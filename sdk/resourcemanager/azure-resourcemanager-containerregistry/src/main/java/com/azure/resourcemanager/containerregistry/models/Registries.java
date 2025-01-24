@@ -122,7 +122,11 @@ public interface Registries extends SupportsCreating<Registry.DefinitionStages.B
      */
     Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String rgName, String acrName);
 
-    /** @return returns entry point to manage container registry webhooks. */
+    /**
+     * Gets returns entry point to manage container registry webhooks.
+     *
+     * @return returns entry point to manage container registry webhooks.
+     */
     WebhooksClient webhooks();
 
     /** Grouping of registry webhook actions. */

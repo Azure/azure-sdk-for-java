@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of the Key Vault which hosts CMK.
  */
 @Fluent
-public final class CmkKeyVaultProperties {
+public final class CmkKeyVaultProperties implements JsonSerializable<CmkKeyVaultProperties> {
     /*
      * The key uri of the Customer Managed Key
      */
-    @JsonProperty(value = "keyUri")
     private String keyUri;
 
     /**
@@ -50,5 +53,41 @@ public final class CmkKeyVaultProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyUri", this.keyUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CmkKeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CmkKeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CmkKeyVaultProperties.
+     */
+    public static CmkKeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CmkKeyVaultProperties deserializedCmkKeyVaultProperties = new CmkKeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyUri".equals(fieldName)) {
+                    deserializedCmkKeyVaultProperties.keyUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCmkKeyVaultProperties;
+        });
     }
 }

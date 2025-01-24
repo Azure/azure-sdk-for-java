@@ -9,7 +9,9 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FilesCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileForSubscription.json
+     * x-ms-original-file:
+     * specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileForSubscription.
+     * json
      */
     /**
      * Sample code: Create a file under a subscription workspace.

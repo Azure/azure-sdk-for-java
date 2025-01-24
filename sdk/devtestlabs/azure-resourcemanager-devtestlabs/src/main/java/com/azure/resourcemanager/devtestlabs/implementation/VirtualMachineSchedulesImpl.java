@@ -30,14 +30,14 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
 
     public PagedIterable<Schedule> list(String resourceGroupName, String labName, String virtualMachineName) {
         PagedIterable<ScheduleInner> inner = this.serviceClient().list(resourceGroupName, labName, virtualMachineName);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Schedule> list(String resourceGroupName, String labName, String virtualMachineName,
         String expand, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ScheduleInner> inner = this.serviceClient()
             .list(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public Response<Schedule> getWithResponse(String resourceGroupName, String labName, String virtualMachineName,

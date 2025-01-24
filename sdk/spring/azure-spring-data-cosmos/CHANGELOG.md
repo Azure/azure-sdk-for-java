@@ -1,15 +1,24 @@
 ## Release History
 
-### 5.19.0-beta.1 (Unreleased)
+### 5.20.0-beta.1 (Unreleased)
 
 #### Features Added
+* Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
+* Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 5.19.0 (2024-12-17)
 
 #### Bugs Fixed
 * Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.65.0`.
 
 ### 5.18.0 (2024-11-05)
 > [!IMPORTANT]

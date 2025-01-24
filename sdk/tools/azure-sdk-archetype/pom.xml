@@ -251,7 +251,7 @@
               <pipelineConfiguration>
                 <filters>
                   <include>
-                    <item>azure-sdk-tree-provider</item>
+                    <item>class-and-package-tree-filter-provider</item>
                   </include>
                 </filters>
               </pipelineConfiguration>

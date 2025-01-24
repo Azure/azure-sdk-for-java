@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-/** Samples for CustomRollouts Get. */
+/**
+ * Samples for CustomRollouts Get.
+ */
 public final class CustomRolloutsGetSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/CustomRollouts_Get.json
+     * x-ms-original-file:
+     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/CustomRollouts_Get.
+     * json
      */
     /**
      * Sample code: CustomRollouts_Get.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
     public static void customRolloutsGet(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
-        manager
-            .customRollouts()
+        manager.customRollouts()
             .getWithResponse("Microsoft.Contoso", "canaryTesting99", com.azure.core.util.Context.NONE);
     }
 }

@@ -115,7 +115,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                     assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
                 }
                 // Assert delete of item1
-                assertThat(itemChanges.get(4).get("previous").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(4).get("previous")).isNull();
                 assertThat(itemChanges.get(4).get("current")).isEmpty();
                 assertThat(itemChanges.get(4).get("metadata").get("operationType").asText()).isEqualTo("delete");
                 assertThat(itemChanges.get(4).get("metadata").get("previousImageLSN").asText()
@@ -172,7 +172,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                     assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
                 }
                 // Assert delete of item3
-                assertThat(itemChanges.get(2).get("previous").get("id").asText()).isEqualTo(item3.getId());
+                assertThat(itemChanges.get(2).get("previous")).isNull();
                 assertThat(itemChanges.get(2).get("current")).isEmpty();
                 assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("delete");
                 assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
@@ -247,7 +247,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                     assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
                 }
                 // Assert delete of item1
-                assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(3).get("previous")).isNull();
                 assertThat(itemChanges.get(3).get("current")).isEmpty();
                 assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
                 assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()

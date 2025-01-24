@@ -2,6 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
     "baseName": {
       "type": "string"
     },
@@ -113,6 +117,10 @@
     }
   ],
   "outputs": {
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
     "ACCOUNT_HOST": {
       "type": "string",
       "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"

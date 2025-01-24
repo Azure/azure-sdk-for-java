@@ -21,7 +21,16 @@ public class StorageService extends ExpandableStringEnum<StorageService> {
     public static final StorageService FILE = fromString("File");
 
     /**
-     * Creates or finds a service service type based on its name.
+     * Creates a new instance of StorageService value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageService() {
+    }
+
+    /**
+     * Creates or finds a service type based on its name.
      *
      * @param name a name to look for
      * @return an StorageService
@@ -30,7 +39,11 @@ public class StorageService extends ExpandableStringEnum<StorageService> {
         return fromString(name, StorageService.class);
     }
 
-    /** @return known storage service types. */
+    /**
+     * Gets known storage service types.
+     *
+     * @return known storage service types.
+     */
     public static Collection<StorageService> values() {
         return values(StorageService.class);
     }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.kusto.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DatabaseOperations. */
+/**
+ * Resource collection API of DatabaseOperations.
+ */
 public interface DatabaseOperations {
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -27,7 +29,7 @@ public interface DatabaseOperations {
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.

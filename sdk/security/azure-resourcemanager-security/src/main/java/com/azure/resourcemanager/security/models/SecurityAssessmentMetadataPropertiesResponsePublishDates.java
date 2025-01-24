@@ -6,23 +6,26 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SecurityAssessmentMetadataPropertiesResponsePublishDates model.
  */
 @Fluent
-public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
+public final class SecurityAssessmentMetadataPropertiesResponsePublishDates
+    implements JsonSerializable<SecurityAssessmentMetadataPropertiesResponsePublishDates> {
     /*
      * The GA property.
      */
-    @JsonProperty(value = "GA")
     private String ga;
 
     /*
      * The public property.
      */
-    @JsonProperty(value = "public", required = true)
     private String publicProperty;
 
     /**
@@ -86,4 +89,48 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
 
     private static final ClientLogger LOGGER
         = new ClientLogger(SecurityAssessmentMetadataPropertiesResponsePublishDates.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("public", this.publicProperty);
+        jsonWriter.writeStringField("GA", this.ga);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentMetadataPropertiesResponsePublishDates from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentMetadataPropertiesResponsePublishDates if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * SecurityAssessmentMetadataPropertiesResponsePublishDates.
+     */
+    public static SecurityAssessmentMetadataPropertiesResponsePublishDates fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentMetadataPropertiesResponsePublishDates deserializedSecurityAssessmentMetadataPropertiesResponsePublishDates
+                = new SecurityAssessmentMetadataPropertiesResponsePublishDates();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("public".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponsePublishDates.publicProperty
+                        = reader.getString();
+                } else if ("GA".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponsePublishDates.ga = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentMetadataPropertiesResponsePublishDates;
+        });
+    }
 }

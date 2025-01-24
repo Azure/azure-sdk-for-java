@@ -20,7 +20,7 @@ public final class AlertRuleTemplatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"AlertRuleTemplate\",\"id\":\"xpqkjnpy\",\"name\":\"iwntotcxmmqmts\",\"type\":\"ky\"}";
+            = "{\"kind\":\"AlertRuleTemplate\",\"id\":\"ay\",\"name\":\"xbulpzealbmqkyo\",\"type\":\"wyvf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class AlertRuleTemplatesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AlertRuleTemplate response = manager.alertRuleTemplates()
-            .getWithResponse("zsoxznntwgk", "yohpsapzupzwwytb", "jzghximkg", com.azure.core.util.Context.NONE)
+            .getWithResponse("nozoeoq", "vjhvefgwbm", "jchnta", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

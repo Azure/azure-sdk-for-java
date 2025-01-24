@@ -29,7 +29,6 @@ import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -82,7 +81,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
 import java.time.Duration;
@@ -91,7 +89,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -376,6 +373,8 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosChangeFeedRequestOptionsImpl getImpl(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            CosmosChangeFeedRequestOptions setEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions, Long endLsn);
+            Long getEndLSN(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
@@ -926,6 +925,19 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnostics diagnostics,
                 Throwable finalError);
 
+            boolean endOperation(
+                CosmosDiagnosticsContext ctx,
+                int statusCode,
+                int subStatusCode,
+                Integer actualItemCount,
+                Double requestCharge,
+                Long opCountPerEvaluation,
+                Long opRetriedCountPerEvaluation,
+                Long globalOpCount,
+                Integer targetMaxMicroBatchSize,
+                CosmosDiagnostics diagnostics,
+                Throwable finalError);
+
             void addRequestCharge(CosmosDiagnosticsContext ctx, float requestCharge);
 
             void addRequestSize(CosmosDiagnosticsContext ctx, int bytes);
@@ -954,6 +966,13 @@ public class ImplementationBridgeHelpers {
 
             String getQueryStatement(CosmosDiagnosticsContext ctx);
 
+            Long getOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
+
+            Long getRetriedOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
+
+            Long getGlobalOpCount(CosmosDiagnosticsContext ctx);
+
+            Integer getTargetMaxMicroBatchSize(CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -1312,6 +1331,22 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+
+            void setOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long opCountPerEvaluation);
+
+            void setGlobalOpCount(CosmosBatchResponse cosmosBatchResponse, long globalOpCount);
+
+            void setRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long retriedOpCountPerEvaluation);
+
+            void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize);
+
+            long getOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            long getGlobalOpCount(CosmosBatchResponse cosmosBatchResponse);
+
+            long getRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            int getTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse);
         }
     }
 

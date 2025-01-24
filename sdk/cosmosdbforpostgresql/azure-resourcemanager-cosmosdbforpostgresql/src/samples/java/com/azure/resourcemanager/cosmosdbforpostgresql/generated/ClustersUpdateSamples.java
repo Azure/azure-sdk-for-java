@@ -24,7 +24,8 @@ public final class ClustersUpdateSamples {
     public static void
         scaleUpStorage(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withNodeStorageQuotaInMb(2097152).apply();
     }
 
@@ -41,9 +42,14 @@ public final class ClustersUpdateSamples {
     public static void updateMultipleConfigurationSettingsOfTheCluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withAdministratorLoginPassword("newpassword").withCoordinatorVCores(16).withNodeCount(4)
-            .withNodeVCores(16).apply();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withAdministratorLoginPassword("newpassword")
+            .withCoordinatorVCores(16)
+            .withNodeCount(4)
+            .withNodeVCores(16)
+            .apply();
     }
 
     /*
@@ -59,7 +65,8 @@ public final class ClustersUpdateSamples {
     public static void
         scaleComputeUpOrDown(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withNodeVCores(16).apply();
     }
 
@@ -76,7 +83,8 @@ public final class ClustersUpdateSamples {
     public static void scaleOutAddNewWorkerNodes(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withNodeCount(2).apply();
     }
 
@@ -93,9 +101,13 @@ public final class ClustersUpdateSamples {
     public static void updateOrDefineMaintenanceWindow(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withMaintenanceWindow(
-            new MaintenanceWindow().withCustomWindow("Enabled").withStartHour(8).withStartMinute(0).withDayOfWeek(0))
+            .getByResourceGroupWithResponse("TestGroup", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withMaintenanceWindow(new MaintenanceWindow().withCustomWindow("Enabled")
+                .withStartHour(8)
+                .withStartMinute(0)
+                .withDayOfWeek(0))
             .apply();
     }
 }

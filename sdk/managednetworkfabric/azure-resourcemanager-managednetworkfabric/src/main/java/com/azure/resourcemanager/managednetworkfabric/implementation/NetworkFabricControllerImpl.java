@@ -206,8 +206,9 @@ public final class NetworkFabricControllerImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkFabricControllerName = Utils.getValueFromIdByName(innerObject.id(), "networkFabricControllers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkFabricControllerName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFabricControllers");
     }
 
     public NetworkFabricController refresh() {

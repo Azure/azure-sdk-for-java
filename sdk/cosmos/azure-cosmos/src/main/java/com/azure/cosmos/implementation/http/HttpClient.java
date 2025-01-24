@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
@@ -44,6 +45,16 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.maxConnections(httpClientConfig.getMaxPoolSize());
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
+
+        if (httpClientConfig.getHttp2Config().isEnabled()) {
+            fixedConnectionProviderBuilder.allocationStrategy(
+                Http2AllocationStrategy.builder()
+                    .maxConnections(httpClientConfig.getHttp2Config().getMaxConnectionPoolSize())
+                    .minConnections(httpClientConfig.getHttp2Config().getMinConnectionPoolSize())
+                    .maxConcurrentStreams(httpClientConfig.getHttp2Config().getMaxConcurrentStreams())
+                    .build()
+            );
+        }
 
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
             httpClientConfig);

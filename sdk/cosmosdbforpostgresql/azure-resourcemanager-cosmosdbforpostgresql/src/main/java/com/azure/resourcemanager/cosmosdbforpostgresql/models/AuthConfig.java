@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Authentication configuration of a cluster.
  */
 @Fluent
-public final class AuthConfig {
+public final class AuthConfig implements JsonSerializable<AuthConfig> {
     /*
      * The activeDirectoryAuth property.
      */
-    @JsonProperty(value = "activeDirectoryAuth")
     private ActiveDirectoryAuth activeDirectoryAuth;
 
     /*
      * The passwordAuth property.
      */
-    @JsonProperty(value = "passwordAuth")
     private PasswordAuth passwordAuth;
 
     /**
@@ -76,5 +78,45 @@ public final class AuthConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activeDirectoryAuth",
+            this.activeDirectoryAuth == null ? null : this.activeDirectoryAuth.toString());
+        jsonWriter.writeStringField("passwordAuth", this.passwordAuth == null ? null : this.passwordAuth.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthConfig if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AuthConfig.
+     */
+    public static AuthConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthConfig deserializedAuthConfig = new AuthConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activeDirectoryAuth".equals(fieldName)) {
+                    deserializedAuthConfig.activeDirectoryAuth = ActiveDirectoryAuth.fromString(reader.getString());
+                } else if ("passwordAuth".equals(fieldName)) {
+                    deserializedAuthConfig.passwordAuth = PasswordAuth.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthConfig;
+        });
     }
 }

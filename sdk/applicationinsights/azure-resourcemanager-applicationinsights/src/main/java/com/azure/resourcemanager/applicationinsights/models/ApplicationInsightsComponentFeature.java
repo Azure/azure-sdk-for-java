@@ -5,73 +5,73 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** An Application Insights component daily data volume cap status. */
+/**
+ * An Application Insights component daily data volume cap status.
+ */
 @Immutable
-public final class ApplicationInsightsComponentFeature {
+public final class ApplicationInsightsComponentFeature
+    implements JsonSerializable<ApplicationInsightsComponentFeature> {
     /*
      * The pricing feature name.
      */
-    @JsonProperty(value = "FeatureName", access = JsonProperty.Access.WRITE_ONLY)
     private String featureName;
 
     /*
      * The meter id used for the feature.
      */
-    @JsonProperty(value = "MeterId", access = JsonProperty.Access.WRITE_ONLY)
     private String meterId;
 
     /*
      * The meter rate for the feature's meter.
      */
-    @JsonProperty(value = "MeterRateFrequency", access = JsonProperty.Access.WRITE_ONLY)
     private String meterRateFrequency;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "ResouceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resouceId;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "IsHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHidden;
 
     /*
      * A list of Application Insights component feature capability.
      */
-    @JsonProperty(value = "Capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationInsightsComponentFeatureCapability> capabilities;
 
     /*
      * Display name of the feature.
      */
-    @JsonProperty(value = "Title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * Whether can apply addon feature on to it.
      */
-    @JsonProperty(value = "IsMainFeature", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMainFeature;
 
     /*
      * The add on features on main feature.
      */
-    @JsonProperty(value = "SupportedAddonFeatures", access = JsonProperty.Access.WRITE_ONLY)
     private String supportedAddonFeatures;
 
-    /** Creates an instance of ApplicationInsightsComponentFeature class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentFeature class.
+     */
     public ApplicationInsightsComponentFeature() {
     }
 
     /**
      * Get the featureName property: The pricing feature name.
-     *
+     * 
      * @return the featureName value.
      */
     public String featureName() {
@@ -80,7 +80,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the meterId property: The meter id used for the feature.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -89,7 +89,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the meterRateFrequency property: The meter rate for the feature's meter.
-     *
+     * 
      * @return the meterRateFrequency value.
      */
     public String meterRateFrequency() {
@@ -98,7 +98,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the resouceId property: Reserved, not used now.
-     *
+     * 
      * @return the resouceId value.
      */
     public String resouceId() {
@@ -107,7 +107,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the isHidden property: Reserved, not used now.
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -116,7 +116,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the capabilities property: A list of Application Insights component feature capability.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ApplicationInsightsComponentFeatureCapability> capabilities() {
@@ -125,7 +125,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the title property: Display name of the feature.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -134,7 +134,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the isMainFeature property: Whether can apply addon feature on to it.
-     *
+     * 
      * @return the isMainFeature value.
      */
     public Boolean isMainFeature() {
@@ -143,7 +143,7 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Get the supportedAddonFeatures property: The add on features on main feature.
-     *
+     * 
      * @return the supportedAddonFeatures value.
      */
     public String supportedAddonFeatures() {
@@ -152,12 +152,68 @@ public final class ApplicationInsightsComponentFeature {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentFeature from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentFeature if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationInsightsComponentFeature.
+     */
+    public static ApplicationInsightsComponentFeature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentFeature deserializedApplicationInsightsComponentFeature
+                = new ApplicationInsightsComponentFeature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("FeatureName".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.featureName = reader.getString();
+                } else if ("MeterId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.meterId = reader.getString();
+                } else if ("MeterRateFrequency".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.meterRateFrequency = reader.getString();
+                } else if ("ResouceId".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.resouceId = reader.getString();
+                } else if ("IsHidden".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.isHidden
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("Capabilities".equals(fieldName)) {
+                    List<ApplicationInsightsComponentFeatureCapability> capabilities
+                        = reader.readArray(reader1 -> ApplicationInsightsComponentFeatureCapability.fromJson(reader1));
+                    deserializedApplicationInsightsComponentFeature.capabilities = capabilities;
+                } else if ("Title".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.title = reader.getString();
+                } else if ("IsMainFeature".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.isMainFeature
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("SupportedAddonFeatures".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeature.supportedAddonFeatures = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentFeature;
+        });
     }
 }

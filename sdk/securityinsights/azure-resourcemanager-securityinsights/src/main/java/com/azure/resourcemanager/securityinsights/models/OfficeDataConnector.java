@@ -123,29 +123,6 @@ public final class OfficeDataConnector extends DataConnectorInner {
     }
 
     /**
-     * Get the dataTypes property: The available data types for the connector.
-     * 
-     * @return the dataTypes value.
-     */
-    public OfficeDataConnectorDataTypes dataTypes() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataTypes();
-    }
-
-    /**
-     * Set the dataTypes property: The available data types for the connector.
-     * 
-     * @param dataTypes the dataTypes value to set.
-     * @return the OfficeDataConnector object itself.
-     */
-    public OfficeDataConnector withDataTypes(OfficeDataConnectorDataTypes dataTypes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new OfficeDataConnectorProperties();
-        }
-        this.innerProperties().withDataTypes(dataTypes);
-        return this;
-    }
-
-    /**
      * Get the tenantId property: The tenant id to connect to, and get the data from.
      * 
      * @return the tenantId value.
@@ -165,6 +142,29 @@ public final class OfficeDataConnector extends DataConnectorInner {
             this.innerProperties = new OfficeDataConnectorProperties();
         }
         this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
+     * Get the dataTypes property: The available data types for the connector.
+     * 
+     * @return the dataTypes value.
+     */
+    public OfficeDataConnectorDataTypes dataTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataTypes();
+    }
+
+    /**
+     * Set the dataTypes property: The available data types for the connector.
+     * 
+     * @param dataTypes the dataTypes value to set.
+     * @return the OfficeDataConnector object itself.
+     */
+    public OfficeDataConnector withDataTypes(OfficeDataConnectorDataTypes dataTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OfficeDataConnectorProperties();
+        }
+        this.innerProperties().withDataTypes(dataTypes);
         return this;
     }
 

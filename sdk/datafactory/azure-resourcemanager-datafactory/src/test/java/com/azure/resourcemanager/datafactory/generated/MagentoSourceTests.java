@@ -11,19 +11,19 @@ public final class MagentoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MagentoSource model = BinaryData.fromString(
-            "{\"type\":\"MagentoSource\",\"query\":\"dataqgpldrn\",\"queryTimeout\":\"datahdb\",\"additionalColumns\":\"databmsbetzufkvx\",\"sourceRetryCount\":\"databddrtngdc\",\"sourceRetryWait\":\"datajzgzaeuu\",\"maxConcurrentConnections\":\"datavheqzl\",\"disableMetricsCollection\":\"datavaskrgoodfhpyue\",\"\":{\"lizlzxh\":\"datanyddp\",\"sjwawl\":\"datacuglgmfznholaf\",\"yk\":\"dataqmznkcwiok\"}}")
+            "{\"type\":\"MagentoSource\",\"query\":\"datajjprd\",\"queryTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datagd\",\"sourceRetryWait\":\"datat\",\"maxConcurrentConnections\":\"datadxlfn\",\"disableMetricsCollection\":\"dataclkmggnzlfyxaiaf\",\"\":{\"uoayapzzcxkuusba\":\"dataxekfvycvhw\",\"yak\":\"datacassqeybdnz\",\"zkicxtumqinawct\":\"datarkohfqm\",\"kjnpe\":\"dataarboxaluoadmcv\"}}")
             .toObject(MagentoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MagentoSource model = new MagentoSource().withSourceRetryCount("databddrtngdc")
-            .withSourceRetryWait("datajzgzaeuu")
-            .withMaxConcurrentConnections("datavheqzl")
-            .withDisableMetricsCollection("datavaskrgoodfhpyue")
-            .withQueryTimeout("datahdb")
-            .withAdditionalColumns("databmsbetzufkvx")
-            .withQuery("dataqgpldrn");
+        MagentoSource model = new MagentoSource().withSourceRetryCount("datagd")
+            .withSourceRetryWait("datat")
+            .withMaxConcurrentConnections("datadxlfn")
+            .withDisableMetricsCollection("dataclkmggnzlfyxaiaf")
+            .withQueryTimeout("datablonlhtgexwjhicu")
+            .withAdditionalColumns("dataavimxnhylwogtvl")
+            .withQuery("datajjprd");
         model = BinaryData.fromObject(model).toObject(MagentoSource.class);
     }
 }

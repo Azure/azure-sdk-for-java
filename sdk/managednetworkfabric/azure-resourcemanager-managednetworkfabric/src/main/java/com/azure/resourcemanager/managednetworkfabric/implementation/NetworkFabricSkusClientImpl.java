@@ -30,17 +30,23 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricSkusListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkFabricSkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFabricSkusClient.
+ */
 public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkFabricSkusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkFabricSkusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkFabricSkusClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -84,15 +90,15 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric SKU resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric SKU resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFabricSkuInner>> getWithResponseAsync(String networkFabricSkuName) {
@@ -117,16 +123,16 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric SKU resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric SKU resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFabricSkuInner>> getWithResponseAsync(String networkFabricSkuName, Context context) {
@@ -150,9 +156,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -166,9 +172,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,9 +189,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Gets a Network Fabric Sku.
-     *
-     * <p>Implements Network Fabric SKU GET method.
-     *
+     * 
+     * Implements Network Fabric SKU GET method.
+     * 
      * @param networkFabricSkuName Name of the Network Fabric SKU.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -199,9 +205,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -227,9 +233,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -257,9 +263,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric SKUs as paginated response with {@link PagedFlux}.
@@ -272,9 +278,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -289,9 +295,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabric SKUs as paginated response with {@link PagedIterable}.
@@ -303,9 +309,9 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * List Network Fabric SKUs by subscription.
-     *
-     * <p>Implements Network Fabric SKUs list by subscription GET method.
-     *
+     * 
+     * Implements Network Fabric SKUs list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,9 +325,8 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,9 +352,8 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

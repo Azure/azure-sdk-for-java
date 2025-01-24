@@ -27,14 +27,14 @@ public final class ApiWikisOperationsImpl implements ApiWikisOperations {
 
     public PagedIterable<WikiContract> list(String resourceGroupName, String serviceName, String apiId) {
         PagedIterable<WikiContractInner> inner = this.serviceClient().list(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new WikiContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WikiContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WikiContract> list(String resourceGroupName, String serviceName, String apiId, String filter,
         Integer top, Integer skip, Context context) {
         PagedIterable<WikiContractInner> inner
             = this.serviceClient().list(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new WikiContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WikiContractImpl(inner1, this.manager()));
     }
 
     private ApiWikisOperationsClient serviceClient() {

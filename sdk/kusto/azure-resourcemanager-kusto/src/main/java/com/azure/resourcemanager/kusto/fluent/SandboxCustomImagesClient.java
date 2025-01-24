@@ -15,11 +15,13 @@ import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.SandboxCustomImageInner;
 import com.azure.resourcemanager.kusto.models.SandboxCustomImagesCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in SandboxCustomImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SandboxCustomImagesClient.
+ */
 public interface SandboxCustomImagesClient {
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +34,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Returns the list of the existing sandbox custom images of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -46,7 +48,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -62,7 +64,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Returns a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -76,7 +78,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -93,7 +95,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -111,7 +113,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -127,7 +129,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Creates or updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -144,7 +146,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -160,7 +162,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -177,7 +179,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -193,7 +195,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Updates a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -210,7 +212,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -225,7 +227,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -241,7 +243,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -254,7 +256,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Deletes a sandbox custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param sandboxCustomImageName The name of the sandbox custom image.
@@ -268,7 +270,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -284,7 +286,7 @@ public interface SandboxCustomImagesClient {
 
     /**
      * Checks that the sandbox custom image resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.

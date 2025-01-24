@@ -74,12 +74,12 @@ public final class VMInstanceGuestAgentsImpl implements VMInstanceGuestAgents {
 
     public PagedIterable<GuestAgent> list(String resourceUri) {
         PagedIterable<GuestAgentInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new GuestAgentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GuestAgentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GuestAgent> list(String resourceUri, Context context) {
         PagedIterable<GuestAgentInner> inner = this.serviceClient().list(resourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new GuestAgentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GuestAgentImpl(inner1, this.manager()));
     }
 
     private VMInstanceGuestAgentsClient serviceClient() {

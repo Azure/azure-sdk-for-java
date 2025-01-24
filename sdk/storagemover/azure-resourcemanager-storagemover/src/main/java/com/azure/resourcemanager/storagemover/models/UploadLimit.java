@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The WAN-link upload limit.
  */
 @Fluent
-public class UploadLimit {
+public class UploadLimit implements JsonSerializable<UploadLimit> {
     /*
      * The WAN-link upload bandwidth (maximum data transfer rate) in megabits per second. Value of 0 indicates no
      * throughput is allowed and any running migration job is effectively paused for the duration of this recurrence.
      * Only data plane operations are governed by this limit. Control plane operations ensure seamless functionality.
      * The agent may exceed this limit with control messages, if necessary.
      */
-    @JsonProperty(value = "limitInMbps", required = true)
     private int limitInMbps;
 
     /**
@@ -59,5 +62,42 @@ public class UploadLimit {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("limitInMbps", this.limitInMbps);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UploadLimit from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UploadLimit if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UploadLimit.
+     */
+    public static UploadLimit fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UploadLimit deserializedUploadLimit = new UploadLimit();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limitInMbps".equals(fieldName)) {
+                    deserializedUploadLimit.limitInMbps = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUploadLimit;
+        });
     }
 }

@@ -26,11 +26,6 @@ public final class SubscriptionIsAllowedToCreateJobValidationResponseProperties 
      */
     private ValidationStatus status;
 
-    /*
-     * Error code and message of validation response.
-     */
-    private CloudError error;
-
     /**
      * Creates an instance of SubscriptionIsAllowedToCreateJobValidationResponseProperties class.
      */
@@ -54,16 +49,6 @@ public final class SubscriptionIsAllowedToCreateJobValidationResponseProperties 
      */
     public ValidationStatus status() {
         return this.status;
-    }
-
-    /**
-     * Get the error property: Error code and message of validation response.
-     * 
-     * @return the error value.
-     */
-    @Override
-    public CloudError error() {
-        return this.error;
     }
 
     /**
@@ -108,8 +93,8 @@ public final class SubscriptionIsAllowedToCreateJobValidationResponseProperties 
                 reader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    deserializedSubscriptionIsAllowedToCreateJobValidationResponseProperties.error
-                        = CloudError.fromJson(reader);
+                    deserializedSubscriptionIsAllowedToCreateJobValidationResponseProperties
+                        .withError(CloudError.fromJson(reader));
                 } else if ("validationType".equals(fieldName)) {
                     deserializedSubscriptionIsAllowedToCreateJobValidationResponseProperties.validationType
                         = ValidationInputDiscriminator.fromString(reader.getString());

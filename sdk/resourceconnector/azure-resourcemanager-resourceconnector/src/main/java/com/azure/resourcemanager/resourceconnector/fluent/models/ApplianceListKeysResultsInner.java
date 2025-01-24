@@ -5,45 +5,47 @@
 package com.azure.resourcemanager.resourceconnector.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceCredentialKubeconfig;
 import com.azure.resourcemanager.resourceconnector.models.ArtifactProfile;
 import com.azure.resourcemanager.resourceconnector.models.SshKey;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The List Cluster Keys Results appliance. */
+/**
+ * The List Cluster Keys Results appliance.
+ */
 @Immutable
-public final class ApplianceListKeysResultsInner {
+public final class ApplianceListKeysResultsInner implements JsonSerializable<ApplianceListKeysResultsInner> {
     /*
      * Map of artifacts that contains a list of ArtifactProfile used to upload artifacts such as logs.
      */
-    @JsonProperty(value = "artifactProfiles", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ArtifactProfile> artifactProfiles;
 
     /*
      * The list of appliance kubeconfigs.
      */
-    @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplianceCredentialKubeconfig> kubeconfigs;
 
     /*
      * Map of Customer User Public, Private SSH Keys and Certificate when available.
      */
-    @JsonProperty(value = "sshKeys", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SshKey> sshKeys;
 
-    /** Creates an instance of ApplianceListKeysResultsInner class. */
+    /**
+     * Creates an instance of ApplianceListKeysResultsInner class.
+     */
     public ApplianceListKeysResultsInner() {
     }
 
     /**
      * Get the artifactProfiles property: Map of artifacts that contains a list of ArtifactProfile used to upload
      * artifacts such as logs.
-     *
+     * 
      * @return the artifactProfiles value.
      */
     public Map<String, ArtifactProfile> artifactProfiles() {
@@ -52,7 +54,7 @@ public final class ApplianceListKeysResultsInner {
 
     /**
      * Get the kubeconfigs property: The list of appliance kubeconfigs.
-     *
+     * 
      * @return the kubeconfigs value.
      */
     public List<ApplianceCredentialKubeconfig> kubeconfigs() {
@@ -61,7 +63,7 @@ public final class ApplianceListKeysResultsInner {
 
     /**
      * Get the sshKeys property: Map of Customer User Public, Private SSH Keys and Certificate when available.
-     *
+     * 
      * @return the sshKeys value.
      */
     public Map<String, SshKey> sshKeys() {
@@ -70,7 +72,7 @@ public final class ApplianceListKeysResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -91,5 +93,50 @@ public final class ApplianceListKeysResultsInner {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceListKeysResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceListKeysResultsInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceListKeysResultsInner.
+     */
+    public static ApplianceListKeysResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceListKeysResultsInner deserializedApplianceListKeysResultsInner
+                = new ApplianceListKeysResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactProfiles".equals(fieldName)) {
+                    Map<String, ArtifactProfile> artifactProfiles
+                        = reader.readMap(reader1 -> ArtifactProfile.fromJson(reader1));
+                    deserializedApplianceListKeysResultsInner.artifactProfiles = artifactProfiles;
+                } else if ("kubeconfigs".equals(fieldName)) {
+                    List<ApplianceCredentialKubeconfig> kubeconfigs
+                        = reader.readArray(reader1 -> ApplianceCredentialKubeconfig.fromJson(reader1));
+                    deserializedApplianceListKeysResultsInner.kubeconfigs = kubeconfigs;
+                } else if ("sshKeys".equals(fieldName)) {
+                    Map<String, SshKey> sshKeys = reader.readMap(reader1 -> SshKey.fromJson(reader1));
+                    deserializedApplianceListKeysResultsInner.sshKeys = sshKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceListKeysResultsInner;
+        });
     }
 }

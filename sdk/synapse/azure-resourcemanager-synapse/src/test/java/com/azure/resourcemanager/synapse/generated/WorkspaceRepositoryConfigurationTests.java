@@ -13,39 +13,39 @@ public final class WorkspaceRepositoryConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceRepositoryConfiguration model = BinaryData.fromString(
-            "{\"type\":\"dboxdfgsftufqobr\",\"hostName\":\"nac\",\"accountName\":\"ckknhxkizvy\",\"projectName\":\"rzvul\",\"repositoryName\":\"aaeranokqgukk\",\"collaborationBranch\":\"nvbroylaxx\",\"rootFolder\":\"cdisd\",\"lastCommitId\":\"fj\",\"tenantId\":\"2d71e860-f5e0-4c72-a7fa-44bf52e35916\"}")
+            "{\"type\":\"uelyetndn\",\"hostName\":\"qyggagfl\",\"accountName\":\"gm\",\"projectName\":\"wahzjmucftbyr\",\"repositoryName\":\"rohkpigqfusu\",\"collaborationBranch\":\"zmkw\",\"rootFolder\":\"snoxaxmqeqa\",\"lastCommitId\":\"hjnhgwydyynfsvk\",\"tenantId\":\"d45f3a39-beb3-4b78-a8c8-016d4f0e8a7a\"}")
             .toObject(WorkspaceRepositoryConfiguration.class);
-        Assertions.assertEquals("dboxdfgsftufqobr", model.type());
-        Assertions.assertEquals("nac", model.hostname());
-        Assertions.assertEquals("ckknhxkizvy", model.accountName());
-        Assertions.assertEquals("rzvul", model.projectName());
-        Assertions.assertEquals("aaeranokqgukk", model.repositoryName());
-        Assertions.assertEquals("nvbroylaxx", model.collaborationBranch());
-        Assertions.assertEquals("cdisd", model.rootFolder());
-        Assertions.assertEquals("fj", model.lastCommitId());
-        Assertions.assertEquals(UUID.fromString("2d71e860-f5e0-4c72-a7fa-44bf52e35916"), model.tenantId());
+        Assertions.assertEquals("uelyetndn", model.type());
+        Assertions.assertEquals("qyggagfl", model.hostname());
+        Assertions.assertEquals("gm", model.accountName());
+        Assertions.assertEquals("wahzjmucftbyr", model.projectName());
+        Assertions.assertEquals("rohkpigqfusu", model.repositoryName());
+        Assertions.assertEquals("zmkw", model.collaborationBranch());
+        Assertions.assertEquals("snoxaxmqeqa", model.rootFolder());
+        Assertions.assertEquals("hjnhgwydyynfsvk", model.lastCommitId());
+        Assertions.assertEquals(UUID.fromString("d45f3a39-beb3-4b78-a8c8-016d4f0e8a7a"), model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceRepositoryConfiguration model = new WorkspaceRepositoryConfiguration().withType("dboxdfgsftufqobr")
-            .withHostname("nac")
-            .withAccountName("ckknhxkizvy")
-            .withProjectName("rzvul")
-            .withRepositoryName("aaeranokqgukk")
-            .withCollaborationBranch("nvbroylaxx")
-            .withRootFolder("cdisd")
-            .withLastCommitId("fj")
-            .withTenantId(UUID.fromString("2d71e860-f5e0-4c72-a7fa-44bf52e35916"));
+        WorkspaceRepositoryConfiguration model = new WorkspaceRepositoryConfiguration().withType("uelyetndn")
+            .withHostname("qyggagfl")
+            .withAccountName("gm")
+            .withProjectName("wahzjmucftbyr")
+            .withRepositoryName("rohkpigqfusu")
+            .withCollaborationBranch("zmkw")
+            .withRootFolder("snoxaxmqeqa")
+            .withLastCommitId("hjnhgwydyynfsvk")
+            .withTenantId(UUID.fromString("d45f3a39-beb3-4b78-a8c8-016d4f0e8a7a"));
         model = BinaryData.fromObject(model).toObject(WorkspaceRepositoryConfiguration.class);
-        Assertions.assertEquals("dboxdfgsftufqobr", model.type());
-        Assertions.assertEquals("nac", model.hostname());
-        Assertions.assertEquals("ckknhxkizvy", model.accountName());
-        Assertions.assertEquals("rzvul", model.projectName());
-        Assertions.assertEquals("aaeranokqgukk", model.repositoryName());
-        Assertions.assertEquals("nvbroylaxx", model.collaborationBranch());
-        Assertions.assertEquals("cdisd", model.rootFolder());
-        Assertions.assertEquals("fj", model.lastCommitId());
-        Assertions.assertEquals(UUID.fromString("2d71e860-f5e0-4c72-a7fa-44bf52e35916"), model.tenantId());
+        Assertions.assertEquals("uelyetndn", model.type());
+        Assertions.assertEquals("qyggagfl", model.hostname());
+        Assertions.assertEquals("gm", model.accountName());
+        Assertions.assertEquals("wahzjmucftbyr", model.projectName());
+        Assertions.assertEquals("rohkpigqfusu", model.repositoryName());
+        Assertions.assertEquals("zmkw", model.collaborationBranch());
+        Assertions.assertEquals("snoxaxmqeqa", model.rootFolder());
+        Assertions.assertEquals("hjnhgwydyynfsvk", model.lastCommitId());
+        Assertions.assertEquals(UUID.fromString("d45f3a39-beb3-4b78-a8c8-016d4f0e8a7a"), model.tenantId());
     }
 }

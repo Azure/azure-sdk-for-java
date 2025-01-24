@@ -29,7 +29,9 @@ import java.util.Arrays;
  */
 public final class PacketCoreControlPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneCreate.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/
+     * PacketCoreControlPlaneCreate.json
      */
     /**
      * Sample code: Create packet core control plane.

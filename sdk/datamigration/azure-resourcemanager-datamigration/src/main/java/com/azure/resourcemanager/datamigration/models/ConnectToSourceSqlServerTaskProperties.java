@@ -32,21 +32,6 @@ public final class ConnectToSourceSqlServerTaskProperties extends ProjectTaskPro
      */
     private List<ConnectToSourceSqlServerTaskOutput> output;
 
-    /*
-     * Array of command properties.
-     */
-    private List<CommandProperties> commands;
-
-    /*
-     * The state of the task. This is ignored if submitted.
-     */
-    private TaskState state;
-
-    /*
-     * Array of errors. This is ignored if submitted.
-     */
-    private List<ManagementError> errors;
-
     /**
      * Creates an instance of ConnectToSourceSqlServerTaskProperties class.
      */
@@ -90,36 +75,6 @@ public final class ConnectToSourceSqlServerTaskProperties extends ProjectTaskPro
      */
     public List<ConnectToSourceSqlServerTaskOutput> output() {
         return this.output;
-    }
-
-    /**
-     * Get the commands property: Array of command properties.
-     * 
-     * @return the commands value.
-     */
-    @Override
-    public List<CommandProperties> commands() {
-        return this.commands;
-    }
-
-    /**
-     * Get the state property: The state of the task. This is ignored if submitted.
-     * 
-     * @return the state value.
-     */
-    @Override
-    public TaskState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the errors property: Array of errors. This is ignored if submitted.
-     * 
-     * @return the errors value.
-     */
-    @Override
-    public List<ManagementError> errors() {
-        return this.errors;
     }
 
     /**
@@ -169,12 +124,13 @@ public final class ConnectToSourceSqlServerTaskProperties extends ProjectTaskPro
 
                 if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedConnectToSourceSqlServerTaskProperties.errors = errors;
+                    deserializedConnectToSourceSqlServerTaskProperties.withErrors(errors);
                 } else if ("state".equals(fieldName)) {
-                    deserializedConnectToSourceSqlServerTaskProperties.state = TaskState.fromString(reader.getString());
+                    deserializedConnectToSourceSqlServerTaskProperties
+                        .withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
                     List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
-                    deserializedConnectToSourceSqlServerTaskProperties.commands = commands;
+                    deserializedConnectToSourceSqlServerTaskProperties.withCommands(commands);
                 } else if ("taskType".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskProperties.taskType = reader.getString();
                 } else if ("input".equals(fieldName)) {

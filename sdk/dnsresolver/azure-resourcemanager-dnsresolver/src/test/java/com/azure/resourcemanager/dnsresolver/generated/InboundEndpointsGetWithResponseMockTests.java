@@ -22,7 +22,7 @@ public final class InboundEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"lyzrpzbchckqqzqi\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"ysuiizynkedya\"},\"privateIpAddress\":\"wyhqmibzyhwits\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Failed\",\"resourceGuid\":\"pcdpumnz\"},\"location\":\"wznm\",\"tags\":{\"gj\":\"knso\",\"vokotllxdyh\":\"xbldtlwwrlkdmtn\",\"oocrkvcikhnv\":\"syocogjltdtbnnha\"},\"id\":\"amqgxqquezikyw\",\"name\":\"gxk\",\"type\":\"lla\"}";
+            = "{\"etag\":\"dmoizpostmg\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"bunrmfqjhhk\"},\"privateIpAddress\":\"pvjymjhxxjyng\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Updating\",\"resourceGuid\":\"tswb\"},\"location\":\"zvszj\",\"tags\":{\"ivetvtcq\":\"vjfdx\",\"mcbxvwvxysl\":\"qtdo\",\"ytkblmpew\":\"bhsfxob\"},\"id\":\"wfbkrvrns\",\"name\":\"shqjohxcrsbf\",\"type\":\"vasrruvwb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class InboundEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         InboundEndpoint response = manager.inboundEndpoints()
-            .getWithResponse("n", "jphuopxodlqi", "ntorzihleosjswsr", com.azure.core.util.Context.NONE)
+            .getWithResponse("opppcqeq", "ol", "dahzxctobg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wznm", response.location());
-        Assertions.assertEquals("knso", response.tags().get("gj"));
-        Assertions.assertEquals("ysuiizynkedya", response.ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("wyhqmibzyhwits", response.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("zvszj", response.location());
+        Assertions.assertEquals("vjfdx", response.tags().get("ivetvtcq"));
+        Assertions.assertEquals("bunrmfqjhhk", response.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("pvjymjhxxjyng", response.ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(IpAllocationMethod.STATIC,
             response.ipConfigurations().get(0).privateIpAllocationMethod());
     }

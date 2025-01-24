@@ -103,6 +103,9 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     /**
+     * Creates a {@link BlobServiceClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link BlobServiceClient} is created.
+     *
      * @return a {@link BlobServiceClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.
@@ -152,6 +155,9 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     /**
+     * Creates a {@link BlobServiceAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncClient()} is called, a new instance of {@link BlobServiceAsyncClient} is created.
+     *
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.

@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the OperationalInsightsManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the OperationalInsightsManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { OperationalInsightsManagementClientImpl.class })
 public final class OperationalInsightsManagementClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the OperationalInsightsManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the OperationalInsightsManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the OperationalInsightsManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the OperationalInsightsManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the OperationalInsightsManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the OperationalInsightsManagementClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class OperationalInsightsManagementClientBuilder {
 
     /**
      * Builds an instance of OperationalInsightsManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of OperationalInsightsManagementClientImpl.
      */
     public OperationalInsightsManagementClientImpl buildClient() {

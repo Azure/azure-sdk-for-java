@@ -58,26 +58,26 @@ public final class DrasImpl implements Dras {
 
     public PagedIterable<DraModel> list(String resourceGroupName, String fabricName) {
         PagedIterable<DraModelInner> inner = this.serviceClient().list(resourceGroupName, fabricName);
-        return Utils.mapPage(inner, inner1 -> new DraModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DraModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DraModel> list(String resourceGroupName, String fabricName, Context context) {
         PagedIterable<DraModelInner> inner = this.serviceClient().list(resourceGroupName, fabricName, context);
-        return Utils.mapPage(inner, inner1 -> new DraModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DraModelImpl(inner1, this.manager()));
     }
 
     public DraModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String fabricAgentName = Utils.getValueFromIdByName(id, "fabricAgents");
+        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
         if (fabricAgentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
@@ -86,17 +86,17 @@ public final class DrasImpl implements Dras {
     }
 
     public Response<DraModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String fabricAgentName = Utils.getValueFromIdByName(id, "fabricAgents");
+        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
         if (fabricAgentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
@@ -105,17 +105,17 @@ public final class DrasImpl implements Dras {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String fabricAgentName = Utils.getValueFromIdByName(id, "fabricAgents");
+        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
         if (fabricAgentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
@@ -124,17 +124,17 @@ public final class DrasImpl implements Dras {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String fabricAgentName = Utils.getValueFromIdByName(id, "fabricAgents");
+        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
         if (fabricAgentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));

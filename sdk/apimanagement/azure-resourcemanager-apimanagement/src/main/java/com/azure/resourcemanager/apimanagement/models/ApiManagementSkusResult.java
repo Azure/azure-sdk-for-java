@@ -6,33 +6,39 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementSkuInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Resource Skus operation response. */
+/**
+ * The List Resource Skus operation response.
+ */
 @Fluent
-public final class ApiManagementSkusResult {
+public final class ApiManagementSkusResult implements JsonSerializable<ApiManagementSkusResult> {
     /*
      * The list of skus available for the subscription.
      */
-    @JsonProperty(value = "value", required = true)
     private List<ApiManagementSkuInner> value;
 
     /*
-     * The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of
-     * Resource Skus
+     * The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource
+     * Skus
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ApiManagementSkusResult class. */
+    /**
+     * Creates an instance of ApiManagementSkusResult class.
+     */
     public ApiManagementSkusResult() {
     }
 
     /**
      * Get the value property: The list of skus available for the subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<ApiManagementSkuInner> value() {
@@ -41,7 +47,7 @@ public final class ApiManagementSkusResult {
 
     /**
      * Set the value property: The list of skus available for the subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApiManagementSkusResult object itself.
      */
@@ -53,7 +59,7 @@ public final class ApiManagementSkusResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to
      * fetch the next page of Resource Skus.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,17 +68,58 @@ public final class ApiManagementSkusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model ApiManagementSkusResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ApiManagementSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApiManagementSkusResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementSkusResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementSkusResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiManagementSkusResult.
+     */
+    public static ApiManagementSkusResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementSkusResult deserializedApiManagementSkusResult = new ApiManagementSkusResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApiManagementSkuInner> value
+                        = reader.readArray(reader1 -> ApiManagementSkuInner.fromJson(reader1));
+                    deserializedApiManagementSkusResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApiManagementSkusResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementSkusResult;
+        });
+    }
 }

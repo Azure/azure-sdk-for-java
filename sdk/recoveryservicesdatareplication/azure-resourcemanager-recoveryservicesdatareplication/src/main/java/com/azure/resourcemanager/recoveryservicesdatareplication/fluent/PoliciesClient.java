@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PolicyModelInner;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public interface PoliciesClient {
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -35,9 +37,9 @@ public interface PoliciesClient {
 
     /**
      * Gets the policy.
-     *
-     * <p>Gets the details of the policy.
-     *
+     * 
+     * Gets the details of the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -51,9 +53,9 @@ public interface PoliciesClient {
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -68,9 +70,9 @@ public interface PoliciesClient {
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -87,9 +89,9 @@ public interface PoliciesClient {
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -103,9 +105,9 @@ public interface PoliciesClient {
 
     /**
      * Puts the policy.
-     *
-     * <p>Creates the policy.
-     *
+     * 
+     * Creates the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -122,9 +124,9 @@ public interface PoliciesClient {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -138,9 +140,9 @@ public interface PoliciesClient {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -156,9 +158,9 @@ public interface PoliciesClient {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -171,9 +173,9 @@ public interface PoliciesClient {
 
     /**
      * Deletes the policy.
-     *
-     * <p>Removes the policy.
-     *
+     * 
+     * Removes the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -187,9 +189,9 @@ public interface PoliciesClient {
 
     /**
      * Lists the policies.
-     *
-     * <p>Gets the list of policies in the given vault.
-     *
+     * 
+     * Gets the list of policies in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,9 +204,9 @@ public interface PoliciesClient {
 
     /**
      * Lists the policies.
-     *
-     * <p>Gets the list of policies in the given vault.
-     *
+     * 
+     * Gets the list of policies in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.

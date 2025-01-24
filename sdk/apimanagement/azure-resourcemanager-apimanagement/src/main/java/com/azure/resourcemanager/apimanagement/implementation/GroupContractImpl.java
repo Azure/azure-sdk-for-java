@@ -132,9 +132,9 @@ public final class GroupContractImpl implements GroupContract, GroupContract.Def
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.groupId = Utils.getValueFromIdByName(innerObject.id(), "groups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.groupId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "groups");
     }
 
     public GroupContract refresh() {

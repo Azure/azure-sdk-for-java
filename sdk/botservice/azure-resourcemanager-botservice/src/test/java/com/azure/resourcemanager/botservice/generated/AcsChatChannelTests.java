@@ -12,17 +12,17 @@ public final class AcsChatChannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AcsChatChannel model = BinaryData.fromString(
-            "{\"channelName\":\"AcsChatChannel\",\"etag\":\"nfqqnvwp\",\"provisioningState\":\"taruoujmkcj\",\"location\":\"qytjrybnwjewgd\"}")
+            "{\"channelName\":\"AcsChatChannel\",\"etag\":\"qytjrybnwjewgd\",\"provisioningState\":\"ervnaenqpehi\",\"location\":\"oygmift\"}")
             .toObject(AcsChatChannel.class);
-        Assertions.assertEquals("nfqqnvwp", model.etag());
-        Assertions.assertEquals("qytjrybnwjewgd", model.location());
+        Assertions.assertEquals("qytjrybnwjewgd", model.etag());
+        Assertions.assertEquals("oygmift", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AcsChatChannel model = new AcsChatChannel().withEtag("nfqqnvwp").withLocation("qytjrybnwjewgd");
+        AcsChatChannel model = new AcsChatChannel().withEtag("qytjrybnwjewgd").withLocation("oygmift");
         model = BinaryData.fromObject(model).toObject(AcsChatChannel.class);
-        Assertions.assertEquals("nfqqnvwp", model.etag());
-        Assertions.assertEquals("qytjrybnwjewgd", model.location());
+        Assertions.assertEquals("qytjrybnwjewgd", model.etag());
+        Assertions.assertEquals("oygmift", model.location());
     }
 }

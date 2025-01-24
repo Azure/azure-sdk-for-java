@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
      * @param name a name to look for.
      * @return the corresponding MetricAggregationType.
      */
-    @JsonCreator
     public static MetricAggregationType fromString(String name) {
         return fromString(name, MetricAggregationType.class);
     }

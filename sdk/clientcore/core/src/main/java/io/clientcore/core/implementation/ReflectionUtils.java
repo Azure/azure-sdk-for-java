@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -13,24 +13,7 @@ import java.lang.reflect.Method;
  */
 public abstract class ReflectionUtils {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
-    private static final ReflectionUtilsApi INSTANCE;
-
-    static {
-        ReflectionUtilsApi instance;
-        try {
-            LOGGER.atVerbose().log("Attempting to use java.lang.invoke package to handle reflection.");
-            instance = new ReflectionUtilsMethodHandle();
-            LOGGER.atVerbose().log("Successfully used java.lang.invoke package to handle reflection.");
-        } catch (LinkageError ignored) {
-            LOGGER.atVerbose()
-                .log("Failed to use java.lang.invoke package to handle reflection. Falling back to "
-                    + "java.lang.reflect package to handle reflection.");
-            instance = new ReflectionUtilsClassic();
-            LOGGER.atVerbose().log("Successfully used java.lang.reflect package to handle reflection.");
-        }
-
-        INSTANCE = instance;
-    }
+    private static final ReflectionUtilsApi INSTANCE = new ReflectionUtilsMethodHandle();
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
@@ -55,36 +38,36 @@ public abstract class ReflectionUtils {
      * to alleviate this issue, if {@code targetClass} is null {@link Method#getDeclaringClass()} will be used to infer
      * the class.
      * <p>
-     * {@code scopeToAzure} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
-     * will determine whether to use a MethodHandles.Lookup scoped to {@code core} or to use a public
+     * {@code scopeToClientCore} is only when used when MethodHandles are being used and Java 9+ modules are being used.
+     * This will determine whether to use a MethodHandles.Lookup scoped to {@code core} or to use a public
      * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code core} requires to module containing the
-     * class to open or export to {@code core} which generally only holds true for other Azure SDKs, for example
+     * class to open or export to {@code core} which generally only holds true for other SDKs, for example
      * there are cases where a reflective invocation is needed to Jackson which won't open or export to
      * {@code core} and the only APIs invoked reflectively are public APIs so the public MethodHandles.Lookup will
      * be used.
      *
      * @param targetClass The class that contains the method.
      * @param method The method to invoke.
-     * @param scopeToGenericCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * @param scopeToClientCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code core} as the scoped module, otherwise this is ignored.
      * @return An {@link ReflectiveInvoker} instance that will invoke the method.
      * @throws NullPointerException If {@code method} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
-    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore)
+    public static ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToClientCore)
         throws Exception {
         if (method == null) {
             throw LOGGER.logThrowableAsError(new NullPointerException("'method' cannot be null."));
         }
 
         targetClass = (targetClass == null) ? method.getDeclaringClass() : targetClass;
-        return INSTANCE.getMethodInvoker(targetClass, method, scopeToGenericCore);
+        return INSTANCE.getMethodInvoker(targetClass, method, scopeToClientCore);
     }
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Constructor}.
      * <p>
-     * Calls {@link #getConstructorInvoker(Class, Constructor, boolean)} with {@code scopeToAzureCore} set to true.
+     * Calls {@link #getConstructorInvoker(Class, Constructor, boolean)} with {@code scopeToClientCore} set to true.
      *
      * @param targetClass The class that contains the constructor.
      * @param constructor The constructor to invoke.
@@ -105,39 +88,30 @@ public abstract class ReflectionUtils {
      * to alleviate this issue, if {@code targetClass} is null {@link Constructor#getDeclaringClass()} will be used to
      * infer the class.
      * <p>
-     * {@code scopeToAzure} is only when used when MethodHandles are being used and Java 9+ modules are being used. This
-     * will determine whether to use a MethodHandles.Lookup scoped to {@code core} or to use a public
+     * {@code scopeToClientCore} is only when used when MethodHandles are being used and Java 9+ modules are being used.
+     * This will determine whether to use a MethodHandles.Lookup scoped to {@code core} or to use a public
      * MethodHandles.Lookup. Scoping a MethodHandles.Lookup to {@code core} requires to module containing the
-     * class to open or export to {@code core} which generally only holds true for other Azure SDKs, for example
+     * class to open or export to {@code core} which generally only holds true for other SDKs, for example
      * there are cases where a reflective invocation is needed to Jackson which won't open or export to
      * {@code core} and the only APIs invoked reflectively are public APIs so the public MethodHandles.Lookup will
      * be used.
      *
      * @param targetClass The class that contains the constructor.
      * @param constructor The constructor to invoke.
-     * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
+     * @param scopeToClientCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
      * {@code core} as the scoped module, otherwise this is ignored.
      * @return An {@link ReflectiveInvoker} instance that will invoke the constructor.
      * @throws NullPointerException If {@code constructor} is null.
      * @throws Exception If the {@link ReflectiveInvoker} cannot be created.
      */
     public static ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
-        boolean scopeToAzureCore) throws Exception {
+        boolean scopeToClientCore) throws Exception {
         if (constructor == null) {
             throw LOGGER.logThrowableAsError(new NullPointerException("'constructor' cannot be null."));
         }
 
         targetClass = (targetClass == null) ? constructor.getDeclaringClass() : targetClass;
-        return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToAzureCore);
-    }
-
-    /**
-     * Determines whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
-     *
-     * @return Whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
-     */
-    public static boolean isModuleBased() {
-        return INSTANCE.isModuleBased();
+        return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToClientCore);
     }
 
     /**
@@ -158,6 +132,31 @@ public abstract class ReflectionUtils {
 
         @Override
         public Object invokeWithArguments(Object target, Object... args) {
+            return null;
+        }
+
+        @Override
+        public Object invoke() {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2) {
+            return null;
+        }
+
+        @Override
+        public Object invoke(Object argOrTarget, Object arg1, Object arg2, Object arg3) {
             return null;
         }
 

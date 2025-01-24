@@ -1,47 +1,76 @@
-### Getting Started
+# Azure Monitor OpenTelemetry Auto Configure for Java
 
-[AutoRest](https://github.com/Azure/autorest) is required to generate the models. 
+> see https://aka.ms/autorest
 
-#### Install autorest
+This is the Autorest configuration file for Monitor OpenTelemetry Auto Configure.
 
+---
+## Getting Started
+To build the SDK for Monitor OpenTelemetry Auto Configure, simply [Install Autorest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest --tag={swagger specification}`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+### Setup
 ```ps
 npm install -g autorest
 ```
 
-#### Generate the models for live metrics
-First, go to [this link](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/data-plane/LiveMetrics) to determine the version of the api you want to use.
-If a new api version gets added to above link, then please update the "input-file" property 
-of livemetrics_autorest.md in this repo to a new link that points to the correct swagger definition.
+### Generation
 
-In the cmd prompt, run the following commands:
-```
-cd <repo-root>\sdk\monitor\azure-monitor-opentelemetry-autoconfigure\swagger
-autorest livemetrics_autorest.md
-```
-This should generate the live metrics apis/classes in the swagger folder inside the quickpulse directory.
-
-#### Generate other models relevant to the module
+There are two swagger specifications for Monitor OpenTelemetry Auto Configure: `exporters` and `livemetrics`.
+They use the following tags respectively: `--tag=exporters` and `--tag=livemetrics`.
 
 ```ps
 cd <swagger-folder>
-autorest autorest_code.md
+autorest --tag={swagger specification}
 ```
 
-In order to use the latest version of autorest, update the `use` directive in the `autorest_code.md` file.
-
-```yml
-use: '@autorest/java@4.1.29'
+e.g.
+```ps
+cd <swagger-folder>
+autorest --tag=exporters
+autorest --tag=livemetrics
 ```
 
-After the code has been updated, copy the generated models from
+## Exporters
+These settings apply only when `--tag=exporters` is specified on the command line.
 
-`sdk/monitor/azure-monitor-opentelemetry-autoconfigure/src/main/java/com/azure/monitor/opentelemetry/autoconfigure/models/` 
+```yaml $(tag) == 'exporters'
+use: '@autorest/java@4.1.42'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
+java: true
+output-folder: ../
+namespace: com.azure.monitor.opentelemetry.autoconfigure
+models-subpackage: implementation.models
+generate-client-as-impl: true
+sync-methods: all
+license-header: MICROSOFT_MIT_SMALL
+artifact-id: azure-monitor-opentelemetry-autoconfigure
+enable-sync-stack: true
+customization-class: src/main/java/MonitorOpenTelemetryAutoConfigureCustomizations.java
+directive:
+    - rename-model:
+        from: TrackResponse
+        to: ExportResult
+```
 
-to the appropriate package under 
+## Live Metrics
+These settings apply only when `--tag=livemetrics` is specified on the command line.
 
-`sdk/monitor/azure-monitor-opentelemetry-autoconfigure/src/main/java/com/azure/monitor/opentelemetry/autoconfigure/implementation/models/`
-
-And then delete 
-
-`sdk/monitor/azure-monitor-opentelemetry-autoconfigure/src/main/java/com/azure/monitor/opentelemetry/autoconfigure/models/` folder to clean it up.
+```yaml $(tag) == 'livemetrics'
+use: '@autorest/java@4.1.42'
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/applicationinsights/data-plane/LiveMetrics/preview/2024-04-01-preview/livemetrics.json
+java: true
+output-folder: ../
+namespace: com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger
+sync-methods: all
+license-header: MICROSOFT_MIT_SMALL
+artifact-id: azure-monitor-opentelemetry-autoconfigure
+enable-sync-stack: true
+```
 

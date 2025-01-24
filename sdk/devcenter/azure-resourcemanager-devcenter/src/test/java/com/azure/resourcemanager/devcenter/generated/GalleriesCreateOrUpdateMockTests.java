@@ -21,7 +21,7 @@ public final class GalleriesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"ykggnoxuztrksx\"},\"id\":\"ndfcpfn\",\"name\":\"nthjtwkjaosrxuzv\",\"type\":\"amktcqiosmgbzah\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"fdwfmvigorqj\"},\"id\":\"tzh\",\"name\":\"aglkafhon\",\"type\":\"juj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class GalleriesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Gallery response = manager.galleries()
-            .define("tsxoatftgz")
-            .withExistingDevcenter("hflzokxco", "pelnjetag")
-            .withGalleryResourceId("swvefloccsrmoz")
+            .define("kyrioovzid")
+            .withExistingDevcenter("ybbabpfhvfsl", "vntjlrigjk")
+            .withGalleryResourceId("abzmifrygznmmaxr")
             .create();
 
-        Assertions.assertEquals("ykggnoxuztrksx", response.galleryResourceId());
+        Assertions.assertEquals("fdwfmvigorqj", response.galleryResourceId());
     }
 }

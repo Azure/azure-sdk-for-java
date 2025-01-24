@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class IotSecuritySolutionListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByIotHubAndRg.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolutionsListByIotHubAndRg.json
      */
     /**
      * Sample code: List IoT Security solutions by resource group and IoT Hub.
@@ -25,7 +27,9 @@ public final class IotSecuritySolutionListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/GetIoTSecuritySolutionsListByRg.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * GetIoTSecuritySolutionsListByRg.json
      */
     /**
      * Sample code: List IoT Security solutions by resource group.

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for DeletedWorkspaces List. */
+/**
+ * Samples for DeletedWorkspaces List.
+ */
 public final class DeletedWorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/WorkspacesSubscriptionList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesSubscriptionList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {

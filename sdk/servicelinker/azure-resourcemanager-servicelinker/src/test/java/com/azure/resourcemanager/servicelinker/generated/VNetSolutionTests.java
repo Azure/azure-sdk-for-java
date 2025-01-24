@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicelinker.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicelinker.models.DeleteOrUpdateBehavior;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
 import com.azure.resourcemanager.servicelinker.models.VNetSolutionType;
 import org.junit.jupiter.api.Assertions;
@@ -13,19 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class VNetSolutionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VNetSolution model
-            = BinaryData.fromString("{\"type\":\"serviceEndpoint\",\"deleteOrUpdateBehavior\":\"Default\"}")
-                .toObject(VNetSolution.class);
-        Assertions.assertEquals(VNetSolutionType.SERVICE_ENDPOINT, model.type());
-        Assertions.assertEquals(DeleteOrUpdateBehavior.DEFAULT, model.deleteOrUpdateBehavior());
+        VNetSolution model = BinaryData.fromString("{\"type\":\"privateLink\"}").toObject(VNetSolution.class);
+        Assertions.assertEquals(VNetSolutionType.PRIVATE_LINK, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VNetSolution model = new VNetSolution().withType(VNetSolutionType.SERVICE_ENDPOINT)
-            .withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior.DEFAULT);
+        VNetSolution model = new VNetSolution().withType(VNetSolutionType.PRIVATE_LINK);
         model = BinaryData.fromObject(model).toObject(VNetSolution.class);
-        Assertions.assertEquals(VNetSolutionType.SERVICE_ENDPOINT, model.type());
-        Assertions.assertEquals(DeleteOrUpdateBehavior.DEFAULT, model.deleteOrUpdateBehavior());
+        Assertions.assertEquals(VNetSolutionType.PRIVATE_LINK, model.type());
     }
 }

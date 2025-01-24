@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-/** Samples for SapDatabaseInstances Delete. */
+/**
+ * Samples for SapDatabaseInstances Delete.
+ */
 public final class SapDatabaseInstancesDeleteSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPDatabaseInstances_Delete.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/
+     * SAPDatabaseInstances_Delete.json
      */
     /**
      * Sample code: SAPDatabaseInstances_Delete.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
     public static void sAPDatabaseInstancesDelete(com.azure.resourcemanager.workloads.WorkloadsManager manager) {

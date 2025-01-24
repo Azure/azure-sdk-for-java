@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Clusters. */
+/**
+ * Resource collection API of Clusters.
+ */
 public interface Clusters {
     /**
      * Gets Log Analytics clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,7 +25,7 @@ public interface Clusters {
 
     /**
      * Gets Log Analytics clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface Clusters {
 
     /**
      * Gets the Log Analytics clusters in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Log Analytics clusters in a subscription as paginated response with {@link PagedIterable}.
@@ -44,7 +46,7 @@ public interface Clusters {
 
     /**
      * Gets the Log Analytics clusters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,7 +57,7 @@ public interface Clusters {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +68,7 @@ public interface Clusters {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param context The context to associate with this operation.
@@ -78,7 +80,7 @@ public interface Clusters {
 
     /**
      * Gets a Log Analytics cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @param context The context to associate with this operation.
@@ -91,7 +93,7 @@ public interface Clusters {
 
     /**
      * Gets a Log Analytics cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Name of the Log Analytics Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +105,7 @@ public interface Clusters {
 
     /**
      * Gets a Log Analytics cluster instance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,7 +116,7 @@ public interface Clusters {
 
     /**
      * Gets a Log Analytics cluster instance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +128,7 @@ public interface Clusters {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,7 +138,7 @@ public interface Clusters {
 
     /**
      * Deletes a cluster instance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +149,7 @@ public interface Clusters {
 
     /**
      * Begins definition for a new Cluster resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Cluster definition.
      */

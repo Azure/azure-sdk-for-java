@@ -29,7 +29,7 @@ public final class StreamingJobsScaleMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.streamingJobs()
-            .scale("fqjbvleo", "fmluiqtqzfavyvn", new ScaleStreamingJobParameters().withStreamingUnits(951173892),
+            .scale("tiagx", "dszue", new ScaleStreamingJobParameters().withStreamingUnits(1236978734),
                 com.azure.core.util.Context.NONE);
 
     }

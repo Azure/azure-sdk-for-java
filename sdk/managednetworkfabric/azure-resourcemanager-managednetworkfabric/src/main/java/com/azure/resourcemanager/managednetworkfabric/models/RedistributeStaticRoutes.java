@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Advertise Static Routes. Ex: "True" | "False". */
+/**
+ * Advertise Static Routes. Ex: "True" | "False".
+ */
 public final class RedistributeStaticRoutes extends ExpandableStringEnum<RedistributeStaticRoutes> {
-    /** Static value True for RedistributeStaticRoutes. */
+    /**
+     * Static value True for RedistributeStaticRoutes.
+     */
     public static final RedistributeStaticRoutes TRUE = fromString("True");
 
-    /** Static value False for RedistributeStaticRoutes. */
+    /**
+     * Static value False for RedistributeStaticRoutes.
+     */
     public static final RedistributeStaticRoutes FALSE = fromString("False");
 
     /**
      * Creates a new instance of RedistributeStaticRoutes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class RedistributeStaticRoutes extends ExpandableStringEnum<Redistr
 
     /**
      * Creates or finds a RedistributeStaticRoutes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RedistributeStaticRoutes.
      */
-    @JsonCreator
     public static RedistributeStaticRoutes fromString(String name) {
         return fromString(name, RedistributeStaticRoutes.class);
     }
 
     /**
      * Gets known RedistributeStaticRoutes values.
-     *
+     * 
      * @return known RedistributeStaticRoutes values.
      */
     public static Collection<RedistributeStaticRoutes> values() {

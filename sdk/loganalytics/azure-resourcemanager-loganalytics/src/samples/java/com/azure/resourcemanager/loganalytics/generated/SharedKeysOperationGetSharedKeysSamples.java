@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for SharedKeysOperation GetSharedKeys. */
+/**
+ * Samples for SharedKeysOperation GetSharedKeys.
+ */
 public final class SharedKeysOperationGetSharedKeysSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesGetSharedKeys.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesGetSharedKeys.json
      */
     /**
      * Sample code: SharedKeysList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void sharedKeysList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {

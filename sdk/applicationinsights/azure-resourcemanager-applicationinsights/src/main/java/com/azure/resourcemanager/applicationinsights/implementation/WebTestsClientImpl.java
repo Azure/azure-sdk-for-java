@@ -35,17 +35,23 @@ import com.azure.resourcemanager.applicationinsights.models.TagsResource;
 import com.azure.resourcemanager.applicationinsights.models.WebTestListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WebTestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebTestsClient.
+ */
 public final class WebTestsClientImpl implements WebTestsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WebTestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of WebTestsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WebTestsClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -149,13 +155,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined for the specified resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all Application Insights web tests defined for the specified resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -183,14 +189,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined for the specified resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all Application Insights web tests defined for the specified resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -219,13 +225,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web tests defined for the specified resource group as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebTestInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -235,14 +241,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web tests defined for the specified resource group as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebTestInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -252,13 +258,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web tests defined for the specified resource group as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebTestInner> listByResourceGroup(String resourceGroupName) {
@@ -267,14 +273,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web tests defined for the specified resource group as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebTestInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -283,14 +289,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get a specific Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Application Insights web test definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebTestInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -320,7 +326,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get a specific Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param context The context to associate with this operation.
@@ -328,7 +334,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Application Insights web test definition along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebTestInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -357,7 +363,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get a specific Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,7 +379,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get a specific Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param context The context to associate with this operation.
@@ -390,7 +396,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get a specific Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,16 +411,16 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Creates or updates an Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web
-     *     test definition.
+     * test definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebTestInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String webTestName,
@@ -450,17 +456,17 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Creates or updates an Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web
-     *     test definition.
+     * test definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebTestInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String webTestName,
@@ -495,11 +501,11 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Creates or updates an Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web
-     *     test definition.
+     * test definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -514,11 +520,11 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Creates or updates an Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web
-     *     test definition.
+     * test definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -533,11 +539,11 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Creates or updates an Application Insights web test definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web
-     *     test definition.
+     * test definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,15 +556,15 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Updates the tags associated with an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestTags Updated tag information to associate with the web test resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebTestInner>> updateTagsWithResponseAsync(String resourceGroupName, String webTestName,
@@ -593,7 +599,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Updates the tags associated with an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestTags Updated tag information to associate with the web test resource.
@@ -601,8 +607,8 @@ public final class WebTestsClientImpl implements WebTestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Application Insights WebTest definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WebTestInner>> updateTagsWithResponseAsync(String resourceGroupName, String webTestName,
@@ -636,7 +642,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Updates the tags associated with an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestTags Updated tag information to associate with the web test resource.
@@ -653,7 +659,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Updates the tags associated with an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestTags Updated tag information to associate with the web test resource.
@@ -671,7 +677,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Updates the tags associated with an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param webTestTags Updated tag information to associate with the web test resource.
@@ -687,7 +693,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Deletes an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -721,7 +727,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Deletes an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param context The context to associate with this operation.
@@ -756,7 +762,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Deletes an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -771,7 +777,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Deletes an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @param context The context to associate with this operation.
@@ -787,7 +793,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Deletes an Application Insights web test.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights WebTest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -801,11 +807,11 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web test definitions for the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web test definitions for the specified subscription along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all Application Insights web test definitions for the specified subscription along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listSinglePageAsync() {
@@ -829,13 +835,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web test definitions for the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web test definitions for the specified subscription along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all Application Insights web test definitions for the specified subscription along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listSinglePageAsync(Context context) {
@@ -857,11 +863,11 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web test definitions for the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web test definitions for the specified subscription as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebTestInner> listAsync() {
@@ -870,13 +876,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web test definitions for the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web test definitions for the specified subscription as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebTestInner> listAsync(Context context) {
@@ -886,11 +892,11 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web test definitions for the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web test definitions for the specified subscription as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebTestInner> list() {
@@ -899,13 +905,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web test definitions for the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web test definitions for the specified subscription as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebTestInner> list(Context context) {
@@ -914,14 +920,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified component.
-     *
+     * 
      * @param componentName The name of the Application Insights component resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web tests defined for the specified component along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByComponentSinglePageAsync(String componentName,
@@ -953,7 +959,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified component.
-     *
+     * 
      * @param componentName The name of the Application Insights component resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -961,7 +967,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all Application Insights web tests defined for the specified component along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByComponentSinglePageAsync(String componentName,
@@ -993,14 +999,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified component.
-     *
+     * 
      * @param componentName The name of the Application Insights component resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined for the specified component as paginated response with {@link
-     *     PagedFlux}.
+     * @return all Application Insights web tests defined for the specified component as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebTestInner> listByComponentAsync(String componentName, String resourceGroupName) {
@@ -1010,15 +1016,15 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified component.
-     *
+     * 
      * @param componentName The name of the Application Insights component resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined for the specified component as paginated response with {@link
-     *     PagedFlux}.
+     * @return all Application Insights web tests defined for the specified component as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebTestInner> listByComponentAsync(String componentName, String resourceGroupName,
@@ -1029,14 +1035,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified component.
-     *
+     * 
      * @param componentName The name of the Application Insights component resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined for the specified component as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Application Insights web tests defined for the specified component as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebTestInner> listByComponent(String componentName, String resourceGroupName) {
@@ -1045,15 +1051,15 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get all Application Insights web tests defined for the specified component.
-     *
+     * 
      * @param componentName The name of the Application Insights component resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Application Insights web tests defined for the specified component as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Application Insights web tests defined for the specified component as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebTestInner> listByComponent(String componentName, String resourceGroupName,
@@ -1063,14 +1069,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of 0 or more Application Insights WebTest definitions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1092,15 +1097,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of 0 or more Application Insights WebTest definitions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1120,14 +1124,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of 0 or more Application Insights WebTest definitions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listNextSinglePageAsync(String nextLink) {
@@ -1147,15 +1150,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of 0 or more Application Insights WebTest definitions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1175,14 +1177,13 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of 0 or more Application Insights WebTest definitions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByComponentNextSinglePageAsync(String nextLink) {
@@ -1203,15 +1204,14 @@ public final class WebTestsClientImpl implements WebTestsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of 0 or more Application Insights WebTest definitions along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebTestInner>> listByComponentNextSinglePageAsync(String nextLink, Context context) {

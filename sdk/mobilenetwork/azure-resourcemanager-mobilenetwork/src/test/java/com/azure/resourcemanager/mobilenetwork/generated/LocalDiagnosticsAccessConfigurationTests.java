@@ -14,19 +14,19 @@ public final class LocalDiagnosticsAccessConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocalDiagnosticsAccessConfiguration model = BinaryData.fromString(
-            "{\"authenticationType\":\"Password\",\"httpsServerCertificate\":{\"certificateUrl\":\"meue\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"zceuojgjrw\"}}}")
+            "{\"authenticationType\":\"Password\",\"httpsServerCertificate\":{\"certificateUrl\":\"bvmeuecivy\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"ojgjrwjueiotwmc\"}}}")
             .toObject(LocalDiagnosticsAccessConfiguration.class);
         Assertions.assertEquals(AuthenticationType.PASSWORD, model.authenticationType());
-        Assertions.assertEquals("meue", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals("bvmeuecivy", model.httpsServerCertificate().certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LocalDiagnosticsAccessConfiguration model
             = new LocalDiagnosticsAccessConfiguration().withAuthenticationType(AuthenticationType.PASSWORD)
-                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("meue"));
+                .withHttpsServerCertificate(new HttpsServerCertificate().withCertificateUrl("bvmeuecivy"));
         model = BinaryData.fromObject(model).toObject(LocalDiagnosticsAccessConfiguration.class);
         Assertions.assertEquals(AuthenticationType.PASSWORD, model.authenticationType());
-        Assertions.assertEquals("meue", model.httpsServerCertificate().certificateUrl());
+        Assertions.assertEquals("bvmeuecivy", model.httpsServerCertificate().certificateUrl());
     }
 }

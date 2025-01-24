@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class VariableName extends ExpandableStringEnum<VariableName> {
      * @param name a name to look for.
      * @return the corresponding VariableName.
      */
-    @JsonCreator
     public static VariableName fromString(String name) {
         return fromString(name, VariableName.class);
     }

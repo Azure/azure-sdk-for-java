@@ -12,11 +12,15 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 @Fluent
 public interface EventHubNamespaceAuthorizationRule extends AuthorizationRule<EventHubNamespaceAuthorizationRule> {
     /**
+     * Gets the resource group of the namespace where parent event hub resides.
+     *
      * @return the resource group of the namespace where parent event hub resides.
      */
     String namespaceResourceGroupName();
 
     /**
+     * Gets the name of the event hub namespace.
+     *
      * @return the name of the event hub namespace.
      */
     String namespaceName();

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/hybridconnectivity/resource-manager/Microsoft.HybridConnectivity/stable/2023-03-15/examples/
+     * OperationsList.json
      */
     /**
      * Sample code: HybridConnectivityOperationsList.
-     *
+     * 
      * @param manager Entry point to HybridConnectivityManager.
      */
     public static void hybridConnectivityOperationsList(

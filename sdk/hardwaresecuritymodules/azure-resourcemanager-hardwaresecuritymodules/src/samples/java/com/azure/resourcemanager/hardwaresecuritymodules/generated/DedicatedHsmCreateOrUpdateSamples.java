@@ -30,7 +30,10 @@ public final class DedicatedHsmCreateOrUpdateSamples {
      */
     public static void createANewOrUpdateAnExistingPaymentHSMWithManagementProfile(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().define("hsm1").withRegion("westus").withExistingResourceGroup("hsm-group")
+        manager.dedicatedHsms()
+            .define("hsm1")
+            .withRegion("westus")
+            .withExistingResourceGroup("hsm-group")
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
@@ -40,7 +43,8 @@ public final class DedicatedHsmCreateOrUpdateSamples {
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.2"))))
                 .withStampId("stamp01"))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60)).create();
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
+            .create();
     }
 
     /*
@@ -55,14 +59,18 @@ public final class DedicatedHsmCreateOrUpdateSamples {
      */
     public static void createANewOrUpdateAnExistingDedicatedHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().define("hsm1").withRegion("westus").withExistingResourceGroup("hsm-group")
+        manager.dedicatedHsms()
+            .define("hsm1")
+            .withRegion("westus")
+            .withExistingResourceGroup("hsm-group")
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
                 .withStampId("stamp01"))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
-            .withSku(new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790)).create();
+            .withSku(new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790))
+            .create();
     }
 
     /*
@@ -77,14 +85,18 @@ public final class DedicatedHsmCreateOrUpdateSamples {
      */
     public static void createANewOrUpdateAnExistingPaymentHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().define("hsm1").withRegion("westus").withExistingResourceGroup("hsm-group")
+        manager.dedicatedHsms()
+            .define("hsm1")
+            .withRegion("westus")
+            .withExistingResourceGroup("hsm-group")
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
                 .withStampId("stamp01"))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60)).create();
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
+            .create();
     }
 
     // Use "Map.of" if available

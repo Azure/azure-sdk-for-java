@@ -101,8 +101,9 @@ public interface StorageTask {
     /**
      * The entirety of the StorageTask definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithIdentity, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -146,15 +147,40 @@ public interface StorageTask {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithIdentity withExistingResourceGroup(String resourceGroupName);
+        }
+
+        /**
+         * The stage of the StorageTask definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identity of the resource..
+             * 
+             * @param identity The managed service identity of the resource.
+             * @return the next definition stage.
+             */
+            WithProperties withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the StorageTask definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the storage task..
+             * 
+             * @param properties Properties of the storage task.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(StorageTaskProperties properties);
         }
 
         /**
          * The stage of the StorageTask definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              * 
@@ -182,32 +208,6 @@ public interface StorageTask {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the StorageTask definition allowing to specify identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The managed service identity of the resource..
-             * 
-             * @param identity The managed service identity of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the StorageTask definition allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: Properties of the storage task..
-             * 
-             * @param properties Properties of the storage task.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(StorageTaskProperties properties);
         }
     }
 

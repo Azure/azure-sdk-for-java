@@ -13,14 +13,15 @@ public final class AlertRuleTemplatesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertRuleTemplatesList model = BinaryData.fromString(
-            "{\"nextLink\":\"ahbc\",\"value\":[{\"kind\":\"AlertRuleTemplate\",\"id\":\"fdfdosygexpa\",\"name\":\"jakhmsbzjh\",\"type\":\"rzevdphlxaol\"},{\"kind\":\"AlertRuleTemplate\",\"id\":\"qtrgqjbpfzfsinzg\",\"name\":\"f\",\"type\":\"jrwzox\"}]}")
+            "{\"nextLink\":\"aojakhmsbzjhcrz\",\"value\":[{\"kind\":\"AlertRuleTemplate\",\"id\":\"phlxa\",\"name\":\"lthqtrgqjbp\",\"type\":\"zfsinzgvf\"},{\"kind\":\"AlertRuleTemplate\",\"id\":\"rwzoxxjtfelluwf\",\"name\":\"it\",\"type\":\"np\"},{\"kind\":\"AlertRuleTemplate\",\"id\":\"fpjkjlxofp\",\"name\":\"vhpfxxypininmay\",\"type\":\"uybbkpodep\"},{\"kind\":\"AlertRuleTemplate\",\"id\":\"ginuvamih\",\"name\":\"ognarxzxtheotus\",\"type\":\"vyevcciqi\"}]}")
             .toObject(AlertRuleTemplatesList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertRuleTemplatesList model = new AlertRuleTemplatesList()
-            .withValue(Arrays.asList(new AlertRuleTemplateInner(), new AlertRuleTemplateInner()));
+        AlertRuleTemplatesList model
+            = new AlertRuleTemplatesList().withValue(Arrays.asList(new AlertRuleTemplateInner(),
+                new AlertRuleTemplateInner(), new AlertRuleTemplateInner(), new AlertRuleTemplateInner()));
         model = BinaryData.fromObject(model).toObject(AlertRuleTemplatesList.class);
     }
 }

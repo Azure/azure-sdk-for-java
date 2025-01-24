@@ -65,22 +65,22 @@ public final class RoutePoliciesImpl implements RoutePolicies {
 
     public PagedIterable<RoutePolicy> listByResourceGroup(String resourceGroupName) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoutePolicy> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoutePolicy> list() {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RoutePolicy> list(Context context) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
     }
 
     public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
@@ -149,12 +149,12 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public RoutePolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
@@ -163,12 +163,12 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public Response<RoutePolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
@@ -177,12 +177,12 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));
@@ -191,12 +191,12 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String routePolicyName = Utils.getValueFromIdByName(id, "routePolicies");
+        String routePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "routePolicies");
         if (routePolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'routePolicies'.", id)));

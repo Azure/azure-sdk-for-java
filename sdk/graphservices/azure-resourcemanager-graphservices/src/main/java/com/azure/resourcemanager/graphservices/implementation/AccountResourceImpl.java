@@ -128,8 +128,8 @@ public final class AccountResourceImpl implements AccountResource, AccountResour
         com.azure.resourcemanager.graphservices.GraphServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public AccountResource refresh() {

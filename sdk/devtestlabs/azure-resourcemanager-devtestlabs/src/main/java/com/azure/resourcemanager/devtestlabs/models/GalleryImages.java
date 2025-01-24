@@ -7,11 +7,13 @@ package com.azure.resourcemanager.devtestlabs.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of GalleryImages. */
+/**
+ * Resource collection API of GalleryImages.
+ */
 public interface GalleryImages {
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface GalleryImages {
 
     /**
      * List gallery images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=author)'.

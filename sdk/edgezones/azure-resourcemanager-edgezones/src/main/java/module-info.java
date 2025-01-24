@@ -10,6 +10,6 @@ module com.azure.resourcemanager.edgezones {
     exports com.azure.resourcemanager.edgezones.fluent.models;
     exports com.azure.resourcemanager.edgezones.models;
 
-    opens com.azure.resourcemanager.edgezones.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.edgezones.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.edgezones.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.edgezones.models to com.azure.core;
 }

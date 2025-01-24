@@ -23,7 +23,7 @@ public final class SqlPoolGeoBackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"iijgencd\"},\"kind\":\"oqueqihkkyowltj\",\"location\":\"whldxwhie\",\"id\":\"roqksmfxm\",\"name\":\"vprstv\",\"type\":\"itbfjtdy\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"storageType\":\"ohzha\"},\"kind\":\"v\",\"location\":\"xbg\",\"id\":\"vkervqchoadhrsxq\",\"name\":\"z\",\"type\":\"spabdsrgfa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,8 +33,8 @@ public final class SqlPoolGeoBackupPoliciesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GeoBackupPolicy> response = manager.sqlPoolGeoBackupPolicies()
-            .list("awmvgxs", "pknpwirfljfewxq", "uoxudnmckaprh", com.azure.core.util.Context.NONE);
+            .list("npd", "zigjsugswhgsaodk", "wnbaf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(GeoBackupPolicyState.DISABLED, response.iterator().next().state());
+        Assertions.assertEquals(GeoBackupPolicyState.ENABLED, response.iterator().next().state());
     }
 }

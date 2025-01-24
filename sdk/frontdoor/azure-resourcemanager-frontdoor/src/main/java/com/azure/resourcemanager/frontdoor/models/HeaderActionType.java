@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class HeaderActionType extends ExpandableStringEnum<HeaderActionTyp
      * @param name a name to look for.
      * @return the corresponding HeaderActionType.
      */
-    @JsonCreator
     public static HeaderActionType fromString(String name) {
         return fromString(name, HeaderActionType.class);
     }

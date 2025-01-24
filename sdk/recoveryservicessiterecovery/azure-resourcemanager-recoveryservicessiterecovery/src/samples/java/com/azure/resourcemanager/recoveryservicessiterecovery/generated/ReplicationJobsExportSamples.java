@@ -22,9 +22,12 @@ public final class ReplicationJobsExportSamples {
      */
     public static void exportsTheDetailsOfTheAzureSiteRecoveryJobsOfTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationJobs().export("vault1", "resourceGroupPS1",
-            new JobQueryParameter().withStartTime("2017-04-27T14:26:51.9161395Z")
-                .withEndTime("2017-05-04T14:26:51.9161395Z").withAffectedObjectTypes("").withJobStatus(""),
-            com.azure.core.util.Context.NONE);
+        manager.replicationJobs()
+            .export("vault1", "resourceGroupPS1",
+                new JobQueryParameter().withStartTime("2017-04-27T14:26:51.9161395Z")
+                    .withEndTime("2017-05-04T14:26:51.9161395Z")
+                    .withAffectedObjectTypes("")
+                    .withJobStatus(""),
+                com.azure.core.util.Context.NONE);
     }
 }

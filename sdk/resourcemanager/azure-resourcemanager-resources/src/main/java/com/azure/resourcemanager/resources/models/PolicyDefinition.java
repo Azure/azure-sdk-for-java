@@ -24,26 +24,36 @@ public interface PolicyDefinition extends HasName, HasId, Indexable, Refreshable
     Updatable<PolicyDefinition.Update>, HasInnerModel<PolicyDefinitionInner> {
 
     /**
+     * Gets the type of the policy definition.
+     *
      * @return the type of the policy definition
      */
     PolicyType policyType();
 
     /**
+     * Gets display name of the policy definition.
+     *
      * @return the policy definition display name
      */
     String displayName();
 
     /**
+     * Gets the policy definition description.
+     *
      * @return the policy definition description
      */
     String description();
 
     /**
+     * Gets the policy rule.
+     *
      * @return the policy rule
      */
     Object policyRule();
 
     /**
+     * Gets the parameters of the policy definition.
+     *
      * @return the parameters of the policy definition
      */
     Map<String, ParameterDefinitionsValue> parameters();

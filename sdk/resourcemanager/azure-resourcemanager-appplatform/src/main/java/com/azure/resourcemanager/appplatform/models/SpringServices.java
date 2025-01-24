@@ -42,9 +42,16 @@ public interface SpringServices
      */
     Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region);
 
-    /** @return all available sku. */
+    /**
+     * Gets all available SKU.
+     *
+     * @return all available SKU.
+     */
     PagedIterable<ResourceSku> listSkus();
 
-    /** @return all available sku. */
+    /**
+     * Gets all available SKU.
+     *
+     * @return all available SKU. */
     PagedFlux<ResourceSku> listSkusAsync();
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recipient User Contract Properties. */
+/**
+ * Recipient User Contract Properties.
+ */
 @Fluent
-public final class RecipientUsersContractProperties {
+public final class RecipientUsersContractProperties implements JsonSerializable<RecipientUsersContractProperties> {
     /*
      * API Management UserId subscribed to notification.
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
-    /** Creates an instance of RecipientUsersContractProperties class. */
+    /**
+     * Creates an instance of RecipientUsersContractProperties class.
+     */
     public RecipientUsersContractProperties() {
     }
 
     /**
      * Get the userId property: API Management UserId subscribed to notification.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -31,7 +38,7 @@ public final class RecipientUsersContractProperties {
 
     /**
      * Set the userId property: API Management UserId subscribed to notification.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the RecipientUsersContractProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class RecipientUsersContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userId", this.userId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecipientUsersContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecipientUsersContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecipientUsersContractProperties.
+     */
+    public static RecipientUsersContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecipientUsersContractProperties deserializedRecipientUsersContractProperties
+                = new RecipientUsersContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userId".equals(fieldName)) {
+                    deserializedRecipientUsersContractProperties.userId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecipientUsersContractProperties;
+        });
     }
 }

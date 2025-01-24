@@ -16,29 +16,31 @@ public final class DedicatedHsmPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHsmProperties model = BinaryData.fromString(
-            "{\"networkProfile\":{\"subnet\":{\"id\":\"bxvwv\"},\"networkInterfaces\":[{\"id\":\"qbhsfxobl\",\"privateIpAddress\":\"k\"}]},\"managementNetworkProfile\":{\"subnet\":{\"id\":\"ewwwfbkrvrnsv\"},\"networkInterfaces\":[{\"id\":\"ohxcrsbfova\",\"privateIpAddress\":\"ruvw\"}]},\"stampId\":\"sqfsubcgjbirxb\",\"statusMessage\":\"bsrfbj\",\"provisioningState\":\"CheckingQuota\"}")
+            "{\"networkProfile\":{\"subnet\":{\"id\":\"n\"},\"networkInterfaces\":[{\"id\":\"cjrwzoxxjtfellu\",\"privateIpAddress\":\"zitonpeqfpjkjl\"}]},\"managementNetworkProfile\":{\"subnet\":{\"id\":\"dvhpfxxypininm\"},\"networkInterfaces\":[{\"id\":\"ybb\",\"privateIpAddress\":\"odepoogin\"}]},\"stampId\":\"amiheognarxz\",\"statusMessage\":\"heotusiv\",\"provisioningState\":\"Deleting\"}")
             .toObject(DedicatedHsmProperties.class);
-        Assertions.assertEquals("bxvwv", model.networkProfile().subnet().id());
-        Assertions.assertEquals("k", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("ewwwfbkrvrnsv", model.managementNetworkProfile().subnet().id());
-        Assertions.assertEquals("ruvw", model.managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("sqfsubcgjbirxb", model.stampId());
+        Assertions.assertEquals("n", model.networkProfile().subnet().id());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("dvhpfxxypininm", model.managementNetworkProfile().subnet().id());
+        Assertions.assertEquals("odepoogin",
+            model.managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("amiheognarxz", model.stampId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmProperties model = new DedicatedHsmProperties()
-            .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("bxvwv"))
-                .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("k"))))
+            .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("n"))
+                .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("zitonpeqfpjkjl"))))
             .withManagementNetworkProfile(
-                new NetworkProfile().withSubnet(new ApiEntityReference().withId("ewwwfbkrvrnsv"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("ruvw"))))
-            .withStampId("sqfsubcgjbirxb");
+                new NetworkProfile().withSubnet(new ApiEntityReference().withId("dvhpfxxypininm"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("odepoogin"))))
+            .withStampId("amiheognarxz");
         model = BinaryData.fromObject(model).toObject(DedicatedHsmProperties.class);
-        Assertions.assertEquals("bxvwv", model.networkProfile().subnet().id());
-        Assertions.assertEquals("k", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("ewwwfbkrvrnsv", model.managementNetworkProfile().subnet().id());
-        Assertions.assertEquals("ruvw", model.managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("sqfsubcgjbirxb", model.stampId());
+        Assertions.assertEquals("n", model.networkProfile().subnet().id());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.networkProfile().networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("dvhpfxxypininm", model.managementNetworkProfile().subnet().id());
+        Assertions.assertEquals("odepoogin",
+            model.managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("amiheognarxz", model.stampId());
     }
 }

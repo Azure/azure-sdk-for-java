@@ -21,7 +21,7 @@ public final class OperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ajquhuxylrjvmtyg\",\"display\":{\"provider\":\"zyos\",\"resource\":\"p\",\"operation\":\"c\",\"description\":\"kyjpmspbps\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"eyujtvczkcnyxrx\":\"datagt\",\"glnkvxlxpagl\":\"dataunjdx\",\"hpzvuqdflvoniyp\":\"dataivbgkcv\",\"idibgqjxgpn\":\"datapubcpzgpxtivhjk\"}},{\"name\":\"govfgpikqmhhaow\",\"display\":{\"provider\":\"zvuporqzdfuydz\",\"resource\":\"fvxcnqmxqpswo\",\"operation\":\"vkhlggdhbemz\",\"description\":\"zszuwiwtglxx\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"gmqgjs\":\"dataicrmnzh\",\"rmbodt\":\"datavpqcb\",\"qgvriibakcla\":\"datas\",\"gmwohqfzizvu\":\"datajfrnxousxauzlwv\"}},{\"name\":\"mk\",\"display\":{\"provider\":\"thnwpzte\",\"resource\":\"vmribiat\",\"operation\":\"plucfotangcfhnyk\",\"description\":\"ugswvx\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"cvclxynpdk\":\"datavtxnjmxmcuqud\"}}],\"nextLink\":\"fabuiyjibu\"}";
+            = "{\"value\":[{\"name\":\"e\",\"display\":{\"provider\":\"zqn\",\"resource\":\"vsqltnzoibgsxg\",\"operation\":\"fyq\",\"description\":\"mpqoxw\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"h\":\"dataqxeiiqbimhtmwwi\",\"bcblemb\":\"datahfqpofv\",\"ihebwtsw\":\"datakbwvqvxkdiv\"}},{\"name\":\"uwfmduragegizvc\",\"display\":{\"provider\":\"lisdjubggbq\",\"resource\":\"kxkbsazgakgacyr\",\"operation\":\"jdmspofapvuhryln\",\"description\":\"frzgbzjed\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"bcuiiz\":\"datav\"}},{\"name\":\"twfans\",\"display\":{\"provider\":\"dibmikostbzbkiwb\",\"resource\":\"n\",\"operation\":\"phzfylsgcrp\",\"description\":\"cunezzcezelfw\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"afzvaylptrs\":\"datawetnpsihc\",\"cxwaxfewz\":\"dataqwztcmwqkc\",\"ylkkshkbffmbm\":\"datakjexfdeqvhp\"}},{\"name\":\"jrgywwpgjxsn\",\"display\":{\"provider\":\"ujgicgaaoe\",\"resource\":\"taqutdewem\",\"operation\":\"wvruunzzj\",\"description\":\"hkfkimrtixokf\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"tshi\":\"dataqepqwhixmon\",\"vuwcobiegstmnin\":\"dataxgvelfclduccbird\"}}],\"nextLink\":\"izcil\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,6 +34,6 @@ public final class OperationsListWithResponseMockTests {
             = manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(true, response.value().get(0).isDataAction());
-        Assertions.assertEquals("fabuiyjibu", response.nextLink());
+        Assertions.assertEquals("izcil", response.nextLink());
     }
 }

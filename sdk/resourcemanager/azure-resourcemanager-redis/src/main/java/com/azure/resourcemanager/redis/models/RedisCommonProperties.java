@@ -81,6 +81,16 @@ public class RedisCommonProperties implements JsonSerializable<RedisCommonProper
      */
     private Boolean disableAccessKeyAuthentication;
 
+    /*
+     * Optional: Specifies how availability zones are allocated to the Redis cache. 'Automatic' enables zone redundancy
+     * and Azure will automatically select zones based on regional availability and capacity. 'UserDefined' will select
+     * availability zones passed in by you using the 'zones' parameter. 'NoZones' will produce a non-zonal cache. If
+     * 'zonalAllocationPolicy' is not passed, it will be set to 'UserDefined' when zones are passed in, otherwise, it
+     * will be set to 'Automatic' in regions where zones are supported and 'NoZones' in regions where zones are not
+     * supported.
+     */
+    private ZonalAllocationPolicy zonalAllocationPolicy;
+
     /**
      * Creates an instance of RedisCommonProperties class.
      */
@@ -330,6 +340,36 @@ public class RedisCommonProperties implements JsonSerializable<RedisCommonProper
     }
 
     /**
+     * Get the zonalAllocationPolicy property: Optional: Specifies how availability zones are allocated to the Redis
+     * cache. 'Automatic' enables zone redundancy and Azure will automatically select zones based on regional
+     * availability and capacity. 'UserDefined' will select availability zones passed in by you using the 'zones'
+     * parameter. 'NoZones' will produce a non-zonal cache. If 'zonalAllocationPolicy' is not passed, it will be set to
+     * 'UserDefined' when zones are passed in, otherwise, it will be set to 'Automatic' in regions where zones are
+     * supported and 'NoZones' in regions where zones are not supported.
+     * 
+     * @return the zonalAllocationPolicy value.
+     */
+    public ZonalAllocationPolicy zonalAllocationPolicy() {
+        return this.zonalAllocationPolicy;
+    }
+
+    /**
+     * Set the zonalAllocationPolicy property: Optional: Specifies how availability zones are allocated to the Redis
+     * cache. 'Automatic' enables zone redundancy and Azure will automatically select zones based on regional
+     * availability and capacity. 'UserDefined' will select availability zones passed in by you using the 'zones'
+     * parameter. 'NoZones' will produce a non-zonal cache. If 'zonalAllocationPolicy' is not passed, it will be set to
+     * 'UserDefined' when zones are passed in, otherwise, it will be set to 'Automatic' in regions where zones are
+     * supported and 'NoZones' in regions where zones are not supported.
+     * 
+     * @param zonalAllocationPolicy the zonalAllocationPolicy value to set.
+     * @return the RedisCommonProperties object itself.
+     */
+    public RedisCommonProperties withZonalAllocationPolicy(ZonalAllocationPolicy zonalAllocationPolicy) {
+        this.zonalAllocationPolicy = zonalAllocationPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -360,6 +400,8 @@ public class RedisCommonProperties implements JsonSerializable<RedisCommonProper
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeStringField("updateChannel", this.updateChannel == null ? null : this.updateChannel.toString());
         jsonWriter.writeBooleanField("disableAccessKeyAuthentication", this.disableAccessKeyAuthentication);
+        jsonWriter.writeStringField("zonalAllocationPolicy",
+            this.zonalAllocationPolicy == null ? null : this.zonalAllocationPolicy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -403,6 +445,9 @@ public class RedisCommonProperties implements JsonSerializable<RedisCommonProper
                 } else if ("disableAccessKeyAuthentication".equals(fieldName)) {
                     deserializedRedisCommonProperties.disableAccessKeyAuthentication
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("zonalAllocationPolicy".equals(fieldName)) {
+                    deserializedRedisCommonProperties.zonalAllocationPolicy
+                        = ZonalAllocationPolicy.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

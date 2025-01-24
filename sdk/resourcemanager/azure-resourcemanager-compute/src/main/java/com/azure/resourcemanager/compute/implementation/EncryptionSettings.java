@@ -16,13 +16,25 @@ import java.util.UUID;
 
 /** Internal base type exposing settings to enable and disable disk encryption extension. */
 abstract class EncryptionSettings {
-    /** @return encryption specific settings to be set on virtual machine storage profile */
+    /**
+     * Gets encryption specific settings to be set on virtual machine storage profile.
+     *
+     * @return encryption specific settings to be set on virtual machine storage profile
+     */
     abstract DiskEncryptionSettings storageProfileEncryptionSettings();
 
-    /** @return encryption extension public settings */
+    /**
+     * Gets encryption extension public settings.
+     *
+     * @return encryption extension public settings
+     */
     abstract HashMap<String, Object> extensionPublicSettings();
 
-    /** @return encryption extension protected settings */
+    /**
+     * Gets encryption extension protected settings.
+     *
+     * @return encryption extension protected settings
+     */
     abstract HashMap<String, Object> extensionProtectedSettings();
 
     /**

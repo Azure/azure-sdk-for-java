@@ -8,7 +8,31 @@
 
 ### Bugs Fixed
 
+* Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
+
 ### Other Changes
+
+## 7.17.8 (2025-01-09)
+
+### Features Added
+
+- Added support for Service Bus Emulator connection string. Refer [Azure Service Bus Emulator](https://github.com/Azure/azure-service-bus-emulator-installer) for emulator installation and supported connection strings. ([38735](https://github.com/Azure/azure-sdk-for-java/issues/38735)).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.14.1` to `1.14.2`.
+
+## 7.17.7 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to version `1.54.1`.
+- Upgraded `azure-core-amqp` from `2.9.11` to version `2.9.12`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.7`.
 
 ## 7.17.6 (2024-11-12)
 

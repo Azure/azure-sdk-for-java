@@ -17,18 +17,17 @@ public final class MicrosoftSecurityIncidentCreationAlertRuleTemplatePropertiesT
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties model = BinaryData.fromString(
-            "{\"displayNamesFilter\":[\"uitrdexyiono\"],\"displayNamesExcludeFilter\":[\"nbdbzsxcwqqr\"],\"productFilter\":\"Office 365 Advanced Threat Protection\",\"severitiesFilter\":[\"High\",\"Medium\",\"Informational\"],\"alertRulesCreatedByTemplateCount\":1706719419,\"lastUpdatedDateUTC\":\"2021-09-09T00:33:30Z\",\"createdDateUTC\":\"2021-04-30T10:40:57Z\",\"description\":\"bcyksivmfogd\",\"displayName\":\"bfcmkrfts\",\"requiredDataConnectors\":[{\"connectorId\":\"jxsgmbawvifdxke\",\"dataTypes\":[\"hocjxwkloozrv\"]},{\"connectorId\":\"vcmuf\",\"dataTypes\":[\"cpxxvirye\"]}],\"status\":\"Available\"}")
+            "{\"alertRulesCreatedByTemplateCount\":595342906,\"createdDateUTC\":\"2021-11-02T17:47:35Z\",\"lastUpdatedDateUTC\":\"2021-04-11T00:27:16Z\",\"description\":\"xrkjpvdw\",\"displayName\":\"zwiivwzjbhyzs\",\"requiredDataConnectors\":[{\"connectorId\":\"ambtrnegvm\",\"dataTypes\":[\"q\",\"qvldspastjbkkd\"]},{\"connectorId\":\"lves\",\"dataTypes\":[\"lx\"]}],\"status\":\"Available\",\"displayNamesFilter\":[\"zapeewchpx\",\"ktwkuziyc\"],\"displayNamesExcludeFilter\":[\"vu\",\"uztcktyhjtqed\",\"gzulwmmrqzzr\"],\"productFilter\":\"Microsoft Cloud App Security\",\"severitiesFilter\":[\"High\",\"Medium\"]}")
             .toObject(MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties.class);
-        Assertions.assertEquals(1706719419, model.alertRulesCreatedByTemplateCount());
-        Assertions.assertEquals("bcyksivmfogd", model.description());
-        Assertions.assertEquals("bfcmkrfts", model.displayName());
-        Assertions.assertEquals("jxsgmbawvifdxke", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("hocjxwkloozrv", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(595342906, model.alertRulesCreatedByTemplateCount());
+        Assertions.assertEquals("xrkjpvdw", model.description());
+        Assertions.assertEquals("zwiivwzjbhyzs", model.displayName());
+        Assertions.assertEquals("ambtrnegvm", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("q", model.requiredDataConnectors().get(0).dataTypes().get(0));
         Assertions.assertEquals(TemplateStatus.AVAILABLE, model.status());
-        Assertions.assertEquals("uitrdexyiono", model.displayNamesFilter().get(0));
-        Assertions.assertEquals("nbdbzsxcwqqr", model.displayNamesExcludeFilter().get(0));
-        Assertions.assertEquals(MicrosoftSecurityProductName.OFFICE_365_ADVANCED_THREAT_PROTECTION,
-            model.productFilter());
+        Assertions.assertEquals("zapeewchpx", model.displayNamesFilter().get(0));
+        Assertions.assertEquals("vu", model.displayNamesExcludeFilter().get(0));
+        Assertions.assertEquals(MicrosoftSecurityProductName.MICROSOFT_CLOUD_APP_SECURITY, model.productFilter());
         Assertions.assertEquals(AlertSeverity.HIGH, model.severitiesFilter().get(0));
     }
 
@@ -36,32 +35,29 @@ public final class MicrosoftSecurityIncidentCreationAlertRuleTemplatePropertiesT
     public void testSerialize() throws Exception {
         MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties model
             = new MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties()
-                .withAlertRulesCreatedByTemplateCount(1706719419)
-                .withDescription("bcyksivmfogd")
-                .withDisplayName("bfcmkrfts")
+                .withAlertRulesCreatedByTemplateCount(595342906)
+                .withDescription("xrkjpvdw")
+                .withDisplayName("zwiivwzjbhyzs")
                 .withRequiredDataConnectors(Arrays.asList(
-                    new AlertRuleTemplateDataSource().withConnectorId("jxsgmbawvifdxke")
-                        .withDataTypes(Arrays.asList("hocjxwkloozrv")),
-                    new AlertRuleTemplateDataSource().withConnectorId("vcmuf")
-                        .withDataTypes(Arrays.asList("cpxxvirye"))))
+                    new AlertRuleTemplateDataSource().withConnectorId("ambtrnegvm")
+                        .withDataTypes(Arrays.asList("q", "qvldspastjbkkd")),
+                    new AlertRuleTemplateDataSource().withConnectorId("lves").withDataTypes(Arrays.asList("lx"))))
                 .withStatus(TemplateStatus.AVAILABLE)
-                .withDisplayNamesFilter(Arrays.asList("uitrdexyiono"))
-                .withDisplayNamesExcludeFilter(Arrays.asList("nbdbzsxcwqqr"))
-                .withProductFilter(MicrosoftSecurityProductName.OFFICE_365_ADVANCED_THREAT_PROTECTION)
-                .withSeveritiesFilter(
-                    Arrays.asList(AlertSeverity.HIGH, AlertSeverity.MEDIUM, AlertSeverity.INFORMATIONAL));
+                .withDisplayNamesFilter(Arrays.asList("zapeewchpx", "ktwkuziyc"))
+                .withDisplayNamesExcludeFilter(Arrays.asList("vu", "uztcktyhjtqed", "gzulwmmrqzzr"))
+                .withProductFilter(MicrosoftSecurityProductName.MICROSOFT_CLOUD_APP_SECURITY)
+                .withSeveritiesFilter(Arrays.asList(AlertSeverity.HIGH, AlertSeverity.MEDIUM));
         model
             = BinaryData.fromObject(model).toObject(MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties.class);
-        Assertions.assertEquals(1706719419, model.alertRulesCreatedByTemplateCount());
-        Assertions.assertEquals("bcyksivmfogd", model.description());
-        Assertions.assertEquals("bfcmkrfts", model.displayName());
-        Assertions.assertEquals("jxsgmbawvifdxke", model.requiredDataConnectors().get(0).connectorId());
-        Assertions.assertEquals("hocjxwkloozrv", model.requiredDataConnectors().get(0).dataTypes().get(0));
+        Assertions.assertEquals(595342906, model.alertRulesCreatedByTemplateCount());
+        Assertions.assertEquals("xrkjpvdw", model.description());
+        Assertions.assertEquals("zwiivwzjbhyzs", model.displayName());
+        Assertions.assertEquals("ambtrnegvm", model.requiredDataConnectors().get(0).connectorId());
+        Assertions.assertEquals("q", model.requiredDataConnectors().get(0).dataTypes().get(0));
         Assertions.assertEquals(TemplateStatus.AVAILABLE, model.status());
-        Assertions.assertEquals("uitrdexyiono", model.displayNamesFilter().get(0));
-        Assertions.assertEquals("nbdbzsxcwqqr", model.displayNamesExcludeFilter().get(0));
-        Assertions.assertEquals(MicrosoftSecurityProductName.OFFICE_365_ADVANCED_THREAT_PROTECTION,
-            model.productFilter());
+        Assertions.assertEquals("zapeewchpx", model.displayNamesFilter().get(0));
+        Assertions.assertEquals("vu", model.displayNamesExcludeFilter().get(0));
+        Assertions.assertEquals(MicrosoftSecurityProductName.MICROSOFT_CLOUD_APP_SECURITY, model.productFilter());
         Assertions.assertEquals(AlertSeverity.HIGH, model.severitiesFilter().get(0));
     }
 }

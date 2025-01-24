@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the properties for manual resolution. */
+/**
+ * Defines the properties for manual resolution.
+ */
 @Fluent
-public final class ManualResolutionProperties {
+public final class ManualResolutionProperties implements JsonSerializable<ManualResolutionProperties> {
     /*
      * Gets or sets the target resource ARM ID of the dependent resource if the resource type is Manual.
      */
-    @JsonProperty(value = "targetId")
     private String targetId;
 
-    /** Creates an instance of ManualResolutionProperties class. */
+    /**
+     * Creates an instance of ManualResolutionProperties class.
+     */
     public ManualResolutionProperties() {
     }
 
     /**
      * Get the targetId property: Gets or sets the target resource ARM ID of the dependent resource if the resource type
      * is Manual.
-     *
+     * 
      * @return the targetId value.
      */
     public String targetId() {
@@ -33,7 +40,7 @@ public final class ManualResolutionProperties {
     /**
      * Set the targetId property: Gets or sets the target resource ARM ID of the dependent resource if the resource type
      * is Manual.
-     *
+     * 
      * @param targetId the targetId value to set.
      * @return the ManualResolutionProperties object itself.
      */
@@ -44,9 +51,45 @@ public final class ManualResolutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetId", this.targetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManualResolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManualResolutionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManualResolutionProperties.
+     */
+    public static ManualResolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManualResolutionProperties deserializedManualResolutionProperties = new ManualResolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetId".equals(fieldName)) {
+                    deserializedManualResolutionProperties.targetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManualResolutionProperties;
+        });
     }
 }

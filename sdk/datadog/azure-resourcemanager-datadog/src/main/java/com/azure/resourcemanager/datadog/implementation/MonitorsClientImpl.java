@@ -50,17 +50,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorsClient.
+ */
 public final class MonitorsClientImpl implements MonitorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MonitorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of MonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MonitorsClientImpl(MicrosoftDatadogClientImpl client) {
@@ -247,7 +253,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +290,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -322,7 +328,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,7 +344,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -356,7 +362,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,7 +377,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the api keys for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -388,7 +394,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,7 +429,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -458,7 +464,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -474,7 +480,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -491,7 +497,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -506,7 +512,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -545,7 +551,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -584,7 +590,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -600,7 +606,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -618,7 +624,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Set the default api key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -633,7 +639,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -670,7 +676,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -708,7 +714,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -724,7 +730,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -741,7 +747,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -756,7 +762,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the hosts for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -772,7 +778,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -810,7 +816,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -848,7 +854,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,7 +870,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -882,7 +888,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -897,7 +903,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all Azure resources associated to the same Datadog organization as the target resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -914,7 +920,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -952,7 +958,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -990,7 +996,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1007,7 +1013,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1025,7 +1031,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1040,7 +1046,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1057,7 +1063,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1083,7 +1089,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1111,7 +1117,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedFlux}.
@@ -1123,7 +1129,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1138,7 +1144,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation as paginated response with {@link PagedIterable}.
@@ -1150,7 +1156,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,7 +1170,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1197,7 +1203,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1231,7 +1237,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1246,7 +1252,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1262,7 +1268,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1276,7 +1282,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all monitors under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1291,14 +1297,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a specific monitor resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogMonitorResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -1328,7 +1334,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1336,7 +1342,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a specific monitor resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogMonitorResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -1364,7 +1370,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1380,7 +1386,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1397,7 +1403,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the properties of a specific monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1412,7 +1418,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1451,7 +1457,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1490,7 +1496,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1510,7 +1516,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1530,7 +1536,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1552,7 +1558,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1569,7 +1575,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1587,7 +1593,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1605,7 +1611,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1622,7 +1628,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1641,7 +1647,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1657,7 +1663,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param body The body parameter.
@@ -1675,10 +1681,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1714,10 +1720,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1753,10 +1759,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1773,7 +1779,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1793,10 +1799,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1815,7 +1821,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1832,10 +1838,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1850,10 +1856,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1868,7 +1874,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1885,10 +1891,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1904,7 +1910,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1920,10 +1926,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1938,7 +1944,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1972,7 +1978,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2007,7 +2013,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2024,7 +2030,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2044,7 +2050,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2059,7 +2065,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2076,7 +2082,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2091,7 +2097,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2108,7 +2114,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2122,7 +2128,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2137,7 +2143,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2173,7 +2179,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2208,7 +2214,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2225,7 +2231,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -2242,7 +2248,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Refresh the set password link and return a latest one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2257,9 +2263,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2284,9 +2289,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2311,9 +2315,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2338,9 +2341,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2365,9 +2367,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2393,9 +2394,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2421,9 +2421,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2449,9 +2448,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2477,9 +2475,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2503,9 +2500,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2530,9 +2526,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2558,9 +2553,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

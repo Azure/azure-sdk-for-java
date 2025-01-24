@@ -10,7 +10,7 @@ import com.azure.resourcemanager.workloads.models.StorageInformation;
 public final class StorageInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageInformation model = BinaryData.fromString("{\"id\":\"z\"}").toObject(StorageInformation.class);
+        StorageInformation model = BinaryData.fromString("{\"id\":\"igdtopbob\"}").toObject(StorageInformation.class);
     }
 
     @org.junit.jupiter.api.Test

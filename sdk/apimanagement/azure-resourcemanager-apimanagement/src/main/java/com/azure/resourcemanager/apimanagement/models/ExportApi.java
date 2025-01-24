@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExportApi. */
+/**
+ * Defines values for ExportApi.
+ */
 public final class ExportApi extends ExpandableStringEnum<ExportApi> {
-    /** Static value true for ExportApi. */
+    /**
+     * Static value true for ExportApi.
+     */
     public static final ExportApi TRUE = fromString("true");
 
     /**
      * Creates a new instance of ExportApi value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class ExportApi extends ExpandableStringEnum<ExportApi> {
 
     /**
      * Creates or finds a ExportApi from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExportApi.
      */
-    @JsonCreator
     public static ExportApi fromString(String name) {
         return fromString(name, ExportApi.class);
     }
 
     /**
      * Gets known ExportApi values.
-     *
+     * 
      * @return known ExportApi values.
      */
     public static Collection<ExportApi> values() {

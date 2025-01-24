@@ -5,144 +5,128 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * InMage protected disk details.
  */
 @Fluent
-public final class InMageProtectedDiskDetails {
+public final class InMageProtectedDiskDetails implements JsonSerializable<InMageProtectedDiskDetails> {
     /*
      * The disk id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName")
     private String diskName;
 
     /*
      * The protection stage.
      */
-    @JsonProperty(value = "protectionStage")
     private String protectionStage;
 
     /*
      * The health error code for the disk.
      */
-    @JsonProperty(value = "healthErrorCode")
     private String healthErrorCode;
 
     /*
      * The RPO in seconds.
      */
-    @JsonProperty(value = "rpoInSeconds")
     private Long rpoInSeconds;
 
     /*
      * A value indicating whether resync is required for this disk.
      */
-    @JsonProperty(value = "resyncRequired")
     private String resyncRequired;
 
     /*
      * The resync progress percentage.
      */
-    @JsonProperty(value = "resyncProgressPercentage")
     private Integer resyncProgressPercentage;
 
     /*
      * The resync duration in seconds.
      */
-    @JsonProperty(value = "resyncDurationInSeconds")
     private Long resyncDurationInSeconds;
 
     /*
      * The disk capacity in bytes.
      */
-    @JsonProperty(value = "diskCapacityInBytes")
     private Long diskCapacityInBytes;
 
     /*
      * The file system capacity in bytes.
      */
-    @JsonProperty(value = "fileSystemCapacityInBytes")
     private Long fileSystemCapacityInBytes;
 
     /*
      * The source data transit in MB.
      */
-    @JsonProperty(value = "sourceDataInMB")
     private Double sourceDataInMB;
 
     /*
      * The PS data transit in MB.
      */
-    @JsonProperty(value = "psDataInMB")
     private Double psDataInMB;
 
     /*
      * The target data transit in MB.
      */
-    @JsonProperty(value = "targetDataInMB")
     private Double targetDataInMB;
 
     /*
      * A value indicating whether disk is resized.
      */
-    @JsonProperty(value = "diskResized")
     private String diskResized;
 
     /*
      * The last RPO calculated time.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime")
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The resync processed bytes.
      */
-    @JsonProperty(value = "resyncProcessedBytes")
     private Long resyncProcessedBytes;
 
     /*
      * The resync total transferred bytes.
      */
-    @JsonProperty(value = "resyncTotalTransferredBytes")
     private Long resyncTotalTransferredBytes;
 
     /*
      * The resync last 15 minutes transferred bytes.
      */
-    @JsonProperty(value = "resyncLast15MinutesTransferredBytes")
     private Long resyncLast15MinutesTransferredBytes;
 
     /*
      * The last data transfer time in UTC.
      */
-    @JsonProperty(value = "resyncLastDataTransferTimeUTC")
     private OffsetDateTime resyncLastDataTransferTimeUtc;
 
     /*
      * The resync start time.
      */
-    @JsonProperty(value = "resyncStartTime")
     private OffsetDateTime resyncStartTime;
 
     /*
      * The Progress Health.
      */
-    @JsonProperty(value = "progressHealth")
     private String progressHealth;
 
     /*
      * The Progress Status.
      */
-    @JsonProperty(value = "progressStatus")
     private String progressStatus;
 
     /**
@@ -598,5 +582,121 @@ public final class InMageProtectedDiskDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("diskName", this.diskName);
+        jsonWriter.writeStringField("protectionStage", this.protectionStage);
+        jsonWriter.writeStringField("healthErrorCode", this.healthErrorCode);
+        jsonWriter.writeNumberField("rpoInSeconds", this.rpoInSeconds);
+        jsonWriter.writeStringField("resyncRequired", this.resyncRequired);
+        jsonWriter.writeNumberField("resyncProgressPercentage", this.resyncProgressPercentage);
+        jsonWriter.writeNumberField("resyncDurationInSeconds", this.resyncDurationInSeconds);
+        jsonWriter.writeNumberField("diskCapacityInBytes", this.diskCapacityInBytes);
+        jsonWriter.writeNumberField("fileSystemCapacityInBytes", this.fileSystemCapacityInBytes);
+        jsonWriter.writeNumberField("sourceDataInMB", this.sourceDataInMB);
+        jsonWriter.writeNumberField("psDataInMB", this.psDataInMB);
+        jsonWriter.writeNumberField("targetDataInMB", this.targetDataInMB);
+        jsonWriter.writeStringField("diskResized", this.diskResized);
+        jsonWriter.writeStringField("lastRpoCalculatedTime",
+            this.lastRpoCalculatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRpoCalculatedTime));
+        jsonWriter.writeNumberField("resyncProcessedBytes", this.resyncProcessedBytes);
+        jsonWriter.writeNumberField("resyncTotalTransferredBytes", this.resyncTotalTransferredBytes);
+        jsonWriter.writeNumberField("resyncLast15MinutesTransferredBytes", this.resyncLast15MinutesTransferredBytes);
+        jsonWriter.writeStringField("resyncLastDataTransferTimeUTC",
+            this.resyncLastDataTransferTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resyncLastDataTransferTimeUtc));
+        jsonWriter.writeStringField("resyncStartTime",
+            this.resyncStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resyncStartTime));
+        jsonWriter.writeStringField("progressHealth", this.progressHealth);
+        jsonWriter.writeStringField("progressStatus", this.progressStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageProtectedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageProtectedDiskDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageProtectedDiskDetails.
+     */
+    public static InMageProtectedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageProtectedDiskDetails deserializedInMageProtectedDiskDetails = new InMageProtectedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.diskId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.diskName = reader.getString();
+                } else if ("protectionStage".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.protectionStage = reader.getString();
+                } else if ("healthErrorCode".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.healthErrorCode = reader.getString();
+                } else if ("rpoInSeconds".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.rpoInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncRequired = reader.getString();
+                } else if ("resyncProgressPercentage".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resyncDurationInSeconds".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncDurationInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("diskCapacityInBytes".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.diskCapacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("fileSystemCapacityInBytes".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.fileSystemCapacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("sourceDataInMB".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.sourceDataInMB = reader.getNullable(JsonReader::getDouble);
+                } else if ("psDataInMB".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.psDataInMB = reader.getNullable(JsonReader::getDouble);
+                } else if ("targetDataInMB".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.targetDataInMB = reader.getNullable(JsonReader::getDouble);
+                } else if ("diskResized".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.diskResized = reader.getString();
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resyncProcessedBytes".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncProcessedBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncTotalTransferredBytes".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncTotalTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncLast15MinutesTransferredBytes".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncLast15MinutesTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncLastDataTransferTimeUTC".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncLastDataTransferTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resyncStartTime".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.resyncStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("progressHealth".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.progressHealth = reader.getString();
+                } else if ("progressStatus".equals(fieldName)) {
+                    deserializedInMageProtectedDiskDetails.progressStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageProtectedDiskDetails;
+        });
     }
 }

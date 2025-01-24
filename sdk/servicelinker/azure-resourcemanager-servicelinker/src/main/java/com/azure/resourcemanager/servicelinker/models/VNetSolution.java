@@ -21,11 +21,6 @@ public final class VNetSolution implements JsonSerializable<VNetSolution> {
      */
     private VNetSolutionType type;
 
-    /*
-     * Indicates whether to clean up previous operation when Linker is updating or deleting
-     */
-    private DeleteOrUpdateBehavior deleteOrUpdateBehavior;
-
     /**
      * Creates an instance of VNetSolution class.
      */
@@ -53,28 +48,6 @@ public final class VNetSolution implements JsonSerializable<VNetSolution> {
     }
 
     /**
-     * Get the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
-     * or deleting.
-     * 
-     * @return the deleteOrUpdateBehavior value.
-     */
-    public DeleteOrUpdateBehavior deleteOrUpdateBehavior() {
-        return this.deleteOrUpdateBehavior;
-    }
-
-    /**
-     * Set the deleteOrUpdateBehavior property: Indicates whether to clean up previous operation when Linker is updating
-     * or deleting.
-     * 
-     * @param deleteOrUpdateBehavior the deleteOrUpdateBehavior value to set.
-     * @return the VNetSolution object itself.
-     */
-    public VNetSolution withDeleteOrUpdateBehavior(DeleteOrUpdateBehavior deleteOrUpdateBehavior) {
-        this.deleteOrUpdateBehavior = deleteOrUpdateBehavior;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -89,8 +62,6 @@ public final class VNetSolution implements JsonSerializable<VNetSolution> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("deleteOrUpdateBehavior",
-            this.deleteOrUpdateBehavior == null ? null : this.deleteOrUpdateBehavior.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -111,9 +82,6 @@ public final class VNetSolution implements JsonSerializable<VNetSolution> {
 
                 if ("type".equals(fieldName)) {
                     deserializedVNetSolution.type = VNetSolutionType.fromString(reader.getString());
-                } else if ("deleteOrUpdateBehavior".equals(fieldName)) {
-                    deserializedVNetSolution.deleteOrUpdateBehavior
-                        = DeleteOrUpdateBehavior.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

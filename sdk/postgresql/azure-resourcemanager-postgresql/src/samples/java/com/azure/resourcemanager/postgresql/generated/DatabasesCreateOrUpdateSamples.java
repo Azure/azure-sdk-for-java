@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.postgresql.generated;
 
-/** Samples for Databases CreateOrUpdate. */
+/**
+ * Samples for Databases CreateOrUpdate.
+ */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseCreate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/DatabaseCreate.
+     * json
      */
     /**
      * Sample code: DatabaseCreate.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void databaseCreate(com.azure.resourcemanager.postgresql.PostgreSqlManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .define("db1")
             .withExistingServer("TestGroup", "testserver")
             .withCharset("UTF8")

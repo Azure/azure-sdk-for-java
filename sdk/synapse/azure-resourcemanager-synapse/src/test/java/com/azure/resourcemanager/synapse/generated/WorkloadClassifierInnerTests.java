@@ -12,30 +12,30 @@ public final class WorkloadClassifierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadClassifierInner model = BinaryData.fromString(
-            "{\"properties\":{\"memberName\":\"ril\",\"label\":\"apeewchpxlkt\",\"context\":\"uziycsl\",\"startTime\":\"ufuztcktyhjtq\",\"endTime\":\"cgzulwmmrqzzr\",\"importance\":\"vpglydz\"},\"id\":\"krvq\",\"name\":\"ev\",\"type\":\"oepry\"}")
+            "{\"properties\":{\"memberName\":\"srxuzvoam\",\"label\":\"cqiosmgbza\",\"context\":\"xqdlyrtltlapr\",\"startTime\":\"zkatb\",\"endTime\":\"mznnbsoqeqalarvl\",\"importance\":\"un\"},\"id\":\"tgfebwln\",\"name\":\"mhyreeudz\",\"type\":\"av\"}")
             .toObject(WorkloadClassifierInner.class);
-        Assertions.assertEquals("ril", model.memberName());
-        Assertions.assertEquals("apeewchpxlkt", model.label());
-        Assertions.assertEquals("uziycsl", model.context());
-        Assertions.assertEquals("ufuztcktyhjtq", model.startTime());
-        Assertions.assertEquals("cgzulwmmrqzzr", model.endTime());
-        Assertions.assertEquals("vpglydz", model.importance());
+        Assertions.assertEquals("srxuzvoam", model.memberName());
+        Assertions.assertEquals("cqiosmgbza", model.label());
+        Assertions.assertEquals("xqdlyrtltlapr", model.context());
+        Assertions.assertEquals("zkatb", model.startTime());
+        Assertions.assertEquals("mznnbsoqeqalarvl", model.endTime());
+        Assertions.assertEquals("un", model.importance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadClassifierInner model = new WorkloadClassifierInner().withMemberName("ril")
-            .withLabel("apeewchpxlkt")
-            .withContext("uziycsl")
-            .withStartTime("ufuztcktyhjtq")
-            .withEndTime("cgzulwmmrqzzr")
-            .withImportance("vpglydz");
+        WorkloadClassifierInner model = new WorkloadClassifierInner().withMemberName("srxuzvoam")
+            .withLabel("cqiosmgbza")
+            .withContext("xqdlyrtltlapr")
+            .withStartTime("zkatb")
+            .withEndTime("mznnbsoqeqalarvl")
+            .withImportance("un");
         model = BinaryData.fromObject(model).toObject(WorkloadClassifierInner.class);
-        Assertions.assertEquals("ril", model.memberName());
-        Assertions.assertEquals("apeewchpxlkt", model.label());
-        Assertions.assertEquals("uziycsl", model.context());
-        Assertions.assertEquals("ufuztcktyhjtq", model.startTime());
-        Assertions.assertEquals("cgzulwmmrqzzr", model.endTime());
-        Assertions.assertEquals("vpglydz", model.importance());
+        Assertions.assertEquals("srxuzvoam", model.memberName());
+        Assertions.assertEquals("cqiosmgbza", model.label());
+        Assertions.assertEquals("xqdlyrtltlapr", model.context());
+        Assertions.assertEquals("zkatb", model.startTime());
+        Assertions.assertEquals("mznnbsoqeqalarvl", model.endTime());
+        Assertions.assertEquals("un", model.importance());
     }
 }

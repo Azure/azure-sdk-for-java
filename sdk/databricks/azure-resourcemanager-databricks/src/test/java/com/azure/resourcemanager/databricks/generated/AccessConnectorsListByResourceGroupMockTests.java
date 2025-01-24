@@ -23,7 +23,7 @@ public final class AccessConnectorsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"bc31da8f-651f-4283-b202-cc25d1aea4b7\",\"tenantId\":\"a7602f3a-0b69-48da-ac7c-174cfc526f19\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"asipqiio\":{\"principalId\":\"9c38ffcc-0f3b-41fd-a11b-2c332a7dff1f\",\"clientId\":\"1e2e7a43-db02-4002-ba27-5288154a070f\"}}},\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"rpqlp\",\"tags\":{\"t\":\"ciuqgbdb\",\"mhykojoxafnndl\":\"uvfbtkuwh\",\"kkpwdreqnovvq\":\"ichkoymkcdyhb\",\"syrsndsytgadgvra\":\"ovljxywsu\"},\"id\":\"aeneqnzarrwl\",\"name\":\"uu\",\"type\":\"jfqka\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"03aa4afc-d8d8-4b82-974d-59fcce3bb77b\",\"tenantId\":\"a523e2ac-411e-4f32-bfff-2bf5ab57c277\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"asipqiio\":{\"principalId\":\"c80297e7-916d-4796-baa1-c003b8c385f6\",\"clientId\":\"8fb275c6-ce17-4b21-8f9f-ff77929e570f\"}}},\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"rpqlp\",\"tags\":{\"t\":\"ciuqgbdb\",\"mhykojoxafnndl\":\"uvfbtkuwh\",\"kkpwdreqnovvq\":\"ichkoymkcdyhb\",\"syrsndsytgadgvra\":\"ovljxywsu\"},\"id\":\"aeneqnzarrwl\",\"name\":\"uu\",\"type\":\"jfqka\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

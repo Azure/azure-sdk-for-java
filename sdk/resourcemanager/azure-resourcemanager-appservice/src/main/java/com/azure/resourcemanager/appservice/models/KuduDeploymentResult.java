@@ -20,6 +20,8 @@ public final class KuduDeploymentResult {
     }
 
     /**
+     * Gets the deployment ID.
+     *
      * @return the deployment ID. It can be {@code null} if tracking deployment is disabled.
      */
     public String deploymentId() {

@@ -5,50 +5,48 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.JsonField;
 import com.azure.resourcemanager.eventgrid.models.JsonFieldWithDefault;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * This can be used to map properties of a source schema (or default values, for certain supported properties) to
  * properties of the EventGridEvent schema.
  */
 @Fluent
-public final class JsonInputSchemaMappingProperties {
+public final class JsonInputSchemaMappingProperties implements JsonSerializable<JsonInputSchemaMappingProperties> {
     /*
      * The mapping information for the Id property of the Event Grid Event.
      */
-    @JsonProperty(value = "id")
     private JsonField id;
 
     /*
      * The mapping information for the Topic property of the Event Grid Event.
      */
-    @JsonProperty(value = "topic")
     private JsonField topic;
 
     /*
      * The mapping information for the EventTime property of the Event Grid Event.
      */
-    @JsonProperty(value = "eventTime")
     private JsonField eventTime;
 
     /*
      * The mapping information for the EventType property of the Event Grid Event.
      */
-    @JsonProperty(value = "eventType")
     private JsonFieldWithDefault eventType;
 
     /*
      * The mapping information for the Subject property of the Event Grid Event.
      */
-    @JsonProperty(value = "subject")
     private JsonFieldWithDefault subject;
 
     /*
      * The mapping information for the DataVersion property of the Event Grid Event.
      */
-    @JsonProperty(value = "dataVersion")
     private JsonFieldWithDefault dataVersion;
 
     /**
@@ -201,5 +199,57 @@ public final class JsonInputSchemaMappingProperties {
         if (dataVersion() != null) {
             dataVersion().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("id", this.id);
+        jsonWriter.writeJsonField("topic", this.topic);
+        jsonWriter.writeJsonField("eventTime", this.eventTime);
+        jsonWriter.writeJsonField("eventType", this.eventType);
+        jsonWriter.writeJsonField("subject", this.subject);
+        jsonWriter.writeJsonField("dataVersion", this.dataVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonInputSchemaMappingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonInputSchemaMappingProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonInputSchemaMappingProperties.
+     */
+    public static JsonInputSchemaMappingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonInputSchemaMappingProperties deserializedJsonInputSchemaMappingProperties
+                = new JsonInputSchemaMappingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJsonInputSchemaMappingProperties.id = JsonField.fromJson(reader);
+                } else if ("topic".equals(fieldName)) {
+                    deserializedJsonInputSchemaMappingProperties.topic = JsonField.fromJson(reader);
+                } else if ("eventTime".equals(fieldName)) {
+                    deserializedJsonInputSchemaMappingProperties.eventTime = JsonField.fromJson(reader);
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedJsonInputSchemaMappingProperties.eventType = JsonFieldWithDefault.fromJson(reader);
+                } else if ("subject".equals(fieldName)) {
+                    deserializedJsonInputSchemaMappingProperties.subject = JsonFieldWithDefault.fromJson(reader);
+                } else if ("dataVersion".equals(fieldName)) {
+                    deserializedJsonInputSchemaMappingProperties.dataVersion = JsonFieldWithDefault.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonInputSchemaMappingProperties;
+        });
     }
 }

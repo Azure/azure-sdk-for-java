@@ -11,6 +11,8 @@ import com.azure.resourcemanager.agrifood.models.PrivateEndpoint;
 import com.azure.resourcemanager.agrifood.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.agrifood.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.agrifood.models.PrivateLinkServiceConnectionState;
+import java.util.Collections;
+import java.util.List;
 
 public final class PrivateEndpointConnectionImpl
     implements PrivateEndpointConnection, PrivateEndpointConnection.Definition, PrivateEndpointConnection.Update {
@@ -32,6 +34,15 @@ public final class PrivateEndpointConnectionImpl
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public List<String> groupIds() {
+        List<String> inner = this.innerModel().groupIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public PrivateEndpoint privateEndpoint() {
@@ -120,9 +131,10 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.farmBeatsResourceName = Utils.getValueFromIdByName(innerObject.id(), "farmBeats");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.farmBeatsResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "farmBeats");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnection refresh() {

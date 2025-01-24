@@ -4,29 +4,23 @@
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
-import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
-import com.azure.spring.cloud.core.service.AzureServiceType;
 import jakarta.jms.Connection;
 import jakarta.jms.ConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -51,8 +45,12 @@ import java.util.function.BiFunction;
     AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({ JmsProperties.class })
-@Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
+@EnableConfigurationProperties
+@Import({
+    ServiceBusJmsContainerConfiguration.class,
+    ServiceBusJmsPropertiesConfiguration.class,
+    ServiceBusJmsConnectionFactoryConfiguration.class
+})
 public class ServiceBusJmsAutoConfiguration {
 
     @Bean
@@ -67,7 +65,7 @@ public class ServiceBusJmsAutoConfiguration {
     @Bean
     @ConditionalOnExpression("'standard'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     @SuppressWarnings("unchecked")
-    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
+    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer() {
         return factory -> {
             JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
             EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
@@ -84,14 +82,6 @@ public class ServiceBusJmsAutoConfiguration {
                 }
             }
         };
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnMissingProperty(prefix = "spring.jms.servicebus", name = "connection-string")
-    static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(
-        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
-        return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
     }
 
     private AzureServiceBusJmsProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureServiceBusJmsProperties azurePasswordlessProperties) {

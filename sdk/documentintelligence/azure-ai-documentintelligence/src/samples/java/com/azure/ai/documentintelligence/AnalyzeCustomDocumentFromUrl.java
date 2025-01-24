@@ -3,11 +3,11 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.ContentFormat;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentContentFormat;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.ai.documentintelligence.models.StringIndexType;
@@ -37,23 +37,18 @@ public class AnalyzeCustomDocumentFromUrl {
 
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
-            "1",
-            "en-US",
-            StringIndexType.TEXT_ELEMENTS,
-            Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-            null,
-            ContentFormat.TEXT,
-            null,
-            new AnalyzeDocumentRequest().setUrlSource(documentUrl));
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
+            new AnalyzeDocumentOptions(documentUrl).setPages(Arrays.asList("1"))
+                .setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)).setLocale("en-US")
+                .setStringIndexType(StringIndexType.TEXT_ELEMENTS).setOutputContentFormat(DocumentContentFormat.TEXT));
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-            final Document analyzedDocument = analyzeResult.getDocuments().get(i);
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
             System.out.printf("----------- Analyzing custom document %d -----------%n", i);
             System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+                analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
         }
 
         analyzeResult.getPages().forEach(documentPage -> {

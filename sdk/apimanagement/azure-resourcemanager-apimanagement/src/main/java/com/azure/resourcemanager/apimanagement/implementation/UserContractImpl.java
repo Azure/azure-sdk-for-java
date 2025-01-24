@@ -172,9 +172,9 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.userId = Utils.getValueFromIdByName(innerObject.id(), "users");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.userId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
     }
 
     public UserContract refresh() {

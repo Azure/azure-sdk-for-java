@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AccessControlLists. */
+/**
+ * Resource collection API of AccessControlLists.
+ */
 public interface AccessControlLists {
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -28,9 +30,9 @@ public interface AccessControlLists {
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface AccessControlLists {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface AccessControlLists {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface AccessControlLists {
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface AccessControlLists {
 
     /**
      * List AccessControlLists by resource group.
-     *
-     * <p>Implements AccessControlLists list by resource group GET method.
-     *
+     * 
+     * Implements AccessControlLists list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface AccessControlLists {
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface AccessControlLists {
 
     /**
      * List AccessControlLists by subscription.
-     *
-     * <p>Implements AccessControlLists list by subscription GET method.
-     *
+     * 
+     * Implements AccessControlLists list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface AccessControlLists {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -136,9 +138,9 @@ public interface AccessControlLists {
 
     /**
      * Updates administrative state of Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param body Request payload.
@@ -153,9 +155,9 @@ public interface AccessControlLists {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,9 +169,9 @@ public interface AccessControlLists {
 
     /**
      * Resync operation on the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -183,9 +185,9 @@ public interface AccessControlLists {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,9 +199,9 @@ public interface AccessControlLists {
 
     /**
      * Validates the configuration of the Access Control Lists.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accessControlListName Name of the Access Control List.
      * @param context The context to associate with this operation.
@@ -213,9 +215,9 @@ public interface AccessControlLists {
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -226,9 +228,9 @@ public interface AccessControlLists {
 
     /**
      * Gets a Access Control List.
-     *
-     * <p>Implements Access Control List GET method.
-     *
+     * 
+     * Implements Access Control List GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,9 +242,9 @@ public interface AccessControlLists {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -252,9 +254,9 @@ public interface AccessControlLists {
 
     /**
      * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
+     * 
+     * Implements Access Control List DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +267,7 @@ public interface AccessControlLists {
 
     /**
      * Begins definition for a new AccessControlList resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AccessControlList definition.
      */

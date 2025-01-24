@@ -14,20 +14,19 @@ public final class SiteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SiteInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"rdve\"}]},\"location\":\"wsdtutnwl\",\"tags\":{\"dxukuqgsjjxundxg\":\"cvuzhyrmewipmve\",\"hhzjhfj\":\"etw\",\"qsxvmhf\":\"hvvmuvgpmun\",\"yue\":\"uzjyihsasbhudypo\"},\"id\":\"slynsqyrpfoo\",\"name\":\"rlttymsjnygqdnfw\",\"type\":\"zdzgtilaxhnfhqly\"}")
+            "{\"properties\":{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"esmkssjhoiftxfkf\"}]},\"location\":\"gpr\",\"tags\":{\"cbiqtgdqoh\":\"ill\",\"etpwbralll\":\"cwsldri\",\"p\":\"bphbqzmizakakank\"},\"id\":\"n\",\"name\":\"zhajoylhjlmuo\",\"type\":\"xprimrsop\"}")
             .toObject(SiteInner.class);
-        Assertions.assertEquals("wsdtutnwl", model.location());
-        Assertions.assertEquals("cvuzhyrmewipmve", model.tags().get("dxukuqgsjjxundxg"));
+        Assertions.assertEquals("gpr", model.location());
+        Assertions.assertEquals("ill", model.tags().get("cbiqtgdqoh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteInner model = new SiteInner().withLocation("wsdtutnwl")
-            .withTags(mapOf("dxukuqgsjjxundxg", "cvuzhyrmewipmve", "hhzjhfj", "etw", "qsxvmhf", "hvvmuvgpmun", "yue",
-                "uzjyihsasbhudypo"));
+        SiteInner model = new SiteInner().withLocation("gpr")
+            .withTags(mapOf("cbiqtgdqoh", "ill", "etpwbralll", "cwsldri", "p", "bphbqzmizakakank"));
         model = BinaryData.fromObject(model).toObject(SiteInner.class);
-        Assertions.assertEquals("wsdtutnwl", model.location());
-        Assertions.assertEquals("cvuzhyrmewipmve", model.tags().get("dxukuqgsjjxundxg"));
+        Assertions.assertEquals("gpr", model.location());
+        Assertions.assertEquals("ill", model.tags().get("cbiqtgdqoh"));
     }
 
     // Use "Map.of" if available

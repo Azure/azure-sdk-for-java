@@ -5,35 +5,113 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the provider specific properties. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "providerType",
-    defaultImpl = ProviderSpecificProperties.class)
-@JsonTypeName("ProviderSpecificProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "SapHana", value = HanaDbProviderInstanceProperties.class),
-    @JsonSubTypes.Type(name = "SapNetWeaver", value = SapNetWeaverProviderInstanceProperties.class),
-    @JsonSubTypes.Type(name = "PrometheusOS", value = PrometheusOSProviderInstanceProperties.class),
-    @JsonSubTypes.Type(name = "Db2", value = DB2ProviderInstanceProperties.class),
-    @JsonSubTypes.Type(name = "PrometheusHaCluster", value = PrometheusHaClusterProviderInstanceProperties.class),
-    @JsonSubTypes.Type(name = "MsSqlServer", value = MsSqlServerProviderInstanceProperties.class) })
+/**
+ * Gets or sets the provider specific properties.
+ */
 @Immutable
-public class ProviderSpecificProperties {
-    /** Creates an instance of ProviderSpecificProperties class. */
+public class ProviderSpecificProperties implements JsonSerializable<ProviderSpecificProperties> {
+    /*
+     * The provider type. For example, the value can be SapHana.
+     */
+    private String providerType = "ProviderSpecificProperties";
+
+    /**
+     * Creates an instance of ProviderSpecificProperties class.
+     */
     public ProviderSpecificProperties() {
     }
 
     /**
+     * Get the providerType property: The provider type. For example, the value can be SapHana.
+     * 
+     * @return the providerType value.
+     */
+    public String providerType() {
+        return this.providerType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerType", this.providerType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderSpecificProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderSpecificProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderSpecificProperties.
+     */
+    public static ProviderSpecificProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("providerType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SapHana".equals(discriminatorValue)) {
+                    return HanaDbProviderInstanceProperties.fromJson(readerToUse.reset());
+                } else if ("SapNetWeaver".equals(discriminatorValue)) {
+                    return SapNetWeaverProviderInstanceProperties.fromJson(readerToUse.reset());
+                } else if ("PrometheusOS".equals(discriminatorValue)) {
+                    return PrometheusOSProviderInstanceProperties.fromJson(readerToUse.reset());
+                } else if ("Db2".equals(discriminatorValue)) {
+                    return DB2ProviderInstanceProperties.fromJson(readerToUse.reset());
+                } else if ("PrometheusHaCluster".equals(discriminatorValue)) {
+                    return PrometheusHaClusterProviderInstanceProperties.fromJson(readerToUse.reset());
+                } else if ("MsSqlServer".equals(discriminatorValue)) {
+                    return MsSqlServerProviderInstanceProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProviderSpecificProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderSpecificProperties deserializedProviderSpecificProperties = new ProviderSpecificProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerType".equals(fieldName)) {
+                    deserializedProviderSpecificProperties.providerType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderSpecificProperties;
+        });
     }
 }

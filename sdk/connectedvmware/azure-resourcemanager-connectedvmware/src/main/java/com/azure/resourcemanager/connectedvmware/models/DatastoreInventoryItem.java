@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The datastore inventory item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inventoryType")
-@JsonTypeName("Datastore")
+/**
+ * The datastore inventory item.
+ */
 @Fluent
 public final class DatastoreInventoryItem extends InventoryItemProperties {
     /*
+     * They inventory type.
+     */
+    private InventoryType inventoryType = InventoryType.DATASTORE;
+
+    /*
      * Gets or sets Maximum capacity of this datastore, in GBs.
      */
-    @JsonProperty(value = "capacityGB")
     private Long capacityGB;
 
     /*
      * Gets or sets Available space of this datastore, in GBs.
      */
-    @JsonProperty(value = "freeSpaceGB")
     private Long freeSpaceGB;
 
-    /** Creates an instance of DatastoreInventoryItem class. */
+    /**
+     * Creates an instance of DatastoreInventoryItem class.
+     */
     public DatastoreInventoryItem() {
     }
 
     /**
+     * Get the inventoryType property: They inventory type.
+     * 
+     * @return the inventoryType value.
+     */
+    @Override
+    public InventoryType inventoryType() {
+        return this.inventoryType;
+    }
+
+    /**
      * Get the capacityGB property: Gets or sets Maximum capacity of this datastore, in GBs.
-     *
+     * 
      * @return the capacityGB value.
      */
     public Long capacityGB() {
@@ -41,7 +57,7 @@ public final class DatastoreInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the capacityGB property: Gets or sets Maximum capacity of this datastore, in GBs.
-     *
+     * 
      * @param capacityGB the capacityGB value to set.
      * @return the DatastoreInventoryItem object itself.
      */
@@ -52,7 +68,7 @@ public final class DatastoreInventoryItem extends InventoryItemProperties {
 
     /**
      * Get the freeSpaceGB property: Gets or sets Available space of this datastore, in GBs.
-     *
+     * 
      * @return the freeSpaceGB value.
      */
     public Long freeSpaceGB() {
@@ -61,7 +77,7 @@ public final class DatastoreInventoryItem extends InventoryItemProperties {
 
     /**
      * Set the freeSpaceGB property: Gets or sets Available space of this datastore, in GBs.
-     *
+     * 
      * @param freeSpaceGB the freeSpaceGB value to set.
      * @return the DatastoreInventoryItem object itself.
      */
@@ -70,21 +86,27 @@ public final class DatastoreInventoryItem extends InventoryItemProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatastoreInventoryItem withManagedResourceId(String managedResourceId) {
         super.withManagedResourceId(managedResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatastoreInventoryItem withMoRefId(String moRefId) {
         super.withMoRefId(moRefId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatastoreInventoryItem withMoName(String moName) {
         super.withMoName(moName);
@@ -93,11 +115,64 @@ public final class DatastoreInventoryItem extends InventoryItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceId", managedResourceId());
+        jsonWriter.writeStringField("moRefId", moRefId());
+        jsonWriter.writeStringField("moName", moName());
+        jsonWriter.writeStringField("inventoryType", this.inventoryType == null ? null : this.inventoryType.toString());
+        jsonWriter.writeNumberField("capacityGB", this.capacityGB);
+        jsonWriter.writeNumberField("freeSpaceGB", this.freeSpaceGB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatastoreInventoryItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatastoreInventoryItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatastoreInventoryItem.
+     */
+    public static DatastoreInventoryItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatastoreInventoryItem deserializedDatastoreInventoryItem = new DatastoreInventoryItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedResourceId".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem.withManagedResourceId(reader.getString());
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem.withMoRefId(reader.getString());
+                } else if ("moName".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem.withMoName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("inventoryType".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem.inventoryType = InventoryType.fromString(reader.getString());
+                } else if ("capacityGB".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem.capacityGB = reader.getNullable(JsonReader::getLong);
+                } else if ("freeSpaceGB".equals(fieldName)) {
+                    deserializedDatastoreInventoryItem.freeSpaceGB = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatastoreInventoryItem;
+        });
     }
 }

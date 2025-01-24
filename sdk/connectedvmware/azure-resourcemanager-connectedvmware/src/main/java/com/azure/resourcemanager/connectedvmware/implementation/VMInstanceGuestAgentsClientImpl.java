@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VMInstanceGuestAgentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VMInstanceGuestAgentsClient.
+ */
 public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAgentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VMInstanceGuestAgentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of VMInstanceGuestAgentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VMInstanceGuestAgentsClientImpl(ConnectedVMwareClientImpl client) {
@@ -107,11 +113,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -139,11 +145,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,11 +178,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -193,11 +199,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,11 +219,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,11 +242,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -254,11 +260,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,11 +280,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,11 +298,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -310,11 +316,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,11 +335,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,11 +353,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GuestAgent PUT method.
-     *
-     * <p>Create Or Update GuestAgent.
-     *
+     * 
+     * Create Or Update GuestAgent.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,11 +372,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,11 +400,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -421,11 +427,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -438,11 +444,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -456,11 +462,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Gets GuestAgent.
-     *
-     * <p>Implements GuestAgent GET method.
-     *
+     * 
+     * Implements GuestAgent GET method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,11 +479,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -501,11 +507,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -528,11 +534,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -547,11 +553,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -568,11 +574,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,11 +591,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -603,11 +609,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -620,11 +626,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -638,11 +644,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -654,11 +660,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Deletes an GuestAgent.
-     *
-     * <p>Implements GuestAgent DELETE method.
-     *
+     * 
+     * Implements GuestAgent DELETE method.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -671,11 +677,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -701,11 +707,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -730,11 +736,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -747,11 +753,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -766,11 +772,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -783,11 +789,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Implements GET GuestAgent in a vm.
-     *
-     * <p>Returns the list of GuestAgent of the given vm.
-     *
+     * 
+     * Returns the list of GuestAgent of the given vm.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the Hybrid Compute machine resource
-     *     to be extended.
+     * to be extended.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -801,9 +807,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -827,9 +832,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

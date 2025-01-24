@@ -7,8 +7,12 @@ package com.azure.resourcemanager.digitaltwins.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsDescriptionInner;
 import com.azure.resourcemanager.digitaltwins.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.digitaltwins.models.ConnectionProperties;
+import com.azure.resourcemanager.digitaltwins.models.ConnectionPropertiesPrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentity;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
+import com.azure.resourcemanager.digitaltwins.models.PrivateEndpoint;
+import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectionStatus;
 import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
 import com.azure.resourcemanager.digitaltwins.models.UserAssignedIdentity;
 import java.util.Arrays;
@@ -20,30 +24,59 @@ public final class DigitalTwinsDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DigitalTwinsDescriptionInner model = BinaryData.fromString(
-            "{\"properties\":{\"createdTime\":\"2021-11-25T12:23:30Z\",\"lastUpdatedTime\":\"2021-08-21T06:38:48Z\",\"provisioningState\":\"Moving\",\"hostName\":\"xpyb\",\"privateEndpointConnections\":[{\"id\":\"hmtzopbsphrup\",\"name\":\"dgs\",\"type\":\"bb\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"cmsxaobhdxbm\",\"tenantId\":\"ioq\",\"userAssignedIdentities\":{\"lrxybqsoq\":{\"clientId\":\"tbmufpo\",\"principalId\":\"oizh\"},\"nrbtcqqjnq\":{\"clientId\":\"gkdmb\",\"principalId\":\"zlobcufpd\"}}},\"location\":\"hqgnufooojywif\",\"tags\":{\"glzlhjxrifkwmrv\":\"saagdf\",\"psqucmpoyf\":\"tsizntocipaoua\"},\"id\":\"kfo\",\"name\":\"knygjofjddeq\",\"type\":\"rd\"}")
+            "{\"properties\":{\"createdTime\":\"2021-11-25T12:23:30Z\",\"lastUpdatedTime\":\"2021-08-21T06:38:48Z\",\"provisioningState\":\"Moving\",\"hostName\":\"xpyb\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Disconnected\",\"privateEndpoint\":{\"id\":\"zopbsphrupidgs\"},\"groupIds\":[\"ejhphoyc\",\"sx\",\"obhdxbmtqioqjze\",\"tbmufpo\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"izhwlrxy\",\"actionsRequired\":\"soqijg\"}},\"id\":\"mbpazlobcufpdzn\",\"name\":\"btcqq\",\"type\":\"nq\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"foooj\",\"tenantId\":\"ifsqesaagdfmg\",\"userAssignedIdentities\":{\"pa\":{\"clientId\":\"j\",\"principalId\":\"ifkwmrvktsizntoc\"},\"fdkfogk\":{\"clientId\":\"ajpsquc\",\"principalId\":\"o\"}}},\"location\":\"gjofjd\",\"tags\":{\"deupewnwrei\":\"s\"},\"id\":\"jzyflu\",\"name\":\"arhmofcqhsmy\",\"type\":\"rkdtmlxh\"}")
             .toObject(DigitalTwinsDescriptionInner.class);
-        Assertions.assertEquals("hqgnufooojywif", model.location());
-        Assertions.assertEquals("saagdf", model.tags().get("glzlhjxrifkwmrv"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("gjofjd", model.location());
+        Assertions.assertEquals("s", model.tags().get("deupewnwrei"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("ejhphoyc", model.privateEndpointConnections().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+            model.privateEndpointConnections().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("izhwlrxy",
+            model.privateEndpointConnections().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("soqijg",
+            model.privateEndpointConnections()
+                .get(0)
+                .properties()
+                .privateLinkServiceConnectionState()
+                .actionsRequired());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsDescriptionInner model = new DigitalTwinsDescriptionInner().withLocation("hqgnufooojywif")
-            .withTags(mapOf("glzlhjxrifkwmrv", "saagdf", "psqucmpoyf", "tsizntocipaoua"))
-            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+        DigitalTwinsDescriptionInner model = new DigitalTwinsDescriptionInner().withLocation("gjofjd")
+            .withTags(mapOf("deupewnwrei", "s"))
+            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.NONE)
                 .withUserAssignedIdentities(
-                    mapOf("lrxybqsoq", new UserAssignedIdentity(), "nrbtcqqjnq", new UserAssignedIdentity())))
-            .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()))
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+                    mapOf("pa", new UserAssignedIdentity(), "fdkfogk", new UserAssignedIdentity())))
+            .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()
+                .withProperties(new ConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withGroupIds(Arrays.asList("ejhphoyc", "sx", "obhdxbmtqioqjze", "tbmufpo"))
+                    .withPrivateLinkServiceConnectionState(new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                        .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
+                        .withDescription("izhwlrxy")
+                        .withActionsRequired("soqijg")))))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(DigitalTwinsDescriptionInner.class);
-        Assertions.assertEquals("hqgnufooojywif", model.location());
-        Assertions.assertEquals("saagdf", model.tags().get("glzlhjxrifkwmrv"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("gjofjd", model.location());
+        Assertions.assertEquals("s", model.tags().get("deupewnwrei"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("ejhphoyc", model.privateEndpointConnections().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+            model.privateEndpointConnections().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("izhwlrxy",
+            model.privateEndpointConnections().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("soqijg",
+            model.privateEndpointConnections()
+                .get(0)
+                .properties()
+                .privateLinkServiceConnectionState()
+                .actionsRequired());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

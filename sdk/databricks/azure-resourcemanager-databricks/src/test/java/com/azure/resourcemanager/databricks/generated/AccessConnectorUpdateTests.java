@@ -17,7 +17,7 @@ public final class AccessConnectorUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessConnectorUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"evqzntypmrbp\":\"xoegukgjnpiucgy\",\"eoejzic\":\"zcdrqjsdpydnfyhx\",\"hajdeyeamdpha\":\"ifsjttgzfbishcb\"},\"identity\":{\"principalId\":\"a5db8b98-5261-4c5a-818f-2f84a32e46a8\",\"tenantId\":\"b4652127-d7d4-4ee8-86b2-7e97aad83297\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ipwhonowk\":{\"principalId\":\"eddc0675-7d40-4ca0-aba1-cd886ea682e5\",\"clientId\":\"471942e8-84ae-49d0-b849-b96187518c64\"}}}}")
+            "{\"tags\":{\"evqzntypmrbp\":\"xoegukgjnpiucgy\",\"eoejzic\":\"zcdrqjsdpydnfyhx\",\"hajdeyeamdpha\":\"ifsjttgzfbishcb\"},\"identity\":{\"principalId\":\"db644181-c674-4dd8-9ef0-70992c573c70\",\"tenantId\":\"fb911635-4744-40e4-9417-c0da951cf5cd\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ipwhonowk\":{\"principalId\":\"4fd75a31-c5f7-4cd3-a921-831b547c61d9\",\"clientId\":\"7871b1f7-9bff-4c01-96dc-d94d54500c19\"}}}}")
             .toObject(AccessConnectorUpdate.class);
         Assertions.assertEquals("xoegukgjnpiucgy", model.tags().get("evqzntypmrbp"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());

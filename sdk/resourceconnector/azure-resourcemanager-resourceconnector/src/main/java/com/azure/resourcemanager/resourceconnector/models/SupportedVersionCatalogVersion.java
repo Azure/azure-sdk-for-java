@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SupportedVersionCatalogVersion object for appliance. */
+/**
+ * The SupportedVersionCatalogVersion object for appliance.
+ */
 @Immutable
-public final class SupportedVersionCatalogVersion {
+public final class SupportedVersionCatalogVersion implements JsonSerializable<SupportedVersionCatalogVersion> {
     /*
      * The newer supported version catalog version data.
      */
-    @JsonProperty(value = "data", access = JsonProperty.Access.WRITE_ONLY)
     private SupportedVersionCatalogVersionData data;
 
     /*
      * The catalog version name for the version available for upgrade.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The catalog version namespace for the version available for upgrade.
      */
-    @JsonProperty(value = "namespace", access = JsonProperty.Access.WRITE_ONLY)
     private String namespace;
 
-    /** Creates an instance of SupportedVersionCatalogVersion class. */
+    /**
+     * Creates an instance of SupportedVersionCatalogVersion class.
+     */
     public SupportedVersionCatalogVersion() {
     }
 
     /**
      * Get the data property: The newer supported version catalog version data.
-     *
+     * 
      * @return the data value.
      */
     public SupportedVersionCatalogVersionData data() {
@@ -43,7 +48,7 @@ public final class SupportedVersionCatalogVersion {
 
     /**
      * Get the name property: The catalog version name for the version available for upgrade.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +57,7 @@ public final class SupportedVersionCatalogVersion {
 
     /**
      * Get the namespace property: The catalog version namespace for the version available for upgrade.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -61,12 +66,53 @@ public final class SupportedVersionCatalogVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (data() != null) {
             data().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedVersionCatalogVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedVersionCatalogVersion if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedVersionCatalogVersion.
+     */
+    public static SupportedVersionCatalogVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedVersionCatalogVersion deserializedSupportedVersionCatalogVersion
+                = new SupportedVersionCatalogVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersion.data
+                        = SupportedVersionCatalogVersionData.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersion.name = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedSupportedVersionCatalogVersion.namespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedVersionCatalogVersion;
+        });
     }
 }

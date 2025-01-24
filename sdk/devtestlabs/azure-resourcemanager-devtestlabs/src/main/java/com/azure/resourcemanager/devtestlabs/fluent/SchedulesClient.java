@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 
-/** An instance of this class provides access to all the operations defined in SchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchedulesClient.
+ */
 public interface SchedulesClient {
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface SchedulesClient {
 
     /**
      * List schedules in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -50,7 +52,7 @@ public interface SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -67,7 +69,7 @@ public interface SchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -81,7 +83,7 @@ public interface SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -98,7 +100,7 @@ public interface SchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -113,7 +115,7 @@ public interface SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -128,7 +130,7 @@ public interface SchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -141,7 +143,7 @@ public interface SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -158,7 +160,7 @@ public interface SchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -173,7 +175,7 @@ public interface SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -187,7 +189,7 @@ public interface SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -203,7 +205,7 @@ public interface SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -216,7 +218,7 @@ public interface SchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -230,7 +232,7 @@ public interface SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.
@@ -244,7 +246,7 @@ public interface SchedulesClient {
 
     /**
      * Lists all applicable schedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the schedule.

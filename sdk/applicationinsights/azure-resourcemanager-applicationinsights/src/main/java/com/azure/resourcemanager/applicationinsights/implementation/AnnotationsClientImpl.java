@@ -35,17 +35,23 @@ import com.azure.resourcemanager.applicationinsights.models.AnnotationsListResul
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AnnotationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AnnotationsClient.
+ */
 public final class AnnotationsClientImpl implements AnnotationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AnnotationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of AnnotationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AnnotationsClientImpl(ApplicationInsightsManagementClientImpl client) {
@@ -102,7 +108,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Gets the list of annotations for a component for given time range.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
@@ -111,7 +117,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of annotations for a component for given time range along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AnnotationInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
@@ -149,7 +155,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Gets the list of annotations for a component for given time range.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
@@ -159,7 +165,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of annotations for a component for given time range along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AnnotationInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
@@ -197,7 +203,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Gets the list of annotations for a component for given time range.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
@@ -205,8 +211,8 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of annotations for a component for given time range as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AnnotationInner> listAsync(String resourceGroupName, String resourceName, String start,
@@ -216,7 +222,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Gets the list of annotations for a component for given time range.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
@@ -225,8 +231,8 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of annotations for a component for given time range as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AnnotationInner> listAsync(String resourceGroupName, String resourceName, String start,
@@ -236,7 +242,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Gets the list of annotations for a component for given time range.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
@@ -244,8 +250,8 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of annotations for a component for given time range as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnnotationInner> list(String resourceGroupName, String resourceName, String start,
@@ -255,7 +261,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Gets the list of annotations for a component for given time range.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
@@ -264,8 +270,8 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of annotations for a component for given time range as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnnotationInner> list(String resourceGroupName, String resourceName, String start, String end,
@@ -275,11 +281,11 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Create an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,11 +325,11 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Create an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
+     * Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
@@ -363,11 +369,11 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Create an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -382,11 +388,11 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Create an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
+     * Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
@@ -401,11 +407,11 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Create an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
+     * Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,7 +425,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Delete an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -458,7 +464,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Delete an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -497,7 +503,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Delete an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -513,7 +519,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Delete an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -531,7 +537,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Delete an Annotation of an Application Insights component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -546,7 +552,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Get the annotation for given id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -586,7 +592,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Get the annotation for given id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -626,7 +632,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Get the annotation for given id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -643,7 +649,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Get the annotation for given id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
@@ -661,7 +667,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
     /**
      * Get the annotation for given id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.

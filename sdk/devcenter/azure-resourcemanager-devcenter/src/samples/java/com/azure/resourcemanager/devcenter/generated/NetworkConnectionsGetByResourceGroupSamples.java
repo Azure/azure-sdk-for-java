@@ -9,7 +9,9 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class NetworkConnectionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/NetworkConnections_Get.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/NetworkConnections_Get.
+     * json
      */
     /**
      * Sample code: NetworkConnections_Get.

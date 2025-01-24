@@ -14,23 +14,23 @@ public final class AutomationRuleRunPlaybookActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationRuleRunPlaybookAction model = BinaryData.fromString(
-            "{\"actionType\":\"RunPlaybook\",\"actionConfiguration\":{\"logicAppResourceId\":\"mvxqab\",\"tenantId\":\"823955c7-7e47-4876-b115-9a395453f64f\"},\"order\":608262144}")
+            "{\"actionType\":\"RunPlaybook\",\"actionConfiguration\":{\"logicAppResourceId\":\"puuw\",\"tenantId\":\"341782c1-abbf-407a-a4de-285633e7341b\"},\"order\":1941131866}")
             .toObject(AutomationRuleRunPlaybookAction.class);
-        Assertions.assertEquals(608262144, model.order());
-        Assertions.assertEquals("mvxqab", model.actionConfiguration().logicAppResourceId());
-        Assertions.assertEquals(UUID.fromString("823955c7-7e47-4876-b115-9a395453f64f"),
+        Assertions.assertEquals(1941131866, model.order());
+        Assertions.assertEquals("puuw", model.actionConfiguration().logicAppResourceId());
+        Assertions.assertEquals(UUID.fromString("341782c1-abbf-407a-a4de-285633e7341b"),
             model.actionConfiguration().tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRuleRunPlaybookAction model = new AutomationRuleRunPlaybookAction().withOrder(608262144)
-            .withActionConfiguration(new PlaybookActionProperties().withLogicAppResourceId("mvxqab")
-                .withTenantId(UUID.fromString("823955c7-7e47-4876-b115-9a395453f64f")));
+        AutomationRuleRunPlaybookAction model = new AutomationRuleRunPlaybookAction().withOrder(1941131866)
+            .withActionConfiguration(new PlaybookActionProperties().withLogicAppResourceId("puuw")
+                .withTenantId(UUID.fromString("341782c1-abbf-407a-a4de-285633e7341b")));
         model = BinaryData.fromObject(model).toObject(AutomationRuleRunPlaybookAction.class);
-        Assertions.assertEquals(608262144, model.order());
-        Assertions.assertEquals("mvxqab", model.actionConfiguration().logicAppResourceId());
-        Assertions.assertEquals(UUID.fromString("823955c7-7e47-4876-b115-9a395453f64f"),
+        Assertions.assertEquals(1941131866, model.order());
+        Assertions.assertEquals("puuw", model.actionConfiguration().logicAppResourceId());
+        Assertions.assertEquals(UUID.fromString("341782c1-abbf-407a-a4de-285633e7341b"),
             model.actionConfiguration().tenantId());
     }
 }

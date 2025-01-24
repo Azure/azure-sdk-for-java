@@ -15,10 +15,35 @@ import java.io.IOException;
  */
 @Fluent
 public final class JobStorageAccount extends StorageAccount {
+    /*
+     * Authentication Mode.
+     */
+    private AuthenticationMode authenticationMode;
+
     /**
      * Creates an instance of JobStorageAccount class.
      */
     public JobStorageAccount() {
+    }
+
+    /**
+     * Get the authenticationMode property: Authentication Mode.
+     * 
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.authenticationMode;
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     * 
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the JobStorageAccount object itself.
+     */
+    public JobStorageAccount withAuthenticationMode(AuthenticationMode authenticationMode) {
+        this.authenticationMode = authenticationMode;
+        return this;
     }
 
     /**
@@ -40,15 +65,6 @@ public final class JobStorageAccount extends StorageAccount {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JobStorageAccount withAuthenticationMode(AuthenticationMode authenticationMode) {
-        super.withAuthenticationMode(authenticationMode);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -66,7 +82,7 @@ public final class JobStorageAccount extends StorageAccount {
         jsonWriter.writeStringField("accountName", accountName());
         jsonWriter.writeStringField("accountKey", accountKey());
         jsonWriter.writeStringField("authenticationMode",
-            authenticationMode() == null ? null : authenticationMode().toString());
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -90,8 +106,8 @@ public final class JobStorageAccount extends StorageAccount {
                 } else if ("accountKey".equals(fieldName)) {
                     deserializedJobStorageAccount.withAccountKey(reader.getString());
                 } else if ("authenticationMode".equals(fieldName)) {
-                    deserializedJobStorageAccount
-                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                    deserializedJobStorageAccount.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

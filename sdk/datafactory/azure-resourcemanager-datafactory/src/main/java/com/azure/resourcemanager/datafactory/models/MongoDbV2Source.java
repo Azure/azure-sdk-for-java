@@ -225,7 +225,6 @@ public final class MongoDbV2Source extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (cursorMethods() != null) {
             cursorMethods().validate();
         }
