@@ -29,6 +29,8 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -49,7 +51,19 @@ import java.util.stream.Collectors;
  * Annotation processor that generates client code based on annotated interfaces.
  */
 @SupportedAnnotationTypes("io.clientcore.core.annotation.*")
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        // Reflective fallback if SourceVersion.RELEASE_8 isn't available at compile time
+        try {
+            return SourceVersion.valueOf("RELEASE_8");
+        } catch (IllegalArgumentException e) {
+            // Fallback to the latest supported version
+            return SourceVersion.latest();
+        }
+    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

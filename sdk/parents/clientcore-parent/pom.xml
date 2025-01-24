@@ -1214,7 +1214,7 @@
               </compilerArgs>
               <generatedSourcesDirectory>${project.build.directory}/generated-test-sources/</generatedSourcesDirectory>
               <annotationProcessors>
-                <annotationProcessor>io.clientcore.tools.codegen.AnnotationProcessor</annotationProcessor>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
               </annotationProcessors>
             </configuration>
             <executions>
