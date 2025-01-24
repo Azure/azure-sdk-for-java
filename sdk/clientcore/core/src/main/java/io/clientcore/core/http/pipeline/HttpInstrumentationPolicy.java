@@ -586,4 +586,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             originalBody.close();
         }
     }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }
