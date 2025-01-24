@@ -93,8 +93,8 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
+     * chain ID.
      * 
      * @return the correlationId value.
      */
@@ -103,8 +103,8 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
+     * chain ID.
      * 
      * @param correlationId the correlationId value to set.
      * @return the RemoveParticipantFailed object itself.
@@ -176,9 +176,6 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

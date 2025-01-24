@@ -7,7 +7,6 @@ package com.azure.communication.callautomation.implementation;
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.HoldRequest;
-import com.azure.communication.callautomation.implementation.models.InterruptAudioAndAnnounceRequest;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
@@ -174,14 +173,6 @@ public final class CallMediasImpl {
         Mono<Response<Void>> stopMediaStreaming(@HostParam("endpoint") String endpoint,
             @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") StopMediaStreamingRequest stopMediaStreamingRequest,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Post("/calling/callConnections/{callConnectionId}:interruptAudioAndAnnounce")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> interruptAudioAndAnnounce(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") InterruptAudioAndAnnounceRequest interruptRequest,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -1535,108 +1526,5 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopMediaStreaming(String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest) {
         stopMediaStreamingWithResponse(callConnectionId, stopMediaStreamingRequest, Context.NONE);
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param interruptRequest play request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> interruptAudioAndAnnounceWithResponseAsync(String callConnectionId,
-        InterruptAudioAndAnnounceRequest interruptRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.interruptAudioAndAnnounce(this.client.getEndpoint(),
-            callConnectionId, this.client.getApiVersion(), interruptRequest, accept, context));
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param interruptRequest play request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> interruptAudioAndAnnounceWithResponseAsync(String callConnectionId,
-        InterruptAudioAndAnnounceRequest interruptRequest, Context context) {
-        final String accept = "application/json";
-        return service.interruptAudioAndAnnounce(this.client.getEndpoint(), callConnectionId,
-            this.client.getApiVersion(), interruptRequest, accept, context);
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param interruptRequest play request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> interruptAudioAndAnnounceAsync(String callConnectionId,
-        InterruptAudioAndAnnounceRequest interruptRequest) {
-        return interruptAudioAndAnnounceWithResponseAsync(callConnectionId, interruptRequest)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param interruptRequest play request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> interruptAudioAndAnnounceAsync(String callConnectionId,
-        InterruptAudioAndAnnounceRequest interruptRequest, Context context) {
-        return interruptAudioAndAnnounceWithResponseAsync(callConnectionId, interruptRequest, context)
-            .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param interruptRequest play request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> interruptAudioAndAnnounceWithResponse(String callConnectionId,
-        InterruptAudioAndAnnounceRequest interruptRequest, Context context) {
-        return interruptAudioAndAnnounceWithResponseAsync(callConnectionId, interruptRequest, context).block();
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     * 
-     * @param callConnectionId The call connection id.
-     * @param interruptRequest play request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void interruptAudioAndAnnounce(String callConnectionId, InterruptAudioAndAnnounceRequest interruptRequest) {
-        interruptAudioAndAnnounceWithResponse(callConnectionId, interruptRequest, Context.NONE);
     }
 }

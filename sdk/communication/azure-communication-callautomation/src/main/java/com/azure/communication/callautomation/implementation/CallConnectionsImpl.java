@@ -702,7 +702,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The add participants request.
+     * @param addParticipantRequest The request payload for adding participant to the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -724,7 +724,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The add participants request.
+     * @param addParticipantRequest The request payload for adding participant to the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -746,7 +746,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The add participants request.
+     * @param addParticipantRequest The request payload for adding participant to the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -763,7 +763,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The add participants request.
+     * @param addParticipantRequest The request payload for adding participant to the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -781,7 +781,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The add participants request.
+     * @param addParticipantRequest The request payload for adding participant to the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -798,7 +798,7 @@ public final class CallConnectionsImpl {
      * Add a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
-     * @param addParticipantRequest The add participants request.
+     * @param addParticipantRequest The request payload for adding participant to the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

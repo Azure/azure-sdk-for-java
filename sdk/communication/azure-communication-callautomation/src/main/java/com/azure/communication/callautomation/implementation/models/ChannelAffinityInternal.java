@@ -22,7 +22,7 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
     private Integer channel;
 
     /*
-     * The identifier for the participant whose bitstream will be written to the channel 
+     * The identifier for the participant whose bitstream will be written to the channel
      * represented by the channel number.
      */
     private CommunicationIdentifierModel participant;
@@ -75,9 +75,6 @@ public final class ChannelAffinityInternal implements JsonSerializable<ChannelAf
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

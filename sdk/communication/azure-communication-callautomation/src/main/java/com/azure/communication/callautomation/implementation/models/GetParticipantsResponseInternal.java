@@ -73,9 +73,6 @@ public final class GetParticipantsResponseInternal implements JsonSerializable<G
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

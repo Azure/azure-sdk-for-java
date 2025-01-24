@@ -47,9 +47,6 @@ public final class SendDtmfTonesResultInternal implements JsonSerializable<SendD
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
