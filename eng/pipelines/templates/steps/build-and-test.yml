@@ -267,6 +267,7 @@ steps:
           $xml.Save($_.FullName)
       }
     displayName: 'Update test case names for reporting'
+    condition: always()
     workingDirectory: $(System.DefaultWorkingDirectory)/sdk
 
   - task: PublishTestResults@2
