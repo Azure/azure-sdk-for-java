@@ -210,9 +210,9 @@
 
   <profiles>
     <profile>
-      <id>java9-plus</id>
+      <id>java12-plus</id>
       <activation>
-        <jdk>[9,)</jdk>
+        <jdk>[12,)</jdk>
       </activation>
 
       <build>
