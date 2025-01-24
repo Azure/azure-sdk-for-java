@@ -24,6 +24,7 @@ import com.azure.communication.messages.models.MessageTemplateText;
 import com.azure.communication.messages.models.MessageTemplateValue;
 import com.azure.communication.messages.models.MessageTemplateVideo;
 import com.azure.communication.messages.models.LinkContent;
+import com.azure.communication.messages.models.ReactionNotificationContent;
 import com.azure.communication.messages.models.StickerNotificationContent;
 import com.azure.communication.messages.models.TextMessageContent;
 import com.azure.communication.messages.models.TextNotificationContent;
@@ -42,6 +43,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +56,11 @@ public class NotificationMessageSample {
 
     public static void main(String[] args) {
         TO_LIST.add(RECIPIENT_IDENTIFIER);
+        sendOtpTemplateMessage();
         //sendTemplateMessageWithDocument();
-        sendStickerMessage();
+        //sendStickerMessage();
+        //sendReactionMessage();
+        //sendImageMessage();
     }
 
     /*
@@ -92,6 +97,80 @@ public class NotificationMessageSample {
         NotificationMessagesClient client = createClientWithTokenCredential();
         SendMessageResult result = client.send(
             new TemplateNotificationContent(CHANNEL_ID, TO_LIST, template));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+    * This sample shows how to send template message with below details
+    * Name: otp, Language: en_US
+    *  [
+          {
+            "type": "BODY",
+            "text": "*{{1}}* is your verification code. For your security, do not share this code.",
+            "example": {
+              "body_text": [
+                [
+                  "123456"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "FOOTER",
+            "text": "This code expires in 10 minutes."
+          },
+          {
+            "type": "BUTTONS",
+            "buttons": [
+              {
+                "type": "URL",
+                "text": "Copy code",
+                "url": "https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code_expiration_minutes=10&code=otp{{1}}",
+                "example": [
+                  "https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code_expiration_minutes=10&code=otp123456"
+                ]
+              }
+            ]
+          }
+        ]
+    * */
+    private static void sendOtpTemplateMessage() {
+
+        //Update Template Name and language according your template associate to your channel.
+        MessageTemplate template = new MessageTemplate("otp", "en_US");
+
+        //Update template parameter type and value
+        List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
+        messageTemplateValues.add(new MessageTemplateText("code", "123456"));
+        MessageTemplateQuickAction btnRf = new MessageTemplateQuickAction("btnRf");
+        btnRf.setText("123456");
+        messageTemplateValues.add(btnRf);
+        template.setValues(messageTemplateValues);
+
+        //Update template parameter binding
+        List<WhatsAppMessageTemplateBindingsComponent> bodyComponents = new ArrayList<>();
+        bodyComponents.add(new WhatsAppMessageTemplateBindingsComponent("code"));
+
+        List<WhatsAppMessageTemplateBindingsButton> buttonComponents = new ArrayList<>();
+        buttonComponents.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.URL, "btnRf"));
+
+        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
+            .setBody(bodyComponents)
+            .setButtons(buttonComponents);
+        template.setBindings(bindings);
+
+        try {
+            System.out.println(template.toJsonString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        NotificationMessagesClient client = createClientWithConnectionString();
+        SendMessageResult result = client.send(
+            new TemplateNotificationContent(CHANNEL_ID, TO_LIST, template));
+
+
 
         result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
@@ -419,6 +498,20 @@ public class NotificationMessageSample {
         NotificationMessagesClient client = createClientWithConnectionString();
         SendMessageResult result = client.send(
             new StickerNotificationContent(CHANNEL_ID, TO_LIST, mediaUrl));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send reaction message with below details
+     * Emoji - unicode for emoji character.
+     * Reply Message ID - ID of the message to be replied with emoji
+     * Note: Business cannot initiate conversation with media message.
+     * */
+    public static void sendReactionMessage() {
+        NotificationMessagesClient client = createClientWithConnectionString();
+        SendMessageResult result = client.send(
+            new ReactionNotificationContent(CHANNEL_ID, TO_LIST, "\uD83D\uDE00", "3b5c2a30-936b-4f26-bd5c-491b22e74853"));
 
         result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }

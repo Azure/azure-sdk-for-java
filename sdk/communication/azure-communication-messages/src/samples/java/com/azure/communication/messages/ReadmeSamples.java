@@ -22,6 +22,7 @@ import com.azure.communication.messages.models.MessageTemplateItem;
 import com.azure.communication.messages.models.MessageTemplateText;
 import com.azure.communication.messages.models.MessageTemplateValue;
 import com.azure.communication.messages.models.LinkContent;
+import com.azure.communication.messages.models.ReactionNotificationContent;
 import com.azure.communication.messages.models.StickerNotificationContent;
 import com.azure.communication.messages.models.TextMessageContent;
 import com.azure.communication.messages.models.TextNotificationContent;
@@ -275,6 +276,26 @@ public final class ReadmeSamples {
         result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
     // END: readme-sample-sendStickerMessage
+
+    // BEGIN: readme-sample-sendReactionMessage
+    /*
+     * This sample shows how to send reaction message with below details
+     * Emoji - unicode for emoji character.
+     * Reply Message ID - ID of the message to be replied with emoji
+     * Note: Business cannot initiate conversation with media message.
+     * */
+    public static void sendReactionMessage() {
+        List<String> recipients = new ArrayList<>();
+        recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+        NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+            .connectionString("<CONNECTION_STRING>")
+            .buildClient();
+        SendMessageResult result = client.send(
+            new ReactionNotificationContent("<CHANNEL_ID>", recipients, "\uD83D\uDE00", "<REPLY_MESSAGE_ID>"));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+    // END: readme-sample-sendReactionMessage
 
     // BEGIN: readme-sample-sendInteractiveMessageWithButtonAction
     /*

@@ -115,6 +115,22 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendReactionMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient.send(new ReactionNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+                "\uD83D\uDE00", "3b5c2a30-936b-4f26-bd5c-491b22e74853")))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendInteractiveMessageWithButtonAction(HttpClient httpClient) {
         messagesClient = buildNotificationMessagesAsyncClient(httpClient);
         List<String> recipients = new ArrayList<>();
