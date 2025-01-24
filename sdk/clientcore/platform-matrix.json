@@ -15,8 +15,8 @@
       "NotFromSource_TestsOnly": {
         "TestFromSource": false,
         "RunAggregateReports": false,
-        "TestOptions": "",
-        "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+        "TestGoals": "verify"
       }
     }
   },
@@ -37,8 +37,8 @@
         "NotFromSource_TestsOnly": {
           "TestFromSource": false,
           "RunAggregateReports": false,
-          "TestOptions": "",
-          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
         }
       }
     },
@@ -52,8 +52,8 @@
         "NotFromSource_TestsOnly": {
           "TestFromSource": false,
           "RunAggregateReports": false,
-          "TestOptions": "",
-          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
         }
       }
     },
