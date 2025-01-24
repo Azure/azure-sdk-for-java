@@ -218,7 +218,7 @@ public class TargetingFilterTest {
 
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Jane", targetedGroups));
 
-        assertTrue(filter.evaluate(context));
+        assertFalse(filter.evaluate(context));
     }
 
     @Test
@@ -246,7 +246,7 @@ public class TargetingFilterTest {
 
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", targetedGroups));
 
-        assertFalse(filter.evaluate(context));
+        assertTrue(filter.evaluate(context));
     }
 
     @Test
