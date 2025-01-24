@@ -96,9 +96,9 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
     }
 
     @Override
-    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToAzureCore)
+    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToClientCore)
         throws Exception {
-        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToAzureCore);
+        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToClientCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflect(method));
     }
