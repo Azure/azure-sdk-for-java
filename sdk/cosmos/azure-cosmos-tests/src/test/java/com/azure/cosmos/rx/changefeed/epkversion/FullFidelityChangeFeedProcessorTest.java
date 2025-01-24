@@ -208,7 +208,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocumentsByFullFidelityCfp = new ConcurrentHashMap<>();
             Map<String, ChangeFeedProcessorItem> receivedDocumentsByIncrementalCfp = new ConcurrentHashMap<>();
 
-            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions().setLeasePrefix("TEST");
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
@@ -268,7 +268,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 }
 
                 ChangeFeedProcessorBuilder incrementalChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(1))
+                    .options(new ChangeFeedProcessorOptions()
+                        .setStartFromBeginning(isStartFromBeginning)
+                        .setMaxItemCount(1)
+                        .setLeasePrefix("TEST"))
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
                     .leaseContainer(createdLeaseCollection)
@@ -323,7 +326,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocumentsByFullFidelityCfp = new ConcurrentHashMap<>();
             Map<String, JsonNode> receivedDocumentsByIncrementalCfp = new ConcurrentHashMap<>();
 
-            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions().setLeasePrefix("TEST");
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
@@ -383,7 +386,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 }
 
                 ChangeFeedProcessorBuilder incrementalChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(1))
+                    .options(new ChangeFeedProcessorOptions()
+                        .setStartFromBeginning(isStartFromBeginning)
+                        .setMaxItemCount(1)
+                        .setLeasePrefix("TEST"))
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
                     .leaseContainer(createdLeaseCollection)
@@ -455,7 +461,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             int docLimit = FEED_COUNT / 2;
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(1))
+                .options(new ChangeFeedProcessorOptions()
+                    .setStartFromBeginning(isStartFromBeginning)
+                    .setMaxItemCount(1)
+                    .setLeasePrefix("TEST"))
                 .hostName(hostName)
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection);
@@ -514,7 +523,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 }
 
                 ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))
+                    .options(new ChangeFeedProcessorOptions()
+                        .setMaxItemCount(1)
+                        .setLeasePrefix("TEST"))
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
                     .leaseContainer(createdLeaseCollection)
@@ -605,7 +616,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             int docLimit = FEED_COUNT / 2;
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(1))
+                .options(new ChangeFeedProcessorOptions()
+                    .setStartFromBeginning(isStartFromBeginning)
+                    .setMaxItemCount(1)
+                    .setLeasePrefix("TEST"))
                 .hostName(hostName)
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection);
@@ -667,7 +681,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 }
 
                 ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))
+                    .options(new ChangeFeedProcessorOptions()
+                        .setMaxItemCount(1)
+                        .setLeasePrefix("TEST"))
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
                     .leaseContainer(createdLeaseCollection)
