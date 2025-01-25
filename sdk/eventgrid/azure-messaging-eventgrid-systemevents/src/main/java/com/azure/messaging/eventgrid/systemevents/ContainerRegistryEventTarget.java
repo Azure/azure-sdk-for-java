@@ -21,7 +21,7 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * The MIME type of the referenced object.
      */
     @Generated
-    private String mediaType;
+    private final String mediaType;
 
     /*
      * The number of bytes of the content. Same as Length field.
@@ -45,7 +45,7 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * The repository name.
      */
     @Generated
-    private String repository;
+    private final String repository;
 
     /*
      * The direct URL to the content.
@@ -61,9 +61,14 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
 
     /**
      * Creates an instance of ContainerRegistryEventTarget class.
+     * 
+     * @param mediaType the mediaType value to set.
+     * @param repository the repository value to set.
      */
     @Generated
-    private ContainerRegistryEventTarget() {
+    private ContainerRegistryEventTarget(String mediaType, String repository) {
+        this.mediaType = mediaType;
+        this.repository = repository;
     }
 
     /**
@@ -144,10 +149,10 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeStringField("repository", this.repository);
         jsonWriter.writeNumberField("size", this.size);
         jsonWriter.writeStringField("digest", this.digest);
         jsonWriter.writeNumberField("length", this.length);
-        jsonWriter.writeStringField("repository", this.repository);
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("tag", this.tag);
         return jsonWriter.writeEndObject();
@@ -159,34 +164,48 @@ public final class ContainerRegistryEventTarget implements JsonSerializable<Cont
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerRegistryEventTarget if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRegistryEventTarget.
      */
     @Generated
     public static ContainerRegistryEventTarget fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerRegistryEventTarget deserializedContainerRegistryEventTarget = new ContainerRegistryEventTarget();
+            String mediaType = null;
+            String repository = null;
+            Long size = null;
+            String digest = null;
+            Long length = null;
+            String url = null;
+            String tag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("mediaType".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.mediaType = reader.getString();
-                } else if ("size".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.size = reader.getNullable(JsonReader::getLong);
-                } else if ("digest".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.digest = reader.getString();
-                } else if ("length".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.length = reader.getNullable(JsonReader::getLong);
+                    mediaType = reader.getString();
                 } else if ("repository".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.repository = reader.getString();
+                    repository = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    size = reader.getNullable(JsonReader::getLong);
+                } else if ("digest".equals(fieldName)) {
+                    digest = reader.getString();
+                } else if ("length".equals(fieldName)) {
+                    length = reader.getNullable(JsonReader::getLong);
                 } else if ("url".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.url = reader.getString();
+                    url = reader.getString();
                 } else if ("tag".equals(fieldName)) {
-                    deserializedContainerRegistryEventTarget.tag = reader.getString();
+                    tag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ContainerRegistryEventTarget deserializedContainerRegistryEventTarget
+                = new ContainerRegistryEventTarget(mediaType, repository);
+            deserializedContainerRegistryEventTarget.size = size;
+            deserializedContainerRegistryEventTarget.digest = digest;
+            deserializedContainerRegistryEventTarget.length = length;
+            deserializedContainerRegistryEventTarget.url = url;
+            deserializedContainerRegistryEventTarget.tag = tag;
 
             return deserializedContainerRegistryEventTarget;
         });

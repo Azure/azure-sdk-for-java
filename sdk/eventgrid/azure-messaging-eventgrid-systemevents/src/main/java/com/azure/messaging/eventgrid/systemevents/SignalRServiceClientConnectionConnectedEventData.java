@@ -31,13 +31,13 @@ public final class SignalRServiceClientConnectionConnectedEventData
      * The hub of connected client connection.
      */
     @Generated
-    private String hubName;
+    private final String hubName;
 
     /*
      * The connection Id of connected client connection.
      */
     @Generated
-    private String connectionId;
+    private final String connectionId;
 
     /*
      * The user Id of connected client connection.
@@ -49,10 +49,15 @@ public final class SignalRServiceClientConnectionConnectedEventData
      * Creates an instance of SignalRServiceClientConnectionConnectedEventData class.
      * 
      * @param timestamp the timestamp value to set.
+     * @param hubName the hubName value to set.
+     * @param connectionId the connectionId value to set.
      */
     @Generated
-    private SignalRServiceClientConnectionConnectedEventData(OffsetDateTime timestamp) {
+    private SignalRServiceClientConnectionConnectedEventData(OffsetDateTime timestamp, String hubName,
+        String connectionId) {
         this.timestamp = timestamp;
+        this.hubName = hubName;
+        this.connectionId = connectionId;
     }
 
     /**
@@ -144,9 +149,7 @@ public final class SignalRServiceClientConnectionConnectedEventData
                 }
             }
             SignalRServiceClientConnectionConnectedEventData deserializedSignalRServiceClientConnectionConnectedEventData
-                = new SignalRServiceClientConnectionConnectedEventData(timestamp);
-            deserializedSignalRServiceClientConnectionConnectedEventData.hubName = hubName;
-            deserializedSignalRServiceClientConnectionConnectedEventData.connectionId = connectionId;
+                = new SignalRServiceClientConnectionConnectedEventData(timestamp, hubName, connectionId);
             deserializedSignalRServiceClientConnectionConnectedEventData.userId = userId;
 
             return deserializedSignalRServiceClientConnectionConnectedEventData;

@@ -24,7 +24,7 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
      * The time at which the event occurred.
      */
     @Generated
-    private final OffsetDateTime timestamp;
+    private OffsetDateTime timestamp;
 
     /*
      * The name of this event.
@@ -40,12 +40,9 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
 
     /**
      * Creates an instance of RedisScalingCompletedEventData class.
-     * 
-     * @param timestamp the timestamp value to set.
      */
     @Generated
-    private RedisScalingCompletedEventData(OffsetDateTime timestamp) {
-        this.timestamp = timestamp;
+    private RedisScalingCompletedEventData() {
     }
 
     /**
@@ -98,34 +95,28 @@ public final class RedisScalingCompletedEventData implements JsonSerializable<Re
      * @param jsonReader The JsonReader being read.
      * @return An instance of RedisScalingCompletedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RedisScalingCompletedEventData.
      */
     @Generated
     public static RedisScalingCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OffsetDateTime timestamp = null;
-            String name = null;
-            String status = null;
+            RedisScalingCompletedEventData deserializedRedisScalingCompletedEventData
+                = new RedisScalingCompletedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    timestamp = reader
+                    deserializedRedisScalingCompletedEventData.timestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedRedisScalingCompletedEventData.name = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = reader.getString();
+                    deserializedRedisScalingCompletedEventData.status = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            RedisScalingCompletedEventData deserializedRedisScalingCompletedEventData
-                = new RedisScalingCompletedEventData(timestamp);
-            deserializedRedisScalingCompletedEventData.name = name;
-            deserializedRedisScalingCompletedEventData.status = status;
 
             return deserializedRedisScalingCompletedEventData;
         });

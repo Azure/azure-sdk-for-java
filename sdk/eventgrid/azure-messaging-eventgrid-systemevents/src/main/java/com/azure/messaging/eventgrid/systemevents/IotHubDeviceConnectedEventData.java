@@ -17,12 +17,6 @@ import java.io.IOException;
 @Immutable
 public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateEventProperties {
     /*
-     * Name of the IoT Hub where the device was created or deleted.
-     */
-    @Generated
-    private String hubName;
-
-    /*
      * The unique identifier of the module. This case-sensitive string can be up to 128 characters long, and supports
      * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ;
      * $ '.
@@ -30,33 +24,17 @@ public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateE
     @Generated
     private String moduleId;
 
-    /*
-     * The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
-     * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = `@` ;
-     * $ '.
-     */
-    @Generated
-    private String deviceId;
-
     /**
      * Creates an instance of IotHubDeviceConnectedEventData class.
      * 
+     * @param deviceId the deviceId value to set.
+     * @param hubName the hubName value to set.
      * @param deviceConnectionStateEventInfo the deviceConnectionStateEventInfo value to set.
      */
     @Generated
-    private IotHubDeviceConnectedEventData(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
-        super(deviceConnectionStateEventInfo);
-    }
-
-    /**
-     * Get the hubName property: Name of the IoT Hub where the device was created or deleted.
-     * 
-     * @return the hubName value.
-     */
-    @Generated
-    @Override
-    public String getHubName() {
-        return this.hubName;
+    private IotHubDeviceConnectedEventData(String deviceId, String hubName,
+        DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
+        super(deviceId, hubName, deviceConnectionStateEventInfo);
     }
 
     /**
@@ -73,29 +51,16 @@ public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateE
     }
 
     /**
-     * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
-     * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
-     * 
-     * @return the deviceId value.
-     */
-    @Generated
-    @Override
-    public String getDeviceId() {
-        return this.deviceId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("deviceConnectionStateEventInfo", getDeviceConnectionStateEventInfo());
         jsonWriter.writeStringField("deviceId", getDeviceId());
-        jsonWriter.writeStringField("moduleId", getModuleId());
         jsonWriter.writeStringField("hubName", getHubName());
+        jsonWriter.writeJsonField("deviceConnectionStateEventInfo", getDeviceConnectionStateEventInfo());
+        jsonWriter.writeStringField("moduleId", getModuleId());
         return jsonWriter.writeEndObject();
     }
 
@@ -111,31 +76,29 @@ public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateE
     @Generated
     public static IotHubDeviceConnectedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo = null;
             String deviceId = null;
-            String moduleId = null;
             String hubName = null;
+            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo = null;
+            String moduleId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("deviceConnectionStateEventInfo".equals(fieldName)) {
-                    deviceConnectionStateEventInfo = DeviceConnectionStateEventInfo.fromJson(reader);
-                } else if ("deviceId".equals(fieldName)) {
+                if ("deviceId".equals(fieldName)) {
                     deviceId = reader.getString();
-                } else if ("moduleId".equals(fieldName)) {
-                    moduleId = reader.getString();
                 } else if ("hubName".equals(fieldName)) {
                     hubName = reader.getString();
+                } else if ("deviceConnectionStateEventInfo".equals(fieldName)) {
+                    deviceConnectionStateEventInfo = DeviceConnectionStateEventInfo.fromJson(reader);
+                } else if ("moduleId".equals(fieldName)) {
+                    moduleId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             IotHubDeviceConnectedEventData deserializedIotHubDeviceConnectedEventData
-                = new IotHubDeviceConnectedEventData(deviceConnectionStateEventInfo);
-            deserializedIotHubDeviceConnectedEventData.deviceId = deviceId;
+                = new IotHubDeviceConnectedEventData(deviceId, hubName, deviceConnectionStateEventInfo);
             deserializedIotHubDeviceConnectedEventData.moduleId = moduleId;
-            deserializedIotHubDeviceConnectedEventData.hubName = hubName;
 
             return deserializedIotHubDeviceConnectedEventData;
         });

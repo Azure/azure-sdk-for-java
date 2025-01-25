@@ -22,7 +22,7 @@ public final class ContainerRegistryArtifactEventTarget
      * The MIME type of the artifact.
      */
     @Generated
-    private String mediaType;
+    private final String mediaType;
 
     /*
      * The size in bytes of the artifact.
@@ -40,7 +40,7 @@ public final class ContainerRegistryArtifactEventTarget
      * The repository name of the artifact.
      */
     @Generated
-    private String repository;
+    private final String repository;
 
     /*
      * The tag of the artifact.
@@ -62,9 +62,14 @@ public final class ContainerRegistryArtifactEventTarget
 
     /**
      * Creates an instance of ContainerRegistryArtifactEventTarget class.
+     * 
+     * @param mediaType the mediaType value to set.
+     * @param repository the repository value to set.
      */
     @Generated
-    private ContainerRegistryArtifactEventTarget() {
+    private ContainerRegistryArtifactEventTarget(String mediaType, String repository) {
+        this.mediaType = mediaType;
+        this.repository = repository;
     }
 
     /**
@@ -145,9 +150,9 @@ public final class ContainerRegistryArtifactEventTarget
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeStringField("repository", this.repository);
         jsonWriter.writeNumberField("size", this.size);
         jsonWriter.writeStringField("digest", this.digest);
-        jsonWriter.writeStringField("repository", this.repository);
         jsonWriter.writeStringField("tag", this.tag);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);
@@ -160,35 +165,48 @@ public final class ContainerRegistryArtifactEventTarget
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerRegistryArtifactEventTarget if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRegistryArtifactEventTarget.
      */
     @Generated
     public static ContainerRegistryArtifactEventTarget fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerRegistryArtifactEventTarget deserializedContainerRegistryArtifactEventTarget
-                = new ContainerRegistryArtifactEventTarget();
+            String mediaType = null;
+            String repository = null;
+            Long size = null;
+            String digest = null;
+            String tag = null;
+            String name = null;
+            String version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("mediaType".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.mediaType = reader.getString();
-                } else if ("size".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.size = reader.getNullable(JsonReader::getLong);
-                } else if ("digest".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.digest = reader.getString();
+                    mediaType = reader.getString();
                 } else if ("repository".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.repository = reader.getString();
+                    repository = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    size = reader.getNullable(JsonReader::getLong);
+                } else if ("digest".equals(fieldName)) {
+                    digest = reader.getString();
                 } else if ("tag".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.tag = reader.getString();
+                    tag = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.name = reader.getString();
+                    name = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedContainerRegistryArtifactEventTarget.version = reader.getString();
+                    version = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ContainerRegistryArtifactEventTarget deserializedContainerRegistryArtifactEventTarget
+                = new ContainerRegistryArtifactEventTarget(mediaType, repository);
+            deserializedContainerRegistryArtifactEventTarget.size = size;
+            deserializedContainerRegistryArtifactEventTarget.digest = digest;
+            deserializedContainerRegistryArtifactEventTarget.tag = tag;
+            deserializedContainerRegistryArtifactEventTarget.name = name;
+            deserializedContainerRegistryArtifactEventTarget.version = version;
 
             return deserializedContainerRegistryArtifactEventTarget;
         });

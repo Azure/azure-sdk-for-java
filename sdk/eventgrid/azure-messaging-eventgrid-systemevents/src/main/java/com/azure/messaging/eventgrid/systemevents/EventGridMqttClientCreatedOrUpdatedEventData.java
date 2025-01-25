@@ -46,37 +46,22 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
     @Generated
     private final Map<String, String> attributes;
 
-    /*
-     * Name of the Event Grid namespace where the MQTT client was created or updated.
-     */
-    @Generated
-    private String namespaceName;
-
-    /*
-     * Name of the client resource in the Event Grid namespace.
-     */
-    @Generated
-    private String clientName;
-
-    /*
-     * Unique identifier for the MQTT client that the client presents to the service
-     * for authentication. This case-sensitive string can be up to 128 characters
-     * long, and supports UTF-8 characters.
-     */
-    @Generated
-    private String clientAuthenticationName;
-
     /**
      * Creates an instance of EventGridMqttClientCreatedOrUpdatedEventData class.
      * 
+     * @param clientAuthenticationName the clientAuthenticationName value to set.
+     * @param clientName the clientName value to set.
+     * @param namespaceName the namespaceName value to set.
      * @param state the state value to set.
      * @param createdOn the createdOn value to set.
      * @param updatedOn the updatedOn value to set.
      * @param attributes the attributes value to set.
      */
     @Generated
-    private EventGridMqttClientCreatedOrUpdatedEventData(EventGridMqttClientState state, OffsetDateTime createdOn,
-        OffsetDateTime updatedOn, Map<String, String> attributes) {
+    private EventGridMqttClientCreatedOrUpdatedEventData(String clientAuthenticationName, String clientName,
+        String namespaceName, EventGridMqttClientState state, OffsetDateTime createdOn, OffsetDateTime updatedOn,
+        Map<String, String> attributes) {
+        super(clientAuthenticationName, clientName, namespaceName);
         this.state = state;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
@@ -123,42 +108,6 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
     @Generated
     public Map<String, String> getAttributes() {
         return this.attributes;
-    }
-
-    /**
-     * Get the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
-     * 
-     * @return the namespaceName value.
-     */
-    @Generated
-    @Override
-    public String getNamespaceName() {
-        return this.namespaceName;
-    }
-
-    /**
-     * Get the clientName property: Name of the client resource in the Event Grid namespace.
-     * 
-     * @return the clientName value.
-     */
-    @Generated
-    @Override
-    public String getClientName() {
-        return this.clientName;
-    }
-
-    /**
-     * Get the clientAuthenticationName property: Unique identifier for the MQTT client that the client presents to the
-     * service
-     * for authentication. This case-sensitive string can be up to 128 characters
-     * long, and supports UTF-8 characters.
-     * 
-     * @return the clientAuthenticationName value.
-     */
-    @Generated
-    @Override
-    public String getClientAuthenticationName() {
-        return this.clientAuthenticationName;
     }
 
     /**
@@ -223,14 +172,8 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
                     reader.skipChildren();
                 }
             }
-            EventGridMqttClientCreatedOrUpdatedEventData deserializedEventGridMqttClientCreatedOrUpdatedEventData
-                = new EventGridMqttClientCreatedOrUpdatedEventData(state, createdOn, updatedOn, attributes);
-            deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientAuthenticationName
-                = clientAuthenticationName;
-            deserializedEventGridMqttClientCreatedOrUpdatedEventData.clientName = clientName;
-            deserializedEventGridMqttClientCreatedOrUpdatedEventData.namespaceName = namespaceName;
-
-            return deserializedEventGridMqttClientCreatedOrUpdatedEventData;
+            return new EventGridMqttClientCreatedOrUpdatedEventData(clientAuthenticationName, clientName, namespaceName,
+                state, createdOn, updatedOn, attributes);
         });
     }
 }

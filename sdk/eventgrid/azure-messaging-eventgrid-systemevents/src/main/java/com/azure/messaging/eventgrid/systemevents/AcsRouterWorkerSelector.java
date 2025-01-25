@@ -145,7 +145,8 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
-        jsonWriter.writeUntypedField("value", this.labelValue.toObject(Object.class));
+        jsonWriter.writeFieldName("value");
+        this.labelValue.writeTo(jsonWriter);
         jsonWriter.writeDoubleField("ttlSeconds", this.timeToLive);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("expirationTime",

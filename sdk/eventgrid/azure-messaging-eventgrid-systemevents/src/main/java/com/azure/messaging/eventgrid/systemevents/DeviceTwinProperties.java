@@ -27,16 +27,18 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * Version of device twin properties.
      */
     @Generated
-    private Double version;
+    private final double version;
 
     /**
      * Creates an instance of DeviceTwinProperties class.
      * 
      * @param metadata the metadata value to set.
+     * @param version the version value to set.
      */
     @Generated
-    private DeviceTwinProperties(DeviceTwinMetadata metadata) {
+    private DeviceTwinProperties(DeviceTwinMetadata metadata, double version) {
         this.metadata = metadata;
+        this.version = version;
     }
 
     /**
@@ -55,7 +57,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
      * @return the version value.
      */
     @Generated
-    public Double getVersion() {
+    public double getVersion() {
         return this.version;
     }
 
@@ -67,7 +69,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("metadata", this.metadata);
-        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeDoubleField("version", this.version);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,7 +86,7 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
     public static DeviceTwinProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceTwinMetadata metadata = null;
-            Double version = null;
+            double version = 0.0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,15 +94,12 @@ public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinPr
                 if ("metadata".equals(fieldName)) {
                     metadata = DeviceTwinMetadata.fromJson(reader);
                 } else if ("version".equals(fieldName)) {
-                    version = reader.getNullable(JsonReader::getDouble);
+                    version = reader.getDouble();
                 } else {
                     reader.skipChildren();
                 }
             }
-            DeviceTwinProperties deserializedDeviceTwinProperties = new DeviceTwinProperties(metadata);
-            deserializedDeviceTwinProperties.version = version;
-
-            return deserializedDeviceTwinProperties;
+            return new DeviceTwinProperties(metadata, version);
         });
     }
 }

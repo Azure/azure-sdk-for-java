@@ -23,13 +23,13 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * $ '.
      */
     @Generated
-    private String deviceId;
+    private final String deviceId;
 
     /*
      * Name of the IoT Hub where the device was created or deleted.
      */
     @Generated
-    private String hubName;
+    private final String hubName;
 
     /*
      * Information about the device twin, which is the cloud representation of application device metadata.
@@ -40,10 +40,14 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     /**
      * Creates an instance of DeviceLifeCycleEventProperties class.
      * 
+     * @param deviceId the deviceId value to set.
+     * @param hubName the hubName value to set.
      * @param twin the twin value to set.
      */
     @Generated
-    protected DeviceLifeCycleEventProperties(DeviceTwinInfo twin) {
+    protected DeviceLifeCycleEventProperties(String deviceId, String hubName, DeviceTwinInfo twin) {
+        this.deviceId = deviceId;
+        this.hubName = hubName;
         this.twin = twin;
     }
 
@@ -60,20 +64,6 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     }
 
     /**
-     * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
-     * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = `&#064;` ; $ '.
-     * 
-     * @param deviceId the deviceId value to set.
-     * @return the DeviceLifeCycleEventProperties object itself.
-     */
-    @Generated
-    DeviceLifeCycleEventProperties setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-        return this;
-    }
-
-    /**
      * Get the hubName property: Name of the IoT Hub where the device was created or deleted.
      * 
      * @return the hubName value.
@@ -81,18 +71,6 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     @Generated
     public String getHubName() {
         return this.hubName;
-    }
-
-    /**
-     * Set the hubName property: Name of the IoT Hub where the device was created or deleted.
-     * 
-     * @param hubName the hubName value to set.
-     * @return the DeviceLifeCycleEventProperties object itself.
-     */
-    @Generated
-    DeviceLifeCycleEventProperties setHubName(String hubName) {
-        this.hubName = hubName;
-        return this;
     }
 
     /**
@@ -113,9 +91,9 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("twin", this.twin);
         jsonWriter.writeStringField("deviceId", this.deviceId);
         jsonWriter.writeStringField("hubName", this.hubName);
+        jsonWriter.writeJsonField("twin", this.twin);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,29 +109,24 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     @Generated
     public static DeviceLifeCycleEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceTwinInfo twin = null;
             String deviceId = null;
             String hubName = null;
+            DeviceTwinInfo twin = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("twin".equals(fieldName)) {
-                    twin = DeviceTwinInfo.fromJson(reader);
-                } else if ("deviceId".equals(fieldName)) {
+                if ("deviceId".equals(fieldName)) {
                     deviceId = reader.getString();
                 } else if ("hubName".equals(fieldName)) {
                     hubName = reader.getString();
+                } else if ("twin".equals(fieldName)) {
+                    twin = DeviceTwinInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            DeviceLifeCycleEventProperties deserializedDeviceLifeCycleEventProperties
-                = new DeviceLifeCycleEventProperties(twin);
-            deserializedDeviceLifeCycleEventProperties.deviceId = deviceId;
-            deserializedDeviceLifeCycleEventProperties.hubName = hubName;
-
-            return deserializedDeviceLifeCycleEventProperties;
+            return new DeviceLifeCycleEventProperties(deviceId, hubName, twin);
         });
     }
 }

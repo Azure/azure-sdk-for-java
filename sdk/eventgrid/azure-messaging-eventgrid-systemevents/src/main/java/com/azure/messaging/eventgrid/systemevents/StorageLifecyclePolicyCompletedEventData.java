@@ -25,6 +25,12 @@ public final class StorageLifecyclePolicyCompletedEventData
     private String scheduleTime;
 
     /*
+     * Policy execution summary which shows the completion status of a LCM run"
+     */
+    @Generated
+    private final StorageLifecyclePolicyRunSummary policyRunSummary;
+
+    /*
      * Execution statistics of a specific policy action in a Blob Management cycle.
      */
     @Generated
@@ -51,16 +57,19 @@ public final class StorageLifecyclePolicyCompletedEventData
     /**
      * Creates an instance of StorageLifecyclePolicyCompletedEventData class.
      * 
+     * @param policyRunSummary the policyRunSummary value to set.
      * @param deleteSummary the deleteSummary value to set.
      * @param tierToCoolSummary the tierToCoolSummary value to set.
      * @param tierToArchiveSummary the tierToArchiveSummary value to set.
      * @param tierToColdSummary the tierToColdSummary value to set.
      */
     @Generated
-    private StorageLifecyclePolicyCompletedEventData(StorageLifecyclePolicyActionSummaryDetail deleteSummary,
+    private StorageLifecyclePolicyCompletedEventData(StorageLifecyclePolicyRunSummary policyRunSummary,
+        StorageLifecyclePolicyActionSummaryDetail deleteSummary,
         StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary,
         StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary,
         StorageLifecyclePolicyActionSummaryDetail tierToColdSummary) {
+        this.policyRunSummary = policyRunSummary;
         this.deleteSummary = deleteSummary;
         this.tierToCoolSummary = tierToCoolSummary;
         this.tierToArchiveSummary = tierToArchiveSummary;
@@ -75,6 +84,16 @@ public final class StorageLifecyclePolicyCompletedEventData
     @Generated
     public String getScheduleTime() {
         return this.scheduleTime;
+    }
+
+    /**
+     * Get the policyRunSummary property: Policy execution summary which shows the completion status of a LCM run".
+     * 
+     * @return the policyRunSummary value.
+     */
+    @Generated
+    public StorageLifecyclePolicyRunSummary getPolicyRunSummary() {
+        return this.policyRunSummary;
     }
 
     /**
@@ -125,6 +144,7 @@ public final class StorageLifecyclePolicyCompletedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("policyRunSummary", this.policyRunSummary);
         jsonWriter.writeJsonField("deleteSummary", this.deleteSummary);
         jsonWriter.writeJsonField("tierToCoolSummary", this.tierToCoolSummary);
         jsonWriter.writeJsonField("tierToArchiveSummary", this.tierToArchiveSummary);
@@ -145,6 +165,7 @@ public final class StorageLifecyclePolicyCompletedEventData
     @Generated
     public static StorageLifecyclePolicyCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            StorageLifecyclePolicyRunSummary policyRunSummary = null;
             StorageLifecyclePolicyActionSummaryDetail deleteSummary = null;
             StorageLifecyclePolicyActionSummaryDetail tierToCoolSummary = null;
             StorageLifecyclePolicyActionSummaryDetail tierToArchiveSummary = null;
@@ -154,7 +175,9 @@ public final class StorageLifecyclePolicyCompletedEventData
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("deleteSummary".equals(fieldName)) {
+                if ("policyRunSummary".equals(fieldName)) {
+                    policyRunSummary = StorageLifecyclePolicyRunSummary.fromJson(reader);
+                } else if ("deleteSummary".equals(fieldName)) {
                     deleteSummary = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
                 } else if ("tierToCoolSummary".equals(fieldName)) {
                     tierToCoolSummary = StorageLifecyclePolicyActionSummaryDetail.fromJson(reader);
@@ -169,8 +192,8 @@ public final class StorageLifecyclePolicyCompletedEventData
                 }
             }
             StorageLifecyclePolicyCompletedEventData deserializedStorageLifecyclePolicyCompletedEventData
-                = new StorageLifecyclePolicyCompletedEventData(deleteSummary, tierToCoolSummary, tierToArchiveSummary,
-                    tierToColdSummary);
+                = new StorageLifecyclePolicyCompletedEventData(policyRunSummary, deleteSummary, tierToCoolSummary,
+                    tierToArchiveSummary, tierToColdSummary);
             deserializedStorageLifecyclePolicyCompletedEventData.scheduleTime = scheduleTime;
 
             return deserializedStorageLifecyclePolicyCompletedEventData;

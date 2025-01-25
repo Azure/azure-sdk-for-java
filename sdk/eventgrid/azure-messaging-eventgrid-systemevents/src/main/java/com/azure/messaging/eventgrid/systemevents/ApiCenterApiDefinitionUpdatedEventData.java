@@ -22,7 +22,7 @@ public final class ApiCenterApiDefinitionUpdatedEventData
      * API definition title.
      */
     @Generated
-    private String title;
+    private final String title;
 
     /*
      * API definition description.
@@ -34,16 +34,16 @@ public final class ApiCenterApiDefinitionUpdatedEventData
      * API definition specification.
      */
     @Generated
-    private final ApiCenterApiSpecification specification;
+    private ApiCenterApiSpecification specification;
 
     /**
      * Creates an instance of ApiCenterApiDefinitionUpdatedEventData class.
      * 
-     * @param specification the specification value to set.
+     * @param title the title value to set.
      */
     @Generated
-    private ApiCenterApiDefinitionUpdatedEventData(ApiCenterApiSpecification specification) {
-        this.specification = specification;
+    private ApiCenterApiDefinitionUpdatedEventData(String title) {
+        this.title = title;
     }
 
     /**
@@ -83,9 +83,9 @@ public final class ApiCenterApiDefinitionUpdatedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("specification", this.specification);
         jsonWriter.writeStringField("title", this.title);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("specification", this.specification);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,27 +101,27 @@ public final class ApiCenterApiDefinitionUpdatedEventData
     @Generated
     public static ApiCenterApiDefinitionUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApiCenterApiSpecification specification = null;
             String title = null;
             String description = null;
+            ApiCenterApiSpecification specification = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("specification".equals(fieldName)) {
-                    specification = ApiCenterApiSpecification.fromJson(reader);
-                } else if ("title".equals(fieldName)) {
+                if ("title".equals(fieldName)) {
                     title = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("specification".equals(fieldName)) {
+                    specification = ApiCenterApiSpecification.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             ApiCenterApiDefinitionUpdatedEventData deserializedApiCenterApiDefinitionUpdatedEventData
-                = new ApiCenterApiDefinitionUpdatedEventData(specification);
-            deserializedApiCenterApiDefinitionUpdatedEventData.title = title;
+                = new ApiCenterApiDefinitionUpdatedEventData(title);
             deserializedApiCenterApiDefinitionUpdatedEventData.description = description;
+            deserializedApiCenterApiDefinitionUpdatedEventData.specification = specification;
 
             return deserializedApiCenterApiDefinitionUpdatedEventData;
         });

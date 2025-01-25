@@ -32,47 +32,61 @@ public final class PolicyInsightsPolicyStateChangedEventData
      * The resource ID of the policy assignment.
      */
     @Generated
-    private String policyAssignmentId;
+    private final String policyAssignmentId;
 
     /*
      * The resource ID of the policy definition.
      */
     @Generated
-    private String policyDefinitionId;
+    private final String policyDefinitionId;
 
     /*
      * The reference ID for the policy definition inside the initiative definition, if the policy assignment is for an
      * initiative. May be empty.
      */
     @Generated
-    private String policyDefinitionReferenceId;
+    private final String policyDefinitionReferenceId;
 
     /*
      * The compliance state of the resource with respect to the policy assignment.
      */
     @Generated
-    private String complianceState;
+    private final String complianceState;
 
     /*
      * The subscription ID of the resource.
      */
     @Generated
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /*
      * The compliance reason code. May be empty.
      */
     @Generated
-    private String complianceReasonCode;
+    private final String complianceReasonCode;
 
     /**
      * Creates an instance of PolicyInsightsPolicyStateChangedEventData class.
      * 
      * @param timestamp the timestamp value to set.
+     * @param policyAssignmentId the policyAssignmentId value to set.
+     * @param policyDefinitionId the policyDefinitionId value to set.
+     * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
+     * @param complianceState the complianceState value to set.
+     * @param subscriptionId the subscriptionId value to set.
+     * @param complianceReasonCode the complianceReasonCode value to set.
      */
     @Generated
-    private PolicyInsightsPolicyStateChangedEventData(OffsetDateTime timestamp) {
+    private PolicyInsightsPolicyStateChangedEventData(OffsetDateTime timestamp, String policyAssignmentId,
+        String policyDefinitionId, String policyDefinitionReferenceId, String complianceState, String subscriptionId,
+        String complianceReasonCode) {
         this.timestamp = timestamp;
+        this.policyAssignmentId = policyAssignmentId;
+        this.policyDefinitionId = policyDefinitionId;
+        this.policyDefinitionReferenceId = policyDefinitionReferenceId;
+        this.complianceState = complianceState;
+        this.subscriptionId = subscriptionId;
+        this.complianceReasonCode = complianceReasonCode;
     }
 
     /**
@@ -207,17 +221,8 @@ public final class PolicyInsightsPolicyStateChangedEventData
                     reader.skipChildren();
                 }
             }
-            PolicyInsightsPolicyStateChangedEventData deserializedPolicyInsightsPolicyStateChangedEventData
-                = new PolicyInsightsPolicyStateChangedEventData(timestamp);
-            deserializedPolicyInsightsPolicyStateChangedEventData.policyAssignmentId = policyAssignmentId;
-            deserializedPolicyInsightsPolicyStateChangedEventData.policyDefinitionId = policyDefinitionId;
-            deserializedPolicyInsightsPolicyStateChangedEventData.policyDefinitionReferenceId
-                = policyDefinitionReferenceId;
-            deserializedPolicyInsightsPolicyStateChangedEventData.complianceState = complianceState;
-            deserializedPolicyInsightsPolicyStateChangedEventData.subscriptionId = subscriptionId;
-            deserializedPolicyInsightsPolicyStateChangedEventData.complianceReasonCode = complianceReasonCode;
-
-            return deserializedPolicyInsightsPolicyStateChangedEventData;
+            return new PolicyInsightsPolicyStateChangedEventData(timestamp, policyAssignmentId, policyDefinitionId,
+                policyDefinitionReferenceId, complianceState, subscriptionId, complianceReasonCode);
         });
     }
 }

@@ -23,13 +23,16 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
      * hex, then the number is a 256 bit number.
      */
     @Generated
-    private String sequenceNumber;
+    private final String sequenceNumber;
 
     /**
      * Creates an instance of DeviceConnectionStateEventInfo class.
+     * 
+     * @param sequenceNumber the sequenceNumber value to set.
      */
     @Generated
-    private DeviceConnectionStateEventInfo() {
+    private DeviceConnectionStateEventInfo(String sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
     }
 
     /**
@@ -61,25 +64,24 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeviceConnectionStateEventInfo if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DeviceConnectionStateEventInfo.
      */
     @Generated
     public static DeviceConnectionStateEventInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DeviceConnectionStateEventInfo deserializedDeviceConnectionStateEventInfo
-                = new DeviceConnectionStateEventInfo();
+            String sequenceNumber = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("sequenceNumber".equals(fieldName)) {
-                    deserializedDeviceConnectionStateEventInfo.sequenceNumber = reader.getString();
+                    sequenceNumber = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedDeviceConnectionStateEventInfo;
+            return new DeviceConnectionStateEventInfo(sequenceNumber);
         });
     }
 }

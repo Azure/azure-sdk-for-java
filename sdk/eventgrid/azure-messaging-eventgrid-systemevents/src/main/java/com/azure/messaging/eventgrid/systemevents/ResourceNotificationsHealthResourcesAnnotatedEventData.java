@@ -18,34 +18,18 @@ import java.io.IOException;
 @Immutable
 public final class ResourceNotificationsHealthResourcesAnnotatedEventData
     extends ResourceNotificationsResourceUpdatedEventData {
-    /*
-     * api version of the resource properties bag
-     */
-    @Generated
-    private String apiVersion;
-
     /**
      * Creates an instance of ResourceNotificationsHealthResourcesAnnotatedEventData class.
      * 
      * @param resourceDetails the resourceDetails value to set.
      * @param operationalDetails the operationalDetails value to set.
+     * @param apiVersion the apiVersion value to set.
      */
     @Generated
     private ResourceNotificationsHealthResourcesAnnotatedEventData(
         ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails) {
-        super(resourceDetails, operationalDetails);
-    }
-
-    /**
-     * Get the apiVersion property: api version of the resource properties bag.
-     * 
-     * @return the apiVersion value.
-     */
-    @Generated
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
+        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
+        super(resourceDetails, operationalDetails, apiVersion);
     }
 
     /**
@@ -91,11 +75,8 @@ public final class ResourceNotificationsHealthResourcesAnnotatedEventData
                     reader.skipChildren();
                 }
             }
-            ResourceNotificationsHealthResourcesAnnotatedEventData deserializedResourceNotificationsHealthResourcesAnnotatedEventData
-                = new ResourceNotificationsHealthResourcesAnnotatedEventData(resourceDetails, operationalDetails);
-            deserializedResourceNotificationsHealthResourcesAnnotatedEventData.apiVersion = apiVersion;
-
-            return deserializedResourceNotificationsHealthResourcesAnnotatedEventData;
+            return new ResourceNotificationsHealthResourcesAnnotatedEventData(resourceDetails, operationalDetails,
+                apiVersion);
         });
     }
 }

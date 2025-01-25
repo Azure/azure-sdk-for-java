@@ -24,7 +24,7 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
      * or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
     @Generated
-    private String validationCode;
+    private final String validationCode;
 
     /*
      * The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview).
@@ -33,13 +33,18 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
      * or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
     @Generated
-    private String validationUrl;
+    private final String validationUrl;
 
     /**
      * Creates an instance of SubscriptionValidationEventData class.
+     * 
+     * @param validationCode the validationCode value to set.
+     * @param validationUrl the validationUrl value to set.
      */
     @Generated
-    private SubscriptionValidationEventData() {
+    private SubscriptionValidationEventData(String validationCode, String validationUrl) {
+        this.validationCode = validationCode;
+        this.validationUrl = validationUrl;
     }
 
     /**
@@ -87,27 +92,27 @@ public final class SubscriptionValidationEventData implements JsonSerializable<S
      * @param jsonReader The JsonReader being read.
      * @return An instance of SubscriptionValidationEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SubscriptionValidationEventData.
      */
     @Generated
     public static SubscriptionValidationEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SubscriptionValidationEventData deserializedSubscriptionValidationEventData
-                = new SubscriptionValidationEventData();
+            String validationCode = null;
+            String validationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("validationCode".equals(fieldName)) {
-                    deserializedSubscriptionValidationEventData.validationCode = reader.getString();
+                    validationCode = reader.getString();
                 } else if ("validationUrl".equals(fieldName)) {
-                    deserializedSubscriptionValidationEventData.validationUrl = reader.getString();
+                    validationUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedSubscriptionValidationEventData;
+            return new SubscriptionValidationEventData(validationCode, validationUrl);
         });
     }
 }

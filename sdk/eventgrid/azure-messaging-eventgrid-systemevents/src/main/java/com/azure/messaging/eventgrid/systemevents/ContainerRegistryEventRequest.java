@@ -21,7 +21,7 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * The ID of the request that initiated the event.
      */
     @Generated
-    private String id;
+    private final String id;
 
     /*
      * The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr
@@ -35,13 +35,13 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * requests.
      */
     @Generated
-    private String host;
+    private final String host;
 
     /*
      * The request method that generated the event.
      */
     @Generated
-    private String method;
+    private final String method;
 
     /*
      * The user agent header of the request.
@@ -51,9 +51,16 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
 
     /**
      * Creates an instance of ContainerRegistryEventRequest class.
+     * 
+     * @param id the id value to set.
+     * @param host the host value to set.
+     * @param method the method value to set.
      */
     @Generated
-    private ContainerRegistryEventRequest() {
+    private ContainerRegistryEventRequest(String id, String host, String method) {
+        this.id = id;
+        this.host = host;
+        this.method = method;
     }
 
     /**
@@ -116,9 +123,9 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("addr", this.addr);
         jsonWriter.writeStringField("host", this.host);
         jsonWriter.writeStringField("method", this.method);
+        jsonWriter.writeStringField("addr", this.addr);
         jsonWriter.writeStringField("useragent", this.useragent);
         return jsonWriter.writeEndObject();
     }
@@ -129,31 +136,39 @@ public final class ContainerRegistryEventRequest implements JsonSerializable<Con
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerRegistryEventRequest if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerRegistryEventRequest.
      */
     @Generated
     public static ContainerRegistryEventRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerRegistryEventRequest deserializedContainerRegistryEventRequest
-                = new ContainerRegistryEventRequest();
+            String id = null;
+            String host = null;
+            String method = null;
+            String addr = null;
+            String useragent = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedContainerRegistryEventRequest.id = reader.getString();
-                } else if ("addr".equals(fieldName)) {
-                    deserializedContainerRegistryEventRequest.addr = reader.getString();
+                    id = reader.getString();
                 } else if ("host".equals(fieldName)) {
-                    deserializedContainerRegistryEventRequest.host = reader.getString();
+                    host = reader.getString();
                 } else if ("method".equals(fieldName)) {
-                    deserializedContainerRegistryEventRequest.method = reader.getString();
+                    method = reader.getString();
+                } else if ("addr".equals(fieldName)) {
+                    addr = reader.getString();
                 } else if ("useragent".equals(fieldName)) {
-                    deserializedContainerRegistryEventRequest.useragent = reader.getString();
+                    useragent = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ContainerRegistryEventRequest deserializedContainerRegistryEventRequest
+                = new ContainerRegistryEventRequest(id, host, method);
+            deserializedContainerRegistryEventRequest.addr = addr;
+            deserializedContainerRegistryEventRequest.useragent = useragent;
 
             return deserializedContainerRegistryEventRequest;
         });

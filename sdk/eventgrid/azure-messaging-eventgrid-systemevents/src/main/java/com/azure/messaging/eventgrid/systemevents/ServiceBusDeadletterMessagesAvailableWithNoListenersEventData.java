@@ -23,45 +23,59 @@ public final class ServiceBusDeadletterMessagesAvailableWithNoListenersEventData
      * The namespace name of the Microsoft.ServiceBus resource.
      */
     @Generated
-    private String namespaceName;
+    private final String namespaceName;
 
     /*
      * The endpoint of the Microsoft.ServiceBus resource.
      */
     @Generated
-    private String requestUri;
+    private final String requestUri;
 
     /*
      * The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or 'subscriber'.
      */
     @Generated
-    private String entityType;
+    private final String entityType;
 
     /*
      * The name of the Microsoft.ServiceBus queue. If the entity type is of type 'subscriber', then this value will be
      * null.
      */
     @Generated
-    private String queueName;
+    private final String queueName;
 
     /*
      * The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue', then this value will be null.
      */
     @Generated
-    private String topicName;
+    private final String topicName;
 
     /*
      * The name of the Microsoft.ServiceBus topic's subscription. If the entity type is of type 'queue', then this value
      * will be null.
      */
     @Generated
-    private String subscriptionName;
+    private final String subscriptionName;
 
     /**
      * Creates an instance of ServiceBusDeadletterMessagesAvailableWithNoListenersEventData class.
+     * 
+     * @param namespaceName the namespaceName value to set.
+     * @param requestUri the requestUri value to set.
+     * @param entityType the entityType value to set.
+     * @param queueName the queueName value to set.
+     * @param topicName the topicName value to set.
+     * @param subscriptionName the subscriptionName value to set.
      */
     @Generated
-    private ServiceBusDeadletterMessagesAvailableWithNoListenersEventData() {
+    private ServiceBusDeadletterMessagesAvailableWithNoListenersEventData(String namespaceName, String requestUri,
+        String entityType, String queueName, String topicName, String subscriptionName) {
+        this.namespaceName = namespaceName;
+        this.requestUri = requestUri;
+        this.entityType = entityType;
+        this.queueName = queueName;
+        this.topicName = topicName;
+        this.subscriptionName = subscriptionName;
     }
 
     /**
@@ -150,6 +164,7 @@ public final class ServiceBusDeadletterMessagesAvailableWithNoListenersEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServiceBusDeadletterMessagesAvailableWithNoListenersEventData if the JsonReader was
      * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the
      * ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.
      */
@@ -157,36 +172,34 @@ public final class ServiceBusDeadletterMessagesAvailableWithNoListenersEventData
     public static ServiceBusDeadletterMessagesAvailableWithNoListenersEventData fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ServiceBusDeadletterMessagesAvailableWithNoListenersEventData deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData
-                = new ServiceBusDeadletterMessagesAvailableWithNoListenersEventData();
+            String namespaceName = null;
+            String requestUri = null;
+            String entityType = null;
+            String queueName = null;
+            String topicName = null;
+            String subscriptionName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("namespaceName".equals(fieldName)) {
-                    deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData.namespaceName
-                        = reader.getString();
+                    namespaceName = reader.getString();
                 } else if ("requestUri".equals(fieldName)) {
-                    deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData.requestUri
-                        = reader.getString();
+                    requestUri = reader.getString();
                 } else if ("entityType".equals(fieldName)) {
-                    deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData.entityType
-                        = reader.getString();
+                    entityType = reader.getString();
                 } else if ("queueName".equals(fieldName)) {
-                    deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData.queueName
-                        = reader.getString();
+                    queueName = reader.getString();
                 } else if ("topicName".equals(fieldName)) {
-                    deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData.topicName
-                        = reader.getString();
+                    topicName = reader.getString();
                 } else if ("subscriptionName".equals(fieldName)) {
-                    deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData.subscriptionName
-                        = reader.getString();
+                    subscriptionName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
+            return new ServiceBusDeadletterMessagesAvailableWithNoListenersEventData(namespaceName, requestUri,
+                entityType, queueName, topicName, subscriptionName);
         });
     }
 }

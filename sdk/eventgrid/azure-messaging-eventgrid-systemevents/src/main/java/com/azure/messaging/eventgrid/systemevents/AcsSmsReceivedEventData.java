@@ -32,6 +32,12 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     private final OffsetDateTime receivedTimestamp;
 
     /*
+     * Number of segments in the message
+     */
+    @Generated
+    private final int segmentCount;
+
+    /*
      * The identity of SMS message receiver
      */
     @Generated
@@ -53,10 +59,12 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
      * Creates an instance of AcsSmsReceivedEventData class.
      * 
      * @param receivedTimestamp the receivedTimestamp value to set.
+     * @param segmentCount the segmentCount value to set.
      */
     @Generated
-    private AcsSmsReceivedEventData(OffsetDateTime receivedTimestamp) {
+    private AcsSmsReceivedEventData(OffsetDateTime receivedTimestamp, int segmentCount) {
         this.receivedTimestamp = receivedTimestamp;
+        this.segmentCount = segmentCount;
     }
 
     /**
@@ -77,6 +85,16 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     @Generated
     public OffsetDateTime getReceivedTimestamp() {
         return this.receivedTimestamp;
+    }
+
+    /**
+     * Get the segmentCount property: Number of segments in the message.
+     * 
+     * @return the segmentCount value.
+     */
+    @Generated
+    public int getSegmentCount() {
+        return this.segmentCount;
     }
 
     /**
@@ -126,6 +144,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
             this.receivedTimestamp == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeIntField("segmentCount", this.segmentCount);
         jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
@@ -146,6 +165,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
             String from = null;
             String to = null;
             OffsetDateTime receivedTimestamp = null;
+            int segmentCount = 0;
             String message = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -160,6 +180,8 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                 } else if ("receivedTimestamp".equals(fieldName)) {
                     receivedTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("segmentCount".equals(fieldName)) {
+                    segmentCount = reader.getInt();
                 } else if ("message".equals(fieldName)) {
                     message = reader.getString();
                 } else {
@@ -167,7 +189,7 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                 }
             }
             AcsSmsReceivedEventData deserializedAcsSmsReceivedEventData
-                = new AcsSmsReceivedEventData(receivedTimestamp);
+                = new AcsSmsReceivedEventData(receivedTimestamp, segmentCount);
             deserializedAcsSmsReceivedEventData.messageId = messageId;
             deserializedAcsSmsReceivedEventData.from = from;
             deserializedAcsSmsReceivedEventData.to = to;

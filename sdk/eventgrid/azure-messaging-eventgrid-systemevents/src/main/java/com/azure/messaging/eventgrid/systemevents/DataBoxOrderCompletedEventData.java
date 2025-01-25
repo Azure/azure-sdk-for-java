@@ -25,7 +25,7 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
      * is associated.
      */
     @Generated
-    private String serialNumber;
+    private final String serialNumber;
 
     /*
      * Name of the current Stage
@@ -42,11 +42,13 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
     /**
      * Creates an instance of DataBoxOrderCompletedEventData class.
      * 
+     * @param serialNumber the serialNumber value to set.
      * @param stageName the stageName value to set.
      * @param stageTime the stageTime value to set.
      */
     @Generated
-    private DataBoxOrderCompletedEventData(DataBoxStageName stageName, OffsetDateTime stageTime) {
+    private DataBoxOrderCompletedEventData(String serialNumber, DataBoxStageName stageName, OffsetDateTime stageTime) {
+        this.serialNumber = serialNumber;
         this.stageName = stageName;
         this.stageTime = stageTime;
     }
@@ -89,10 +91,10 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
         jsonWriter.writeStringField("stageName", this.stageName == null ? null : this.stageName.toString());
         jsonWriter.writeStringField("stageTime",
             this.stageTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stageTime));
-        jsonWriter.writeStringField("serialNumber", this.serialNumber);
         return jsonWriter.writeEndObject();
     }
 
@@ -108,29 +110,25 @@ public final class DataBoxOrderCompletedEventData implements JsonSerializable<Da
     @Generated
     public static DataBoxOrderCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String serialNumber = null;
             DataBoxStageName stageName = null;
             OffsetDateTime stageTime = null;
-            String serialNumber = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("stageName".equals(fieldName)) {
+                if ("serialNumber".equals(fieldName)) {
+                    serialNumber = reader.getString();
+                } else if ("stageName".equals(fieldName)) {
                     stageName = DataBoxStageName.fromString(reader.getString());
                 } else if ("stageTime".equals(fieldName)) {
                     stageTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("serialNumber".equals(fieldName)) {
-                    serialNumber = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            DataBoxOrderCompletedEventData deserializedDataBoxOrderCompletedEventData
-                = new DataBoxOrderCompletedEventData(stageName, stageTime);
-            deserializedDataBoxOrderCompletedEventData.serialNumber = serialNumber;
-
-            return deserializedDataBoxOrderCompletedEventData;
+            return new DataBoxOrderCompletedEventData(serialNumber, stageName, stageTime);
         });
     }
 }

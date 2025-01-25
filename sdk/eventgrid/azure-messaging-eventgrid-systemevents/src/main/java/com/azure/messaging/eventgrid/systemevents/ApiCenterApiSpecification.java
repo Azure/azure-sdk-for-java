@@ -21,7 +21,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * Specification name.
      */
     @Generated
-    private String name;
+    private final String name;
 
     /*
      * Specification version.
@@ -31,9 +31,12 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
 
     /**
      * Creates an instance of ApiCenterApiSpecification class.
+     * 
+     * @param name the name value to set.
      */
     @Generated
-    private ApiCenterApiSpecification() {
+    private ApiCenterApiSpecification(String name) {
+        this.name = name;
     }
 
     /**
@@ -74,24 +77,28 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApiCenterApiSpecification if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApiCenterApiSpecification.
      */
     @Generated
     public static ApiCenterApiSpecification fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApiCenterApiSpecification deserializedApiCenterApiSpecification = new ApiCenterApiSpecification();
+            String name = null;
+            String version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedApiCenterApiSpecification.name = reader.getString();
+                    name = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedApiCenterApiSpecification.version = reader.getString();
+                    version = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ApiCenterApiSpecification deserializedApiCenterApiSpecification = new ApiCenterApiSpecification(name);
+            deserializedApiCenterApiSpecification.version = version;
 
             return deserializedApiCenterApiSpecification;
         });

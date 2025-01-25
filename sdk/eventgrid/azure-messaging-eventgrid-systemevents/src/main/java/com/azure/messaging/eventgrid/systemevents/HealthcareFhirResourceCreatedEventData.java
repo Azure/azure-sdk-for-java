@@ -28,28 +28,35 @@ public final class HealthcareFhirResourceCreatedEventData
      * Domain name of FHIR account for this resource.
      */
     @Generated
-    private String resourceFhirAccount;
+    private final String resourceFhirAccount;
 
     /*
      * Id of HL7 FHIR resource.
      */
     @Generated
-    private String resourceFhirId;
+    private final String resourceFhirId;
 
     /*
      * VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
      */
     @Generated
-    private Long resourceVersionId;
+    private final long resourceVersionId;
 
     /**
      * Creates an instance of HealthcareFhirResourceCreatedEventData class.
      * 
      * @param resourceType the resourceType value to set.
+     * @param resourceFhirAccount the resourceFhirAccount value to set.
+     * @param resourceFhirId the resourceFhirId value to set.
+     * @param resourceVersionId the resourceVersionId value to set.
      */
     @Generated
-    private HealthcareFhirResourceCreatedEventData(HealthcareFhirResourceType resourceType) {
+    private HealthcareFhirResourceCreatedEventData(HealthcareFhirResourceType resourceType, String resourceFhirAccount,
+        String resourceFhirId, long resourceVersionId) {
         this.resourceType = resourceType;
+        this.resourceFhirAccount = resourceFhirAccount;
+        this.resourceFhirId = resourceFhirId;
+        this.resourceVersionId = resourceVersionId;
     }
 
     /**
@@ -89,7 +96,7 @@ public final class HealthcareFhirResourceCreatedEventData
      * @return the resourceVersionId value.
      */
     @Generated
-    public Long getResourceVersionId() {
+    public long getResourceVersionId() {
         return this.resourceVersionId;
     }
 
@@ -103,7 +110,7 @@ public final class HealthcareFhirResourceCreatedEventData
         jsonWriter.writeStringField("resourceType", this.resourceType == null ? null : this.resourceType.toString());
         jsonWriter.writeStringField("resourceFhirAccount", this.resourceFhirAccount);
         jsonWriter.writeStringField("resourceFhirId", this.resourceFhirId);
-        jsonWriter.writeNumberField("resourceVersionId", this.resourceVersionId);
+        jsonWriter.writeLongField("resourceVersionId", this.resourceVersionId);
         return jsonWriter.writeEndObject();
     }
 
@@ -122,7 +129,7 @@ public final class HealthcareFhirResourceCreatedEventData
             HealthcareFhirResourceType resourceType = null;
             String resourceFhirAccount = null;
             String resourceFhirId = null;
-            Long resourceVersionId = null;
+            long resourceVersionId = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -134,18 +141,13 @@ public final class HealthcareFhirResourceCreatedEventData
                 } else if ("resourceFhirId".equals(fieldName)) {
                     resourceFhirId = reader.getString();
                 } else if ("resourceVersionId".equals(fieldName)) {
-                    resourceVersionId = reader.getNullable(JsonReader::getLong);
+                    resourceVersionId = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
             }
-            HealthcareFhirResourceCreatedEventData deserializedHealthcareFhirResourceCreatedEventData
-                = new HealthcareFhirResourceCreatedEventData(resourceType);
-            deserializedHealthcareFhirResourceCreatedEventData.resourceFhirAccount = resourceFhirAccount;
-            deserializedHealthcareFhirResourceCreatedEventData.resourceFhirId = resourceFhirId;
-            deserializedHealthcareFhirResourceCreatedEventData.resourceVersionId = resourceVersionId;
-
-            return deserializedHealthcareFhirResourceCreatedEventData;
+            return new HealthcareFhirResourceCreatedEventData(resourceType, resourceFhirAccount, resourceFhirId,
+                resourceVersionId);
         });
     }
 }

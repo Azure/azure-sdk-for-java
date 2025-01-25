@@ -25,16 +25,22 @@ public final class AcsEmailDeliveryReportReceivedEventData
      * The Sender Email Address
      */
     @Generated
-    private String sender;
+    private final String sender;
 
     /*
      * The recipient Email Address
      */
     @Generated
-    private String recipient;
+    private final String recipient;
 
     /*
-     * The Id of the email been sent
+     * The Internet Message Id of the email that has been sent
+     */
+    @Generated
+    private final String internetMessageId;
+
+    /*
+     * The Id of the email that has been sent
      */
     @Generated
     private String messageId;
@@ -60,13 +66,20 @@ public final class AcsEmailDeliveryReportReceivedEventData
     /**
      * Creates an instance of AcsEmailDeliveryReportReceivedEventData class.
      * 
+     * @param sender the sender value to set.
+     * @param recipient the recipient value to set.
+     * @param internetMessageId the internetMessageId value to set.
      * @param status the status value to set.
      * @param deliveryStatusDetails the deliveryStatusDetails value to set.
      * @param deliveryAttemptTimestamp the deliveryAttemptTimestamp value to set.
      */
     @Generated
-    private AcsEmailDeliveryReportReceivedEventData(AcsEmailDeliveryReportStatus status,
-        AcsEmailDeliveryReportStatusDetails deliveryStatusDetails, OffsetDateTime deliveryAttemptTimestamp) {
+    private AcsEmailDeliveryReportReceivedEventData(String sender, String recipient, String internetMessageId,
+        AcsEmailDeliveryReportStatus status, AcsEmailDeliveryReportStatusDetails deliveryStatusDetails,
+        OffsetDateTime deliveryAttemptTimestamp) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.internetMessageId = internetMessageId;
         this.status = status;
         this.deliveryStatusDetails = deliveryStatusDetails;
         this.deliveryAttemptTimestamp = deliveryAttemptTimestamp;
@@ -93,7 +106,17 @@ public final class AcsEmailDeliveryReportReceivedEventData
     }
 
     /**
-     * Get the messageId property: The Id of the email been sent.
+     * Get the internetMessageId property: The Internet Message Id of the email that has been sent.
+     * 
+     * @return the internetMessageId value.
+     */
+    @Generated
+    public String getInternetMessageId() {
+        return this.internetMessageId;
+    }
+
+    /**
+     * Get the messageId property: The Id of the email that has been sent.
      * 
      * @return the messageId value.
      */
@@ -139,14 +162,15 @@ public final class AcsEmailDeliveryReportReceivedEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sender", this.sender);
+        jsonWriter.writeStringField("recipient", this.recipient);
+        jsonWriter.writeStringField("internetMessageId", this.internetMessageId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("deliveryStatusDetails", this.deliveryStatusDetails);
         jsonWriter.writeStringField("deliveryAttemptTimestamp",
             this.deliveryAttemptTimestamp == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deliveryAttemptTimestamp));
-        jsonWriter.writeStringField("sender", this.sender);
-        jsonWriter.writeStringField("recipient", this.recipient);
         jsonWriter.writeStringField("messageId", this.messageId);
         return jsonWriter.writeEndObject();
     }
@@ -163,27 +187,30 @@ public final class AcsEmailDeliveryReportReceivedEventData
     @Generated
     public static AcsEmailDeliveryReportReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String sender = null;
+            String recipient = null;
+            String internetMessageId = null;
             AcsEmailDeliveryReportStatus status = null;
             AcsEmailDeliveryReportStatusDetails deliveryStatusDetails = null;
             OffsetDateTime deliveryAttemptTimestamp = null;
-            String sender = null;
-            String recipient = null;
             String messageId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("status".equals(fieldName)) {
+                if ("sender".equals(fieldName)) {
+                    sender = reader.getString();
+                } else if ("recipient".equals(fieldName)) {
+                    recipient = reader.getString();
+                } else if ("internetMessageId".equals(fieldName)) {
+                    internetMessageId = reader.getString();
+                } else if ("status".equals(fieldName)) {
                     status = AcsEmailDeliveryReportStatus.fromString(reader.getString());
                 } else if ("deliveryStatusDetails".equals(fieldName)) {
                     deliveryStatusDetails = AcsEmailDeliveryReportStatusDetails.fromJson(reader);
                 } else if ("deliveryAttemptTimestamp".equals(fieldName)) {
                     deliveryAttemptTimestamp = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("sender".equals(fieldName)) {
-                    sender = reader.getString();
-                } else if ("recipient".equals(fieldName)) {
-                    recipient = reader.getString();
                 } else if ("messageId".equals(fieldName)) {
                     messageId = reader.getString();
                 } else {
@@ -191,9 +218,8 @@ public final class AcsEmailDeliveryReportReceivedEventData
                 }
             }
             AcsEmailDeliveryReportReceivedEventData deserializedAcsEmailDeliveryReportReceivedEventData
-                = new AcsEmailDeliveryReportReceivedEventData(status, deliveryStatusDetails, deliveryAttemptTimestamp);
-            deserializedAcsEmailDeliveryReportReceivedEventData.sender = sender;
-            deserializedAcsEmailDeliveryReportReceivedEventData.recipient = recipient;
+                = new AcsEmailDeliveryReportReceivedEventData(sender, recipient, internetMessageId, status,
+                    deliveryStatusDetails, deliveryAttemptTimestamp);
             deserializedAcsEmailDeliveryReportReceivedEventData.messageId = messageId;
 
             return deserializedAcsEmailDeliveryReportReceivedEventData;

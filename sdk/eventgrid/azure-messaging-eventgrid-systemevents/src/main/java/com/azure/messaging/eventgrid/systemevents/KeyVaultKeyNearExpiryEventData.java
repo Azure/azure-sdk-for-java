@@ -21,49 +21,65 @@ public final class KeyVaultKeyNearExpiryEventData implements JsonSerializable<Ke
      * The id of the object that triggered this event.
      */
     @Generated
-    private String id;
+    private final String id;
 
     /*
      * Key vault name of the object that triggered this event.
      */
     @Generated
-    private String vaultName;
+    private final String vaultName;
 
     /*
      * The type of the object that triggered this event
      */
     @Generated
-    private String objectType;
+    private final String objectType;
 
     /*
      * The name of the object that triggered this event
      */
     @Generated
-    private String objectName;
+    private final String objectName;
 
     /*
      * The version of the object that triggered this event
      */
     @Generated
-    private String version;
+    private final String version;
 
     /*
      * Not before date of the object that triggered this event
      */
     @Generated
-    private Double nbf;
+    private final double nbf;
 
     /*
      * The expiration date of the object that triggered this event
      */
     @Generated
-    private Double exp;
+    private final double exp;
 
     /**
      * Creates an instance of KeyVaultKeyNearExpiryEventData class.
+     * 
+     * @param id the id value to set.
+     * @param vaultName the vaultName value to set.
+     * @param objectType the objectType value to set.
+     * @param objectName the objectName value to set.
+     * @param version the version value to set.
+     * @param nbf the nbf value to set.
+     * @param exp the exp value to set.
      */
     @Generated
-    private KeyVaultKeyNearExpiryEventData() {
+    private KeyVaultKeyNearExpiryEventData(String id, String vaultName, String objectType, String objectName,
+        String version, double nbf, double exp) {
+        this.id = id;
+        this.vaultName = vaultName;
+        this.objectType = objectType;
+        this.objectName = objectName;
+        this.version = version;
+        this.nbf = nbf;
+        this.exp = exp;
     }
 
     /**
@@ -122,7 +138,7 @@ public final class KeyVaultKeyNearExpiryEventData implements JsonSerializable<Ke
      * @return the nbf value.
      */
     @Generated
-    public Double getNbf() {
+    public double getNbf() {
         return this.nbf;
     }
 
@@ -132,7 +148,7 @@ public final class KeyVaultKeyNearExpiryEventData implements JsonSerializable<Ke
      * @return the exp value.
      */
     @Generated
-    public Double getExp() {
+    public double getExp() {
         return this.exp;
     }
 
@@ -148,8 +164,8 @@ public final class KeyVaultKeyNearExpiryEventData implements JsonSerializable<Ke
         jsonWriter.writeStringField("ObjectType", this.objectType);
         jsonWriter.writeStringField("ObjectName", this.objectName);
         jsonWriter.writeStringField("Version", this.version);
-        jsonWriter.writeNumberField("NBF", this.nbf);
-        jsonWriter.writeNumberField("EXP", this.exp);
+        jsonWriter.writeDoubleField("NBF", this.nbf);
+        jsonWriter.writeDoubleField("EXP", this.exp);
         return jsonWriter.writeEndObject();
     }
 
@@ -159,37 +175,42 @@ public final class KeyVaultKeyNearExpiryEventData implements JsonSerializable<Ke
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyVaultKeyNearExpiryEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyVaultKeyNearExpiryEventData.
      */
     @Generated
     public static KeyVaultKeyNearExpiryEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KeyVaultKeyNearExpiryEventData deserializedKeyVaultKeyNearExpiryEventData
-                = new KeyVaultKeyNearExpiryEventData();
+            String id = null;
+            String vaultName = null;
+            String objectType = null;
+            String objectName = null;
+            String version = null;
+            double nbf = 0.0;
+            double exp = 0.0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("Id".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.id = reader.getString();
+                    id = reader.getString();
                 } else if ("VaultName".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.vaultName = reader.getString();
+                    vaultName = reader.getString();
                 } else if ("ObjectType".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.objectType = reader.getString();
+                    objectType = reader.getString();
                 } else if ("ObjectName".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.objectName = reader.getString();
+                    objectName = reader.getString();
                 } else if ("Version".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.version = reader.getString();
+                    version = reader.getString();
                 } else if ("NBF".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.nbf = reader.getNullable(JsonReader::getDouble);
+                    nbf = reader.getDouble();
                 } else if ("EXP".equals(fieldName)) {
-                    deserializedKeyVaultKeyNearExpiryEventData.exp = reader.getNullable(JsonReader::getDouble);
+                    exp = reader.getDouble();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedKeyVaultKeyNearExpiryEventData;
+            return new KeyVaultKeyNearExpiryEventData(id, vaultName, objectType, objectName, version, nbf, exp);
         });
     }
 }

@@ -23,25 +23,32 @@ public final class ResourceNotificationsResourceDeletedDetails
      * id of the resource for which the event is being emitted
      */
     @Generated
-    private String id;
+    private final String id;
 
     /*
      * name of the resource for which the event is being emitted
      */
     @Generated
-    private String name;
+    private final String name;
 
     /*
      * the type of the resource for which the event is being emitted
      */
     @Generated
-    private String type;
+    private final String type;
 
     /**
      * Creates an instance of ResourceNotificationsResourceDeletedDetails class.
+     * 
+     * @param id the id value to set.
+     * @param name the name value to set.
+     * @param type the type value to set.
      */
     @Generated
-    private ResourceNotificationsResourceDeletedDetails() {
+    private ResourceNotificationsResourceDeletedDetails(String id, String name, String type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
     }
 
     /**
@@ -93,29 +100,30 @@ public final class ResourceNotificationsResourceDeletedDetails
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceNotificationsResourceDeletedDetails if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceNotificationsResourceDeletedDetails.
      */
     @Generated
     public static ResourceNotificationsResourceDeletedDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ResourceNotificationsResourceDeletedDetails deserializedResourceNotificationsResourceDeletedDetails
-                = new ResourceNotificationsResourceDeletedDetails();
+            String id = null;
+            String name = null;
+            String type = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceDeletedDetails.id = reader.getString();
+                    id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceDeletedDetails.name = reader.getString();
+                    name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedResourceNotificationsResourceDeletedDetails.type = reader.getString();
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedResourceNotificationsResourceDeletedDetails;
+            return new ResourceNotificationsResourceDeletedDetails(id, name, type);
         });
     }
 }

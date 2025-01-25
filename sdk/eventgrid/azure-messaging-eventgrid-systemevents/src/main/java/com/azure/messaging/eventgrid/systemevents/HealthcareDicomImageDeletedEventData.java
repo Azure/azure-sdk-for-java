@@ -22,44 +22,58 @@ public final class HealthcareDicomImageDeletedEventData
      * Data partition name
      */
     @Generated
-    private String partitionName;
+    private final String partitionName;
 
     /*
      * Unique identifier for the Study
      */
     @Generated
-    private String imageStudyInstanceUid;
+    private final String imageStudyInstanceUid;
 
     /*
      * Unique identifier for the Series
      */
     @Generated
-    private String imageSeriesInstanceUid;
+    private final String imageSeriesInstanceUid;
 
     /*
      * Unique identifier for the DICOM Image
      */
     @Generated
-    private String imageSopInstanceUid;
+    private final String imageSopInstanceUid;
 
     /*
      * Host name of the DICOM account for this image.
      */
     @Generated
-    private String serviceHostName;
+    private final String serviceHostName;
 
     /*
      * Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation and
      * deletion within the service.
      */
     @Generated
-    private Long sequenceNumber;
+    private final long sequenceNumber;
 
     /**
      * Creates an instance of HealthcareDicomImageDeletedEventData class.
+     * 
+     * @param partitionName the partitionName value to set.
+     * @param imageStudyInstanceUid the imageStudyInstanceUid value to set.
+     * @param imageSeriesInstanceUid the imageSeriesInstanceUid value to set.
+     * @param imageSopInstanceUid the imageSopInstanceUid value to set.
+     * @param serviceHostName the serviceHostName value to set.
+     * @param sequenceNumber the sequenceNumber value to set.
      */
     @Generated
-    private HealthcareDicomImageDeletedEventData() {
+    private HealthcareDicomImageDeletedEventData(String partitionName, String imageStudyInstanceUid,
+        String imageSeriesInstanceUid, String imageSopInstanceUid, String serviceHostName, long sequenceNumber) {
+        this.partitionName = partitionName;
+        this.imageStudyInstanceUid = imageStudyInstanceUid;
+        this.imageSeriesInstanceUid = imageSeriesInstanceUid;
+        this.imageSopInstanceUid = imageSopInstanceUid;
+        this.serviceHostName = serviceHostName;
+        this.sequenceNumber = sequenceNumber;
     }
 
     /**
@@ -119,7 +133,7 @@ public final class HealthcareDicomImageDeletedEventData
      * @return the sequenceNumber value.
      */
     @Generated
-    public Long getSequenceNumber() {
+    public long getSequenceNumber() {
         return this.sequenceNumber;
     }
 
@@ -135,7 +149,7 @@ public final class HealthcareDicomImageDeletedEventData
         jsonWriter.writeStringField("imageSeriesInstanceUid", this.imageSeriesInstanceUid);
         jsonWriter.writeStringField("imageSopInstanceUid", this.imageSopInstanceUid);
         jsonWriter.writeStringField("serviceHostName", this.serviceHostName);
-        jsonWriter.writeNumberField("sequenceNumber", this.sequenceNumber);
+        jsonWriter.writeLongField("sequenceNumber", this.sequenceNumber);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,36 +159,40 @@ public final class HealthcareDicomImageDeletedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of HealthcareDicomImageDeletedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareDicomImageDeletedEventData.
      */
     @Generated
     public static HealthcareDicomImageDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            HealthcareDicomImageDeletedEventData deserializedHealthcareDicomImageDeletedEventData
-                = new HealthcareDicomImageDeletedEventData();
+            String partitionName = null;
+            String imageStudyInstanceUid = null;
+            String imageSeriesInstanceUid = null;
+            String imageSopInstanceUid = null;
+            String serviceHostName = null;
+            long sequenceNumber = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("partitionName".equals(fieldName)) {
-                    deserializedHealthcareDicomImageDeletedEventData.partitionName = reader.getString();
+                    partitionName = reader.getString();
                 } else if ("imageStudyInstanceUid".equals(fieldName)) {
-                    deserializedHealthcareDicomImageDeletedEventData.imageStudyInstanceUid = reader.getString();
+                    imageStudyInstanceUid = reader.getString();
                 } else if ("imageSeriesInstanceUid".equals(fieldName)) {
-                    deserializedHealthcareDicomImageDeletedEventData.imageSeriesInstanceUid = reader.getString();
+                    imageSeriesInstanceUid = reader.getString();
                 } else if ("imageSopInstanceUid".equals(fieldName)) {
-                    deserializedHealthcareDicomImageDeletedEventData.imageSopInstanceUid = reader.getString();
+                    imageSopInstanceUid = reader.getString();
                 } else if ("serviceHostName".equals(fieldName)) {
-                    deserializedHealthcareDicomImageDeletedEventData.serviceHostName = reader.getString();
+                    serviceHostName = reader.getString();
                 } else if ("sequenceNumber".equals(fieldName)) {
-                    deserializedHealthcareDicomImageDeletedEventData.sequenceNumber
-                        = reader.getNullable(JsonReader::getLong);
+                    sequenceNumber = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
             }
-
-            return deserializedHealthcareDicomImageDeletedEventData;
+            return new HealthcareDicomImageDeletedEventData(partitionName, imageStudyInstanceUid,
+                imageSeriesInstanceUid, imageSopInstanceUid, serviceHostName, sequenceNumber);
         });
     }
 }

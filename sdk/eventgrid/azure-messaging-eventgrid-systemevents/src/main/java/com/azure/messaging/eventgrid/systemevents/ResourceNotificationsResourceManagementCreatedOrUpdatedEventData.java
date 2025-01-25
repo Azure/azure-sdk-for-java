@@ -18,34 +18,18 @@ import java.io.IOException;
 @Immutable
 public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventData
     extends ResourceNotificationsResourceUpdatedEventData {
-    /*
-     * api version of the resource properties bag
-     */
-    @Generated
-    private String apiVersion;
-
     /**
      * Creates an instance of ResourceNotificationsResourceManagementCreatedOrUpdatedEventData class.
      * 
      * @param resourceDetails the resourceDetails value to set.
      * @param operationalDetails the operationalDetails value to set.
+     * @param apiVersion the apiVersion value to set.
      */
     @Generated
     private ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(
         ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails) {
-        super(resourceDetails, operationalDetails);
-    }
-
-    /**
-     * Get the apiVersion property: api version of the resource properties bag.
-     * 
-     * @return the apiVersion value.
-     */
-    @Generated
-    @Override
-    public String getApiVersion() {
-        return this.apiVersion;
+        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
+        super(resourceDetails, operationalDetails, apiVersion);
     }
 
     /**
@@ -92,12 +76,8 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
                     reader.skipChildren();
                 }
             }
-            ResourceNotificationsResourceManagementCreatedOrUpdatedEventData deserializedResourceNotificationsResourceManagementCreatedOrUpdatedEventData
-                = new ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(resourceDetails,
-                    operationalDetails);
-            deserializedResourceNotificationsResourceManagementCreatedOrUpdatedEventData.apiVersion = apiVersion;
-
-            return deserializedResourceNotificationsResourceManagementCreatedOrUpdatedEventData;
+            return new ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(resourceDetails,
+                operationalDetails, apiVersion);
         });
     }
 }

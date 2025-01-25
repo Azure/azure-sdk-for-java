@@ -31,13 +31,13 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
      * The hub of connected client connection.
      */
     @Generated
-    private String hubName;
+    private final String hubName;
 
     /*
      * The connection Id of connected client connection.
      */
     @Generated
-    private String connectionId;
+    private final String connectionId;
 
     /*
      * The user Id of connected client connection.
@@ -55,10 +55,15 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
      * Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class.
      * 
      * @param timestamp the timestamp value to set.
+     * @param hubName the hubName value to set.
+     * @param connectionId the connectionId value to set.
      */
     @Generated
-    private SignalRServiceClientConnectionDisconnectedEventData(OffsetDateTime timestamp) {
+    private SignalRServiceClientConnectionDisconnectedEventData(OffsetDateTime timestamp, String hubName,
+        String connectionId) {
         this.timestamp = timestamp;
+        this.hubName = hubName;
+        this.connectionId = connectionId;
     }
 
     /**
@@ -165,9 +170,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData
                 }
             }
             SignalRServiceClientConnectionDisconnectedEventData deserializedSignalRServiceClientConnectionDisconnectedEventData
-                = new SignalRServiceClientConnectionDisconnectedEventData(timestamp);
-            deserializedSignalRServiceClientConnectionDisconnectedEventData.hubName = hubName;
-            deserializedSignalRServiceClientConnectionDisconnectedEventData.connectionId = connectionId;
+                = new SignalRServiceClientConnectionDisconnectedEventData(timestamp, hubName, connectionId);
             deserializedSignalRServiceClientConnectionDisconnectedEventData.userId = userId;
             deserializedSignalRServiceClientConnectionDisconnectedEventData.errorMessage = errorMessage;
 

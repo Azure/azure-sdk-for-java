@@ -34,19 +34,21 @@ public class ResourceNotificationsResourceUpdatedEventData
      * api version of the resource properties bag
      */
     @Generated
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Creates an instance of ResourceNotificationsResourceUpdatedEventData class.
      * 
      * @param resourceDetails the resourceDetails value to set.
      * @param operationalDetails the operationalDetails value to set.
+     * @param apiVersion the apiVersion value to set.
      */
     @Generated
     protected ResourceNotificationsResourceUpdatedEventData(ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails) {
+        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
         this.resourceDetails = resourceDetails;
         this.operationalDetails = operationalDetails;
+        this.apiVersion = apiVersion;
     }
 
     /**
@@ -77,18 +79,6 @@ public class ResourceNotificationsResourceUpdatedEventData
     @Generated
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Set the apiVersion property: api version of the resource properties bag.
-     * 
-     * @param apiVersion the apiVersion value to set.
-     * @return the ResourceNotificationsResourceUpdatedEventData object itself.
-     */
-    @Generated
-    ResourceNotificationsResourceUpdatedEventData setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /**
@@ -133,11 +123,7 @@ public class ResourceNotificationsResourceUpdatedEventData
                     reader.skipChildren();
                 }
             }
-            ResourceNotificationsResourceUpdatedEventData deserializedResourceNotificationsResourceUpdatedEventData
-                = new ResourceNotificationsResourceUpdatedEventData(resourceDetails, operationalDetails);
-            deserializedResourceNotificationsResourceUpdatedEventData.apiVersion = apiVersion;
-
-            return deserializedResourceNotificationsResourceUpdatedEventData;
+            return new ResourceNotificationsResourceUpdatedEventData(resourceDetails, operationalDetails, apiVersion);
         });
     }
 }

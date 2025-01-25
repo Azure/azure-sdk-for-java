@@ -24,6 +24,12 @@ public final class AcsEmailDeliveryReportStatusDetails
     @Generated
     private String statusMessage;
 
+    /*
+     * Recipient mail server host name
+     */
+    @Generated
+    private String recipientMailServerHostName;
+
     /**
      * Creates an instance of AcsEmailDeliveryReportStatusDetails class.
      */
@@ -42,6 +48,16 @@ public final class AcsEmailDeliveryReportStatusDetails
     }
 
     /**
+     * Get the recipientMailServerHostName property: Recipient mail server host name.
+     * 
+     * @return the recipientMailServerHostName value.
+     */
+    @Generated
+    public String getRecipientMailServerHostName() {
+        return this.recipientMailServerHostName;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -49,6 +65,7 @@ public final class AcsEmailDeliveryReportStatusDetails
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("statusMessage", this.statusMessage);
+        jsonWriter.writeStringField("recipientMailServerHostName", this.recipientMailServerHostName);
         return jsonWriter.writeEndObject();
     }
 
@@ -71,6 +88,8 @@ public final class AcsEmailDeliveryReportStatusDetails
 
                 if ("statusMessage".equals(fieldName)) {
                     deserializedAcsEmailDeliveryReportStatusDetails.statusMessage = reader.getString();
+                } else if ("recipientMailServerHostName".equals(fieldName)) {
+                    deserializedAcsEmailDeliveryReportStatusDetails.recipientMailServerHostName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
