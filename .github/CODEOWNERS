@@ -116,9 +116,6 @@
 # ServiceLabel: %ARO
 # ServiceOwners:                                     @mjudeikis @jim-minter @julienstroheker @amanohar
 
-# ServiceLabel: %graalvm
-# AzureSdkOwners:                                    @srnagar
-
 # PRLabel: %Attestation
 /sdk/attestation/                                    @Azure/azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
 
@@ -202,10 +199,10 @@
 # ServiceOwners:                                     @yingqunpku @bowgong
 
 # ServiceLabel: %Cognitive - Custom Vision
-# ServiceOwners:                                     @areddish @tburns10
+# ServiceOwners:                                     @joyhui
 
 # ServiceLabel: %Cognitive - Computer Vision
-# ServiceOwners:                                     @ryogok @TFR258 @tburns10
+# ServiceOwners:                                     @ryogok
 
 # ServiceLabel: %Cognitive - Face
 # ServiceOwners:                                     @JinyuID @dipidoo @SteveMSFT
@@ -214,7 +211,7 @@
 # ServiceOwners:                                     @bingisbestest @nerajput1607
 
 # ServiceLabel: %Cognitive - Translator
-# ServiceOwners:                                     @swmachan @MikeyMCZ
+# ServiceOwners:                                     @han-msft @leareai @krishna-doss-mohan @SG_MS
 
 # ServiceLabel: %Cognitive - Speech
 # ServiceOwners:                                     @rhurey
@@ -244,10 +241,10 @@
 # ServiceOwners:                                     @yangyuan
 
 # PRLabel: %Cognitive - Health Insights
-/sdk/healthinsights/                                               @tomsft @koen-mertens
+/sdk/healthinsights/                                 @tomsft @koen-mertens @asaflevi-ms @slobshay
 
 # ServiceLabel: %Cognitive - Health Insights
-# ServiceOwners:                                                   @tomsft @koen-mertens
+# ServiceOwners:                                     @tomsft @koen-mertens @asaflevi-ms @slobshay
 
 # ServiceLabel: %Commerce
 # ServiceOwners:                                     @ms-premp @qiaozha
@@ -462,7 +459,7 @@
 
 # ServiceLabel: %Cognitive - Face
 # PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/               @leareai
+/sdk/face/azure-ai-vision-face/                      @han-msft @leareai
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
@@ -496,9 +493,6 @@
 
 # ServiceLabel: %Image Analysis
 # ServiceOwners:                                     @rhurey @dargilco
-
-# ServiceLabel: %Import Export
-# ServiceOwners:                                     @madhurinms
 
 # ServiceLabel: %IoT - CLI
 # ServiceOwners:                                     @Azure/azure-iot-cli-triage
@@ -563,7 +557,7 @@
 # ServiceOwners:                                     @kpiteira
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository/                               @drwill-ms @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft @ngastelum-ms
+/sdk/modelsrepository/                               @timtay-microsoft @varunpuranik
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane
@@ -674,7 +668,7 @@
 /sdk/purview/                                        @yifan-zhou922
 
 # PRLabel: %Azure Quantum
-/sdk/quantum/                                        @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
+/sdk/quantum/                                        @vxfield @msoeken @xinyi-joffre
 
 # ServiceLabel: %Recovery Services Backup
 # ServiceOwners:                                     @Daya-Patil
@@ -802,7 +796,7 @@
 
 # ServiceLabel: %Text Translation
 # PRLabel:  %Text Translation
-/sdk/translation/azure-ai-translation-text/         @MikeyMCZ
+/sdk/translation/azure-ai-translation-text/          @han-msft @leareai @krishna-doss-mohan @SG_MS
 
 # PRLabel: %EngSys
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
