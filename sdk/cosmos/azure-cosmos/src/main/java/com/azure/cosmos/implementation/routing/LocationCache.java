@@ -115,7 +115,6 @@ public class LocationCache {
      * Get the list of available read endpoints.
      * The list will not be filtered by preferred region list.
      *
-     * This method is ONLY used for fault injection.
      * @return
      */
     public List<URI> getAvailableReadEndpoints() {
@@ -126,7 +125,6 @@ public class LocationCache {
      * Get the list of available write endpoints.
      * The list will not be filtered by preferred region list.
      *
-     * This method is ONLY used for fault injection.
      * @return
      */
     public List<URI> getAvailableWriteEndpoints() {
