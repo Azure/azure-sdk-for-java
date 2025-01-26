@@ -45,6 +45,11 @@ public enum Flags {
         return null;
     }
 
+    /**
+     * Returns the value for a Flags instance.
+     *
+     * @return the integer value of the Flags object.
+     */
     public int getValue() {
         return value;
     }

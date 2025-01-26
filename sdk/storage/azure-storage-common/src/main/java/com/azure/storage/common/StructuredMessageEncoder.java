@@ -3,20 +3,35 @@
 
 package com.azure.storage.common;
 
+import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * temp comment to allow building
+ */
 public class StructuredMessageEncoder {
+    /**
+     * temp comment to allow building
+     */
     public static final int DEFAULT_MESSAGE_VERSION = 1;
+    /**
+     * temp comment to allow building
+     */
     public static final int V1_HEADER_LENGTH = 13;
+    /**
+     * temp comment to allow building
+     */
     public static final int V1_SEGMENT_HEADER_LENGTH = 10;
+    /**
+     * temp comment to allow building
+     */
     public static final int CRC64_LENGTH = 8;
 
     private int messageVersion;
@@ -40,6 +55,9 @@ public class StructuredMessageEncoder {
         MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER, SEGMENT_CONTENT,
     }
 
+    /**
+     * temp comment to allow building
+     */
     public StructuredMessageEncoder(ByteBuffer innerBuffer, int contentLength, int segmentSize, Flags flags) {
         StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
         if (segmentSize < 1) { //python says at least 1, .net says at least 2?
@@ -172,6 +190,9 @@ public class StructuredMessageEncoder {
         return position;
     }
 
+    /**
+     * temp comment to allow building
+     */
     public ByteBuffer encode(int size) throws IOException {
         if (size == 0) {
             return ByteBuffer.allocate(0);
@@ -340,13 +361,11 @@ public class StructuredMessageEncoder {
         }
     }
 
+    /**
+     * temp comment to allow building
+     */
     public int getMessageLength() {
         return messageLength;
-    }
-
-    //temporary for testing:
-    public BigInteger getUnsignedCRC64() {
-        return new BigInteger(Long.toUnsignedString(messageCRC64));
     }
 
     // Untested
