@@ -286,6 +286,7 @@ public interface AsyncDocumentClient {
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
                         && this.credential == null && this.tokenCredential == null && this.cosmosAuthorizationTokenResolver == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
+
                         "resource token, permissionFeed and azure key credential");
             ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
                 "cannot buildAsyncClient client without key credential");

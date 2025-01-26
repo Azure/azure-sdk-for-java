@@ -110,37 +110,6 @@ public class LocationCache {
         return this.locationInfo.writeEndpoints;
     }
 
-    /**
-     * Gets list of thin client read endpoints ordered by
-     *
-     * 1. Preferred location
-     * 2. Endpoint availability
-     * @return
-     */
-    public UnmodifiableList<URI> getThinClientReadEndpoints() {
-        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
-            && unavailableLocationsExpirationTimePassed()) {
-            this.updateLocationCache();
-        }
-
-        return this.locationInfo.thinClientReadEndpoints;
-    }
-
-    /**
-     * Gets list of thin client write endpoints ordered by
-     * 1. Preferred location
-     * 2. Endpoint availability
-     * @return
-     */
-    public UnmodifiableList<URI> getThinClientWriteEndpoints() {
-        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
-            && unavailableLocationsExpirationTimePassed()) {
-            this.updateLocationCache();
-        }
-
-        return this.locationInfo.thinClientWriteEndpoints;
-    }
-
     /***
      * Get the list of available read endpoints.
      * The list will not be filtered by preferred region list.
@@ -149,7 +118,7 @@ public class LocationCache {
      * @return
      */
     public List<URI> getAvailableReadEndpoints() {
-        return this.locationInfo.availableReadEndpointByLocation.values().stream().collect(Collectors.toList());
+        return this.locationInfo.availableReadEndpointsByLocation.values().stream().collect(Collectors.toList());
     }
 
     /***
@@ -160,7 +129,7 @@ public class LocationCache {
      * @return
      */
     public List<URI> getAvailableWriteEndpoints() {
-        return this.locationInfo.availableWriteEndpointByLocation.values().stream().collect(Collectors.toList());
+        return this.locationInfo.availableWriteEndpointsByLocation.values().stream().collect(Collectors.toList());
     }
 
     public List<String> getEffectivePreferredLocations() {
@@ -189,15 +158,13 @@ public class LocationCache {
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
-                databaseAccount.getThinClientWritableLocations(),
-                databaseAccount.getThinClientReadableLocations(),
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
     }
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {
         this.updateLocationCache(
-                null, null, null, null, preferredLocations, null);
+                null, null, preferredLocations, null);
     }
 
     /**
@@ -237,7 +204,7 @@ public class LocationCache {
             if(this.enableEndpointDiscovery && currentLocationInfo.availableWriteLocations.size() > 0) {
                 locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
-                return currentLocationInfo.availableWriteEndpointByLocation.get(writeLocation);
+                return currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation);
             } else {
                 return this.defaultEndpoint;
             }
@@ -348,9 +315,9 @@ public class LocationCache {
     public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
         Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
         if (writeOnly) {
-            Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder);
+            Utils.tryGetValue(this.locationInfo.availableWriteEndpointsByLocation, region, endpointValueHolder);
         } else {
-            Utils.tryGetValue(this.locationInfo.availableReadEndpointByLocation, region, endpointValueHolder);
+            Utils.tryGetValue(this.locationInfo.availableReadEndpointsByLocation, region, endpointValueHolder);
         }
 
         if (endpointValueHolder.v != null) {
@@ -393,7 +360,7 @@ public class LocationCache {
                 Utils.ValueHolder<URI> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
-                if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
+                if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointsByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
                     logger.debug("most preferred is [{}], most preferred available is [{}]",
                             mostPreferredLocation, mostPreferredReadEndpointHolder.v);
                     if (!areEqual(mostPreferredReadEndpointHolder.v, readLocationEndpoints.get(0))) {
@@ -435,7 +402,7 @@ public class LocationCache {
                     return shouldRefresh;
                 }
             } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
+                if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointsByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
                     shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v,writeLocationEndpoints.get(0));
 
                     if (shouldRefresh) {
@@ -570,14 +537,12 @@ public class LocationCache {
     }
 
     private void updateLocationCache(){
-        updateLocationCache(null, null, null, null, null, null);
+        updateLocationCache(null, null, null, null);
     }
 
     private void updateLocationCache(
             Iterable<DatabaseAccountLocation> writeLocations,
             Iterable<DatabaseAccountLocation> readLocations,
-            Iterable<DatabaseAccountLocation> thinClientWriteLocations,
-            Iterable<DatabaseAccountLocation> thinClientReadLocations,
             UnmodifiableList<String> preferenceList,
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
@@ -598,7 +563,7 @@ public class LocationCache {
             if (readLocations != null) {
                 Utils.ValueHolder<UnmodifiableList<String>> out = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
                 Utils.ValueHolder<UnmodifiableMap<URI, String>> outReadRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
-                nextLocationInfo.availableReadEndpointByLocation = this.getEndpointByLocation(readLocations, out, outReadRegionMap);
+                nextLocationInfo.availableReadEndpointsByLocation = this.getEndpointsByLocation(readLocations, out, outReadRegionMap);
                 nextLocationInfo.availableReadLocations =  out.v;
                 nextLocationInfo.regionNameByReadEndpoint = outReadRegionMap.v;
             }
@@ -606,13 +571,13 @@ public class LocationCache {
             if (writeLocations != null) {
                 Utils.ValueHolder<UnmodifiableList<String>> out = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
                 Utils.ValueHolder<UnmodifiableMap<URI, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
-                nextLocationInfo.availableWriteEndpointByLocation = this.getEndpointByLocation(writeLocations, out, outWriteRegionMap);
+                nextLocationInfo.availableWriteEndpointsByLocation = this.getEndpointsByLocation(writeLocations, out, outWriteRegionMap);
                 nextLocationInfo.availableWriteLocations = out.v;
                 nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
             }
 
-            nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
-            nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
+            nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointsByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
+            nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointsByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
 
             if (nextLocationInfo.preferredLocations == null || nextLocationInfo.preferredLocations.isEmpty()) {
 
@@ -706,17 +671,22 @@ public class LocationCache {
 
 
 
-    private UnmodifiableMap<String, URI> getEndpointByLocation(Iterable<DatabaseAccountLocation> locations,
-                                                               Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
-                                                               Utils.ValueHolder<UnmodifiableMap<URI, String>> regionMap) {
-        Map<String, URI> endpointsByLocation = new CaseInsensitiveMap<>();
+    private UnmodifiableMap<String, LocationEndpoints> getEndpointsByLocation(Iterable<DatabaseAccountLocation> locations,
+                                                                Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
+                                                                Utils.ValueHolder<UnmodifiableMap<URI, String>> regionMap) {
+        Map<String, LocationEndpoints> endpointsByLocation = new CaseInsensitiveMap<>();
         Map<URI, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();
 
         for (DatabaseAccountLocation location: locations) {
             if (!Strings.isNullOrEmpty(location.getName())) {
                 try {
-                    URI endpoint = new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
+                    String endpointString = location.getEndpoint().toLowerCase(Locale.ROOT);
+                    // TODO: How do we know if thinclient endpoint? Seems 10650 is the selected port
+                    // for thin proxy operations, using that as an indicator for now - they are clearly
+                    // marked in the DatabaseAccount response obj but currently cannot figure out how to
+                    // float/mark them once they reach this point
+                    URI endpoint = new URI();
                     endpointsByLocation.put(location.getName().toLowerCase(Locale.ROOT), endpoint);
                     regionByEndpoint.put(endpoint, location.getName().toLowerCase(Locale.ROOT));
                     parsedLocations.add(location.getName());
@@ -731,7 +701,7 @@ public class LocationCache {
         orderedLocations.v = new UnmodifiableList<String>(parsedLocations);
         regionMap.v = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(regionByEndpoint);
 
-        return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
+        return (UnmodifiableMap<String, LocationEndpoints>) UnmodifiableMap.<String, LocationEndpoints>unmodifiableMap(endpointsByLocation);
     }
 
     public boolean canUseMultipleWriteLocations() {
@@ -806,30 +776,54 @@ public class LocationCache {
         return excludedRegionsSupplier != null && excludedRegionsSupplier.get() != null;
     }
 
+    private static class LocationEndpoints {
+        private URI gatewayEndpoint;
+        private URI thinClientEndpoint;
+
+        private LocationEndpoints() {
+            this.gatewayEndpoint = null;
+            this.thinClientEndpoint = null;
+        }
+
+        private URI getGatewayEndpoint() {
+            return this.gatewayEndpoint;
+        }
+
+        private void setGatewayEndpoint(URI gatewayEndpoint) {
+            this.gatewayEndpoint = gatewayEndpoint;
+        }
+
+        private URI getThinClientEndpoint() {
+            return this.thinClientEndpoint;
+        }
+
+        private void setThinClientEndpoint(URI thinClientEndpoint) {
+            this.thinClientEndpoint = thinClientEndpoint;
+        }
+    }
+
     static class DatabaseAccountLocationsInfo {
+        private UnmodifiableList<URI> writeEndpoints;
+        private UnmodifiableList<URI> readEndpoints;
         private UnmodifiableList<String> preferredLocations;
         private UnmodifiableList<String> effectivePreferredLocations;
         // lower-case region
         private UnmodifiableList<String> availableWriteLocations;
         // lower-case region
         private UnmodifiableList<String> availableReadLocations;
-        private UnmodifiableMap<String, URI> availableWriteEndpointByLocation;
-        private UnmodifiableMap<String, URI> availableReadEndpointByLocation;
+        private UnmodifiableMap<String, LocationEndpoints> availableWriteEndpointsByLocation;
+        private UnmodifiableMap<String, LocationEndpoints> availableReadEndpointsByLocation;
         private UnmodifiableMap<URI, String> regionNameByWriteEndpoint;
         private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
-        private UnmodifiableList<URI> writeEndpoints;
-        private UnmodifiableList<URI> readEndpoints;
-        private UnmodifiableList<URI> thinClientReadEndpoints;
-        private UnmodifiableList<URI> thinClientWriteEndpoints;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
-            this.availableWriteEndpointByLocation
-                = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
-            this.availableReadEndpointByLocation
-                = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableWriteEndpointsByLocation
+                = (UnmodifiableMap<String, LocationEndpoints>) UnmodifiableMap.<String, LocationEndpoints>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableReadEndpointsByLocation
+                = (UnmodifiableMap<String, LocationEndpoints>) UnmodifiableMap.<String, LocationEndpoints>unmodifiableMap(new CaseInsensitiveMap<>());
             this.regionNameByWriteEndpoint
                 = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
             this.regionNameByReadEndpoint
@@ -845,10 +839,10 @@ public class LocationCache {
             this.effectivePreferredLocations = other.effectivePreferredLocations;
             this.availableWriteLocations = other.availableWriteLocations;
             this.availableReadLocations = other.availableReadLocations;
-            this.availableWriteEndpointByLocation = other.availableWriteEndpointByLocation;
+            this.availableWriteEndpointsByLocation = other.availableWriteEndpointsByLocation;
             this.regionNameByWriteEndpoint = other.regionNameByWriteEndpoint;
             this.regionNameByReadEndpoint = other.regionNameByReadEndpoint;
-            this.availableReadEndpointByLocation = other.availableReadEndpointByLocation;
+            this.availableReadEndpointsByLocation = other.availableReadEndpointsByLocation;
             this.writeEndpoints = other.writeEndpoints;
             this.readEndpoints = other.readEndpoints;
         }

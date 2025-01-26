@@ -490,12 +490,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-            this.serviceEndpoint = serviceEndpoint;
+            this.isThinClientEnabled = this.configs.getThinclientEnabled();
+            this.serviceEndpoint = this.isThinClientEnabled ? configs.getThinclientEndpoint() : serviceEndpoint;
             this.credential = credential;
             this.tokenCredential = tokenCredential;
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
             this.authorizationTokenType = AuthorizationTokenType.Invalid;
-            this.isThinClientEnabled = this.configs.getThinclientEnabled();
 
             if (this.credential != null) {
                 hasAuthKeyResourceToken = false;
@@ -5741,6 +5741,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {
+            // TODO: need to restrict thinclient to just document operations - need to decide whether this should be decided in getStoreProxy or inside thin client store model
+            if (this.isThinClientEnabled) {
+                return this.thinProxy;
+            }
             return this.gatewayProxy;
         }
 
