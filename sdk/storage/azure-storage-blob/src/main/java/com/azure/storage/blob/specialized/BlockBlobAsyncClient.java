@@ -38,12 +38,15 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
+import com.azure.storage.common.Flags;
+import com.azure.storage.common.StructuredMessageEncoder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -53,6 +56,8 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.StructuredMessageEncoder.DEFAULT_SEGMENT_CONTENT_LENGTH;
+import static com.azure.storage.common.StructuredMessageEncoder.STRUCTUED_BODY_TYPE;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -431,21 +436,39 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
-            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
-                options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
-                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
-                null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
-            .map(rb -> {
-                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
-                return new SimpleResponse<>(rb, item);
-            }));
+        return dataMono.flatMap(data -> {
+            ByteBuffer innerBuffer = ByteBuffer.wrap(data.toBytes());
+            int contentLength = Math.toIntExact(data.getLength());
+
+            StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(innerBuffer, contentLength,
+                DEFAULT_SEGMENT_CONTENT_LENGTH, Flags.STORAGE_CRC64);
+
+            try {
+                data = BinaryData.fromBytes(structuredMessageEncoder.encode(-1).array());
+            } catch (IOException e) {
+                throw new RuntimeException("bad encode", e);
+            }
+
+            // contentLength is whole structured message length
+            // structuredContentLength is just the length of the content of the message, no headers or footers
+
+            return this.azureBlobStorage.getBlockBlobs()
+                .uploadWithResponseAsync(containerName, blobName, data.getLength(), data, null, options.getContentMd5(),
+                    options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                    requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
+                    immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
+                    STRUCTUED_BODY_TYPE, structuredMessageEncoder.getContentLength(), options.getHeaders(),
+                    getCustomerProvidedKey(), encryptionScope, finalContext)
+                .map(rb -> {
+                    BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
+                    BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsVersionId());
+                    return new SimpleResponse<>(rb, item);
+                });
+        });
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.common;
 
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -33,6 +34,14 @@ public class StructuredMessageEncoder {
      * temp comment to allow building
      */
     public static final int CRC64_LENGTH = 8;
+    /**
+     * temp comment to allow building
+     */
+    public static final int DEFAULT_SEGMENT_CONTENT_LENGTH = 4 * Constants.MB;
+    /**
+     * temp comment to allow building
+     */
+    public static final String STRUCTUED_BODY_TYPE = "XSM/1.0; properties=crc64";
 
     private int messageVersion;
     private int contentLength;
@@ -57,6 +66,10 @@ public class StructuredMessageEncoder {
 
     /**
      * temp comment to allow building
+     * @param innerBuffer The buffer to encode
+     * @param contentLength The length of the content
+     * @param segmentSize The size of each segment
+     * @param flags The flags for the message
      */
     public StructuredMessageEncoder(ByteBuffer innerBuffer, int contentLength, int segmentSize, Flags flags) {
         StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
@@ -192,6 +205,9 @@ public class StructuredMessageEncoder {
 
     /**
      * temp comment to allow building
+     * @param size The size to encode
+     * @return The encoded ByteBuffer
+     * @throws IOException If an I/O error occurs
      */
     public ByteBuffer encode(int size) throws IOException {
         if (size == 0) {
@@ -363,9 +379,18 @@ public class StructuredMessageEncoder {
 
     /**
      * temp comment to allow building
+     * @return The message length
      */
     public int getMessageLength() {
         return messageLength;
+    }
+
+    /**
+     * temp comment to allow building
+     * @return The content length
+     */
+    public Long getContentLength() {
+        return (long) contentLength;
     }
 
     // Untested
