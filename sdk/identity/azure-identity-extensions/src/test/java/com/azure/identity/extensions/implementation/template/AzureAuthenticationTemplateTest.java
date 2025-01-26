@@ -117,7 +117,7 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void getTokenAsPasswordWithDefaultCredentialProvider() throws InterruptedException {
+    void verityTokeWithDefaultCredentialProvider() throws InterruptedException {
         // setup
         String token1 = "token1";
         String token2 = "token2";
@@ -167,11 +167,12 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<DefaultTokenCredentialProvider> credentialProviderMock
-            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+        try (MockedConstruction<CachingTokenCredentialProvider> credentialProviderMock
+            = mockConstruction(CachingTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
                 when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
             })) {
             Properties properties = new Properties();
+
             AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
             template.init(properties);
             AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
