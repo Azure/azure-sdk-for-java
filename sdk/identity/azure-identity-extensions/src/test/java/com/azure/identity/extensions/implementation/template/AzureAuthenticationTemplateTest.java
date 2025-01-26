@@ -152,7 +152,7 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void getTokenAsPasswordWithCachingCredentialProvider() throws InterruptedException {
+    void verityTokenWithCachingCredentialProvider() throws InterruptedException {
         int tokenExpireSeconds = 2;
         AtomicInteger tokenIndex1 = new AtomicInteger();
         AtomicInteger tokenIndex2 = new AtomicInteger(1);
@@ -167,12 +167,11 @@ class AzureAuthenticationTemplateTest {
             }
         });
         // mock
-        try (MockedConstruction<CachingTokenCredentialProvider> credentialProviderMock
-            = mockConstruction(CachingTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+        try (MockedConstruction<DefaultTokenCredentialProvider> credentialProviderMock
+            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
                 when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
             })) {
             Properties properties = new Properties();
-
             AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
             template.init(properties);
             AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate();
@@ -180,7 +179,7 @@ class AzureAuthenticationTemplateTest {
 
             verifyToken("token1-", 0, template);
             TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
-            verifyToken("token2-", 1, template);
+            verifyToken("token2-", 1, template2);
             assertNotNull(credentialProviderMock);
         }
     }
