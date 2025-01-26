@@ -66,6 +66,23 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ```
 
 ## Key concepts
+### Jar Signer
+
+### TLS/mTLS
+
+### Exposed Env Options
+JCA library support to configure the following options:
+* `azure.keyvault.uri`: The Azure Key Vault endpoint to retrieve certificates.
+* `azure.keyvault.aadAuthenticationUrl`: The authentication URL for Microsoft Entra ID.
+* `azure.keyvault.tenantId`: The Microsoft Entra ID tenant ID required for authentication.
+* `azure.keyvault.clientId`: The client/application ID used for authentication.
+* `azure.keyvault.clientSecret`: The client secret for authentication when using client credentials.
+* `azure.keyvault.managedIdentity`: Indicates whether Managed Identity authentication is enabled.
+* `azure.cert-path.well-known`: The path where the well-known certificate is stored.
+* `azure.cert-path.custom`: The path where the custom certificate is stored.
+* `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
+* `azure.keyvault.jca.certificates-refresh-interval(-in-ms)`: The refresh interval time.
+* `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 
 ## Examples
 ### Server side SSL
