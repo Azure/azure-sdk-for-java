@@ -36,7 +36,7 @@
         they can coexist on a classpath. -->
         <dependency>
             <groupId>org.openrewrite</groupId>
-            <artifactId>rewrite-java-17</artifactId>
+            <artifactId>rewrite-java-8</artifactId>
             <scope>runtime</scope>
         </dependency>
 
