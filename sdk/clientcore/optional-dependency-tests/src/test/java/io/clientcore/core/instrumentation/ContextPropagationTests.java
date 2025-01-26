@@ -62,7 +62,7 @@ public class ContextPropagationTests {
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
         instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
-        tracer = instrumentation.getTracer();
+        tracer = instrumentation.createTracer();
         contextPropagator = instrumentation.getW3CTraceContextPropagator();
     }
 

@@ -86,6 +86,22 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     /**
+     * This code snippet shows how to disable metrics
+     * for a specific instance of client.
+     */
+    public void disableMetrics() {
+        // BEGIN: io.clientcore.core.telemetry.fallback.disablemetrics
+
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setMetricsEnabled(false);
+
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+        client.clientCall();
+
+        // END: io.clientcore.core.telemetry.fallback.disablemetrics
+    }
+
+    /**
      * This code snippet shows how to assign custom traceId and spanId to the client call.
      */
     public void correlationWithExplicitContext() {
@@ -158,7 +174,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).createTracer();
         }
 
         public void clientCall() {

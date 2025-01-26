@@ -3,12 +3,19 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
+import io.clientcore.core.implementation.instrumentation.NoopAttributes;
+import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Fallback implementation of {@link Instrumentation} which implements basic correlation and context propagation
@@ -35,8 +42,24 @@ public class FallbackInstrumentation implements Instrumentation {
      * {@inheritDoc}
      */
     @Override
-    public Tracer getTracer() {
+    public Tracer createTracer() {
         return new FallbackTracer(instrumentationOptions, libraryOptions);
+    }
+
+    @Override
+    public Meter createMeter() {
+        return NoopMeter.INSTANCE;
+    }
+
+    @Override
+    public InstrumentationAttributes createAttributes(Map<String, Object> attributes) {
+        if (attributes != null) {
+            for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+                Objects.requireNonNull(entry.getKey(), "attribute key cannot be null.");
+                Objects.requireNonNull(entry.getValue(), "attribute value cannot be null.");
+            }
+        }
+        return NoopAttributes.INSTANCE;
     }
 
     /**

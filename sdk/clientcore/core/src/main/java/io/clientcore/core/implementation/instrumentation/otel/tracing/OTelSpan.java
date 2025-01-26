@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelAttributeKey;
+import io.clientcore.core.implementation.instrumentation.otel.OTelContext;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
@@ -22,7 +23,7 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.STATUS_CODE_CLASS;
-import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelContext.markCoreSpan;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelContext.markCoreSpan;
 import static io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext.INVALID_OTEL_SPAN_CONTEXT;
 
 /**
@@ -132,8 +133,10 @@ public class OTelSpan implements Span {
     @Override
     public OTelSpan setAttribute(String key, Object value) {
         if (isInitialized() && isRecording) {
-            SET_ATTRIBUTE_INVOKER.invoke(otelSpan, OTelAttributeKey.getKey(key, value),
-                OTelAttributeKey.castAttributeValue(value));
+            Object otelKey = OTelAttributeKey.getKey(key, value);
+            if (otelKey != null) {
+                SET_ATTRIBUTE_INVOKER.invoke(otelSpan, otelKey, OTelAttributeKey.castAttributeValue(value));
+            }
         }
 
         return this;
@@ -229,13 +232,13 @@ public class OTelSpan implements Span {
         return span;
     }
 
-    static Object wrapSpanContext(Object otelSpanContext) {
-        assert SPAN_CONTEXT_CLASS.isInstance(otelSpanContext);
-
-        Object propagatingSpan = WRAP_INVOKER.invoke(otelSpanContext);
-        assert SPAN_CLASS.isInstance(propagatingSpan);
-
-        return propagatingSpan;
+    /**
+     * Wraps an OpenTelemetry span context in a propagating span.
+     * @param otelSpanContext the OpenTelemetry span context
+     * @return the propagating span
+     */
+    public static Object wrapSpanContext(Object otelSpanContext) {
+        return WRAP_INVOKER.invoke(otelSpanContext);
     }
 
     static Object getSpanContext(Object otelSpan) {
@@ -247,7 +250,13 @@ public class OTelSpan implements Span {
         return spanContext;
     }
 
-    static Object storeInContext(Object otelSpan, Object otelContext) {
+    /**
+     * Stores the given span in the given context.
+     * @param otelSpan the OpenTelemetry span
+     * @param otelContext the OpenTelemetry context
+     * @return the updated context
+     */
+    public static Object storeInContext(Object otelSpan, Object otelContext) {
         Object updatedContext = STORE_IN_CONTEXT_INVOKER.invoke(otelSpan, otelContext);
 
         return updatedContext != null ? updatedContext : otelContext;

@@ -14,8 +14,11 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -37,6 +40,7 @@ import java.util.stream.Collectors;
 import java.net.URI;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_CONTENT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_SIZE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
@@ -76,7 +80,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * so that it's executed in the scope of the span created by the {@link HttpInstrumentationPolicy}.
  *
  * <p><strong>Configure instrumentation policy:</strong></p>
- * <!-- src_embed io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
+ * <!-- src_embed io.clientcore.core.instrumentation.instrumentationpolicy -->
  * <pre>
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -86,10 +90,10 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *     .build&#40;&#41;;
  *
  * </pre>
- * <!-- end io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
+ * <!-- end io.clientcore.core.instrumentation.instrumentationpolicy -->
  *
  * <p><strong>Customize instrumentation policy:</strong></p>
- * <!-- src_embed io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
+ * <!-- src_embed io.clientcore.core.instrumentation.customizeinstrumentationpolicy -->
  * <pre>
  *
  * &#47;&#47; You can configure URL sanitization to include additional query parameters to preserve
@@ -104,10 +108,10 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *     .build&#40;&#41;;
  *
  * </pre>
- * <!-- end io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
+ * <!-- end io.clientcore.core.instrumentation.customizeinstrumentationpolicy -->
  *
  * <p><strong>Enrich HTTP spans with additional attributes:</strong></p>
- * <!-- src_embed io.clientcore.core.telemetry.tracing.enrichhttpspans -->
+ * <!-- src_embed io.clientcore.core.instrumentation.enrichhttpspans -->
  * <pre>
  *
  * HttpPipelinePolicy enrichingPolicy = &#40;request, next&#41; -&gt; &#123;
@@ -130,7 +134,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *
  *
  * </pre>
- * <!-- end io.clientcore.core.telemetry.tracing.enrichhttpspans -->
+ * <!-- end io.clientcore.core.instrumentation.enrichhttpspans -->
  *
  */
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
@@ -167,6 +171,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
 
     private final Tracer tracer;
+    private final Meter meter;
+    private final Instrumentation instrumentation;
+    private final DoubleHistogram httpRequestDuration;
     private final TraceContextPropagator traceContextPropagator;
     private final Set<String> allowedQueryParameterNames;
     private final Set<HttpHeaderName> allowedHeaderNames;
@@ -179,8 +186,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param instrumentationOptions Application telemetry options.
      */
     public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-        this.tracer = instrumentation.getTracer();
+        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+        this.tracer = instrumentation.createTracer();
+        this.meter = instrumentation.createMeter();
+        this.httpRequestDuration
+            = meter.createDoubleHistogram("http.client.request.duration", "Duration of HTTP client requests", "s");
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
         HttpInstrumentationOptions optionsToUse
@@ -204,7 +214,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
         boolean isTracingEnabled = tracer.isEnabled();
-        if (!isTracingEnabled && !isLoggingEnabled) {
+        boolean isMetricsEnabled = meter.isEnabled();
+        if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
             return next.process();
         }
 
@@ -216,6 +227,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         InstrumentationContext instrumentationContext
             = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
+
         Span span = Span.noop();
         if (isTracingEnabled) {
             if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
@@ -235,6 +247,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, instrumentationContext);
 
+        int statusCode = -1;
+        String error = null;
         try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
@@ -249,16 +263,25 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 return null;
             }
 
-            addDetails(request, response, tryCount, span);
+            statusCode = response.getStatusCode();
+            if (statusCode >= 400) {
+                error = String.valueOf(statusCode);
+            }
+
+            addDetails(request, response.getStatusCode(), tryCount, error, span);
             response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
                 instrumentationContext);
             span.end();
             return response;
         } catch (RuntimeException t) {
-            span.end(unwrap(t));
+            Throwable cause = unwrap(t);
+            error = cause.getClass().getCanonicalName();
+            span.end(cause);
             // TODO (limolkova) test otel scope still covers this
             throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
                 instrumentationContext);
+        } finally {
+            reportDuration(request, statusCode, error, startNs, instrumentationContext);
         }
     }
 
@@ -267,44 +290,71 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
             .setAttribute(URL_FULL_KEY, sanitizedUrl)
             .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
-        maybeSetServerPort(spanBuilder, request.getUri());
+        int port = getServerPort(request.getUri());
+        if (port > 0) {
+            spanBuilder.setAttribute(SERVER_PORT_KEY, port);
+        }
         return spanBuilder.startSpan();
+    }
+
+    private void reportDuration(HttpRequest request, int responseStatusCode, String error, long startNs,
+        InstrumentationContext context) {
+        if (!httpRequestDuration.isEnabled()) {
+            return;
+        }
+
+        InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
+        attributes.put(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString());
+        if (responseStatusCode > 0) {
+            attributes.put(HTTP_RESPONSE_STATUS_CODE_KEY, responseStatusCode);
+        }
+
+        attributes.put(SERVER_ADDRESS_KEY, request.getUri().getHost());
+
+        int port = getServerPort(request.getUri());
+        if (port > 0) {
+            attributes.put(SERVER_PORT_KEY, port);
+        }
+
+        // TODO: (limolkova) url.template
+
+        if (error != null) {
+            attributes.put(ERROR_TYPE_KEY, error);
+        }
+
+        httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0, attributes, context);
     }
 
     /**
      * Does the best effort to capture the server port with minimum perf overhead.
      * If port is not set, we check scheme for "http" and "https" (case-sensitive).
-     * If scheme is not one of those, we don't set the port.
+     * If scheme is not one of those, returns -1.
      *
-     * @param spanBuilder span builder
      * @param uri request URI
      */
-    private static void maybeSetServerPort(SpanBuilder spanBuilder, URI uri) {
+    private static int getServerPort(URI uri) {
         int port = uri.getPort();
-        if (port != -1) {
-            spanBuilder.setAttribute(SERVER_PORT_KEY, port);
-        } else {
+        if (port == -1) {
             switch (uri.getScheme()) {
                 case "http":
-                    spanBuilder.setAttribute(SERVER_PORT_KEY, 80);
-                    break;
+                    return 80;
 
                 case "https":
-                    spanBuilder.setAttribute(SERVER_PORT_KEY, 443);
-                    break;
+                    return 443;
 
                 default:
                     break;
             }
         }
+        return port;
     }
 
-    private void addDetails(HttpRequest request, Response<?> response, int tryCount, Span span) {
+    private void addDetails(HttpRequest request, int statusCode, int tryCount, String error, Span span) {
         if (!span.isRecording()) {
             return;
         }
 
-        span.setAttribute(HTTP_RESPONSE_STATUS_CODE_KEY, (long) response.getStatusCode());
+        span.setAttribute(HTTP_RESPONSE_STATUS_CODE_KEY, (long) statusCode);
 
         if (tryCount > 0) {
             span.setAttribute(HTTP_REQUEST_RESEND_COUNT_KEY, (long) tryCount);
@@ -315,9 +365,10 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             span.setAttribute(USER_AGENT_ORIGINAL_KEY, userAgent);
         }
 
-        if (response.getStatusCode() >= 400) {
-            span.setError(String.valueOf(response.getStatusCode()));
+        if (error != null) {
+            span.setError(error);
         }
+
         // TODO (lmolkova) url.template and experimental features
     }
 
