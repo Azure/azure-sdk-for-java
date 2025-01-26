@@ -94,6 +94,7 @@
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <revapi.skip>false</revapi.skip>
+
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
 
@@ -228,8 +229,6 @@
 
     <!-- Skips Spotless running code style formatting verification. -->
     <spotless.check.skip>false</spotless.check.skip>
-    <!-- Skips annotation processing by default -->
-    <enable.annotation.processing>false</enable.annotation.processing>
   </properties>
 
   <dependencies>
@@ -657,6 +656,7 @@
               </excludes>
               <includes combine.children="append">
                 <include>io.clientcore:*</include>
+
                </includes>
             </bannedDependencies>
 
@@ -730,19 +730,10 @@
               <arg>-Xlint:varargs</arg>
             </compilerArgs>
 
-            <!-- Default is annotation processing being on. -->
-            <annotationProcessorPaths>
-              <annotationProcessorPath>
-                <groupId>io.clientcore</groupId>
-                <artifactId>annotation-processor</artifactId>
-                <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
-              </annotationProcessorPath>
-            </annotationProcessorPaths>
+            <!-- Default is annotation processing being off. -->
+            <proc>${compiler.proc}</proc>
+
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
-            <annotationProcessors>
-              <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
-            </annotationProcessors>
-            <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
           </configuration>
         </plugin>
 
@@ -1157,10 +1148,6 @@
               </testExcludes>
               <testSource>1.8</testSource>
               <testTarget>1.8</testTarget>
-              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-              <annotationProcessors>
-                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
-              </annotationProcessors>
             </configuration>
           </plugin>
           <!-- Avoid errors from module-info -->
@@ -1172,7 +1159,6 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
-
             </configuration>
           </plugin>
         </plugins>
@@ -1212,10 +1198,6 @@
                 <arg>-Xlint:removal</arg>
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
-              <generatedSourcesDirectory>${project.build.directory}/generated-test-sources/</generatedSourcesDirectory>
-              <annotationProcessors>
-                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
-              </annotationProcessors>
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
@@ -1292,26 +1274,6 @@
                     <testExclude>module-info.java</testExclude>
                   </testExcludes>
                   <useModulePath>false</useModulePath>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>add-test-sources</id>
-                <phase>generate-test-sources</phase>
-                <goals>
-                  <goal>add-test-source</goal>
-                </goals>
-                <configuration>
-                  <sources>
-                    <source>${project.build.directory}/generated-sources/</source>
-                  </sources>
                 </configuration>
               </execution>
             </executions>

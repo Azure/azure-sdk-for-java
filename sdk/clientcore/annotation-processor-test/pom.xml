@@ -76,21 +76,6 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>enable-annotation-processing</id>
-      <activation>
-        <property>
-          <name>enable.annotation.processing</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <properties>
-        <skipCompile>false</skipCompile>
-      </properties>
-    </profile>
-  </profiles>
-
 
   <build>
     <testResources>
@@ -98,5 +83,23 @@
         <directory>${project.build.directory}/generated-sources</directory>
       </testResource>
     </testResources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <configuration>
+            <annotationProcessorPaths>
+              <annotationProcessorPath>
+                <groupId>io.clientcore</groupId>
+                <artifactId>annotation-processor</artifactId>
+                <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
+              </annotationProcessorPath>
+            </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>
