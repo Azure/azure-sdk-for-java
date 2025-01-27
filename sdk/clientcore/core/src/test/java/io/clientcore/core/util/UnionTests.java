@@ -313,7 +313,7 @@ public class UnionTests {
     void setAndGetValueWithNull() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
 
-        assertThrows(NullPointerException.class, () -> union.setValue(null));
+        assertThrows(IllegalArgumentException.class, () -> union.setValue(null));
         assertNull(union.getValue());
     }
 

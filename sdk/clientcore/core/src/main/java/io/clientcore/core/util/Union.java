@@ -155,7 +155,9 @@ public final class Union {
                 return new Union(types, value, type);
             }
         }
-        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
+
+        throw LOGGER.logThrowableAsError(
+            new IllegalArgumentException("Invalid type: " + (value == null ? "Null" : value.getClass().getName())));
     }
 
     /**
