@@ -143,7 +143,7 @@ public interface Instrumentation {
      *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;;
      *
      * &#47;&#47; run on another thread
-     * client.clientCall&#40;options&#41;;
+     * client.downloadContent&#40;options&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
