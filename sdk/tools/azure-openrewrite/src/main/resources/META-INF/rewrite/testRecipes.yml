@@ -1,0 +1,14 @@
+# --------------------------------------------------------------------
+# Migration Recipes for Azure Core Libraries
+# --------------------------------------------------------------------
+# TODO: Move these to src/main/java/com/azure/openrewrite/core/CoreMigrationRecipes.java (jairmyree)
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipes.migrateAzureCoreLibraries
+displayName: Migrate from azure-core to azure-core-v2
+description: This recipe migrates the azure sdk libraries from azure-core to azure-core-v2 and clientcore libraries.
+recipeList:
+  # Before: import com.azure.core.http.HttpHeaderName;
+  # After: import io.clientcore.core.http.models.HttpHeaderName;
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaderName
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpHeaderName
