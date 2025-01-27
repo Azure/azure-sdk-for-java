@@ -40,6 +40,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.File;
 import java.time.Duration;
@@ -1580,6 +1582,31 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void deleteFileLease() {
+        String fileName = "testCreateFile";
+        primaryDirectoryClient.create();
+        primaryDirectoryClient.createFile(fileName, 1024);
+        String leaseId = createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Void> response = primaryDirectoryClient.deleteFileWithResponse(fileName, requestConditions, null, null);
+        assertEquals(202, response.getStatusCode());
+    }
+
+    @Test
+    public void deleteFileLeaseFail() {
+        String fileName = "testCreateFile";
+        primaryDirectoryClient.create();
+        primaryDirectoryClient.createFile(fileName, 1024);
+        createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
+        ShareStorageException exception = assertThrows(ShareStorageException.class, () -> {
+            primaryDirectoryClient.deleteFileWithResponse(fileName, requestConditions, null, null);
+        });
+        assertNotNull(exception);
+    }
+
+    @Test
     public void deleteFileError() {
         primaryDirectoryClient.create();
 
@@ -1605,6 +1632,32 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         FileShareTestHelper
             .assertResponseStatusCode(primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, null, null), 202);
+    }
+
+    @Test
+    public void deleteIfExistsFileLease() {
+        String fileName = "testCreateFile";
+        primaryDirectoryClient.create();
+        primaryDirectoryClient.createFile(fileName, 1024);
+        String leaseId = createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Boolean> response = primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, requestConditions, null, null);
+        assertEquals(202, response.getStatusCode());
+        assertTrue(response.getValue());
+    }
+
+    @Test
+    public void deleteIfExistsFileLeaseFail() {
+        String fileName = "testCreateFile";
+        primaryDirectoryClient.create();
+        primaryDirectoryClient.createFile(fileName, 1024);
+        createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
+        ShareStorageException exception = assertThrows(ShareStorageException.class, () -> {
+            primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, requestConditions, null, null);
+        });
+        assertNotNull(exception);
     }
 
     @Test
