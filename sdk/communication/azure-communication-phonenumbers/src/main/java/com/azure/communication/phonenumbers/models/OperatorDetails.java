@@ -22,12 +22,12 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
     private String name;
 
     /*
-     * Mobile Network Code, 2 or 3 decimal digits that identify mobile networks within a country
+     * Mobile Network Code, 2 or 3 decimal digits that identify mobile networks within a country/region
      */
     private String mobileNetworkCode;
 
     /*
-     * Mobile Country Code, 3 decimal digits that identify a country
+     * Mobile Country Code, 3 decimal digits that identify a country/region
      */
     private String mobileCountryCode;
 
