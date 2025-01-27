@@ -6,8 +6,6 @@ package com.azure.resourcemanager.containerorchestratorruntime.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerorchestratorruntime.fluent.models.OperationInner;
-import com.azure.resourcemanager.containerorchestratorruntime.models.ActionType;
-import org.junit.jupiter.api.Assertions;
 
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
@@ -15,6 +13,5 @@ public final class OperationInnerTests {
         OperationInner model = BinaryData.fromString(
             "{\"name\":\"qgoulznd\",\"isDataAction\":false,\"display\":{\"provider\":\"qkgfgibma\",\"resource\":\"akeqs\",\"operation\":\"yb\",\"description\":\"qedqytbciqfoufl\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
             .toObject(OperationInner.class);
-        Assertions.assertEquals(ActionType.INTERNAL, model.actionType());
     }
 }

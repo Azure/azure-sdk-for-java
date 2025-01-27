@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-standbypool</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,6 +70,47 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+// reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
+
+// Create virtual network and virtual machine scale set
+virtualNetwork = this.computeManager.networkManager()
+    .networks()
+    .define("vmssvnet")
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withAddressSpace("10.0.0.0/27")
+    .withSubnet("default", "10.0.0.0/27")
+    .create();
+
+virtualMachineScaleSet = computeManager.virtualMachineScaleSets()
+    .define("vmss")
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withFlexibleOrchestrationMode()
+    .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+    .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
+    .withoutPrimaryInternetFacingLoadBalancer()
+    .withoutPrimaryInternalLoadBalancer()
+    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+    .withRootUsername("Foo12")
+    .withSsh(sshPublicKey())
+    .withVirtualMachinePublicIp()
+    .withCapacity(3L)
+    .create();
+
+// create standby virtual machine pool
+standbyVirtualMachinePool = standbyPoolManager.standbyVirtualMachinePools()
+    .define(poolName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withProperties(new StandbyVirtualMachinePoolResourceProperties()
+        .withAttachedVirtualMachineScaleSetId(virtualMachineScaleSet.id())
+        .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
+        .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(3L)
+            .withMinReadyCapacity(1L)))
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/standbypool/azure-resourcemanager-standbypool/SAMPLE.md)
 
 

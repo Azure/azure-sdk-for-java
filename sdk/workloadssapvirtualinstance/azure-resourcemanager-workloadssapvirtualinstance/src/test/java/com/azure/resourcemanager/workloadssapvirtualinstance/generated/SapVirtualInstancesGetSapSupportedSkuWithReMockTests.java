@@ -27,7 +27,7 @@ public final class SapVirtualInstancesGetSapSupportedSkuWithReMockTests {
     @Test
     public void testGetSapSupportedSkuWithResponse() throws Exception {
         String responseStr
-            = "{\"supportedSkus\":[{\"vmSku\":\"pyouaibrebqaays\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"nqttezl\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"kpj\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false},{\"vmSku\":\"d\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false}]}";
+            = "{\"supportedSkus\":[{\"vmSku\":\"lo\",\"isAppServerCertified\":true,\"isDatabaseCertified\":false},{\"vmSku\":\"zlmvfelfktgp\",\"isAppServerCertified\":false,\"isDatabaseCertified\":true}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,18 +37,18 @@ public final class SapVirtualInstancesGetSapSupportedSkuWithReMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapSupportedResourceSkusResult response = manager.sapVirtualInstances()
-            .getSapSupportedSkuWithResponse("taugzxnfaa",
-                new SapSupportedSkusRequest().withAppLocation("pxdtnkdmkq")
+            .getSapSupportedSkuWithResponse("ekrrjr",
+                new SapSupportedSkusRequest().withAppLocation("afxtsgum")
                     .withEnvironment(SapEnvironmentType.PROD)
-                    .withSapProduct(SapProductType.ECC)
+                    .withSapProduct(SapProductType.S4HANA)
                     .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
                     .withDatabaseType(SapDatabaseType.HANA)
                     .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pyouaibrebqaays", response.supportedSkus().get(0).vmSku());
-        Assertions.assertEquals(false, response.supportedSkus().get(0).isAppServerCertified());
+        Assertions.assertEquals("lo", response.supportedSkus().get(0).vmSku());
+        Assertions.assertEquals(true, response.supportedSkus().get(0).isAppServerCertified());
         Assertions.assertEquals(false, response.supportedSkus().get(0).isDatabaseCertified());
     }
 }

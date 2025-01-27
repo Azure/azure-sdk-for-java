@@ -24,7 +24,7 @@ public final class SapVirtualInstancesGetAvailabilityZoneDetaiMockTests {
     @Test
     public void testGetAvailabilityZoneDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"availabilityZonePairs\":[{\"zoneA\":8930706636163683839,\"zoneB\":7724253777962595356},{\"zoneA\":8079990441730774595,\"zoneB\":5614449039864356696},{\"zoneA\":618784540661466249,\"zoneB\":6520590766362280172}]}";
+            = "{\"availabilityZonePairs\":[{\"zoneA\":1441267877176887045,\"zoneB\":1750475282934790505},{\"zoneA\":2905922473009619098,\"zoneB\":5784000721532409978},{\"zoneA\":43627080801211364,\"zoneB\":4164889178539078814},{\"zoneA\":1742595014873597372,\"zoneB\":1104101737481354255}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class SapVirtualInstancesGetAvailabilityZoneDetaiMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapAvailabilityZoneDetailsResult response = manager.sapVirtualInstances()
-            .getAvailabilityZoneDetailsWithResponse("iithtywu",
-                new SapAvailabilityZoneDetailsRequest().withAppLocation("xcbihw")
-                    .withSapProduct(SapProductType.OTHER)
-                    .withDatabaseType(SapDatabaseType.HANA),
+            .getAvailabilityZoneDetailsWithResponse("ihxumwctondzj",
+                new SapAvailabilityZoneDetailsRequest().withAppLocation("uu")
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDatabaseType(SapDatabaseType.DB2),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(8930706636163683839L, response.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(7724253777962595356L, response.availabilityZonePairs().get(0).zoneB());
+        Assertions.assertEquals(1441267877176887045L, response.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(1750475282934790505L, response.availabilityZonePairs().get(0).zoneB());
     }
 }

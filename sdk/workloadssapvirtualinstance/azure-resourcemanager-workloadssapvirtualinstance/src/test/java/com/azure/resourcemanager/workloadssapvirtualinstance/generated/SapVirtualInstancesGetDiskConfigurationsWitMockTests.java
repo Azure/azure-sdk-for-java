@@ -27,7 +27,7 @@ public final class SapVirtualInstancesGetDiskConfigurationsWitMockTests {
     @Test
     public void testGetDiskConfigurationsWithResponse() throws Exception {
         String responseStr
-            = "{\"volumeConfigurations\":{\"urdoi\":{\"recommendedConfiguration\":{\"count\":1254850422114196148,\"sizeGB\":5953574927577101427,\"sku\":{\"name\":\"StandardSSD_ZRS\"}},\"supportedConfigurations\":[{\"sku\":{},\"sizeGB\":686052529791158175,\"minimumSupportedDiskCount\":3920435085963862976,\"maximumSupportedDiskCount\":4971111949791382837,\"iopsReadWrite\":8084058404803750830,\"mbpsReadWrite\":1158865571853625138,\"diskTier\":\"yl\"},{\"sku\":{},\"sizeGB\":880079432937074833,\"minimumSupportedDiskCount\":8274971032821131751,\"maximumSupportedDiskCount\":1375339389748279377,\"iopsReadWrite\":5218276109557788624,\"mbpsReadWrite\":1232834909698748994,\"diskTier\":\"rywvtylbfpn\"}]}}}";
+            = "{\"volumeConfigurations\":{\"akpjpqqmtedlt\":{\"recommendedConfiguration\":{\"count\":6959238001993164880,\"sizeGB\":7258439173640642574,\"sku\":{\"name\":\"StandardSSD_LRS\"}},\"supportedConfigurations\":[{\"sku\":{},\"sizeGB\":9034800237137536606,\"minimumSupportedDiskCount\":8092095565901879644,\"maximumSupportedDiskCount\":4819915655623437065,\"iopsReadWrite\":1733392169509913838,\"mbpsReadWrite\":7663559353445099957,\"diskTier\":\"vrkpyouaibreb\"},{\"sku\":{},\"sizeGB\":5925123443522573300,\"minimumSupportedDiskCount\":888839059192362297,\"maximumSupportedDiskCount\":6437751248565857120,\"iopsReadWrite\":8668201172705247496,\"mbpsReadWrite\":2784974934686338692,\"diskTier\":\"wfff\"}]},\"evzhfsto\":{\"recommendedConfiguration\":{\"count\":2185926262396381637,\"sizeGB\":6366527775792042692,\"sku\":{\"name\":\"StandardSSD_ZRS\"}},\"supportedConfigurations\":[{\"sku\":{},\"sizeGB\":227084746082206788,\"minimumSupportedDiskCount\":364088888984952408,\"maximumSupportedDiskCount\":1577307704371478753,\"iopsReadWrite\":9207382017369514266,\"mbpsReadWrite\":2524662615582469653,\"diskTier\":\"cwxqu\"}]},\"ttpkiwkkbnujrywv\":{\"recommendedConfiguration\":{\"count\":7919496875623966593,\"sizeGB\":6799031070152943610,\"sku\":{\"name\":\"Premium_ZRS\"}},\"supportedConfigurations\":[{\"sku\":{},\"sizeGB\":8636395279237294027,\"minimumSupportedDiskCount\":8215635773534083202,\"maximumSupportedDiskCount\":4167707270687338526,\"iopsReadWrite\":55141822425765508,\"mbpsReadWrite\":4361894023478136574,\"diskTier\":\"ool\"}]},\"twjchrdg\":{\"recommendedConfiguration\":{\"count\":651948610007991047,\"sizeGB\":3158870233768803594,\"sku\":{\"name\":\"StandardSSD_LRS\"}},\"supportedConfigurations\":[{\"sku\":{},\"sizeGB\":7973708904011670408,\"minimumSupportedDiskCount\":3934291710122169990,\"maximumSupportedDiskCount\":9144979933211508953,\"iopsReadWrite\":7718798958168735300,\"mbpsReadWrite\":174415668605862946,\"diskTier\":\"knfd\"}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,33 +37,41 @@ public final class SapVirtualInstancesGetDiskConfigurationsWitMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapDiskConfigurationsResult response = manager.sapVirtualInstances()
-            .getDiskConfigurationsWithResponse("ihyeozphvw",
-                new SapDiskConfigurationsRequest().withAppLocation("uyqncygupkvipmd")
+            .getDiskConfigurationsWithResponse("jxeznoigbrnjwmw",
+                new SapDiskConfigurationsRequest().withAppLocation("pn")
                     .withEnvironment(SapEnvironmentType.NON_PROD)
-                    .withSapProduct(SapProductType.OTHER)
-                    .withDatabaseType(SapDatabaseType.DB2)
-                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                    .withDbVmSku("upev"),
+                    .withSapProduct(SapProductType.ECC)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withDbVmSku("jjoqkagf"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1254850422114196148L,
-            response.volumeConfigurations().get("urdoi").recommendedConfiguration().count());
-        Assertions.assertEquals(5953574927577101427L,
-            response.volumeConfigurations().get("urdoi").recommendedConfiguration().sizeGB());
-        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_ZRS,
-            response.volumeConfigurations().get("urdoi").recommendedConfiguration().sku().name());
-        Assertions.assertEquals(686052529791158175L,
-            response.volumeConfigurations().get("urdoi").supportedConfigurations().get(0).sizeGB());
-        Assertions.assertEquals(3920435085963862976L,
-            response.volumeConfigurations().get("urdoi").supportedConfigurations().get(0).minimumSupportedDiskCount());
-        Assertions.assertEquals(4971111949791382837L,
-            response.volumeConfigurations().get("urdoi").supportedConfigurations().get(0).maximumSupportedDiskCount());
-        Assertions.assertEquals(8084058404803750830L,
-            response.volumeConfigurations().get("urdoi").supportedConfigurations().get(0).iopsReadWrite());
-        Assertions.assertEquals(1158865571853625138L,
-            response.volumeConfigurations().get("urdoi").supportedConfigurations().get(0).mbpsReadWrite());
-        Assertions.assertEquals("yl",
-            response.volumeConfigurations().get("urdoi").supportedConfigurations().get(0).diskTier());
+        Assertions.assertEquals(6959238001993164880L,
+            response.volumeConfigurations().get("akpjpqqmtedlt").recommendedConfiguration().count());
+        Assertions.assertEquals(7258439173640642574L,
+            response.volumeConfigurations().get("akpjpqqmtedlt").recommendedConfiguration().sizeGB());
+        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_LRS,
+            response.volumeConfigurations().get("akpjpqqmtedlt").recommendedConfiguration().sku().name());
+        Assertions.assertEquals(9034800237137536606L,
+            response.volumeConfigurations().get("akpjpqqmtedlt").supportedConfigurations().get(0).sizeGB());
+        Assertions.assertEquals(8092095565901879644L,
+            response.volumeConfigurations()
+                .get("akpjpqqmtedlt")
+                .supportedConfigurations()
+                .get(0)
+                .minimumSupportedDiskCount());
+        Assertions.assertEquals(4819915655623437065L,
+            response.volumeConfigurations()
+                .get("akpjpqqmtedlt")
+                .supportedConfigurations()
+                .get(0)
+                .maximumSupportedDiskCount());
+        Assertions.assertEquals(1733392169509913838L,
+            response.volumeConfigurations().get("akpjpqqmtedlt").supportedConfigurations().get(0).iopsReadWrite());
+        Assertions.assertEquals(7663559353445099957L,
+            response.volumeConfigurations().get("akpjpqqmtedlt").supportedConfigurations().get(0).mbpsReadWrite());
+        Assertions.assertEquals("vrkpyouaibreb",
+            response.volumeConfigurations().get("akpjpqqmtedlt").supportedConfigurations().get(0).diskTier());
     }
 }
