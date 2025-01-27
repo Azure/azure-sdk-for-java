@@ -24,6 +24,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -118,7 +119,10 @@ public class LocationCache {
      * @return
      */
     public List<URI> getAvailableReadEndpoints() {
-        return this.locationInfo.availableReadEndpointsByLocation.values().stream().collect(Collectors.toList());
+        return this.locationInfo.availableReadEndpointsByLocation.values().stream().map(locationEndpoints -> {
+                // TODO: Integrate thinclient endpoints into fault injection
+                return locationEndpoints.gatewayEndpoint;
+            }).collect(Collectors.toList());
     }
 
     /***
@@ -129,7 +133,10 @@ public class LocationCache {
      * @return
      */
     public List<URI> getAvailableWriteEndpoints() {
-        return this.locationInfo.availableWriteEndpointsByLocation.values().stream().collect(Collectors.toList());
+        return this.locationInfo.availableWriteEndpointsByLocation.values().stream().map(locationEndpoints -> {
+            // TODO: Integrate thinclient endpoints into fault injection
+            return locationEndpoints.gatewayEndpoint;
+        }).collect(Collectors.toList());
     }
 
     public List<String> getEffectivePreferredLocations() {
@@ -206,7 +213,9 @@ public class LocationCache {
             if(this.enableEndpointDiscovery && currentLocationInfo.availableWriteLocations.size() > 0) {
                 locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
-                return currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation);
+                URI thinclientEndpoint = currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation).thinClientEndpoint;
+                URI gatewayEndpoint = currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation).gatewayEndpoint;
+                return thinclientEndpoint != null ? thinclientEndpoint : gatewayEndpoint;
             } else {
                 return this.defaultEndpoint;
             }
@@ -315,7 +324,7 @@ public class LocationCache {
     }
 
     public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
-        Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
+        Utils.ValueHolder<LocationEndpoints> endpointValueHolder = new Utils.ValueHolder<>();
         if (writeOnly) {
             Utils.tryGetValue(this.locationInfo.availableWriteEndpointsByLocation, region, endpointValueHolder);
         } else {
@@ -323,7 +332,8 @@ public class LocationCache {
         }
 
         if (endpointValueHolder.v != null) {
-            return endpointValueHolder.v;
+            // TODO: Figure out how to integrate thinclient into fault injection
+            return endpointValueHolder.v.gatewayEndpoint;
         }
 
         throw new IllegalArgumentException("Can not find service endpoint for region " + region);
@@ -359,17 +369,25 @@ public class LocationCache {
             }
 
             if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                Utils.ValueHolder<URI> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
+                Utils.ValueHolder<LocationEndpoints> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
                 if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointsByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
+                    URI mostPreferredLocationGatewayEndpoint = mostPreferredReadEndpointHolder.v.gatewayEndpoint;
+                    URI mostPreferredLocationThinclientEndpoint = mostPreferredReadEndpointHolder.v.thinClientEndpoint;
                     logger.debug("most preferred is [{}], most preferred available is [{}]",
                             mostPreferredLocation, mostPreferredReadEndpointHolder.v);
-                    if (!areEqual(mostPreferredReadEndpointHolder.v, readLocationEndpoints.get(0))) {
+                    if (!areEqual(mostPreferredLocationThinclientEndpoint, readLocationEndpoints.get(0))) {
                         // For reads, we can always refresh in background as we can alternate to
                         // other available read endpoints
                         logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
-                                " is not available for read.", mostPreferredLocation);
+                                " is not available for read.", mostPreferredLocationThinclientEndpoint);
+                        return true;
+                    } else if (!areEqual(mostPreferredLocationGatewayEndpoint, readLocationEndpoints.get(0))) {
+                        // For reads, we can always refresh in background as we can alternate to
+                        // other available read endpoints
+                        logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
+                            " is not available for read.", mostPreferredLocationGatewayEndpoint);
                         return true;
                     }
 
@@ -383,7 +401,7 @@ public class LocationCache {
                 }
             }
 
-            Utils.ValueHolder<URI> mostPreferredWriteEndpointHolder = new Utils.ValueHolder<>();
+            Utils.ValueHolder<LocationEndpoints> mostPreferredWriteEndpointHolder = new Utils.ValueHolder<>();
             List<URI> writeLocationEndpoints = currentLocationInfo.writeEndpoints;
             logger.debug("getWriteEndpoints [{}]", writeLocationEndpoints);
 
@@ -405,14 +423,27 @@ public class LocationCache {
                 }
             } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
                 if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointsByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
-                    shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v,writeLocationEndpoints.get(0));
+                    URI mostPreferredLocationGatewayEndpoint = mostPreferredWriteEndpointHolder.v.gatewayEndpoint;
+                    URI mostPreferredLocationThinclientEndpoint = mostPreferredWriteEndpointHolder.v.thinClientEndpoint;
 
-                    if (shouldRefresh) {
-                        logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
-                                writeLocationEndpoints.get(0), mostPreferredWriteEndpointHolder.v);
-                    } else {
-                        logger.debug("shouldRefreshEndpoints: false, write endpoint [{}] is the same as most preferred [{}]",
-                                writeLocationEndpoints.get(0), mostPreferredWriteEndpointHolder.v);
+                    if (mostPreferredLocationThinclientEndpoint != null) {
+                        shouldRefresh = ! areEqual(mostPreferredLocationGatewayEndpoint, writeLocationEndpoints.get(0));
+                        if (shouldRefresh) {
+                            logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationThinclientEndpoint);
+                        } else {
+                            logger.debug("shouldRefreshEndpoints: false, write endpoint [{}] is the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationThinclientEndpoint);
+                        }
+                    } else if (mostPreferredLocationGatewayEndpoint != null) {
+                        shouldRefresh = ! areEqual(mostPreferredLocationGatewayEndpoint, writeLocationEndpoints.get(0));
+                        if (shouldRefresh) {
+                            logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationGatewayEndpoint);
+                        } else {
+                            logger.debug("shouldRefreshEndpoints: false, write endpoint [{}] is the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationGatewayEndpoint);
+                        }
                     }
 
                     return shouldRefresh;
