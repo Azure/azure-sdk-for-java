@@ -14,8 +14,6 @@ import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.util.Objects;
-
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
@@ -156,7 +154,6 @@ public class OTelSpan implements Span {
      */
     @Override
     public void end(Throwable throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null");
         endSpan(throwable);
     }
 

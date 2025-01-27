@@ -4,6 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.instrumentation.NoopAttributes;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -20,16 +21,20 @@ import static io.clientcore.core.implementation.instrumentation.otel.OTelInitial
 /**
  * A class that wraps the OpenTelemetry attributes builder.
  */
-public class OTelAttributes implements InstrumentationAttributes {
+public final class OTelAttributes implements InstrumentationAttributes {
     private static final ClientLogger LOGGER = new ClientLogger(OTelAttributes.class);
     private static final FallbackInvoker ATTRIBUTES_BUILDER_INVOKER;
     private static final FallbackInvoker PUT_INVOKER;
     private static final FallbackInvoker BUILD_INVOKER;
+    private static final FallbackInvoker TO_BUILD_INVOKER;
+    private static final OTelAttributes EMPTY_INSTANCE;
 
     static {
         ReflectiveInvoker attributesBuilderInvoker = null;
         ReflectiveInvoker putInvoker = null;
         ReflectiveInvoker buildInvoker = null;
+        ReflectiveInvoker toBuildInvoker = null;
+        Object emptyInstance = null;
 
         try {
             attributesBuilderInvoker = getMethodInvoker(ATTRIBUTES_CLASS, ATTRIBUTES_CLASS.getMethod("builder"));
@@ -37,6 +42,9 @@ public class OTelAttributes implements InstrumentationAttributes {
                 ATTRIBUTES_BUILDER_CLASS.getMethod("put", ATTRIBUTE_KEY_CLASS, Object.class));
             buildInvoker = getMethodInvoker(ATTRIBUTES_BUILDER_CLASS, ATTRIBUTES_BUILDER_CLASS.getMethod("build"));
 
+            toBuildInvoker = getMethodInvoker(ATTRIBUTES_CLASS, ATTRIBUTES_CLASS.getMethod("toBuilder"));
+            ReflectiveInvoker emptyInvoker = getMethodInvoker(ATTRIBUTES_CLASS, ATTRIBUTES_CLASS.getMethod("empty"));
+            emptyInstance = emptyInvoker.invoke();
         } catch (Throwable t) {
             OTelInitializer.initError(LOGGER, t);
         }
@@ -44,25 +52,40 @@ public class OTelAttributes implements InstrumentationAttributes {
         ATTRIBUTES_BUILDER_INVOKER = new FallbackInvoker(attributesBuilderInvoker, LOGGER);
         PUT_INVOKER = new FallbackInvoker(putInvoker, LOGGER);
         BUILD_INVOKER = new FallbackInvoker(buildInvoker, LOGGER);
+        TO_BUILD_INVOKER = new FallbackInvoker(toBuildInvoker, LOGGER);
+        EMPTY_INSTANCE = new OTelAttributes(emptyInstance);
     }
 
-    private final Object attributesBuilder;
+    private final Object otelAttributes;
 
     /**
-     * Creates a new instance of OTelAttributes.
+     * Creates a new instance of OpenTelemetry attributes or noops if OpenTelemetry is not initialized.
      *
      * @param attributes The attributes to initialize the builder with.
+     * @return The OpenTelemetry attributes.
      */
-    public OTelAttributes(Map<String, Object> attributes) {
-        this.attributesBuilder = ATTRIBUTES_BUILDER_INVOKER.invoke();
-        if (attributesBuilder != null && attributes != null) {
-            for (Map.Entry<String, Object> kvp : attributes.entrySet()) {
-                Objects.requireNonNull(kvp.getKey(), "attribute key cannot be null.");
-                Objects.requireNonNull(kvp.getValue(), "attribute value cannot be null.");
-                Object otelKey = getKey(kvp.getKey(), kvp.getValue());
-                PUT_INVOKER.invoke(attributesBuilder, otelKey, castAttributeValue(kvp.getValue()));
-            }
+    public static InstrumentationAttributes create(Map<String, Object> attributes) {
+        if (attributes == null) {
+            return EMPTY_INSTANCE;
         }
+
+        Object attributesBuilder = ATTRIBUTES_BUILDER_INVOKER.invoke();
+        if (attributesBuilder == null) {
+            return NoopAttributes.INSTANCE;
+        }
+
+        for (Map.Entry<String, Object> kvp : attributes.entrySet()) {
+            Objects.requireNonNull(kvp.getKey(), "attribute key cannot be null.");
+            Objects.requireNonNull(kvp.getValue(), "attribute value cannot be null.");
+            Object otelKey = getKey(kvp.getKey(), kvp.getValue());
+            PUT_INVOKER.invoke(attributesBuilder, otelKey, castAttributeValue(kvp.getValue()));
+        }
+
+        return new OTelAttributes(BUILD_INVOKER.invoke(attributesBuilder));
+    }
+
+    private OTelAttributes(Object otelAttributes) {
+        this.otelAttributes = otelAttributes;
     }
 
     /**
@@ -70,8 +93,8 @@ public class OTelAttributes implements InstrumentationAttributes {
      *
      * @return The OpenTelemetry attributes.
      */
-    public Object buildOTelAttributes() {
-        return isEnable() ? BUILD_INVOKER.invoke(attributesBuilder) : null;
+    public Object getOTelAttributes() {
+        return otelAttributes;
     }
 
     /**
@@ -81,17 +104,23 @@ public class OTelAttributes implements InstrumentationAttributes {
     public InstrumentationAttributes put(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
-        if (isEnable()) {
+        if (isEnabled()) {
+            Object attributesBuilder = TO_BUILD_INVOKER.invoke(otelAttributes);
+            if (attributesBuilder == null) {
+                return NoopAttributes.INSTANCE;
+            }
+
             Object otelKey = getKey(key, value);
             if (otelKey != null) {
-                // TODO (limolkova) update
                 PUT_INVOKER.invoke(attributesBuilder, otelKey, castAttributeValue(value));
             }
+
+            return new OTelAttributes(BUILD_INVOKER.invoke(attributesBuilder));
         }
-        return this;
+        return NoopAttributes.INSTANCE;
     }
 
-    private boolean isEnable() {
-        return attributesBuilder != null && OTelInitializer.isInitialized();
+    private boolean isEnabled() {
+        return otelAttributes != null && OTelInitializer.isInitialized();
     }
 }

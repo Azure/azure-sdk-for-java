@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -94,9 +96,10 @@ public class MeterTests {
 
     @Test
     public void histogramWithAttributes() {
-        InstrumentationAttributes attributes
-            = instrumentation.createAttributes(Collections.singletonMap("key1", "value"));
-        attributes.put("key2", 42);
+        Map<String, Object> attributesMap = new HashMap<>();
+        attributesMap.put("key1", "value");
+        attributesMap.put("key2", 42);
+        InstrumentationAttributes attributes = instrumentation.createAttributes(attributesMap);
 
         Attributes otelAttributes = Attributes.builder().put("key1", "value").put("key2", 42).build();
 
@@ -172,9 +175,10 @@ public class MeterTests {
 
     @Test
     public void counterWithAttributes() {
-        InstrumentationAttributes attributes
-            = instrumentation.createAttributes(Collections.singletonMap("key1", "value"));
-        attributes.put("key2", 42);
+        Map<String, Object> attributesMap = new HashMap<>();
+        attributesMap.put("key1", "value");
+        attributesMap.put("key2", 42);
+        InstrumentationAttributes attributes = instrumentation.createAttributes(attributesMap);
 
         Attributes otelAttributes = Attributes.builder().put("key1", "value").put("key2", 42).build();
 
@@ -218,9 +222,10 @@ public class MeterTests {
 
     @Test
     public void upDownCounterWithAttributes() {
-        InstrumentationAttributes attributes
-            = instrumentation.createAttributes(Collections.singletonMap("key1", "value"));
-        attributes.put("key2", 42);
+        Map<String, Object> attributesMap = new HashMap<>();
+        attributesMap.put("key1", "value");
+        attributesMap.put("key2", 42);
+        InstrumentationAttributes attributes = instrumentation.createAttributes(attributesMap);
 
         Attributes otelAttributes = Attributes.builder().put("key1", "value").put("key2", 42).build();
 

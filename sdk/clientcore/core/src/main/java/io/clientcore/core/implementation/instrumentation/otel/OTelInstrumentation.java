@@ -140,11 +140,7 @@ public class OTelInstrumentation implements Instrumentation {
 
     @Override
     public InstrumentationAttributes createAttributes(Map<String, Object> attributes) {
-        if (OTelInitializer.isInitialized()) {
-            return new OTelAttributes(attributes);
-        }
-
-        return NoopAttributes.INSTANCE;
+        return OTelInitializer.isInitialized() ? OTelAttributes.create(attributes) : NoopAttributes.INSTANCE;
     }
 
     /**

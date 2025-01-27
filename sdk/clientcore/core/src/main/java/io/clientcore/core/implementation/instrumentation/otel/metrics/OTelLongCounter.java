@@ -91,7 +91,7 @@ final class OTelLongCounter implements LongCounter {
     public void add(long value, InstrumentationAttributes attributes, InstrumentationContext context) {
         Objects.requireNonNull(attributes, "'attributes' cannot be null.");
         if (isEnabled() && attributes instanceof OTelAttributes) {
-            ADD_INVOKER.invoke(otelCounter, value, ((OTelAttributes) attributes).buildOTelAttributes(),
+            ADD_INVOKER.invoke(otelCounter, value, ((OTelAttributes) attributes).getOTelAttributes(),
                 OTelContext.fromInstrumentationContext(context));
         }
     }

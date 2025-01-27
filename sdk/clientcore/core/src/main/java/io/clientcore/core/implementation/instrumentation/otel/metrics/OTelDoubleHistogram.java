@@ -91,7 +91,7 @@ final class OTelDoubleHistogram implements DoubleHistogram {
     public void record(double value, InstrumentationAttributes attributes, InstrumentationContext context) {
         Objects.requireNonNull(attributes, "'attributes' cannot be null.");
         if (isEnabled() && attributes instanceof OTelAttributes) {
-            RECORD_INVOKER.invoke(otelHistogram, value, ((OTelAttributes) attributes).buildOTelAttributes(),
+            RECORD_INVOKER.invoke(otelHistogram, value, ((OTelAttributes) attributes).getOTelAttributes(),
                 OTelContext.fromInstrumentationContext(context));
         }
     }

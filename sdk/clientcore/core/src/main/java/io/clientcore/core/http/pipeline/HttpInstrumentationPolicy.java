@@ -14,7 +14,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
-import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
@@ -31,6 +30,7 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -213,42 +213,41 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     @SuppressWarnings("try")
     @Override
     public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
-        boolean isTracingEnabled = tracer.isEnabled();
-        boolean isMetricsEnabled = meter.isEnabled();
+        final boolean isTracingEnabled = tracer.isEnabled();
+        final boolean isMetricsEnabled = meter.isEnabled();
         if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
             return next.process();
         }
 
         ClientLogger logger = getLogger(request);
         final long startNs = System.nanoTime();
-        String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
-        int tryCount = HttpRequestAccessHelper.getTryCount(request);
+        final String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
+        final int tryCount = HttpRequestAccessHelper.getTryCount(request);
         final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
 
-        InstrumentationContext instrumentationContext
-            = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
-
-        Span span = Span.noop();
-        if (isTracingEnabled) {
-            if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
-                request.setRequestOptions(new RequestOptions());
-            }
-
-            span = startHttpSpan(request, redactedUrl, instrumentationContext);
-            instrumentationContext = span.getInstrumentationContext();
-            request.getRequestOptions().setInstrumentationContext(instrumentationContext);
+        Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
+        if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
+            request.setRequestOptions(new RequestOptions());
         }
 
-        // even if tracing is disabled, we could have a valid context to propagate
-        // if it was provided by the application explicitly.
-        if (instrumentationContext != null && instrumentationContext.isValid()) {
-            traceContextPropagator.inject(instrumentationContext, request.getHeaders(), SETTER);
+        InstrumentationContext parentContext = request.getRequestOptions().getInstrumentationContext();
+
+        SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
+        setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
+        Span span = spanBuilder.startSpan();
+
+        InstrumentationContext context
+            = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
+
+        if (context != null && context.isValid()) {
+            request.getRequestOptions().setInstrumentationContext(context);
+            // even if tracing is disabled, we could have a valid context to propagate
+            // if it was provided by the application explicitly.
+            traceContextPropagator.inject(context, request.getHeaders(), SETTER);
         }
 
-        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, instrumentationContext);
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
 
-        int statusCode = -1;
-        String error = null;
         try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
 
@@ -263,66 +262,50 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 return null;
             }
 
-            statusCode = response.getStatusCode();
-            if (statusCode >= 400) {
-                error = String.valueOf(statusCode);
-            }
-
-            addDetails(request, response.getStatusCode(), tryCount, error, span);
-            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
-                instrumentationContext);
+            addDetails(request, response.getStatusCode(), tryCount, span, metricAttributes);
+            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, context);
             span.end();
             return response;
         } catch (RuntimeException t) {
             Throwable cause = unwrap(t);
-            error = cause.getClass().getCanonicalName();
+            if (metricAttributes != null) {
+                metricAttributes.put(ERROR_TYPE_KEY, cause.getClass().getCanonicalName());
+            }
             span.end(cause);
-            // TODO (limolkova) test otel scope still covers this
             throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
-                instrumentationContext);
+                context);
         } finally {
-            reportDuration(request, statusCode, error, startNs, instrumentationContext);
+            if (httpRequestDuration.isEnabled()) {
+                httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
+                    instrumentation.createAttributes(metricAttributes), context);
+            }
         }
     }
 
-    private Span startHttpSpan(HttpRequest request, String sanitizedUrl, InstrumentationContext context) {
-        SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
-            .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
-            .setAttribute(URL_FULL_KEY, sanitizedUrl)
-            .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
-        int port = getServerPort(request.getUri());
-        if (port > 0) {
-            spanBuilder.setAttribute(SERVER_PORT_KEY, port);
-        }
-        return spanBuilder.startSpan();
-    }
-
-    private void reportDuration(HttpRequest request, int responseStatusCode, String error, long startNs,
-        InstrumentationContext context) {
-        if (!httpRequestDuration.isEnabled()) {
+    private void setStartAttributes(HttpRequest request, String sanitizedUrl, SpanBuilder spanBuilder,
+        Map<String, Object> metricAttributes) {
+        if (!tracer.isEnabled() && !httpRequestDuration.isEnabled()) {
             return;
         }
 
-        InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
-        attributes.put(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString());
-        if (responseStatusCode > 0) {
-            attributes.put(HTTP_RESPONSE_STATUS_CODE_KEY, responseStatusCode);
-        }
-
-        attributes.put(SERVER_ADDRESS_KEY, request.getUri().getHost());
-
         int port = getServerPort(request.getUri());
-        if (port > 0) {
-            attributes.put(SERVER_PORT_KEY, port);
+        if (tracer.isEnabled()) {
+            spanBuilder.setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
+                .setAttribute(URL_FULL_KEY, sanitizedUrl)
+                .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
+
+            if (port > 0) {
+                spanBuilder.setAttribute(SERVER_PORT_KEY, port);
+            }
         }
 
-        // TODO: (limolkova) url.template
-
-        if (error != null) {
-            attributes.put(ERROR_TYPE_KEY, error);
+        if (httpRequestDuration.isEnabled()) {
+            metricAttributes.put(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString());
+            metricAttributes.put(SERVER_ADDRESS_KEY, request.getUri().getHost());
+            if (port > 0) {
+                metricAttributes.put(SERVER_PORT_KEY, port);
+            }
         }
-
-        httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0, attributes, context);
     }
 
     /**
@@ -349,24 +332,42 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         return port;
     }
 
-    private void addDetails(HttpRequest request, int statusCode, int tryCount, String error, Span span) {
-        if (!span.isRecording()) {
+    private void addDetails(HttpRequest request, int statusCode, int tryCount, Span span,
+        Map<String, Object> metricAttributes) {
+        if (!span.isRecording() && !httpRequestDuration.isEnabled()) {
             return;
         }
 
-        span.setAttribute(HTTP_RESPONSE_STATUS_CODE_KEY, (long) statusCode);
-
-        if (tryCount > 0) {
-            span.setAttribute(HTTP_REQUEST_RESEND_COUNT_KEY, (long) tryCount);
+        String error = null;
+        if (statusCode >= 400) {
+            error = String.valueOf(statusCode);
         }
 
-        String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
-        if (userAgent != null) {
-            span.setAttribute(USER_AGENT_ORIGINAL_KEY, userAgent);
+        if (span.isRecording()) {
+            span.setAttribute(HTTP_RESPONSE_STATUS_CODE_KEY, (long) statusCode);
+
+            if (tryCount > 0) {
+                span.setAttribute(HTTP_REQUEST_RESEND_COUNT_KEY, (long) tryCount);
+            }
+
+            String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
+            if (userAgent != null) {
+                span.setAttribute(USER_AGENT_ORIGINAL_KEY, userAgent);
+            }
+
+            if (error != null) {
+                span.setError(error);
+            }
         }
 
-        if (error != null) {
-            span.setError(error);
+        if (httpRequestDuration.isEnabled()) {
+            if (statusCode > 0) {
+                metricAttributes.put(HTTP_RESPONSE_STATUS_CODE_KEY, statusCode);
+            }
+
+            if (error != null) {
+                metricAttributes.put(ERROR_TYPE_KEY, error);
+            }
         }
 
         // TODO (lmolkova) url.template and experimental features

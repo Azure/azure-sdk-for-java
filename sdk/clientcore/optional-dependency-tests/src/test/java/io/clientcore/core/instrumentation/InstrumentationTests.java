@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -345,7 +346,7 @@ public class InstrumentationTests {
 
         InstrumentationAttributes attributes = instrumentation.createAttributes(start);
         OTelAttributes otelAttributes = (OTelAttributes) attributes;
-        Object otelAttrs = otelAttributes.buildOTelAttributes();
+        Object otelAttrs = otelAttributes.getOTelAttributes();
         assertInstanceOf(Attributes.class, otelAttrs);
 
         Attributes attrs = (Attributes) otelAttrs;
@@ -357,14 +358,19 @@ public class InstrumentationTests {
         assertEquals(4.2f, attrs.get(AttributeKey.doubleKey("float")), 0.1);
         assertEquals(true, attrs.get(AttributeKey.booleanKey("boolean")));
 
-        attributes.put("string2", "value2");
-        attributes.put("int2", 24);
-        attributes.put("double2", 0.24);
-        attributes.put("float2", 2.4f);
-        attributes.put("boolean2", false);
-        attributes.put("long2", 240L);
+        InstrumentationAttributes attributes2 = attributes.put("string2", "value2");
 
-        attrs = (Attributes) otelAttributes.buildOTelAttributes();
+        assertNotSame(attributes, attributes2);
+        assertNull(attrs.get(AttributeKey.stringKey("string2")));
+        assertEquals(6, attrs.size());
+
+        attributes2 = attributes2.put("int2", 24)
+            .put("double2", 0.24)
+            .put("float2", 2.4f)
+            .put("boolean2", false)
+            .put("long2", 240L);
+
+        attrs = (Attributes) ((OTelAttributes) attributes2).getOTelAttributes();
         assertEquals(12, attrs.size());
         assertEquals("value2", attrs.get(AttributeKey.stringKey("string2")));
         assertEquals(24L, attrs.get(AttributeKey.longKey("int2")));
@@ -381,10 +387,9 @@ public class InstrumentationTests {
         start.put("string", "value1");
         start.put("string", "value2");
 
-        InstrumentationAttributes attributes1 = instrumentation.createAttributes(start);
-        attributes1.put("string", "value3");
-        attributes1.put("string", "value4");
-        Object otelAttrs = ((OTelAttributes) attributes1).buildOTelAttributes();
+        InstrumentationAttributes attributes
+            = instrumentation.createAttributes(start).put("string", "value3").put("string", "value4");
+        Object otelAttrs = ((OTelAttributes) attributes).getOTelAttributes();
 
         Attributes attrs = (Attributes) otelAttrs;
         assertEquals(1, attrs.size());
