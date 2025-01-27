@@ -35,6 +35,7 @@ public class ThinClientTest {
         container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class)
             .block();*/
         } finally {
+            System.clearProperty(Configs.THINCLIENT_ENABLED);
             System.clearProperty(Configs.THINCLIENT_ENDPOINT);
             System.clearProperty(Configs.HTTP2_ENABLED);
         }
