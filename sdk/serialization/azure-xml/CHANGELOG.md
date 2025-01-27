@@ -1,14 +1,20 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2025-01-27)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added APIs to `XmlReader` that may reduce `QName`, and other allocations, depending on the XML implementation.
+  `XmlElementConsumer` and usage with `XmlReader.processNextElement(XmlElementConsumer)` allow for processing an element
+  without using `QName`. `XmlReader.elementNameMathes(String)` and `XmlReader.elementNameMatches(String, String)` allow
+  for checking the current element name without using `QName`. `XmlReader.getElementLocalName()` and 
+  `XmlReader.getElementNamespaceUri()` allow for inspecting the current element name and namespace without using 
+  `QName`. Depending on the implementation, using these methods may reduce allocations and improve performance.
 
 ### Other Changes
+
+- Shaded Aalto XML 1.3.3 into `azure-xml` and updated `XmlReader` and `XmlWriter` to use that implementation by default
+  if the `XMLInputFactory` or `XMLOutputFactory` `newInstance` returned the default JDK implementation.
 
 ## 1.1.0 (2024-07-26)
 
