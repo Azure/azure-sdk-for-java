@@ -1081,7 +1081,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
         final SubscriptionProperties createdSubscription
             = client.createSubscription(topicName, subscriptionName, ruleName, subscriptionOptions, ruleOptions)
-            .block(DEFAULT_TIMEOUT);
+                .block(DEFAULT_TIMEOUT);
 
         // Assert created options are correct.
         assertNotNull(createdSubscription);
