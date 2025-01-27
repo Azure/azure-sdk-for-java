@@ -7,6 +7,9 @@ import io.clientcore.core.implementation.GenericParameterizedType;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,13 +52,14 @@ public class UnionTests {
     private static final GenericParameterizedType SET_OF_STRING_TYPE
         = new GenericParameterizedType(Set.class, String.class);
 
-    private static final List<String> LIST_OF_STRING_VALUE = List.of("Hello", "world", "!");
-    private static final List<Integer> LIST_OF_INTEGER_VALUE = List.of(1, 2, 3);
-    private static final List<Long> LIST_OF_LONG_VALUE = List.of(1L, 2L, 3L);
-    private static final List<Float> LIST_OF_FLOAT_VALUE = List.of(1.1f, 2.2f, 3.3f);
-    private static final List<Double> LIST_OF_DOUBLE_VALUE = List.of(1.1d, 2.2d, 3.3d);
+    private static final List<String> LIST_OF_STRING_VALUE = Arrays.asList("Hello", "world", "!");
+    private static final List<Integer> LIST_OF_INTEGER_VALUE = Arrays.asList(1, 2, 3);
+    private static final List<Long> LIST_OF_LONG_VALUE = Arrays.asList(1L, 2L, 3L);
+    private static final List<Float> LIST_OF_FLOAT_VALUE = Arrays.asList(1.1f, 2.2f, 3.3f);
+    private static final List<Double> LIST_OF_DOUBLE_VALUE = Arrays.asList(1.1d, 2.2d, 3.3d);
 
-    private static final Set<String> SET_OF_STRING_VALUE = Set.of("Hello", "world", "!");
+    private static final Set<String> SET_OF_STRING_VALUE = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList("Hello", "world", "!")));
 
     @Test
     void createUnionWithMultipleTypes() {
@@ -316,7 +320,7 @@ public class UnionTests {
     @Test
     void setAndGetValueWithEmptyCollection() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE);
-        List<String> emptyList = List.of();
+        List<String> emptyList = Arrays.asList();
         union = union.setValue(emptyList);
         assertEquals(LIST_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(emptyList, union.getValue(LIST_OF_STRING_TYPE));
@@ -326,7 +330,7 @@ public class UnionTests {
     void setValueWithMixedTypeCollection() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE);
 
-        List<Object> mixedList = List.of("Hello", 1);
+        List<Object> mixedList = Arrays.asList("Hello", 1);
         assertThrows(IllegalArgumentException.class, () -> union.setValue(mixedList));
     }
 
@@ -336,7 +340,7 @@ public class UnionTests {
             = new GenericParameterizedType(List.class, new GenericParameterizedType(List.class, String.class));
         Union union = Union.ofTypes(listOfListOfString);
 
-        List<List<String>> nestedList = List.of(LIST_OF_STRING_VALUE);
+        List<List<String>> nestedList = Arrays.asList(LIST_OF_STRING_VALUE);
         union = union.setValue(nestedList);
         assertEquals(listOfListOfString, union.getCurrentType());
         assertEquals(nestedList, union.getValue(listOfListOfString));
@@ -361,7 +365,7 @@ public class UnionTests {
             = new GenericParameterizedType(List.class, new GenericParameterizedType(List.class, LIST_OF_STRING_TYPE));
         Union union = Union.ofTypes(listOfListOfListOfString);
 
-        List<List<List<String>>> deeplyNestedList = List.of(List.of(LIST_OF_STRING_VALUE));
+        List<List<List<String>>> deeplyNestedList = Arrays.asList(Arrays.asList(LIST_OF_STRING_VALUE));
         union = union.setValue(deeplyNestedList);
         assertEquals(listOfListOfListOfString, union.getCurrentType());
         assertEquals(deeplyNestedList, union.getValue(listOfListOfListOfString));
@@ -389,7 +393,7 @@ public class UnionTests {
         Union union = Union.ofTypes(String.class, Integer.class, Map.class);
         String key = "key";
         String value = "value";
-        Map<String, String> map = Map.of(key, value);
+        Map<String, String> map = Collections.singletonMap(key, value);
         union = union.setValue(map);
 
         assertEquals(Map.class, union.getCurrentType());

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.net.http.HttpResponse;
 import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
     implements HttpResponse.BodySubscriber<InputStream> {
     // Sentinel values to indicate completion.
     private static final ByteBuffer LAST_BUFFER = ByteBuffer.wrap(new byte[0]);
-    private static final List<ByteBuffer> LAST_LIST = List.of(LAST_BUFFER);
+    private static final List<ByteBuffer> LAST_LIST = Arrays.asList(LAST_BUFFER);
 
     // A queue of yet unprocessed ByteBuffers received from the flow API.
     private final BlockingQueue<List<ByteBuffer>> buffers;

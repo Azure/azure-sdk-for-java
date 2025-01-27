@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class PagedResponseTests {
@@ -17,7 +18,7 @@ public class PagedResponseTests {
         final HttpRequest mockHttpRequest = new HttpRequest(HttpMethod.GET, "https://endpoint");
         final int statusCode = 200;
         final HttpHeaders mockHttpHeaders = new HttpHeaders();
-        final List<Object> mockValue = List.of(new Object());
+        final List<Object> mockValue = Arrays.asList(new Object());
 
         final String continuationToken = "continuation_token";
         final String nextLink = "https://next_link";

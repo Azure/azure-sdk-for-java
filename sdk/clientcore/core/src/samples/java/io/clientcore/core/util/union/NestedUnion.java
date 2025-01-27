@@ -3,6 +3,7 @@ package io.clientcore.core.util.union;
 import io.clientcore.core.implementation.GenericParameterizedType;
 import io.clientcore.core.util.Union;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
 public class NestedUnion {
     public static void main(String[] args) {
         NestedClassB nestedClassB = new NestedClassB();
-        nestedClassB.setProp(List.of(1, 2, 3));
+        nestedClassB.setProp(Arrays.asList(1, 2, 3));
         System.out.println("Current Type of Nested Class B: " + nestedClassB.getProp().getCurrentType());
         System.out.println("Value from Nested Class B: " +
             nestedClassB.getProp().getValue(new GenericParameterizedType(List.class, Integer.class)));
