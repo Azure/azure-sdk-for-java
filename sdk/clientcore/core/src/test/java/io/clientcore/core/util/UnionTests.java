@@ -58,8 +58,8 @@ public class UnionTests {
     private static final List<Float> LIST_OF_FLOAT_VALUE = Arrays.asList(1.1f, 2.2f, 3.3f);
     private static final List<Double> LIST_OF_DOUBLE_VALUE = Arrays.asList(1.1d, 2.2d, 3.3d);
 
-    private static final Set<String> SET_OF_STRING_VALUE = Collections.unmodifiableSet(
-        new HashSet<>(Arrays.asList("Hello", "world", "!")));
+    private static final Set<String> SET_OF_STRING_VALUE
+        = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("Hello", "world", "!")));
 
     @Test
     void createUnionWithMultipleTypes() {
