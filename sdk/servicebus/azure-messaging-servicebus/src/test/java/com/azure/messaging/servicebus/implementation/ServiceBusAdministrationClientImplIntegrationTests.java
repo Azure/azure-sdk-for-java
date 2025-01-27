@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -22,6 +23,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.administration.ServiceBusSupplementaryAuthHeaderPolicy;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
@@ -231,7 +233,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
 
             httpClientToUse = httpClient;
             tokenCredential = TestUtils.getPipelineCredential(credentialCached);
-        } else {
+        } else if (interceptorManager.isRecordMode()) {
             // Record Mode.
             final String connectionString = TestUtils.getConnectionString(false);
             if (CoreUtils.isNullOrEmpty(connectionString)) {
@@ -248,14 +250,18 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
 
             httpClientToUse = httpClient;
             policies.add(interceptorManager.getRecordPolicy());
+        } else {
+            throw new UnsupportedOperationException("Test mode is not supported: " + getTestMode());
+        }
 
-            if (!interceptorManager.isLiveMode()) {
-                interceptorManager.addSanitizers(TestUtils.TEST_PROXY_SANITIZERS);
-                interceptorManager.addMatchers(TestUtils.TEST_PROXY_REQUEST_MATCHERS);
-            }
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(TestUtils.TEST_PROXY_SANITIZERS);
+            interceptorManager.addMatchers(TestUtils.TEST_PROXY_REQUEST_MATCHERS);
         }
 
         policies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
+        policies.add(new AddHeadersFromContextPolicy());
+        policies.add(new ServiceBusSupplementaryAuthHeaderPolicy(tokenCredential));
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
