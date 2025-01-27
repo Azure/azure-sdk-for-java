@@ -3,6 +3,11 @@
 
 package com.azure.communication.callautomation;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import com.azure.communication.callautomation.models.events.AddParticipantFailed;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.AnswerFailed;
@@ -31,12 +36,16 @@ import com.azure.communication.callautomation.models.events.HoldAudioPaused;
 import com.azure.communication.callautomation.models.events.HoldAudioResumed;
 import com.azure.communication.callautomation.models.events.HoldAudioStarted;
 import com.azure.communication.callautomation.models.events.HoldFailed;
+import com.azure.communication.callautomation.models.events.IncomingCall;
+import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
+import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
+import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.PlayPaused;
 import com.azure.communication.callautomation.models.events.PlayResumed;
-import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.PlayStarted;
 import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
@@ -44,25 +53,17 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
+import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
-import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
-import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
-import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
-import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
-import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Event handler for taking care of event related tasks.
@@ -217,6 +218,8 @@ public final class CallAutomationEventParser {
                 ret = MediaStreamingStopped.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingFailed")) {
                 ret = MediaStreamingFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.IncomingCall")) {
+                ret = IncomingCall.fromJson(jsonReader);
             } else {
                 ret = null;
             }
