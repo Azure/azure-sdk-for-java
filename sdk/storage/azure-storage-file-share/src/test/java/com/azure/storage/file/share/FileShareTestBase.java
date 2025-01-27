@@ -220,6 +220,18 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.buildClient();
     }
 
+    protected ShareAsyncClient getShareAsyncClient(final String shareName, Boolean allowTrailingDot,
+        Boolean allowSourceTrailingDot) {
+        ShareClientBuilder builder = shareBuilderHelper(shareName, null);
+        if (allowTrailingDot != null) {
+            builder.allowTrailingDot(allowTrailingDot);
+        }
+        if (allowSourceTrailingDot != null) {
+            builder.allowSourceTrailingDot(allowSourceTrailingDot);
+        }
+        return builder.buildAsyncClient();
+    }
+
     protected ShareClientBuilder shareBuilderHelper(final String shareName, final String snapshot) {
         ShareClientBuilder builder = instrument(new ShareClientBuilder());
         return builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
