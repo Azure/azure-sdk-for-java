@@ -16,6 +16,5 @@
     <module>http-stress</module>
     <module>annotation-processor</module>
     <module>annotation-processor-test</module>
-    <module>tools</module>
   </modules>
 </project>

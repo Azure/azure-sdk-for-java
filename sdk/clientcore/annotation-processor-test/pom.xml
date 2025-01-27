@@ -9,12 +9,11 @@
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
     <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
-    <relativePath>../../parents/clientcore-parent/pom.xml</relativePath>
+    <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
   <artifactId>annotation-processor-test</artifactId>
-  <packaging>jar</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor-test;current} -->
 
   <name>Java Core library tests for annotation-processor features.</name>
@@ -41,6 +40,8 @@
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <spotless.skip>true</spotless.skip>
+    <revapi.skip>true</revapi.skip>
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -78,6 +79,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
+          <proc>only</proc>
           <!-- Supported source version 'RELEASE_8' from annotation processor 'io.clientcore.annotation.processor.AnnotationProcessor' less than -source '17' -->
           <failOnWarning>false</failOnWarning>
           <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
@@ -91,6 +93,9 @@
           <annotationProcessors>
             <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
           </annotationProcessors>
+          <compileSourceRoots>
+            <compileSourceRoot>${project.build.directory}/generated-sources/</compileSourceRoot>
+          </compileSourceRoots>
         </configuration>
       </plugin>
     </plugins>
