@@ -227,13 +227,15 @@ public final class CallAutomationAsyncClient {
 
         CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = null;
         if (createCallOptions.getCallIntelligenceOptions() != null
-            && (createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null
-                || createCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null)) {
+            && createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
             callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
             callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
                 createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
-            callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
-                createCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+
+            if (createCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null) {
+                callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
+                    createCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+            }
         }
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
@@ -278,13 +280,15 @@ public final class CallAutomationAsyncClient {
 
         CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = null;
         if (createCallGroupOptions.getCallIntelligenceOptions() != null
-            && (createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null
-                || createCallGroupOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null)) {
+            && createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
             callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
             callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
                 createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
-            callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
-                createCallGroupOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+
+            if (createCallGroupOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null) {
+                callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
+                    createCallGroupOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+            }
         }
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
@@ -386,13 +390,16 @@ public final class CallAutomationAsyncClient {
                     .setOperationContext(answerCallOptions.getOperationContext());
 
             if (answerCallOptions.getCallIntelligenceOptions() != null
-                && (answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null
-                    || answerCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null)) {
+                && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
                 callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
                     answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
-                callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
-                    answerCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+
+                if (answerCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null) {
+                    callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
+                        answerCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+                }
+
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
@@ -587,13 +594,16 @@ public final class CallAutomationAsyncClient {
             }
 
             if (connectCallOptions.getCallIntelligenceOptions() != null
-                && (connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null
-                    || connectCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null)) {
+                && connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
                 callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
                     connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
-                callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
-                    connectCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+
+                if (connectCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint() != null) {
+                    callIntelligenceOptionsInternal.setBackupCognitiveServicesEndpoint(
+                        connectCallOptions.getCallIntelligenceOptions().getBackupCognitiveServicesEndpoint());
+                }
+
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
