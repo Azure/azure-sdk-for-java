@@ -28,28 +28,6 @@ import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous ImageAnalysisClient type.
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client-api-key-auth -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client with API key authentication.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client-api-key-auth -->
- * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client-entra-id-auth -->
- * <pre>
- * &#47;&#47;
- * &#47;&#47; Create a synchronous Image Analysis client with Entra ID authentication.
- * &#47;&#47;
- * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.sync-client-entra-id-auth -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class)
 public final class ImageAnalysisClient {
@@ -98,15 +76,18 @@ public final class ImageAnalysisClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -192,7 +173,8 @@ public final class ImageAnalysisClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -327,13 +309,16 @@ public final class ImageAnalysisClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     captionResult (Optional): {
      *         confidence: double (Required)
@@ -419,7 +404,8 @@ public final class ImageAnalysisClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
@@ -586,30 +572,26 @@ public final class ImageAnalysisClient {
      * @return represents the outcome of an Image Analysis operation.
      *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
+     * 
      * <pre>
      * &#47;&#47;
      * &#47;&#47; Synchronous analysis of an image file &#40;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&#41;,
      * &#47;&#47; using all visual features, with all options set. You will likely need fewer visual features
      * &#47;&#47; and only some &#40;or no&#41; options set.
      * &#47;&#47;
-     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;
-     *     .setLanguage&#40;&quot;en&quot;&#41;
+     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *     .setGenderNeutralCaption&#40;true&#41;
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * ImageAnalysisResult result = client.analyzeFromUrl&#40;
-     *     &quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
-     *     Arrays.asList&#40;
-     *         VisualFeatures.SMART_CROPS,
-     *         VisualFeatures.CAPTION,
-     *         VisualFeatures.DENSE_CAPTIONS,
-     *         VisualFeatures.OBJECTS,
-     *         VisualFeatures.PEOPLE,
-     *         VisualFeatures.READ,
-     *         VisualFeatures.TAGS&#41;,
-     *     options&#41;;
+     * ImageAnalysisResult result
+     *     = client
+     *         .analyzeFromUrl&#40;&quot;https:&#47;&#47;aka.ms&#47;azsdk&#47;image-analysis&#47;sample.jpg&quot;,
+     *             Arrays.asList&#40;VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+     *                 VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS&#41;,
+     *             options&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.vision.imageanalysis.sync-analysis-from-url -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -637,30 +619,26 @@ public final class ImageAnalysisClient {
      * @return represents the outcome of an Image Analysis operation.
      *
      * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
+     * 
      * <pre>
      * &#47;&#47;
      * &#47;&#47; Synchronous analysis of an image file &#40;sample.jpg&#41;, using all visual features,
      * &#47;&#47; with all options set. You will likely need fewer visual features and only
      * &#47;&#47; some &#40;or no&#41; options set.
      * &#47;&#47;
-     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;
-     *     .setLanguage&#40;&quot;en&quot;&#41;
+     * ImageAnalysisOptions options = new ImageAnalysisOptions&#40;&#41;.setLanguage&#40;&quot;en&quot;&#41;
      *     .setGenderNeutralCaption&#40;true&#41;
      *     .setSmartCropsAspectRatios&#40;Arrays.asList&#40;0.9, 1.33&#41;&#41;
      *     .setModelVersion&#40;&quot;latest&quot;&#41;;
      *
-     * ImageAnalysisResult result = client.analyze&#40;
-     *     BinaryData.fromFile&#40;new File&#40;&quot;sample.jpg&quot;&#41;.toPath&#40;&#41;&#41;,
-     *     Arrays.asList&#40;
-     *         VisualFeatures.SMART_CROPS,
-     *         VisualFeatures.CAPTION,
-     *         VisualFeatures.DENSE_CAPTIONS,
-     *         VisualFeatures.OBJECTS,
-     *         VisualFeatures.PEOPLE,
-     *         VisualFeatures.READ,
-     *         VisualFeatures.TAGS&#41;,
-     *     options&#41;;
+     * ImageAnalysisResult result
+     *     = client
+     *         .analyze&#40;BinaryData.fromFile&#40;new File&#40;&quot;sample.jpg&quot;&#41;.toPath&#40;&#41;&#41;,
+     *             Arrays.asList&#40;VisualFeatures.SMART_CROPS, VisualFeatures.CAPTION, VisualFeatures.DENSE_CAPTIONS,
+     *                 VisualFeatures.OBJECTS, VisualFeatures.PEOPLE, VisualFeatures.READ, VisualFeatures.TAGS&#41;,
+     *             options&#41;;
      * </pre>
+     * 
      * <!-- end com.azure.ai.vision.imageanalysis.sync-analysis-from-file -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -36,16 +36,16 @@ public final class SapVirtualInstancesGetSizingRecommendationsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SapSizingRecommendationResult response = manager.sapVirtualInstances()
-            .getSizingRecommendationsWithResponse("pn",
-                new SapSizingRecommendationRequest().withAppLocation("saz")
+            .getSizingRecommendationsWithResponse("t",
+                new SapSizingRecommendationRequest().withAppLocation("jqppyostronzmy")
                     .withEnvironment(SapEnvironmentType.NON_PROD)
-                    .withSapProduct(SapProductType.S4HANA)
+                    .withSapProduct(SapProductType.ECC)
                     .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                    .withSaps(12239624100997197L)
-                    .withDbMemory(17918194548495452L)
+                    .withSaps(3347625108897056791L)
+                    .withDbMemory(3797997651495402097L)
                     .withDatabaseType(SapDatabaseType.DB2)
                     .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
