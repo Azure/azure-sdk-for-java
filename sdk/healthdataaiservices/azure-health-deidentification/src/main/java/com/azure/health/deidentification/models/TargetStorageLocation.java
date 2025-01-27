@@ -4,8 +4,8 @@
 
 package com.azure.health.deidentification.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Storage location.
  */
-@Immutable
+@Fluent
 public final class TargetStorageLocation implements JsonSerializable<TargetStorageLocation> {
     /*
      * URL to storage location.
@@ -24,10 +24,23 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
     private final String location;
 
     /*
-     * Prefix to filter path by.
+     * Replaces the input prefix of a file path with the output prefix, preserving the rest of the path structure.
+     * 
+     * Example:
+     * File full path: documents/user/note.txt
+     * Input Prefix: "documents/user/"
+     * Output Prefix: "output_docs/"
+     * 
+     * Output file: "output_docs/note.txt"
      */
     @Generated
     private final String prefix;
+
+    /*
+     * When set to true during a job, the service will overwrite the output location if it already exists.
+     */
+    @Generated
+    private Boolean overwrite;
 
     /**
      * Creates an instance of TargetStorageLocation class.
@@ -52,13 +65,45 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
     }
 
     /**
-     * Get the prefix property: Prefix to filter path by.
+     * Get the prefix property: Replaces the input prefix of a file path with the output prefix, preserving the rest of
+     * the path structure.
+     * 
+     * Example:
+     * File full path: documents/user/note.txt
+     * Input Prefix: "documents/user/"
+     * Output Prefix: "output_docs/"
+     * 
+     * Output file: "output_docs/note.txt".
      * 
      * @return the prefix value.
      */
     @Generated
     public String getPrefix() {
         return this.prefix;
+    }
+
+    /**
+     * Get the overwrite property: When set to true during a job, the service will overwrite the output location if it
+     * already exists.
+     * 
+     * @return the overwrite value.
+     */
+    @Generated
+    public Boolean isOverwrite() {
+        return this.overwrite;
+    }
+
+    /**
+     * Set the overwrite property: When set to true during a job, the service will overwrite the output location if it
+     * already exists.
+     * 
+     * @param overwrite the overwrite value to set.
+     * @return the TargetStorageLocation object itself.
+     */
+    @Generated
+    public TargetStorageLocation setOverwrite(Boolean overwrite) {
+        this.overwrite = overwrite;
+        return this;
     }
 
     /**
@@ -70,6 +115,7 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeBooleanField("overwrite", this.overwrite);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +133,7 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
         return jsonReader.readObject(reader -> {
             String location = null;
             String prefix = null;
+            Boolean overwrite = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -95,11 +142,16 @@ public final class TargetStorageLocation implements JsonSerializable<TargetStora
                     location = reader.getString();
                 } else if ("prefix".equals(fieldName)) {
                     prefix = reader.getString();
+                } else if ("overwrite".equals(fieldName)) {
+                    overwrite = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TargetStorageLocation(location, prefix);
+            TargetStorageLocation deserializedTargetStorageLocation = new TargetStorageLocation(location, prefix);
+            deserializedTargetStorageLocation.overwrite = overwrite;
+
+            return deserializedTargetStorageLocation;
         });
     }
 }

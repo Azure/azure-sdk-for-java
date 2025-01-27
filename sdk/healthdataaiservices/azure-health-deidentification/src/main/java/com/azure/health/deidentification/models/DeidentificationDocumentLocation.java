@@ -16,12 +16,12 @@ import java.io.IOException;
  * Location of a document.
  */
 @Immutable
-public final class DocumentLocation implements JsonSerializable<DocumentLocation> {
+public final class DeidentificationDocumentLocation implements JsonSerializable<DeidentificationDocumentLocation> {
     /*
-     * Path of document in storage.
+     * Location of document in storage.
      */
     @Generated
-    private final String path;
+    private final String location;
 
     /*
      * The entity tag for this resource.
@@ -30,23 +30,23 @@ public final class DocumentLocation implements JsonSerializable<DocumentLocation
     private String etag;
 
     /**
-     * Creates an instance of DocumentLocation class.
+     * Creates an instance of DeidentificationDocumentLocation class.
      * 
-     * @param path the path value to set.
+     * @param location the location value to set.
      */
     @Generated
-    private DocumentLocation(String path) {
-        this.path = path;
+    private DeidentificationDocumentLocation(String location) {
+        this.location = location;
     }
 
     /**
-     * Get the path property: Path of document in storage.
+     * Get the location property: Location of document in storage.
      * 
-     * @return the path value.
+     * @return the location value.
      */
     @Generated
-    public String getPath() {
-        return this.path;
+    public String getLocation() {
+        return this.location;
     }
 
     /**
@@ -66,40 +66,41 @@ public final class DocumentLocation implements JsonSerializable<DocumentLocation
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of DocumentLocation from the JsonReader.
+     * Reads an instance of DeidentificationDocumentLocation from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentLocation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of DeidentificationDocumentLocation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentLocation.
+     * @throws IOException If an error occurs while reading the DeidentificationDocumentLocation.
      */
     @Generated
-    public static DocumentLocation fromJson(JsonReader jsonReader) throws IOException {
+    public static DeidentificationDocumentLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String path = null;
+            String location = null;
             String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("path".equals(fieldName)) {
-                    path = reader.getString();
+                if ("location".equals(fieldName)) {
+                    location = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            DocumentLocation deserializedDocumentLocation = new DocumentLocation(path);
-            deserializedDocumentLocation.etag = etag;
+            DeidentificationDocumentLocation deserializedDeidentificationDocumentLocation
+                = new DeidentificationDocumentLocation(location);
+            deserializedDeidentificationDocumentLocation.etag = etag;
 
-            return deserializedDocumentLocation;
+            return deserializedDeidentificationDocumentLocation;
         });
     }
 }

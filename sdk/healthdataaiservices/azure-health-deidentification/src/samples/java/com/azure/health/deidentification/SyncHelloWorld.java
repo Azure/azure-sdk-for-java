@@ -20,10 +20,9 @@ public class SyncHelloWorld {
         DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
         // BEGIN: com.azure.health.deidentification.sync.helloworld
         String inputText = "Hello, my name is John Smith.";
-
         DeidentificationContent content = new DeidentificationContent(inputText);
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         System.out.println("Deidentified output: " + result.getOutputText());
         // Deidentified output: Hello, my name is Harley Billiard.

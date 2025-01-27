@@ -5,13 +5,12 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.JobStatus;
-import com.azure.health.deidentification.models.JobSummary;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
+import com.azure.health.deidentification.models.DeidentificationJobSummary;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
+import com.azure.health.deidentification.models.OperationState;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -22,36 +21,33 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
     @Disabled
     public void testCancelADeIdentificationJobTests() {
         // method invocation
-        DeidentificationJob response = deidentificationClient.cancelJob("documents_smith_1");
+        DeidentificationJob response = deidentificationClient.cancelJob("job_smith_documents_1");
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "name"
-        Assertions.assertEquals("documents_smith_1", response.getName());
+        Assertions.assertEquals("job_smith_documents_1", response.getName());
+        // verify property "operation"
+        Assertions.assertEquals(DeidentificationOperationType.REDACT, response.getOperation());
         // verify property "sourceLocation"
         SourceStorageLocation responseSourceLocation = response.getSourceLocation();
         Assertions.assertNotNull(responseSourceLocation);
-        Assertions.assertEquals(
-            "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             responseSourceLocation.getLocation());
-        Assertions.assertEquals("/documents", responseSourceLocation.getPrefix());
-        List<String> responseSourceLocationExtensions = responseSourceLocation.getExtensions();
-        Assertions.assertEquals("*", responseSourceLocationExtensions.iterator().next());
+        Assertions.assertEquals("documents/", responseSourceLocation.getPrefix());
         // verify property "targetLocation"
         TargetStorageLocation responseTargetLocation = response.getTargetLocation();
         Assertions.assertNotNull(responseTargetLocation);
-        Assertions.assertEquals(
-            "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             responseTargetLocation.getLocation());
-        Assertions.assertEquals("/documents", responseTargetLocation.getPrefix());
-        // verify property "operation"
-        Assertions.assertEquals(OperationType.REDACT, response.getOperation());
-        // verify property "dataType"
-        Assertions.assertEquals(DocumentDataType.PLAINTEXT, response.getDataType());
-        // verify property "redactionFormat"
-        Assertions.assertEquals("[{type}]", response.getRedactionFormat());
+        Assertions.assertEquals("_output/", responseTargetLocation.getPrefix());
+        Assertions.assertEquals(true, responseTargetLocation.isOverwrite());
+        // verify property "customizations"
+        DeidentificationJobCustomizationOptions responseCustomizations = response.getCustomizations();
+        Assertions.assertNotNull(responseCustomizations);
+        Assertions.assertEquals("[{type}]", responseCustomizations.getRedactionFormat());
         // verify property "status"
-        Assertions.assertEquals(JobStatus.CANCELED, response.getStatus());
+        Assertions.assertEquals(OperationState.CANCELED, response.getStatus());
         // verify property "lastUpdatedAt"
         Assertions.assertNotNull(response.getLastUpdatedAt());
         // verify property "createdAt"
@@ -59,12 +55,12 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
         // verify property "startedAt"
         Assertions.assertNotNull(response.getStartedAt());
         // verify property "summary"
-        JobSummary responseSummary = response.getSummary();
+        DeidentificationJobSummary responseSummary = response.getSummary();
         Assertions.assertNotNull(responseSummary);
-        Assertions.assertEquals(10, responseSummary.getSuccessful());
-        Assertions.assertEquals(0, responseSummary.getFailed());
-        Assertions.assertEquals(2, responseSummary.getCanceled());
-        Assertions.assertEquals(12, responseSummary.getTotal());
+        Assertions.assertEquals(10, responseSummary.getSuccessfulCount());
+        Assertions.assertEquals(0, responseSummary.getFailedCount());
+        Assertions.assertEquals(2, responseSummary.getCanceledCount());
+        Assertions.assertEquals(12, responseSummary.getTotalCount());
         Assertions.assertEquals(4096L, responseSummary.getBytesProcessed());
     }
 }

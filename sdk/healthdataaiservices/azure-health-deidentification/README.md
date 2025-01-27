@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-health-deidentification</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -48,11 +48,11 @@ Various documentation is available to help you get started
 The following sections provide several code snippets covering some of the most common Azure Deidentification client use cases, including:
 
 - [Create a `DeidentificationClient`](#create-a-deidentificationclient)
-- [Calling deidentification endpoint](#calling-deidentification-endpoint)
-- [Creating deidentification Job](#creating-deidentification-job)
-- [Process deidentification Job](#process-deidentification-job)
-- [List deidentification Jobs](#list-deidentification-jobs)
-- [List completed files](#list-completed-files)
+- [Call the deidentification endpoint](#calling-deidentification-endpoint)
+- [Create a Deidentification Job](#creating-deidentification-job)
+- [Process a Deidentification Job](#process-deidentification-job)
+- [List all Deidentification Jobs](#list-deidentification-jobs)
+- [List completed files within a Deidentification Job](#list-completed-files)
 
 ### Create a `DeidentificationClient`
 
@@ -69,32 +69,31 @@ DeidentificationClient deidentificationClient = deidentificationClientbuilder.bu
 
 ### Calling `Deidentification` endpoint
 
-Calling the realtime endpoint with an input.
+Calling the realtime endpoint with some input text.
 
 ```java com.azure.health.deidentification.sync.helloworld
 String inputText = "Hello, my name is John Smith.";
-
 DeidentificationContent content = new DeidentificationContent(inputText);
 
-DeidentificationResult result = deidentificationClient.deidentify(content);
+DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
 System.out.println("Deidentified output: " + result.getOutputText());
 // Deidentified output: Hello, my name is Harley Billiard.
 ```
 ### Creating Deidentification Job
 
-Creating a Deidentification Job using `STORAGE_ACCOUNT_NAME` and `STORAGE_CONTAINER_NAME` environment variables.
+Create a Deidentification Job using `STORAGE_ACCOUNT_NAME` and `STORAGE_CONTAINER_NAME` environment variables to 
+deidentify all files in the storage container.
 
 ```java com.azure.health.deidentification.sync.createjob.create
 String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
 String jobName = "MyJob-" + Instant.now().toEpochMilli();
-String outputFolder = "_output";
-String inputPrefix = "example_patient_1";
+String outputFolder = "output_patient_1/";
+String inputPrefix = "example_patient_1/";
 SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
 
 DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
-job.setOperation(OperationType.SURROGATE);
-job.setDataType(DocumentDataType.PLAINTEXT);
+job.setOperation(DeidentificationOperationType.SURROGATE);
 
 ```
 ### Process Deidentification Job
@@ -102,7 +101,7 @@ job.setDataType(DocumentDataType.PLAINTEXT);
 Create and poll job until it is completed.
 
 ```java com.azure.health.deidentification.sync.createjob.process
-DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
     .waitForCompletion()
     .getValue();
 System.out.println(jobName + " - " + result.getStatus());
@@ -126,12 +125,10 @@ for (DeidentificationJob currentJob : jobs) {
 List the files which are completed by a job.
 
 ```java com.azure.health.deidentification.sync.listcompletedfiles
-PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
+PagedIterable<DeidentificationDocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
 
-for (DocumentDetails currentFile : reports) {
-    System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getPath());
-    // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
-    // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt
+for (DeidentificationDocumentDetails currentFile : reports) {
+    System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getLocation());
 }
 ```
 

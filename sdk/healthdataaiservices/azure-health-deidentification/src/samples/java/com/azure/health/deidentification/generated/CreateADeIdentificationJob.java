@@ -4,34 +4,32 @@
 
 package com.azure.health.deidentification.generated;
 
-import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.health.deidentification.DeidentificationClient;
+import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
-@Disabled
-public final class CreateADeIdentificationJobTests extends DeidentificationClientTestBase {
-    @Test
-    @Disabled
-    public void testCreateADeIdentificationJobTests() {
-        // method invocation
+public class CreateADeIdentificationJob {
+    public static void main(String[] args) {
+        DeidentificationClient deidentificationClient
+            = new DeidentificationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
+        // BEGIN:com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
         SyncPoller<DeidentificationJob, DeidentificationJob> response
-            = setPlaybackSyncPollerPollInterval(deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
+            = deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
                 new DeidentificationJob(
                     new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
                     new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
                         .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
                             .setCustomizations(
-                                new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]"))));
-
-        // response assertion
-        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-            response.waitForCompletion().getStatus());
+                                new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]")));
+        // END:com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
     }
 }

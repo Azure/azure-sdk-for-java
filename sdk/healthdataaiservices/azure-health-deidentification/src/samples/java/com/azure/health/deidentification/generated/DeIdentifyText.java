@@ -4,28 +4,26 @@
 
 package com.azure.health.deidentification.generated;
 
+import com.azure.core.util.Configuration;
+import com.azure.health.deidentification.DeidentificationClient;
+import com.azure.health.deidentification.DeidentificationClientBuilder;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationCustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
-@Disabled
-public final class DeIdentifyTextTests extends DeidentificationClientTestBase {
-    @Test
-    @Disabled
-    public void testDeIdentifyTextTests() {
-        // method invocation
+public class DeIdentifyText {
+    public static void main(String[] args) {
+        DeidentificationClient deidentificationClient
+            = new DeidentificationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
+        // BEGIN:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
         DeidentificationResult response
             = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
                 .setOperation(DeidentificationOperationType.REDACT)
                 .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
-
-        // response assertion
-        Assertions.assertNotNull(response);
-        // verify property "outputText"
-        Assertions.assertEquals("Hello my name is [name].", response.getOutputText());
+        // END:com.azure.health.deidentification.generated.deidentifytext.deidentifytext
     }
 }

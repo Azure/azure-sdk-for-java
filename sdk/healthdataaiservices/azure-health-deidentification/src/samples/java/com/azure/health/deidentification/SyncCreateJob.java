@@ -8,8 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 
@@ -27,17 +26,16 @@ public class SyncCreateJob {
         // BEGIN: com.azure.health.deidentification.sync.createjob.create
         String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
-        String outputFolder = "_output";
-        String inputPrefix = "example_patient_1";
+        String outputFolder = "output_patient_1/";
+        String inputPrefix = "example_patient_1/";
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
-        job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         // END: com.azure.health.deidentification.sync.createjob.create
         // BEGIN: com.azure.health.deidentification.sync.createjob.process
-        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitForCompletion()
             .getValue();
         System.out.println(jobName + " - " + result.getStatus());

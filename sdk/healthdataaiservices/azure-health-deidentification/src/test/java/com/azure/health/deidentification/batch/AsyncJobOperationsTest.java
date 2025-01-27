@@ -4,16 +4,19 @@
 package com.azure.health.deidentification.batch;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.models.*;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AsyncJobOperationsTest extends BatchOperationTestBase {
     protected DeidentificationAsyncClient deidentificationAsyncClient;
-    private static final String OUTPUT_FOLDER = "_output";
+    private static final String OUTPUT_FOLDER = "_output/";
 
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded006r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-006r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -39,10 +42,9 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
-        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
@@ -52,10 +54,9 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
-        assertEquals(JobStatus.NOT_STARTED, result.getStatus());
+        assertEquals(OperationState.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        assertNull(result.getRedactionFormat());
-        assertNull(result.getSummary());
+        assertEquals("en-US", result.getCustomizations().getSurrogateLocale());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
         assertEquals(OUTPUT_FOLDER, result.getTargetLocation().getPrefix());
@@ -65,7 +66,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded007r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-007r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -77,10 +78,9 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
-        deidentificationAsyncClient.beginCreateJob(jobName, job)
+        deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
             .waitUntil(LongRunningOperationStatus.NOT_STARTED);
 
@@ -93,9 +93,9 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 assertNotNull(item.getCreatedAt());
                 assertNotNull(item.getLastUpdatedAt());
                 assertNull(item.getStartedAt());
-                assertEquals(JobStatus.NOT_STARTED, item.getStatus());
+                assertEquals(OperationState.NOT_STARTED, item.getStatus());
                 assertNull(item.getError());
-                assertNull(item.getRedactionFormat());
+                assertEquals("en-US", item.getCustomizations().getSurrogateLocale());
                 assertNull(item.getSummary());
                 assertEquals(inputPrefix, item.getSourceLocation().getPrefix());
                 assertTrue(item.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -107,7 +107,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded008r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-008r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -117,32 +117,44 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job
-            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation,
+            new TargetStorageLocation(storageLocation, OUTPUT_FOLDER).setOverwrite(true));
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         PollerFlux<DeidentificationJob, DeidentificationJob> poller
-            = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginCreateJob(jobName, job));
+            = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job));
         DeidentificationJob result = poller.getSyncPoller().waitForCompletion().getValue();
 
-        assertEquals(JobStatus.SUCCEEDED, result.getStatus());
+        assertEquals(OperationState.SUCCEEDED, result.getStatus());
 
-        PagedFlux<DocumentDetails> reports = deidentificationAsyncClient.listJobDocuments(jobName);
+        PagedFlux<BinaryData> reports = deidentificationAsyncClient.listJobDocuments(jobName,
+            new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
+        Long count = reports.count().block();
+        assertEquals(3, count);
 
-        reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
-            .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
-            .subscribe(item -> {
-                assertEquals(item.getStatus(), OperationState.SUCCEEDED);
-                assertTrue(item.getOutput().getPath().startsWith(OUTPUT_FOLDER));
-                assertEquals(item.getId().length(), 36);
-            });
+        List<String> documentIdList = new ArrayList<>();
+        StepVerifier.create(deidentificationAsyncClient
+            .listJobDocuments(jobName, new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)))
+            .byPage()
+            .take(2)).thenConsumeWhile(documentDetailsPagedResponse -> {
+                documentDetailsPagedResponse.getValue().forEach(detailsBinary -> {
+                    DeidentificationDocumentDetails details
+                        = detailsBinary.toObject(DeidentificationDocumentDetails.class);
+                    assertFalse(documentIdList.contains(details.getId()));
+                    documentIdList.add(details.getId());
+                    assertEquals(OperationState.SUCCEEDED, details.getStatus());
+                    assertNotNull(details.getOutput());
+                    assertTrue(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
+                    assertEquals(36, details.getId().length());
+                });
+                return true;
+            }).expectComplete().verify(Duration.ofSeconds(100));
     }
 
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded009r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-009r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -154,29 +166,29 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
-        DeidentificationJob result = deidentificationAsyncClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
 
         DeidentificationJob cancelledJob = deidentificationAsyncClient.cancelJob(jobName).block();
 
-        assertEquals(JobStatus.CANCELED, cancelledJob.getStatus());
+        assertEquals(OperationState.CANCELED, cancelledJob.getStatus());
 
         deidentificationAsyncClient.deleteJob(jobName).block();
 
-        assertThrows(ResourceNotFoundException.class, () -> {
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
             deidentificationAsyncClient.getJob(jobName).block();
         });
+        assertEquals(404, exception.getResponse().getStatusCode());
     }
 
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded0010r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-0010r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = "FAKE_STORAGE_ACCOUNT";
@@ -188,11 +200,10 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
-        job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
+        job.setOperation(DeidentificationOperationType.SURROGATE);
 
         assertThrows(HttpResponseException.class,
-            () -> deidentificationAsyncClient.beginCreateJob(jobName, job)
+            () -> deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job)
                 .getSyncPoller()
                 .waitUntil(LongRunningOperationStatus.NOT_STARTED));
     }
