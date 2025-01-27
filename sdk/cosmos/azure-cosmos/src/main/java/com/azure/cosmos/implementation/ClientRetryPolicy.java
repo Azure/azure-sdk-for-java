@@ -214,9 +214,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // Address resolution flows are present in GatewayAddressCache and use MetadataRequestRetryPolicy & OpenConnectionAndInitCachesRetryPolicy
         // Address resolution flows are retried in a purely region-scoped manner by the above retry policies as addresses are unique to a partition-region combo
         // If flow of control has reached here - we are at the level of the 'Document' request which ideally can be retried on
-        // a different region for both reads and writes - it is safe for 'Document' writes (from idempotency perspective) as the addresses have simply
-        // not been resolved for the write payload to have made it on the wire to a particular primary replica
-        if (!isMetaDataRequest && request.isAddressRefresh()) {
+        // a different region for Document reads
+        // For Document writes being retried on a different region there is no guarantee of idempotency as isAddressRefresh property
+        // on RxDocumentServiceRequest instance is not set back to false after address resolution completes so hard to stay what stage timed out - address resolution or the Document write
+        if (!isMetaDataRequest && request.isAddressRefresh() && request.isReadOnlyRequest()) {
             return true;
         }
 
