@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
@@ -404,17 +405,25 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                     Arrays.asList(addressRefreshResponseDelayRule, dataOperationGoneRule))
                 .block();
 
-            // validate for request on feed range 0, it will fail
+            // validate for request on feed range 0, address refresh request failures will happen but request will succeed in second region as request is Document read
             try {
-                CosmosDiagnostics cosmosDiagnostics =
+                CosmosItemResponse<JsonNode> itemResponse =
                     container
                         .readItem(itemOnFeedRange1.getId(), new PartitionKey(itemOnFeedRange1.getId()), JsonNode.class)
-                        .block()
-                        .getDiagnostics();
+                        .block();
 
-                fail("Item on feed range 1 should have failed. " + cosmosDiagnostics);
+                assertThat(itemResponse).isNotNull();
+
+                CosmosDiagnostics cosmosDiagnostics = itemResponse.getDiagnostics();
+
+                assertThat(addressRefreshResponseDelayRule.getHitCount()).isGreaterThan(0);
+
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames().size()).isEqualTo(2);
             } catch (CosmosException e) {
-                // no-op
+                fail("Item on feed range 1 should have succeeded. " + e.getDiagnostics());
             }
 
             try {
