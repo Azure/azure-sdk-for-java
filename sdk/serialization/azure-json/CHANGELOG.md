@@ -1,14 +1,15 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2025-01-27)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added convenience APIs to `JsonArray` for adding a `boolean`, `Number`, or `String` without needing to instantiate the
+  corresponding `JsonElement` subtype.
+- Added convenience APIs to `JsonObject` for setting `boolean`, `Number`, and `String` without needing to instantiate the
+  corresponding `JsonElement` subtype.
+- Added `JsonObject.hasProperty` to check if a property exists in the object.
+- Added convenience fluent methods to `JsonElement` to cast to a specific subtype if the element is of that type.
 
 ## 1.3.0 (2024-09-11)
 
