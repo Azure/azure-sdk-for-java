@@ -306,17 +306,33 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             CosmosDiagnostics cosmosDiagnostics =
                 this.performDocumentOperation(container, operationType, createdItem);
 
-            assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(
-                cosmosDiagnostics
-                    .getContactedRegionNames()
-                    .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase())))
-                .isTrue();
 
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
-                .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
-                .isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+            if (isNonWriteDocumentOperation(operationType)) {
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(
+                    cosmosDiagnostics
+                        .getContactedRegionNames()
+                        .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase(), this.readPreferredLocations.get(0).toLowerCase())))
+                    .isTrue();
+
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
+                    .isNotEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                    .isNotEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+            } else {
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(
+                    cosmosDiagnostics
+                        .getContactedRegionNames()
+                        .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase())))
+                    .isTrue();
+
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
+                    .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                    .isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+            }
+
             validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3);
         } finally {
             addressRefreshResponseDelayRule.disable();
@@ -743,6 +759,12 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
 
         assertThat(failureInjectedCount).isEqualTo(failureInjectedExpectedCount);
+    }
+
+    private static boolean isNonWriteDocumentOperation(OperationType operationType) {
+        return operationType == OperationType.Read ||
+            operationType == OperationType.Query ||
+            operationType == OperationType.ReadFeed;
     }
 
     private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
