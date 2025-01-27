@@ -53,11 +53,16 @@ import java.util.function.Consumer;
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
  * union = union.setValue&#40;&quot;Hello&quot;&#41;;
- * switch &#40;union.getValue&#40;&#41;&#41; &#123;
- *     case String s -&gt; System.out.println&#40;&quot;String value: &quot; + s&#41;;
- *     case Integer i -&gt; System.out.println&#40;&quot;Integer value: &quot; + i&#41;;
- *     default -&gt; throw new IllegalArgumentException&#40;
- *         &quot;Unknown type: &quot; + union.getCurrentType&#40;&#41;.getTypeName&#40;&#41;&#41;;
+ * Object value = union.getValue&#40;&#41;;
+ * &#47;&#47; we can write an if-else block to consume the value in Java 8+, or switch pattern match in Java 17+
+ * if &#40;value instanceof String&#41; &#123;
+ *     String s = &#40;String&#41; value;
+ *     System.out.println&#40;&quot;String value: &quot; + s&#41;;
+ * &#125; else if &#40;value instanceof Integer&#41; &#123;
+ *     Integer i = &#40;Integer&#41; value;
+ *     System.out.println&#40;&quot;Integer value: &quot; + i&#41;;
+ * &#125; else &#123;
+ *     throw new IllegalArgumentException&#40;&quot;Unknown type: &quot; + union.getCurrentType&#40;&#41;.getTypeName&#40;&#41;&#41;;
  * &#125;
  * </pre>
  * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
