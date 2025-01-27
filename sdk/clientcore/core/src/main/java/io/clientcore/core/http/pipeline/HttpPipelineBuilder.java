@@ -356,20 +356,11 @@ public class HttpPipelineBuilder {
                 new NoSuchElementException("A policy with the name '" + policyName + "' was not found."));
         }
 
-        if (attemptToAdd(policy, policyName, before, beforeRedirect, redirectPolicy, afterCredential)) {
-            return this;
-        }
-
-        if (attemptToAdd(policy, policyName, before, beforeRetry, retryPolicy, afterRetry)) {
-            return this;
-        }
-
-        if (attemptToAdd(policy, policyName, before, beforeCredential, credentialPolicy, afterCredential)) {
-            return this;
-        }
-
-        if (attemptToAdd(policy, policyName, before, beforeInstrumentation, instrumentationPolicy,
-            afterInstrumentation)) {
+        if (attemptToAdd(policy, policyName, before, beforeRedirect, redirectPolicy, afterCredential)
+            || attemptToAdd(policy, policyName, before, beforeRetry, retryPolicy, afterRetry)
+            || attemptToAdd(policy, policyName, before, beforeCredential, credentialPolicy, afterCredential)
+            || attemptToAdd(policy, policyName, before, beforeInstrumentation, instrumentationPolicy,
+                afterInstrumentation)) {
             return this;
         }
 
@@ -487,19 +478,10 @@ public class HttpPipelineBuilder {
     }
 
     private HttpPipelineBuilder setOrRemove(HttpPipelinePolicy policy, String policyName) {
-        if (attemptToSetOrRemove(policy, policyName, beforeRedirect, afterCredential)) {
-            return this;
-        }
-
-        if (attemptToSetOrRemove(policy, policyName, beforeRetry, afterRetry)) {
-            return this;
-        }
-
-        if (attemptToSetOrRemove(policy, policyName, beforeCredential, afterCredential)) {
-            return this;
-        }
-
-        if (attemptToSetOrRemove(policy, policyName, beforeInstrumentation, afterInstrumentation)) {
+        if (attemptToSetOrRemove(policy, policyName, beforeRedirect, afterCredential)
+            || attemptToSetOrRemove(policy, policyName, beforeRetry, afterRetry)
+            || attemptToSetOrRemove(policy, policyName, beforeCredential, afterCredential)
+            || attemptToSetOrRemove(policy, policyName, beforeInstrumentation, afterInstrumentation)) {
             return this;
         }
 
