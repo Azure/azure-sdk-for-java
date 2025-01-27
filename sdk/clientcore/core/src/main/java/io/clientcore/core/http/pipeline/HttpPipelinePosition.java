@@ -7,7 +7,10 @@ package io.clientcore.core.http.pipeline;
  * {@link HttpPipelineBuilder}.
  * <p>
  * For policies that are optional in an {@link HttpPipeline} if the policy isn't present the policy added will be
- * positioned adjacent to where it would have existed.
+ * positioned adjacent to where it would have existed. For example, if the {@link HttpPipeline} doesn't have the
+ * {@link HttpPipelineBuilder#setInstrumentationPolicy(HttpInstrumentationPolicy)} policy configured but
+ * {@link HttpPipelineBuilder#addPolicyBefore(HttpPipelinePolicy, HttpPipelinePosition)} is called with
+ * {@link #INSTRUMENTATION} the policy added will be positioned before the placeholder for the instrumentation policy.
  */
 public enum HttpPipelinePosition {
     /**

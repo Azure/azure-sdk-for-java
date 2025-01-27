@@ -201,8 +201,8 @@ public class HttpPipelineBuilder {
      * {@link HttpRetryPolicy}.
      * <p>
      * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * {@code "logging"}, or {@code "telemetry"} an {@link IllegalStateException} will be thrown. These names are
-     * reserved for the set methods that configure the respective policies.
+     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
+     * set methods that configure the respective policies.
      *
      * @param policy The policy to add.
      * @param position The position to add the policy before.
@@ -223,8 +223,8 @@ public class HttpPipelineBuilder {
      * {@code policy1}.
      * <p>
      * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * {@code "logging"}, or {@code "telemetry"} an {@link IllegalStateException} will be thrown. These names are
-     * reserved for the set methods that configure the respective policies.
+     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
+     * set methods that configure the respective policies.
      *
      * @param policy The policy to add.
      * @param position The position to add the policy after.
@@ -300,8 +300,8 @@ public class HttpPipelineBuilder {
      * {@code "retry"} the resulting ordering will be {@code policy1}, {@code policy2}, {@code retry}.
      * <p>
      * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * {@code "logging"}, or {@code "telemetry"} an {@link IllegalStateException} will be thrown. These names are
-     * reserved for the set methods that configure the respective policies.
+     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
+     * set methods that configure the respective policies.
      *
      * @param policy The policy to add.
      * @param policyName The name of the policy to add the policy before.
@@ -322,8 +322,8 @@ public class HttpPipelineBuilder {
      * {@code "retry"} the resulting ordering will be {@code retry}, {@code policy2}, {@code policy1}.
      * <p>
      * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * {@code "logging"}, or {@code "telemetry"} an {@link IllegalStateException} will be thrown. These names are
-     * reserved for the set methods that configure the respective policies.
+     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
+     * set methods that configure the respective policies.
      *
      * @param policy The policy to add.
      * @param policyName The name of the policy to add the policy after.
@@ -424,8 +424,8 @@ public class HttpPipelineBuilder {
      * If the policy with the given name is not found an {@link NoSuchElementException} will be thrown.
      * <p>
      * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * {@code "logging"}, or {@code "telemetry"} an {@link IllegalStateException} will be thrown. These names are
-     * reserved for the set methods that configure the respective policies.
+     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
+     * set methods that configure the respective policies.
      *
      * @param policy The policy to set.
      * @return The updated HttpPipelineBuilder object.
@@ -433,7 +433,7 @@ public class HttpPipelineBuilder {
      * @throws NoSuchElementException If a policy with the given name is not found.
      * @throws IllegalStateException If the name of the {@code policy} is reserved.
      */
-    public HttpPipelineBuilder setPolicy(HttpPipelinePolicy policy) {
+    public HttpPipelineBuilder replacePolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
         String lowerCaseName = policy.getName().toLowerCase();
         if (!policyNames.contains(lowerCaseName)) {
@@ -454,8 +454,8 @@ public class HttpPipelineBuilder {
      * <p>
      * If a policy with the given name is not found this is a no-op.
      * <p>
-     * If the {@code policyName} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"}, {@code "logging"},
-     * or {@code "telemetry"} an {@link IllegalStateException} will be thrown. These names are reserved for the set
+     * If the {@code policyName} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"}, or
+     * {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the set
      * methods that configure the respective policies.
      *
      * @param policyName The name of the policy to remove.
