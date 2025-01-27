@@ -316,22 +316,24 @@ public final class Union {
 
         if (type instanceof ParameterizedType) {
             ParameterizedType pType = (ParameterizedType) type;
-            if (pType.getRawType()instanceof Class<?> rawType && rawType.isInstance(value)) {
+            if (pType.getRawType() instanceof Class<?> && ((Class<?>) pType.getRawType()).isInstance(value)) {
                 Type[] actualTypeArguments = pType.getActualTypeArguments();
-                if (value instanceof Collection<?> collection) {
+                if (value instanceof Collection<?>) {
+                    Collection<?> collection = (Collection<?>) value;
                     return collection.stream()
                         .allMatch(element -> element != null
                             && Arrays.stream(actualTypeArguments).anyMatch(arg -> isInstanceOfType(element, arg)));
                 }
             }
-        } else if (type instanceof Class<?> clazz) {
-            return clazz.isInstance(value);
+        } else if (type instanceof Class<?>) {
+            return ((Class<?>) type).isInstance(value);
         }
         return false;
     }
 
     private boolean isPrimitiveTypeMatch(Object value, Type type) {
-        if (type instanceof Class<?> clazz) {
+        if (type instanceof Class<?>) {
+            Class<?> clazz = (Class<?>) type;
             if (clazz.isPrimitive()) {
                 if ((clazz == int.class && value instanceof Integer)
                     || (clazz == long.class && value instanceof Long)
