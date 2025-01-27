@@ -217,12 +217,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // a different region for Document reads
         // For Document writes being retried on a different region there is no guarantee of idempotency as isAddressRefresh property
         // on RxDocumentServiceRequest instance is not set back to false after address resolution completes so hard to stay what stage timed out - address resolution or the Document write
-        if (!isMetaDataRequest && request.isAddressRefresh() && request.isReadOnlyRequest()) {
-            return true;
-        }
-
-        // Purely a Document read request which timed out
-        if (!isMetaDataRequest && request.isReadOnlyRequest()) {
+        if (!isMetaDataRequest && request.isReadOnly()) {
             return true;
         }
 
