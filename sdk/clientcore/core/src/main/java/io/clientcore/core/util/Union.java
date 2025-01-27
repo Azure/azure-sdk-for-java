@@ -110,6 +110,13 @@ public final class Union {
         this.types = Collections.unmodifiableList(typeCopy);
     }
 
+    // This internal constructor is used to create a new instance of Union with the provided types and value.
+    private Union(List<Type> types, Object value, Type currentType) {
+        this.types = Collections.unmodifiableList(types);
+        this.value = value;
+        this.currentType = currentType;
+    }
+
     /**
      * Creates a new instance of {@link Union} with the provided types.
      * <p>
@@ -145,10 +152,7 @@ public final class Union {
     public Union setValue(Object value) {
         for (Type type : types) {
             if (isInstanceOfType(value, type) || isPrimitiveTypeMatch(value, type)) {
-                Union newUnion = new Union(types.toArray(new Type[0]));
-                newUnion.value = value;
-                newUnion.currentType = type;
-                return newUnion;
+                return new Union(types, value, type);
             }
         }
         throw LOGGER.logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
@@ -164,7 +168,7 @@ public final class Union {
     }
 
     /**
-     * Gets the types of the union.
+     * Gets the types of the union. The types are unmodifiable.
      *
      * @return The types of the union.
      */
