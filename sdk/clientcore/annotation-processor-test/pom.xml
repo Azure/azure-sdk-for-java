@@ -38,12 +38,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
-
     <checkstyle.skip>true</checkstyle.skip>
-
-    <!-- Enables fail on deprecated API usage. -->
-    <compiler.failondeprecatedstatus/>
-
     <spotbugs.skip>true</spotbugs.skip>
     <spotless.skip>true</spotless.skip>
   </properties>
@@ -52,7 +47,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -76,30 +71,28 @@
     </dependency>
   </dependencies>
 
-
   <build>
-    <testResources>
-      <testResource>
-        <directory>${project.build.directory}/generated-sources</directory>
-      </testResource>
-    </testResources>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-          <configuration>
-            <annotationProcessorPaths>
-              <annotationProcessorPath>
-                <groupId>io.clientcore</groupId>
-                <artifactId>annotation-processor</artifactId>
-                <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;dependency} -->
-              </annotationProcessorPath>
-            </annotationProcessorPaths>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <!-- Supported source version 'RELEASE_8' from annotation processor 'io.clientcore.annotation.processor.AnnotationProcessor' less than -source '17' -->
+          <failOnWarning>false</failOnWarning>
+          <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+          <annotationProcessorPaths>
+            <annotationProcessorPath>
+              <groupId>io.clientcore</groupId>
+              <artifactId>annotation-processor</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+            </annotationProcessorPath>
+          </annotationProcessorPaths>
+          <annotationProcessors>
+            <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+          </annotationProcessors>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

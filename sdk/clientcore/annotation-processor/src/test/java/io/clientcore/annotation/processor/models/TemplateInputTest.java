@@ -92,8 +92,8 @@ public class TemplateInputTest {
     @Test
     void setAndGetUnexpectedResponseExceptionDetails() {
         TemplateInput templateInput = new TemplateInput();
-        List<UnexpectedResponseExceptionDetail> details =
-            Collections.singletonList(mock(UnexpectedResponseExceptionDetail.class));
+        List<UnexpectedResponseExceptionDetail> details
+            = Collections.singletonList(mock(UnexpectedResponseExceptionDetail.class));
         templateInput.setUnexpectedResponseExceptionDetails(details);
         assertEquals(details, templateInput.getUnexpectedResponseExceptionDetails());
     }

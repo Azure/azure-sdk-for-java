@@ -37,11 +37,11 @@ public class HttpPipelineBuilderMethodTest {
 
     private static final String PACKAGE_NAME = "com.example";
     private static final String SERVICE_INTERFACE_SHORT_NAME = getExampleClientServiceImpl();
+    private static final ClassName CLIENT_LOGGER_NAME = ClassName.bestGuess(ClientLogger.class.getName());
+    private static final ClassName HTTP_PIPELINE = ClassName.bestGuess(HttpPipeline.class.getName());
     private JavaPoetTemplateProcessor processor;
     private ProcessingEnvironment processingEnv;
     private TemplateInput templateInput;
-    private final ClassName CLIENT_LOGGER_NAME = ClassName.bestGuess(ClientLogger.class.getName());
-    private final ClassName HTTP_PIPELINE = ClassName.bestGuess(HttpPipeline.class.getName());
 
     @BeforeEach
     public void setUp() {
@@ -100,8 +100,8 @@ public class HttpPipelineBuilderMethodTest {
 
     @Test
     public void testGetServiceVersionType() {
-        assertEquals("com.example.ExampleServiceVersion", processor.getServiceVersionType(PACKAGE_NAME,
-            SERVICE_INTERFACE_SHORT_NAME).toString());
+        assertEquals("com.example.ExampleServiceVersion",
+            JavaPoetTemplateProcessor.getServiceVersionType(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME).toString());
     }
 
     @Test
@@ -111,6 +111,8 @@ public class HttpPipelineBuilderMethodTest {
             loggerField.modifiers);
         assertEquals(CLIENT_LOGGER_NAME, loggerField.type);
         assertEquals("LOGGER", loggerField.name);
-        assertTrue(loggerField.initializer.toString().contains("new io.clientcore.core.instrumentation.logging.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
+        assertTrue(loggerField.initializer.toString()
+            .contains(
+                "new io.clientcore.core.instrumentation.logging.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
     }
 }

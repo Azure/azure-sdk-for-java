@@ -41,14 +41,12 @@ public class APIGenerationTest {
 
         getUserMethodContext.setHttpMethod(HttpMethod.GET);
         getUserMethodContext.setPath("/users/{userId}");
-        getUserMethodContext.setExpectedStatusCodes(new int[]{200});
+        getUserMethodContext.setExpectedStatusCodes(new int[] { 200 });
         getUserMethodContext.setMethodName("getUser");
         getUserMethodContext.setMethodReturnType("User");
-        getUserMethodContext.addSubstitution(new Substitution(
-            "String",
-            "userId",
-            false));
-        getUserMethodContext.setBody(new HttpRequestContext.Body("multipart/form-data", "BinaryData", "audioTranscriptionOptions"));
+        getUserMethodContext.addSubstitution(new Substitution("String", "userId", false));
+        getUserMethodContext
+            .setBody(new HttpRequestContext.Body("multipart/form-data", "BinaryData", "audioTranscriptionOptions"));
         templateInput.setHttpRequestContexts(Collections.singletonList(getUserMethodContext));
 
         MethodSpec getUserMethodGenerationSpec = processor.generatePublicMethod(getUserMethodContext);

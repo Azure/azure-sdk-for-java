@@ -23,6 +23,15 @@ public class PathBuilder {
     // Note that query parameters may also exist, and should be appended to the end of the URL string using
     // a Map containing key-value pairs.
     // Note that the 'endpoint' parameter is special - it is always the first parameter, and is always a host parameter.
+    /**
+     * Builds the path of the request URL by replacing the placeholders with the actual values.
+     * @param rawHost The raw host string that contains {} delimited parameters.
+     * @param method The HttpRequestContext object that contains the method's configuration, parameters, headers, and other details.
+     * @return The path of the request URL with the placeholders replaced with the actual values.
+     * @throws NullPointerException If the method is null.
+     * @throws MissingSubstitutionException If a substitution is missing for a placeholder in the raw host string.
+     * @throws IllegalArgumentException If the query parameter key or value is empty.
+     */
     public static String buildPath(String rawHost, HttpRequestContext method) {
         if (method == null) {
             throw new NullPointerException("method cannot be null");
@@ -41,9 +50,7 @@ public class PathBuilder {
 
             if (substitution != null) {
                 String substitutionValue = substitution.getParameterVariableName();
-                String replacementValue = substitutionValue != null
-                    ? Objects.toString(substitutionValue, "null")
-                    : "";
+                String replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";
 
                 matcher.appendReplacement(buffer, "");
                 if (buffer.length() != 0) {
@@ -51,7 +58,8 @@ public class PathBuilder {
                 }
                 buffer.append(replacementValue).append(" + \"");
             } else {
-                throw new MissingSubstitutionException("Could not find substitution for '" + paramName + "' in method '" + method.getMethodName() + "'");
+                throw new MissingSubstitutionException(
+                    "Could not find substitution for '" + paramName + "' in method '" + method.getMethodName() + "'");
             }
         }
 

@@ -25,14 +25,14 @@ public class ResponseBodyModeGeneration {
      * @param useRequestOptions whether request options are used.
      */
     public static void generateResponseBodyMode(MethodSpec.Builder methodBuilder, TypeName returnTypeName,
-                                                boolean useRequestOptions) {
+        boolean useRequestOptions) {
         methodBuilder.addStatement("$T responseBodyMode = null", ResponseBodyMode.class);
 
         // Assign responseBodyMode based on request options.
         // TODO: Temporary fix for TestInterface
         if (useRequestOptions) {
-            methodBuilder.beginControlFlow(
-                    "if (requestOptions != null && requestOptions.getResponseBodyMode() != null)")
+            methodBuilder
+                .beginControlFlow("if (requestOptions != null && requestOptions.getResponseBodyMode() != null)")
                 .addStatement("responseBodyMode = requestOptions.getResponseBodyMode()")
                 .endControlFlow();
         }
@@ -84,7 +84,7 @@ public class ResponseBodyModeGeneration {
      * @param useRequestOptions whether request options are used.
      */
     public static void generateResponseHandling(MethodSpec.Builder methodBuilder, TypeName returnTypeName,
-                                                boolean useRequestOptions) {
+        boolean useRequestOptions) {
         if (returnTypeName.toString().equals("void")) {
             closeResponse(methodBuilder);
             methodBuilder.addStatement("return");
@@ -119,7 +119,7 @@ public class ResponseBodyModeGeneration {
      * Adds a return statement for response handling when necessary.
      *
      * @param returnTypeName the return type of the method.
-     * @param methodBuilder  the method builder to append generated code.
+     * @param methodBuilder the method builder to append generated code.
      */
     public static void createResponseIfNecessary(TypeName returnTypeName, MethodSpec.Builder methodBuilder) {
         methodBuilder.addStatement("return ($T) response", returnTypeName);
@@ -129,7 +129,7 @@ public class ResponseBodyModeGeneration {
      * Handles different response processing modes based on the return type and method.
      *
      * @param returnTypeName the return type of the method.
-     * @param methodBuilder  the method builder to append generated code.
+     * @param methodBuilder the method builder to append generated code.
      */
     public static void handleResponseModeToCreateResponse(TypeName returnTypeName, MethodSpec.Builder methodBuilder) {
         if (returnTypeName.toString().contains("Boolean") || returnTypeName.toString().contains("boolean")) {
@@ -150,4 +150,3 @@ public class ResponseBodyModeGeneration {
         }
     }
 }
-

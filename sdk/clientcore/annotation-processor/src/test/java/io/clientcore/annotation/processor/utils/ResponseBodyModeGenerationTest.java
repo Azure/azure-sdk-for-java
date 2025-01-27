@@ -24,7 +24,7 @@ public class ResponseBodyModeGenerationTest {
     }
 
     @Test
-    void generateResponseBodyMode_withRequestOptions() {
+    void generateResponseBodyModeWithRequestOptions() {
         TypeName returnTypeName = TypeName.get(String.class);
         ResponseBodyModeGeneration.generateResponseBodyMode(methodBuilder, returnTypeName, true);
         MethodSpec methodSpec = methodBuilder.build();
@@ -32,16 +32,16 @@ public class ResponseBodyModeGenerationTest {
     }
 
     @Test
-    void generateResponseBodyMode_withoutRequestOptions() {
+    void generateResponseBodyModeWithoutRequestOptions() {
         TypeName returnTypeName = TypeName.get(String.class);
         ResponseBodyModeGeneration.generateResponseBodyMode(methodBuilder, returnTypeName, false);
         MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(methodSpec.toString().contains("responseBodyMode = io.clientcore.core.http.models" +
-            ".ResponseBodyMode.DESERIALIZE"));
+        assertTrue(methodSpec.toString()
+            .contains("responseBodyMode = io.clientcore.core.http.models" + ".ResponseBodyMode.DESERIALIZE"));
     }
 
     @Test
-    void generateResponseHandling_withVoidReturnType() {
+    void generateResponseHandlingWithVoidReturnType() {
         TypeName returnTypeName = TypeName.VOID;
         ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
         MethodSpec methodSpec = methodBuilder.build();
@@ -49,20 +49,20 @@ public class ResponseBodyModeGenerationTest {
     }
 
     @Test
-    void generateResponseHandling_withResponseReturnType() {
+    void generateResponseHandlingWithResponseReturnType() {
+        TypeName returnTypeName = TypeName.get(HttpResponse.class);
+        ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
+        MethodSpec methodSpec = methodBuilder.build();
+        assertTrue(
+            methodSpec.toString().contains("io.clientcore.core.implementation.http.HttpResponseAccessHelper.setValue"));
+    }
+
+    @Test
+    void generateResponseHandlingWithNonDeserializeMode() {
         TypeName returnTypeName = TypeName.get(HttpResponse.class);
         ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
         MethodSpec methodSpec = methodBuilder.build();
         assertTrue(methodSpec.toString()
-            .contains("io.clientcore.core.implementation.http.HttpResponseAccessHelper.setValue"));
-    }
-
-    @Test
-    void generateResponseHandling_withNonDeserializeMode() {
-        TypeName returnTypeName = TypeName.get(HttpResponse.class);
-        ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
-        MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(methodSpec.toString().contains(
-            "io.clientcore.core.implementation.http.HttpResponseAccessHelper.setBodyDeserializer"));
+            .contains("io.clientcore.core.implementation.http.HttpResponseAccessHelper.setBodyDeserializer"));
     }
 }

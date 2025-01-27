@@ -40,16 +40,16 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
     private static final ClassName HTTP_HEADERS = ClassName.bestGuess(HttpHeaders.class.getName());
     private static final ClassName CONTENT_TYPE = ClassName.bestGuess(ContentType.class.getName());
 
-    private final ClassName HTTP_REQUEST = ClassName.bestGuess(HttpRequest.class.getName());
-    private final ClassName RESPONSE = ClassName.bestGuess(Response.class.getName());
-    private final ClassName HTTP_METHOD = ClassName.bestGuess(HttpMethod.class.getName());
+    private static final ClassName HTTP_REQUEST = ClassName.bestGuess(HttpRequest.class.getName());
+    private static final ClassName RESPONSE = ClassName.bestGuess(Response.class.getName());
+    private static final ClassName HTTP_METHOD = ClassName.bestGuess(HttpMethod.class.getName());
 
     private TypeSpec.Builder classBuilder;
 
-    private final ClassName HTTP_PIPELINE = ClassName.bestGuess(HttpPipeline.class.getName());
-    private static ClassName SERVICE_VERSION_TYPE;
-    private final ClassName CLIENT_LOGGER_NAME = ClassName.bestGuess(ClientLogger.class.getName());
-    private ClassName OBJECT_SERIALIZER = ClassName.bestGuess(ObjectSerializer.class.getName());
+    private static final ClassName HTTP_PIPELINE = ClassName.bestGuess(HttpPipeline.class.getName());
+    private static final ClassName CLIENT_LOGGER_NAME = ClassName.bestGuess(ClientLogger.class.getName());
+    private static final ClassName OBJECT_SERIALIZER = ClassName.bestGuess(ObjectSerializer.class.getName());
+    private static ClassName serviceVersionType;
 
     @Override
     public void process(TemplateInput templateInput, ProcessingEnvironment processingEnv) {
@@ -63,13 +63,12 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
         FieldSpec loggerField = getLoggerField(packageName, serviceInterfaceShortName);
 
         // Create the defaultPipeline field
-        FieldSpec defaultPipeline =
-            FieldSpec.builder(HTTP_PIPELINE, "defaultPipeline", Modifier.PRIVATE, Modifier.FINAL)
-                .build();
+        FieldSpec defaultPipeline
+            = FieldSpec.builder(HTTP_PIPELINE, "defaultPipeline", Modifier.PRIVATE, Modifier.FINAL).build();
 
         // Create the serializer field
-        FieldSpec serializer = FieldSpec.builder(ObjectSerializer.class, "serializer", Modifier.PRIVATE, Modifier.FINAL)
-            .build();
+        FieldSpec serializer
+            = FieldSpec.builder(ObjectSerializer.class, "serializer", Modifier.PRIVATE, Modifier.FINAL).build();
 
         // Create the endpoint field
         //FieldSpec endpoint = FieldSpec.builder(String.class, "endpoint", Modifier.PRIVATE, Modifier.FINAL)
@@ -77,20 +76,22 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
         // Create the serviceVersion field
         String serviceVersionPackageName = packageName.substring(0, packageName.lastIndexOf("."));
-        SERVICE_VERSION_TYPE = ClassName.get(serviceVersionPackageName, serviceInterfaceShortName.substring(0, serviceInterfaceShortName.indexOf("ClientService")) + "ServiceVersion");
-        FieldSpec serviceVersion =
-            FieldSpec.builder(SERVICE_VERSION_TYPE, "serviceVersion", Modifier.PRIVATE).build();
+        serviceVersionType = ClassName.get(serviceVersionPackageName,
+            serviceInterfaceShortName.substring(0, serviceInterfaceShortName.indexOf("ClientService"))
+                + "ServiceVersion");
+        FieldSpec serviceVersion = FieldSpec.builder(serviceVersionType, "serviceVersion", Modifier.PRIVATE).build();
 
         // Create the constructor
         MethodSpec constructor = getServiceImplConstructor();
 
-        FieldSpec apiVersion = FieldSpec.builder(String.class, "apiVersion")
-            .addModifiers(Modifier.PRIVATE)
-            .build();
+        FieldSpec apiVersion = FieldSpec.builder(String.class, "apiVersion").addModifiers(Modifier.PRIVATE).build();
 
         // Add instance field
-        FieldSpec instanceField = FieldSpec.builder(ClassName.get(packageName, serviceInterfaceImplShortName),
-            "instance", Modifier.PRIVATE, Modifier.STATIC).build();
+        FieldSpec instanceField
+            = FieldSpec
+                .builder(ClassName.get(packageName, serviceInterfaceImplShortName), "instance", Modifier.PRIVATE,
+                    Modifier.STATIC)
+                .build();
 
         // Add the static getInstance method
         MethodSpec getInstanceMethod = MethodSpec.methodBuilder("getInstance")
@@ -98,9 +99,10 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             .returns(ClassName.get(packageName, serviceInterfaceImplShortName))
             .addParameter(HTTP_PIPELINE, "pipeline")
             .addParameter(OBJECT_SERIALIZER, "serializer")
-            .addParameter(SERVICE_VERSION_TYPE, "serviceVersion")
+            .addParameter(serviceVersionType, "serviceVersion")
             .beginControlFlow("if (instance == null)")
-            .addStatement("instance = new $T(pipeline, serializer, serviceVersion)", ClassName.get(packageName, serviceInterfaceImplShortName))
+            .addStatement("instance = new $T(pipeline, serializer, serviceVersion)",
+                ClassName.get(packageName, serviceInterfaceImplShortName))
             .endControlFlow()
             .addStatement("return instance")
             .build();
@@ -143,8 +145,11 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
     void getGeneratedServiceMethods(TemplateInput templateInput) {
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
-            boolean generateInternalOnly = method.getParameters().isEmpty() || method.getParameters().stream()
-                .anyMatch(parameter -> !(parameter.getName().equals("endpoint") || parameter.getName().equals("apiVersion")));
+            boolean generateInternalOnly = method.getParameters().isEmpty()
+                || method.getParameters()
+                    .stream()
+                    .anyMatch(parameter -> !(parameter.getName().equals("endpoint")
+                        || parameter.getName().equals("apiVersion")));
 
             if (generateInternalOnly) {
                 generateInternalMethod(method); // Generate the internal method
@@ -167,17 +172,19 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             .addParameter(HTTP_PIPELINE, "defaultPipeline")
             .addStatement("this.defaultPipeline = defaultPipeline")
             .addParameter(OBJECT_SERIALIZER, "serializer")
-            .addParameter(SERVICE_VERSION_TYPE, "serviceVersion")
+            .addParameter(serviceVersionType, "serviceVersion")
             .addStatement("this.serializer = serializer == null ? new $T() : serializer", JsonSerializer.class)
-            .addStatement("this.serviceVersion = serviceVersion == null ? $T.getLatest() : serviceVersion", SERVICE_VERSION_TYPE)
+            .addStatement("this.serviceVersion = serviceVersion == null ? $T.getLatest() : serviceVersion",
+                serviceVersionType)
             .addStatement("this.apiVersion = this.serviceVersion.getVersion()")
             .build();
     }
 
     static ClassName getServiceVersionType(String packageName, String serviceInterfaceShortName) {
-        SERVICE_VERSION_TYPE = ClassName.get(packageName, serviceInterfaceShortName.substring(0,
-            serviceInterfaceShortName.indexOf("ClientService")) + "ServiceVersion");
-        return SERVICE_VERSION_TYPE;
+        serviceVersionType = ClassName.get(packageName,
+            serviceInterfaceShortName.substring(0, serviceInterfaceShortName.indexOf("ClientService"))
+                + "ServiceVersion");
+        return serviceVersionType;
     }
 
     MethodSpec getEndpointMethod() {
@@ -199,7 +206,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
     MethodSpec getServiceVersionMethod() {
         return MethodSpec.methodBuilder("getServiceVersion")
             .addModifiers(Modifier.PUBLIC)
-            .returns(SERVICE_VERSION_TYPE)
+            .returns(serviceVersionType)
             .addStatement("return serviceVersion")
             .build();
     }
@@ -219,17 +226,16 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
         }
 
         // add call to the overloaded version of this method
-        String params = method.getParameters().stream()
+        String params = method.getParameters()
+            .stream()
             .map(HttpRequestContext.MethodParameter::getName)
             .reduce((a, b) -> a + ", " + b)
             .orElse("");
 
         if (!"void".equals(method.getMethodReturnType())) {
-            methodBuilder.addStatement("return $L($L)",
-                method.getMethodName(), params);
+            methodBuilder.addStatement("return $L($L)", method.getMethodName(), params);
         } else {
-            methodBuilder.addStatement("$L($L)",
-                method.getMethodName(), params);
+            methodBuilder.addStatement("$L($L)", method.getMethodName(), params);
         }
 
         return methodBuilder.build();
@@ -251,9 +257,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
     // Helper methods
     private MethodSpec.Builder createMethodBuilder(HttpRequestContext method, TypeName returnTypeName) {
-        return MethodSpec.methodBuilder(method.getMethodName())
-            .addModifiers(Modifier.PUBLIC)
-            .returns(returnTypeName);
+        return MethodSpec.methodBuilder(method.getMethodName()).addModifiers(Modifier.PUBLIC).returns(returnTypeName);
     }
 
     private void addMethodParameters(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
@@ -267,13 +271,13 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
         methodBuilder.addStatement("String host = $L", method.getHost())
             .addCode("\n")
             .addComment("Create the HTTP request")
-            .addStatement("$T httpRequest = new $T($T.$L, host)", HTTP_REQUEST, HTTP_REQUEST, HTTP_METHOD, method.getHttpMethod());
+            .addStatement("$T httpRequest = new $T($T.$L, host)", HTTP_REQUEST, HTTP_REQUEST, HTTP_METHOD,
+                method.getHttpMethod());
     }
 
     private void addHeadersToRequest(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
         if (!method.getHeaders().isEmpty()) {
-            methodBuilder
-                .addCode("\n")
+            methodBuilder.addCode("\n")
                 .addComment("set the headers")
                 .addStatement("$T headers = new $T()", HTTP_HEADERS, HTTP_HEADERS);
             for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
@@ -286,14 +290,17 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
                     }
                 }
 
-                boolean isStringType = method.getParameters().stream()
-                    .anyMatch(parameter -> parameter.getName().equals(header.getValue()) && TypeName.get(parameter.getTypeMirror()).equals(TypeName.get(String.class)));
+                boolean isStringType = method.getParameters()
+                    .stream()
+                    .anyMatch(parameter -> parameter.getName().equals(header.getValue())
+                        && TypeName.get(parameter.getTypeMirror()).equals(TypeName.get(String.class)));
                 String value = isStringType ? header.getValue() : "String.valueOf(" + header.getValue() + ")";
 
                 if (isEnumExists) {
                     methodBuilder.addStatement("headers.add($T.$L, $L)", HTTP_HEADER_NAME, enumHeaderKey, value);
                 } else {
-                    methodBuilder.addStatement("headers.add($T.fromString($S), $L)", HTTP_HEADER_NAME, header.getKey(), value);
+                    methodBuilder.addStatement("headers.add($T.fromString($S), $L)", HTTP_HEADER_NAME, header.getKey(),
+                        value);
                 }
             }
             methodBuilder.addStatement("httpRequest.setHeaders(headers)");
@@ -303,19 +310,22 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
     private void addRequestBody(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
         methodBuilder.addCode("\n").addComment("Set the request body");
         HttpRequestContext.Body body = method.getBody();
-        boolean isContentTypeSetInHeaders = method.getParameters().stream()
-            .anyMatch(parameter -> parameter.getName().equals("contentType"));
+        boolean isContentTypeSetInHeaders
+            = method.getParameters().stream().anyMatch(parameter -> parameter.getName().equals("contentType"));
 
         if (body != null) {
             configureRequestWithBodyAndContentType(methodBuilder, body.getParameterType(), body.getContentType(),
                 body.getParameterName(), isContentTypeSetInHeaders);
         } else {
-            methodBuilder.addStatement("httpRequest.getHeaders().set($T.CONTENT_LENGTH, $S)", HttpHeaderName.class, "0");
+            methodBuilder.addStatement("httpRequest.getHeaders().set($T.CONTENT_LENGTH, $S)", HttpHeaderName.class,
+                "0");
         }
     }
 
-    private void finalizeHttpRequest(MethodSpec.Builder methodBuilder, TypeName returnTypeName, HttpRequestContext method) {
-        methodBuilder.addCode("\n").addComment("Send the request through the pipeline")
+    private void finalizeHttpRequest(MethodSpec.Builder methodBuilder, TypeName returnTypeName,
+        HttpRequestContext method) {
+        methodBuilder.addCode("\n")
+            .addComment("Send the request through the pipeline")
             .addStatement("$T<?> response = pipeline.send(httpRequest)", RESPONSE);
 
         if (!method.getExpectedStatusCodes().isEmpty()) {
@@ -328,14 +338,13 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
     private void validateResponseStatus(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
         if (!method.getExpectedStatusCodes().isEmpty()) {
-            methodBuilder
-                .addCode("\n")
-                .addStatement("int responseCode = response.getStatusCode()");
+            methodBuilder.addCode("\n").addStatement("int responseCode = response.getStatusCode()");
             if (method.getExpectedStatusCodes().size() == 1) {
                 methodBuilder.addStatement("boolean expectedResponse = responseCode == $L",
                     method.getExpectedStatusCodes().get(0));
             } else {
-                String statusCodes = method.getExpectedStatusCodes().stream()
+                String statusCodes = method.getExpectedStatusCodes()
+                    .stream()
                     .map(code -> "responseCode == " + code)
                     .collect(Collectors.joining(" || "));
                 methodBuilder.addStatement("boolean expectedResponse = " + statusCodes);
@@ -346,15 +355,23 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    public void configureRequestWithBodyAndContentType(MethodSpec.Builder methodBuilder, String parameterType, String contentType, String parameterName, boolean isContentTypeSetInHeaders) {
+    /**
+     * Configures the request with the body content and content type.
+     * @param methodBuilder The method builder to add the statements to
+     * @param parameterType The type of the parameter
+     * @param contentType The content type of the request
+     * @param parameterName The name of the parameter
+     * @param isContentTypeSetInHeaders Whether the content type is set in the headers
+     */
+    public void configureRequestWithBodyAndContentType(MethodSpec.Builder methodBuilder, String parameterType,
+        String contentType, String parameterName, boolean isContentTypeSetInHeaders) {
         if (parameterType == null) {
             // No body content to set
-            methodBuilder
-                .addStatement("httpRequest.getHeaders().set($T.CONTENT_LENGTH, $S))", HttpHeaderName.class, 0);
+            methodBuilder.addStatement("httpRequest.getHeaders().set($T.CONTENT_LENGTH, $S))", HttpHeaderName.class, 0);
         } else {
 
             if (contentType == null || contentType.isEmpty()) {
-                if (parameterType.equals("byte[]") || parameterType.equals("String")) {
+                if ("byte[]".equals(parameterType) || "String".equals(parameterType)) {
 
                     contentType = ContentType.APPLICATION_OCTET_STREAM;
                 } else {
@@ -366,9 +383,8 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             if (!isContentTypeSetInHeaders) {
                 setContentTypeHeader(methodBuilder, contentType);
             }
-            if (parameterType.equals("io.clientcore.core.util.binarydata.BinaryData")) {
-                methodBuilder
-                    .addStatement("$T binaryData = ($T) $L", BinaryData.class, BinaryData.class, parameterName)
+            if ("io.clientcore.core.util.binarydata.BinaryData".equals(parameterType)) {
+                methodBuilder.addStatement("$T binaryData = ($T) $L", BinaryData.class, BinaryData.class, parameterName)
                     .beginControlFlow("if (binaryData.getLength() != null)")
                     .addStatement(
                         "httpRequest.getHeaders().set($T.CONTENT_LENGTH, String.valueOf(binaryData.getLength()))",
@@ -395,32 +411,28 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
     private static void setContentTypeHeader(MethodSpec.Builder methodBuilder, String contentType) {
         switch (contentType) {
             case ContentType.APPLICATION_JSON:
-                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)",
-                    HTTP_HEADER_NAME,
-                    "CONTENT_TYPE",
-                    CONTENT_TYPE,
-                    "APPLICATION_JSON");
+                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)", HTTP_HEADER_NAME,
+                    "CONTENT_TYPE", CONTENT_TYPE, "APPLICATION_JSON");
                 break;
+
             case ContentType.APPLICATION_OCTET_STREAM:
-                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)",
-                    HTTP_HEADER_NAME,
-                    "CONTENT_TYPE",
-                    CONTENT_TYPE,
-                    "APPLICATION_OCTET_STREAM");
+                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)", HTTP_HEADER_NAME,
+                    "CONTENT_TYPE", CONTENT_TYPE, "APPLICATION_OCTET_STREAM");
                 break;
+
             case ContentType.APPLICATION_X_WWW_FORM_URLENCODED:
-                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)",
-                    HTTP_HEADER_NAME,
-                    "CONTENT_TYPE",
-                    CONTENT_TYPE,
-                    "APPLICATION_X_WWW_FORM_URLENCODED");
+                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)", HTTP_HEADER_NAME,
+                    "CONTENT_TYPE", CONTENT_TYPE, "APPLICATION_X_WWW_FORM_URLENCODED");
                 break;
+
             case ContentType.TEXT_EVENT_STREAM:
-                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)",
-                    HTTP_HEADER_NAME,
-                    "CONTENT_TYPE",
-                    CONTENT_TYPE,
-                    "TEXT_EVENT_STREAM");
+                methodBuilder.addStatement("httpRequest.getHeaders().set($T.$L, $T.$L)", HTTP_HEADER_NAME,
+                    "CONTENT_TYPE", CONTENT_TYPE, "TEXT_EVENT_STREAM");
+                break;
+
+            default:
+                methodBuilder.addStatement("httpRequest.getHeaders().set($T.fromString($S), $S)", HTTP_HEADER_NAME,
+                    "CONTENT_TYPE", contentType);
                 break;
         }
     }
@@ -431,15 +443,15 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             return;
         }
         if (isJson) {
-            methodBuilder
-                .addStatement("httpRequest.setBody($T.fromObject($L, serializer))", BinaryData.class, parameterName);
-        } else if (parameterType.equals("byte[]")) {
-            methodBuilder
-                .addStatement("httpRequest.setBody($T.fromBytes((byte[]) $L))", BinaryData.class, parameterName);
-        } else if (parameterType.equals("String")) {
-            methodBuilder
-                .addStatement("httpRequest.setBody($T.fromString((String) $L))", BinaryData.class, parameterName);
-        } else if (parameterType.equals("ByteBuffer")) {
+            methodBuilder.addStatement("httpRequest.setBody($T.fromObject($L, serializer))", BinaryData.class,
+                parameterName);
+        } else if ("byte[]".equals(parameterType)) {
+            methodBuilder.addStatement("httpRequest.setBody($T.fromBytes((byte[]) $L))", BinaryData.class,
+                parameterName);
+        } else if ("String".equals(parameterType)) {
+            methodBuilder.addStatement("httpRequest.setBody($T.fromString((String) $L))", BinaryData.class,
+                parameterName);
+        } else if ("ByteBuffer".equals(parameterType)) {
             // TODO: confirm behavior
             //if (((ByteBuffer) bodyContentObject).hasArray()) {
             //    methodBuilder
@@ -451,13 +463,12 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             //    methodBuilder
             //            .addStatement("httpRequest.setBody($T.fromBytes($L))", BinaryData.class, array);
             //}
-            methodBuilder
-                .addStatement("httpRequest.setBody($T.fromBytes(((ByteBuffer) $L).array()))", BinaryData.class,
-                    parameterName);
+            methodBuilder.addStatement("httpRequest.setBody($T.fromBytes(((ByteBuffer) $L).array()))", BinaryData.class,
+                parameterName);
 
         } else {
-            methodBuilder
-                .addStatement("httpRequest.setBody($T.fromObject($L, serializer))", BinaryData.class, parameterName);
+            methodBuilder.addStatement("httpRequest.setBody($T.fromObject($L, serializer))", BinaryData.class,
+                parameterName);
         }
     }
 

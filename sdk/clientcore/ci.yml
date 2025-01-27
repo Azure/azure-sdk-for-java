@@ -64,7 +64,7 @@ extends:
       - name: annotation-processor-test
         groupId: io.clientcore
     PreBuildSteps:
-      - task:  Maven@4
+      - task: Maven@4
         displayName: 'Build and install annotation-processor'
         inputs:
           mavenPomFile: sdk/clientcore/annotation-processor/pom.xml

@@ -71,14 +71,14 @@ public class AnnotationProcessor extends AbstractProcessor {
         // This outer for-loop is not strictly necessary, as we only have one annotation that we care about
         // (@ServiceInterface), but we'll leave it here for now
         annotations.stream()
-                .map(roundEnv::getElementsAnnotatedWith)
-                .flatMap(Set::stream)
-                .filter(element -> element.getKind().isInterface())
-                .forEach(element -> {
-                    if (element.getAnnotation(ServiceInterface.class) != null) {
-                        this.processServiceInterface(element);
-                    }
-                });
+            .map(roundEnv::getElementsAnnotatedWith)
+            .flatMap(Set::stream)
+            .filter(element -> element.getKind().isInterface())
+            .forEach(element -> {
+                if (element.getAnnotation(ServiceInterface.class) != null) {
+                    this.processServiceInterface(element);
+                }
+            });
 
         return true;
     }
@@ -114,7 +114,8 @@ public class AnnotationProcessor extends AbstractProcessor {
         addImports(templateInput);
 
         // Collect methods annotated with @HttpRequestInformation
-        List<ExecutableElement> httpRequestMethods = serviceInterface.getEnclosedElements().stream()
+        List<ExecutableElement> httpRequestMethods = serviceInterface.getEnclosedElements()
+            .stream()
             .filter(element -> element.getKind() == ElementKind.METHOD)
             .filter(element -> element.getAnnotation(HttpRequestInformation.class) != null)
             .map(ExecutableElement.class::cast)
@@ -180,33 +181,28 @@ public class AnnotationProcessor extends AbstractProcessor {
 
             // Switch based on annotations
             if (hostParam != null) {
-                method.addSubstitution(new Substitution(
-                    hostParam.value(),
-                    param.getSimpleName().toString(),
-                    hostParam.encoded()));
+                method.addSubstitution(
+                    new Substitution(hostParam.value(), param.getSimpleName().toString(), hostParam.encoded()));
             } else if (pathParam != null) {
                 if (pathParam.encoded()) {
                     isEncoded = true;
                 }
-                method.addSubstitution(new Substitution(
-                    pathParam.value(),
-                    param.getSimpleName().toString(),
-                    pathParam.encoded()));
+                method.addSubstitution(
+                    new Substitution(pathParam.value(), param.getSimpleName().toString(), pathParam.encoded()));
             } else if (headerParam != null) {
                 method.addHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString());
                 // TODO: Add support for multipleQueryParams and encoded handling
             } else if (bodyParam != null) {
-                method.setBody(new HttpRequestContext.Body(
-                    bodyParam.value(),
-                    param.asType().toString(),
+                method.setBody(new HttpRequestContext.Body(bodyParam.value(), param.asType().toString(),
                     param.getSimpleName().toString()));
             }
 
             // Add parameter details to method context
             String shortParamName = templateInput.addImport(param.asType());
-            method.addParameter(new HttpRequestContext.MethodParameter(param.asType(), shortParamName, param.getSimpleName().toString()));
+            method.addParameter(new HttpRequestContext.MethodParameter(param.asType(), shortParamName,
+                param.getSimpleName().toString()));
         }
 
         // Pre-compute host substitutions
@@ -216,7 +212,7 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void setReturnTypeFormMethod(HttpRequestContext method, ExecutableElement requestMethod,
-                                         TemplateInput templateInput) {
+        TemplateInput templateInput) {
         // Get the return type from the method
         TypeMirror returnType = requestMethod.getReturnType();
 
@@ -225,7 +221,6 @@ public class AnnotationProcessor extends AbstractProcessor {
             DeclaredType declaredType = (DeclaredType) returnType;
             TypeElement typeElement = (TypeElement) declaredType.asElement();
             String fullTypeName = typeElement.getQualifiedName().toString();
-
 
             // Handle generic arguments for declared types
             List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();

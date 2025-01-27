@@ -219,7 +219,8 @@ public class TemplateInput {
      *
      * @param unexpectedResponseExceptionDetails the list of unexpected response exception details to set.
      */
-    public void setUnexpectedResponseExceptionDetails(List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    public void setUnexpectedResponseExceptionDetails(
+        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
         this.unexpectedResponseExceptionDetails = unexpectedResponseExceptionDetails;
     }
 }

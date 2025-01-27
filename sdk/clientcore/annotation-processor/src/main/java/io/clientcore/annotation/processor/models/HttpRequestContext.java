@@ -172,7 +172,7 @@ public final class HttpRequestContext {
     /**
      * Adds a header.
      *
-     * @param key   the header key.
+     * @param key the header key.
      * @param value the header value.
      */
     public void addHeader(String key, String value) {
@@ -191,7 +191,7 @@ public final class HttpRequestContext {
     /**
      * Adds a query parameter.
      *
-     * @param key   the query parameter key.
+     * @param key the query parameter key.
      * @param value the query parameter value.
      * @throws IllegalArgumentException if a duplicate query parameter is added.
      */
@@ -210,7 +210,8 @@ public final class HttpRequestContext {
      */
     public void addSubstitution(Substitution substitution) {
         if (substitutions.containsKey(substitution.getParameterName())) {
-            throw new IllegalArgumentException("Cannot add duplicate substitution for parameter '" + substitution.getParameterName() + "'");
+            throw new IllegalArgumentException(
+                "Cannot add duplicate substitution for parameter '" + substitution.getParameterName() + "'");
         }
         substitutions.put(substitution.getParameterName(), substitution);
     }
@@ -275,9 +276,9 @@ public final class HttpRequestContext {
         /**
          * Constructs a new MethodParameter.
          *
-         * @param type          the type of the parameter.
+         * @param type the type of the parameter.
          * @param shortTypeName the short type name of the parameter.
-         * @param name          the name of the parameter.
+         * @param name the name of the parameter.
          */
         public MethodParameter(TypeMirror type, String shortTypeName, String name) {
             this.type = type;
@@ -330,7 +331,7 @@ public final class HttpRequestContext {
         /**
          * Constructs a new Body.
          *
-         * @param contentType   the content type.
+         * @param contentType the content type.
          * @param parameterType the parameter type.
          * @param parameterName the parameter name.
          */

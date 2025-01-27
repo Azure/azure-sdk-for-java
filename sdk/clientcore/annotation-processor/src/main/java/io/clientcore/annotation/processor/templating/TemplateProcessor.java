@@ -11,9 +11,21 @@ import javax.annotation.processing.ProcessingEnvironment;
  * Interface for processing templates.
  */
 public interface TemplateProcessor {
+
+    /**
+     * Returns an instance of the TemplateProcessor.
+     *
+     * @return a new instance of JavaPoetTemplateProcessor
+     */
     static TemplateProcessor getInstance() {
         return new JavaPoetTemplateProcessor();
     }
 
+    /**
+     * Processes the given template input using the provided processing environment.
+     *
+     * @param templateInput the input data for the template
+     * @param processingEnv the environment used for processing
+     */
     void process(TemplateInput templateInput, ProcessingEnvironment processingEnv);
 }

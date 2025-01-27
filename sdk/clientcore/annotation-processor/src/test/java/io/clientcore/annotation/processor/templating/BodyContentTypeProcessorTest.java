@@ -48,8 +48,8 @@ public class BodyContentTypeProcessorTest {
         MethodSpec methodSpec = methodBuilder.build();
 
         // Expected output
-        String expectedOutput =
-            "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
+        String expectedOutput
+            = "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
 
         // Actual output
         String actualOutput = methodSpec.toString();
@@ -87,9 +87,9 @@ public class BodyContentTypeProcessorTest {
         MethodSpec methodSpec = methodBuilder.build();
 
         // Expected output
-        String expectedOutput =
-            "httpRequest.getHeaders().set(io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE, " +
-                expectedContentType;
+        String expectedOutput
+            = "httpRequest.getHeaders().set(io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE, "
+                + expectedContentType;
 
         // Actual output
         String actualOutput = methodSpec.toString();
@@ -119,8 +119,8 @@ public class BodyContentTypeProcessorTest {
         MethodSpec methodSpec = methodBuilder.build();
 
         // Expected output
-        String expectedOutput =
-            "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
+        String expectedOutput
+            = "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes(((ByteBuffer) request).array()));";
 
         // Actual output
         String actualOutput = methodSpec.toString();
@@ -129,15 +129,12 @@ public class BodyContentTypeProcessorTest {
         // Verify headers in a separate test request content type header is set to application/octet-stream
     }
 
-
     private static Stream<Arguments> knownContentTypesProvider() {
-        return Stream.of(
-            Arguments.of("byte[]", "io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM"),
+        return Stream.of(Arguments.of("byte[]", "io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM"),
             Arguments.of("String", "io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM"),
             Arguments.of("BinaryData", "io.clientcore.core.http.models.ContentType.APPLICATION_JSON"),
             Arguments.of("Object", "io.clientcore.core.http.models.ContentType.APPLICATION_JSON"),
-            Arguments.of("ByteBuffer", "io.clientcore.core.http.models.ContentType.APPLICATION_JSON")
-        );
+            Arguments.of("ByteBuffer", "io.clientcore.core.http.models.ContentType.APPLICATION_JSON"));
     }
 
     private static Stream<Arguments> knownParameterTypesProvider() {
@@ -173,7 +170,6 @@ public class BodyContentTypeProcessorTest {
                 "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromBytes((byte[]) request));"),
             // Add scenario for parameterType == "String"
             Arguments.of(new HttpRequestContext.Body("application/octet-stream", "String", "request"),
-                "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromString((String) request));")
-        );
+                "httpRequest.setBody(io.clientcore.core.util.binarydata.BinaryData.fromString((String) request));"));
     }
 }

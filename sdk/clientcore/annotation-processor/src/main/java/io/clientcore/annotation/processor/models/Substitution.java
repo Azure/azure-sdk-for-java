@@ -45,6 +45,11 @@ public class Substitution {
         return parameterName;
     }
 
+    /**
+     * Get the variable name that will be used to replace the placeholder in the target URL.
+     *
+     * @return The name of the variable that will be used to replace the placeholder in the target URL.
+     */
     public String getParameterVariableName() {
         return parameterVariableName;
     }
