@@ -31,17 +31,22 @@ public class UnionJavaDocCodeSnippets {
     }
 
     @Test
-    public void unionConsumeSwitch() {
-        // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch
+    public void unionConsumeIfElseStatement() {
+        // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement
         Union union = Union.ofTypes(String.class, Integer.class);
         union = union.setValue("Hello");
-        switch (union.getValue()) {
-            case String s -> System.out.println("String value: " + s);
-            case Integer i -> System.out.println("Integer value: " + i);
-            default -> throw new IllegalArgumentException(
-                "Unknown type: " + union.getCurrentType().getTypeName());
+        Object value = union.getValue();
+        // we can write an if-else block to consume the value in Java 8+, or switch pattern match in Java 17+
+        if (value instanceof String) {
+            String s = (String) value;
+            System.out.println("String value: " + s);
+        } else if (value instanceof Integer) {
+            Integer i = (Integer) value;
+            System.out.println("Integer value: " + i);
+        } else {
+            throw new IllegalArgumentException("Unknown type: " + union.getCurrentType().getTypeName());
         }
-        // END: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch
+        // END: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement
     }
 
     @Test

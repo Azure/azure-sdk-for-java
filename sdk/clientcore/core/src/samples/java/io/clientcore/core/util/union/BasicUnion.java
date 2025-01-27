@@ -42,12 +42,19 @@ public class BasicUnion {
     }
 
     private static void handleUnion(Union union) {
-        // we simply get the value from the Union, and switch on it depending on the type
-        switch (union.getValue()) {
-            case String s -> System.out.println("String value from switch: " + s);
-            case Integer i -> System.out.println("Integer value from switch: " + i);
-            case Double d -> System.out.println("Double value from switch: " + d);
-            default -> throw new IllegalArgumentException("Unknown type: " + union.getCurrentType().getTypeName());
+        // we can write an if-else block to consume the value in Java 8+, or switch pattern match in Java 17+
+        Object value = union.getValue();
+        if (value instanceof String) {
+            String s = (String) value;
+            System.out.println("String value from if-else: " + s);
+        } else if (value instanceof Integer) {
+            Integer i = (Integer) value;
+            System.out.println("Integer value from if-else: " + i);
+        } else if (value instanceof Double) {
+            Double d = (Double) value;
+            System.out.println("Double value from if-else: " + d);
+        } else {
+            throw new IllegalArgumentException("Unknown type: " + union.getCurrentType().getTypeName());
         }
     }
 }

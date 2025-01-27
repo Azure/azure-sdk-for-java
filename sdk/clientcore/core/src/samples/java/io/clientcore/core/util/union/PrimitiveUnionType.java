@@ -45,12 +45,20 @@ public class PrimitiveUnionType {
         // or we can use the tryConsume method
         modelType.getProp().tryConsume(v -> System.out.println("Value from lambda: " + v), int.class);
 
+        // or we can write an if-else block to consume the value in Java 8+, or switch pattern match in Java 17+
         // but the switch expression doesn't work directly - we need to rely on the autoboxing to save us (Integer works, int doesn't)
-        switch (modelType.getProp().getValue()) {
-            case String s -> System.out.println("String value from switch: " + s);
-            case Integer i -> System.out.println("Integer value from switch: " + i);
-            case Double d -> System.out.println("Double value from switch: " + d);
-            default -> throw new IllegalArgumentException("Unknown type: " + modelType.getProp().getCurrentType().getTypeName());
+        Object value = modelType.getProp().getValue();
+        if (value instanceof String) {
+            String s = (String) value;
+            System.out.println("String value from if-else: " + s);
+        } else if (value instanceof Integer) {
+            Integer i = (Integer) value;
+            System.out.println("Integer value from if-else: " + i);
+        } else if (value instanceof Double) {
+            Double d = (Double) value;
+            System.out.println("Double value from if-else: " + d);
+        } else {
+            throw new IllegalArgumentException("Unknown type: " + modelType.getProp().getCurrentType().getTypeName());
         }
     }
 }

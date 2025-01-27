@@ -49,7 +49,7 @@ import java.util.function.Consumer;
  *
  * <p><strong>Consume the value of the Union if it is of the expected type</strong></p>
  *
- * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch -->
+ * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
  * union = union.setValue&#40;&quot;Hello&quot;&#41;;
@@ -60,7 +60,7 @@ import java.util.function.Consumer;
  *         &quot;Unknown type: &quot; + union.getCurrentType&#40;&#41;.getTypeName&#40;&#41;&#41;;
  * &#125;
  * </pre>
- * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsSwitch -->
+ * <!-- end io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
  *
  * or
  *
