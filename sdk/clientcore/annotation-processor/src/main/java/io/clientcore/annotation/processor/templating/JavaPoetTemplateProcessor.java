@@ -100,24 +100,14 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
                     Modifier.STATIC)
                 .build();
 
-        // Add the static getInstance method
-        MethodSpec getInstanceMethod = MethodSpec.methodBuilder("getInstance")
-            .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.SYNCHRONIZED)
+        // Add the static getNewInstance method
+        MethodSpec getNewInstanceMethod = MethodSpec.methodBuilder("getNewInstance")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
             .returns(ClassName.get(packageName, serviceInterfaceImplShortName))
             .addParameter(HTTP_PIPELINE, "pipeline")
             .addParameter(OBJECT_SERIALIZER, "serializer")
-            .addParameter(serviceVersionType, "serviceVersion")
-            .beginControlFlow("if (instance == null)")
-            .addStatement("instance = new $T(pipeline, serializer, serviceVersion)",
+            .addStatement("return new $T(pipeline, serializer)",
                 ClassName.get(packageName, serviceInterfaceImplShortName))
-            .endControlFlow()
-            .addStatement("return instance")
-            .build();
-
-        // Add reset instance method
-        MethodSpec resetInstanceMethod = MethodSpec.methodBuilder("reset")
-            .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.SYNCHRONIZED)
-            .addStatement("instance = null")
             .build();
 
         classBuilder = TypeSpec.classBuilder(serviceInterfaceImplShortName)
@@ -132,8 +122,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             .addMethod(getServiceVersionMethod())
             .addMethod(constructor)
             .addField(instanceField)
-            .addMethod(getInstanceMethod)
-            .addMethod(resetInstanceMethod);
+            .addMethod(getNewInstanceMethod);
 
         getGeneratedServiceMethods(templateInput);
 
@@ -179,11 +168,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             .addParameter(HTTP_PIPELINE, "defaultPipeline")
             .addStatement("this.defaultPipeline = defaultPipeline")
             .addParameter(OBJECT_SERIALIZER, "serializer")
-            .addParameter(serviceVersionType, "serviceVersion")
             .addStatement("this.serializer = serializer == null ? new $T() : serializer", JsonSerializer.class)
-            .addStatement("this.serviceVersion = serviceVersion == null ? $T.getLatest() : serviceVersion",
-                serviceVersionType)
-            .addStatement("this.apiVersion = this.serviceVersion.getVersion()")
             .build();
     }
 

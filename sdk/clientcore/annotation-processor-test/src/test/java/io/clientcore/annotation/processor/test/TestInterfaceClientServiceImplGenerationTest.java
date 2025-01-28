@@ -3,6 +3,7 @@
 
 package io.clientcore.annotation.processor.test;
 
+import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientService;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
@@ -10,8 +11,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -23,17 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class TestInterfaceClientServiceImplGenerationTest {
 
-    @BeforeEach
-    public void resetState() {
-        TestInterfaceClientService.reset();
-    }
-
     @Test
-    public void testGetInstance() {
+    public void testGetNewInstance() {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterfaceClientService testInterface = TestInterfaceClientService.getInstance(pipeline, null, null);
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
         assertNotNull(testInterface);
     }
 
