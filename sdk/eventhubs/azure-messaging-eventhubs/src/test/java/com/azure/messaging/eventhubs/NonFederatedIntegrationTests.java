@@ -56,7 +56,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".+")
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void sendAndReceiveEventByAzureSasCredential() {
         Assumptions.assumeTrue(TestUtils.getConnectionString(true) != null,
             "SAS was not set. Can't run test scenario.");
