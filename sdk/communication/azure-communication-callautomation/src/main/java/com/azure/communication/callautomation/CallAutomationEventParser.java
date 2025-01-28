@@ -128,7 +128,7 @@ public final class CallAutomationEventParser {
                 ret = ParticipantsUpdated.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecordingStateChanged")) {
                 ret = RecordingStateChanged.fromJson(jsonReader);
-            }else if (Objects.equals(eventType, "Microsoft.Communication.StartRecordingFailed")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.StartRecordingFailed")) {
                 ret = StartRecordingFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
                 ret = PlayCompleted.fromJson(jsonReader);

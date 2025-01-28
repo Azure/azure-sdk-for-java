@@ -51,9 +51,10 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
             = CallAutomationUnitTestBase.getCallAutomationAsyncClient(recordingOperationsResponses);
         callRecording = callingServerClient.getCallRecordingAsync();
 
-        validateRecordingState(callRecording.start(new StartRecordingOptions()
-            .setCallConnectionId(CALL_CONNECTION_ID)
-            .setRecordingStateCallbackUrl("https://localhost/")), RecordingState.ACTIVE);
+        validateRecordingState(
+            callRecording.start(
+                new StartRecordingOptions(CALL_CONNECTION_ID).setRecordingStateCallbackUrl("https://localhost/")),
+            RecordingState.ACTIVE);
 
         validateOperationWithRecordingState(callRecording.pause(RECORDING_ID), RecordingState.INACTIVE);
 

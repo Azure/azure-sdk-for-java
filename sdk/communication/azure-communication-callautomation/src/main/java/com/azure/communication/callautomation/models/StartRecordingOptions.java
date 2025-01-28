@@ -49,7 +49,6 @@ public final class StartRecordingOptions {
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
-        // Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
     }
 
@@ -60,6 +59,15 @@ public final class StartRecordingOptions {
      */
     public CallLocator getCallLocator() {
         return this.callLocator;
+    }
+
+    /**
+    * Constructor
+    *
+    * @param callConnectionId
+    */
+    public StartRecordingOptions(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
     }
 
     /**
@@ -232,17 +240,6 @@ public final class StartRecordingOptions {
      */
     public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
         this.channelAffinity = channelAffinity;
-        return this;
-    }
-
-    /**
-     * Set the callConnectionId
-     *
-     * @param callConnectionId to send state change callbacks.
-     * @return the {@link callConnectionId}
-     */
-    public StartRecordingOptions setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
         return this;
     }
 
