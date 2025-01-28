@@ -26,6 +26,7 @@ private[cosmos] object CosmosConstants {
   val defaultMetricsIntervalInSeconds = 60
   val defaultSlf4jMetricReporterEnabled = false
   val readOperationEndToEndTimeoutInSeconds = 65
+  val batchOperationEndToEndTimeoutInSeconds = 65
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"

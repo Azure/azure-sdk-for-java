@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachNewDataDiskOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachNewDataDiskOptions model =
-            BinaryData
-                .fromString("{\"diskSizeGiB\":808609813,\"diskName\":\"ejjoqkagfhsxtta\",\"diskType\":\"StandardSSD\"}")
-                .toObject(AttachNewDataDiskOptions.class);
+        AttachNewDataDiskOptions model = BinaryData
+            .fromString("{\"diskSizeGiB\":808609813,\"diskName\":\"ejjoqkagfhsxtta\",\"diskType\":\"StandardSSD\"}")
+            .toObject(AttachNewDataDiskOptions.class);
         Assertions.assertEquals(808609813, model.diskSizeGiB());
         Assertions.assertEquals("ejjoqkagfhsxtta", model.diskName());
         Assertions.assertEquals(StorageType.STANDARD_SSD, model.diskType());
@@ -23,11 +22,9 @@ public final class AttachNewDataDiskOptionsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachNewDataDiskOptions model =
-            new AttachNewDataDiskOptions()
-                .withDiskSizeGiB(808609813)
-                .withDiskName("ejjoqkagfhsxtta")
-                .withDiskType(StorageType.STANDARD_SSD);
+        AttachNewDataDiskOptions model = new AttachNewDataDiskOptions().withDiskSizeGiB(808609813)
+            .withDiskName("ejjoqkagfhsxtta")
+            .withDiskType(StorageType.STANDARD_SSD);
         model = BinaryData.fromObject(model).toObject(AttachNewDataDiskOptions.class);
         Assertions.assertEquals(808609813, model.diskSizeGiB());
         Assertions.assertEquals("ejjoqkagfhsxtta", model.diskName());

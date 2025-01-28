@@ -36,7 +36,7 @@ public final class TableAccountSasSignatureValues {
      * @param resourceTypes {@link TableAccountSasResourceType account resource types} targeted by the SAS.
      */
     public TableAccountSasSignatureValues(OffsetDateTime expiryTime, TableAccountSasPermission permissions,
-                                          TableAccountSasService services, TableAccountSasResourceType resourceTypes) {
+        TableAccountSasService services, TableAccountSasResourceType resourceTypes) {
 
         Objects.requireNonNull(expiryTime, "'expiryTime' cannot be null");
         Objects.requireNonNull(services, "'services' cannot be null");

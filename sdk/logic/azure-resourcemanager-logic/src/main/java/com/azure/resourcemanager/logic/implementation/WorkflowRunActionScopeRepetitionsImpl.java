@@ -21,53 +21,44 @@ public final class WorkflowRunActionScopeRepetitionsImpl implements WorkflowRunA
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowRunActionScopeRepetitionsImpl(
-        WorkflowRunActionScopeRepetitionsClient innerClient,
+    public WorkflowRunActionScopeRepetitionsImpl(WorkflowRunActionScopeRepetitionsClient innerClient,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkflowRunActionRepetitionDefinition> list(
-        String resourceGroupName, String workflowName, String runName, String actionName) {
-        PagedIterable<WorkflowRunActionRepetitionDefinitionInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, runName, actionName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowRunActionRepetitionDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowRunActionRepetitionDefinition> list(String resourceGroupName, String workflowName,
+        String runName, String actionName) {
+        PagedIterable<WorkflowRunActionRepetitionDefinitionInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, runName, actionName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new WorkflowRunActionRepetitionDefinitionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkflowRunActionRepetitionDefinition> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
-        PagedIterable<WorkflowRunActionRepetitionDefinitionInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, runName, actionName, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowRunActionRepetitionDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowRunActionRepetitionDefinition> list(String resourceGroupName, String workflowName,
+        String runName, String actionName, Context context) {
+        PagedIterable<WorkflowRunActionRepetitionDefinitionInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, runName, actionName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new WorkflowRunActionRepetitionDefinitionImpl(inner1, this.manager()));
     }
 
-    public Response<WorkflowRunActionRepetitionDefinition> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
-        Response<WorkflowRunActionRepetitionDefinitionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workflowName, runName, actionName, repetitionName, context);
+    public Response<WorkflowRunActionRepetitionDefinition> getWithResponse(String resourceGroupName,
+        String workflowName, String runName, String actionName, String repetitionName, Context context) {
+        Response<WorkflowRunActionRepetitionDefinitionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workflowName, runName, actionName, repetitionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowRunActionRepetitionDefinitionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WorkflowRunActionRepetitionDefinition get(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
-        WorkflowRunActionRepetitionDefinitionInner inner =
-            this.serviceClient().get(resourceGroupName, workflowName, runName, actionName, repetitionName);
+    public WorkflowRunActionRepetitionDefinition get(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName) {
+        WorkflowRunActionRepetitionDefinitionInner inner
+            = this.serviceClient().get(resourceGroupName, workflowName, runName, actionName, repetitionName);
         if (inner != null) {
             return new WorkflowRunActionRepetitionDefinitionImpl(inner, this.manager());
         } else {

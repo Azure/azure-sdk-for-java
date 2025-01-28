@@ -76,7 +76,7 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param http the http
      * @throws Exception failed to initialize SecurityBuilder
      */
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings("removal")
     @Override
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off
@@ -97,6 +97,7 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      *
      * @return the access token response client
      */
+    @SuppressWarnings("deprecation")
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         if (accessTokenResponseClient != null) {
             return accessTokenResponseClient;

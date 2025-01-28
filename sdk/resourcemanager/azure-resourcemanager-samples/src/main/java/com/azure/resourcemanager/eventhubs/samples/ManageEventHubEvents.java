@@ -68,7 +68,8 @@ public class ManageEventHubEvents {
                 .withNewEventHub(eventHubName)
                 .create();
 
-            System.out.println(String.format("Created event hub namespace %s and event hub %s ", namespace.name(), eventHubName));
+            System.out.println(
+                String.format("Created event hub namespace %s and event hub %s ", namespace.name(), eventHubName));
             System.out.println();
             Utils.print(namespace);
 
@@ -78,7 +79,8 @@ public class ManageEventHubEvents {
 
             System.out.println("Retrieving the namespace authorization rule");
 
-            EventHubNamespaceAuthorizationRule eventHubAuthRule = azureResourceManager.eventHubNamespaces().authorizationRules()
+            EventHubNamespaceAuthorizationRule eventHubAuthRule = azureResourceManager.eventHubNamespaces()
+                .authorizationRules()
                 .getByName(namespace.resourceGroupName(), namespace.name(), "RootManageSharedAccessKey");
 
             System.out.println("Namespace authorization rule Retrieved");
@@ -90,7 +92,7 @@ public class ManageEventHubEvents {
             System.out.println("Enabling diagnostics events of a cosmosdb to stream to event hub");
 
             // Store Id of created Diagnostic settings only for clean-up
-            DiagnosticSetting ds  = azureResourceManager.diagnosticSettings()
+            DiagnosticSetting ds = azureResourceManager.diagnosticSettings()
                 .define("DiaEventHub")
                 .withResource(docDb.id())
                 .withEventHub(eventHubAuthRule.id(), eventHubName)
@@ -139,8 +141,7 @@ public class ManageEventHubEvents {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

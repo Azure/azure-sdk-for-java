@@ -7,31 +7,51 @@ package com.azure.resourcemanager.delegatednetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents an instance of a resource. */
+/**
+ * Represents an instance of a resource.
+ */
 @Fluent
 public class OrchestratorResource extends Resource {
     /*
      * The kind of workbook. Choices are user and shared.
      */
-    @JsonProperty(value = "kind", required = true)
     private OrchestratorKind kind;
 
     /*
      * The identity of the orchestrator
      */
-    @JsonProperty(value = "identity")
     private OrchestratorIdentity identity;
 
-    /** Creates an instance of OrchestratorResource class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OrchestratorResource class.
+     */
     public OrchestratorResource() {
     }
 
     /**
      * Get the kind property: The kind of workbook. Choices are user and shared.
-     *
+     * 
      * @return the kind value.
      */
     public OrchestratorKind kind() {
@@ -40,7 +60,7 @@ public class OrchestratorResource extends Resource {
 
     /**
      * Set the kind property: The kind of workbook. Choices are user and shared.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the OrchestratorResource object itself.
      */
@@ -51,7 +71,7 @@ public class OrchestratorResource extends Resource {
 
     /**
      * Get the identity property: The identity of the orchestrator.
-     *
+     * 
      * @return the identity value.
      */
     public OrchestratorIdentity identity() {
@@ -60,7 +80,7 @@ public class OrchestratorResource extends Resource {
 
     /**
      * Set the identity property: The identity of the orchestrator.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the OrchestratorResource object itself.
      */
@@ -69,14 +89,48 @@ public class OrchestratorResource extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrchestratorResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrchestratorResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,14 +139,13 @@ public class OrchestratorResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model OrchestratorResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model OrchestratorResource"));
         }
         if (identity() != null) {
             identity().validate();
@@ -100,4 +153,57 @@ public class OrchestratorResource extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrchestratorResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestratorResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestratorResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrchestratorResource.
+     */
+    public static OrchestratorResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestratorResource deserializedOrchestratorResource = new OrchestratorResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOrchestratorResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOrchestratorResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOrchestratorResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedOrchestratorResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedOrchestratorResource.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedOrchestratorResource.kind = OrchestratorKind.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedOrchestratorResource.identity = OrchestratorIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestratorResource;
+        });
+    }
 }

@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 public final class TextAnalyticsActionResultPropertiesHelper {
     private static TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor accessor;
 
-    private TextAnalyticsActionResultPropertiesHelper() { }
+    private TextAnalyticsActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link TextAnalyticsActionResult}
@@ -22,8 +23,11 @@ public final class TextAnalyticsActionResultPropertiesHelper {
      */
     public interface TextAnalyticsActionResultAccessor {
         void setActionName(TextAnalyticsActionResult actionResult, String actionName);
+
         void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt);
+
         void setError(TextAnalyticsActionResult actionResult, TextAnalyticsError error);
+
         void setIsError(TextAnalyticsActionResult actionResult, boolean isError);
     }
 
@@ -32,8 +36,8 @@ public final class TextAnalyticsActionResultPropertiesHelper {
      *
      * @param textAnalyticsActionResultAccessor The accessor.
      */
-    public static void setAccessor(final TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor
-                                       textAnalyticsActionResultAccessor) {
+    public static void setAccessor(
+        final TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor textAnalyticsActionResultAccessor) {
         accessor = textAnalyticsActionResultAccessor;
     }
 

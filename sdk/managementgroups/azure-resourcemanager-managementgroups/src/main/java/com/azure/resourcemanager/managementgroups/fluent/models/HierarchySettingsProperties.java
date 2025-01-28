@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The generic properties of hierarchy settings. */
+/**
+ * The generic properties of hierarchy settings.
+ */
 @Fluent
-public final class HierarchySettingsProperties {
+public final class HierarchySettingsProperties implements JsonSerializable<HierarchySettingsProperties> {
     /*
      * The AAD Tenant ID associated with the hierarchy settings. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
@@ -22,24 +27,24 @@ public final class HierarchySettingsProperties {
      * to create new Groups directly under the root. This will prevent new users from creating new Management Groups,
      * unless they are given access.
      */
-    @JsonProperty(value = "requireAuthorizationForGroupCreation")
     private Boolean requireAuthorizationForGroupCreation;
 
     /*
      * Settings that sets the default Management Group under which new subscriptions get added in this tenant. For
      * example, /providers/Microsoft.Management/managementGroups/defaultGroup
      */
-    @JsonProperty(value = "defaultManagementGroup")
     private String defaultManagementGroup;
 
-    /** Creates an instance of HierarchySettingsProperties class. */
+    /**
+     * Creates an instance of HierarchySettingsProperties class.
+     */
     public HierarchySettingsProperties() {
     }
 
     /**
      * Get the tenantId property: The AAD Tenant ID associated with the hierarchy settings. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -49,7 +54,7 @@ public final class HierarchySettingsProperties {
     /**
      * Set the tenantId property: The AAD Tenant ID associated with the hierarchy settings. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the HierarchySettingsProperties object itself.
      */
@@ -64,7 +69,7 @@ public final class HierarchySettingsProperties {
      * Microsoft.Management/managementGroups/write action on the root Management Group scope in order to create new
      * Groups directly under the root. This will prevent new users from creating new Management Groups, unless they are
      * given access.
-     *
+     * 
      * @return the requireAuthorizationForGroupCreation value.
      */
     public Boolean requireAuthorizationForGroupCreation() {
@@ -77,12 +82,12 @@ public final class HierarchySettingsProperties {
      * Microsoft.Management/managementGroups/write action on the root Management Group scope in order to create new
      * Groups directly under the root. This will prevent new users from creating new Management Groups, unless they are
      * given access.
-     *
+     * 
      * @param requireAuthorizationForGroupCreation the requireAuthorizationForGroupCreation value to set.
      * @return the HierarchySettingsProperties object itself.
      */
-    public HierarchySettingsProperties withRequireAuthorizationForGroupCreation(
-        Boolean requireAuthorizationForGroupCreation) {
+    public HierarchySettingsProperties
+        withRequireAuthorizationForGroupCreation(Boolean requireAuthorizationForGroupCreation) {
         this.requireAuthorizationForGroupCreation = requireAuthorizationForGroupCreation;
         return this;
     }
@@ -91,7 +96,7 @@ public final class HierarchySettingsProperties {
      * Get the defaultManagementGroup property: Settings that sets the default Management Group under which new
      * subscriptions get added in this tenant. For example,
      * /providers/Microsoft.Management/managementGroups/defaultGroup.
-     *
+     * 
      * @return the defaultManagementGroup value.
      */
     public String defaultManagementGroup() {
@@ -102,7 +107,7 @@ public final class HierarchySettingsProperties {
      * Set the defaultManagementGroup property: Settings that sets the default Management Group under which new
      * subscriptions get added in this tenant. For example,
      * /providers/Microsoft.Management/managementGroups/defaultGroup.
-     *
+     * 
      * @param defaultManagementGroup the defaultManagementGroup value to set.
      * @return the HierarchySettingsProperties object itself.
      */
@@ -113,9 +118,52 @@ public final class HierarchySettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeBooleanField("requireAuthorizationForGroupCreation", this.requireAuthorizationForGroupCreation);
+        jsonWriter.writeStringField("defaultManagementGroup", this.defaultManagementGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HierarchySettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HierarchySettingsProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HierarchySettingsProperties.
+     */
+    public static HierarchySettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HierarchySettingsProperties deserializedHierarchySettingsProperties = new HierarchySettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedHierarchySettingsProperties.tenantId = reader.getString();
+                } else if ("requireAuthorizationForGroupCreation".equals(fieldName)) {
+                    deserializedHierarchySettingsProperties.requireAuthorizationForGroupCreation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultManagementGroup".equals(fieldName)) {
+                    deserializedHierarchySettingsProperties.defaultManagementGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHierarchySettingsProperties;
+        });
     }
 }

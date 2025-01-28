@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = ModelInferenceClientBuilder.class, isAsync = true)
 public final class ModelInferenceAsyncClient {
-    @Generated private final ModelInferencesImpl serviceClient;
+    @Generated
+    private final ModelInferencesImpl serviceClient;
 
     /**
      * Initializes an instance of ModelInferenceAsyncClient class.
@@ -116,8 +117,8 @@ public final class ModelInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateBiomassModelJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateBiomassModelJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateBiomassModelJobAsync(jobId, job, requestOptions);
     }
 
@@ -250,8 +251,8 @@ public final class ModelInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateSensorPlacementModelJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateSensorPlacementModelJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateSensorPlacementModelJobAsync(jobId, job, requestOptions);
     }
 
@@ -301,8 +302,8 @@ public final class ModelInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSensorPlacementModelJobWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSensorPlacementModelJobWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getSensorPlacementModelJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -398,8 +399,8 @@ public final class ModelInferenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateSoilMoistureModelJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateSoilMoistureModelJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateSoilMoistureModelJobAsync(jobId, job, requestOptions);
     }
 

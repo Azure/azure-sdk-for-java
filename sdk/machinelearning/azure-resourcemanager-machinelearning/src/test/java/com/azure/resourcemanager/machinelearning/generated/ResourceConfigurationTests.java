@@ -13,27 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"instanceCount\":1364369199,\"instanceType\":\"kgjubgdknnqvsazn\",\"properties\":{\"mkycgra\":\"dataorudsgsa\"}}")
-                .toObject(ResourceConfiguration.class);
-        Assertions.assertEquals(1364369199, model.instanceCount());
-        Assertions.assertEquals("kgjubgdknnqvsazn", model.instanceType());
+        ResourceConfiguration model = BinaryData.fromString(
+            "{\"instanceCount\":190807596,\"instanceType\":\"uunfprnjletlxsm\",\"properties\":{\"ifamowazi\":\"datado\",\"hxqszdtmaajquh\":\"datanknlqwzdvpi\"}}")
+            .toObject(ResourceConfiguration.class);
+        Assertions.assertEquals(190807596, model.instanceCount());
+        Assertions.assertEquals("uunfprnjletlxsm", model.instanceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceConfiguration model =
-            new ResourceConfiguration()
-                .withInstanceCount(1364369199)
-                .withInstanceType("kgjubgdknnqvsazn")
-                .withProperties(mapOf("mkycgra", "dataorudsgsa"));
+        ResourceConfiguration model = new ResourceConfiguration().withInstanceCount(190807596)
+            .withInstanceType("uunfprnjletlxsm")
+            .withProperties(mapOf("ifamowazi", "datado", "hxqszdtmaajquh", "datanknlqwzdvpi"));
         model = BinaryData.fromObject(model).toObject(ResourceConfiguration.class);
-        Assertions.assertEquals(1364369199, model.instanceCount());
-        Assertions.assertEquals("kgjubgdknnqvsazn", model.instanceType());
+        Assertions.assertEquals(190807596, model.instanceCount());
+        Assertions.assertEquals("uunfprnjletlxsm", model.instanceType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

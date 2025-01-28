@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Schedule model =
-            BinaryData
-                .fromString(
-                    "{\"enable\":false,\"weeklyInterval\":981074224,\"monthlyOccurrence\":586679230,\"dayOfWeek\":\"Wednesday\",\"startTime\":\"ugidyjrr\"}")
-                .toObject(Schedule.class);
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals(981074224, model.weeklyInterval());
-        Assertions.assertEquals(586679230, model.monthlyOccurrence());
-        Assertions.assertEquals(AssessmentDayOfWeek.WEDNESDAY, model.dayOfWeek());
-        Assertions.assertEquals("ugidyjrr", model.startTime());
+        Schedule model = BinaryData.fromString(
+            "{\"enable\":true,\"weeklyInterval\":668778225,\"monthlyOccurrence\":807862919,\"dayOfWeek\":\"Monday\",\"startTime\":\"acspkwl\"}")
+            .toObject(Schedule.class);
+        Assertions.assertEquals(true, model.enable());
+        Assertions.assertEquals(668778225, model.weeklyInterval());
+        Assertions.assertEquals(807862919, model.monthlyOccurrence());
+        Assertions.assertEquals(AssessmentDayOfWeek.MONDAY, model.dayOfWeek());
+        Assertions.assertEquals("acspkwl", model.startTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schedule model =
-            new Schedule()
-                .withEnable(false)
-                .withWeeklyInterval(981074224)
-                .withMonthlyOccurrence(586679230)
-                .withDayOfWeek(AssessmentDayOfWeek.WEDNESDAY)
-                .withStartTime("ugidyjrr");
+        Schedule model = new Schedule().withEnable(true)
+            .withWeeklyInterval(668778225)
+            .withMonthlyOccurrence(807862919)
+            .withDayOfWeek(AssessmentDayOfWeek.MONDAY)
+            .withStartTime("acspkwl");
         model = BinaryData.fromObject(model).toObject(Schedule.class);
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals(981074224, model.weeklyInterval());
-        Assertions.assertEquals(586679230, model.monthlyOccurrence());
-        Assertions.assertEquals(AssessmentDayOfWeek.WEDNESDAY, model.dayOfWeek());
-        Assertions.assertEquals("ugidyjrr", model.startTime());
+        Assertions.assertEquals(true, model.enable());
+        Assertions.assertEquals(668778225, model.weeklyInterval());
+        Assertions.assertEquals(807862919, model.monthlyOccurrence());
+        Assertions.assertEquals(AssessmentDayOfWeek.MONDAY, model.dayOfWeek());
+        Assertions.assertEquals("acspkwl", model.startTime());
     }
 }

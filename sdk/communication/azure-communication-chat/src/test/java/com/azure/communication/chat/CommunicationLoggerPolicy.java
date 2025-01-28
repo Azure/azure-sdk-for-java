@@ -30,8 +30,7 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process()
-        .flatMap(httpResponse -> {
+        return next.process().flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
 
             // Should sanitize printed reponse url

@@ -22,9 +22,12 @@ public final class ProfilesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getProfiles().update("RG", "profile1",
-            new ProfileUpdateParameters().withTags(mapOf("additionalProperties", "Tag1")),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .update("RG", "profile1", new ProfileUpdateParameters().withTags(mapOf("additionalProperties", "Tag1")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -14,19 +14,18 @@ public final class SimCloneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SimClone model = BinaryData
-            .fromString(
-                "{\"targetSimGroupId\":{\"id\":\"xk\"},\"sims\":[\"oaz\",\"ruocbgo\",\"rb\",\"eoybfhjxakvvjgs\"]}")
+            .fromString("{\"targetSimGroupId\":{\"id\":\"dmflv\"},\"sims\":[\"mjlxrrilozapeewc\",\"pxlktwkuziycsl\"]}")
             .toObject(SimClone.class);
-        Assertions.assertEquals("xk", model.targetSimGroupId().id());
-        Assertions.assertEquals("oaz", model.sims().get(0));
+        Assertions.assertEquals("dmflv", model.targetSimGroupId().id());
+        Assertions.assertEquals("mjlxrrilozapeewc", model.sims().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimClone model = new SimClone().withTargetSimGroupId(new SimGroupResourceId().withId("xk"))
-            .withSims(Arrays.asList("oaz", "ruocbgo", "rb", "eoybfhjxakvvjgs"));
+        SimClone model = new SimClone().withTargetSimGroupId(new SimGroupResourceId().withId("dmflv"))
+            .withSims(Arrays.asList("mjlxrrilozapeewc", "pxlktwkuziycsl"));
         model = BinaryData.fromObject(model).toObject(SimClone.class);
-        Assertions.assertEquals("xk", model.targetSimGroupId().id());
-        Assertions.assertEquals("oaz", model.sims().get(0));
+        Assertions.assertEquals("dmflv", model.targetSimGroupId().id());
+        Assertions.assertEquals("mjlxrrilozapeewc", model.sims().get(0));
     }
 }

@@ -13,22 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CdnPeeringPrefixListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CdnPeeringPrefixListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"prefix\":\"uv\",\"azureRegion\":\"xpyb\",\"azureService\":\"m\",\"isPrimaryRegion\":false,\"bgpCommunity\":\"zopbsphrupidgs\"},\"id\":\"bb\",\"name\":\"jhphoyc\",\"type\":\"sx\"},{\"properties\":{\"prefix\":\"hdxbmtqio\",\"azureRegion\":\"zehtbmu\",\"azureService\":\"ownoizhw\",\"isPrimaryRegion\":true,\"bgpCommunity\":\"bqsoqijg\"},\"id\":\"dmbpazlobcufpdz\",\"name\":\"rbt\",\"type\":\"qqjnqgl\"},{\"properties\":{\"prefix\":\"nufo\",\"azureRegion\":\"jywif\",\"azureService\":\"esaagdfm\",\"isPrimaryRegion\":true,\"bgpCommunity\":\"hjxri\"},\"id\":\"kwm\",\"name\":\"vktsizntocipao\",\"type\":\"ajpsquc\"}],\"nextLink\":\"o\"}")
-                .toObject(CdnPeeringPrefixListResult.class);
+        CdnPeeringPrefixListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"prefix\":\"uv\",\"azureRegion\":\"xpyb\",\"azureService\":\"m\",\"isPrimaryRegion\":false,\"bgpCommunity\":\"zopbsphrupidgs\"},\"id\":\"bb\",\"name\":\"jhphoyc\",\"type\":\"sx\"},{\"properties\":{\"prefix\":\"hdxbmtqio\",\"azureRegion\":\"zehtbmu\",\"azureService\":\"ownoizhw\",\"isPrimaryRegion\":true,\"bgpCommunity\":\"bqsoqijg\"},\"id\":\"dmbpazlobcufpdz\",\"name\":\"rbt\",\"type\":\"qqjnqgl\"},{\"properties\":{\"prefix\":\"nufo\",\"azureRegion\":\"jywif\",\"azureService\":\"esaagdfm\",\"isPrimaryRegion\":true,\"bgpCommunity\":\"hjxri\"},\"id\":\"kwm\",\"name\":\"vktsizntocipao\",\"type\":\"ajpsquc\"}],\"nextLink\":\"o\"}")
+            .toObject(CdnPeeringPrefixListResult.class);
         Assertions.assertEquals("o", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CdnPeeringPrefixListResult model =
-            new CdnPeeringPrefixListResult()
-                .withValue(
-                    Arrays
-                        .asList(new CdnPeeringPrefixInner(), new CdnPeeringPrefixInner(), new CdnPeeringPrefixInner()))
-                .withNextLink("o");
+        CdnPeeringPrefixListResult model = new CdnPeeringPrefixListResult()
+            .withValue(
+                Arrays.asList(new CdnPeeringPrefixInner(), new CdnPeeringPrefixInner(), new CdnPeeringPrefixInner()))
+            .withNextLink("o");
         model = BinaryData.fromObject(model).toObject(CdnPeeringPrefixListResult.class);
         Assertions.assertEquals("o", model.nextLink());
     }

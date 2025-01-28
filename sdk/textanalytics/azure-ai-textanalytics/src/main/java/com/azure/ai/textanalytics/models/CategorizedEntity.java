@@ -33,8 +33,8 @@ public final class CategorizedEntity {
     }
 
     static {
-        CategorizedEntityPropertiesHelper.setAccessor(
-            new CategorizedEntityPropertiesHelper.CategorizedEntityAccessor() {
+        CategorizedEntityPropertiesHelper
+            .setAccessor(new CategorizedEntityPropertiesHelper.CategorizedEntityAccessor() {
                 @Override
                 public void setLength(CategorizedEntity entity, int length) {
                     entity.setLength(length);

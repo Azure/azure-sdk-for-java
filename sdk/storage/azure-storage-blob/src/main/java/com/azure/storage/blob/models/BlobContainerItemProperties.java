@@ -4,12 +4,6 @@
 
 package com.azure.storage.blob.models;
 
-import java.time.OffsetDateTime;
-import java.util.Objects;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -17,6 +11,10 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * Properties of a container.
@@ -405,7 +403,6 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobContainerItemProperties if the XmlReader was pointing to an instance of it, or null if
      * it was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobContainerItemProperties.
      */
     public static BlobContainerItemProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -420,7 +417,6 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobContainerItemProperties if the XmlReader was pointing to an instance of it, or null if
      * it was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobContainerItemProperties.
      */
     public static BlobContainerItemProperties fromXml(XmlReader xmlReader, String rootElementName)

@@ -5,116 +5,107 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Custom Parameters used for Cluster Creation. */
+/**
+ * Custom Parameters used for Cluster Creation.
+ */
 @Fluent
-public final class WorkspaceCustomParameters {
+public final class WorkspaceCustomParameters implements JsonSerializable<WorkspaceCustomParameters> {
     /*
      * The ID of a Azure Machine Learning workspace to link with Databricks workspace
      */
-    @JsonProperty(value = "amlWorkspaceId")
     private WorkspaceCustomStringParameter amlWorkspaceId;
 
     /*
      * The ID of a Virtual Network where this Databricks Cluster should be created
      */
-    @JsonProperty(value = "customVirtualNetworkId")
     private WorkspaceCustomStringParameter customVirtualNetworkId;
 
     /*
      * The name of a Public Subnet within the Virtual Network
      */
-    @JsonProperty(value = "customPublicSubnetName")
     private WorkspaceCustomStringParameter customPublicSubnetName;
 
     /*
      * The name of the Private Subnet within the Virtual Network
      */
-    @JsonProperty(value = "customPrivateSubnetName")
     private WorkspaceCustomStringParameter customPrivateSubnetName;
 
     /*
      * Should the Public IP be Disabled?
      */
-    @JsonProperty(value = "enableNoPublicIp")
     private WorkspaceCustomBooleanParameter enableNoPublicIp;
 
     /*
      * Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).
      */
-    @JsonProperty(value = "loadBalancerBackendPoolName")
     private WorkspaceCustomStringParameter loadBalancerBackendPoolName;
 
     /*
      * Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace.
      */
-    @JsonProperty(value = "loadBalancerId")
     private WorkspaceCustomStringParameter loadBalancerId;
 
     /*
      * Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.
      */
-    @JsonProperty(value = "natGatewayName")
     private WorkspaceCustomStringParameter natGatewayName;
 
     /*
      * Name of the Public IP for No Public IP workspace with managed vNet.
      */
-    @JsonProperty(value = "publicIpName")
     private WorkspaceCustomStringParameter publicIpName;
 
     /*
      * Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.
      */
-    @JsonProperty(value = "prepareEncryption")
     private WorkspaceCustomBooleanParameter prepareEncryption;
 
     /*
      * Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
      */
-    @JsonProperty(value = "encryption")
     private WorkspaceEncryptionParameter encryption;
 
     /*
      * A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption
      * with platform managed keys for data at rest.
      */
-    @JsonProperty(value = "requireInfrastructureEncryption")
     private WorkspaceCustomBooleanParameter requireInfrastructureEncryption;
 
     /*
      * Default DBFS storage account name.
      */
-    @JsonProperty(value = "storageAccountName")
     private WorkspaceCustomStringParameter storageAccountName;
 
     /*
      * Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer https://aka.ms/storageskus for valid inputs.
      */
-    @JsonProperty(value = "storageAccountSkuName")
     private WorkspaceCustomStringParameter storageAccountSkuName;
 
     /*
      * Address prefix for Managed virtual network. Default value for this input is 10.139.
      */
-    @JsonProperty(value = "vnetAddressPrefix")
     private WorkspaceCustomStringParameter vnetAddressPrefix;
 
     /*
-     * Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace
-     * level.
+     * Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace level.
      */
-    @JsonProperty(value = "resourceTags", access = JsonProperty.Access.WRITE_ONLY)
     private WorkspaceCustomObjectParameter resourceTags;
 
-    /** Creates an instance of WorkspaceCustomParameters class. */
+    /**
+     * Creates an instance of WorkspaceCustomParameters class.
+     */
     public WorkspaceCustomParameters() {
     }
 
     /**
      * Get the amlWorkspaceId property: The ID of a Azure Machine Learning workspace to link with Databricks workspace.
-     *
+     * 
      * @return the amlWorkspaceId value.
      */
     public WorkspaceCustomStringParameter amlWorkspaceId() {
@@ -123,7 +114,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the amlWorkspaceId property: The ID of a Azure Machine Learning workspace to link with Databricks workspace.
-     *
+     * 
      * @param amlWorkspaceId the amlWorkspaceId value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -135,7 +126,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the customVirtualNetworkId property: The ID of a Virtual Network where this Databricks Cluster should be
      * created.
-     *
+     * 
      * @return the customVirtualNetworkId value.
      */
     public WorkspaceCustomStringParameter customVirtualNetworkId() {
@@ -145,7 +136,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the customVirtualNetworkId property: The ID of a Virtual Network where this Databricks Cluster should be
      * created.
-     *
+     * 
      * @param customVirtualNetworkId the customVirtualNetworkId value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -156,7 +147,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Get the customPublicSubnetName property: The name of a Public Subnet within the Virtual Network.
-     *
+     * 
      * @return the customPublicSubnetName value.
      */
     public WorkspaceCustomStringParameter customPublicSubnetName() {
@@ -165,7 +156,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the customPublicSubnetName property: The name of a Public Subnet within the Virtual Network.
-     *
+     * 
      * @param customPublicSubnetName the customPublicSubnetName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -176,7 +167,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Get the customPrivateSubnetName property: The name of the Private Subnet within the Virtual Network.
-     *
+     * 
      * @return the customPrivateSubnetName value.
      */
     public WorkspaceCustomStringParameter customPrivateSubnetName() {
@@ -185,19 +176,19 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the customPrivateSubnetName property: The name of the Private Subnet within the Virtual Network.
-     *
+     * 
      * @param customPrivateSubnetName the customPrivateSubnetName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
-    public WorkspaceCustomParameters withCustomPrivateSubnetName(
-        WorkspaceCustomStringParameter customPrivateSubnetName) {
+    public WorkspaceCustomParameters
+        withCustomPrivateSubnetName(WorkspaceCustomStringParameter customPrivateSubnetName) {
         this.customPrivateSubnetName = customPrivateSubnetName;
         return this;
     }
 
     /**
      * Get the enableNoPublicIp property: Should the Public IP be Disabled?.
-     *
+     * 
      * @return the enableNoPublicIp value.
      */
     public WorkspaceCustomBooleanParameter enableNoPublicIp() {
@@ -206,7 +197,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the enableNoPublicIp property: Should the Public IP be Disabled?.
-     *
+     * 
      * @param enableNoPublicIp the enableNoPublicIp value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -218,7 +209,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the loadBalancerBackendPoolName property: Name of the outbound Load Balancer Backend Pool for Secure Cluster
      * Connectivity (No Public IP).
-     *
+     * 
      * @return the loadBalancerBackendPoolName value.
      */
     public WorkspaceCustomStringParameter loadBalancerBackendPoolName() {
@@ -228,12 +219,12 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the loadBalancerBackendPoolName property: Name of the outbound Load Balancer Backend Pool for Secure Cluster
      * Connectivity (No Public IP).
-     *
+     * 
      * @param loadBalancerBackendPoolName the loadBalancerBackendPoolName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
-    public WorkspaceCustomParameters withLoadBalancerBackendPoolName(
-        WorkspaceCustomStringParameter loadBalancerBackendPoolName) {
+    public WorkspaceCustomParameters
+        withLoadBalancerBackendPoolName(WorkspaceCustomStringParameter loadBalancerBackendPoolName) {
         this.loadBalancerBackendPoolName = loadBalancerBackendPoolName;
         return this;
     }
@@ -241,7 +232,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the loadBalancerId property: Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No
      * Public IP) workspace.
-     *
+     * 
      * @return the loadBalancerId value.
      */
     public WorkspaceCustomStringParameter loadBalancerId() {
@@ -251,7 +242,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the loadBalancerId property: Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No
      * Public IP) workspace.
-     *
+     * 
      * @param loadBalancerId the loadBalancerId value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -263,7 +254,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the natGatewayName property: Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace
      * subnets.
-     *
+     * 
      * @return the natGatewayName value.
      */
     public WorkspaceCustomStringParameter natGatewayName() {
@@ -273,7 +264,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the natGatewayName property: Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace
      * subnets.
-     *
+     * 
      * @param natGatewayName the natGatewayName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -284,7 +275,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Get the publicIpName property: Name of the Public IP for No Public IP workspace with managed vNet.
-     *
+     * 
      * @return the publicIpName value.
      */
     public WorkspaceCustomStringParameter publicIpName() {
@@ -293,7 +284,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the publicIpName property: Name of the Public IP for No Public IP workspace with managed vNet.
-     *
+     * 
      * @param publicIpName the publicIpName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -305,7 +296,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the prepareEncryption property: Prepare the workspace for encryption. Enables the Managed Identity for
      * managed storage account.
-     *
+     * 
      * @return the prepareEncryption value.
      */
     public WorkspaceCustomBooleanParameter prepareEncryption() {
@@ -315,7 +306,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the prepareEncryption property: Prepare the workspace for encryption. Enables the Managed Identity for
      * managed storage account.
-     *
+     * 
      * @param prepareEncryption the prepareEncryption value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -326,7 +317,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Get the encryption property: Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public WorkspaceEncryptionParameter encryption() {
@@ -335,7 +326,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the encryption property: Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -347,7 +338,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the requireInfrastructureEncryption property: A boolean indicating whether or not the DBFS root file system
      * will be enabled with secondary layer of encryption with platform managed keys for data at rest.
-     *
+     * 
      * @return the requireInfrastructureEncryption value.
      */
     public WorkspaceCustomBooleanParameter requireInfrastructureEncryption() {
@@ -357,19 +348,19 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the requireInfrastructureEncryption property: A boolean indicating whether or not the DBFS root file system
      * will be enabled with secondary layer of encryption with platform managed keys for data at rest.
-     *
+     * 
      * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
-    public WorkspaceCustomParameters withRequireInfrastructureEncryption(
-        WorkspaceCustomBooleanParameter requireInfrastructureEncryption) {
+    public WorkspaceCustomParameters
+        withRequireInfrastructureEncryption(WorkspaceCustomBooleanParameter requireInfrastructureEncryption) {
         this.requireInfrastructureEncryption = requireInfrastructureEncryption;
         return this;
     }
 
     /**
      * Get the storageAccountName property: Default DBFS storage account name.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public WorkspaceCustomStringParameter storageAccountName() {
@@ -378,7 +369,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Set the storageAccountName property: Default DBFS storage account name.
-     *
+     * 
      * @param storageAccountName the storageAccountName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -390,7 +381,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the storageAccountSkuName property: Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer
      * https://aka.ms/storageskus for valid inputs.
-     *
+     * 
      * @return the storageAccountSkuName value.
      */
     public WorkspaceCustomStringParameter storageAccountSkuName() {
@@ -400,7 +391,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the storageAccountSkuName property: Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer
      * https://aka.ms/storageskus for valid inputs.
-     *
+     * 
      * @param storageAccountSkuName the storageAccountSkuName value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -412,7 +403,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the vnetAddressPrefix property: Address prefix for Managed virtual network. Default value for this input is
      * 10.139.
-     *
+     * 
      * @return the vnetAddressPrefix value.
      */
     public WorkspaceCustomStringParameter vnetAddressPrefix() {
@@ -422,7 +413,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Set the vnetAddressPrefix property: Address prefix for Managed virtual network. Default value for this input is
      * 10.139.
-     *
+     * 
      * @param vnetAddressPrefix the vnetAddressPrefix value to set.
      * @return the WorkspaceCustomParameters object itself.
      */
@@ -434,7 +425,7 @@ public final class WorkspaceCustomParameters {
     /**
      * Get the resourceTags property: Tags applied to resources under Managed resource group. These can be updated by
      * updating tags at workspace level.
-     *
+     * 
      * @return the resourceTags value.
      */
     public WorkspaceCustomObjectParameter resourceTags() {
@@ -443,7 +434,7 @@ public final class WorkspaceCustomParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -495,5 +486,100 @@ public final class WorkspaceCustomParameters {
         if (resourceTags() != null) {
             resourceTags().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("amlWorkspaceId", this.amlWorkspaceId);
+        jsonWriter.writeJsonField("customVirtualNetworkId", this.customVirtualNetworkId);
+        jsonWriter.writeJsonField("customPublicSubnetName", this.customPublicSubnetName);
+        jsonWriter.writeJsonField("customPrivateSubnetName", this.customPrivateSubnetName);
+        jsonWriter.writeJsonField("enableNoPublicIp", this.enableNoPublicIp);
+        jsonWriter.writeJsonField("loadBalancerBackendPoolName", this.loadBalancerBackendPoolName);
+        jsonWriter.writeJsonField("loadBalancerId", this.loadBalancerId);
+        jsonWriter.writeJsonField("natGatewayName", this.natGatewayName);
+        jsonWriter.writeJsonField("publicIpName", this.publicIpName);
+        jsonWriter.writeJsonField("prepareEncryption", this.prepareEncryption);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeJsonField("requireInfrastructureEncryption", this.requireInfrastructureEncryption);
+        jsonWriter.writeJsonField("storageAccountName", this.storageAccountName);
+        jsonWriter.writeJsonField("storageAccountSkuName", this.storageAccountSkuName);
+        jsonWriter.writeJsonField("vnetAddressPrefix", this.vnetAddressPrefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceCustomParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceCustomParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceCustomParameters.
+     */
+    public static WorkspaceCustomParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceCustomParameters deserializedWorkspaceCustomParameters = new WorkspaceCustomParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amlWorkspaceId".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.amlWorkspaceId
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("customVirtualNetworkId".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.customVirtualNetworkId
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("customPublicSubnetName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.customPublicSubnetName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("customPrivateSubnetName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.customPrivateSubnetName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("enableNoPublicIp".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.enableNoPublicIp
+                        = WorkspaceCustomBooleanParameter.fromJson(reader);
+                } else if ("loadBalancerBackendPoolName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.loadBalancerBackendPoolName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("loadBalancerId".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.loadBalancerId
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("natGatewayName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.natGatewayName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("publicIpName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.publicIpName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("prepareEncryption".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.prepareEncryption
+                        = WorkspaceCustomBooleanParameter.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.encryption = WorkspaceEncryptionParameter.fromJson(reader);
+                } else if ("requireInfrastructureEncryption".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.requireInfrastructureEncryption
+                        = WorkspaceCustomBooleanParameter.fromJson(reader);
+                } else if ("storageAccountName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.storageAccountName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("storageAccountSkuName".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.storageAccountSkuName
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("vnetAddressPrefix".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.vnetAddressPrefix
+                        = WorkspaceCustomStringParameter.fromJson(reader);
+                } else if ("resourceTags".equals(fieldName)) {
+                    deserializedWorkspaceCustomParameters.resourceTags
+                        = WorkspaceCustomObjectParameter.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceCustomParameters;
+        });
     }
 }

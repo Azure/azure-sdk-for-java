@@ -5,20 +5,42 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Command Job limit class. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobLimitsType")
-@JsonTypeName("Command")
+/**
+ * Command Job limit class.
+ */
 @Fluent
 public final class CommandJobLimits extends JobLimits {
-    /** Creates an instance of CommandJobLimits class. */
+    /*
+     * [Required] JobLimit type.
+     */
+    private JobLimitsType jobLimitsType = JobLimitsType.COMMAND;
+
+    /**
+     * Creates an instance of CommandJobLimits class.
+     */
     public CommandJobLimits() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the jobLimitsType property: [Required] JobLimit type.
+     * 
+     * @return the jobLimitsType value.
+     */
+    @Override
+    public JobLimitsType jobLimitsType() {
+        return this.jobLimitsType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommandJobLimits withTimeout(Duration timeout) {
         super.withTimeout(timeout);
@@ -27,11 +49,51 @@ public final class CommandJobLimits extends JobLimits {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(timeout()));
+        jsonWriter.writeStringField("jobLimitsType", this.jobLimitsType == null ? null : this.jobLimitsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommandJobLimits from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommandJobLimits if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommandJobLimits.
+     */
+    public static CommandJobLimits fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommandJobLimits deserializedCommandJobLimits = new CommandJobLimits();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeout".equals(fieldName)) {
+                    deserializedCommandJobLimits
+                        .withTimeout(reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("jobLimitsType".equals(fieldName)) {
+                    deserializedCommandJobLimits.jobLimitsType = JobLimitsType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommandJobLimits;
+        });
     }
 }

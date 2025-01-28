@@ -5,28 +5,130 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.consumption.fluent.models.LegacyReservationRecommendationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
 
-/** The properties of the legacy reservation recommendation for shared scope. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scope")
-@JsonTypeName("Shared")
+/**
+ * The properties of the legacy reservation recommendation for shared scope.
+ */
 @Immutable
 public final class LegacySharedScopeReservationRecommendationProperties
     extends LegacyReservationRecommendationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LegacySharedScopeReservationRecommendationProperties.class);
+    /*
+     * Shared or single recommendation.
+     */
+    private String scope = "Shared";
+
+    /**
+     * Creates an instance of LegacySharedScopeReservationRecommendationProperties class.
+     */
+    public LegacySharedScopeReservationRecommendationProperties() {
+    }
+
+    /**
+     * Get the scope property: Shared or single recommendation.
+     * 
+     * @return the scope value.
+     */
+    @Override
+    public String scope() {
+        return this.scope;
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (skuProperties() != null) {
+            skuProperties().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacySharedScopeReservationRecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacySharedScopeReservationRecommendationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LegacySharedScopeReservationRecommendationProperties.
+     */
+    public static LegacySharedScopeReservationRecommendationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacySharedScopeReservationRecommendationProperties deserializedLegacySharedScopeReservationRecommendationProperties
+                = new LegacySharedScopeReservationRecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lookBackPeriod".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withLookBackPeriod(reader.getString());
+                } else if ("instanceFlexibilityRatio".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withInstanceFlexibilityRatio(reader.getNullable(JsonReader::getFloat));
+                } else if ("instanceFlexibilityGroup".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withInstanceFlexibilityGroup(reader.getString());
+                } else if ("normalizedSize".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withNormalizedSize(reader.getString());
+                } else if ("recommendedQuantityNormalized".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withRecommendedQuantityNormalized(reader.getNullable(JsonReader::getFloat));
+                } else if ("meterId".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withMeterId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withResourceType(reader.getString());
+                } else if ("term".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.withTerm(reader.getString());
+                } else if ("costWithNoReservedInstances".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.withCostWithNoReservedInstances(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
+                } else if ("recommendedQuantity".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.withRecommendedQuantity(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
+                } else if ("totalCostWithReservedInstances".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.withTotalCostWithReservedInstances(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
+                } else if ("netSavings".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties
+                        .withNetSavings(reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
+                } else if ("firstUsageDate".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.withFirstUsageDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("skuProperties".equals(fieldName)) {
+                    List<SkuProperty> skuProperties = reader.readArray(reader1 -> SkuProperty.fromJson(reader1));
+                    deserializedLegacySharedScopeReservationRecommendationProperties.withSkuProperties(skuProperties);
+                } else if ("scope".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacySharedScopeReservationRecommendationProperties;
+        });
     }
 }

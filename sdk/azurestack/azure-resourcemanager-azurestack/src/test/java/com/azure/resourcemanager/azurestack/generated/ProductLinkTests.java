@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductLink model =
-            BinaryData
-                .fromString("{\"displayName\":\"ochcbonqvpkvl\",\"uri\":\"njeaseipheofloke\"}")
-                .toObject(ProductLink.class);
-        Assertions.assertEquals("ochcbonqvpkvl", model.displayName());
-        Assertions.assertEquals("njeaseipheofloke", model.uri());
+        ProductLink model
+            = BinaryData.fromString("{\"displayName\":\"jmvxie\",\"uri\":\"ugidyjrr\"}").toObject(ProductLink.class);
+        Assertions.assertEquals("jmvxie", model.displayName());
+        Assertions.assertEquals("ugidyjrr", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductLink model = new ProductLink().withDisplayName("ochcbonqvpkvl").withUri("njeaseipheofloke");
+        ProductLink model = new ProductLink().withDisplayName("jmvxie").withUri("ugidyjrr");
         model = BinaryData.fromObject(model).toObject(ProductLink.class);
-        Assertions.assertEquals("ochcbonqvpkvl", model.displayName());
-        Assertions.assertEquals("njeaseipheofloke", model.uri());
+        Assertions.assertEquals("jmvxie", model.displayName());
+        Assertions.assertEquals("ugidyjrr", model.uri());
     }
 }

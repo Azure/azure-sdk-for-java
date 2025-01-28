@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Update classifications included in the software update configuration. */
+/**
+ * Update classifications included in the software update configuration.
+ */
 public final class LinuxUpdateClasses extends ExpandableStringEnum<LinuxUpdateClasses> {
-    /** Static value Unclassified for LinuxUpdateClasses. */
+    /**
+     * Static value Unclassified for LinuxUpdateClasses.
+     */
     public static final LinuxUpdateClasses UNCLASSIFIED = fromString("Unclassified");
 
-    /** Static value Critical for LinuxUpdateClasses. */
+    /**
+     * Static value Critical for LinuxUpdateClasses.
+     */
     public static final LinuxUpdateClasses CRITICAL = fromString("Critical");
 
-    /** Static value Security for LinuxUpdateClasses. */
+    /**
+     * Static value Security for LinuxUpdateClasses.
+     */
     public static final LinuxUpdateClasses SECURITY = fromString("Security");
 
-    /** Static value Other for LinuxUpdateClasses. */
+    /**
+     * Static value Other for LinuxUpdateClasses.
+     */
     public static final LinuxUpdateClasses OTHER = fromString("Other");
 
     /**
+     * Creates a new instance of LinuxUpdateClasses value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinuxUpdateClasses() {
+    }
+
+    /**
      * Creates or finds a LinuxUpdateClasses from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LinuxUpdateClasses.
      */
-    @JsonCreator
     public static LinuxUpdateClasses fromString(String name) {
         return fromString(name, LinuxUpdateClasses.class);
     }
 
     /**
      * Gets known LinuxUpdateClasses values.
-     *
+     * 
      * @return known LinuxUpdateClasses values.
      */
     public static Collection<LinuxUpdateClasses> values() {

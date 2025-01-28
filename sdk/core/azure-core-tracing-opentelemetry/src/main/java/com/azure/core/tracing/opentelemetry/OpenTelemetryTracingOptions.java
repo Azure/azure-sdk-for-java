@@ -8,7 +8,7 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.TracerProvider;
 
 /**
- * OpenTelemetry-specific Azure SDK tracing options.
+ * OpenTelemetry-specific tracing options implementation.
  */
 public class OpenTelemetryTracingOptions extends TracingOptions {
     private TracerProvider provider;

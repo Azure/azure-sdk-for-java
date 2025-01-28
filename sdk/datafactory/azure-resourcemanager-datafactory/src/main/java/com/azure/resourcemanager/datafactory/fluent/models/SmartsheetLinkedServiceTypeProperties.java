@@ -6,25 +6,28 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Smartsheet linked service type properties.
  */
 @Fluent
-public final class SmartsheetLinkedServiceTypeProperties {
+public final class SmartsheetLinkedServiceTypeProperties
+    implements JsonSerializable<SmartsheetLinkedServiceTypeProperties> {
     /*
      * The api token for the Smartsheet source.
      */
-    @JsonProperty(value = "apiToken", required = true)
     private SecretBase apiToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -91,4 +94,45 @@ public final class SmartsheetLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SmartsheetLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("apiToken", this.apiToken);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmartsheetLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmartsheetLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmartsheetLinkedServiceTypeProperties.
+     */
+    public static SmartsheetLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmartsheetLinkedServiceTypeProperties deserializedSmartsheetLinkedServiceTypeProperties
+                = new SmartsheetLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiToken".equals(fieldName)) {
+                    deserializedSmartsheetLinkedServiceTypeProperties.apiToken = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSmartsheetLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmartsheetLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.managedapplications.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managedapplications.models.ManagedIdentityToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The array of managed identity tokens. */
+/**
+ * The array of managed identity tokens.
+ */
 @Fluent
-public final class ManagedIdentityTokenResultInner {
+public final class ManagedIdentityTokenResultInner implements JsonSerializable<ManagedIdentityTokenResultInner> {
     /*
      * The array of managed identity tokens.
      */
-    @JsonProperty(value = "value")
     private List<ManagedIdentityToken> value;
 
-    /** Creates an instance of ManagedIdentityTokenResultInner class. */
+    /**
+     * Creates an instance of ManagedIdentityTokenResultInner class.
+     */
     public ManagedIdentityTokenResultInner() {
     }
 
     /**
      * Get the value property: The array of managed identity tokens.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedIdentityToken> value() {
@@ -33,7 +40,7 @@ public final class ManagedIdentityTokenResultInner {
 
     /**
      * Set the value property: The array of managed identity tokens.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedIdentityTokenResultInner object itself.
      */
@@ -44,12 +51,51 @@ public final class ManagedIdentityTokenResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentityTokenResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentityTokenResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentityTokenResultInner.
+     */
+    public static ManagedIdentityTokenResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentityTokenResultInner deserializedManagedIdentityTokenResultInner
+                = new ManagedIdentityTokenResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedIdentityToken> value
+                        = reader.readArray(reader1 -> ManagedIdentityToken.fromJson(reader1));
+                    deserializedManagedIdentityTokenResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentityTokenResultInner;
+        });
     }
 }

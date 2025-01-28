@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingType. */
+/**
+ * Represents billing type.
+ */
 public final class BillingType extends ExpandableStringEnum<BillingType> {
-    /** Static value Pav2 for BillingType. */
+    /**
+     * Static value Pav2 for BillingType.
+     */
     public static final BillingType PAV2 = fromString("Pav2");
 
-    /** Static value Purchase for BillingType. */
+    /**
+     * Static value Purchase for BillingType.
+     */
     public static final BillingType PURCHASE = fromString("Purchase");
 
     /**
+     * Creates a new instance of BillingType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingType() {
+    }
+
+    /**
      * Creates or finds a BillingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingType.
      */
-    @JsonCreator
     public static BillingType fromString(String name) {
         return fromString(name, BillingType.class);
     }
 
-    /** @return known BillingType values. */
+    /**
+     * Gets known BillingType values.
+     * 
+     * @return known BillingType values.
+     */
     public static Collection<BillingType> values() {
         return values(BillingType.class);
     }

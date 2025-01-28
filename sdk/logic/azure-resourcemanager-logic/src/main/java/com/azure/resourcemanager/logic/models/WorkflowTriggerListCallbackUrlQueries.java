@@ -5,48 +5,52 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets the workflow trigger callback URL query parameters. */
+/**
+ * Gets the workflow trigger callback URL query parameters.
+ */
 @Fluent
-public final class WorkflowTriggerListCallbackUrlQueries {
+public final class WorkflowTriggerListCallbackUrlQueries
+    implements JsonSerializable<WorkflowTriggerListCallbackUrlQueries> {
     /*
      * The api version.
      */
-    @JsonProperty(value = "api-version")
     private String apiVersion;
 
     /*
      * The SAS permissions.
      */
-    @JsonProperty(value = "sp")
     private String sp;
 
     /*
      * The SAS version.
      */
-    @JsonProperty(value = "sv")
     private String sv;
 
     /*
      * The SAS signature.
      */
-    @JsonProperty(value = "sig")
     private String sig;
 
     /*
      * The SAS timestamp.
      */
-    @JsonProperty(value = "se")
     private String se;
 
-    /** Creates an instance of WorkflowTriggerListCallbackUrlQueries class. */
+    /**
+     * Creates an instance of WorkflowTriggerListCallbackUrlQueries class.
+     */
     public WorkflowTriggerListCallbackUrlQueries() {
     }
 
     /**
      * Get the apiVersion property: The api version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -55,7 +59,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the apiVersion property: The api version.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -66,7 +70,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the sp property: The SAS permissions.
-     *
+     * 
      * @return the sp value.
      */
     public String sp() {
@@ -75,7 +79,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the sp property: The SAS permissions.
-     *
+     * 
      * @param sp the sp value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -86,7 +90,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the sv property: The SAS version.
-     *
+     * 
      * @return the sv value.
      */
     public String sv() {
@@ -95,7 +99,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the sv property: The SAS version.
-     *
+     * 
      * @param sv the sv value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -106,7 +110,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the sig property: The SAS signature.
-     *
+     * 
      * @return the sig value.
      */
     public String sig() {
@@ -115,7 +119,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the sig property: The SAS signature.
-     *
+     * 
      * @param sig the sig value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -126,7 +130,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Get the se property: The SAS timestamp.
-     *
+     * 
      * @return the se value.
      */
     public String se() {
@@ -135,7 +139,7 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Set the se property: The SAS timestamp.
-     *
+     * 
      * @param se the se value to set.
      * @return the WorkflowTriggerListCallbackUrlQueries object itself.
      */
@@ -146,9 +150,58 @@ public final class WorkflowTriggerListCallbackUrlQueries {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("api-version", this.apiVersion);
+        jsonWriter.writeStringField("sp", this.sp);
+        jsonWriter.writeStringField("sv", this.sv);
+        jsonWriter.writeStringField("sig", this.sig);
+        jsonWriter.writeStringField("se", this.se);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerListCallbackUrlQueries from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerListCallbackUrlQueries if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerListCallbackUrlQueries.
+     */
+    public static WorkflowTriggerListCallbackUrlQueries fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerListCallbackUrlQueries deserializedWorkflowTriggerListCallbackUrlQueries
+                = new WorkflowTriggerListCallbackUrlQueries();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("api-version".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.apiVersion = reader.getString();
+                } else if ("sp".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.sp = reader.getString();
+                } else if ("sv".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.sv = reader.getString();
+                } else if ("sig".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.sig = reader.getString();
+                } else if ("se".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.se = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerListCallbackUrlQueries;
+        });
     }
 }

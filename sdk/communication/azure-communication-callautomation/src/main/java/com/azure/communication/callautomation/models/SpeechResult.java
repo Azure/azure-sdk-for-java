@@ -33,7 +33,6 @@ public final class SpeechResult extends RecognizeResult {
         return this.speech;
     }
 
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

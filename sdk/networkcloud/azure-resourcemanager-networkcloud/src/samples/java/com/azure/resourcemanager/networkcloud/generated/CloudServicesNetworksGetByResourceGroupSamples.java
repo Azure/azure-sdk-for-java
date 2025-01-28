@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for CloudServicesNetworks GetByResourceGroup. */
+/**
+ * Samples for CloudServicesNetworks GetByResourceGroup.
+ */
 public final class CloudServicesNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/CloudServicesNetworks_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * CloudServicesNetworks_Get.json
      */
     /**
      * Sample code: Get cloud services network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getCloudServicesNetwork(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .cloudServicesNetworks()
-            .getByResourceGroupWithResponse(
-                "resourceGroupName", "cloudServicesNetworkName", com.azure.core.util.Context.NONE);
+        manager.cloudServicesNetworks()
+            .getByResourceGroupWithResponse("resourceGroupName", "cloudServicesNetworkName",
+                com.azure.core.util.Context.NONE);
     }
 }

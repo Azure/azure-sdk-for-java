@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AclTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Acl model =
-            BinaryData
-                .fromString("{\"initiatorIqn\":\"lwn\",\"mappedLuns\":[\"hjdauwhvylwz\",\"tdhxujznbmpowuwp\"]}")
-                .toObject(Acl.class);
-        Assertions.assertEquals("lwn", model.initiatorIqn());
-        Assertions.assertEquals("hjdauwhvylwz", model.mappedLuns().get(0));
+        Acl model = BinaryData.fromString("{\"initiatorIqn\":\"mocmbqfqvmk\",\"mappedLuns\":[\"oz\",\"pvhelxprg\"]}")
+            .toObject(Acl.class);
+        Assertions.assertEquals("mocmbqfqvmk", model.initiatorIqn());
+        Assertions.assertEquals("oz", model.mappedLuns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Acl model = new Acl().withInitiatorIqn("lwn").withMappedLuns(Arrays.asList("hjdauwhvylwz", "tdhxujznbmpowuwp"));
+        Acl model = new Acl().withInitiatorIqn("mocmbqfqvmk").withMappedLuns(Arrays.asList("oz", "pvhelxprg"));
         model = BinaryData.fromObject(model).toObject(Acl.class);
-        Assertions.assertEquals("lwn", model.initiatorIqn());
-        Assertions.assertEquals("hjdauwhvylwz", model.mappedLuns().get(0));
+        Assertions.assertEquals("mocmbqfqvmk", model.initiatorIqn());
+        Assertions.assertEquals("oz", model.mappedLuns().get(0));
     }
 }

@@ -22,7 +22,8 @@ public final class SpringbootappsPropertiesInstancesItemTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpringbootappsPropertiesInstancesItem model = new SpringbootappsPropertiesInstancesItem().withMachineArmId("a")
-            .withInstanceCount(8203543).withJvmMemoryInMB(2117984998);
+            .withInstanceCount(8203543)
+            .withJvmMemoryInMB(2117984998);
         model = BinaryData.fromObject(model).toObject(SpringbootappsPropertiesInstancesItem.class);
         Assertions.assertEquals("a", model.machineArmId());
         Assertions.assertEquals(8203543, model.instanceCount());

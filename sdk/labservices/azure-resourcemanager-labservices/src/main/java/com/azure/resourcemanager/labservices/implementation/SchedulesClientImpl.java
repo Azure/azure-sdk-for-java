@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SchedulesClient.
+ */
 public final class SchedulesClientImpl implements SchedulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LabServicesClientImpl client;
 
     /**
      * Initializes an instance of SchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SchedulesClientImpl(LabServicesClientImpl client) {
-        this.service =
-            RestProxy.create(SchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,105 +71,67 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "LabServicesClientSch")
-    private interface SchedulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs"
-                + "/{labName}/schedules")
-        @ExpectedResponses({200})
+    public interface SchedulesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/schedules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PagedSchedules>> listByLab(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PagedSchedules>> listByLab(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs"
-                + "/{labName}/schedules/{scheduleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("scheduleName") String scheduleName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScheduleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("scheduleName") String scheduleName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs"
-                + "/{labName}/schedules/{scheduleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("scheduleName") String scheduleName,
-            @BodyParam("application/json") ScheduleInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScheduleInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("scheduleName") String scheduleName, @BodyParam("application/json") ScheduleInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs"
-                + "/{labName}/schedules/{scheduleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("scheduleName") String scheduleName,
-            @BodyParam("application/json") ScheduleUpdate body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScheduleInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("scheduleName") String scheduleName, @BodyParam("application/json") ScheduleUpdate body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs"
-                + "/{labName}/schedules/{scheduleName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LabServices/labs/{labName}/schedules/{scheduleName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("scheduleName") String scheduleName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("scheduleName") String scheduleName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PagedSchedules>> listByLabNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PagedSchedules>> listByLabNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -173,19 +141,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return paged list of schedules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduleInner>> listByLabSinglePageAsync(
-        String resourceGroupName, String labName, String filter) {
+    private Mono<PagedResponse<ScheduleInner>> listByLabSinglePageAsync(String resourceGroupName, String labName,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,35 +160,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByLab(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<ScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByLab(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, labName, filter, accept, context))
+            .<PagedResponse<ScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -235,19 +182,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return paged list of schedules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduleInner>> listByLabSinglePageAsync(
-        String resourceGroupName, String labName, String filter, Context context) {
+    private Mono<PagedResponse<ScheduleInner>> listByLabSinglePageAsync(String resourceGroupName, String labName,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -259,31 +202,17 @@ public final class SchedulesClientImpl implements SchedulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLab(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByLab(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -294,16 +223,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByLabAsync(String resourceGroupName, String labName, String filter) {
-        return new PagedFlux<>(
-            () -> listByLabSinglePageAsync(resourceGroupName, labName, filter),
+        return new PagedFlux<>(() -> listByLabSinglePageAsync(resourceGroupName, labName, filter),
             nextLink -> listByLabNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,16 +242,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByLabAsync(String resourceGroupName, String labName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByLabSinglePageAsync(resourceGroupName, labName, filter),
+        return new PagedFlux<>(() -> listByLabSinglePageAsync(resourceGroupName, labName, filter),
             nextLink -> listByLabNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -334,18 +261,17 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return paged list of schedules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScheduleInner> listByLabAsync(
-        String resourceGroupName, String labName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByLabSinglePageAsync(resourceGroupName, labName, filter, context),
+    private PagedFlux<ScheduleInner> listByLabAsync(String resourceGroupName, String labName, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByLabSinglePageAsync(resourceGroupName, labName, filter, context),
             nextLink -> listByLabNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,9 +287,9 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get all schedules for a lab.
-     *
-     * <p>Returns a list of all schedules for a lab.
-     *
+     * 
+     * Returns a list of all schedules for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -374,40 +300,36 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return paged list of schedules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScheduleInner> listByLab(
-        String resourceGroupName, String labName, String filter, Context context) {
+    public PagedIterable<ScheduleInner> listByLab(String resourceGroupName, String labName, String filter,
+        Context context) {
         return new PagedIterable<>(listByLabAsync(resourceGroupName, labName, filter, context));
     }
 
     /**
      * Get a lab Schedule.
-     *
-     * <p>Returns the properties of a lab Schedule.
-     *
+     * 
+     * Returns the properties of a lab Schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName) {
+    private Mono<Response<ScheduleInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -421,51 +343,37 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            scheduleName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, labName, scheduleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a lab Schedule.
-     *
-     * <p>Returns the properties of a lab Schedule.
-     *
+     * 
+     * Returns the properties of a lab Schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName, Context context) {
+    private Mono<Response<ScheduleInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -479,32 +387,24 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                scheduleName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, labName, scheduleName, accept, context);
     }
 
     /**
      * Get a lab Schedule.
-     *
-     * <p>Returns the properties of a lab Schedule.
-     *
+     * 
+     * Returns the properties of a lab Schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScheduleInner> getAsync(String resourceGroupName, String labName, String scheduleName) {
@@ -514,13 +414,35 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get a lab Schedule.
-     *
-     * <p>Returns the properties of a lab Schedule.
-     *
+     * 
+     * Returns the properties of a lab Schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduleInner> getWithResponse(String resourceGroupName, String labName, String scheduleName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, labName, scheduleName, context).block();
+    }
+
+    /**
+     * Get a lab Schedule.
+     * 
+     * Returns the properties of a lab Schedule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -528,61 +450,35 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner get(String resourceGroupName, String labName, String scheduleName) {
-        return getAsync(resourceGroupName, labName, scheduleName).block();
-    }
-
-    /**
-     * Get a lab Schedule.
-     *
-     * <p>Returns the properties of a lab Schedule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> getWithResponse(
-        String resourceGroupName, String labName, String scheduleName, Context context) {
-        return getWithResponseAsync(resourceGroupName, labName, scheduleName, context).block();
+        return getWithResponse(resourceGroupName, labName, scheduleName, Context.NONE).getValue();
     }
 
     /**
      * Create or update a lab schedule.
-     *
-     * <p>Operation to create or update a lab schedule.
-     *
+     * 
+     * Operation to create or update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName, ScheduleInner body) {
+    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName, ScheduleInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -601,53 +497,38 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            scheduleName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, labName, scheduleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a lab schedule.
-     *
-     * <p>Operation to create or update a lab schedule.
-     *
+     * 
+     * Operation to create or update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName, ScheduleInner body, Context context) {
+    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName, ScheduleInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -666,51 +547,65 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                scheduleName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, labName, scheduleName, body, accept, context);
     }
 
     /**
      * Create or update a lab schedule.
-     *
-     * <p>Operation to create or update a lab schedule.
-     *
+     * 
+     * Operation to create or update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> createOrUpdateAsync(
-        String resourceGroupName, String labName, String scheduleName, ScheduleInner body) {
+    private Mono<ScheduleInner> createOrUpdateAsync(String resourceGroupName, String labName, String scheduleName,
+        ScheduleInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, scheduleName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a lab schedule.
-     *
-     * <p>Operation to create or update a lab schedule.
-     *
+     * 
+     * Operation to create or update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String labName,
+        String scheduleName, ScheduleInner body, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, labName, scheduleName, body, context).block();
+    }
+
+    /**
+     * Create or update a lab schedule.
+     * 
+     * Operation to create or update a lab schedule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
+     * URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -718,64 +613,37 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner createOrUpdate(
-        String resourceGroupName, String labName, String scheduleName, ScheduleInner body) {
-        return createOrUpdateAsync(resourceGroupName, labName, scheduleName, body).block();
-    }
-
-    /**
-     * Create or update a lab schedule.
-     *
-     * <p>Operation to create or update a lab schedule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String scheduleName, ScheduleInner body, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, labName, scheduleName, body, context).block();
+    public ScheduleInner createOrUpdate(String resourceGroupName, String labName, String scheduleName,
+        ScheduleInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, labName, scheduleName, body, Context.NONE).getValue();
     }
 
     /**
      * Update a lab schedule.
-     *
-     * <p>Operation to update a lab schedule.
-     *
+     * 
+     * Operation to update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName, ScheduleUpdate body) {
+    private Mono<Response<ScheduleInner>> updateWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName, ScheduleUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -794,53 +662,38 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            scheduleName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, labName, scheduleName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a lab schedule.
-     *
-     * <p>Operation to update a lab schedule.
-     *
+     * 
+     * Operation to update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName, ScheduleUpdate body, Context context) {
+    private Mono<Response<ScheduleInner>> updateWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName, ScheduleUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -859,51 +712,65 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                scheduleName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, labName, scheduleName, body, accept, context);
     }
 
     /**
      * Update a lab schedule.
-     *
-     * <p>Operation to update a lab schedule.
-     *
+     * 
+     * Operation to update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule for automatically turning virtual machines in a lab on and off at specified times on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> updateAsync(
-        String resourceGroupName, String labName, String scheduleName, ScheduleUpdate body) {
+    private Mono<ScheduleInner> updateAsync(String resourceGroupName, String labName, String scheduleName,
+        ScheduleUpdate body) {
         return updateWithResponseAsync(resourceGroupName, labName, scheduleName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a lab schedule.
-     *
-     * <p>Operation to update a lab schedule.
-     *
+     * 
+     * Operation to update a lab schedule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ScheduleInner> updateWithResponse(String resourceGroupName, String labName, String scheduleName,
+        ScheduleUpdate body, Context context) {
+        return updateWithResponseAsync(resourceGroupName, labName, scheduleName, body, context).block();
+    }
+
+    /**
+     * Update a lab schedule.
+     * 
+     * Operation to update a lab schedule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
+     * URIs.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -912,60 +779,33 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScheduleInner update(String resourceGroupName, String labName, String scheduleName, ScheduleUpdate body) {
-        return updateAsync(resourceGroupName, labName, scheduleName, body).block();
-    }
-
-    /**
-     * Update a lab schedule.
-     *
-     * <p>Operation to update a lab schedule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule for automatically turning virtual machines in a lab on and off at specified times along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName, String labName, String scheduleName, ScheduleUpdate body, Context context) {
-        return updateWithResponseAsync(resourceGroupName, labName, scheduleName, body, context).block();
+        return updateWithResponse(resourceGroupName, labName, scheduleName, body, Context.NONE).getValue();
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -979,30 +819,20 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            scheduleName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, labName, scheduleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1010,19 +840,15 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String scheduleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String labName,
+        String scheduleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1036,51 +862,41 @@ public final class SchedulesClientImpl implements SchedulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                scheduleName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, labName, scheduleName, accept, context);
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String labName, String scheduleName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName,
+        String scheduleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, scheduleName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1088,45 +904,44 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String labName, String scheduleName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName,
+        String scheduleName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, labName, scheduleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, labName, scheduleName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String scheduleName) {
-        return beginDeleteAsync(resourceGroupName, labName, scheduleName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName,
+        String scheduleName) {
+        return this.beginDeleteAsync(resourceGroupName, labName, scheduleName).getSyncPoller();
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1134,20 +949,20 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String scheduleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, labName, scheduleName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String scheduleName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, labName, scheduleName, context).getSyncPoller();
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1155,20 +970,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String labName, String scheduleName) {
-        return beginDeleteAsync(resourceGroupName, labName, scheduleName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, labName, scheduleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1177,20 +991,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String labName, String scheduleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, labName, scheduleName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, labName, scheduleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1202,13 +1015,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Deletes a schedule resource.
-     *
-     * <p>Operation to delete a schedule resource.
-     *
+     * 
+     * Operation to delete a schedule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
-     *     URIs.
+     * URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1221,9 +1034,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1235,31 +1047,21 @@ public final class SchedulesClientImpl implements SchedulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLabNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1272,23 +1074,13 @@ public final class SchedulesClientImpl implements SchedulesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByLabNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByLabNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -23,7 +23,8 @@ public final class ManifestArtifactFormatTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManifestArtifactFormat model = new ManifestArtifactFormat().withArtifactName("zqljyxgtczh")
-            .withArtifactType(ArtifactType.OCIARTIFACT).withArtifactVersion("sdshmkxmaehvb");
+            .withArtifactType(ArtifactType.OCIARTIFACT)
+            .withArtifactVersion("sdshmkxmaehvb");
         model = BinaryData.fromObject(model).toObject(ManifestArtifactFormat.class);
         Assertions.assertEquals("zqljyxgtczh", model.artifactName());
         Assertions.assertEquals(ArtifactType.OCIARTIFACT, model.artifactType());

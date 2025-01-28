@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for AgentPools ListByKubernetesCluster. */
+/**
+ * Samples for AgentPools ListByKubernetesCluster.
+ */
 public final class AgentPoolsListByKubernetesClusterSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/AgentPools_ListByKubernetesCluster.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * AgentPools_ListByKubernetesCluster.json
      */
     /**
      * Sample code: List agent pools of the Kubernetes cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void listAgentPoolsOfTheKubernetesCluster(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .agentPools()
+    public static void
+        listAgentPoolsOfTheKubernetesCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.agentPools()
             .listByKubernetesCluster("resourceGroupName", "kubernetesClusterName", com.azure.core.util.Context.NONE);
     }
 }

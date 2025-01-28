@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<WindowsPatchAssessmentMode> {
     /**
-     * Static value ImageDefault for WindowsPatchAssessmentMode.
+     * You control the timing of patch assessments on a virtual machine.
      */
     public static final WindowsPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /**
-     * Static value AutomaticByPlatform for WindowsPatchAssessmentMode.
+     * The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
      */
     public static final WindowsPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * List the private link resources available for this workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface PrivateLinkResources {
 
     /**
      * List the private link resources available for this workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param pageSize Number of items per page.
@@ -35,17 +37,12 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private link resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateLinkResource> listByWorkspace(
-        String resourceGroupName,
-        String workspaceName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<PrivateLinkResource> listByWorkspace(String resourceGroupName, String workspaceName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List the private link resources available for this hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,7 +54,7 @@ public interface PrivateLinkResources {
 
     /**
      * List the private link resources available for this hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -69,11 +66,6 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private link resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateLinkResource> listByHostPool(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<PrivateLinkResource> listByHostPool(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

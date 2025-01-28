@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Direction of sort. */
+/**
+ * Direction of sort.
+ */
 public final class ReportConfigSortingType extends ExpandableStringEnum<ReportConfigSortingType> {
-    /** Static value Ascending for ReportConfigSortingType. */
+    /**
+     * Static value Ascending for ReportConfigSortingType.
+     */
     public static final ReportConfigSortingType ASCENDING = fromString("Ascending");
 
-    /** Static value Descending for ReportConfigSortingType. */
+    /**
+     * Static value Descending for ReportConfigSortingType.
+     */
     public static final ReportConfigSortingType DESCENDING = fromString("Descending");
 
     /**
      * Creates a new instance of ReportConfigSortingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ReportConfigSortingType extends ExpandableStringEnum<ReportCo
 
     /**
      * Creates or finds a ReportConfigSortingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReportConfigSortingType.
      */
-    @JsonCreator
     public static ReportConfigSortingType fromString(String name) {
         return fromString(name, ReportConfigSortingType.class);
     }
 
     /**
      * Gets known ReportConfigSortingType values.
-     *
+     * 
      * @return known ReportConfigSortingType values.
      */
     public static Collection<ReportConfigSortingType> values() {

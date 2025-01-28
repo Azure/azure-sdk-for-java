@@ -6,46 +6,70 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Base definition for datastore contents configuration. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "datastoreType",
-    defaultImpl = DatastoreProperties.class)
-@JsonTypeName("DatastoreProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBlob", value = AzureBlobDatastore.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeGen1", value = AzureDataLakeGen1Datastore.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeGen2", value = AzureDataLakeGen2Datastore.class),
-    @JsonSubTypes.Type(name = "AzureFile", value = AzureFileDatastore.class)
-})
+/**
+ * Base definition for datastore contents configuration.
+ */
 @Fluent
 public class DatastoreProperties extends ResourceBase {
     /*
-     * [Required] Account credentials.
+     * [Required] Storage type backing the datastore.
      */
-    @JsonProperty(value = "credentials", required = true)
-    private DatastoreCredentials credentials;
+    private DatastoreType datastoreType = DatastoreType.fromString("DatastoreProperties");
 
     /*
      * Readonly property to indicate if datastore is the workspace default datastore
      */
-    @JsonProperty(value = "isDefault", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefault;
 
-    /** Creates an instance of DatastoreProperties class. */
+    /*
+     * [Required] Account credentials.
+     */
+    private DatastoreCredentials credentials;
+
+    /**
+     * Creates an instance of DatastoreProperties class.
+     */
     public DatastoreProperties() {
     }
 
     /**
+     * Get the datastoreType property: [Required] Storage type backing the datastore.
+     * 
+     * @return the datastoreType value.
+     */
+    public DatastoreType datastoreType() {
+        return this.datastoreType;
+    }
+
+    /**
+     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     * 
+     * @return the isDefault value.
+     */
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
+     * Set the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
+     * 
+     * @param isDefault the isDefault value to set.
+     * @return the DatastoreProperties object itself.
+     */
+    DatastoreProperties withIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+        return this;
+    }
+
+    /**
      * Get the credentials property: [Required] Account credentials.
-     *
+     * 
      * @return the credentials value.
      */
     public DatastoreCredentials credentials() {
@@ -54,7 +78,7 @@ public class DatastoreProperties extends ResourceBase {
 
     /**
      * Set the credentials property: [Required] Account credentials.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the DatastoreProperties object itself.
      */
@@ -64,29 +88,17 @@ public class DatastoreProperties extends ResourceBase {
     }
 
     /**
-     * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
-     *
-     * @return the isDefault value.
+     * {@inheritDoc}
      */
-    public Boolean isDefault() {
-        return this.isDefault;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public DatastoreProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public DatastoreProperties withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatastoreProperties withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -94,16 +106,25 @@ public class DatastoreProperties extends ResourceBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DatastoreProperties withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (credentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property credentials in model DatastoreProperties"));
         } else {
             credentials().validate();
@@ -111,4 +132,90 @@ public class DatastoreProperties extends ResourceBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatastoreProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        jsonWriter.writeStringField("datastoreType", this.datastoreType == null ? null : this.datastoreType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatastoreProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatastoreProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatastoreProperties.
+     */
+    public static DatastoreProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("datastoreType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBlob".equals(discriminatorValue)) {
+                    return AzureBlobDatastore.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeGen1".equals(discriminatorValue)) {
+                    return AzureDataLakeGen1Datastore.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeGen2".equals(discriminatorValue)) {
+                    return AzureDataLakeGen2Datastore.fromJson(readerToUse.reset());
+                } else if ("AzureFile".equals(discriminatorValue)) {
+                    return AzureFileDatastore.fromJson(readerToUse.reset());
+                } else if ("OneLake".equals(discriminatorValue)) {
+                    return OneLakeDatastore.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DatastoreProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatastoreProperties deserializedDatastoreProperties = new DatastoreProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDatastoreProperties.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDatastoreProperties.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDatastoreProperties.withProperties(properties);
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedDatastoreProperties.credentials = DatastoreCredentials.fromJson(reader);
+                } else if ("datastoreType".equals(fieldName)) {
+                    deserializedDatastoreProperties.datastoreType = DatastoreType.fromString(reader.getString());
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedDatastoreProperties.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatastoreProperties;
+        });
+    }
 }

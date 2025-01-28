@@ -35,7 +35,7 @@ public final class KeyEncryptionKeyClient extends CryptographyClient implements 
      * deferred to the service.
      */
     KeyEncryptionKeyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
-                           boolean disableKeyCaching) {
+        boolean disableKeyCaching) {
         super(keyId, pipeline, version, disableKeyCaching);
     }
 

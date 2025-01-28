@@ -26,12 +26,12 @@ public final class UsagesImpl implements Usages {
 
     public PagedIterable<SignalRServiceUsage> list(String location) {
         PagedIterable<SignalRServiceUsageInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new SignalRServiceUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SignalRServiceUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SignalRServiceUsage> list(String location, Context context) {
         PagedIterable<SignalRServiceUsageInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new SignalRServiceUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SignalRServiceUsageImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {

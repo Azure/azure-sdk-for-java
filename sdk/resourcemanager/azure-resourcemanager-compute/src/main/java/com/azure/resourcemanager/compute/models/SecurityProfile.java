@@ -42,7 +42,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     private EncryptionIdentity encryptionIdentity;
 
     /*
-     * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
+     * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
      */
     private ProxyAgentSettings proxyAgentSettings;
 
@@ -148,7 +148,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /**
      * Get the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine. Minimum
-     * api-version: 2024-03-01.
+     * api-version: 2023-09-01.
      * 
      * @return the proxyAgentSettings value.
      */
@@ -158,7 +158,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /**
      * Set the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine. Minimum
-     * api-version: 2024-03-01.
+     * api-version: 2023-09-01.
      * 
      * @param proxyAgentSettings the proxyAgentSettings value to set.
      * @return the SecurityProfile object itself.

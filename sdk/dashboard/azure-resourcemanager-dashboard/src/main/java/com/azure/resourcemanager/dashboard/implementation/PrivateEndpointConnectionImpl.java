@@ -82,14 +82,16 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().approve(resourceGroupName,
-            workspaceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approve(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().approve(resourceGroupName,
-            workspaceName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approve(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
@@ -104,14 +106,16 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().approve(resourceGroupName,
-            workspaceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approve(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().approve(resourceGroupName,
-            workspaceName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .approve(resourceGroupName, workspaceName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
@@ -119,20 +123,25 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "grafana");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "grafana");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnection refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context)
+            .getValue();
         return this;
     }
 

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeAnalyticsSchemaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeAnalyticsSchemaProperties model =
-            BinaryData
-                .fromString("{\"dataLakeStoreAccountName\":\"b\"}")
-                .toObject(DataLakeAnalyticsSchemaProperties.class);
-        Assertions.assertEquals("b", model.dataLakeStoreAccountName());
+        DataLakeAnalyticsSchemaProperties model = BinaryData.fromString("{\"dataLakeStoreAccountName\":\"wtxzuisam\"}")
+            .toObject(DataLakeAnalyticsSchemaProperties.class);
+        Assertions.assertEquals("wtxzuisam", model.dataLakeStoreAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeAnalyticsSchemaProperties model =
-            new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("b");
+        DataLakeAnalyticsSchemaProperties model
+            = new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("wtxzuisam");
         model = BinaryData.fromObject(model).toObject(DataLakeAnalyticsSchemaProperties.class);
-        Assertions.assertEquals("b", model.dataLakeStoreAccountName());
+        Assertions.assertEquals("wtxzuisam", model.dataLakeStoreAccountName());
     }
 }

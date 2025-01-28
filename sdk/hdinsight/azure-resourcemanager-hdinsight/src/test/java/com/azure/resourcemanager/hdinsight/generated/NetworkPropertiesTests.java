@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.hdinsight.models.IpTag;
 import com.azure.resourcemanager.hdinsight.models.NetworkProperties;
+import com.azure.resourcemanager.hdinsight.models.OutboundDependenciesManagedType;
 import com.azure.resourcemanager.hdinsight.models.PrivateLink;
 import com.azure.resourcemanager.hdinsight.models.ResourceProviderConnection;
 import org.junit.jupiter.api.Assertions;
@@ -13,22 +15,28 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkProperties model =
-            BinaryData
-                .fromString("{\"resourceProviderConnection\":\"Inbound\",\"privateLink\":\"Disabled\"}")
-                .toObject(NetworkProperties.class);
+        NetworkProperties model = BinaryData.fromString(
+            "{\"outboundDependenciesManagedType\":\"Managed\",\"resourceProviderConnection\":\"Inbound\",\"privateLink\":\"Disabled\",\"publicIpTag\":{\"ipTagType\":\"nrjawgqwg\",\"tag\":\"hniskxfbkpyc\"}}")
+            .toObject(NetworkProperties.class);
+        Assertions.assertEquals(OutboundDependenciesManagedType.MANAGED, model.outboundDependenciesManagedType());
         Assertions.assertEquals(ResourceProviderConnection.INBOUND, model.resourceProviderConnection());
         Assertions.assertEquals(PrivateLink.DISABLED, model.privateLink());
+        Assertions.assertEquals("nrjawgqwg", model.publicIpTag().ipTagType());
+        Assertions.assertEquals("hniskxfbkpyc", model.publicIpTag().tag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProperties model =
-            new NetworkProperties()
+        NetworkProperties model
+            = new NetworkProperties().withOutboundDependenciesManagedType(OutboundDependenciesManagedType.MANAGED)
                 .withResourceProviderConnection(ResourceProviderConnection.INBOUND)
-                .withPrivateLink(PrivateLink.DISABLED);
+                .withPrivateLink(PrivateLink.DISABLED)
+                .withPublicIpTag(new IpTag().withIpTagType("nrjawgqwg").withTag("hniskxfbkpyc"));
         model = BinaryData.fromObject(model).toObject(NetworkProperties.class);
+        Assertions.assertEquals(OutboundDependenciesManagedType.MANAGED, model.outboundDependenciesManagedType());
         Assertions.assertEquals(ResourceProviderConnection.INBOUND, model.resourceProviderConnection());
         Assertions.assertEquals(PrivateLink.DISABLED, model.privateLink());
+        Assertions.assertEquals("nrjawgqwg", model.publicIpTag().ipTagType());
+        Assertions.assertEquals("hniskxfbkpyc", model.publicIpTag().tag());
     }
 }

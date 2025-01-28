@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ListCredentialsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListCredentialsRequest model =
-            BinaryData.fromString("{\"serviceName\":\"WAC\"}").toObject(ListCredentialsRequest.class);
+        ListCredentialsRequest model
+            = BinaryData.fromString("{\"serviceName\":\"WAC\"}").toObject(ListCredentialsRequest.class);
         Assertions.assertEquals(ServiceName.WAC, model.serviceName());
     }
 

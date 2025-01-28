@@ -34,24 +34,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationServiceEnvironmentSkusClient.
  */
 public final class IntegrationServiceEnvironmentSkusClientImpl implements IntegrationServiceEnvironmentSkusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationServiceEnvironmentSkusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LogicManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationServiceEnvironmentSkusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationServiceEnvironmentSkusClientImpl(LogicManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    IntegrationServiceEnvironmentSkusService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(IntegrationServiceEnvironmentSkusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,95 +62,66 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
     public interface IntegrationServiceEnvironmentSkusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic"
-                + "/integrationServiceEnvironments/{integrationServiceEnvironmentName}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IntegrationServiceEnvironmentSkuList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<IntegrationServiceEnvironmentSkuList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("integrationServiceEnvironmentName") String integrationServiceEnvironmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationServiceEnvironmentSkuList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration service environment Skus along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listSinglePageAsync(
-        String resourceGroup, String integrationServiceEnvironmentName) {
+    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>>
+        listSinglePageAsync(String resourceGroup, String integrationServiceEnvironmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
         }
         if (integrationServiceEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter integrationServiceEnvironmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter integrationServiceEnvironmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            integrationServiceEnvironmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroup, integrationServiceEnvironmentName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -158,57 +129,38 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration service environment Skus along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listSinglePageAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>>
+        listSinglePageAsync(String resourceGroup, String integrationServiceEnvironmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
         }
         if (integrationServiceEnvironmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter integrationServiceEnvironmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter integrationServiceEnvironmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                integrationServiceEnvironmentName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+                integrationServiceEnvironmentName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,16 +169,15 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @return a list of integration service environment Skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IntegrationServiceEnvironmentSkuDefinitionInner> listAsync(
-        String resourceGroup, String integrationServiceEnvironmentName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroup, integrationServiceEnvironmentName),
+    private PagedFlux<IntegrationServiceEnvironmentSkuDefinitionInner> listAsync(String resourceGroup,
+        String integrationServiceEnvironmentName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroup, integrationServiceEnvironmentName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -236,16 +187,15 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @return a list of integration service environment Skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IntegrationServiceEnvironmentSkuDefinitionInner> listAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroup, integrationServiceEnvironmentName, context),
+    private PagedFlux<IntegrationServiceEnvironmentSkuDefinitionInner> listAsync(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroup, integrationServiceEnvironmentName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,14 +204,14 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @return a list of integration service environment Skus as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName) {
+    public PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> list(String resourceGroup,
+        String integrationServiceEnvironmentName) {
         return new PagedIterable<>(listAsync(resourceGroup, integrationServiceEnvironmentName));
     }
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -271,85 +221,64 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @return a list of integration service environment Skus as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
+    public PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> list(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroup, integrationServiceEnvironmentName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of integration service environment skus along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>>
+        listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of integration service environment skus along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>>
+        listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateLinkResourcesInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateLinkResources. */
+/**
+ * An immutable client-side representation of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * Gets the value property: The list of available private link resources for a provisioning service.
-     *
+     * 
      * @return the value value.
      */
     List<GroupIdInformation> value();
@@ -19,7 +21,7 @@ public interface PrivateLinkResources {
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateLinkResourcesInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkResourcesInner innerModel();

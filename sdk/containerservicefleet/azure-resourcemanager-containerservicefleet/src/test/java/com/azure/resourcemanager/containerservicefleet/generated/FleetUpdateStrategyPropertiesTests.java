@@ -16,28 +16,33 @@ public final class FleetUpdateStrategyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetUpdateStrategyProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"bhqwalmuzyoxa\",\"groups\":[{\"name\":\"kzjancuxrhdwbav\"},{\"name\":\"bniwdj\"},{\"name\":\"wz\"}],\"afterStageWaitInSeconds\":670634549},{\"name\":\"bpg\",\"groups\":[{\"name\":\"txhp\"},{\"name\":\"xbzpfzab\"}],\"afterStageWaitInSeconds\":687811406}]}}")
+            "{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"xw\",\"groups\":[{\"name\":\"whonowk\"},{\"name\":\"shwankixzbinje\"},{\"name\":\"uttmrywnuzoqft\"}],\"afterStageWaitInSeconds\":1348586485},{\"name\":\"zrnkcqvyxlwh\",\"groups\":[{\"name\":\"icohoqqnwvl\"},{\"name\":\"yav\"},{\"name\":\"hheunmmqhgyx\"},{\"name\":\"konocu\"}],\"afterStageWaitInSeconds\":470359400},{\"name\":\"lyaxuc\",\"groups\":[{\"name\":\"qszf\"},{\"name\":\"beypewrmjmw\"}],\"afterStageWaitInSeconds\":341479391}]}}")
             .toObject(FleetUpdateStrategyProperties.class);
-        Assertions.assertEquals("bhqwalmuzyoxa", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("kzjancuxrhdwbav", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(670634549, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("xw", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("whonowk", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1348586485, model.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetUpdateStrategyProperties model
             = new FleetUpdateStrategyProperties().withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
-                new UpdateStage().withName("bhqwalmuzyoxa")
-                    .withGroups(Arrays.asList(new UpdateGroup().withName("kzjancuxrhdwbav"),
-                        new UpdateGroup().withName("bniwdj"), new UpdateGroup().withName("wz")))
-                    .withAfterStageWaitInSeconds(670634549),
-                new UpdateStage().withName("bpg")
+                new UpdateStage().withName("xw")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("whonowk"),
+                        new UpdateGroup().withName("shwankixzbinje"), new UpdateGroup().withName("uttmrywnuzoqft")))
+                    .withAfterStageWaitInSeconds(1348586485),
+                new UpdateStage().withName("zrnkcqvyxlwh")
                     .withGroups(
-                        Arrays.asList(new UpdateGroup().withName("txhp"), new UpdateGroup().withName("xbzpfzab")))
-                    .withAfterStageWaitInSeconds(687811406))));
+                        Arrays.asList(new UpdateGroup().withName("icohoqqnwvl"), new UpdateGroup().withName("yav"),
+                            new UpdateGroup().withName("hheunmmqhgyx"), new UpdateGroup().withName("konocu")))
+                    .withAfterStageWaitInSeconds(470359400),
+                new UpdateStage().withName("lyaxuc")
+                    .withGroups(
+                        Arrays.asList(new UpdateGroup().withName("qszf"), new UpdateGroup().withName("beypewrmjmw")))
+                    .withAfterStageWaitInSeconds(341479391))));
         model = BinaryData.fromObject(model).toObject(FleetUpdateStrategyProperties.class);
-        Assertions.assertEquals("bhqwalmuzyoxa", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("kzjancuxrhdwbav", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(670634549, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("xw", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("whonowk", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1348586485, model.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

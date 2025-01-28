@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HDInsight compute properties. */
+/**
+ * HDInsight compute properties.
+ */
 @Fluent
-public final class HDInsightProperties {
+public final class HDInsightProperties implements JsonSerializable<HDInsightProperties> {
     /*
      * Port open for ssh connections on the master node of the cluster.
      */
-    @JsonProperty(value = "sshPort")
     private Integer sshPort;
 
     /*
      * Public IP address of the master node of the cluster.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * Admin credentials for master node of the cluster
      */
-    @JsonProperty(value = "administratorAccount")
     private VirtualMachineSshCredentials administratorAccount;
 
-    /** Creates an instance of HDInsightProperties class. */
+    /**
+     * Creates an instance of HDInsightProperties class.
+     */
     public HDInsightProperties() {
     }
 
     /**
      * Get the sshPort property: Port open for ssh connections on the master node of the cluster.
-     *
+     * 
      * @return the sshPort value.
      */
     public Integer sshPort() {
@@ -43,7 +48,7 @@ public final class HDInsightProperties {
 
     /**
      * Set the sshPort property: Port open for ssh connections on the master node of the cluster.
-     *
+     * 
      * @param sshPort the sshPort value to set.
      * @return the HDInsightProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class HDInsightProperties {
 
     /**
      * Get the address property: Public IP address of the master node of the cluster.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -63,7 +68,7 @@ public final class HDInsightProperties {
 
     /**
      * Set the address property: Public IP address of the master node of the cluster.
-     *
+     * 
      * @param address the address value to set.
      * @return the HDInsightProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class HDInsightProperties {
 
     /**
      * Get the administratorAccount property: Admin credentials for master node of the cluster.
-     *
+     * 
      * @return the administratorAccount value.
      */
     public VirtualMachineSshCredentials administratorAccount() {
@@ -83,7 +88,7 @@ public final class HDInsightProperties {
 
     /**
      * Set the administratorAccount property: Admin credentials for master node of the cluster.
-     *
+     * 
      * @param administratorAccount the administratorAccount value to set.
      * @return the HDInsightProperties object itself.
      */
@@ -94,12 +99,55 @@ public final class HDInsightProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorAccount() != null) {
             administratorAccount().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("sshPort", this.sshPort);
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeJsonField("administratorAccount", this.administratorAccount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HDInsightProperties.
+     */
+    public static HDInsightProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightProperties deserializedHDInsightProperties = new HDInsightProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sshPort".equals(fieldName)) {
+                    deserializedHDInsightProperties.sshPort = reader.getNullable(JsonReader::getInt);
+                } else if ("address".equals(fieldName)) {
+                    deserializedHDInsightProperties.address = reader.getString();
+                } else if ("administratorAccount".equals(fieldName)) {
+                    deserializedHDInsightProperties.administratorAccount
+                        = VirtualMachineSshCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHDInsightProperties;
+        });
     }
 }

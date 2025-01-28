@@ -5,33 +5,37 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.PartnerUpdateDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerUpdateTopicInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Properties of the channel update parameters.
  */
 @Fluent
-public final class ChannelUpdateParametersProperties {
+public final class ChannelUpdateParametersProperties implements JsonSerializable<ChannelUpdateParametersProperties> {
     /*
-     * Expiration time of the channel. If this timer expires while the corresponding partner topic or partner destination is never activated,
+     * Expiration time of the channel. If this timer expires while the corresponding partner topic or partner
+     * destination is never activated,
      * the channel and corresponding partner topic or partner destination are deleted.
      */
-    @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
     private OffsetDateTime expirationTimeIfNotActivatedUtc;
 
     /*
      * Partner destination properties which can be updated if the channel is of type PartnerDestination.
      */
-    @JsonProperty(value = "partnerDestinationInfo")
     private PartnerUpdateDestinationInfo partnerDestinationInfo;
 
     /*
      * Partner topic properties which can be updated if the channel is of type PartnerTopic.
      */
-    @JsonProperty(value = "partnerTopicInfo")
     private PartnerUpdateTopicInfo partnerTopicInfo;
 
     /**
@@ -122,5 +126,54 @@ public final class ChannelUpdateParametersProperties {
         if (partnerTopicInfo() != null) {
             partnerTopicInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expirationTimeIfNotActivatedUtc",
+            this.expirationTimeIfNotActivatedUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeIfNotActivatedUtc));
+        jsonWriter.writeJsonField("partnerDestinationInfo", this.partnerDestinationInfo);
+        jsonWriter.writeJsonField("partnerTopicInfo", this.partnerTopicInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChannelUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChannelUpdateParametersProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChannelUpdateParametersProperties.
+     */
+    public static ChannelUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChannelUpdateParametersProperties deserializedChannelUpdateParametersProperties
+                = new ChannelUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expirationTimeIfNotActivatedUtc".equals(fieldName)) {
+                    deserializedChannelUpdateParametersProperties.expirationTimeIfNotActivatedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("partnerDestinationInfo".equals(fieldName)) {
+                    deserializedChannelUpdateParametersProperties.partnerDestinationInfo
+                        = PartnerUpdateDestinationInfo.fromJson(reader);
+                } else if ("partnerTopicInfo".equals(fieldName)) {
+                    deserializedChannelUpdateParametersProperties.partnerTopicInfo
+                        = PartnerUpdateTopicInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChannelUpdateParametersProperties;
+        });
     }
 }

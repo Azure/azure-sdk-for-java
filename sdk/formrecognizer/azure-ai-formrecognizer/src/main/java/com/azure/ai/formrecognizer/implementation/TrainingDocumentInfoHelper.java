@@ -11,7 +11,8 @@ import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 public final class TrainingDocumentInfoHelper {
     private static TrainingDocumentInfoAccessor accessor;
 
-    private TrainingDocumentInfoHelper() { }
+    private TrainingDocumentInfoHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link TrainingDocumentInfo} instance.

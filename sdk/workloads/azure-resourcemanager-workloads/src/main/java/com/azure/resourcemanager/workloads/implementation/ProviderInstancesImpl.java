@@ -23,31 +23,28 @@ public final class ProviderInstancesImpl implements ProviderInstances {
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    public ProviderInstancesImpl(
-        ProviderInstancesClient innerClient, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    public ProviderInstancesImpl(ProviderInstancesClient innerClient,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ProviderInstance> list(String resourceGroupName, String monitorName) {
         PagedIterable<ProviderInstanceInner> inner = this.serviceClient().list(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new ProviderInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProviderInstance> list(String resourceGroupName, String monitorName, Context context) {
         PagedIterable<ProviderInstanceInner> inner = this.serviceClient().list(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new ProviderInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderInstanceImpl(inner1, this.manager()));
     }
 
-    public Response<ProviderInstance> getWithResponse(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
-        Response<ProviderInstanceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, monitorName, providerInstanceName, context);
+    public Response<ProviderInstance> getWithResponse(String resourceGroupName, String monitorName,
+        String providerInstanceName, Context context) {
+        Response<ProviderInstanceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, monitorName, providerInstanceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProviderInstanceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,8 +61,8 @@ public final class ProviderInstancesImpl implements ProviderInstances {
     }
 
     public OperationStatusResult delete(String resourceGroupName, String monitorName, String providerInstanceName) {
-        OperationStatusResultInner inner =
-            this.serviceClient().delete(resourceGroupName, monitorName, providerInstanceName);
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, monitorName, providerInstanceName);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -73,10 +70,10 @@ public final class ProviderInstancesImpl implements ProviderInstances {
         }
     }
 
-    public OperationStatusResult delete(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
-        OperationStatusResultInner inner =
-            this.serviceClient().delete(resourceGroupName, monitorName, providerInstanceName, context);
+    public OperationStatusResult delete(String resourceGroupName, String monitorName, String providerInstanceName,
+        Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, monitorName, providerInstanceName, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -85,113 +82,77 @@ public final class ProviderInstancesImpl implements ProviderInstances {
     }
 
     public ProviderInstance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String providerInstanceName = Utils.getValueFromIdByName(id, "providerInstances");
+        String providerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "providerInstances");
         if (providerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, providerInstanceName, Context.NONE).getValue();
     }
 
     public Response<ProviderInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String providerInstanceName = Utils.getValueFromIdByName(id, "providerInstances");
+        String providerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "providerInstances");
         if (providerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, providerInstanceName, context);
     }
 
     public OperationStatusResult deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String providerInstanceName = Utils.getValueFromIdByName(id, "providerInstances");
+        String providerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "providerInstances");
         if (providerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
         }
         return this.delete(resourceGroupName, monitorName, providerInstanceName, Context.NONE);
     }
 
     public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String providerInstanceName = Utils.getValueFromIdByName(id, "providerInstances");
+        String providerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "providerInstances");
         if (providerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'providerInstances'.", id)));
         }
         return this.delete(resourceGroupName, monitorName, providerInstanceName, context);
     }

@@ -6,36 +6,41 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represent the secrets intended for encryption with asymmetric key pair. */
+/**
+ * Represent the secrets intended for encryption with asymmetric key pair.
+ */
 @Fluent
-public final class AsymmetricEncryptedSecret {
+public final class AsymmetricEncryptedSecret implements JsonSerializable<AsymmetricEncryptedSecret> {
     /*
      * The value of the secret.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Thumbprint certificate used to encrypt \"Value\". If the value is unencrypted, it will be null.
      */
-    @JsonProperty(value = "encryptionCertThumbprint")
     private String encryptionCertThumbprint;
 
     /*
      * The algorithm used to encrypt "Value".
      */
-    @JsonProperty(value = "encryptionAlgorithm", required = true)
     private EncryptionAlgorithm encryptionAlgorithm;
 
-    /** Creates an instance of AsymmetricEncryptedSecret class. */
+    /**
+     * Creates an instance of AsymmetricEncryptedSecret class.
+     */
     public AsymmetricEncryptedSecret() {
     }
 
     /**
      * Get the value property: The value of the secret.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -44,7 +49,7 @@ public final class AsymmetricEncryptedSecret {
 
     /**
      * Set the value property: The value of the secret.
-     *
+     * 
      * @param value the value value to set.
      * @return the AsymmetricEncryptedSecret object itself.
      */
@@ -56,7 +61,7 @@ public final class AsymmetricEncryptedSecret {
     /**
      * Get the encryptionCertThumbprint property: Thumbprint certificate used to encrypt \"Value\". If the value is
      * unencrypted, it will be null.
-     *
+     * 
      * @return the encryptionCertThumbprint value.
      */
     public String encryptionCertThumbprint() {
@@ -66,7 +71,7 @@ public final class AsymmetricEncryptedSecret {
     /**
      * Set the encryptionCertThumbprint property: Thumbprint certificate used to encrypt \"Value\". If the value is
      * unencrypted, it will be null.
-     *
+     * 
      * @param encryptionCertThumbprint the encryptionCertThumbprint value to set.
      * @return the AsymmetricEncryptedSecret object itself.
      */
@@ -77,7 +82,7 @@ public final class AsymmetricEncryptedSecret {
 
     /**
      * Get the encryptionAlgorithm property: The algorithm used to encrypt "Value".
-     *
+     * 
      * @return the encryptionAlgorithm value.
      */
     public EncryptionAlgorithm encryptionAlgorithm() {
@@ -86,7 +91,7 @@ public final class AsymmetricEncryptedSecret {
 
     /**
      * Set the encryptionAlgorithm property: The algorithm used to encrypt "Value".
-     *
+     * 
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the AsymmetricEncryptedSecret object itself.
      */
@@ -97,22 +102,66 @@ public final class AsymmetricEncryptedSecret {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property value in model AsymmetricEncryptedSecret"));
         }
         if (encryptionAlgorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encryptionAlgorithm in model AsymmetricEncryptedSecret"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptionAlgorithm in model AsymmetricEncryptedSecret"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AsymmetricEncryptedSecret.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("encryptionAlgorithm",
+            this.encryptionAlgorithm == null ? null : this.encryptionAlgorithm.toString());
+        jsonWriter.writeStringField("encryptionCertThumbprint", this.encryptionCertThumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsymmetricEncryptedSecret from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsymmetricEncryptedSecret if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AsymmetricEncryptedSecret.
+     */
+    public static AsymmetricEncryptedSecret fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsymmetricEncryptedSecret deserializedAsymmetricEncryptedSecret = new AsymmetricEncryptedSecret();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedAsymmetricEncryptedSecret.value = reader.getString();
+                } else if ("encryptionAlgorithm".equals(fieldName)) {
+                    deserializedAsymmetricEncryptedSecret.encryptionAlgorithm
+                        = EncryptionAlgorithm.fromString(reader.getString());
+                } else if ("encryptionCertThumbprint".equals(fieldName)) {
+                    deserializedAsymmetricEncryptedSecret.encryptionCertThumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsymmetricEncryptedSecret;
+        });
+    }
 }

@@ -19,7 +19,8 @@ public final class AzureLargeInstanceGetByResourceGroupSamples {
      * @param manager Entry point to LargeInstanceManager.
      */
     public static void azureLargeInstanceGet(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().getByResourceGroupWithResponse("myResourceGroup", "myAzureLargeInstance",
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .getByResourceGroupWithResponse("myResourceGroup", "myAzureLargeInstance",
+                com.azure.core.util.Context.NONE);
     }
 }

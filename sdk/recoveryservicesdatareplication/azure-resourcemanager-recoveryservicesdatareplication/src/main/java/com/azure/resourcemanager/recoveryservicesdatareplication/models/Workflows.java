@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workflows. */
+/**
+ * Resource collection API of Workflows.
+ */
 public interface Workflows {
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -24,14 +26,14 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the job along with {@link Response}.
      */
-    Response<WorkflowModel> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, Context context);
+    Response<WorkflowModel> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        Context context);
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -44,9 +46,9 @@ public interface Workflows {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,9 +60,9 @@ public interface Workflows {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -71,6 +73,6 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of jobs in the given vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkflowModel> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<WorkflowModel> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context);
 }

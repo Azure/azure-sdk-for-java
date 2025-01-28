@@ -1,5 +1,156 @@
 # Release History
 
+## 5.20.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.4.2 and Spring Cloud dependencies version to 2024.0.0
+Upgrade Spring Boot dependencies version to 3.4.1 and Spring Cloud dependencies version to 2024.0.0
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Fix bug: Registered the empty value for ineligible definition, it causes NPE when sending message via bean `StreamBridge`. [#43366](https://github.com/Azure/azure-sdk-for-java/issues/43366).
+- Fix bug: Not working when using Spring Kafka and Kafka Binder via connection string auth [#43853](https://github.com/Azure/azure-sdk-for-java/issues/43853).
+
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+- Fix bug: The `PropertiesMerger` implementation not handling property `CustomEndpointAddress`. [#43555](https://github.com/Azure/azure-sdk-for-java/issues/43555).
+
+## 5.19.0 (2024-12-17)
+- This release is compatible with Spring Boot 3.4.0, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>0), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2024.0.0, 2023.0.0-2023.0.4, 2022.0.0-2022.0.5. (Note: 2024.0.x(x>0) and 2023.0.y (y>4) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support customize StaticConnectionStringProvider<AzureServiceType.EventHubs> bean. [#42919](https://github.com/Azure/azure-sdk-for-java/pull/42919).
+- Support customize StaticConnectionStringProvider<AzureServiceType.ServiceBus> bean. [#43076](https://github.com/Azure/azure-sdk-for-java/pull/43076).
+
+#### Bugs Fixed
+- Fix error: Event Hubs connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
+- Fix error: Service Bus connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
+- Fix warn logs: Mark the bean post processor related beans as internal to avoid the log 'Bean xxx of type xxx is not eligible for getting processed by all BeanPostProcessors'. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
+- Fix missing bean `springTokenCredentialProviderContextProvider`: Azure Identity Extensions and Spring Cloud Stream Binder cannot work together. [#43147](https://github.com/Azure/azure-sdk-for-java/issues/43147).
+- Fix bug: Property does not work when setting `spring.jms.servicebus.pool.enabled=false` using `@PropertySource`. [#43279](https://github.com/Azure/azure-sdk-for-java/issues/43279).
+
+### Spring Integration Azure Core
+This section includes changes in the `spring-integration-azure-core` module.
+
+#### Bugs Fixed
+- Fix `DefaultMessageHandler.handleMessageInternal` error: When using a parallel Reactor Scheduler, blocking calls are prohibited. [#35215](https://github.com/Azure/azure-sdk-for-java/issues/35215).
+
+### Spring Integration Azure Event Hubs
+This section includes changes in the `spring-integration-azure-eventhubs` module.
+
+#### Bugs Fixed
+- Fix `EventHubsTemplate.doSend` error: When using a parallel Reactor Scheduler, blocking calls are prohibited. Thanks to [@AlanKrueger](https://github.com/AlanKrueger) for his contribution. [#40772](https://github.com/Azure/azure-sdk-for-java/pull/40772).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5190-2024-12-17) for more details.
+
+## 5.18.0 (2024-11-05)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.11, 3.3.0-3.3.5. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>11) and 3.3.m (m>5) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support to configure token credential bean name. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+
+#### Bugs Fixed
+- Fix primitive type prop (isManagedIdentityEnabled) copy issue. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+- Fix to support multiple JDBC datasource prop passwordless. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
+
+#### Breaking Changes
+- Change the default Service Bus JMS connection factory to `JmsPoolConnectionFactory` from `CachingConnectionFactory`. Set `spring.jms.cache.enabled=true` to continue using `CachingConnectionFactory` [#42306](https://github.com/Azure/azure-sdk-for-java/pull/42306).
+
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+- Support propagating the custom beans for Service Bus binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Features Added
+- Support propagating the custom beans for Event Hubs binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5180-2024-11-05) for more details.
+
+## 5.17.1 (2024-10-11)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure
+
+#### Bugs Fixed
+- Fixed issue that some classes do not support Java 17.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5171-2024-10-11) for more details.
+
+## 5.17.0 (2024-10-09)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.28.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Improve the JDBC properties bean post processor priority. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
+- Allow users to update SSL\TLS parameters in the default JDBC URL. [#39064](https://github.com/Azure/azure-sdk-for-java/issues/39064).
+
+#### Other Changes
+- Switch to use `ServiceBusJmsConnectionFactory` from `azure-servicebus-jms` [#42022](https://github.com/Azure/azure-sdk-for-java/pull/42022).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5170-2024-10-09) for more details.
+
+## 5.16.0 (2024-09-09)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.3. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.27.
+- Added a new dependency: `spring-cloud-azure-docker-compose`.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Provide extension point to configure token credential for Key Vault property source  [#41580](https://github.com/Azure/azure-sdk-for-java/pull/41580).
+
+#### Bugs Fixed
+- Avoid always overriding the default binder when using Kafka binder. [#37337](https://github.com/Azure/azure-sdk-for-java/issues/37337).
+- Fix to support multiple property sources auto refresh. [#26356](https://github.com/Azure/azure-sdk-for-java/issues/26356).
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+#### Bugs Fixed
+- Support map and list when parse client_filters parameter. [#41298](https://github.com/Azure/azure-sdk-for-java/pull/41298).
+- Fix missing "additional-spring-configuration-metadata.json" in `spring-cloud-azure-starter-appconfiguration-config`. [#41502](https://github.com/Azure/azure-sdk-for-java/issues/41502).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5160-2024-09-09) for more details.
+
 ## 5.15.0 (2024-08-07)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.2. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>2) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)

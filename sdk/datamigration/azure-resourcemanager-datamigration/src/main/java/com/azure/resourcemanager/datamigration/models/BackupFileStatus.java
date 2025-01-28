@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** An enumeration of Status of the log backup file. */
+/**
+ * An enumeration of Status of the log backup file.
+ */
 public final class BackupFileStatus extends ExpandableStringEnum<BackupFileStatus> {
-    /** Static value Arrived for BackupFileStatus. */
+    /**
+     * Static value Arrived for BackupFileStatus.
+     */
     public static final BackupFileStatus ARRIVED = fromString("Arrived");
 
-    /** Static value Queued for BackupFileStatus. */
+    /**
+     * Static value Queued for BackupFileStatus.
+     */
     public static final BackupFileStatus QUEUED = fromString("Queued");
 
-    /** Static value Uploading for BackupFileStatus. */
+    /**
+     * Static value Uploading for BackupFileStatus.
+     */
     public static final BackupFileStatus UPLOADING = fromString("Uploading");
 
-    /** Static value Uploaded for BackupFileStatus. */
+    /**
+     * Static value Uploaded for BackupFileStatus.
+     */
     public static final BackupFileStatus UPLOADED = fromString("Uploaded");
 
-    /** Static value Restoring for BackupFileStatus. */
+    /**
+     * Static value Restoring for BackupFileStatus.
+     */
     public static final BackupFileStatus RESTORING = fromString("Restoring");
 
-    /** Static value Restored for BackupFileStatus. */
+    /**
+     * Static value Restored for BackupFileStatus.
+     */
     public static final BackupFileStatus RESTORED = fromString("Restored");
 
-    /** Static value Cancelled for BackupFileStatus. */
+    /**
+     * Static value Cancelled for BackupFileStatus.
+     */
     public static final BackupFileStatus CANCELLED = fromString("Cancelled");
 
     /**
      * Creates a new instance of BackupFileStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class BackupFileStatus extends ExpandableStringEnum<BackupFileStatu
 
     /**
      * Creates or finds a BackupFileStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupFileStatus.
      */
-    @JsonCreator
     public static BackupFileStatus fromString(String name) {
         return fromString(name, BackupFileStatus.class);
     }
 
     /**
      * Gets known BackupFileStatus values.
-     *
+     * 
      * @return known BackupFileStatus values.
      */
     public static Collection<BackupFileStatus> values() {

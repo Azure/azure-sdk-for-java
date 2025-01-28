@@ -12,21 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model =
-            BinaryData
-                .fromString("{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"hfmvfaxkffe\",\"family\":\"th\"}")
-                .toObject(Sku.class);
+        Sku model = BinaryData
+            .fromString(
+                "{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"ciwwzjuqkhr\",\"family\":\"jiwkuofoskghsau\"}")
+            .toObject(Sku.class);
         Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.name());
-        Assertions.assertEquals("hfmvfaxkffe", model.displayName());
-        Assertions.assertEquals("th", model.family());
+        Assertions.assertEquals("ciwwzjuqkhr", model.displayName());
+        Assertions.assertEquals("jiwkuofoskghsau", model.family());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.DATA_BOX_CUSTOMER_DISK).withDisplayName("hfmvfaxkffe").withFamily("th");
+        Sku model = new Sku().withName(SkuName.DATA_BOX_CUSTOMER_DISK)
+            .withDisplayName("ciwwzjuqkhr")
+            .withFamily("jiwkuofoskghsau");
         model = BinaryData.fromObject(model).toObject(Sku.class);
         Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.name());
-        Assertions.assertEquals("hfmvfaxkffe", model.displayName());
-        Assertions.assertEquals("th", model.family());
+        Assertions.assertEquals("ciwwzjuqkhr", model.displayName());
+        Assertions.assertEquals("jiwkuofoskghsau", model.family());
     }
 }

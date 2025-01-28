@@ -5,39 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A2A update protection container mapping.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
 @Fluent
 public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpecificUpdateContainerMappingInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * A value indicating whether the auto update is enabled.
      */
-    @JsonProperty(value = "agentAutoUpdateStatus")
     private AgentAutoUpdateStatus agentAutoUpdateStatus;
 
     /*
      * The automation account arm id.
      */
-    @JsonProperty(value = "automationAccountArmId")
     private String automationAccountArmId;
 
     /*
      * A value indicating the type authentication to use for automation Account.
      */
-    @JsonProperty(value = "automationAccountAuthenticationType")
     private AutomationAccountAuthenticationType automationAccountAuthenticationType;
 
     /**
      * Creates an instance of A2AUpdateContainerMappingInput class.
      */
     public A2AUpdateContainerMappingInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -110,6 +121,57 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("agentAutoUpdateStatus",
+            this.agentAutoUpdateStatus == null ? null : this.agentAutoUpdateStatus.toString());
+        jsonWriter.writeStringField("automationAccountArmId", this.automationAccountArmId);
+        jsonWriter.writeStringField("automationAccountAuthenticationType",
+            this.automationAccountAuthenticationType == null
+                ? null
+                : this.automationAccountAuthenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AUpdateContainerMappingInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AUpdateContainerMappingInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AUpdateContainerMappingInput.
+     */
+    public static A2AUpdateContainerMappingInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AUpdateContainerMappingInput deserializedA2AUpdateContainerMappingInput
+                = new A2AUpdateContainerMappingInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2AUpdateContainerMappingInput.instanceType = reader.getString();
+                } else if ("agentAutoUpdateStatus".equals(fieldName)) {
+                    deserializedA2AUpdateContainerMappingInput.agentAutoUpdateStatus
+                        = AgentAutoUpdateStatus.fromString(reader.getString());
+                } else if ("automationAccountArmId".equals(fieldName)) {
+                    deserializedA2AUpdateContainerMappingInput.automationAccountArmId = reader.getString();
+                } else if ("automationAccountAuthenticationType".equals(fieldName)) {
+                    deserializedA2AUpdateContainerMappingInput.automationAccountAuthenticationType
+                        = AutomationAccountAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AUpdateContainerMappingInput;
+        });
     }
 }

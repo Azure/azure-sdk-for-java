@@ -35,17 +35,23 @@ import com.azure.resourcemanager.education.models.InviteCodeGenerateRequest;
 import com.azure.resourcemanager.education.models.LabListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LabsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LabsClient.
+ */
 public final class LabsClientImpl implements LabsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LabsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EducationManagementClientImpl client;
 
     /**
      * Initializes an instance of LabsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LabsClientImpl(EducationManagementClientImpl client) {
@@ -59,145 +65,107 @@ public final class LabsClientImpl implements LabsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EducationManagementC")
-    private interface LabsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/providers/Microsoft.Education/labs")
-        @ExpectedResponses({200})
+    public interface LabsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/labs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabListResult>> listAll(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabListResult>> listAll(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
-            @QueryParam("includeBudget") Boolean includeBudget,
-            @QueryParam("includeDeleted") Boolean includeDeleted,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("includeBudget") Boolean includeBudget, @QueryParam("includeDeleted") Boolean includeDeleted,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @QueryParam("includeBudget") Boolean includeBudget,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("includeBudget") Boolean includeBudget, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
-            @QueryParam("includeBudget") Boolean includeBudget,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("includeBudget") Boolean includeBudget, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
-            @PathParam("invoiceSectionName") String invoiceSectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("invoiceSectionName") String invoiceSectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabDetailsInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabDetailsInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
-            @PathParam("invoiceSectionName") String invoiceSectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") LabDetailsInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("invoiceSectionName") String invoiceSectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LabDetailsInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/generateInviteCode")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default/generateInviteCode")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabDetailsInner>> generateInviteCode(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabDetailsInner>> generateInviteCode(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
             @PathParam("billingProfileName") String billingProfileName,
             @PathParam("invoiceSectionName") String invoiceSectionName,
             @QueryParam("onlyUpdateStudentCountParameter") Boolean onlyUpdateStudentCountParameter,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") InviteCodeGenerateRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") InviteCodeGenerateRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LabListResult>> listAllNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LabListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeBudget May be used to include budget information.
      * @param includeDeleted May be used to show deleted items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LabDetailsInner>> listAllSinglePageAsync(
-        String billingAccountName, String billingProfileName, Boolean includeBudget, Boolean includeDeleted) {
+    private Mono<PagedResponse<LabDetailsInner>> listAllSinglePageAsync(String billingAccountName,
+        String billingProfileName, Boolean includeBudget, Boolean includeDeleted) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -209,35 +177,18 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAll(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            includeBudget,
-                            includeDeleted,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LabDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAll(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                includeBudget, includeDeleted, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<LabDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeBudget May be used to include budget information.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
@@ -245,20 +196,14 @@ public final class LabsClientImpl implements LabsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LabDetailsInner>> listAllSinglePageAsync(
-        String billingAccountName,
-        String billingProfileName,
-        Boolean includeBudget,
-        Boolean includeDeleted,
-        Context context) {
+    private Mono<PagedResponse<LabDetailsInner>> listAllSinglePageAsync(String billingAccountName,
+        String billingProfileName, Boolean includeBudget, Boolean includeDeleted, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -271,42 +216,28 @@ public final class LabsClientImpl implements LabsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAll(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                includeBudget,
-                includeDeleted,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAll(this.client.getEndpoint(), billingAccountName, billingProfileName, includeBudget, includeDeleted,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeBudget May be used to include budget information.
      * @param includeDeleted May be used to show deleted items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LabDetailsInner> listAllAsync(
-        String billingAccountName, String billingProfileName, Boolean includeBudget, Boolean includeDeleted) {
+    private PagedFlux<LabDetailsInner> listAllAsync(String billingAccountName, String billingProfileName,
+        Boolean includeBudget, Boolean includeDeleted) {
         return new PagedFlux<>(
             () -> listAllSinglePageAsync(billingAccountName, billingProfileName, includeBudget, includeDeleted),
             nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -314,14 +245,14 @@ public final class LabsClientImpl implements LabsClient {
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LabDetailsInner> listAllAsync(String billingAccountName, String billingProfileName) {
@@ -334,9 +265,9 @@ public final class LabsClientImpl implements LabsClient {
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeBudget May be used to include budget information.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
@@ -344,31 +275,25 @@ public final class LabsClientImpl implements LabsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LabDetailsInner> listAllAsync(
-        String billingAccountName,
-        String billingProfileName,
-        Boolean includeBudget,
-        Boolean includeDeleted,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listAllSinglePageAsync(billingAccountName, billingProfileName, includeBudget, includeDeleted, context),
-            nextLink -> listAllNextSinglePageAsync(nextLink, context));
+    private PagedFlux<LabDetailsInner> listAllAsync(String billingAccountName, String billingProfileName,
+        Boolean includeBudget, Boolean includeDeleted, Context context) {
+        return new PagedFlux<>(() -> listAllSinglePageAsync(billingAccountName, billingProfileName, includeBudget,
+            includeDeleted, context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabDetailsInner> listAll(String billingAccountName, String billingProfileName) {
@@ -379,9 +304,9 @@ public final class LabsClientImpl implements LabsClient {
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeBudget May be used to include budget information.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
@@ -389,15 +314,11 @@ public final class LabsClientImpl implements LabsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LabDetailsInner> listAll(
-        String billingAccountName,
-        String billingProfileName,
-        Boolean includeBudget,
-        Boolean includeDeleted,
-        Context context) {
+    public PagedIterable<LabDetailsInner> listAll(String billingAccountName, String billingProfileName,
+        Boolean includeBudget, Boolean includeDeleted, Context context) {
         return new PagedIterable<>(
             listAllAsync(billingAccountName, billingProfileName, includeBudget, includeDeleted, context));
     }
@@ -405,25 +326,23 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * and invoice section name along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LabDetailsInner>> listSinglePageAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeBudget) {
+    private Mono<PagedResponse<LabDetailsInner>> listSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, Boolean includeBudget) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -439,57 +358,34 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            includeBudget,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LabDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, includeBudget, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<LabDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * and invoice section name along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LabDetailsInner>> listSinglePageAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
+    private Mono<PagedResponse<LabDetailsInner>> listSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, Boolean includeBudget, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -506,43 +402,29 @@ public final class LabsClientImpl implements LabsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                includeBudget,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName, includeBudget,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedFlux}.
+     * and invoice section name as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LabDetailsInner> listAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeBudget) {
+    private PagedFlux<LabDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -551,19 +433,19 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedFlux}.
+     * and invoice section name as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LabDetailsInner> listAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    private PagedFlux<LabDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeBudget = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget),
@@ -573,47 +455,41 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedFlux}.
+     * and invoice section name as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LabDetailsInner> listAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<LabDetailsInner> listAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            includeBudget, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedIterable}.
+     * and invoice section name as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LabDetailsInner> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    public PagedIterable<LabDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeBudget = null;
         return new PagedIterable<>(
             listAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget));
@@ -622,25 +498,21 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedIterable}.
+     * and invoice section name as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LabDetailsInner> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
+    public PagedIterable<LabDetailsInner> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context) {
         return new PagedIterable<>(
             listAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context));
     }
@@ -648,25 +520,23 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name along with {@link Response} on successful completion of {@link Mono}.
+     * and invoice section name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabDetailsInner>> getWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Boolean includeBudget) {
+    private Mono<Response<LabDetailsInner>> getWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -682,48 +552,32 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            includeBudget,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, includeBudget, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name along with {@link Response} on successful completion of {@link Mono}.
+     * and invoice section name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabDetailsInner>> getWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
+    private Mono<Response<LabDetailsInner>> getWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -739,34 +593,26 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                includeBudget,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            includeBudget, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name on successful completion of {@link Mono}.
+     * and invoice section name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LabDetailsInner> getAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    private Mono<LabDetailsInner> getAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         final Boolean includeBudget = null;
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -775,25 +621,21 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name along with {@link Response}.
+     * and invoice section name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabDetailsInner> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context) {
+    public Response<LabDetailsInner> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context) {
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, includeBudget, context)
             .block();
     }
@@ -801,15 +643,15 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name.
+     * and invoice section name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabDetailsInner get(String billingAccountName, String billingProfileName, String invoiceSectionName) {
@@ -821,23 +663,21 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -853,27 +693,18 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), billingAccountName, billingProfileName,
+                invoiceSectionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -881,13 +712,11 @@ public final class LabsClientImpl implements LabsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -903,24 +732,17 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -935,10 +757,10 @@ public final class LabsClientImpl implements LabsClient {
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -946,18 +768,18 @@ public final class LabsClientImpl implements LabsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
+    public Response<Void> deleteWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Context context) {
         return deleteWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, context).block();
     }
 
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -969,10 +791,10 @@ public final class LabsClientImpl implements LabsClient {
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -980,13 +802,11 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabDetailsInner>> createOrUpdateWithResponseAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
+    private Mono<Response<LabDetailsInner>> createOrUpdateWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -1007,27 +827,17 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), billingAccountName,
+                billingProfileName, invoiceSectionName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1036,17 +846,11 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabDetailsInner>> createOrUpdateWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        LabDetailsInner parameters,
-        Context context) {
+    private Mono<Response<LabDetailsInner>> createOrUpdateWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, LabDetailsInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -1067,24 +871,16 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), billingAccountName, billingProfileName,
+            invoiceSectionName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1092,18 +888,18 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LabDetailsInner> createOrUpdateAsync(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
+    private Mono<LabDetailsInner> createOrUpdateAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LabDetailsInner parameters) {
         return createOrUpdateWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1112,23 +908,18 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabDetailsInner> createOrUpdateWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        LabDetailsInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, parameters, context)
-            .block();
+    public Response<LabDetailsInner> createOrUpdateWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LabDetailsInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName, parameters,
+            context).block();
     }
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1136,39 +927,33 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LabDetailsInner createOrUpdate(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters) {
-        return createOrUpdateWithResponse(
-                billingAccountName, billingProfileName, invoiceSectionName, parameters, Context.NONE)
-            .getValue();
+    public LabDetailsInner createOrUpdate(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LabDetailsInner parameters) {
+        return createOrUpdateWithResponse(billingAccountName, billingProfileName, invoiceSectionName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @param onlyUpdateStudentCountParameter set this flag to true if you want to update student count without
-     *     generating a new invite code.
+     * generating a new invite code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lab details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabDetailsInner>> generateInviteCodeWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters,
+    private Mono<Response<LabDetailsInner>> generateInviteCodeWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, InviteCodeGenerateRequest parameters,
         Boolean onlyUpdateStudentCountParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -1189,31 +974,21 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateInviteCode(
-                            this.client.getEndpoint(),
-                            billingAccountName,
-                            billingProfileName,
-                            invoiceSectionName,
-                            onlyUpdateStudentCountParameter,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.generateInviteCode(this.client.getEndpoint(), billingAccountName,
+                billingProfileName, invoiceSectionName, onlyUpdateStudentCountParameter, this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @param onlyUpdateStudentCountParameter set this flag to true if you want to update student count without
-     *     generating a new invite code.
+     * generating a new invite code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1221,18 +996,12 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabDetailsInner>> generateInviteCodeWithResponseAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters,
-        Boolean onlyUpdateStudentCountParameter,
-        Context context) {
+    private Mono<Response<LabDetailsInner>> generateInviteCodeWithResponseAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, InviteCodeGenerateRequest parameters,
+        Boolean onlyUpdateStudentCountParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -1253,25 +1022,17 @@ public final class LabsClientImpl implements LabsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .generateInviteCode(
-                this.client.getEndpoint(),
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                onlyUpdateStudentCountParameter,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.generateInviteCode(this.client.getEndpoint(), billingAccountName, billingProfileName,
+            invoiceSectionName, onlyUpdateStudentCountParameter, this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1279,26 +1040,22 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LabDetailsInner> generateInviteCodeAsync(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters) {
+    private Mono<LabDetailsInner> generateInviteCodeAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InviteCodeGenerateRequest parameters) {
         final Boolean onlyUpdateStudentCountParameter = null;
-        return generateInviteCodeWithResponseAsync(
-                billingAccountName, billingProfileName, invoiceSectionName, parameters, onlyUpdateStudentCountParameter)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return generateInviteCodeWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            parameters, onlyUpdateStudentCountParameter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @param onlyUpdateStudentCountParameter set this flag to true if you want to update student count without
-     *     generating a new invite code.
+     * generating a new invite code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1306,29 +1063,19 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabDetailsInner> generateInviteCodeWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters,
-        Boolean onlyUpdateStudentCountParameter,
-        Context context) {
-        return generateInviteCodeWithResponseAsync(
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                parameters,
-                onlyUpdateStudentCountParameter,
-                context)
-            .block();
+    public Response<LabDetailsInner> generateInviteCodeWithResponse(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, InviteCodeGenerateRequest parameters,
+        Boolean onlyUpdateStudentCountParameter, Context context) {
+        return generateInviteCodeWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            parameters, onlyUpdateStudentCountParameter, context).block();
     }
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1336,27 +1083,17 @@ public final class LabsClientImpl implements LabsClient {
      * @return lab details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LabDetailsInner generateInviteCode(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters) {
+    public LabDetailsInner generateInviteCode(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InviteCodeGenerateRequest parameters) {
         final Boolean onlyUpdateStudentCountParameter = null;
-        return generateInviteCodeWithResponse(
-                billingAccountName,
-                billingProfileName,
-                invoiceSectionName,
-                parameters,
-                onlyUpdateStudentCountParameter,
-                Context.NONE)
-            .getValue();
+        return generateInviteCodeWithResponse(billingAccountName, billingProfileName, invoiceSectionName, parameters,
+            onlyUpdateStudentCountParameter, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1368,31 +1105,21 @@ public final class LabsClientImpl implements LabsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LabDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LabDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1405,31 +1132,20 @@ public final class LabsClientImpl implements LabsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1441,31 +1157,20 @@ public final class LabsClientImpl implements LabsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LabDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<LabDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1478,23 +1183,13 @@ public final class LabsClientImpl implements LabsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

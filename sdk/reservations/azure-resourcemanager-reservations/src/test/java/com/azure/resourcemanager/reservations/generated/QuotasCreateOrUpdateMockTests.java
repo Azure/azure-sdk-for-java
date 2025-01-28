@@ -6,79 +6,46 @@ package com.azure.resourcemanager.reservations.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.reservations.ReservationsManager;
 import com.azure.resourcemanager.reservations.models.CurrentQuotaLimitBase;
 import com.azure.resourcemanager.reservations.models.QuotaProperties;
 import com.azure.resourcemanager.reservations.models.ResourceName;
 import com.azure.resourcemanager.reservations.models.ResourceType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class QuotasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"limit\":1922486723,\"currentValue\":1078649712,\"unit\":\"srvhmgorffuki\",\"name\":{\"value\":\"w\",\"localizedValue\":\"hwplefaxvx\"},\"resourceType\":\"standard\",\"quotaPeriod\":\"tg\",\"properties\":\"datanzeyqxtjj\"},\"id\":\"zqlqhyc\",\"name\":\"vodggxdbee\",\"type\":\"mieknlraria\"}";
 
-        String responseStr =
-            "{\"properties\":{\"limit\":800106977,\"currentValue\":457679085,\"unit\":\"y\",\"name\":{\"value\":\"yavluwmncstt\",\"localizedValue\":\"fybvpoek\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"gbdhuzqgnjdg\",\"properties\":\"datanscliqhzvhxnk\"},\"id\":\"mtk\",\"name\":\"bo\",\"type\":\"ppnvdxz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ReservationsManager manager = ReservationsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        CurrentQuotaLimitBase response = manager.quotas()
+            .define("vgtrdcnifmzzs")
+            .withExistingLocation("ppnvdxz", "hihfrbbcevqagtlt", "hlfkqojpy")
+            .withProperties(new QuotaProperties().withLimit(599707965)
+                .withUnit("suxmpraf")
+                .withName(new ResourceName().withValue("khocxvdfffwaf"))
+                .withResourceType(ResourceType.STANDARD)
+                .withProperties("datahcxgkmoyx"))
+            .create();
 
-        ReservationsManager manager =
-            ReservationsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        CurrentQuotaLimitBase response =
-            manager
-                .quotas()
-                .define("irclnpk")
-                .withExistingLocation("gzuriglaecxndt", "cokpv", "mlqtmldgxob")
-                .withProperties(
-                    new QuotaProperties()
-                        .withLimit(1931804941)
-                        .withUnit("ykhyawfvjlboxqvk")
-                        .withName(new ResourceName().withValue("xhom"))
-                        .withResourceType(ResourceType.DEDICATED)
-                        .withProperties("dataa"))
-                .create();
-
-        Assertions.assertEquals(800106977, response.properties().limit());
-        Assertions.assertEquals("y", response.properties().unit());
-        Assertions.assertEquals("yavluwmncstt", response.properties().name().value());
-        Assertions.assertEquals(ResourceType.LOW_PRIORITY, response.properties().resourceType());
+        Assertions.assertEquals(1922486723, response.properties().limit());
+        Assertions.assertEquals("srvhmgorffuki", response.properties().unit());
+        Assertions.assertEquals("w", response.properties().name().value());
+        Assertions.assertEquals(ResourceType.STANDARD, response.properties().resourceType());
     }
 }

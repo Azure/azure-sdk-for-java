@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OrdersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OrdersClient.
+ */
 public final class OrdersClientImpl implements OrdersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OrdersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxEdgeManagementClientImpl client;
 
     /**
      * Initializes an instance of OrdersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OrdersClientImpl(DataBoxEdgeManagementClientImpl client) {
@@ -63,81 +69,54 @@ public final class OrdersClientImpl implements OrdersClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
     public interface OrdersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/orders")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderList>> listByDataBoxEdgeDevice(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OrderList>> listByDataBoxEdgeDevice(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/orders/default")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OrderInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
+        Mono<Response<OrderInner>> get(@HostParam("$host") String endpoint, @PathParam("deviceName") String deviceName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/orders/default")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") OrderInner order,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") OrderInner order, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/orders/default")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/orders/default")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OrderList>> listByDataBoxEdgeDeviceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,22 +125,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return list of order entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName) {
+    private Mono<PagedResponse<OrderInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,32 +144,16 @@ public final class OrdersClientImpl implements OrdersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDataBoxEdgeDevice(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<OrderInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<OrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -204,22 +163,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return list of order entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<OrderInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -228,28 +183,15 @@ public final class OrdersClientImpl implements OrdersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDataBoxEdgeDevice(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,14 +201,13 @@ public final class OrdersClientImpl implements OrdersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrderInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -276,16 +217,15 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return list of order entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OrderInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
+    private PagedFlux<OrderInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,7 +240,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Lists all the orders related to a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -310,14 +250,14 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return list of order entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OrderInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context) {
+    public PagedIterable<OrderInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByDataBoxEdgeDeviceAsync(deviceName, resourceGroupName, context));
     }
 
     /**
      * Gets a specific order by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,19 +268,15 @@ public final class OrdersClientImpl implements OrdersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrderInner>> getWithResponseAsync(String deviceName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -348,23 +284,14 @@ public final class OrdersClientImpl implements OrdersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a specific order by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -374,22 +301,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return a specific order by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OrderInner>> getWithResponseAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private Mono<Response<OrderInner>> getWithResponseAsync(String deviceName, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -397,20 +320,13 @@ public final class OrdersClientImpl implements OrdersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a specific order by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,7 +341,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Gets a specific order by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -441,7 +357,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Gets a specific order by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -456,7 +372,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -466,22 +382,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the order details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String resourceGroupName, OrderInner order) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName,
+        String resourceGroupName, OrderInner order) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -493,25 +405,14 @@ public final class OrdersClientImpl implements OrdersClient {
             order.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            order,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), deviceName,
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), order, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -522,22 +423,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the order details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String resourceGroupName, OrderInner order, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName,
+        String resourceGroupName, OrderInner order, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -550,21 +447,13 @@ public final class OrdersClientImpl implements OrdersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                order,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), order, accept, context);
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -574,18 +463,16 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link PollerFlux} for polling of the order details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OrderInner>, OrderInner> beginCreateOrUpdateAsync(
-        String deviceName, String resourceGroupName, OrderInner order) {
+    private PollerFlux<PollResult<OrderInner>, OrderInner> beginCreateOrUpdateAsync(String deviceName,
+        String resourceGroupName, OrderInner order) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(deviceName, resourceGroupName, order);
-        return this
-            .client
-            .<OrderInner, OrderInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OrderInner.class, OrderInner.class, this.client.getContext());
+        return this.client.<OrderInner, OrderInner>getLroResult(mono, this.client.getHttpPipeline(), OrderInner.class,
+            OrderInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -596,20 +483,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link PollerFlux} for polling of the order details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OrderInner>, OrderInner> beginCreateOrUpdateAsync(
-        String deviceName, String resourceGroupName, OrderInner order, Context context) {
+    private PollerFlux<PollResult<OrderInner>, OrderInner> beginCreateOrUpdateAsync(String deviceName,
+        String resourceGroupName, OrderInner order, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, resourceGroupName, order, context);
-        return this
-            .client
-            .<OrderInner, OrderInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OrderInner.class, OrderInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, resourceGroupName, order, context);
+        return this.client.<OrderInner, OrderInner>getLroResult(mono, this.client.getHttpPipeline(), OrderInner.class,
+            OrderInner.class, context);
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -619,14 +504,14 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link SyncPoller} for polling of the order details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrderInner>, OrderInner> beginCreateOrUpdate(
-        String deviceName, String resourceGroupName, OrderInner order) {
+    public SyncPoller<PollResult<OrderInner>, OrderInner> beginCreateOrUpdate(String deviceName,
+        String resourceGroupName, OrderInner order) {
         return this.beginCreateOrUpdateAsync(deviceName, resourceGroupName, order).getSyncPoller();
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -637,14 +522,14 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link SyncPoller} for polling of the order details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OrderInner>, OrderInner> beginCreateOrUpdate(
-        String deviceName, String resourceGroupName, OrderInner order, Context context) {
+    public SyncPoller<PollResult<OrderInner>, OrderInner> beginCreateOrUpdate(String deviceName,
+        String resourceGroupName, OrderInner order, Context context) {
         return this.beginCreateOrUpdateAsync(deviceName, resourceGroupName, order, context).getSyncPoller();
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -655,14 +540,13 @@ public final class OrdersClientImpl implements OrdersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrderInner> createOrUpdateAsync(String deviceName, String resourceGroupName, OrderInner order) {
-        return beginCreateOrUpdateAsync(deviceName, resourceGroupName, order)
-            .last()
+        return beginCreateOrUpdateAsync(deviceName, resourceGroupName, order).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -673,16 +557,15 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the order details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OrderInner> createOrUpdateAsync(
-        String deviceName, String resourceGroupName, OrderInner order, Context context) {
-        return beginCreateOrUpdateAsync(deviceName, resourceGroupName, order, context)
-            .last()
+    private Mono<OrderInner> createOrUpdateAsync(String deviceName, String resourceGroupName, OrderInner order,
+        Context context) {
+        return beginCreateOrUpdateAsync(deviceName, resourceGroupName, order, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -698,7 +581,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Creates or updates an order.
-     *
+     * 
      * @param deviceName The order details of a device.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
@@ -715,7 +598,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -726,19 +609,15 @@ public final class OrdersClientImpl implements OrdersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -746,23 +625,14 @@ public final class OrdersClientImpl implements OrdersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), deviceName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -772,22 +642,18 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -795,20 +661,13 @@ public final class OrdersClientImpl implements OrdersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,15 +678,13 @@ public final class OrdersClientImpl implements OrdersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -837,18 +694,17 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String resourceGroupName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -863,7 +719,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -873,14 +729,14 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String resourceGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String resourceGroupName,
+        Context context) {
         return this.beginDeleteAsync(deviceName, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -895,7 +751,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -906,14 +762,13 @@ public final class OrdersClientImpl implements OrdersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, resourceGroupName, context)
-            .last()
+        return beginDeleteAsync(deviceName, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,7 +782,7 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Deletes the order related to the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -942,9 +797,8 @@ public final class OrdersClientImpl implements OrdersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -956,32 +810,22 @@ public final class OrdersClientImpl implements OrdersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OrderInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<OrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -989,29 +833,19 @@ public final class OrdersClientImpl implements OrdersClient {
      * @return list of order entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OrderInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<OrderInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

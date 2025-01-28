@@ -6,64 +6,35 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinition;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClustersListFollowerDatabasesMockTests {
     @Test
     public void testListFollowerDatabases() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"clusterResourceId\":\"egprhptil\",\"attachedDatabaseConfigurationName\":\"ucb\",\"databaseName\":\"tgdqohmcwsldriz\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"bra\",\"llibphbqzmizak\",\"kan\",\"jpdn\"],\"tablesToExclude\":[\"ajoylhjl\"],\"externalTablesToInclude\":[\"y\",\"primr\"],\"externalTablesToExclude\":[\"teecjmeislst\",\"asylwx\"],\"materializedViewsToInclude\":[\"umweoohguufuzboy\",\"athwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"materializedViewsToExclude\":[\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"],\"functionsToInclude\":[\"pndzaapmudqmeq\"],\"functionsToExclude\":[\"pibudqwyxebeybpm\"]},\"databaseShareOrigin\":\"Other\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"clusterResourceId\":\"yxkyxvx\",\"attachedDatabaseConfigurationName\":\"vblbjednljlageua\",\"databaseName\":\"xuns\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"kppxynenlsvxeiz\",\"gwklnsr\",\"ffeycx\"],\"tablesToExclude\":[\"piymerteea\",\"mx\",\"iekkkzddrtkgdojb\"],\"externalTablesToInclude\":[\"a\",\"refdee\",\"vecuijpx\"],\"externalTablesToExclude\":[\"uwprtujwsawd\"],\"materializedViewsToInclude\":[\"babxvitit\",\"tzeexav\",\"xtfglecdmdqb\",\"pypqtgsfj\"],\"materializedViewsToExclude\":[\"slhhxudbxv\"],\"functionsToInclude\":[\"tnsi\",\"ud\"],\"functionsToExclude\":[\"mes\"]},\"databaseShareOrigin\":\"Other\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<FollowerDatabaseDefinition> response = manager.clusters()
+            .listFollowerDatabases("eafidltugsresm", "ssjhoiftxfkf", com.azure.core.util.Context.NONE);
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<FollowerDatabaseDefinition> response =
-            manager.clusters().listFollowerDatabases("kzyb", "jjidjk", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("yxkyxvx", response.iterator().next().clusterResourceId());
-        Assertions.assertEquals("vblbjednljlageua", response.iterator().next().attachedDatabaseConfigurationName());
+        Assertions.assertEquals("egprhptil", response.iterator().next().clusterResourceId());
+        Assertions.assertEquals("ucb", response.iterator().next().attachedDatabaseConfigurationName());
     }
 }

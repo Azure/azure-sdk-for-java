@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JitRequestMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitRequestMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"originRequestId\":\"rrqnbpoczvyifqrv\",\"requestorId\":\"vjsllrmvvdfw\",\"tenantDisplayName\":\"kpnpulexxbczwtr\",\"subjectDisplayName\":\"iqzbq\"}")
-                .toObject(JitRequestMetadata.class);
+        JitRequestMetadata model = BinaryData.fromString(
+            "{\"originRequestId\":\"rrqnbpoczvyifqrv\",\"requestorId\":\"vjsllrmvvdfw\",\"tenantDisplayName\":\"kpnpulexxbczwtr\",\"subjectDisplayName\":\"iqzbq\"}")
+            .toObject(JitRequestMetadata.class);
         Assertions.assertEquals("rrqnbpoczvyifqrv", model.originRequestId());
         Assertions.assertEquals("vjsllrmvvdfw", model.requestorId());
         Assertions.assertEquals("kpnpulexxbczwtr", model.tenantDisplayName());
@@ -24,12 +22,10 @@ public final class JitRequestMetadataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitRequestMetadata model =
-            new JitRequestMetadata()
-                .withOriginRequestId("rrqnbpoczvyifqrv")
-                .withRequestorId("vjsllrmvvdfw")
-                .withTenantDisplayName("kpnpulexxbczwtr")
-                .withSubjectDisplayName("iqzbq");
+        JitRequestMetadata model = new JitRequestMetadata().withOriginRequestId("rrqnbpoczvyifqrv")
+            .withRequestorId("vjsllrmvvdfw")
+            .withTenantDisplayName("kpnpulexxbczwtr")
+            .withSubjectDisplayName("iqzbq");
         model = BinaryData.fromObject(model).toObject(JitRequestMetadata.class);
         Assertions.assertEquals("rrqnbpoczvyifqrv", model.originRequestId());
         Assertions.assertEquals("vjsllrmvvdfw", model.requestorId());

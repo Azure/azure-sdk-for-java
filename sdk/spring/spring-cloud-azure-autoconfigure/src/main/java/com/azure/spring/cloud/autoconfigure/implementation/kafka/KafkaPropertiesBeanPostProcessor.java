@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -13,14 +12,9 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
 
-    KafkaPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
-
-    @SuppressWarnings("removal")
     @Override
     protected Map<String, Object> getMergedProducerProperties(KafkaProperties properties) {
-        return properties.buildProducerProperties();
+        return invokeBuildKafkaProperties(properties, "buildProducerProperties");
     }
 
     @Override
@@ -28,10 +22,9 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
         return properties.getProducer().getProperties();
     }
 
-    @SuppressWarnings("removal")
     @Override
     protected Map<String, Object> getMergedConsumerProperties(KafkaProperties properties) {
-        return properties.buildConsumerProperties();
+        return invokeBuildKafkaProperties(properties, "buildConsumerProperties");
     }
 
     @Override
@@ -39,10 +32,9 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
         return properties.getConsumer().getProperties();
     }
 
-    @SuppressWarnings("removal")
     @Override
     protected Map<String, Object> getMergedAdminProperties(KafkaProperties properties) {
-        return properties.buildAdminProperties();
+        return invokeBuildKafkaProperties(properties, "buildAdminProperties");
 
     }
 

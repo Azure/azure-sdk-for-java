@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of shared private link resources. */
+/**
+ * A list of shared private link resources.
+ */
 @Fluent
-public final class SharedPrivateLinkResourceList {
+public final class SharedPrivateLinkResourceList implements JsonSerializable<SharedPrivateLinkResourceList> {
     /*
      * The list of the shared private link resources
      */
-    @JsonProperty(value = "value")
     private List<SharedPrivateLinkResourceInner> value;
 
     /*
      * Request URL that can be used to query next page of private endpoint connections. Returned when the total number
      * of requested private endpoint connections exceed maximum page size.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SharedPrivateLinkResourceList class. */
+    /**
+     * Creates an instance of SharedPrivateLinkResourceList class.
+     */
     public SharedPrivateLinkResourceList() {
     }
 
     /**
      * Get the value property: The list of the shared private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SharedPrivateLinkResourceInner> value() {
@@ -40,7 +46,7 @@ public final class SharedPrivateLinkResourceList {
 
     /**
      * Set the value property: The list of the shared private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SharedPrivateLinkResourceList object itself.
      */
@@ -52,7 +58,7 @@ public final class SharedPrivateLinkResourceList {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of private endpoint connections.
      * Returned when the total number of requested private endpoint connections exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +68,7 @@ public final class SharedPrivateLinkResourceList {
     /**
      * Set the nextLink property: Request URL that can be used to query next page of private endpoint connections.
      * Returned when the total number of requested private endpoint connections exceed maximum page size.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SharedPrivateLinkResourceList object itself.
      */
@@ -73,12 +79,54 @@ public final class SharedPrivateLinkResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedPrivateLinkResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedPrivateLinkResourceList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedPrivateLinkResourceList.
+     */
+    public static SharedPrivateLinkResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedPrivateLinkResourceList deserializedSharedPrivateLinkResourceList
+                = new SharedPrivateLinkResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SharedPrivateLinkResourceInner> value
+                        = reader.readArray(reader1 -> SharedPrivateLinkResourceInner.fromJson(reader1));
+                    deserializedSharedPrivateLinkResourceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSharedPrivateLinkResourceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedPrivateLinkResourceList;
+        });
     }
 }

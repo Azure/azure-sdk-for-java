@@ -15,104 +15,106 @@ import com.azure.resourcemanager.loadtesting.fluent.models.LoadTestResourceInner
 import com.azure.resourcemanager.loadtesting.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.loadtesting.models.LoadTestResourcePatchRequestBody;
 
-/** An instance of this class provides access to all the operations defined in LoadTestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadTestsClient.
+ */
 public interface LoadTestsClient {
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> list();
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> list(Context context);
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadTestResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response}.
+     * @return a LoadTestResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadTestResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String loadTestName, Context context);
+    Response<LoadTestResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String loadTestName,
+        Context context);
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTestResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LoadTestResourceInner getByResourceGroup(String resourceGroupName, String loadTestName);
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of loadTest details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource);
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String loadTestName, LoadTestResourceInner resource);
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,30 +122,29 @@ public interface LoadTestsClient {
      * @return the {@link SyncPoller} for polling of loadTest details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context);
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String loadTestName, LoadTestResourceInner resource, Context context);
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadTestResourceInner createOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource);
+    LoadTestResourceInner createOrUpdate(String resourceGroupName, String loadTestName, LoadTestResourceInner resource);
 
     /**
-     * Create or update LoadTest resource.
-     *
+     * Create a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResource LoadTest resource data.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,68 +152,61 @@ public interface LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadTestResourceInner createOrUpdate(
-        String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context);
-
-    /**
-     * Update a loadtest resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of loadTest details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody);
-
-    /**
-     * Update a loadtest resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of loadTest details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
+    LoadTestResourceInner createOrUpdate(String resourceGroupName, String loadTestName, LoadTestResourceInner resource,
         Context context);
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(String resourceGroupName,
+        String loadTestName, LoadTestResourcePatchRequestBody properties);
+
+    /**
+     * Update a LoadTestResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of loadTest details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginUpdate(String resourceGroupName,
+        String loadTestName, LoadTestResourcePatchRequestBody properties, Context context);
+
+    /**
+     * Update a LoadTestResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param loadTestName Load Test name.
+     * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadTestResourceInner update(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody);
+    LoadTestResourceInner update(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties);
 
     /**
-     * Update a loadtest resource.
-     *
+     * Update a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
-     * @param loadTestResourcePatchRequestBody LoadTest resource update data.
+     * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,15 +214,12 @@ public interface LoadTestsClient {
      * @return loadTest details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadTestResourceInner update(
-        String resourceGroupName,
-        String loadTestName,
-        LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
-        Context context);
+    LoadTestResourceInner update(String resourceGroupName, String loadTestName,
+        LoadTestResourcePatchRequestBody properties, Context context);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,8 +231,8 @@ public interface LoadTestsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -254,8 +245,8 @@ public interface LoadTestsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName, Context context);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,8 +257,8 @@ public interface LoadTestsClient {
     void delete(String resourceGroupName, String loadTestName);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -280,7 +271,7 @@ public interface LoadTestsClient {
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,12 +280,12 @@ public interface LoadTestsClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String loadTestName);
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -304,6 +295,6 @@ public interface LoadTestsClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName, Context context);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String loadTestName, Context context);
 }

@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions> {
     /**
-     * Static value Local for DiffDiskOptions.
+     * Local Option.
      */
     public static final DiffDiskOptions LOCAL = fromString("Local");
 

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RolloutRequestInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RolloutRequestInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"wfzitonpeqfpjk\",\"identityIds\":[\"xofpdvhpfxxypi\",\"i\",\"mayhuybbkpodepoo\",\"inuvamiheogn\"]},\"properties\":{\"buildVersion\":\"rxzxtheo\",\"artifactSourceId\":\"si\",\"targetServiceTopologyId\":\"yevc\",\"stepGroups\":[{\"name\":\"qi\",\"dependsOnStepGroups\":[],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"un\",\"postDeploymentSteps\":[]},{\"name\":\"wjzrnfygxgisp\",\"dependsOnStepGroups\":[],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"tzfkufubl\",\"postDeploymentSteps\":[]}]},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"},\"id\":\"ybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}")
-                .toObject(RolloutRequestInner.class);
+        RolloutRequestInner model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"wfzitonpeqfpjk\",\"identityIds\":[\"xofpdvhpfxxypi\",\"i\",\"mayhuybbkpodepoo\",\"inuvamiheogn\"]},\"properties\":{\"buildVersion\":\"rxzxtheo\",\"artifactSourceId\":\"si\",\"targetServiceTopologyId\":\"yevc\",\"stepGroups\":[{\"name\":\"qi\",\"dependsOnStepGroups\":[],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"un\",\"postDeploymentSteps\":[]},{\"name\":\"wjzrnfygxgisp\",\"dependsOnStepGroups\":[],\"preDeploymentSteps\":[],\"deploymentTargetId\":\"tzfkufubl\",\"postDeploymentSteps\":[]}]},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"},\"id\":\"ybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}")
+            .toObject(RolloutRequestInner.class);
         Assertions.assertEquals("fxqeof", model.location());
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
         Assertions.assertEquals("wfzitonpeqfpjk", model.identity().type());
@@ -34,32 +32,24 @@ public final class RolloutRequestInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RolloutRequestInner model =
-            new RolloutRequestInner()
-                .withLocation("fxqeof")
-                .withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
-                .withIdentity(
-                    new Identity()
-                        .withType("wfzitonpeqfpjk")
-                        .withIdentityIds(Arrays.asList("xofpdvhpfxxypi", "i", "mayhuybbkpodepoo", "inuvamiheogn")))
-                .withBuildVersion("rxzxtheo")
-                .withArtifactSourceId("si")
-                .withTargetServiceTopologyId("yevc")
-                .withStepGroups(
-                    Arrays
-                        .asList(
-                            new StepGroup()
-                                .withName("qi")
-                                .withDependsOnStepGroups(Arrays.asList())
-                                .withPreDeploymentSteps(Arrays.asList())
-                                .withDeploymentTargetId("un")
-                                .withPostDeploymentSteps(Arrays.asList()),
-                            new StepGroup()
-                                .withName("wjzrnfygxgisp")
-                                .withDependsOnStepGroups(Arrays.asList())
-                                .withPreDeploymentSteps(Arrays.asList())
-                                .withDeploymentTargetId("tzfkufubl")
-                                .withPostDeploymentSteps(Arrays.asList())));
+        RolloutRequestInner model = new RolloutRequestInner().withLocation("fxqeof")
+            .withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
+            .withIdentity(new Identity().withType("wfzitonpeqfpjk")
+                .withIdentityIds(Arrays.asList("xofpdvhpfxxypi", "i", "mayhuybbkpodepoo", "inuvamiheogn")))
+            .withBuildVersion("rxzxtheo")
+            .withArtifactSourceId("si")
+            .withTargetServiceTopologyId("yevc")
+            .withStepGroups(Arrays.asList(
+                new StepGroup().withName("qi")
+                    .withDependsOnStepGroups(Arrays.asList())
+                    .withPreDeploymentSteps(Arrays.asList())
+                    .withDeploymentTargetId("un")
+                    .withPostDeploymentSteps(Arrays.asList()),
+                new StepGroup().withName("wjzrnfygxgisp")
+                    .withDependsOnStepGroups(Arrays.asList())
+                    .withPreDeploymentSteps(Arrays.asList())
+                    .withDeploymentTargetId("tzfkufubl")
+                    .withPostDeploymentSteps(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(RolloutRequestInner.class);
         Assertions.assertEquals("fxqeof", model.location());
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));

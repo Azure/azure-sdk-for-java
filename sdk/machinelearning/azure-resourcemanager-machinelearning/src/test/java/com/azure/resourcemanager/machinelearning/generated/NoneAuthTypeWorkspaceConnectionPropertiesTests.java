@@ -8,34 +8,60 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.NoneAuthTypeWorkspaceConnectionProperties;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class NoneAuthTypeWorkspaceConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NoneAuthTypeWorkspaceConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"authType\":\"None\",\"category\":\"Git\",\"target\":\"lazipbhpwvq\",\"value\":\"ny\",\"valueFormat\":\"JSON\"}")
-                .toObject(NoneAuthTypeWorkspaceConnectionProperties.class);
-        Assertions.assertEquals(ConnectionCategory.GIT, model.category());
-        Assertions.assertEquals("lazipbhpwvq", model.target());
-        Assertions.assertEquals("ny", model.value());
+        NoneAuthTypeWorkspaceConnectionProperties model = BinaryData.fromString(
+            "{\"authType\":\"None\",\"category\":\"AzureSynapseAnalytics\",\"createdByWorkspaceArmId\":\"wf\",\"expiryTime\":\"2021-09-18T05:09:03Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":true,\"target\":\"lt\",\"metadata\":{\"vazjpwexcd\":\"gexojfccylhtrht\",\"o\":\"zp\",\"pjeuxsp\":\"zzxezmnrkj\",\"bhwbdqufvcgnrgla\":\"lokfpmijpdvzv\"},\"sharedUserList\":[\"yambhb\",\"febzxf\"],\"value\":\"qutibhl\",\"valueFormat\":\"JSON\"}")
+            .toObject(NoneAuthTypeWorkspaceConnectionProperties.class);
+        Assertions.assertEquals(ConnectionCategory.AZURE_SYNAPSE_ANALYTICS, model.category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T05:09:03Z"), model.expiryTime());
+        Assertions.assertEquals(true, model.isSharedToAll());
+        Assertions.assertEquals("lt", model.target());
+        Assertions.assertEquals("gexojfccylhtrht", model.metadata().get("vazjpwexcd"));
+        Assertions.assertEquals("yambhb", model.sharedUserList().get(0));
+        Assertions.assertEquals("qutibhl", model.value());
         Assertions.assertEquals(ValueFormat.JSON, model.valueFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NoneAuthTypeWorkspaceConnectionProperties model =
-            new NoneAuthTypeWorkspaceConnectionProperties()
-                .withCategory(ConnectionCategory.GIT)
-                .withTarget("lazipbhpwvq")
-                .withValue("ny")
+        NoneAuthTypeWorkspaceConnectionProperties model
+            = new NoneAuthTypeWorkspaceConnectionProperties().withCategory(ConnectionCategory.AZURE_SYNAPSE_ANALYTICS)
+                .withExpiryTime(OffsetDateTime.parse("2021-09-18T05:09:03Z"))
+                .withIsSharedToAll(true)
+                .withTarget("lt")
+                .withMetadata(mapOf("vazjpwexcd", "gexojfccylhtrht", "o", "zp", "pjeuxsp", "zzxezmnrkj",
+                    "bhwbdqufvcgnrgla", "lokfpmijpdvzv"))
+                .withSharedUserList(Arrays.asList("yambhb", "febzxf"))
+                .withValue("qutibhl")
                 .withValueFormat(ValueFormat.JSON);
         model = BinaryData.fromObject(model).toObject(NoneAuthTypeWorkspaceConnectionProperties.class);
-        Assertions.assertEquals(ConnectionCategory.GIT, model.category());
-        Assertions.assertEquals("lazipbhpwvq", model.target());
-        Assertions.assertEquals("ny", model.value());
+        Assertions.assertEquals(ConnectionCategory.AZURE_SYNAPSE_ANALYTICS, model.category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T05:09:03Z"), model.expiryTime());
+        Assertions.assertEquals(true, model.isSharedToAll());
+        Assertions.assertEquals("lt", model.target());
+        Assertions.assertEquals("gexojfccylhtrht", model.metadata().get("vazjpwexcd"));
+        Assertions.assertEquals("yambhb", model.sharedUserList().get(0));
+        Assertions.assertEquals("qutibhl", model.value());
         Assertions.assertEquals(ValueFormat.JSON, model.valueFormat());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

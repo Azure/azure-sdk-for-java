@@ -5,49 +5,76 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.models.Channel;
 import com.azure.resourcemanager.botservice.models.ChannelSettings;
 import com.azure.resourcemanager.botservice.models.Kind;
 import com.azure.resourcemanager.botservice.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-/** The ARM channel of list channel with keys operation response. */
+/**
+ * The ARM channel of list channel with keys operation response.
+ */
 @Fluent
 public final class ListChannelWithKeysResponseInner extends BotChannelInner {
     /*
      * The set of properties specific to bot channel resource
      */
-    @JsonProperty(value = "resource")
     private Channel resource;
 
     /*
      * Channel settings
      */
-    @JsonProperty(value = "setting")
     private ChannelSettings setting;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * Entity tag of the resource
      */
-    @JsonProperty(value = "entityTag")
     private String entityTag;
 
     /*
      * Changed time of the resource
      */
-    @JsonProperty(value = "changedTime")
     private String changedTime;
+
+    /*
+     * Entity zones
+     */
+    private List<String> zones;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ListChannelWithKeysResponseInner class.
+     */
+    public ListChannelWithKeysResponseInner() {
+    }
 
     /**
      * Get the resource property: The set of properties specific to bot channel resource.
-     *
+     * 
      * @return the resource value.
      */
     public Channel resource() {
@@ -56,7 +83,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Set the resource property: The set of properties specific to bot channel resource.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ListChannelWithKeysResponseInner object itself.
      */
@@ -67,7 +94,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Get the setting property: Channel settings.
-     *
+     * 
      * @return the setting value.
      */
     public ChannelSettings setting() {
@@ -76,7 +103,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Set the setting property: Channel settings.
-     *
+     * 
      * @param setting the setting value to set.
      * @return the ListChannelWithKeysResponseInner object itself.
      */
@@ -87,7 +114,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -96,7 +123,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Set the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ListChannelWithKeysResponseInner object itself.
      */
@@ -107,7 +134,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Get the entityTag property: Entity tag of the resource.
-     *
+     * 
      * @return the entityTag value.
      */
     public String entityTag() {
@@ -116,7 +143,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Set the entityTag property: Entity tag of the resource.
-     *
+     * 
      * @param entityTag the entityTag value to set.
      * @return the ListChannelWithKeysResponseInner object itself.
      */
@@ -127,7 +154,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Get the changedTime property: Changed time of the resource.
-     *
+     * 
      * @return the changedTime value.
      */
     public String changedTime() {
@@ -136,7 +163,7 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Set the changedTime property: Changed time of the resource.
-     *
+     * 
      * @param changedTime the changedTime value to set.
      * @return the ListChannelWithKeysResponseInner object itself.
      */
@@ -145,42 +172,94 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the zones property: Entity zones.
+     * 
+     * @return the zones value.
+     */
+    @Override
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListChannelWithKeysResponseInner withProperties(Channel properties) {
         super.withProperties(properties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListChannelWithKeysResponseInner withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListChannelWithKeysResponseInner withKind(Kind kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListChannelWithKeysResponseInner withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListChannelWithKeysResponseInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListChannelWithKeysResponseInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -189,17 +268,100 @@ public final class ListChannelWithKeysResponseInner extends BotChannelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (resource() != null) {
             resource().validate();
         }
         if (setting() != null) {
             setting().validate();
         }
+        if (properties() != null) {
+            properties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", properties());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("setting", this.setting);
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeStringField("entityTag", this.entityTag);
+        jsonWriter.writeStringField("changedTime", this.changedTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListChannelWithKeysResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListChannelWithKeysResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListChannelWithKeysResponseInner.
+     */
+    public static ListChannelWithKeysResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListChannelWithKeysResponseInner deserializedListChannelWithKeysResponseInner
+                = new ListChannelWithKeysResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedListChannelWithKeysResponseInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.withProperties(Channel.fromJson(reader));
+                } else if ("sku".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.withSku(Sku.fromJson(reader));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.withKind(Kind.fromString(reader.getString()));
+                } else if ("etag".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.withEtag(reader.getString());
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedListChannelWithKeysResponseInner.zones = zones;
+                } else if ("resource".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.resource = Channel.fromJson(reader);
+                } else if ("setting".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.setting = ChannelSettings.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.provisioningState = reader.getString();
+                } else if ("entityTag".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.entityTag = reader.getString();
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedListChannelWithKeysResponseInner.changedTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListChannelWithKeysResponseInner;
+        });
     }
 }

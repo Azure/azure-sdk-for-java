@@ -12,13 +12,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.reservations.fluent.models.ExchangeOperationResultResponseInner;
 import com.azure.resourcemanager.reservations.models.ExchangeRequest;
 
-/** An instance of this class provides access to all the operations defined in ExchangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExchangesClient.
+ */
 public interface ExchangesClient {
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,14 +28,14 @@ public interface ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body);
+    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body);
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,14 +44,14 @@ public interface ExchangesClient {
      * @return the {@link SyncPoller} for polling of exchange operation result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner> beginPost(
-        ExchangeRequest body, Context context);
+    SyncPoller<PollResult<ExchangeOperationResultResponseInner>, ExchangeOperationResultResponseInner>
+        beginPost(ExchangeRequest body, Context context);
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,9 +63,9 @@ public interface ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

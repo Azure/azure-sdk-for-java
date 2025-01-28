@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkRule model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"subnetId\":\"stkiiuxhqyud\",\"virtualNetworkRuleState\":\"Failed\"},\"name\":\"qn\",\"type\":\"oczvy\",\"id\":\"qrvkdv\"}")
-                .toObject(VirtualNetworkRule.class);
-        Assertions.assertEquals("qrvkdv", model.id());
+        VirtualNetworkRule model = BinaryData.fromString(
+            "{\"properties\":{\"subnetId\":\"bonqvpkvlrxnjeas\",\"virtualNetworkRuleState\":\"Active\"},\"name\":\"eo\",\"type\":\"okeyyienj\",\"id\":\"lwtgrhpdj\"}")
+            .toObject(VirtualNetworkRule.class);
+        Assertions.assertEquals("lwtgrhpdj", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkRule model = new VirtualNetworkRule().withId("qrvkdv");
+        VirtualNetworkRule model = new VirtualNetworkRule().withId("lwtgrhpdj");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRule.class);
-        Assertions.assertEquals("qrvkdv", model.id());
+        Assertions.assertEquals("lwtgrhpdj", model.id());
     }
 }

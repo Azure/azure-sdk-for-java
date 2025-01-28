@@ -8,34 +8,36 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StudentLabs. */
+/**
+ * Resource collection API of StudentLabs.
+ */
 public interface StudentLabs {
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all labs associated with the caller of the API as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all labs associated with the caller of the API as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<StudentLabDetails> listAll();
 
     /**
      * Get a list of all labs associated with the caller of the API.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all labs associated with the caller of the API as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all labs associated with the caller of the API as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<StudentLabDetails> listAll(Context context);
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,8 +48,8 @@ public interface StudentLabs {
 
     /**
      * Get the details for a specified lab associated with the student lab.
-     *
-     * @param studentLabName Student lab name.
+     * 
+     * @param studentLabName The ID that uniquely identifies a student lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

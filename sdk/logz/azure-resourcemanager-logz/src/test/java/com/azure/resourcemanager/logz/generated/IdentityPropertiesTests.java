@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityProperties model =
-            BinaryData
-                .fromString("{\"principalId\":\"ro\",\"tenantId\":\"qpteeh\",\"type\":\"UserAssigned\"}")
-                .toObject(IdentityProperties.class);
-        Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, model.type());
+        IdentityProperties model = BinaryData
+            .fromString(
+                "{\"principalId\":\"wpyeicxmqciwqvh\",\"tenantId\":\"ixuigdtopbobj\",\"type\":\"SystemAssigned\"}")
+            .toObject(IdentityProperties.class);
+        Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProperties model = new IdentityProperties().withType(ManagedIdentityTypes.USER_ASSIGNED);
+        IdentityProperties model = new IdentityProperties().withType(ManagedIdentityTypes.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(IdentityProperties.class);
-        Assertions.assertEquals(ManagedIdentityTypes.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedIdentityTypes.SYSTEM_ASSIGNED, model.type());
     }
 }

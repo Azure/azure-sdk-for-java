@@ -26,21 +26,12 @@ import java.io.InputStream;
 import java.util.Objects;
 
 /** The implementation for DeploymentSlot. */
-class DeploymentSlotImpl
-    extends DeploymentSlotBaseImpl<
-        DeploymentSlot,
-        DeploymentSlotImpl,
-        WebAppImpl,
-        DeploymentSlot.DefinitionStages.WithCreate,
-        DeploymentSlotBase.Update<DeploymentSlot>>
+class DeploymentSlotImpl extends
+    DeploymentSlotBaseImpl<DeploymentSlot, DeploymentSlotImpl, WebAppImpl, DeploymentSlot.DefinitionStages.WithCreate, DeploymentSlotBase.Update<DeploymentSlot>>
     implements DeploymentSlot, DeploymentSlot.Definition {
 
-    DeploymentSlotImpl(
-        String name,
-        SiteInner innerObject,
-        SiteConfigResourceInner siteConfig,
-        SiteLogsConfigInner logConfig,
-        WebAppImpl parent) {
+    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig, WebAppImpl parent) {
         super(name, innerObject, siteConfig, logConfig, parent);
     }
 
@@ -147,8 +138,8 @@ class DeploymentSlotImpl
             deployOptions = new DeployOptions();
         }
         try {
-            return kuduClient.deployAsync(type, file,
-                deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
+            return kuduClient.deployAsync(type, file, deployOptions.path(), deployOptions.restartSite(),
+                deployOptions.cleanDeployment());
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -176,8 +167,8 @@ class DeploymentSlotImpl
         if (deployOptions == null) {
             deployOptions = new DeployOptions();
         }
-        return kuduClient.deployAsync(type, file, length,
-            deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
+        return kuduClient.deployAsync(type, file, length, deployOptions.path(), deployOptions.restartSite(),
+            deployOptions.cleanDeployment());
     }
 
     @Override
@@ -193,9 +184,8 @@ class DeploymentSlotImpl
             deployOptions = new DeployOptions();
         }
         try {
-            return kuduClient.pushDeployAsync(type, file,
-                deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment(),
-                deployOptions.trackDeployment());
+            return kuduClient.pushDeployAsync(type, file, deployOptions.path(), deployOptions.restartSite(),
+                deployOptions.cleanDeployment(), deployOptions.trackDeployment());
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -210,20 +200,23 @@ class DeploymentSlotImpl
     public Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId) {
         // "GET" LRO is not supported in azure-core
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        return this.manager().serviceClient().getWebApps()
-            .getSlotSiteDeploymentStatusSlotWithResponseAsync(this.resourceGroupName(), this.parent().name(), this.name(), deploymentId)
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
+            .getSlotSiteDeploymentStatusSlotWithResponseAsync(this.resourceGroupName(), this.parent().name(),
+                this.name(), deploymentId)
             .flatMap(fluxResponse -> {
                 HttpResponse response = new HttpFluxBBResponse(fluxResponse);
-                return response.getBodyAsString()
-                    .flatMap(bodyString -> {
-                        CsmDeploymentStatus status;
-                        try {
-                            status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
-                        } catch (IOException e) {
-                            return Mono.error(new ManagementException("Deserialize failed for response body.", response));
-                        }
-                        return Mono.justOrEmpty(status);
-                    });
+                return response.getBodyAsString().flatMap(bodyString -> {
+                    CsmDeploymentStatus status;
+                    try {
+                        status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class,
+                            SerializerEncoding.JSON);
+                    } catch (IOException e) {
+                        return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                    }
+                    return Mono.justOrEmpty(status);
+                }).doFinally(ignored -> response.close());
             });
     }
 }

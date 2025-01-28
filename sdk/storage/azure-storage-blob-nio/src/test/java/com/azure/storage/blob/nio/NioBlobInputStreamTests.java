@@ -60,8 +60,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     private void resetForLargeSource() {
         if (getTestMode() != TestMode.PLAYBACK) {
             // Base setup only uploads a small source to reduce size of session record.
-            BlobClient blobClient = getNonRecordingServiceClient()
-                .getBlobContainerClient(bc.getContainerName())
+            BlobClient blobClient = getNonRecordingServiceClient().getBlobContainerClient(bc.getContainerName())
                 .getBlobClient(bc.getBlobName());
             blobClient.upload(BinaryData.fromBytes(fileBytes), true);
         }
@@ -92,7 +91,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 100, 4 * 1024 * 1024})
+    @ValueSource(ints = { 0, 100, 4 * 1024 * 1024 })
     public void readBuff(int size) throws IOException {
         resetForLargeSource();
         byte[] nioBytes = new byte[size];
@@ -111,7 +110,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"-1,5", "3,-1", "0,11", "3,8"})
+    @CsvSource(value = { "-1,5", "3,-1", "0,11", "3,8" })
     public void readBuffOffsetLenFail(int off, int len) {
         byte[] b = new byte[10];
 
@@ -143,9 +142,8 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
         assertThrows(ClosedFileSystemException.class, () -> nioStream.read(new byte[10], 2, 5));
     }
 
-
     @ParameterizedTest
-    @CsvSource(value = {"0,0", "0,50", "50,0", "50,50", "50,5242780", "5242780,50"})
+    @CsvSource(value = { "0,0", "0,50", "50,0", "50,50", "50,5242780", "5242780,50" })
     public void markAndReset(int markAfter, int resetAfter) throws IOException {
         resetForLargeSource();
         byte[] b = new byte[markAfter];
@@ -193,7 +191,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 10, 4 * 1024 * 1024, (5 * 1024 * 1024) - 1})
+    @ValueSource(ints = { 0, 10, 4 * 1024 * 1024, (5 * 1024 * 1024) - 1 })
     public void skip(int skip) throws IOException {
         resetForLargeSource();
         nioStream.skip(skip);
@@ -226,7 +224,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"0,4194304", "5,4194299", "5242880,0"})
+    @CsvSource(value = { "0,4194304", "5,4194299", "5242880,0" })
     public void available(int readAmount, int available) throws IOException {
         resetForLargeSource();
         nioStream.read(new byte[readAmount]);

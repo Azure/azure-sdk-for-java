@@ -20,8 +20,7 @@ public final class MetricPeriodFeedback extends MetricFeedback {
      * @param periodType the type of setting period.
      * @param periodValue the number of intervals a period contains.
      */
-    public MetricPeriodFeedback(PeriodType periodType,
-        int periodValue) {
+    public MetricPeriodFeedback(PeriodType periodType, int periodValue) {
         this.periodType = periodType;
         this.periodValue = periodValue;
     }

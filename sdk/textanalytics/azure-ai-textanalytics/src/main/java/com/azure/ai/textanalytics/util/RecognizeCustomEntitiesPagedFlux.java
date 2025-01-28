@@ -16,16 +16,15 @@ import java.util.function.Supplier;
  * @see ContinuablePagedFluxCore
  */
 @Immutable
-public final class RecognizeCustomEntitiesPagedFlux extends ContinuablePagedFluxCore<String,
-    RecognizeCustomEntitiesResultCollection, PagedResponse<RecognizeCustomEntitiesResultCollection>> {
+public final class RecognizeCustomEntitiesPagedFlux extends
+    ContinuablePagedFluxCore<String, RecognizeCustomEntitiesResultCollection, PagedResponse<RecognizeCustomEntitiesResultCollection>> {
     /**
      * Creates an instance of {@code RecognizeCustomEntitiesPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */
     public RecognizeCustomEntitiesPagedFlux(
-        Supplier<PageRetriever<String, PagedResponse<RecognizeCustomEntitiesResultCollection>>>
-            pageRetrieverProvider) {
+        Supplier<PageRetriever<String, PagedResponse<RecognizeCustomEntitiesResultCollection>>> pageRetrieverProvider) {
         super(pageRetrieverProvider);
     }
 }

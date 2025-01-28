@@ -46,23 +46,28 @@ public final class ServiceResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourceInner model = new ServiceResourceInner().withProperties(new ServiceResourceProperties()
-            .withPlacementConstraints("wlycoduhpkxkg")
-            .withCorrelationScheme(Arrays.asList(
-                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
-                    .withServiceName("eqnajxqugjhkycu"),
-                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
-                    .withServiceName("ddg")))
-            .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("fwqmzqalkrmn").withWeight(ServiceLoadMetricWeight.LOW)
-                    .withPrimaryDefaultLoad(988494266).withSecondaryDefaultLoad(1400063393).withDefaultLoad(935480812)))
-            .withServicePlacementPolicies(
-                Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription(),
-                    new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.MEDIUM).withServiceTypeName("q")
-            .withPartitionDescription(new PartitionSchemeDescription())
-            .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS)
-            .withServiceDnsName("x")).withLocation("yxbaaabjyvayf").withTags(mapOf("evfdnwnwm", "rzrtuzqogsex"));
+        ServiceResourceInner model = new ServiceResourceInner()
+            .withProperties(new ServiceResourceProperties().withPlacementConstraints("wlycoduhpkxkg")
+                .withCorrelationScheme(Arrays.asList(
+                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                        .withServiceName("eqnajxqugjhkycu"),
+                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
+                        .withServiceName("ddg")))
+                .withServiceLoadMetrics(Arrays.asList(new ServiceLoadMetricDescription().withName("fwqmzqalkrmn")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(988494266)
+                    .withSecondaryDefaultLoad(1400063393)
+                    .withDefaultLoad(935480812)))
+                .withServicePlacementPolicies(
+                    Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription(),
+                        new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+                .withDefaultMoveCost(MoveCost.MEDIUM)
+                .withServiceTypeName("q")
+                .withPartitionDescription(new PartitionSchemeDescription())
+                .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS)
+                .withServiceDnsName("x"))
+            .withLocation("yxbaaabjyvayf")
+            .withTags(mapOf("evfdnwnwm", "rzrtuzqogsex"));
         model = BinaryData.fromObject(model).toObject(ServiceResourceInner.class);
         Assertions.assertEquals("wlycoduhpkxkg", model.properties().placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.INVALID,

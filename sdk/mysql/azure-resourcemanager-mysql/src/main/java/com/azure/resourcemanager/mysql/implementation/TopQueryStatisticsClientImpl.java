@@ -49,8 +49,8 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @param client the instance of the service client containing this operation class.
      */
     TopQueryStatisticsClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TopQueryStatisticsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(TopQueryStatisticsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,47 +61,35 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     private interface TopQueryStatisticsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/topQueryStatistics/{queryStatisticId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/topQueryStatistics/{queryStatisticId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryStatisticInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("queryStatisticId") String queryStatisticId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<QueryStatisticInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("queryStatisticId") String queryStatisticId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
-                + "/{serverName}/topQueryStatistics")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers"
+            + "/{serverName}/topQueryStatistics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TopQueryStatisticsResultList>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @BodyParam("application/json") TopQueryStatisticsInput parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<TopQueryStatisticsResultList>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @BodyParam("application/json") TopQueryStatisticsInput parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopQueryStatisticsResultList>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -116,19 +104,15 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return represents a Query Statistic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryStatisticInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String queryStatisticId) {
+    private Mono<Response<QueryStatisticInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String queryStatisticId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -144,18 +128,8 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            queryStatisticId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, serverName, queryStatisticId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -172,19 +146,15 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return represents a Query Statistic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryStatisticInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context) {
+    private Mono<Response<QueryStatisticInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String queryStatisticId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -200,16 +170,8 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                queryStatisticId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            serverName, queryStatisticId, accept, context);
     }
 
     /**
@@ -226,14 +188,13 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QueryStatisticInner> getAsync(String resourceGroupName, String serverName, String queryStatisticId) {
         return getWithResponseAsync(resourceGroupName, serverName, queryStatisticId)
-            .flatMap(
-                (Response<QueryStatisticInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<QueryStatisticInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -265,8 +226,8 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return represents a Query Statistic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryStatisticInner> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context) {
+    public Response<QueryStatisticInner> getWithResponse(String resourceGroupName, String serverName,
+        String queryStatisticId, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, queryStatisticId, context).block();
     }
 
@@ -282,19 +243,15 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryStatisticInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters) {
+    private Mono<PagedResponse<QueryStatisticInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, TopQueryStatisticsInput parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -311,27 +268,10 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            parameters,
-                            accept,
-                            context))
-            .<PagedResponse<QueryStatisticInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, context))
+            .<PagedResponse<QueryStatisticInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -348,19 +288,15 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryStatisticInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context) {
+    private Mono<PagedResponse<QueryStatisticInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, TopQueryStatisticsInput parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -378,24 +314,10 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                parameters,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                serverName, parameters, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -410,10 +332,9 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return a list of query statistics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QueryStatisticInner> listByServerAsync(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, parameters),
+    private PagedFlux<QueryStatisticInner> listByServerAsync(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, parameters),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -430,10 +351,9 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return a list of query statistics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QueryStatisticInner> listByServerAsync(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, parameters, context),
+    private PagedFlux<QueryStatisticInner> listByServerAsync(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, parameters, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -449,8 +369,8 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return a list of query statistics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryStatisticInner> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters) {
+    public PagedIterable<QueryStatisticInner> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, parameters));
     }
 
@@ -467,8 +387,8 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @return a list of query statistics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryStatisticInner> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context) {
+    public PagedIterable<QueryStatisticInner> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, parameters, context));
     }
 
@@ -487,23 +407,14 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QueryStatisticInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<QueryStatisticInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -523,23 +434,13 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

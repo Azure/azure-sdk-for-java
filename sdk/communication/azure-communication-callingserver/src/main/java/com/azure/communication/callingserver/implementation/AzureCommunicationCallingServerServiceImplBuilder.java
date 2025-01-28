@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /** A builder for creating a new instance of the AzureCommunicationCallingServerService type. */
-@ServiceClientBuilder(serviceClients = {AzureCommunicationCallingServerServiceImpl.class})
+@ServiceClientBuilder(serviceClients = { AzureCommunicationCallingServerServiceImpl.class })
 public final class AzureCommunicationCallingServerServiceImplBuilder {
     private static final String SDK_NAME = "name";
 
@@ -198,33 +198,31 @@ public final class AzureCommunicationCallingServerServiceImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureCommunicationCallingServerServiceImpl client =
-                new AzureCommunicationCallingServerServiceImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        AzureCommunicationCallingServerServiceImpl client
+            = new AzureCommunicationCallingServerServiceImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies
+            .add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
         return httpPipeline;
     }
 }

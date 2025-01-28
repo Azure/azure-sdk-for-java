@@ -15,8 +15,7 @@ public final class SkuEnumerationForExistingResourceResultImpl implements SkuEnu
 
     private final com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager;
 
-    SkuEnumerationForExistingResourceResultImpl(
-        SkuEnumerationForExistingResourceResultInner innerObject,
+    SkuEnumerationForExistingResourceResultImpl(SkuEnumerationForExistingResourceResultInner innerObject,
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

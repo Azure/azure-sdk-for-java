@@ -20,31 +20,27 @@ public final class DeletedAutomationAccountsImpl implements DeletedAutomationAcc
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public DeletedAutomationAccountsImpl(
-        DeletedAutomationAccountsClient innerClient,
+    public DeletedAutomationAccountsImpl(DeletedAutomationAccountsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<DeletedAutomationAccountListResult> listBySubscriptionWithResponse(Context context) {
+        Response<DeletedAutomationAccountListResultInner> inner
+            = this.serviceClient().listBySubscriptionWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeletedAutomationAccountListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeletedAutomationAccountListResult listBySubscription() {
         DeletedAutomationAccountListResultInner inner = this.serviceClient().listBySubscription();
         if (inner != null) {
             return new DeletedAutomationAccountListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DeletedAutomationAccountListResult> listBySubscriptionWithResponse(Context context) {
-        Response<DeletedAutomationAccountListResultInner> inner =
-            this.serviceClient().listBySubscriptionWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DeletedAutomationAccountListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

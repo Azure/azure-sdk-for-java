@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryTimePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryTimePeriod model =
-            BinaryData
-                .fromString("{\"from\":\"2021-02-03T13:27:34Z\",\"to\":\"2021-04-02T23:40:45Z\"}")
+        QueryTimePeriod model
+            = BinaryData.fromString("{\"from\":\"2021-03-16T19:39:08Z\",\"to\":\"2021-06-15T06:42:17Z\"}")
                 .toObject(QueryTimePeriod.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T13:27:34Z"), model.from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T23:40:45Z"), model.to());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-16T19:39:08Z"), model.from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T06:42:17Z"), model.to());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryTimePeriod model =
-            new QueryTimePeriod()
-                .withFrom(OffsetDateTime.parse("2021-02-03T13:27:34Z"))
-                .withTo(OffsetDateTime.parse("2021-04-02T23:40:45Z"));
+        QueryTimePeriod model = new QueryTimePeriod().withFrom(OffsetDateTime.parse("2021-03-16T19:39:08Z"))
+            .withTo(OffsetDateTime.parse("2021-06-15T06:42:17Z"));
         model = BinaryData.fromObject(model).toObject(QueryTimePeriod.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T13:27:34Z"), model.from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T23:40:45Z"), model.to());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-16T19:39:08Z"), model.from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T06:42:17Z"), model.to());
     }
 }

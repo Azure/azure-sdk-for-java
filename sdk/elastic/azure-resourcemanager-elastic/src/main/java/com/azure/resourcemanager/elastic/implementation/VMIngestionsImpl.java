@@ -20,21 +20,18 @@ public final class VMIngestionsImpl implements VMIngestions {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public VMIngestionsImpl(
-        VMIngestionsClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public VMIngestionsImpl(VMIngestionsClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<VMIngestionDetailsResponse> detailsWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<VMIngestionDetailsResponseInner> inner =
-            this.serviceClient().detailsWithResponse(resourceGroupName, monitorName, context);
+    public Response<VMIngestionDetailsResponse> detailsWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<VMIngestionDetailsResponseInner> inner
+            = this.serviceClient().detailsWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VMIngestionDetailsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a Query Text. */
 @Fluent
 public final class QueryTextInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryTextInner.class);
 
     /*
      * The properties of a query text.

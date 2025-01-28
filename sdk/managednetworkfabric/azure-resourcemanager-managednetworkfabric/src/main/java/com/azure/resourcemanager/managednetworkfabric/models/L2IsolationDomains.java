@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of L2IsolationDomains. */
+/**
+ * Resource collection API of L2IsolationDomains.
+ */
 public interface L2IsolationDomains {
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
-    Response<L2IsolationDomain> getByResourceGroupWithResponse(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    Response<L2IsolationDomain> getByResourceGroupWithResponse(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface L2IsolationDomains {
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface L2IsolationDomains {
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface L2IsolationDomains {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -80,14 +82,14 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
-     *
+     * 
+     * Enables isolation domain across the fabric or on specified racks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
@@ -97,12 +99,12 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for device updates.
      */
-    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface L2IsolationDomains {
 
     /**
      * Validates the configuration of the resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -123,14 +125,14 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration.
      */
-    ValidateConfigurationResponse validateConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,9 +144,9 @@ public interface L2IsolationDomains {
 
     /**
      * Execute the commit on the resources.
-     *
-     * <p>Commits the configuration of the given resources.
-     *
+     * 
+     * Commits the configuration of the given resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -153,14 +155,14 @@ public interface L2IsolationDomains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,9 +173,9 @@ public interface L2IsolationDomains {
 
     /**
      * List L2IsolationDomains by resource group.
-     *
-     * <p>Displays L2IsolationDomains list by resource group GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,9 +187,9 @@ public interface L2IsolationDomains {
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
@@ -196,9 +198,9 @@ public interface L2IsolationDomains {
 
     /**
      * List L2IsolationDomains by subscription.
-     *
-     * <p>Displays L2IsolationDomains list by subscription GET method.
-     *
+     * 
+     * Displays L2IsolationDomains list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -209,9 +211,9 @@ public interface L2IsolationDomains {
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,9 +224,9 @@ public interface L2IsolationDomains {
 
     /**
      * Retrieves details of this L2 Isolation Domain.
-     *
-     * <p>Implements L2 Isolation Domain GET method.
-     *
+     * 
+     * Implements L2 Isolation Domain GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +238,9 @@ public interface L2IsolationDomains {
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -248,9 +250,9 @@ public interface L2IsolationDomains {
 
     /**
      * Deletes the L2 Isolation Domain.
-     *
-     * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
-     *
+     * 
+     * Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +263,7 @@ public interface L2IsolationDomains {
 
     /**
      * Begins definition for a new L2IsolationDomain resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new L2IsolationDomain definition.
      */

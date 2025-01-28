@@ -3,6 +3,9 @@
 
 package com.azure.communication.messages;
 
+import com.azure.communication.messages.models.AudioNotificationContent;
+import com.azure.communication.messages.models.DocumentNotificationContent;
+import com.azure.communication.messages.models.ImageNotificationContent;
 import com.azure.communication.messages.models.MessageTemplate;
 import com.azure.communication.messages.models.MessageTemplateBindings;
 import com.azure.communication.messages.models.MessageTemplateDocument;
@@ -11,9 +14,9 @@ import com.azure.communication.messages.models.MessageTemplateQuickAction;
 import com.azure.communication.messages.models.MessageTemplateText;
 import com.azure.communication.messages.models.MessageTemplateValue;
 import com.azure.communication.messages.models.MessageTemplateVideo;
-import com.azure.communication.messages.models.MediaNotificationContent;
 import com.azure.communication.messages.models.TextNotificationContent;
 import com.azure.communication.messages.models.TemplateNotificationContent;
+import com.azure.communication.messages.models.VideoNotificationContent;
 import com.azure.communication.messages.models.SendMessageResult;
 import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSubType;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
@@ -317,16 +320,73 @@ public class NotificationMessageSample {
     }
 
     /*
-     * This sample shows how to send simple media (image, video, document) message with below details
+     * This sample shows how to send image message with below details
      * Note: Business cannot initiate conversation with media message.
      * */
-    public static void sendMediaMessage() {
+    public static void sendImageMessage() {
         //Update the Media URL
         String mediaUrl = "https://wallpapercave.com/wp/wp2163723.jpg";
 
         NotificationMessagesClient client = createClientWithConnectionString();
         SendMessageResult result = client.send(
-            new MediaNotificationContent(CHANNEL_ID, TO_LIST, mediaUrl));
+            new ImageNotificationContent(CHANNEL_ID, TO_LIST, mediaUrl));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send video message with below details
+     * Supported video - video/3gp (.3gp), video/mp4 (.mp4)
+     * Note: Business cannot initiate conversation with media message.
+     * */
+    public void sendVideoMessage() {
+        //Update the Media URL
+        String mediaUrl = "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4";
+        List<String> recipients = new ArrayList<>();
+        recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+        NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+            .connectionString("<CONNECTION_STRING>")
+            .buildClient();
+        SendMessageResult result = client.send(
+            new VideoNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send audio message with below details
+     * Supported audio - audio/aac (.aac), audio/amr (.amr), audio/mpeg (.mp3), audio/a4a (.mp4), audio/ogg (.ogg )
+     * Note: Business cannot initiate conversation with media message.
+     * */
+    public void sendAudioMessage() {
+        //Update the Media URL
+        String mediaUrl = "https://sample-videos.com/audio/mp3/wave.mp3";
+        List<String> recipients = new ArrayList<>();
+        recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+        NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+            .connectionString("<CONNECTION_STRING>")
+            .buildClient();
+        SendMessageResult result = client.send(
+            new AudioNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+    }
+
+    /*
+     * This sample shows how to send document message with below details
+     * Supported Document type - Plain Text (.txt), PDF (.pdf), Microsoft Excel, Word, PowerPoint
+     * Note: Business cannot initiate conversation with media message.
+     * */
+    public void sendDocumentMessage() {
+        //Update the Media URL
+        String mediaUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+        List<String> recipients = new ArrayList<>();
+        recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+        NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+            .connectionString("<CONNECTION_STRING>")
+            .buildClient();
+        SendMessageResult result = client.send(
+            new DocumentNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
         result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }

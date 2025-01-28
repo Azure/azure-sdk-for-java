@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current status of the storage account. */
+/**
+ * Current status of the storage account.
+ */
 public final class StorageAccountStatus extends ExpandableStringEnum<StorageAccountStatus> {
-    /** Static value OK for StorageAccountStatus. */
+    /**
+     * Static value OK for StorageAccountStatus.
+     */
     public static final StorageAccountStatus OK = fromString("OK");
 
-    /** Static value Offline for StorageAccountStatus. */
+    /**
+     * Static value Offline for StorageAccountStatus.
+     */
     public static final StorageAccountStatus OFFLINE = fromString("Offline");
 
-    /** Static value Unknown for StorageAccountStatus. */
+    /**
+     * Static value Unknown for StorageAccountStatus.
+     */
     public static final StorageAccountStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Updating for StorageAccountStatus. */
+    /**
+     * Static value Updating for StorageAccountStatus.
+     */
     public static final StorageAccountStatus UPDATING = fromString("Updating");
 
-    /** Static value NeedsAttention for StorageAccountStatus. */
+    /**
+     * Static value NeedsAttention for StorageAccountStatus.
+     */
     public static final StorageAccountStatus NEEDS_ATTENTION = fromString("NeedsAttention");
 
     /**
      * Creates a new instance of StorageAccountStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class StorageAccountStatus extends ExpandableStringEnum<StorageAcco
 
     /**
      * Creates or finds a StorageAccountStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageAccountStatus.
      */
-    @JsonCreator
     public static StorageAccountStatus fromString(String name) {
         return fromString(name, StorageAccountStatus.class);
     }
 
     /**
      * Gets known StorageAccountStatus values.
-     *
+     * 
      * @return known StorageAccountStatus values.
      */
     public static Collection<StorageAccountStatus> values() {

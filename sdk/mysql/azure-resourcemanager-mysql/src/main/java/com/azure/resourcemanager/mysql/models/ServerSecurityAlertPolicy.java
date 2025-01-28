@@ -94,11 +94,13 @@ public interface ServerSecurityAlertPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ServerSecurityAlertPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the ServerSecurityAlertPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -110,18 +112,15 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withExistingServer(String resourceGroupName, String serverName);
         }
+
         /**
          * The stage of the ServerSecurityAlertPolicy definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithState,
-                DefinitionStages.WithDisabledAlerts,
-                DefinitionStages.WithEmailAddresses,
-                DefinitionStages.WithEmailAccountAdmins,
-                DefinitionStages.WithStorageEndpoint,
-                DefinitionStages.WithStorageAccountAccessKey,
-                DefinitionStages.WithRetentionDays {
+        interface WithCreate extends DefinitionStages.WithState, DefinitionStages.WithDisabledAlerts,
+            DefinitionStages.WithEmailAddresses, DefinitionStages.WithEmailAccountAdmins,
+            DefinitionStages.WithStorageEndpoint, DefinitionStages.WithStorageAccountAccessKey,
+            DefinitionStages.WithRetentionDays {
             /**
              * Executes the create request.
              *
@@ -137,6 +136,7 @@ public interface ServerSecurityAlertPolicy {
              */
             ServerSecurityAlertPolicy create(Context context);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify state. */
         interface WithState {
             /**
@@ -147,6 +147,7 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withState(ServerSecurityAlertPolicyState state);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify disabledAlerts. */
         interface WithDisabledAlerts {
             /**
@@ -159,6 +160,7 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withDisabledAlerts(List<String> disabledAlerts);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify emailAddresses. */
         interface WithEmailAddresses {
             /**
@@ -170,6 +172,7 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withEmailAddresses(List<String> emailAddresses);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify emailAccountAdmins. */
         interface WithEmailAccountAdmins {
             /**
@@ -181,6 +184,7 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withEmailAccountAdmins(Boolean emailAccountAdmins);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify storageEndpoint. */
         interface WithStorageEndpoint {
             /**
@@ -194,6 +198,7 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify storageAccountAccessKey. */
         interface WithStorageAccountAccessKey {
             /**
@@ -206,6 +211,7 @@ public interface ServerSecurityAlertPolicy {
              */
             WithCreate withStorageAccountAccessKey(String storageAccountAccessKey);
         }
+
         /** The stage of the ServerSecurityAlertPolicy definition allowing to specify retentionDays. */
         interface WithRetentionDays {
             /**
@@ -218,6 +224,7 @@ public interface ServerSecurityAlertPolicy {
             WithCreate withRetentionDays(Integer retentionDays);
         }
     }
+
     /**
      * Begins update for the ServerSecurityAlertPolicy resource.
      *
@@ -226,14 +233,9 @@ public interface ServerSecurityAlertPolicy {
     ServerSecurityAlertPolicy.Update update();
 
     /** The template for ServerSecurityAlertPolicy update. */
-    interface Update
-        extends UpdateStages.WithState,
-            UpdateStages.WithDisabledAlerts,
-            UpdateStages.WithEmailAddresses,
-            UpdateStages.WithEmailAccountAdmins,
-            UpdateStages.WithStorageEndpoint,
-            UpdateStages.WithStorageAccountAccessKey,
-            UpdateStages.WithRetentionDays {
+    interface Update extends UpdateStages.WithState, UpdateStages.WithDisabledAlerts, UpdateStages.WithEmailAddresses,
+        UpdateStages.WithEmailAccountAdmins, UpdateStages.WithStorageEndpoint, UpdateStages.WithStorageAccountAccessKey,
+        UpdateStages.WithRetentionDays {
         /**
          * Executes the update request.
          *
@@ -249,6 +251,7 @@ public interface ServerSecurityAlertPolicy {
          */
         ServerSecurityAlertPolicy apply(Context context);
     }
+
     /** The ServerSecurityAlertPolicy update stages. */
     interface UpdateStages {
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify state. */
@@ -261,6 +264,7 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withState(ServerSecurityAlertPolicyState state);
         }
+
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify disabledAlerts. */
         interface WithDisabledAlerts {
             /**
@@ -273,6 +277,7 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withDisabledAlerts(List<String> disabledAlerts);
         }
+
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify emailAddresses. */
         interface WithEmailAddresses {
             /**
@@ -284,6 +289,7 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withEmailAddresses(List<String> emailAddresses);
         }
+
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify emailAccountAdmins. */
         interface WithEmailAccountAdmins {
             /**
@@ -295,6 +301,7 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withEmailAccountAdmins(Boolean emailAccountAdmins);
         }
+
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify storageEndpoint. */
         interface WithStorageEndpoint {
             /**
@@ -308,6 +315,7 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withStorageEndpoint(String storageEndpoint);
         }
+
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify storageAccountAccessKey. */
         interface WithStorageAccountAccessKey {
             /**
@@ -320,6 +328,7 @@ public interface ServerSecurityAlertPolicy {
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
         }
+
         /** The stage of the ServerSecurityAlertPolicy update allowing to specify retentionDays. */
         interface WithRetentionDays {
             /**
@@ -332,6 +341,7 @@ public interface ServerSecurityAlertPolicy {
             Update withRetentionDays(Integer retentionDays);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

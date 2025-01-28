@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
      * @param name a name to look for.
      * @return the corresponding ValueType.
      */
-    @JsonCreator
     public static ValueType fromString(String name) {
         return fromString(name, ValueType.class);
     }

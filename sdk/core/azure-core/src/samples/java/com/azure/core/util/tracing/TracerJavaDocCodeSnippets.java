@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 
 import java.time.Instant;
@@ -222,8 +223,14 @@ public class TracerJavaDocCodeSnippets {
     public void createTracer() {
         ClientOptions clientOptions = new HttpClientOptions();
         // BEGIN: com.azure.core.util.tracing.TracerProvider#create-tracer
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("azure-storage-blobs", "12.20.0",
-            "Microsoft.Storage", clientOptions.getTracingOptions());
+
+        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("azure-storage-blobs")
+            .setLibraryVersion("12.20.0")
+            .setResourceProviderNamespace("Microsoft.Storage")
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");
+
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(libraryOptions, clientOptions.getTracingOptions());
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .tracer(tracer)
             .clientOptions(clientOptions)

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringReceivedRouteInner
 public final class PeeringReceivedRouteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringReceivedRouteInner model =
-            BinaryData
-                .fromString(
-                    "{\"prefix\":\"hbttkphyw\",\"nextHop\":\"vjtoqnermclfp\",\"asPath\":\"hoxus\",\"originAsValidationState\":\"pabgyeps\",\"rpkiValidationState\":\"tazqugxywpmueefj\",\"trustAnchor\":\"fqkquj\",\"receivedTimestamp\":\"suyonobglaocq\"}")
-                .toObject(PeeringReceivedRouteInner.class);
+        PeeringReceivedRouteInner model = BinaryData.fromString(
+            "{\"prefix\":\"vriuhprwmdyvx\",\"nextHop\":\"ayriwwroyqbexrm\",\"asPath\":\"ibycno\",\"originAsValidationState\":\"knme\",\"rpkiValidationState\":\"sgzvahapjyzhpv\",\"trustAnchor\":\"zcjrvxdjzlmwlx\",\"receivedTimestamp\":\"ug\"}")
+            .toObject(PeeringReceivedRouteInner.class);
     }
 
     @org.junit.jupiter.api.Test

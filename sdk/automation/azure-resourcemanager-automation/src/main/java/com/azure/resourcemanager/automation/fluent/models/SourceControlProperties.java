@@ -5,70 +5,75 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Definition of the source control properties. */
+/**
+ * Definition of the source control properties.
+ */
 @Fluent
-public final class SourceControlProperties {
+public final class SourceControlProperties implements JsonSerializable<SourceControlProperties> {
     /*
      * The repo url of the source control.
      */
-    @JsonProperty(value = "repoUrl")
     private String repoUrl;
 
     /*
      * The repo branch of the source control. Include branch as empty string for VsoTfvc.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The folder path of the source control.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * The auto sync of the source control. Default is false.
      */
-    @JsonProperty(value = "autoSync")
     private Boolean autoSync;
 
     /*
      * The auto publish of the source control. Default is true.
      */
-    @JsonProperty(value = "publishRunbook")
     private Boolean publishRunbook;
 
     /*
      * The source type. Must be one of VsoGit, VsoTfvc, GitHub.
      */
-    @JsonProperty(value = "sourceType")
     private SourceType sourceType;
 
     /*
      * The description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * The last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /**
+     * Creates an instance of SourceControlProperties class.
+     */
+    public SourceControlProperties() {
+    }
+
+    /**
      * Get the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -77,7 +82,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the repoUrl property: The repo url of the source control.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -88,7 +93,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -97,7 +102,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the branch property: The repo branch of the source control. Include branch as empty string for VsoTfvc.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -108,7 +113,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the folderPath property: The folder path of the source control.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -117,7 +122,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the folderPath property: The folder path of the source control.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -128,7 +133,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the autoSync property: The auto sync of the source control. Default is false.
-     *
+     * 
      * @return the autoSync value.
      */
     public Boolean autoSync() {
@@ -137,7 +142,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the autoSync property: The auto sync of the source control. Default is false.
-     *
+     * 
      * @param autoSync the autoSync value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -148,7 +153,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @return the publishRunbook value.
      */
     public Boolean publishRunbook() {
@@ -157,7 +162,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the publishRunbook property: The auto publish of the source control. Default is true.
-     *
+     * 
      * @param publishRunbook the publishRunbook value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -168,7 +173,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -177,7 +182,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the sourceType property: The source type. Must be one of VsoGit, VsoTfvc, GitHub.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -188,7 +193,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the description property: The description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -197,7 +202,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the description property: The description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -208,7 +213,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the creationTime property: The creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -217,7 +222,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the creationTime property: The creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -228,7 +233,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the lastModifiedTime property: The last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -237,7 +242,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the lastModifiedTime property: The last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -248,9 +253,75 @@ public final class SourceControlProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("repoUrl", this.repoUrl);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeBooleanField("autoSync", this.autoSync);
+        jsonWriter.writeBooleanField("publishRunbook", this.publishRunbook);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceControlProperties.
+     */
+    public static SourceControlProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlProperties deserializedSourceControlProperties = new SourceControlProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("repoUrl".equals(fieldName)) {
+                    deserializedSourceControlProperties.repoUrl = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedSourceControlProperties.branch = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedSourceControlProperties.folderPath = reader.getString();
+                } else if ("autoSync".equals(fieldName)) {
+                    deserializedSourceControlProperties.autoSync = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publishRunbook".equals(fieldName)) {
+                    deserializedSourceControlProperties.publishRunbook = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedSourceControlProperties.sourceType = SourceType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSourceControlProperties.description = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedSourceControlProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSourceControlProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlProperties;
+        });
     }
 }

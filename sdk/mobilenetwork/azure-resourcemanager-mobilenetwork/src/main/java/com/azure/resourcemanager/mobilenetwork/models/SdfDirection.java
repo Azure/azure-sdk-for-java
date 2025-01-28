@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SdfDirection extends ExpandableStringEnum<SdfDirection> {
      * @param name a name to look for.
      * @return the corresponding SdfDirection.
      */
-    @JsonCreator
     public static SdfDirection fromString(String name) {
         return fromString(name, SdfDirection.class);
     }

@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of a contact. */
+/**
+ * Status of a contact.
+ */
 public final class ContactsStatus extends ExpandableStringEnum<ContactsStatus> {
-    /** Static value scheduled for ContactsStatus. */
+    /**
+     * Static value scheduled for ContactsStatus.
+     */
     public static final ContactsStatus SCHEDULED = fromString("scheduled");
 
-    /** Static value cancelled for ContactsStatus. */
+    /**
+     * Static value cancelled for ContactsStatus.
+     */
     public static final ContactsStatus CANCELLED = fromString("cancelled");
 
-    /** Static value succeeded for ContactsStatus. */
+    /**
+     * Static value succeeded for ContactsStatus.
+     */
     public static final ContactsStatus SUCCEEDED = fromString("succeeded");
 
-    /** Static value failed for ContactsStatus. */
+    /**
+     * Static value failed for ContactsStatus.
+     */
     public static final ContactsStatus FAILED = fromString("failed");
 
-    /** Static value providerCancelled for ContactsStatus. */
+    /**
+     * Static value providerCancelled for ContactsStatus.
+     */
     public static final ContactsStatus PROVIDER_CANCELLED = fromString("providerCancelled");
 
     /**
      * Creates a new instance of ContactsStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ContactsStatus extends ExpandableStringEnum<ContactsStatus> {
 
     /**
      * Creates or finds a ContactsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContactsStatus.
      */
-    @JsonCreator
     public static ContactsStatus fromString(String name) {
         return fromString(name, ContactsStatus.class);
     }
 
     /**
      * Gets known ContactsStatus values.
-     *
+     * 
      * @return known ContactsStatus values.
      */
     public static Collection<ContactsStatus> values() {

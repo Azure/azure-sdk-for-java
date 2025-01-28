@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -43,11 +44,6 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      * are allowed to be placed according to the placement constraints on the service.
      */
     private Integer minInstancePercentage;
-
-    /*
-     * The current deployment or provisioning state, which only appears in the response
-     */
-    private String provisioningState;
 
     /**
      * Creates an instance of StatelessServiceProperties class.
@@ -139,17 +135,6 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
     public StatelessServiceProperties withMinInstancePercentage(Integer minInstancePercentage) {
         this.minInstancePercentage = minInstancePercentage;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -251,8 +236,33 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      */
     @Override
     public void validate() {
-        super.validate();
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+        if (scalingPolicies() != null) {
+            scalingPolicies().forEach(e -> e.validate());
+        }
+        if (serviceTypeName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceTypeName in model StatelessServiceProperties"));
+        }
+        if (partitionDescription() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partitionDescription in model StatelessServiceProperties"));
+        } else {
+            partitionDescription().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StatelessServiceProperties.class);
 
     /**
      * {@inheritDoc}
@@ -322,7 +332,7 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
                     List<ScalingPolicy> scalingPolicies = reader.readArray(reader1 -> ScalingPolicy.fromJson(reader1));
                     deserializedStatelessServiceProperties.withScalingPolicies(scalingPolicies);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatelessServiceProperties.provisioningState = reader.getString();
+                    deserializedStatelessServiceProperties.withProvisioningState(reader.getString());
                 } else if ("servicePackageActivationMode".equals(fieldName)) {
                     deserializedStatelessServiceProperties
                         .withServicePackageActivationMode(ServicePackageActivationMode.fromString(reader.getString()));

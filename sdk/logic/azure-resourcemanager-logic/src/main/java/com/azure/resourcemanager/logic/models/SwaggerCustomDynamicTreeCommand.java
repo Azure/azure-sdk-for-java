@@ -5,69 +5,67 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The swagger tree command. */
+/**
+ * The swagger tree command.
+ */
 @Fluent
-public final class SwaggerCustomDynamicTreeCommand {
+public final class SwaggerCustomDynamicTreeCommand implements JsonSerializable<SwaggerCustomDynamicTreeCommand> {
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "itemsPath")
     private String itemsPath;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "itemValuePath")
     private String itemValuePath;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "itemTitlePath")
     private String itemTitlePath;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "itemFullTitlePath")
     private String itemFullTitlePath;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "itemIsParent")
     private String itemIsParent;
 
     /*
      * The path to an item property which defines the display name of the item.
      */
-    @JsonProperty(value = "selectableFilter")
     private String selectableFilter;
 
     /*
      * Dictionary of <SwaggerCustomDynamicTreeParameter>
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerCustomDynamicTreeParameter> parameters;
 
-    /** Creates an instance of SwaggerCustomDynamicTreeCommand class. */
+    /**
+     * Creates an instance of SwaggerCustomDynamicTreeCommand class.
+     */
     public SwaggerCustomDynamicTreeCommand() {
     }
 
     /**
      * Get the operationId property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -76,7 +74,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the operationId property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -87,7 +85,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the itemsPath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the itemsPath value.
      */
     public String itemsPath() {
@@ -96,7 +94,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the itemsPath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param itemsPath the itemsPath value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -107,7 +105,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the itemValuePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the itemValuePath value.
      */
     public String itemValuePath() {
@@ -116,7 +114,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the itemValuePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param itemValuePath the itemValuePath value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -127,7 +125,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the itemTitlePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the itemTitlePath value.
      */
     public String itemTitlePath() {
@@ -136,7 +134,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the itemTitlePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param itemTitlePath the itemTitlePath value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -147,7 +145,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the itemFullTitlePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the itemFullTitlePath value.
      */
     public String itemFullTitlePath() {
@@ -156,7 +154,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the itemFullTitlePath property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param itemFullTitlePath the itemFullTitlePath value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -167,7 +165,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the itemIsParent property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the itemIsParent value.
      */
     public String itemIsParent() {
@@ -176,7 +174,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the itemIsParent property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param itemIsParent the itemIsParent value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -187,7 +185,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the selectableFilter property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @return the selectableFilter value.
      */
     public String selectableFilter() {
@@ -196,7 +194,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the selectableFilter property: The path to an item property which defines the display name of the item.
-     *
+     * 
      * @param selectableFilter the selectableFilter value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -207,7 +205,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Get the parameters property: Dictionary of &lt;SwaggerCustomDynamicTreeParameter&gt;.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, SwaggerCustomDynamicTreeParameter> parameters() {
@@ -216,7 +214,7 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Set the parameters property: Dictionary of &lt;SwaggerCustomDynamicTreeParameter&gt;.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SwaggerCustomDynamicTreeCommand object itself.
      */
@@ -227,19 +225,76 @@ public final class SwaggerCustomDynamicTreeCommand {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("itemsPath", this.itemsPath);
+        jsonWriter.writeStringField("itemValuePath", this.itemValuePath);
+        jsonWriter.writeStringField("itemTitlePath", this.itemTitlePath);
+        jsonWriter.writeStringField("itemFullTitlePath", this.itemFullTitlePath);
+        jsonWriter.writeStringField("itemIsParent", this.itemIsParent);
+        jsonWriter.writeStringField("selectableFilter", this.selectableFilter);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerCustomDynamicTreeCommand from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerCustomDynamicTreeCommand if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerCustomDynamicTreeCommand.
+     */
+    public static SwaggerCustomDynamicTreeCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerCustomDynamicTreeCommand deserializedSwaggerCustomDynamicTreeCommand
+                = new SwaggerCustomDynamicTreeCommand();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.operationId = reader.getString();
+                } else if ("itemsPath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.itemsPath = reader.getString();
+                } else if ("itemValuePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.itemValuePath = reader.getString();
+                } else if ("itemTitlePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.itemTitlePath = reader.getString();
+                } else if ("itemFullTitlePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.itemFullTitlePath = reader.getString();
+                } else if ("itemIsParent".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.itemIsParent = reader.getString();
+                } else if ("selectableFilter".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicTreeCommand.selectableFilter = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, SwaggerCustomDynamicTreeParameter> parameters
+                        = reader.readMap(reader1 -> SwaggerCustomDynamicTreeParameter.fromJson(reader1));
+                    deserializedSwaggerCustomDynamicTreeCommand.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerCustomDynamicTreeCommand;
+        });
     }
 }

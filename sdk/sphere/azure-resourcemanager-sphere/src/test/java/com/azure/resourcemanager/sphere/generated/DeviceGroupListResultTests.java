@@ -27,23 +27,28 @@ public final class DeviceGroupListResultTests {
         Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
             model.value().get(0).properties().allowCrashDumpsCollection());
         Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
+        Assertions.assertEquals("sllr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeviceGroupListResult model = new DeviceGroupListResult().withValue(Arrays.asList(
             new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("oaeupfhyhltrpmo")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
             new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("yzydagfuaxbezyi")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.EU)),
             new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("s")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
-                .withRegionalDataBoundary(RegionalDataBoundary.NONE))));
+                .withRegionalDataBoundary(RegionalDataBoundary.NONE))))
+            .withNextLink("sllr");
         model = BinaryData.fromObject(model).toObject(DeviceGroupListResult.class);
         Assertions.assertEquals("oaeupfhyhltrpmo", model.value().get(0).properties().description());
         Assertions.assertEquals(OSFeedType.RETAIL_EVAL, model.value().get(0).properties().osFeedType());
@@ -51,5 +56,6 @@ public final class DeviceGroupListResultTests {
         Assertions.assertEquals(AllowCrashDumpCollection.ENABLED,
             model.value().get(0).properties().allowCrashDumpsCollection());
         Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
+        Assertions.assertEquals("sllr", model.nextLink());
     }
 }

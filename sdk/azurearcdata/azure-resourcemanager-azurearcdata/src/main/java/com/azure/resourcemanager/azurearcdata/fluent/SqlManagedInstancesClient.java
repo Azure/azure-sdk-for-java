@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurearcdata.fluent.models.SqlManagedInstanceInner;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceUpdate;
 
-/** An instance of this class provides access to all the operations defined in SqlManagedInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlManagedInstancesClient.
+ */
 public interface SqlManagedInstancesClient {
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface SqlManagedInstancesClient {
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,9 +42,9 @@ public interface SqlManagedInstancesClient {
 
     /**
      * List sqlManagedInstance resources in the resource group
-     *
-     * <p>Gets all sqlManagedInstances in a resource group.
-     *
+     * 
+     * Gets all sqlManagedInstances in a resource group.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,9 +56,9 @@ public interface SqlManagedInstancesClient {
 
     /**
      * List sqlManagedInstance resources in the resource group
-     *
-     * <p>Gets all sqlManagedInstances in a resource group.
-     *
+     * 
+     * Gets all sqlManagedInstances in a resource group.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,7 +71,7 @@ public interface SqlManagedInstancesClient {
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
@@ -79,12 +81,12 @@ public interface SqlManagedInstancesClient {
      * @return a SqlManagedInstance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlManagedInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlManagedInstanceName, Context context);
+    Response<SqlManagedInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlManagedInstanceName, Context context);
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +99,7 @@ public interface SqlManagedInstancesClient {
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -107,12 +109,12 @@ public interface SqlManagedInstancesClient {
      * @return the {@link SyncPoller} for polling of a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance);
+    SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(String resourceGroupName,
+        String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance);
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -123,15 +125,12 @@ public interface SqlManagedInstancesClient {
      * @return the {@link SyncPoller} for polling of a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
-        Context context);
+    SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(String resourceGroupName,
+        String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance, Context context);
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -141,12 +140,12 @@ public interface SqlManagedInstancesClient {
      * @return a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlManagedInstanceInner create(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance);
+    SqlManagedInstanceInner create(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceInner sqlManagedInstance);
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -157,15 +156,12 @@ public interface SqlManagedInstancesClient {
      * @return a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlManagedInstanceInner create(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
-        Context context);
+    SqlManagedInstanceInner create(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceInner sqlManagedInstance, Context context);
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +174,7 @@ public interface SqlManagedInstancesClient {
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
@@ -188,12 +184,12 @@ public interface SqlManagedInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlManagedInstanceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlManagedInstanceName,
+        Context context);
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +201,7 @@ public interface SqlManagedInstancesClient {
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
@@ -218,7 +214,7 @@ public interface SqlManagedInstancesClient {
 
     /**
      * Updates a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of sqlManagedInstance.
      * @param parameters The SQL Managed Instance.
@@ -229,12 +225,12 @@ public interface SqlManagedInstancesClient {
      * @return a SqlManagedInstance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlManagedInstanceInner> updateWithResponse(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters, Context context);
+    Response<SqlManagedInstanceInner> updateWithResponse(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceUpdate parameters, Context context);
 
     /**
      * Updates a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of sqlManagedInstance.
      * @param parameters The SQL Managed Instance.
@@ -244,6 +240,6 @@ public interface SqlManagedInstancesClient {
      * @return a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlManagedInstanceInner update(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters);
+    SqlManagedInstanceInner update(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceUpdate parameters);
 }

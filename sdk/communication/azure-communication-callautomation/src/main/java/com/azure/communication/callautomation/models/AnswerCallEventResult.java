@@ -47,7 +47,8 @@ public final class AnswerCallEventResult {
     }
 
     /**
-     * 
+     * Gets the answer failed failure event.
+     *
      * @return the answer failed failure event.
      */
     public AnswerFailed getFailureResult() {

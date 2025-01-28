@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentLicenseResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentLicenseResponseInner model =
-            BinaryData
-                .fromString("{\"temporaryLicenseChain\":[\"xvd\"],\"signature\":\"jgrtfwvukxga\"}")
+        DeploymentLicenseResponseInner model
+            = BinaryData.fromString("{\"temporaryLicenseChain\":[\"xvd\"],\"signature\":\"jgrtfwvukxga\"}")
                 .toObject(DeploymentLicenseResponseInner.class);
         Assertions.assertEquals("xvd", model.temporaryLicenseChain().get(0));
         Assertions.assertEquals("jgrtfwvukxga", model.signature());
@@ -22,9 +21,8 @@ public final class DeploymentLicenseResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentLicenseResponseInner model =
-            new DeploymentLicenseResponseInner()
-                .withTemporaryLicenseChain(Arrays.asList("xvd"))
+        DeploymentLicenseResponseInner model
+            = new DeploymentLicenseResponseInner().withTemporaryLicenseChain(Arrays.asList("xvd"))
                 .withSignature("jgrtfwvukxga");
         model = BinaryData.fromObject(model).toObject(DeploymentLicenseResponseInner.class);
         Assertions.assertEquals("xvd", model.temporaryLicenseChain().get(0));

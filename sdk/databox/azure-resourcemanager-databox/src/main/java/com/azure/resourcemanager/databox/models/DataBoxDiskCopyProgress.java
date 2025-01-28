@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** DataBox Disk Copy Progress. */
+/**
+ * DataBox Disk Copy Progress.
+ */
 @Immutable
-public final class DataBoxDiskCopyProgress {
+public final class DataBoxDiskCopyProgress implements JsonSerializable<DataBoxDiskCopyProgress> {
     /*
      * The serial number of the disk
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * Bytes copied during the copy of disk.
      */
-    @JsonProperty(value = "bytesCopied", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesCopied;
 
     /*
      * Indicates the percentage completed for the copy of the disk.
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
      * The Status of the copy
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CopyStatus status;
 
     /*
      * Error, if any, in the stage
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CloudError error;
 
     /*
      * Available actions on the job.
      */
-    @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
     private List<CustomerResolutionCode> actions;
 
-    /** Creates an instance of DataBoxDiskCopyProgress class. */
+    /**
+     * Creates an instance of DataBoxDiskCopyProgress class.
+     */
     public DataBoxDiskCopyProgress() {
     }
 
     /**
      * Get the serialNumber property: The serial number of the disk.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -62,7 +64,7 @@ public final class DataBoxDiskCopyProgress {
 
     /**
      * Get the bytesCopied property: Bytes copied during the copy of disk.
-     *
+     * 
      * @return the bytesCopied value.
      */
     public Long bytesCopied() {
@@ -71,7 +73,7 @@ public final class DataBoxDiskCopyProgress {
 
     /**
      * Get the percentComplete property: Indicates the percentage completed for the copy of the disk.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -80,7 +82,7 @@ public final class DataBoxDiskCopyProgress {
 
     /**
      * Get the status property: The Status of the copy.
-     *
+     * 
      * @return the status value.
      */
     public CopyStatus status() {
@@ -89,7 +91,7 @@ public final class DataBoxDiskCopyProgress {
 
     /**
      * Get the error property: Error, if any, in the stage.
-     *
+     * 
      * @return the error value.
      */
     public CloudError error() {
@@ -98,7 +100,7 @@ public final class DataBoxDiskCopyProgress {
 
     /**
      * Get the actions property: Available actions on the job.
-     *
+     * 
      * @return the actions value.
      */
     public List<CustomerResolutionCode> actions() {
@@ -107,12 +109,59 @@ public final class DataBoxDiskCopyProgress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxDiskCopyProgress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxDiskCopyProgress if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxDiskCopyProgress.
+     */
+    public static DataBoxDiskCopyProgress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxDiskCopyProgress deserializedDataBoxDiskCopyProgress = new DataBoxDiskCopyProgress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serialNumber".equals(fieldName)) {
+                    deserializedDataBoxDiskCopyProgress.serialNumber = reader.getString();
+                } else if ("bytesCopied".equals(fieldName)) {
+                    deserializedDataBoxDiskCopyProgress.bytesCopied = reader.getNullable(JsonReader::getLong);
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedDataBoxDiskCopyProgress.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedDataBoxDiskCopyProgress.status = CopyStatus.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedDataBoxDiskCopyProgress.error = CloudError.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedDataBoxDiskCopyProgress.actions = actions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxDiskCopyProgress;
+        });
     }
 }

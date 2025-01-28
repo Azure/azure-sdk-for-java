@@ -79,9 +79,7 @@ public final class NamespacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NamespacePropertiesEntryImpl>> getWithResponseAsync() {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(
-            context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
     /**

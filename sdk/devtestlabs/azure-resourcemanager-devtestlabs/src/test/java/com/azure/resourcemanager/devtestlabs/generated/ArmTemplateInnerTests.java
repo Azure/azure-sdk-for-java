@@ -13,21 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmTemplateInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"c\",\"description\":\"ynqwwncwzzhxgk\",\"publisher\":\"mgucna\",\"icon\":\"t\",\"contents\":\"dataellwptfdy\",\"createdDate\":\"2020-12-31T02:22:45Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ac\",\"parametersValueInfo\":\"datapzfqrhhuaoppp\"}],\"enabled\":false},\"location\":\"qxolzdahzx\",\"tags\":{\"grcfb\":\"bgbkdmoizpost\",\"bpvjymjhx\":\"nrmfqjhhk\",\"n\":\"j\"},\"id\":\"u\",\"name\":\"ivkrtsw\",\"type\":\"xqzvszjfa\"}")
-                .toObject(ArmTemplateInner.class);
+        ArmTemplateInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"c\",\"description\":\"ynqwwncwzzhxgk\",\"publisher\":\"mgucna\",\"icon\":\"t\",\"contents\":\"dataellwptfdy\",\"createdDate\":\"2020-12-31T02:22:45Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ac\",\"parametersValueInfo\":\"datapzfqrhhuaoppp\"}],\"enabled\":false},\"location\":\"qxolzdahzx\",\"tags\":{\"grcfb\":\"bgbkdmoizpost\",\"bpvjymjhx\":\"nrmfqjhhk\",\"n\":\"j\"},\"id\":\"u\",\"name\":\"ivkrtsw\",\"type\":\"xqzvszjfa\"}")
+            .toObject(ArmTemplateInner.class);
         Assertions.assertEquals("qxolzdahzx", model.location());
         Assertions.assertEquals("bgbkdmoizpost", model.tags().get("grcfb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmTemplateInner model =
-            new ArmTemplateInner()
-                .withLocation("qxolzdahzx")
-                .withTags(mapOf("grcfb", "bgbkdmoizpost", "bpvjymjhx", "nrmfqjhhk", "n", "j"));
+        ArmTemplateInner model = new ArmTemplateInner().withLocation("qxolzdahzx")
+            .withTags(mapOf("grcfb", "bgbkdmoizpost", "bpvjymjhx", "nrmfqjhhk", "n", "j"));
         model = BinaryData.fromObject(model).toObject(ArmTemplateInner.class);
         Assertions.assertEquals("qxolzdahzx", model.location());
         Assertions.assertEquals("bgbkdmoizpost", model.tags().get("grcfb"));

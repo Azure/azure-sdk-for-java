@@ -20,14 +20,22 @@ public final class OriginsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void originsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getOrigins().create("RG", "profile1", "endpoint1",
-            "www-someDomain-net",
-            new OriginInner().withHostname("www.someDomain.net").withHttpPort(80).withHttpsPort(443)
-                .withOriginHostHeader("www.someDomain.net").withPriority(1).withWeight(50).withEnabled(true)
-                .withPrivateLinkResourceId(
-                    "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1")
-                .withPrivateLinkLocation("eastus").withPrivateLinkApprovalMessage(
-                    "Please approve the connection request for this Private Link"),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getOrigins()
+            .create("RG", "profile1", "endpoint1", "www-someDomain-net",
+                new OriginInner().withHostname("www.someDomain.net")
+                    .withHttpPort(80)
+                    .withHttpsPort(443)
+                    .withOriginHostHeader("www.someDomain.net")
+                    .withPriority(1)
+                    .withWeight(50)
+                    .withEnabled(true)
+                    .withPrivateLinkResourceId(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1")
+                    .withPrivateLinkLocation("eastus")
+                    .withPrivateLinkApprovalMessage("Please approve the connection request for this Private Link"),
+                com.azure.core.util.Context.NONE);
     }
 }

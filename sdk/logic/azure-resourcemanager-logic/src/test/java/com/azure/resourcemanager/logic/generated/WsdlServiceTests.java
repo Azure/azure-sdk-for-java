@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WsdlServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WsdlService model =
-            BinaryData
-                .fromString(
-                    "{\"qualifiedName\":\"udcdabtqwpwyawb\",\"EndpointQualifiedNames\":[\"qbucljgkyexaoguy\",\"i\"]}")
+        WsdlService model
+            = BinaryData.fromString("{\"qualifiedName\":\"ycjimryvwgcwwpbm\",\"EndpointQualifiedNames\":[\"esyds\"]}")
                 .toObject(WsdlService.class);
-        Assertions.assertEquals("udcdabtqwpwyawb", model.qualifiedName());
-        Assertions.assertEquals("qbucljgkyexaoguy", model.endpointQualifiedNames().get(0));
+        Assertions.assertEquals("ycjimryvwgcwwpbm", model.qualifiedName());
+        Assertions.assertEquals("esyds", model.endpointQualifiedNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WsdlService model =
-            new WsdlService()
-                .withQualifiedName("udcdabtqwpwyawb")
-                .withEndpointQualifiedNames(Arrays.asList("qbucljgkyexaoguy", "i"));
+        WsdlService model = new WsdlService().withQualifiedName("ycjimryvwgcwwpbm")
+            .withEndpointQualifiedNames(Arrays.asList("esyds"));
         model = BinaryData.fromObject(model).toObject(WsdlService.class);
-        Assertions.assertEquals("udcdabtqwpwyawb", model.qualifiedName());
-        Assertions.assertEquals("qbucljgkyexaoguy", model.endpointQualifiedNames().get(0));
+        Assertions.assertEquals("ycjimryvwgcwwpbm", model.qualifiedName());
+        Assertions.assertEquals("esyds", model.endpointQualifiedNames().get(0));
     }
 }

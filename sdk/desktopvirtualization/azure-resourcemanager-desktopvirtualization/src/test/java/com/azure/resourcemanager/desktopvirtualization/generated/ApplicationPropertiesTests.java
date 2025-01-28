@@ -13,50 +13,46 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"objectId\":\"jphuopxodlqi\",\"description\":\"torzih\",\"friendlyName\":\"osjswsr\",\"filePath\":\"lyzrpzbchckqqzqi\",\"msixPackageFamilyName\":\"iysui\",\"msixPackageApplicationId\":\"ynkedyatrwyhqmib\",\"applicationType\":\"InBuilt\",\"commandLineSetting\":\"Require\",\"commandLineArguments\":\"tsmypyynpcdp\",\"showInPortal\":true,\"iconPath\":\"g\",\"iconIndex\":83591449,\"iconHash\":\"mabiknsorgjhxb\"}")
-                .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("torzih", model.description());
-        Assertions.assertEquals("osjswsr", model.friendlyName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.filePath());
-        Assertions.assertEquals("iysui", model.msixPackageFamilyName());
-        Assertions.assertEquals("ynkedyatrwyhqmib", model.msixPackageApplicationId());
+        ApplicationProperties model = BinaryData.fromString(
+            "{\"objectId\":\"dvwvgpio\",\"description\":\"wxrt\",\"friendlyName\":\"dxepxgyq\",\"filePath\":\"vrvmnpkukghim\",\"msixPackageFamilyName\":\"lxgwimfnjhf\",\"msixPackageApplicationId\":\"wmszkk\",\"applicationType\":\"InBuilt\",\"commandLineSetting\":\"Require\",\"commandLineArguments\":\"yfkzik\",\"showInPortal\":false,\"iconPath\":\"n\",\"iconIndex\":693357808,\"iconHash\":\"xwczelpcire\"}")
+            .toObject(ApplicationProperties.class);
+        Assertions.assertEquals("wxrt", model.description());
+        Assertions.assertEquals("dxepxgyq", model.friendlyName());
+        Assertions.assertEquals("vrvmnpkukghim", model.filePath());
+        Assertions.assertEquals("lxgwimfnjhf", model.msixPackageFamilyName());
+        Assertions.assertEquals("wmszkk", model.msixPackageApplicationId());
         Assertions.assertEquals(RemoteApplicationType.IN_BUILT, model.applicationType());
         Assertions.assertEquals(CommandLineSetting.REQUIRE, model.commandLineSetting());
-        Assertions.assertEquals("tsmypyynpcdp", model.commandLineArguments());
-        Assertions.assertEquals(true, model.showInPortal());
-        Assertions.assertEquals("g", model.iconPath());
-        Assertions.assertEquals(83591449, model.iconIndex());
+        Assertions.assertEquals("yfkzik", model.commandLineArguments());
+        Assertions.assertEquals(false, model.showInPortal());
+        Assertions.assertEquals("n", model.iconPath());
+        Assertions.assertEquals(693357808, model.iconIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationProperties model =
-            new ApplicationProperties()
-                .withDescription("torzih")
-                .withFriendlyName("osjswsr")
-                .withFilePath("lyzrpzbchckqqzqi")
-                .withMsixPackageFamilyName("iysui")
-                .withMsixPackageApplicationId("ynkedyatrwyhqmib")
-                .withApplicationType(RemoteApplicationType.IN_BUILT)
-                .withCommandLineSetting(CommandLineSetting.REQUIRE)
-                .withCommandLineArguments("tsmypyynpcdp")
-                .withShowInPortal(true)
-                .withIconPath("g")
-                .withIconIndex(83591449);
+        ApplicationProperties model = new ApplicationProperties().withDescription("wxrt")
+            .withFriendlyName("dxepxgyq")
+            .withFilePath("vrvmnpkukghim")
+            .withMsixPackageFamilyName("lxgwimfnjhf")
+            .withMsixPackageApplicationId("wmszkk")
+            .withApplicationType(RemoteApplicationType.IN_BUILT)
+            .withCommandLineSetting(CommandLineSetting.REQUIRE)
+            .withCommandLineArguments("yfkzik")
+            .withShowInPortal(false)
+            .withIconPath("n")
+            .withIconIndex(693357808);
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("torzih", model.description());
-        Assertions.assertEquals("osjswsr", model.friendlyName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.filePath());
-        Assertions.assertEquals("iysui", model.msixPackageFamilyName());
-        Assertions.assertEquals("ynkedyatrwyhqmib", model.msixPackageApplicationId());
+        Assertions.assertEquals("wxrt", model.description());
+        Assertions.assertEquals("dxepxgyq", model.friendlyName());
+        Assertions.assertEquals("vrvmnpkukghim", model.filePath());
+        Assertions.assertEquals("lxgwimfnjhf", model.msixPackageFamilyName());
+        Assertions.assertEquals("wmszkk", model.msixPackageApplicationId());
         Assertions.assertEquals(RemoteApplicationType.IN_BUILT, model.applicationType());
         Assertions.assertEquals(CommandLineSetting.REQUIRE, model.commandLineSetting());
-        Assertions.assertEquals("tsmypyynpcdp", model.commandLineArguments());
-        Assertions.assertEquals(true, model.showInPortal());
-        Assertions.assertEquals("g", model.iconPath());
-        Assertions.assertEquals(83591449, model.iconIndex());
+        Assertions.assertEquals("yfkzik", model.commandLineArguments());
+        Assertions.assertEquals(false, model.showInPortal());
+        Assertions.assertEquals("n", model.iconPath());
+        Assertions.assertEquals(693357808, model.iconIndex());
     }
 }

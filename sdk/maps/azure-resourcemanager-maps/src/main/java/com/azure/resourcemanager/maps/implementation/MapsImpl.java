@@ -26,22 +26,22 @@ public final class MapsImpl implements Maps {
 
     public PagedIterable<OperationDetail> listOperations() {
         PagedIterable<OperationDetailInner> inner = this.serviceClient().listOperations();
-        return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationDetail> listOperations(Context context) {
         PagedIterable<OperationDetailInner> inner = this.serviceClient().listOperations(context);
-        return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationDetail> list() {
         PagedIterable<OperationDetailInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationDetail> list(Context context) {
         PagedIterable<OperationDetailInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDetailImpl(inner1, this.manager()));
     }
 
     private MapsClient serviceClient() {

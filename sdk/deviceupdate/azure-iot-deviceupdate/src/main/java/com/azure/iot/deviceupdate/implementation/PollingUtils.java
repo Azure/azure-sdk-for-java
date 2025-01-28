@@ -44,7 +44,7 @@ public final class PollingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
-                                                  TypeReference<T> typeReference) {
+        TypeReference<T> typeReference) {
         if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
             return Mono.just((T) binaryData);
         } else {
@@ -68,7 +68,7 @@ public final class PollingUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> convertResponse(Object response, ObjectSerializer serializer,
-                                              TypeReference<T> typeReference) {
+        TypeReference<T> typeReference) {
         if (response == null) {
             return Mono.empty();
         } else if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.education.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.fluent.models.LabDetailsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of labs. */
+/**
+ * List of labs.
+ */
 @Immutable
-public final class LabListResult {
+public final class LabListResult implements JsonSerializable<LabListResult> {
     /*
      * The list of labs.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabDetailsInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LabListResult class. */
+    /**
+     * Creates an instance of LabListResult class.
+     */
     public LabListResult() {
     }
 
     /**
      * Get the value property: The list of labs.
-     *
+     * 
      * @return the value value.
      */
     public List<LabDetailsInner> value() {
@@ -39,7 +45,7 @@ public final class LabListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class LabListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabListResult.
+     */
+    public static LabListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabListResult deserializedLabListResult = new LabListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LabDetailsInner> value = reader.readArray(reader1 -> LabDetailsInner.fromJson(reader1));
+                    deserializedLabListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLabListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabListResult;
+        });
     }
 }

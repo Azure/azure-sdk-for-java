@@ -7,9 +7,11 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,33 +23,42 @@ public final class ApplicationResourceUpdate extends ProxyResource {
     /*
      * The application resource properties for patch operations.
      */
-    @JsonProperty(value = "properties")
     private ApplicationResourceUpdateProperties innerProperties;
 
     /*
      * It will be deprecated in New API, resource location depends on the parent resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Azure resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Azure resource etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ApplicationResourceUpdate class.
@@ -120,6 +131,36 @@ public final class ApplicationResourceUpdate extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -329,5 +370,60 @@ public final class ApplicationResourceUpdate extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationResourceUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationResourceUpdate.
+     */
+    public static ApplicationResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationResourceUpdate deserializedApplicationResourceUpdate = new ApplicationResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.innerProperties
+                        = ApplicationResourceUpdateProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationResourceUpdate.tags = tags;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationResourceUpdate;
+        });
     }
 }

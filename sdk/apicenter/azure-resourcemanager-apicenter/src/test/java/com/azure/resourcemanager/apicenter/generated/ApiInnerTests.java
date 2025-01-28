@@ -39,8 +39,10 @@ public final class ApiInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiInner model = new ApiInner().withProperties(new ApiProperties().withTitle("nj").withKind(ApiKind.SOAP)
-            .withDescription("wtgrhpdjpj").withSummary("asxazjpqyegualhb")
+        ApiInner model = new ApiInner().withProperties(new ApiProperties().withTitle("nj")
+            .withKind(ApiKind.SOAP)
+            .withDescription("wtgrhpdjpj")
+            .withSummary("asxazjpqyegualhb")
             .withTermsOfService(new TermsOfService().withUrl("jj"))
             .withExternalDocumentation(Arrays
                 .asList(new ExternalDocumentation().withTitle("udgwdslfho").withDescription("mcy").withUrl("pwlbjnpg")))

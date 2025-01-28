@@ -6,19 +6,22 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The log profile properties.
  */
 @Fluent
-public final class LogProfileProperties {
+public final class LogProfileProperties implements JsonSerializable<LogProfileProperties> {
     /*
      * the resource id of the storage account to which you would like to send the Activity Log.
      */
-    @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
@@ -26,27 +29,23 @@ public final class LogProfileProperties {
      * streaming the Activity Log. The rule ID is of the format: '{service bus resource ID}/authorizationrules/{key
      * name}'.
      */
-    @JsonProperty(value = "serviceBusRuleId")
     private String serviceBusRuleId;
 
     /*
-     * List of regions for which Activity Log events should be stored or streamed. It is a comma separated list of
-     * valid ARM locations including the 'global' location.
+     * List of regions for which Activity Log events should be stored or streamed. It is a comma separated list of valid
+     * ARM locations including the 'global' location.
      */
-    @JsonProperty(value = "locations", required = true)
     private List<String> locations;
 
     /*
      * the categories of the logs. These categories are created as is convenient to the user. Some values are: 'Write',
      * 'Delete', and/or 'Action.'
      */
-    @JsonProperty(value = "categories", required = true)
     private List<String> categories;
 
     /*
      * the retention policy for the events in the log.
      */
-    @JsonProperty(value = "retentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
 
     /**
@@ -172,20 +171,73 @@ public final class LogProfileProperties {
      */
     public void validate() {
         if (locations() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property locations in model LogProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property locations in model LogProfileProperties"));
         }
         if (categories() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property categories in model LogProfileProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property categories in model LogProfileProperties"));
         }
         if (retentionPolicy() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property retentionPolicy in model LogProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property retentionPolicy in model LogProfileProperties"));
         } else {
             retentionPolicy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogProfileProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("serviceBusRuleId", this.serviceBusRuleId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogProfileProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogProfileProperties.
+     */
+    public static LogProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogProfileProperties deserializedLogProfileProperties = new LogProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLogProfileProperties.locations = locations;
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLogProfileProperties.categories = categories;
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedLogProfileProperties.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedLogProfileProperties.storageAccountId = reader.getString();
+                } else if ("serviceBusRuleId".equals(fieldName)) {
+                    deserializedLogProfileProperties.serviceBusRuleId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogProfileProperties;
+        });
+    }
 }

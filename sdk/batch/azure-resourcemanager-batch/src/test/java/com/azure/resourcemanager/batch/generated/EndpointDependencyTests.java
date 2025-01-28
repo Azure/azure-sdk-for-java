@@ -11,7 +11,7 @@ public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointDependency model = BinaryData.fromString(
-            "{\"domainName\":\"akgtdlmkkzevdlh\",\"description\":\"pusdstt\",\"endpointDetails\":[{\"port\":221713689},{\"port\":1374887959},{\"port\":2086607804}]}")
+            "{\"domainName\":\"bsystawfsdjpvk\",\"description\":\"bjxbkzbzk\",\"endpointDetails\":[{\"port\":1155079568}]}")
             .toObject(EndpointDependency.class);
     }
 

@@ -41,8 +41,8 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
      * immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be
      * permanently canceled. System wil permanently delete it after 90 days, if not recovered.
      */
-    public static final DeletionRecoveryLevel RECOVERABLE_PROTECTED_SUBSCRIPTION =
-            fromString("Recoverable+ProtectedSubscription");
+    public static final DeletionRecoveryLevel RECOVERABLE_PROTECTED_SUBSCRIPTION
+        = fromString("Recoverable+ProtectedSubscription");
 
     /**
      * Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent deletion
@@ -50,8 +50,8 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
      * deleted entity during the retention interval, unless a Purge operation is requested, or the subscription is
      * cancelled.
      */
-    public static final DeletionRecoveryLevel CUSTOMIZED_RECOVERABLE_PURGEABLE =
-            fromString("CustomizedRecoverable+Purgeable");
+    public static final DeletionRecoveryLevel CUSTOMIZED_RECOVERABLE_PURGEABLE
+        = fromString("CustomizedRecoverable+Purgeable");
 
     /**
      * Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent
@@ -66,20 +66,21 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
      * SoftDeleteRetentionInDays &lt; 90. This level guarantees the recoverability of the deleted entity during the
      * retention interval, and also reflects the fact that the subscription itself cannot be cancelled.
      */
-    public static final DeletionRecoveryLevel CUSTOMIZED_RECOVERABLE_PROTECTED_SUBSCRIPTION =
-            fromString("CustomizedRecoverable+ProtectedSubscription");
+    public static final DeletionRecoveryLevel CUSTOMIZED_RECOVERABLE_PROTECTED_SUBSCRIPTION
+        = fromString("CustomizedRecoverable+ProtectedSubscription");
 
     /**
      * Creates a new instance of DeletionRecoveryLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DeletionRecoveryLevel() {}
+    public DeletionRecoveryLevel() {
+    }
 
     /**
      * Creates or finds a DeletionRecoveryLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeletionRecoveryLevel.
      */
@@ -89,7 +90,7 @@ public final class DeletionRecoveryLevel extends ExpandableStringEnum<DeletionRe
 
     /**
      * Gets known DeletionRecoveryLevel values.
-     *
+     * 
      * @return known DeletionRecoveryLevel values.
      */
     public static Collection<DeletionRecoveryLevel> values() {

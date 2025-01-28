@@ -6,29 +6,30 @@ package com.azure.resourcemanager.apicenter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Additional, external documentation for the API.
  */
 @Fluent
-public final class ExternalDocumentation {
+public final class ExternalDocumentation implements JsonSerializable<ExternalDocumentation> {
     /*
      * Title of the documentation.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Description of the documentation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * URL pointing to the documentation.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**
@@ -104,10 +105,53 @@ public final class ExternalDocumentation {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model ExternalDocumentation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model ExternalDocumentation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExternalDocumentation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalDocumentation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalDocumentation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExternalDocumentation.
+     */
+    public static ExternalDocumentation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalDocumentation deserializedExternalDocumentation = new ExternalDocumentation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedExternalDocumentation.url = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedExternalDocumentation.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedExternalDocumentation.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalDocumentation;
+        });
+    }
 }

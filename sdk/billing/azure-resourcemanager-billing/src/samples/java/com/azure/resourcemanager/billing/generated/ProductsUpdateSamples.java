@@ -4,26 +4,28 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.resourcemanager.billing.fluent.models.ProductInner;
 import com.azure.resourcemanager.billing.models.AutoRenew;
+import com.azure.resourcemanager.billing.models.ProductPatch;
+import com.azure.resourcemanager.billing.models.ProductProperties;
 
-/** Samples for Products Update. */
+/**
+ * Samples for Products Update.
+ */
 public final class ProductsUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateProduct.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productsUpdate.json
      */
     /**
-     * Sample code: UpdateBillingProperty.
-     *
+     * Sample code: ProductsUpdate.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void updateBillingProperty(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .products()
-            .updateWithResponse(
-                "{billingAccountName}",
-                "{productName}",
-                new ProductInner().withAutoRenew(AutoRenew.OFF),
+    public static void productsUpdate(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.products()
+            .updateWithResponse("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                "11111111-1111-1111-1111-111111111111",
+                new ProductPatch().withProperties(new ProductProperties().withAutoRenew(AutoRenew.ON)),
                 com.azure.core.util.Context.NONE);
     }
 }

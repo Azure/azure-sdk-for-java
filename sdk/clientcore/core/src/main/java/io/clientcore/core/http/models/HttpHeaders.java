@@ -40,8 +40,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     public HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
 
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValues())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValues())));
     }
 
     /**
@@ -289,7 +289,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return Collections.unmodifiableMap(result);
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -309,9 +308,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     @Override
     public String toString() {
-        return this.stream()
-            .map(HttpHeader::toString)
-            .collect(Collectors.joining(", "));
+        return this.stream().map(HttpHeader::toString).collect(Collectors.joining(", "));
     }
 
 }

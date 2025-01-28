@@ -54,8 +54,7 @@ public final class MixedRealityStsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken() {
         try {
-            return this.getTokenWithResponse()
-                .map(response -> response.getValue());
+            return this.getTokenWithResponse().map(response -> response.getValue());
         } catch (RuntimeException exception) {
             return monoError(this.logger, exception);
         }

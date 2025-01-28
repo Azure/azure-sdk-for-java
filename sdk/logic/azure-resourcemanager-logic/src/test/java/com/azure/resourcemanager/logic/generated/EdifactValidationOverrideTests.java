@@ -12,38 +12,34 @@ import org.junit.jupiter.api.Assertions;
 public final class EdifactValidationOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdifactValidationOverride model =
-            BinaryData
-                .fromString(
-                    "{\"messageId\":\"suxmpraf\",\"enforceCharacterSet\":false,\"validateEDITypes\":false,\"validateXSDTypes\":true,\"allowLeadingAndTrailingSpacesAndZeroes\":true,\"trailingSeparatorPolicy\":\"Mandatory\",\"trimLeadingAndTrailingSpacesAndZeroes\":true}")
-                .toObject(EdifactValidationOverride.class);
-        Assertions.assertEquals("suxmpraf", model.messageId());
+        EdifactValidationOverride model = BinaryData.fromString(
+            "{\"messageId\":\"uwc\",\"enforceCharacterSet\":false,\"validateEDITypes\":false,\"validateXSDTypes\":true,\"allowLeadingAndTrailingSpacesAndZeroes\":true,\"trailingSeparatorPolicy\":\"Mandatory\",\"trimLeadingAndTrailingSpacesAndZeroes\":false}")
+            .toObject(EdifactValidationOverride.class);
+        Assertions.assertEquals("uwc", model.messageId());
         Assertions.assertEquals(false, model.enforceCharacterSet());
         Assertions.assertEquals(false, model.validateEdiTypes());
         Assertions.assertEquals(true, model.validateXsdTypes());
         Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
         Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
-        Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(false, model.trimLeadingAndTrailingSpacesAndZeroes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdifactValidationOverride model =
-            new EdifactValidationOverride()
-                .withMessageId("suxmpraf")
-                .withEnforceCharacterSet(false)
-                .withValidateEdiTypes(false)
-                .withValidateXsdTypes(true)
-                .withAllowLeadingAndTrailingSpacesAndZeroes(true)
-                .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.MANDATORY)
-                .withTrimLeadingAndTrailingSpacesAndZeroes(true);
+        EdifactValidationOverride model = new EdifactValidationOverride().withMessageId("uwc")
+            .withEnforceCharacterSet(false)
+            .withValidateEdiTypes(false)
+            .withValidateXsdTypes(true)
+            .withAllowLeadingAndTrailingSpacesAndZeroes(true)
+            .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.MANDATORY)
+            .withTrimLeadingAndTrailingSpacesAndZeroes(false);
         model = BinaryData.fromObject(model).toObject(EdifactValidationOverride.class);
-        Assertions.assertEquals("suxmpraf", model.messageId());
+        Assertions.assertEquals("uwc", model.messageId());
         Assertions.assertEquals(false, model.enforceCharacterSet());
         Assertions.assertEquals(false, model.validateEdiTypes());
         Assertions.assertEquals(true, model.validateXsdTypes());
         Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
         Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
-        Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(false, model.trimLeadingAndTrailingSpacesAndZeroes());
     }
 }

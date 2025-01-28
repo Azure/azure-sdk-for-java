@@ -5,52 +5,51 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CosmosDbConnectionMode;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * CosmosDB linked service properties.
  */
 @Fluent
-public final class CosmosDbLinkedServiceTypeProperties {
+public final class CosmosDbLinkedServiceTypeProperties
+    implements JsonSerializable<CosmosDbLinkedServiceTypeProperties> {
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * The endpoint of the Azure CosmosDB account. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "accountEndpoint")
     private Object accountEndpoint;
 
     /*
      * The name of the database. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "database")
     private Object database;
 
     /*
      * The account key of the Azure CosmosDB account. Type: SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "accountKey")
     private SecretBase accountKey;
 
     /*
      * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string.
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -59,14 +58,12 @@ public final class CosmosDbLinkedServiceTypeProperties {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
@@ -74,26 +71,22 @@ public final class CosmosDbLinkedServiceTypeProperties {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * The connection mode used to access CosmosDB account. Type: string.
      */
-    @JsonProperty(value = "connectionMode")
     private CosmosDbConnectionMode connectionMode;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -382,5 +375,79 @@ public final class CosmosDbLinkedServiceTypeProperties {
         if (credential() != null) {
             credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("accountEndpoint", this.accountEndpoint);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeJsonField("accountKey", this.accountKey);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeStringField("connectionMode",
+            this.connectionMode == null ? null : this.connectionMode.toString());
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CosmosDbLinkedServiceTypeProperties.
+     */
+    public static CosmosDbLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbLinkedServiceTypeProperties deserializedCosmosDbLinkedServiceTypeProperties
+                = new CosmosDbLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("accountEndpoint".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.accountEndpoint = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.accountKey = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("connectionMode".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.connectionMode
+                        = CosmosDbConnectionMode.fromString(reader.getString());
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedCosmosDbLinkedServiceTypeProperties.credential = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCosmosDbLinkedServiceTypeProperties;
+        });
     }
 }

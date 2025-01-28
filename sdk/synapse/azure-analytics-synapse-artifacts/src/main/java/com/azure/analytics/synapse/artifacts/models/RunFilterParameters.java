@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -189,11 +190,11 @@ public final class RunFilterParameters implements JsonSerializable<RunFilterPara
                 reader.nextToken();
 
                 if ("lastUpdatedAfter".equals(fieldName)) {
-                    deserializedRunFilterParameters.lastUpdatedAfter
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRunFilterParameters.lastUpdatedAfter = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedBefore".equals(fieldName)) {
-                    deserializedRunFilterParameters.lastUpdatedBefore
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRunFilterParameters.lastUpdatedBefore = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("continuationToken".equals(fieldName)) {
                     deserializedRunFilterParameters.continuationToken = reader.getString();
                 } else if ("filters".equals(fieldName)) {

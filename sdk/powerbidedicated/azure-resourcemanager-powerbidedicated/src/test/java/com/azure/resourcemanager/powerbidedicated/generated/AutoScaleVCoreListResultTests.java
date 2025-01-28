@@ -17,67 +17,53 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleVCoreListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleVCoreListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"lhocohslkev\",\"tier\":\"AutoScale\",\"capacity\":1425243209},\"properties\":{\"capacityObjectId\":\"u\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":53032115},\"location\":\"x\",\"tags\":{\"v\":\"eiithlvmez\",\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\"},\"id\":\"nvudwtiukb\",\"name\":\"dng\",\"type\":\"pocipazyxoegu\"},{\"sku\":{\"name\":\"g\",\"tier\":\"AutoScale\",\"capacity\":244069221},\"properties\":{\"capacityObjectId\":\"ygevqzntypmrbpiz\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":53365345},\"location\":\"dpydn\",\"tags\":{\"ifsjttgzfbishcb\":\"xdeoejzic\",\"alpbuxwgipwhon\":\"hajdeyeamdpha\"},\"id\":\"wkgshwa\",\"name\":\"kix\",\"type\":\"bin\"},{\"sku\":{\"name\":\"eputtmrywnuzoqf\",\"tier\":\"AutoScale\",\"capacity\":827817441},\"properties\":{\"capacityObjectId\":\"kcqvyxl\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":1368622267},\"location\":\"cohoq\",\"tags\":{\"gyxzk\":\"vlryavwhheunmmq\"},\"id\":\"noc\",\"name\":\"koklya\",\"type\":\"uconuqszfkbey\"}]}")
-                .toObject(AutoScaleVCoreListResult.class);
-        Assertions.assertEquals("x", model.value().get(0).location());
-        Assertions.assertEquals("eiithlvmez", model.value().get(0).tags().get("v"));
-        Assertions.assertEquals("lhocohslkev", model.value().get(0).sku().name());
+        AutoScaleVCoreListResult model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"rnkcqvyxlw\",\"tier\":\"AutoScale\",\"capacity\":658066876},\"properties\":{\"capacityObjectId\":\"hoqqnwvlr\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":866198392},\"location\":\"eun\",\"tags\":{\"koklya\":\"hgyxzkonoc\",\"ewrmjmwvvjektc\":\"uconuqszfkbey\",\"frzpwvlqdqgb\":\"senhwlrs\",\"fcivfsnkym\":\"qylihkaetckt\"},\"id\":\"ctq\",\"name\":\"jf\",\"type\":\"ebrjcxe\"},{\"sku\":{\"name\":\"fuwutttxf\",\"tier\":\"AutoScale\",\"capacity\":218350030},\"properties\":{\"capacityObjectId\":\"hxepcyvahfnlj\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":197436298},\"location\":\"uujqgidokgjljyo\",\"tags\":{\"hbijhtxfvgxb\":\"cltbgsncghkjesz\",\"eh\":\"smx\",\"qkkrb\":\"pvecxgodeb\"},\"id\":\"pukgriwflzlfb\",\"name\":\"zpuzycisp\",\"type\":\"qzahmgkbrp\"},{\"sku\":{\"name\":\"y\",\"tier\":\"AutoScale\",\"capacity\":1421404379},\"properties\":{\"capacityObjectId\":\"qkpikadrgvtqagnb\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":850338934},\"location\":\"gg\",\"tags\":{\"vpnazzm\":\"fsiarbutr\"},\"id\":\"jrunmpxtt\",\"name\":\"bh\",\"type\":\"bnlankxmyskpb\"}]}")
+            .toObject(AutoScaleVCoreListResult.class);
+        Assertions.assertEquals("eun", model.value().get(0).location());
+        Assertions.assertEquals("hgyxzkonoc", model.value().get(0).tags().get("koklya"));
+        Assertions.assertEquals("rnkcqvyxlw", model.value().get(0).sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1425243209, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("u", model.value().get(0).capacityObjectId());
-        Assertions.assertEquals(53032115, model.value().get(0).capacityLimit());
+        Assertions.assertEquals(658066876, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("hoqqnwvlr", model.value().get(0).capacityObjectId());
+        Assertions.assertEquals(866198392, model.value().get(0).capacityLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoScaleVCoreListResult model =
-            new AutoScaleVCoreListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AutoScaleVCoreInner()
-                                .withLocation("x")
-                                .withTags(mapOf("v", "eiithlvmez", "xwburvjxxjns", "hxmzsbbzoggig", "ou", "ydptkoen"))
-                                .withSku(
-                                    new AutoScaleVCoreSku()
-                                        .withName("lhocohslkev")
-                                        .withTier(VCoreSkuTier.AUTO_SCALE)
-                                        .withCapacity(1425243209))
-                                .withCapacityObjectId("u")
-                                .withCapacityLimit(53032115),
-                            new AutoScaleVCoreInner()
-                                .withLocation("dpydn")
-                                .withTags(mapOf("ifsjttgzfbishcb", "xdeoejzic", "alpbuxwgipwhon", "hajdeyeamdpha"))
-                                .withSku(
-                                    new AutoScaleVCoreSku()
-                                        .withName("g")
-                                        .withTier(VCoreSkuTier.AUTO_SCALE)
-                                        .withCapacity(244069221))
-                                .withCapacityObjectId("ygevqzntypmrbpiz")
-                                .withCapacityLimit(53365345),
-                            new AutoScaleVCoreInner()
-                                .withLocation("cohoq")
-                                .withTags(mapOf("gyxzk", "vlryavwhheunmmq"))
-                                .withSku(
-                                    new AutoScaleVCoreSku()
-                                        .withName("eputtmrywnuzoqf")
-                                        .withTier(VCoreSkuTier.AUTO_SCALE)
-                                        .withCapacity(827817441))
-                                .withCapacityObjectId("kcqvyxl")
-                                .withCapacityLimit(1368622267)));
+        AutoScaleVCoreListResult model = new AutoScaleVCoreListResult().withValue(Arrays.asList(
+            new AutoScaleVCoreInner().withLocation("eun")
+                .withTags(mapOf("koklya", "hgyxzkonoc", "ewrmjmwvvjektc", "uconuqszfkbey", "frzpwvlqdqgb", "senhwlrs",
+                    "fcivfsnkym", "qylihkaetckt"))
+                .withSku(new AutoScaleVCoreSku().withName("rnkcqvyxlw")
+                    .withTier(VCoreSkuTier.AUTO_SCALE)
+                    .withCapacity(658066876))
+                .withCapacityObjectId("hoqqnwvlr")
+                .withCapacityLimit(866198392),
+            new AutoScaleVCoreInner().withLocation("uujqgidokgjljyo")
+                .withTags(mapOf("hbijhtxfvgxb", "cltbgsncghkjesz", "eh", "smx", "qkkrb", "pvecxgodeb"))
+                .withSku(new AutoScaleVCoreSku().withName("fuwutttxf")
+                    .withTier(VCoreSkuTier.AUTO_SCALE)
+                    .withCapacity(218350030))
+                .withCapacityObjectId("hxepcyvahfnlj")
+                .withCapacityLimit(197436298),
+            new AutoScaleVCoreInner().withLocation("gg")
+                .withTags(mapOf("vpnazzm", "fsiarbutr"))
+                .withSku(
+                    new AutoScaleVCoreSku().withName("y").withTier(VCoreSkuTier.AUTO_SCALE).withCapacity(1421404379))
+                .withCapacityObjectId("qkpikadrgvtqagnb")
+                .withCapacityLimit(850338934)));
         model = BinaryData.fromObject(model).toObject(AutoScaleVCoreListResult.class);
-        Assertions.assertEquals("x", model.value().get(0).location());
-        Assertions.assertEquals("eiithlvmez", model.value().get(0).tags().get("v"));
-        Assertions.assertEquals("lhocohslkev", model.value().get(0).sku().name());
+        Assertions.assertEquals("eun", model.value().get(0).location());
+        Assertions.assertEquals("hgyxzkonoc", model.value().get(0).tags().get("koklya"));
+        Assertions.assertEquals("rnkcqvyxlw", model.value().get(0).sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1425243209, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("u", model.value().get(0).capacityObjectId());
-        Assertions.assertEquals(53032115, model.value().get(0).capacityLimit());
+        Assertions.assertEquals(658066876, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("hoqqnwvlr", model.value().get(0).capacityObjectId());
+        Assertions.assertEquals(866198392, model.value().get(0).capacityLimit());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageLimitSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageLimitSettings model =
-            BinaryData
-                .fromString("{\"maxConcurrentTrials\":543709562,\"maxTrials\":848455814,\"timeout\":\"PT224H41M46S\"}")
-                .toObject(ImageLimitSettings.class);
-        Assertions.assertEquals(543709562, model.maxConcurrentTrials());
-        Assertions.assertEquals(848455814, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT224H41M46S"), model.timeout());
+        ImageLimitSettings model = BinaryData
+            .fromString("{\"maxTrials\":1226753892,\"timeout\":\"PT148H19M11S\",\"maxConcurrentTrials\":1388239886}")
+            .toObject(ImageLimitSettings.class);
+        Assertions.assertEquals(1226753892, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT148H19M11S"), model.timeout());
+        Assertions.assertEquals(1388239886, model.maxConcurrentTrials());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageLimitSettings model =
-            new ImageLimitSettings()
-                .withMaxConcurrentTrials(543709562)
-                .withMaxTrials(848455814)
-                .withTimeout(Duration.parse("PT224H41M46S"));
+        ImageLimitSettings model = new ImageLimitSettings().withMaxTrials(1226753892)
+            .withTimeout(Duration.parse("PT148H19M11S"))
+            .withMaxConcurrentTrials(1388239886);
         model = BinaryData.fromObject(model).toObject(ImageLimitSettings.class);
-        Assertions.assertEquals(543709562, model.maxConcurrentTrials());
-        Assertions.assertEquals(848455814, model.maxTrials());
-        Assertions.assertEquals(Duration.parse("PT224H41M46S"), model.timeout());
+        Assertions.assertEquals(1226753892, model.maxTrials());
+        Assertions.assertEquals(Duration.parse("PT148H19M11S"), model.timeout());
+        Assertions.assertEquals(1388239886, model.maxConcurrentTrials());
     }
 }

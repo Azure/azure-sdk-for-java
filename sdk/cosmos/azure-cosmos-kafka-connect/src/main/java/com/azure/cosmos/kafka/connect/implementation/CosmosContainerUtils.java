@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CosmosContainerUtils {
 
-    public static void validateContainers(List<String> containerNames, CosmosAsyncClient cosmosAsyncClient, String databaseName) {
+    public static void validateDatabaseAndContainers(List<String> containerNames, CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
 
@@ -35,7 +35,16 @@ public class CosmosContainerUtils {
             .byPage()
             .flatMapIterable(response -> response.getResults())
             .collectList()
-            .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "validateContainers failed.")).block();
+            .onErrorMap(throwable -> {
+                if (KafkaCosmosExceptionsHelper.isOwnerResourceNotExistsException(throwable)) {
+                    return KafkaCosmosExceptionsHelper.convertToConnectException(
+                        throwable,
+                        "Database specified in the config does not exist in the CosmosDB account.");
+                }
+
+                return KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "validateDatabaseAndContainers failed.");
+            })
+            .block();
         if (cosmosContainerProperties.isEmpty() || cosmosContainerProperties.size() != containerNames.size()) {
             throw new IllegalStateException("Containers specified in the config do not exist in the CosmosDB account.");
         }

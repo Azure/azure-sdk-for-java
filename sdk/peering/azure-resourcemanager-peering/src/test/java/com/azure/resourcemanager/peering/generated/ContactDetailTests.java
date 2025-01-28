@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactDetail model =
-            BinaryData
-                .fromString("{\"role\":\"Technical\",\"email\":\"f\",\"phone\":\"otkftutqxlngx\"}")
+        ContactDetail model
+            = BinaryData.fromString("{\"role\":\"Technical\",\"email\":\"f\",\"phone\":\"otkftutqxlngx\"}")
                 .toObject(ContactDetail.class);
         Assertions.assertEquals(Role.TECHNICAL, model.role());
         Assertions.assertEquals("f", model.email());

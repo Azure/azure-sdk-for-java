@@ -24,8 +24,8 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
     private String timespan;
 
     /*
-     * The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special case for
-     * 'FULL' value that returns single datapoint for entire time span requested.
+     * The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special case for 'FULL'
+     * value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*
      */
     private String interval;
@@ -45,8 +45,8 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * and C.<br>- Return all time series of C where A = a1 and B = b1 or b2<br>**$filter=A eq ‘a1’ and B eq ‘b1’ or B
      * eq ‘b2’ and C eq ‘*’**<br>- Invalid variant:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B =
      * ‘b2’**<br>This is invalid because the logical or operator cannot separate two different metadata names.<br>-
-     * Return all time series where A = a1, B = b1 and C = c1:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq
-     * ‘c1’**<br>- Return all time series where A = a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * Return all time series where A = a1, B = b1 and C = c1:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**<br>-
+     * Return all time series where A = a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      */
     private String filter;
 
@@ -83,9 +83,9 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
     private String metricNamespace;
 
     /*
-     * When set to true, if the timespan passed in is not supported by this metric, the API will return the result
-     * using the closest supported timespan. When set to false, an error is returned for invalid timespan parameters.
-     * Defaults to false.
+     * When set to true, if the timespan passed in is not supported by this metric, the API will return the result using
+     * the closest supported timespan. When set to false, an error is returned for invalid timespan parameters. Defaults
+     * to false.
      */
     private Boolean autoAdjustTimegrain;
 
@@ -193,8 +193,8 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
      * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
      * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return
-     * all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * 
      * @return the filter value.
      */
@@ -208,8 +208,8 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
      * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
      * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
      * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
-     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return
-     * all time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * 
      * @param filter the filter value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
@@ -358,8 +358,8 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
     }
 
     /**
-     * Get the validateDimensions property: When set to false, invalid filter parameter values will be ignored. When
-     * set to true, an error is returned for invalid filter parameters. Defaults to true.
+     * Get the validateDimensions property: When set to false, invalid filter parameter values will be ignored. When set
+     * to true, an error is returned for invalid filter parameters. Defaults to true.
      * 
      * @return the validateDimensions value.
      */
@@ -368,8 +368,8 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
     }
 
     /**
-     * Set the validateDimensions property: When set to false, invalid filter parameter values will be ignored. When
-     * set to true, an error is returned for invalid filter parameters. Defaults to true.
+     * Set the validateDimensions property: When set to false, invalid filter parameter values will be ignored. When set
+     * to true, an error is returned for invalid filter parameters. Defaults to true.
      * 
      * @param validateDimensions the validateDimensions value to set.
      * @return the SubscriptionScopeMetricsRequestBodyParameters object itself.
@@ -379,6 +379,9 @@ public final class SubscriptionScopeMetricsRequestBodyParameters
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

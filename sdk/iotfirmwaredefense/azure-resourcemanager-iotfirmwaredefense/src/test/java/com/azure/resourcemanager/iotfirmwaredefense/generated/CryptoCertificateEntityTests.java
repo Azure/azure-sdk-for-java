@@ -23,9 +23,11 @@ public final class CryptoCertificateEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CryptoCertificateEntity model
-            = new CryptoCertificateEntity().withCommonName("xklrypl").withOrganization("kbasyypn")
-                .withOrganizationalUnit("hsgcbacphejkot").withState("qgoulznd").withCountry("kwy");
+        CryptoCertificateEntity model = new CryptoCertificateEntity().withCommonName("xklrypl")
+            .withOrganization("kbasyypn")
+            .withOrganizationalUnit("hsgcbacphejkot")
+            .withState("qgoulznd")
+            .withCountry("kwy");
         model = BinaryData.fromObject(model).toObject(CryptoCertificateEntity.class);
         Assertions.assertEquals("xklrypl", model.commonName());
         Assertions.assertEquals("kbasyypn", model.organization());

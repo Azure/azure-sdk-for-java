@@ -5,33 +5,37 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Instance type schema. */
+/**
+ * Instance type schema.
+ */
 @Fluent
-public final class InstanceTypeSchema {
+public final class InstanceTypeSchema implements JsonSerializable<InstanceTypeSchema> {
     /*
      * Node Selector
      */
-    @JsonProperty(value = "nodeSelector")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> nodeSelector;
 
     /*
      * Resource requests/limits for this instance type
      */
-    @JsonProperty(value = "resources")
     private InstanceTypeSchemaResources resources;
 
-    /** Creates an instance of InstanceTypeSchema class. */
+    /**
+     * Creates an instance of InstanceTypeSchema class.
+     */
     public InstanceTypeSchema() {
     }
 
     /**
      * Get the nodeSelector property: Node Selector.
-     *
+     * 
      * @return the nodeSelector value.
      */
     public Map<String, String> nodeSelector() {
@@ -40,7 +44,7 @@ public final class InstanceTypeSchema {
 
     /**
      * Set the nodeSelector property: Node Selector.
-     *
+     * 
      * @param nodeSelector the nodeSelector value to set.
      * @return the InstanceTypeSchema object itself.
      */
@@ -51,7 +55,7 @@ public final class InstanceTypeSchema {
 
     /**
      * Get the resources property: Resource requests/limits for this instance type.
-     *
+     * 
      * @return the resources value.
      */
     public InstanceTypeSchemaResources resources() {
@@ -60,7 +64,7 @@ public final class InstanceTypeSchema {
 
     /**
      * Set the resources property: Resource requests/limits for this instance type.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the InstanceTypeSchema object itself.
      */
@@ -71,12 +75,52 @@ public final class InstanceTypeSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resources() != null) {
             resources().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("nodeSelector", this.nodeSelector, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("resources", this.resources);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstanceTypeSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstanceTypeSchema if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstanceTypeSchema.
+     */
+    public static InstanceTypeSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstanceTypeSchema deserializedInstanceTypeSchema = new InstanceTypeSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nodeSelector".equals(fieldName)) {
+                    Map<String, String> nodeSelector = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInstanceTypeSchema.nodeSelector = nodeSelector;
+                } else if ("resources".equals(fieldName)) {
+                    deserializedInstanceTypeSchema.resources = InstanceTypeSchemaResources.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstanceTypeSchema;
+        });
     }
 }

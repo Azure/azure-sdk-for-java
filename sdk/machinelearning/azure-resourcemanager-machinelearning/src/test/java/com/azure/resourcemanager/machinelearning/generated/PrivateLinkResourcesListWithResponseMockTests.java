@@ -6,66 +6,44 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.machinelearning.models.PrivateLinkResourceListResult;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"r\",\"requiredMembers\":[\"tuwcimtcaumv\",\"udzpsjqrmlujmt\"],\"requiredZoneNames\":[\"ofwuzeb\",\"qvmpjb\",\"zyenfspet\",\"eudwkhdlckdoxocj\"]},\"identity\":{\"principalId\":\"c2c4d25f-b219-4531-a6e4-818157aa4f04\",\"tenantId\":\"c501f775-2837-49de-9b64-4e272ec688dc\",\"type\":\"None\",\"userAssignedIdentities\":{\"reortwwyj\":{}}},\"location\":\"vrlhfxmrhjn\",\"tags\":{\"ksz\":\"cjywkdy\",\"l\":\"vuafanefictpt\",\"z\":\"ossj\",\"aczhfjdccjn\":\"xpzwdqzuhfgt\"},\"sku\":{\"name\":\"vbtcuhjcgjtjknt\",\"tier\":\"Free\",\"size\":\"zthcdbszsbz\",\"family\":\"xeyvidcowlrm\",\"capacity\":1231342742},\"id\":\"qxave\",\"name\":\"oezvwk\",\"type\":\"yzgavplnd\"},{\"properties\":{\"groupId\":\"iekkiskyyyaekn\",\"requiredMembers\":[\"yshdawjlmlcufb\"],\"requiredZoneNames\":[\"utfofhoajjyl\",\"yqyjnufzvl\",\"quyhbceev\",\"girrpwnqtvuxeuj\"]},\"identity\":{\"principalId\":\"30b6d8a5-0e82-4c35-a462-17f3051a784a\",\"tenantId\":\"0d41d391-86be-4578-8ab2-a8d30a81fb4f\",\"type\":\"None\",\"userAssignedIdentities\":{\"axxfdlypkcpw\":{}}},\"location\":\"qnnmjundt\",\"tags\":{\"ycgqakcsihxvt\":\"ltjhb\",\"yxnsbubwh\":\"cwwfopxp\",\"mkdhwqcqweba\":\"qqgugwluxahtq\"},\"sku\":{\"name\":\"fpkeph\",\"tier\":\"Basic\",\"size\":\"c\",\"family\":\"vkke\",\"capacity\":2073355838},\"id\":\"ypaxpjp\",\"name\":\"illgnu\",\"type\":\"ezfpffbuqxkn\"},{\"properties\":{\"groupId\":\"g\",\"requiredMembers\":[\"zyojfch\",\"cp\",\"rexzoksgq\",\"boojuxi\"],\"requiredZoneNames\":[\"blkcrfldfljw\",\"kbptsfl\"]},\"identity\":{\"principalId\":\"746eeafd-ab8f-483b-ad9d-7f168c0be033\",\"tenantId\":\"68f87143-478c-4e61-be0b-badd152065e0\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"gftshfgmuxuqiags\":{},\"oikuqirhsk\":{},\"paowkgvnlfueyxfz\":{},\"brlrjugcfebpi\":{}}},\"location\":\"enbvrllldfknb\",\"tags\":{\"i\":\"ilsxr\"},\"sku\":{\"name\":\"zlwrduxntpfxxgj\",\"tier\":\"Basic\",\"size\":\"fwfctqvey\",\"family\":\"kqynlzxeme\",\"capacity\":1938054109},\"id\":\"ckiehdmvfoyr\",\"name\":\"xxffgmcuanszeerv\",\"type\":\"cgcsapvbcqpf\"},{\"properties\":{\"groupId\":\"kijhmine\",\"requiredMembers\":[\"ivp\",\"rkvorlfqmljewyn\",\"fvvcwvurkmjufa\"],\"requiredZoneNames\":[\"npbsotmynklnm\",\"znmtvrk\",\"fcwxizk\",\"txneykeip\"]},\"identity\":{\"principalId\":\"d4142576-befe-4200-bae4-e1a584382841\",\"tenantId\":\"a22ed680-6d49-4b25-86a6-151508e3bb4f\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"iuvnfaz\":{},\"tvsayyaeiiv\":{},\"qk\":{}}},\"location\":\"jwrvewojoqfxqetx\",\"tags\":{\"uzljvgjijzqj\":\"iusp\",\"hcmecags\":\"ljsazmjsisfq\"},\"sku\":{\"name\":\"eiirpnjygllfkchh\",\"tier\":\"Free\",\"size\":\"zzcajl\",\"family\":\"qcycabaa\",\"capacity\":1883254200},\"id\":\"dhpmkxdujkxpuqzd\",\"name\":\"oqywsuarpzhryh\",\"type\":\"zx\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"c\",\"tags\":{\"m\":\"fshksnyzmspamwb\",\"qdktwtkvihlp\":\"nlslcef\",\"zhwv\":\"liwoyngu\"},\"id\":\"p\",\"name\":\"mhjhaus\",\"type\":\"b\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateLinkResourceListResult response = manager.privateLinkResources()
+            .listWithResponse("lqcw", "zhndqkzstzpzec", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateLinkResourceListResult response =
-            manager
-                .privateLinkResources()
-                .listWithResponse("hxqqmqip", "y", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("c", response.value().get(0).location());
-        Assertions.assertEquals("fshksnyzmspamwb", response.value().get(0).tags().get("m"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.value().get(0).identity().type());
+        Assertions.assertEquals("vrlhfxmrhjn", response.value().get(0).location());
+        Assertions.assertEquals("cjywkdy", response.value().get(0).tags().get("ksz"));
+        Assertions.assertEquals("vbtcuhjcgjtjknt", response.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.value().get(0).sku().tier());
+        Assertions.assertEquals("zthcdbszsbz", response.value().get(0).sku().size());
+        Assertions.assertEquals("xeyvidcowlrm", response.value().get(0).sku().family());
+        Assertions.assertEquals(1231342742, response.value().get(0).sku().capacity());
+        Assertions.assertEquals("ofwuzeb", response.value().get(0).requiredZoneNames().get(0));
     }
 }

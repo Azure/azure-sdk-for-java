@@ -14,8 +14,8 @@ public final class UpgradableVersionsListImpl implements UpgradableVersionsList 
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    UpgradableVersionsListImpl(
-        UpgradableVersionsListInner innerObject, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    UpgradableVersionsListImpl(UpgradableVersionsListInner innerObject,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

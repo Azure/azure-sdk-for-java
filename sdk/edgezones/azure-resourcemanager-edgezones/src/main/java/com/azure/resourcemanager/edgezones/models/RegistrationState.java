@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.edgezones.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class RegistrationState extends ExpandableStringEnum<RegistrationSt
      * @param name a name to look for.
      * @return the corresponding RegistrationState.
      */
-    @JsonCreator
     public static RegistrationState fromString(String name) {
         return fromString(name, RegistrationState.class);
     }

@@ -44,12 +44,14 @@ public final class DataProductsCatalogsGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataProductsCatalog response = manager.dataProductsCatalogs()
-            .getByResourceGroupWithResponse("vkr", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("vkr", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("qzvszjf", response.properties().publishers().get(0).publisherName());
         Assertions.assertEquals("vjfdx",

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.synapse {
     exports com.azure.resourcemanager.synapse.fluent.models;
     exports com.azure.resourcemanager.synapse.models;
 
-    opens com.azure.resourcemanager.synapse.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.synapse.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.synapse.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.synapse.models to com.azure.core;
 }

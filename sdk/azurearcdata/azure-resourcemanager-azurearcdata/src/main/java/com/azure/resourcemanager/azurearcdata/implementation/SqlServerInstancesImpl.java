@@ -21,8 +21,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
 
     private final com.azure.resourcemanager.azurearcdata.AzureArcDataManager serviceManager;
 
-    public SqlServerInstancesImpl(
-        SqlServerInstancesClient innerClient,
+    public SqlServerInstancesImpl(SqlServerInstancesClient innerClient,
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,34 +29,31 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
 
     public PagedIterable<SqlServerInstance> list() {
         PagedIterable<SqlServerInstanceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlServerInstance> list(Context context) {
         PagedIterable<SqlServerInstanceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlServerInstance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SqlServerInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlServerInstance> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<SqlServerInstanceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
+        PagedIterable<SqlServerInstanceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlServerInstanceImpl(inner1, this.manager()));
     }
 
-    public Response<SqlServerInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlServerInstanceName, Context context) {
-        Response<SqlServerInstanceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, context);
+    public Response<SqlServerInstance> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlServerInstanceName, Context context) {
+        Response<SqlServerInstanceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SqlServerInstanceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
     }
 
     public SqlServerInstance getByResourceGroup(String resourceGroupName, String sqlServerInstanceName) {
-        SqlServerInstanceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, sqlServerInstanceName);
+        SqlServerInstanceInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, sqlServerInstanceName);
         if (inner != null) {
             return new SqlServerInstanceImpl(inner, this.manager());
         } else {
@@ -83,85 +79,57 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
     }
 
     public SqlServerInstance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
+        String sqlServerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, Context.NONE).getValue();
     }
 
     public Response<SqlServerInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
+        String sqlServerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, sqlServerInstanceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
+        String sqlServerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
         }
         this.delete(resourceGroupName, sqlServerInstanceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlServerInstanceName = Utils.getValueFromIdByName(id, "sqlServerInstances");
+        String sqlServerInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "sqlServerInstances");
         if (sqlServerInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
         }
         this.delete(resourceGroupName, sqlServerInstanceName, context);
     }

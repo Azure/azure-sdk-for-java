@@ -20,9 +20,10 @@ public class SpringAppServiceBindingImpl
 
     @Override
     public Mono<SpringAppServiceBinding> createResourceAsync() {
-        return manager().serviceClient().getBindings().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(), innerModel()
-        )
+        return manager().serviceClient()
+            .getBindings()
+            .createOrUpdateAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+                name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -36,16 +37,16 @@ public class SpringAppServiceBindingImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getBindings().deleteAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getBindings()
+            .deleteAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
     protected Mono<BindingResourceInner> getInnerAsync() {
-        return manager().serviceClient().getBindings().getAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getBindings()
+            .getAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override

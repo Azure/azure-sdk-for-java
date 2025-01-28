@@ -644,8 +644,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(String resourceGroupName,
         String profileName, String endpointName, String customDomainName, CustomDomainParameters customDomainProperties,
         Context context) {
-        return this.beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName,
-            customDomainProperties, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -666,7 +668,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public Mono<CustomDomainInner> createAsync(String resourceGroupName, String profileName, String endpointName,
         String customDomainName, CustomDomainParameters customDomainProperties) {
         return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1198,7 +1201,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     private Mono<CustomDomainInner> disableCustomHttpsAsync(String resourceGroupName, String profileName,
         String endpointName, String customDomainName, Context context) {
         return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1440,8 +1444,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(String resourceGroupName,
         String profileName, String endpointName, String customDomainName) {
         final CustomDomainHttpsParameters customDomainHttpsParameters = null;
-        return this.beginEnableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName,
-            customDomainHttpsParameters).getSyncPoller();
+        return this
+            .beginEnableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName,
+                customDomainHttpsParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1465,8 +1471,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(String resourceGroupName,
         String profileName, String endpointName, String customDomainName,
         CustomDomainHttpsParameters customDomainHttpsParameters, Context context) {
-        return this.beginEnableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName,
-            customDomainHttpsParameters, context).getSyncPoller();
+        return this
+            .beginEnableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName,
+                customDomainHttpsParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1586,9 +1594,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1615,9 +1621,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

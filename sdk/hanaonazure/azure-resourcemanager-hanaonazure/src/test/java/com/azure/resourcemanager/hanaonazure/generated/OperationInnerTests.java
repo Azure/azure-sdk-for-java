@@ -11,11 +11,9 @@ import com.azure.resourcemanager.hanaonazure.models.Display;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"sarhmofc\",\"display\":{\"provider\":\"my\",\"resource\":\"kdtmlxhekuk\",\"operation\":\"txukcdmp\",\"description\":\"cryuan\",\"origin\":\"uxzdxtay\"},\"isDataAction\":true}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"sarhmofc\",\"display\":{\"provider\":\"my\",\"resource\":\"kdtmlxhekuk\",\"operation\":\"txukcdmp\",\"description\":\"cryuan\",\"origin\":\"uxzdxtay\"},\"isDataAction\":true}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"vnmdyfoeboj\",\"connectionString\":\"pp\",\"useFromLocation\":\"aohoqkpjtnq\",\"resourceId\":\"l\"}}")
-                .toObject(CacheUpdateParameters.class);
+        CacheUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"vnmdyfoeboj\",\"connectionString\":\"pp\",\"useFromLocation\":\"aohoqkpjtnq\",\"resourceId\":\"l\"}}")
+            .toObject(CacheUpdateParameters.class);
         Assertions.assertEquals("vnmdyfoeboj", model.description());
         Assertions.assertEquals("pp", model.connectionString());
         Assertions.assertEquals("aohoqkpjtnq", model.useFromLocation());
@@ -24,12 +22,10 @@ public final class CacheUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheUpdateParameters model =
-            new CacheUpdateParameters()
-                .withDescription("vnmdyfoeboj")
-                .withConnectionString("pp")
-                .withUseFromLocation("aohoqkpjtnq")
-                .withResourceId("l");
+        CacheUpdateParameters model = new CacheUpdateParameters().withDescription("vnmdyfoeboj")
+            .withConnectionString("pp")
+            .withUseFromLocation("aohoqkpjtnq")
+            .withResourceId("l");
         model = BinaryData.fromObject(model).toObject(CacheUpdateParameters.class);
         Assertions.assertEquals("vnmdyfoeboj", model.description());
         Assertions.assertEquals("pp", model.connectionString());

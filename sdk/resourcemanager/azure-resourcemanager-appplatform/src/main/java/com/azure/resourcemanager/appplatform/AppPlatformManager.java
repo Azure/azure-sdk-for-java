@@ -21,6 +21,7 @@ import java.util.Objects;
 public final class AppPlatformManager extends Manager<AppPlatformManagementClient> {
     // Collections
     private SpringServices springServices;
+
     /**
      * Get a Configurable instance that can be used to create AppPlatformManager with optional configuration.
      *
@@ -76,17 +77,18 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
     }
 
     private AppPlatformManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new AppPlatformManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new AppPlatformManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
     }
 
-    /** @return Entry point for Spring Service management API. */
+    /**
+     * Gets the entry point for Spring Service management API.
+     *
+     * @return Entry point for Spring Service management API.
+     */
     public SpringServices springServices() {
         if (springServices == null) {
             springServices = new SpringServicesImpl(this);

@@ -5,49 +5,56 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schedule resource properties used for updates. */
+/**
+ * Schedule resource properties used for updates.
+ */
 @Fluent
-public class ScheduleUpdateProperties {
+public class ScheduleUpdateProperties implements JsonSerializable<ScheduleUpdateProperties> {
     /*
-     * When lab user virtual machines will be started. Timestamp offsets will be ignored and timeZoneId is used
-     * instead.
+     * When lab user virtual machines will be started. Timestamp offsets will be ignored and timeZoneId is used instead.
      */
-    @JsonProperty(value = "startAt")
     private OffsetDateTime startAt;
 
     /*
-     * When lab user virtual machines will be stopped. Timestamp offsets will be ignored and timeZoneId is used
-     * instead.
+     * When lab user virtual machines will be stopped. Timestamp offsets will be ignored and timeZoneId is used instead.
      */
-    @JsonProperty(value = "stopAt")
     private OffsetDateTime stopAt;
 
     /*
      * The recurrence pattern of the scheduled actions.
      */
-    @JsonProperty(value = "recurrencePattern")
     private RecurrencePattern recurrencePattern;
 
     /*
      * The IANA timezone id for the schedule.
      */
-    @JsonProperty(value = "timeZoneId")
     private String timeZoneId;
 
     /*
      * Notes for this schedule.
      */
-    @JsonProperty(value = "notes")
     private String notes;
+
+    /**
+     * Creates an instance of ScheduleUpdateProperties class.
+     */
+    public ScheduleUpdateProperties() {
+    }
 
     /**
      * Get the startAt property: When lab user virtual machines will be started. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @return the startAt value.
      */
     public OffsetDateTime startAt() {
@@ -57,7 +64,7 @@ public class ScheduleUpdateProperties {
     /**
      * Set the startAt property: When lab user virtual machines will be started. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @param startAt the startAt value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -69,7 +76,7 @@ public class ScheduleUpdateProperties {
     /**
      * Get the stopAt property: When lab user virtual machines will be stopped. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @return the stopAt value.
      */
     public OffsetDateTime stopAt() {
@@ -79,7 +86,7 @@ public class ScheduleUpdateProperties {
     /**
      * Set the stopAt property: When lab user virtual machines will be stopped. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @param stopAt the stopAt value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -90,7 +97,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the recurrencePattern property: The recurrence pattern of the scheduled actions.
-     *
+     * 
      * @return the recurrencePattern value.
      */
     public RecurrencePattern recurrencePattern() {
@@ -99,7 +106,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the recurrencePattern property: The recurrence pattern of the scheduled actions.
-     *
+     * 
      * @param recurrencePattern the recurrencePattern value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -110,7 +117,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the timeZoneId property: The IANA timezone id for the schedule.
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -119,7 +126,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the timeZoneId property: The IANA timezone id for the schedule.
-     *
+     * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -130,7 +137,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the notes property: Notes for this schedule.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -139,7 +146,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the notes property: Notes for this schedule.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -150,12 +157,64 @@ public class ScheduleUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recurrencePattern() != null) {
             recurrencePattern().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startAt",
+            this.startAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startAt));
+        jsonWriter.writeStringField("stopAt",
+            this.stopAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stopAt));
+        jsonWriter.writeJsonField("recurrencePattern", this.recurrencePattern);
+        jsonWriter.writeStringField("timeZoneId", this.timeZoneId);
+        jsonWriter.writeStringField("notes", this.notes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleUpdateProperties.
+     */
+    public static ScheduleUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleUpdateProperties deserializedScheduleUpdateProperties = new ScheduleUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startAt".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.startAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("stopAt".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.stopAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recurrencePattern".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.recurrencePattern = RecurrencePattern.fromJson(reader);
+                } else if ("timeZoneId".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.timeZoneId = reader.getString();
+                } else if ("notes".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.notes = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleUpdateProperties;
+        });
     }
 }

@@ -19,20 +19,20 @@ public final class CdnPeeringPrefixesImpl implements CdnPeeringPrefixes {
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public CdnPeeringPrefixesImpl(
-        CdnPeeringPrefixesClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public CdnPeeringPrefixesImpl(CdnPeeringPrefixesClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<CdnPeeringPrefix> list(String peeringLocation) {
         PagedIterable<CdnPeeringPrefixInner> inner = this.serviceClient().list(peeringLocation);
-        return Utils.mapPage(inner, inner1 -> new CdnPeeringPrefixImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CdnPeeringPrefixImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CdnPeeringPrefix> list(String peeringLocation, Context context) {
         PagedIterable<CdnPeeringPrefixInner> inner = this.serviceClient().list(peeringLocation, context);
-        return Utils.mapPage(inner, inner1 -> new CdnPeeringPrefixImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CdnPeeringPrefixImpl(inner1, this.manager()));
     }
 
     private CdnPeeringPrefixesClient serviceClient() {

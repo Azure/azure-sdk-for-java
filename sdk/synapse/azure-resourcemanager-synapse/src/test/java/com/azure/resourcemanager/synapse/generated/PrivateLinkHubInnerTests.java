@@ -13,29 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"ounqecano\",\"privateEndpointConnections\":[{\"id\":\"fhyhltrpmopjmcma\"}]},\"location\":\"okth\",\"tags\":{\"xodpuozmyzydagfu\":\"uaodsfcpk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}")
-                .toObject(PrivateLinkHubInner.class);
-        Assertions.assertEquals("okth", model.location());
-        Assertions.assertEquals("uaodsfcpk", model.tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("ounqecano", model.provisioningState());
+        PrivateLinkHubInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"yebizikayuh\",\"privateEndpointConnections\":[{\"id\":\"bs\",\"properties\":{\"privateEndpoint\":{\"id\":\"wrv\"},\"privateLinkServiceConnectionState\":{\"status\":\"gmfpgvmp\",\"description\":\"as\",\"actionsRequired\":\"haq\"},\"provisioningState\":\"ss\"}},{\"id\":\"u\",\"properties\":{\"privateEndpoint\":{\"id\":\"srezp\"},\"privateLinkServiceConnectionState\":{\"status\":\"neuyow\",\"description\":\"d\",\"actionsRequired\":\"t\"},\"provisioningState\":\"ib\"}}]},\"location\":\"rcgp\",\"tags\":{\"av\":\"zimejzanlfzx\",\"jq\":\"mbzonokix\",\"rlazszrnw\":\"irgzp\",\"fpwpjylwbt\":\"iin\"},\"id\":\"h\",\"name\":\"lsj\",\"type\":\"dhszfjv\"}")
+            .toObject(PrivateLinkHubInner.class);
+        Assertions.assertEquals("rcgp", model.location());
+        Assertions.assertEquals("zimejzanlfzx", model.tags().get("av"));
+        Assertions.assertEquals("yebizikayuh", model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubInner model =
-            new PrivateLinkHubInner()
-                .withLocation("okth")
-                .withTags(mapOf("xodpuozmyzydagfu", "uaodsfcpk", "dxwzywqsmbsurexi", "xbezyiuokktwh"))
-                .withProvisioningState("ounqecano");
+        PrivateLinkHubInner model = new PrivateLinkHubInner().withLocation("rcgp")
+            .withTags(mapOf("av", "zimejzanlfzx", "jq", "mbzonokix", "rlazszrnw", "irgzp", "fpwpjylwbt", "iin"))
+            .withProvisioningState("yebizikayuh");
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubInner.class);
-        Assertions.assertEquals("okth", model.location());
-        Assertions.assertEquals("uaodsfcpk", model.tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("ounqecano", model.provisioningState());
+        Assertions.assertEquals("rcgp", model.location());
+        Assertions.assertEquals("zimejzanlfzx", model.tags().get("av"));
+        Assertions.assertEquals("yebizikayuh", model.provisioningState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

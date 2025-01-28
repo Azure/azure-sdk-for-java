@@ -13,10 +13,8 @@ import com.azure.resourcemanager.customerinsights.models.PermissionTypes;
 import java.util.Collections;
 import java.util.List;
 
-public final class AuthorizationPolicyResourceFormatImpl
-    implements AuthorizationPolicyResourceFormat,
-        AuthorizationPolicyResourceFormat.Definition,
-        AuthorizationPolicyResourceFormat.Update {
+public final class AuthorizationPolicyResourceFormatImpl implements AuthorizationPolicyResourceFormat,
+    AuthorizationPolicyResourceFormat.Definition, AuthorizationPolicyResourceFormat.Update {
     private AuthorizationPolicyResourceFormatInner innerObject;
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
@@ -79,29 +77,24 @@ public final class AuthorizationPolicyResourceFormatImpl
     }
 
     public AuthorizationPolicyResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, authorizationPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, authorizationPolicyName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationPolicyResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, authorizationPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, authorizationPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    AuthorizationPolicyResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    AuthorizationPolicyResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new AuthorizationPolicyResourceFormatInner();
         this.serviceManager = serviceManager;
         this.authorizationPolicyName = name;
@@ -112,78 +105,65 @@ public final class AuthorizationPolicyResourceFormatImpl
     }
 
     public AuthorizationPolicyResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, authorizationPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, authorizationPolicyName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationPolicyResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, authorizationPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, authorizationPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    AuthorizationPolicyResourceFormatImpl(
-        AuthorizationPolicyResourceFormatInner innerObject,
+    AuthorizationPolicyResourceFormatImpl(AuthorizationPolicyResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.authorizationPolicyName = Utils.getValueFromIdByName(innerObject.id(), "authorizationPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.authorizationPolicyName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizationPolicies");
     }
 
     public AuthorizationPolicyResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationPolicies()
-                .getWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationPolicies()
+            .getWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationPolicyResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationPolicies()
-                .getWithResponse(resourceGroupName, hubName, authorizationPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationPolicies()
+            .getWithResponse(resourceGroupName, hubName, authorizationPolicyName, context)
+            .getValue();
         return this;
     }
 
     public Response<AuthorizationPolicy> regeneratePrimaryKeyWithResponse(Context context) {
-        return serviceManager
-            .authorizationPolicies()
+        return serviceManager.authorizationPolicies()
             .regeneratePrimaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, context);
     }
 
     public AuthorizationPolicy regeneratePrimaryKey() {
-        return serviceManager
-            .authorizationPolicies()
+        return serviceManager.authorizationPolicies()
             .regeneratePrimaryKey(resourceGroupName, hubName, authorizationPolicyName);
     }
 
     public Response<AuthorizationPolicy> regenerateSecondaryKeyWithResponse(Context context) {
-        return serviceManager
-            .authorizationPolicies()
+        return serviceManager.authorizationPolicies()
             .regenerateSecondaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, context);
     }
 
     public AuthorizationPolicy regenerateSecondaryKey() {
-        return serviceManager
-            .authorizationPolicies()
+        return serviceManager.authorizationPolicies()
             .regenerateSecondaryKey(resourceGroupName, hubName, authorizationPolicyName);
     }
 

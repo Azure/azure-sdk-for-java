@@ -10,8 +10,8 @@ import com.azure.resourcemanager.deploymentmanager.models.RolloutIdentityAuthent
 public final class RolloutIdentityAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RolloutIdentityAuthentication model =
-            BinaryData.fromString("{\"type\":\"RolloutIdentity\"}").toObject(RolloutIdentityAuthentication.class);
+        RolloutIdentityAuthentication model
+            = BinaryData.fromString("{\"type\":\"RolloutIdentity\"}").toObject(RolloutIdentityAuthentication.class);
     }
 
     @org.junit.jupiter.api.Test

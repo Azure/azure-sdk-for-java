@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Source platform of the project. */
+/**
+ * Source platform of the project.
+ */
 public final class ProjectSourcePlatform extends ExpandableStringEnum<ProjectSourcePlatform> {
-    /** Static value SQL for ProjectSourcePlatform. */
+    /**
+     * Static value SQL for ProjectSourcePlatform.
+     */
     public static final ProjectSourcePlatform SQL = fromString("SQL");
 
-    /** Static value Unknown for ProjectSourcePlatform. */
+    /**
+     * Static value Unknown for ProjectSourcePlatform.
+     */
     public static final ProjectSourcePlatform UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of ProjectSourcePlatform value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ProjectSourcePlatform extends ExpandableStringEnum<ProjectSou
 
     /**
      * Creates or finds a ProjectSourcePlatform from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProjectSourcePlatform.
      */
-    @JsonCreator
     public static ProjectSourcePlatform fromString(String name) {
         return fromString(name, ProjectSourcePlatform.class);
     }
 
     /**
      * Gets known ProjectSourcePlatform values.
-     *
+     * 
      * @return known ProjectSourcePlatform values.
      */
     public static Collection<ProjectSourcePlatform> values() {

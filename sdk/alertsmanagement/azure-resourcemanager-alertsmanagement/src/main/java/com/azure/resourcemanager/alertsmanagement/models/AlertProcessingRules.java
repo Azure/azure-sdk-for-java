@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AlertProcessingRules. */
+/**
+ * Resource collection API of AlertProcessingRules.
+ */
 public interface AlertProcessingRules {
     /**
      * List all alert processing rules in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of alert processing rules as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface AlertProcessingRules {
 
     /**
      * List all alert processing rules in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface AlertProcessingRules {
 
     /**
      * List all alert processing rules in a resource group.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface AlertProcessingRules {
 
     /**
      * List all alert processing rules in a resource group.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,21 @@ public interface AlertProcessingRules {
 
     /**
      * Get an alert processing rule by name.
-     *
+     * 
+     * @param resourceGroupName Resource group name where the resource is created.
+     * @param alertProcessingRuleName The name of the alert processing rule that needs to be fetched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an alert processing rule by name.
+     */
+    Response<AlertProcessingRule> getByResourceGroupWithResponse(String resourceGroupName,
+        String alertProcessingRuleName, Context context);
+
+    /**
+     * Get an alert processing rule by name.
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param alertProcessingRuleName The name of the alert processing rule that needs to be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,22 +82,22 @@ public interface AlertProcessingRules {
     AlertProcessingRule getByResourceGroup(String resourceGroupName, String alertProcessingRuleName);
 
     /**
-     * Get an alert processing rule by name.
-     *
+     * Delete an alert processing rule.
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
-     * @param alertProcessingRuleName The name of the alert processing rule that needs to be fetched.
+     * @param alertProcessingRuleName The name of the alert processing rule that needs to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert processing rule by name.
+     * @return the response.
      */
-    Response<AlertProcessingRule> getByResourceGroupWithResponse(
-        String resourceGroupName, String alertProcessingRuleName, Context context);
+    AlertProcessingRulesDeleteResponse deleteByResourceGroupWithResponse(String resourceGroupName,
+        String alertProcessingRuleName, Context context);
 
     /**
      * Delete an alert processing rule.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param alertProcessingRuleName The name of the alert processing rule that needs to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,22 +107,8 @@ public interface AlertProcessingRules {
     void deleteByResourceGroup(String resourceGroupName, String alertProcessingRuleName);
 
     /**
-     * Delete an alert processing rule.
-     *
-     * @param resourceGroupName Resource group name where the resource is created.
-     * @param alertProcessingRuleName The name of the alert processing rule that needs to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    AlertProcessingRulesDeleteResponse deleteWithResponse(
-        String resourceGroupName, String alertProcessingRuleName, Context context);
-
-    /**
      * Get an alert processing rule by name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,7 +119,7 @@ public interface AlertProcessingRules {
 
     /**
      * Get an alert processing rule by name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +131,7 @@ public interface AlertProcessingRules {
 
     /**
      * Delete an alert processing rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,7 +141,7 @@ public interface AlertProcessingRules {
 
     /**
      * Delete an alert processing rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface AlertProcessingRules {
 
     /**
      * Begins definition for a new AlertProcessingRule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AlertProcessingRule definition.
      */

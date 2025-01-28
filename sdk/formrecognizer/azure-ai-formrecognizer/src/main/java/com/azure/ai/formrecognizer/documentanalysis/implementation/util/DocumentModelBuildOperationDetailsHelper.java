@@ -21,7 +21,8 @@ public final class DocumentModelBuildOperationDetailsHelper {
      *
      * @param addressValueAccessor The accessor.
      */
-    public static void setAccessor(final DocumentModelBuildOperationDetailsHelper.DocumentModelBuildOperationDetailsAccessor addressValueAccessor) {
+    public static void setAccessor(
+        final DocumentModelBuildOperationDetailsHelper.DocumentModelBuildOperationDetailsAccessor addressValueAccessor) {
         accessor = addressValueAccessor;
     }
 

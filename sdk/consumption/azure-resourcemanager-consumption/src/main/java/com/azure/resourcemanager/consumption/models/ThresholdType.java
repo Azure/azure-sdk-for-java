@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ThresholdType. */
+/**
+ * The type of threshold.
+ */
 public final class ThresholdType extends ExpandableStringEnum<ThresholdType> {
-    /** Static value Actual for ThresholdType. */
+    /**
+     * Static value Actual for ThresholdType.
+     */
     public static final ThresholdType ACTUAL = fromString("Actual");
 
-    /** Static value Forecasted for ThresholdType. */
+    /**
+     * Static value Forecasted for ThresholdType.
+     */
     public static final ThresholdType FORECASTED = fromString("Forecasted");
 
     /**
+     * Creates a new instance of ThresholdType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ThresholdType() {
+    }
+
+    /**
      * Creates or finds a ThresholdType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ThresholdType.
      */
-    @JsonCreator
     public static ThresholdType fromString(String name) {
         return fromString(name, ThresholdType.class);
     }
 
-    /** @return known ThresholdType values. */
+    /**
+     * Gets known ThresholdType values.
+     * 
+     * @return known ThresholdType values.
+     */
     public static Collection<ThresholdType> values() {
         return values(ThresholdType.class);
     }

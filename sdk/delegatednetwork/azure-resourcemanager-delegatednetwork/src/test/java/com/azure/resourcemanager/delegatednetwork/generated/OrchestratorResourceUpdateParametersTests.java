@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OrchestratorResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrchestratorResourceUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"vmgxsab\":\"ljfmppee\",\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\"}}")
-                .toObject(OrchestratorResourceUpdateParameters.class);
+        OrchestratorResourceUpdateParameters model = BinaryData
+            .fromString(
+                "{\"tags\":{\"vmgxsab\":\"ljfmppee\",\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\"}}")
+            .toObject(OrchestratorResourceUpdateParameters.class);
         Assertions.assertEquals("ljfmppee", model.tags().get("vmgxsab"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrchestratorResourceUpdateParameters model =
-            new OrchestratorResourceUpdateParameters()
-                .withTags(mapOf("vmgxsab", "ljfmppee", "jczdzevndh", "yqduujit", "feusnhut", "rwpdappdsbdkvwrw"));
+        OrchestratorResourceUpdateParameters model = new OrchestratorResourceUpdateParameters()
+            .withTags(mapOf("vmgxsab", "ljfmppee", "jczdzevndh", "yqduujit", "feusnhut", "rwpdappdsbdkvwrw"));
         model = BinaryData.fromObject(model).toObject(OrchestratorResourceUpdateParameters.class);
         Assertions.assertEquals("ljfmppee", model.tags().get("vmgxsab"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

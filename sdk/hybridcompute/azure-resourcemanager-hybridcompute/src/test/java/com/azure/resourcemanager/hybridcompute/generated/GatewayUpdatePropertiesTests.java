@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayUpdateProperties model = BinaryData
-            .fromString("{\"allowedFeatures\":[\"atpxl\",\"rxcyjmoad\",\"uvarmywdmjsjq\",\"jhhyxxrwlycoduhp\"]}")
-            .toObject(GatewayUpdateProperties.class);
-        Assertions.assertEquals("atpxl", model.allowedFeatures().get(0));
+        GatewayUpdateProperties model
+            = BinaryData.fromString("{\"allowedFeatures\":[\"wpracstwitykhev\",\"c\",\"edcpnmdyodnwzxl\"]}")
+                .toObject(GatewayUpdateProperties.class);
+        Assertions.assertEquals("wpracstwitykhev", model.allowedFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayUpdateProperties model = new GatewayUpdateProperties()
-            .withAllowedFeatures(Arrays.asList("atpxl", "rxcyjmoad", "uvarmywdmjsjq", "jhhyxxrwlycoduhp"));
+            .withAllowedFeatures(Arrays.asList("wpracstwitykhev", "c", "edcpnmdyodnwzxl"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdateProperties.class);
-        Assertions.assertEquals("atpxl", model.allowedFeatures().get(0));
+        Assertions.assertEquals("wpracstwitykhev", model.allowedFeatures().get(0));
     }
 }

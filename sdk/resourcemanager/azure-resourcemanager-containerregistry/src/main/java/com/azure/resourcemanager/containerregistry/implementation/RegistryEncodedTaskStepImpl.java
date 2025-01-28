@@ -16,11 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
-    implements RegistryEncodedTaskStep,
-        RegistryEncodedTaskStep.Definition,
-        RegistryEncodedTaskStep.Update,
-        HasInnerModel<EncodedTaskStep> {
+class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl implements RegistryEncodedTaskStep,
+    RegistryEncodedTaskStep.Definition, RegistryEncodedTaskStep.Update, HasInnerModel<EncodedTaskStep> {
 
     private EncodedTaskStep inner;
     private EncodedTaskStepUpdateParameters encodedTaskStepUpdateParameters;

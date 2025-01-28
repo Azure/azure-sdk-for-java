@@ -13,13 +13,10 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.DraModel
 public final class DraModelImpl implements DraModel, DraModel.Definition {
     private DraModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    DraModelImpl(
-        DraModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    DraModelImpl(DraModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -65,49 +62,39 @@ public final class DraModelImpl implements DraModel, DraModel.Definition {
     }
 
     public DraModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDras()
-                .create(resourceGroupName, fabricName, fabricAgentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDras()
+            .create(resourceGroupName, fabricName, fabricAgentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DraModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDras()
-                .create(resourceGroupName, fabricName, fabricAgentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDras()
+            .create(resourceGroupName, fabricName, fabricAgentName, this.innerModel(), context);
         return this;
     }
 
-    DraModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    DraModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new DraModelInner();
         this.serviceManager = serviceManager;
         this.fabricAgentName = name;
     }
 
     public DraModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDras()
-                .getWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDras()
+            .getWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DraModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDras()
-                .getWithResponse(resourceGroupName, fabricName, fabricAgentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDras()
+            .getWithResponse(resourceGroupName, fabricName, fabricAgentName, context)
+            .getValue();
         return this;
     }
 

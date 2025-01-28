@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes Dolby Digital Audio Codec (AC3) audio encoding settings. The current implementation for Dolby Digital Audio
@@ -14,36 +16,59 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * 32K/44.1K/48K Hz; Audio bitrate values as AC3 specification supports: 32000, 40000, 48000, 56000, 64000, 80000,
  * 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 384000, 448000, 512000, 576000, 640000 bps.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.DDAudio")
 @Fluent
 public final class DDAudio extends Audio {
-    /** Creates an instance of DDAudio class. */
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.DDAudio";
+
+    /**
+     * Creates an instance of DDAudio class.
+     */
     public DDAudio() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DDAudio withChannels(Integer channels) {
         super.withChannels(channels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DDAudio withSamplingRate(Integer samplingRate) {
         super.withSamplingRate(samplingRate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DDAudio withBitrate(Integer bitrate) {
         super.withBitrate(bitrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DDAudio withLabel(String label) {
         super.withLabel(label);
@@ -52,11 +77,58 @@ public final class DDAudio extends Audio {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeNumberField("channels", channels());
+        jsonWriter.writeNumberField("samplingRate", samplingRate());
+        jsonWriter.writeNumberField("bitrate", bitrate());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DDAudio from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DDAudio if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the DDAudio.
+     */
+    public static DDAudio fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DDAudio deserializedDDAudio = new DDAudio();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedDDAudio.withLabel(reader.getString());
+                } else if ("channels".equals(fieldName)) {
+                    deserializedDDAudio.withChannels(reader.getNullable(JsonReader::getInt));
+                } else if ("samplingRate".equals(fieldName)) {
+                    deserializedDDAudio.withSamplingRate(reader.getNullable(JsonReader::getInt));
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedDDAudio.withBitrate(reader.getNullable(JsonReader::getInt));
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedDDAudio.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDDAudio;
+        });
     }
 }

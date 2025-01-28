@@ -6,25 +6,31 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** ACL for a private endpoint. */
+/**
+ * ACL for a private endpoint.
+ */
 @Fluent
 public final class PrivateEndpointAcl extends NetworkAcl {
     /*
      * Name of the private endpoint connection
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of PrivateEndpointAcl class. */
+    /**
+     * Creates an instance of PrivateEndpointAcl class.
+     */
     public PrivateEndpointAcl() {
     }
 
     /**
      * Get the name property: Name of the private endpoint connection.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +39,7 @@ public final class PrivateEndpointAcl extends NetworkAcl {
 
     /**
      * Set the name property: Name of the private endpoint connection.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateEndpointAcl object itself.
      */
@@ -42,14 +48,18 @@ public final class PrivateEndpointAcl extends NetworkAcl {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateEndpointAcl withAllow(List<WebPubSubRequestType> allow) {
         super.withAllow(allow);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateEndpointAcl withDeny(List<WebPubSubRequestType> deny) {
         super.withDeny(deny);
@@ -58,18 +68,65 @@ public final class PrivateEndpointAcl extends NetworkAcl {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PrivateEndpointAcl"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PrivateEndpointAcl"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointAcl.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allow", allow(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("deny", deny(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointAcl from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointAcl if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateEndpointAcl.
+     */
+    public static PrivateEndpointAcl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointAcl deserializedPrivateEndpointAcl = new PrivateEndpointAcl();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allow".equals(fieldName)) {
+                    List<WebPubSubRequestType> allow
+                        = reader.readArray(reader1 -> WebPubSubRequestType.fromString(reader1.getString()));
+                    deserializedPrivateEndpointAcl.withAllow(allow);
+                } else if ("deny".equals(fieldName)) {
+                    List<WebPubSubRequestType> deny
+                        = reader.readArray(reader1 -> WebPubSubRequestType.fromString(reader1.getString()));
+                    deserializedPrivateEndpointAcl.withDeny(deny);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointAcl.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointAcl;
+        });
+    }
 }

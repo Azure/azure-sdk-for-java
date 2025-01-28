@@ -16,13 +16,15 @@ import com.azure.resourcemanager.devspaces.fluent.models.ControllerInner;
 import com.azure.resourcemanager.devspaces.models.ControllerUpdateParameters;
 import com.azure.resourcemanager.devspaces.models.ListConnectionDetailsParameters;
 
-/** An instance of this class provides access to all the operations defined in ControllersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ControllersClient.
+ */
 public interface ControllersClient {
     /**
      * Gets an Azure Dev Spaces Controller.
-     *
-     * <p>Gets the properties for an Azure Dev Spaces Controller.
-     *
+     * 
+     * Gets the properties for an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param context The context to associate with this operation.
@@ -36,9 +38,9 @@ public interface ControllersClient {
 
     /**
      * Gets an Azure Dev Spaces Controller.
-     *
-     * <p>Gets the properties for an Azure Dev Spaces Controller.
-     *
+     * 
+     * Gets the properties for an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,9 +53,9 @@ public interface ControllersClient {
 
     /**
      * Creates an Azure Dev Spaces Controller.
-     *
-     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
-     *
+     * 
+     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param controller Controller create parameters.
@@ -63,14 +65,14 @@ public interface ControllersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ControllerInner>, ControllerInner> beginCreate(
-        String resourceGroupName, String name, ControllerInner controller);
+    SyncPoller<PollResult<ControllerInner>, ControllerInner> beginCreate(String resourceGroupName, String name,
+        ControllerInner controller);
 
     /**
      * Creates an Azure Dev Spaces Controller.
-     *
-     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
-     *
+     * 
+     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param controller Controller create parameters.
@@ -81,14 +83,14 @@ public interface ControllersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ControllerInner>, ControllerInner> beginCreate(
-        String resourceGroupName, String name, ControllerInner controller, Context context);
+    SyncPoller<PollResult<ControllerInner>, ControllerInner> beginCreate(String resourceGroupName, String name,
+        ControllerInner controller, Context context);
 
     /**
      * Creates an Azure Dev Spaces Controller.
-     *
-     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
-     *
+     * 
+     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param controller Controller create parameters.
@@ -102,9 +104,9 @@ public interface ControllersClient {
 
     /**
      * Creates an Azure Dev Spaces Controller.
-     *
-     * <p>Creates an Azure Dev Spaces Controller with the specified create parameters.
-     *
+     * 
+     * Creates an Azure Dev Spaces Controller with the specified create parameters.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param controller Controller create parameters.
@@ -119,9 +121,9 @@ public interface ControllersClient {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,9 +136,9 @@ public interface ControllersClient {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param context The context to associate with this operation.
@@ -150,9 +152,9 @@ public interface ControllersClient {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,9 +166,9 @@ public interface ControllersClient {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param context The context to associate with this operation.
@@ -179,9 +181,9 @@ public interface ControllersClient {
 
     /**
      * Updates an Azure Dev Spaces Controller.
-     *
-     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
-     *
+     * 
+     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param controllerUpdateParameters Parameters for updating the Azure Dev Spaces Controller.
@@ -192,14 +194,14 @@ public interface ControllersClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ControllerInner> updateWithResponse(
-        String resourceGroupName, String name, ControllerUpdateParameters controllerUpdateParameters, Context context);
+    Response<ControllerInner> updateWithResponse(String resourceGroupName, String name,
+        ControllerUpdateParameters controllerUpdateParameters, Context context);
 
     /**
      * Updates an Azure Dev Spaces Controller.
-     *
-     * <p>Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
-     *
+     * 
+     * Updates the properties of an existing Azure Dev Spaces Controller with the specified update parameters.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param controllerUpdateParameters Parameters for updating the Azure Dev Spaces Controller.
@@ -209,15 +211,15 @@ public interface ControllersClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ControllerInner update(
-        String resourceGroupName, String name, ControllerUpdateParameters controllerUpdateParameters);
+    ControllerInner update(String resourceGroupName, String name,
+        ControllerUpdateParameters controllerUpdateParameters);
 
     /**
      * Lists the Azure Dev Spaces Controllers in a resource group.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -229,10 +231,10 @@ public interface ControllersClient {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a resource group.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,9 +247,9 @@ public interface ControllersClient {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a subscription.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
-     *
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -257,9 +259,9 @@ public interface ControllersClient {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a subscription.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
-     *
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,9 +273,9 @@ public interface ControllersClient {
 
     /**
      * Lists connection details for an Azure Dev Spaces Controller.
-     *
-     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
-     *
+     * 
+     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
@@ -284,17 +286,14 @@ public interface ControllersClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ControllerConnectionDetailsListInner> listConnectionDetailsWithResponse(
-        String resourceGroupName,
-        String name,
-        ListConnectionDetailsParameters listConnectionDetailsParameters,
-        Context context);
+    Response<ControllerConnectionDetailsListInner> listConnectionDetailsWithResponse(String resourceGroupName,
+        String name, ListConnectionDetailsParameters listConnectionDetailsParameters, Context context);
 
     /**
      * Lists connection details for an Azure Dev Spaces Controller.
-     *
-     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
-     *
+     * 
+     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
@@ -304,6 +303,6 @@ public interface ControllersClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ControllerConnectionDetailsListInner listConnectionDetails(
-        String resourceGroupName, String name, ListConnectionDetailsParameters listConnectionDetailsParameters);
+    ControllerConnectionDetailsListInner listConnectionDetails(String resourceGroupName, String name,
+        ListConnectionDetailsParameters listConnectionDetailsParameters);
 }

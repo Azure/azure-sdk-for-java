@@ -14,29 +14,25 @@ import org.junit.jupiter.api.Assertions;
 public final class IpMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"hcvsqltnzoi\"],\"ipGroupNames\":[\"xgnxfyqonmpqoxwd\",\"fdbxiqxeiiqbim\"]}")
-                .toObject(IpMatchCondition.class);
-        Assertions.assertEquals(SourceDestinationType.SOURCE_IP, model.type());
-        Assertions.assertEquals(PrefixType.PREFIX, model.prefixType());
-        Assertions.assertEquals("hcvsqltnzoi", model.ipPrefixValues().get(0));
-        Assertions.assertEquals("xgnxfyqonmpqoxwd", model.ipGroupNames().get(0));
+        IpMatchCondition model = BinaryData.fromString(
+            "{\"type\":\"DestinationIP\",\"prefixType\":\"LongestPrefix\",\"ipPrefixValues\":[\"unnoxyhk\",\"g\",\"ddrihpf\",\"oqcaaewdaomdj\"],\"ipGroupNames\":[\"jxxkzbrmsgei\",\"siykzkdncjdxonbz\"]}")
+            .toObject(IpMatchCondition.class);
+        Assertions.assertEquals(SourceDestinationType.DESTINATION_IP, model.type());
+        Assertions.assertEquals(PrefixType.LONGEST_PREFIX, model.prefixType());
+        Assertions.assertEquals("unnoxyhk", model.ipPrefixValues().get(0));
+        Assertions.assertEquals("jxxkzbrmsgei", model.ipGroupNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpMatchCondition model =
-            new IpMatchCondition()
-                .withType(SourceDestinationType.SOURCE_IP)
-                .withPrefixType(PrefixType.PREFIX)
-                .withIpPrefixValues(Arrays.asList("hcvsqltnzoi"))
-                .withIpGroupNames(Arrays.asList("xgnxfyqonmpqoxwd", "fdbxiqxeiiqbim"));
+        IpMatchCondition model = new IpMatchCondition().withType(SourceDestinationType.DESTINATION_IP)
+            .withPrefixType(PrefixType.LONGEST_PREFIX)
+            .withIpPrefixValues(Arrays.asList("unnoxyhk", "g", "ddrihpf", "oqcaaewdaomdj"))
+            .withIpGroupNames(Arrays.asList("jxxkzbrmsgei", "siykzkdncjdxonbz"));
         model = BinaryData.fromObject(model).toObject(IpMatchCondition.class);
-        Assertions.assertEquals(SourceDestinationType.SOURCE_IP, model.type());
-        Assertions.assertEquals(PrefixType.PREFIX, model.prefixType());
-        Assertions.assertEquals("hcvsqltnzoi", model.ipPrefixValues().get(0));
-        Assertions.assertEquals("xgnxfyqonmpqoxwd", model.ipGroupNames().get(0));
+        Assertions.assertEquals(SourceDestinationType.DESTINATION_IP, model.type());
+        Assertions.assertEquals(PrefixType.LONGEST_PREFIX, model.prefixType());
+        Assertions.assertEquals("unnoxyhk", model.ipPrefixValues().get(0));
+        Assertions.assertEquals("jxxkzbrmsgei", model.ipGroupNames().get(0));
     }
 }

@@ -6,30 +6,36 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Storage container properties. */
+/**
+ * Storage container properties.
+ */
 @Fluent
-public final class StorageContainerProperties {
+public final class StorageContainerProperties implements JsonSerializable<StorageContainerProperties> {
     /*
      * Gets or sets the Name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the ClusterSharedVolumePath.
      */
-    @JsonProperty(value = "clusterSharedVolumePath", required = true)
     private String clusterSharedVolumePath;
 
-    /** Creates an instance of StorageContainerProperties class. */
+    /**
+     * Creates an instance of StorageContainerProperties class.
+     */
     public StorageContainerProperties() {
     }
 
     /**
      * Get the name property: Gets or sets the Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class StorageContainerProperties {
 
     /**
      * Set the name property: Gets or sets the Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the StorageContainerProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class StorageContainerProperties {
 
     /**
      * Get the clusterSharedVolumePath property: Gets or sets the ClusterSharedVolumePath.
-     *
+     * 
      * @return the clusterSharedVolumePath value.
      */
     public String clusterSharedVolumePath() {
@@ -58,7 +64,7 @@ public final class StorageContainerProperties {
 
     /**
      * Set the clusterSharedVolumePath property: Gets or sets the ClusterSharedVolumePath.
-     *
+     * 
      * @param clusterSharedVolumePath the clusterSharedVolumePath value to set.
      * @return the StorageContainerProperties object itself.
      */
@@ -69,22 +75,61 @@ public final class StorageContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property name in model StorageContainerProperties"));
         }
         if (clusterSharedVolumePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterSharedVolumePath in model StorageContainerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterSharedVolumePath in model StorageContainerProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageContainerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("clusterSharedVolumePath", this.clusterSharedVolumePath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageContainerProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageContainerProperties.
+     */
+    public static StorageContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageContainerProperties deserializedStorageContainerProperties = new StorageContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStorageContainerProperties.name = reader.getString();
+                } else if ("clusterSharedVolumePath".equals(fieldName)) {
+                    deserializedStorageContainerProperties.clusterSharedVolumePath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageContainerProperties;
+        });
+    }
 }

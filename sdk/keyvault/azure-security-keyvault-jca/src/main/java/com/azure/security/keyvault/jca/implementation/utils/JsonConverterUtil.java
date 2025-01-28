@@ -3,61 +3,79 @@
 
 package com.azure.security.keyvault.jca.implementation.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.WARNING;
 
 /**
- * The Jackson JsonConverter.
+ * The JSON Converter.
  */
 public final class JsonConverterUtil {
-    private static final ObjectMapper FROM_JSON_MAPPER = new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    private static final ObjectMapper TO_JSON_MAPPER = new ObjectMapper();
-
     /**
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(JsonConverterUtil.class.getName());
 
     /**
-     * From JSON.
+     * Deserializes the {@code json} as an instance of {@link JsonSerializable}.
      *
-     * @param string the string.
-     * @param resultClass the result class.
-     * @return the object, or null if the conversion failed.
+     * @param deserializationFunction The deserialization function.
+     * @param json The JSON being deserialized.
+     *
+     * @return An instance of {@code jsonSerializable} based on the {@code json}.
+     *
+     * @throws IOException If an error occurs during deserialization.
+     * @throws IllegalStateException If the {@code jsonSerializable} does not have a static {@code fromJson} method.
+     * @throws Error If an error occurs during deserialization.
      */
-    public static Object fromJson(String string, Class<?> resultClass) {
-        LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { string, resultClass });
-        Object result = null;
-        try {
-            result = FROM_JSON_MAPPER.readValue(string, resultClass);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(WARNING, "Unable to convert from JSON", e);
+    public static <T extends JsonSerializable<T>> T fromJson(ReadValueCallback<JsonReader, T> deserializationFunction,
+        String json) throws IOException {
+
+        LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { deserializationFunction, json });
+
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+            T deserialized = deserializationFunction.read(jsonReader);
+
+            LOGGER.exiting("JsonConverterUtil", "fromJson", deserialized);
+
+            return deserialized;
         }
-        LOGGER.exiting("JsonConverterUtil", "fromJson", result);
-        return result;
     }
 
     /**
-     * To JSON.
+     * Serializes an object to a JSON string.
      *
-     * @param object the object.
-     * @return the JSON string.
+     * @param jsonSerializable The object to serialize.
      */
-    public static String toJson(Object object) {
-        LOGGER.entering("JsonConverterUtil", "toJson", object);
-        String result = null;
-        try {
-            result = TO_JSON_MAPPER.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
+    @SuppressWarnings("CharsetObjectCanBeUsed")
+    public static String toJson(JsonSerializable<?> jsonSerializable) {
+        LOGGER.entering("JsonConverterUtil", "toJson", jsonSerializable);
+
+        if (jsonSerializable == null) {
+            return null;
+        }
+
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
+
+            jsonWriter.writeUntyped(jsonSerializable);
+            jsonWriter.flush();
+
+            return byteArrayOutputStream.toString("UTF-8");
+        } catch (IOException e) {
             LOGGER.log(WARNING, "Unable to convert to JSON", e);
         }
-        LOGGER.exiting("JsonConverterUtil", "toJson", result);
-        return result;
+
+        LOGGER.exiting("JsonConverterUtil", "toJson");
+
+        return null;
     }
 }

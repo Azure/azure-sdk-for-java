@@ -6,36 +6,41 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SAP request to get list of availability zones. */
+/**
+ * The SAP request to get list of availability zones.
+ */
 @Fluent
-public final class SapAvailabilityZoneDetailsRequest {
+public final class SapAvailabilityZoneDetailsRequest implements JsonSerializable<SapAvailabilityZoneDetailsRequest> {
     /*
      * The geo-location where the SAP resources will be created.
      */
-    @JsonProperty(value = "appLocation", required = true)
     private String appLocation;
 
     /*
      * Defines the SAP Product type.
      */
-    @JsonProperty(value = "sapProduct", required = true)
     private SapProductType sapProduct;
 
     /*
      * The database type. Eg: HANA, DB2, etc
      */
-    @JsonProperty(value = "databaseType", required = true)
     private SapDatabaseType databaseType;
 
-    /** Creates an instance of SapAvailabilityZoneDetailsRequest class. */
+    /**
+     * Creates an instance of SapAvailabilityZoneDetailsRequest class.
+     */
     public SapAvailabilityZoneDetailsRequest() {
     }
 
     /**
      * Get the appLocation property: The geo-location where the SAP resources will be created.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -44,7 +49,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Set the appLocation property: The geo-location where the SAP resources will be created.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
@@ -55,7 +60,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Get the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @return the sapProduct value.
      */
     public SapProductType sapProduct() {
@@ -64,7 +69,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Set the sapProduct property: Defines the SAP Product type.
-     *
+     * 
      * @param sapProduct the sapProduct value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
@@ -75,7 +80,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Get the databaseType property: The database type. Eg: HANA, DB2, etc.
-     *
+     * 
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -84,7 +89,7 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Set the databaseType property: The database type. Eg: HANA, DB2, etc.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SapAvailabilityZoneDetailsRequest object itself.
      */
@@ -95,29 +100,72 @@ public final class SapAvailabilityZoneDetailsRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appLocation in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appLocation in model SapAvailabilityZoneDetailsRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapProduct in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sapProduct in model SapAvailabilityZoneDetailsRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseType in model SapAvailabilityZoneDetailsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseType in model SapAvailabilityZoneDetailsRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapAvailabilityZoneDetailsRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appLocation", this.appLocation);
+        jsonWriter.writeStringField("sapProduct", this.sapProduct == null ? null : this.sapProduct.toString());
+        jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapAvailabilityZoneDetailsRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapAvailabilityZoneDetailsRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapAvailabilityZoneDetailsRequest.
+     */
+    public static SapAvailabilityZoneDetailsRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapAvailabilityZoneDetailsRequest deserializedSapAvailabilityZoneDetailsRequest
+                = new SapAvailabilityZoneDetailsRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appLocation".equals(fieldName)) {
+                    deserializedSapAvailabilityZoneDetailsRequest.appLocation = reader.getString();
+                } else if ("sapProduct".equals(fieldName)) {
+                    deserializedSapAvailabilityZoneDetailsRequest.sapProduct
+                        = SapProductType.fromString(reader.getString());
+                } else if ("databaseType".equals(fieldName)) {
+                    deserializedSapAvailabilityZoneDetailsRequest.databaseType
+                        = SapDatabaseType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapAvailabilityZoneDetailsRequest;
+        });
+    }
 }

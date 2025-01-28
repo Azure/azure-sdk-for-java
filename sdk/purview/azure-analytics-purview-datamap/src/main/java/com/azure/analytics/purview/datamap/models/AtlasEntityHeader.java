@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +24,7 @@ public final class AtlasEntityHeader implements JsonSerializable<AtlasEntityHead
      * The attributes of the struct.
      */
     @Generated
-    private Map<String, Object> attributes;
+    private Map<String, BinaryData> attributes;
 
     /*
      * The name of the type.
@@ -105,7 +106,7 @@ public final class AtlasEntityHeader implements JsonSerializable<AtlasEntityHead
      * @return the attributes value.
      */
     @Generated
-    public Map<String, Object> getAttributes() {
+    public Map<String, BinaryData> getAttributes() {
         return this.attributes;
     }
 
@@ -116,7 +117,7 @@ public final class AtlasEntityHeader implements JsonSerializable<AtlasEntityHead
      * @return the AtlasEntityHeader object itself.
      */
     @Generated
-    public AtlasEntityHeader setAttributes(Map<String, Object> attributes) {
+    public AtlasEntityHeader setAttributes(Map<String, BinaryData> attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -372,7 +373,8 @@ public final class AtlasEntityHeader implements JsonSerializable<AtlasEntityHead
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("attributes", this.attributes,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("typeName", this.typeName);
         jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
         jsonWriter.writeArrayField("classificationNames", this.classificationNames,
@@ -406,7 +408,8 @@ public final class AtlasEntityHeader implements JsonSerializable<AtlasEntityHead
                 reader.nextToken();
 
                 if ("attributes".equals(fieldName)) {
-                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasEntityHeader.attributes = attributes;
                 } else if ("typeName".equals(fieldName)) {
                     deserializedAtlasEntityHeader.typeName = reader.getString();

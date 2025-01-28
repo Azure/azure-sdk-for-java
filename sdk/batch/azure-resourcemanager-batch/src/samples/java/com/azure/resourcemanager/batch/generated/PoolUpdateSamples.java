@@ -24,7 +24,7 @@ import java.util.Arrays;
 public final class PoolUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_EnableAutoScale.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_EnableAutoScale.json
      */
     /**
      * Sample code: UpdatePool - Enable Autoscale.
@@ -43,7 +43,7 @@ public final class PoolUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_RemoveStartTask.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_RemoveStartTask.json
      */
     /**
      * Sample code: UpdatePool - Remove Start Task.
@@ -59,7 +59,7 @@ public final class PoolUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_ResizePool.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_ResizePool.json
      */
     /**
      * Sample code: UpdatePool - Resize Pool.
@@ -71,15 +71,17 @@ public final class PoolUpdateSamples {
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withScaleSettings(new ScaleSettings().withFixedScale(new FixedScaleSettings()
-                .withResizeTimeout(Duration.parse("PT8M")).withTargetDedicatedNodes(5).withTargetLowPriorityNodes(0)
-                .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+            .withScaleSettings(
+                new ScaleSettings().withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
+                    .withTargetDedicatedNodes(5)
+                    .withTargetLowPriorityNodes(0)
+                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PoolUpdate_OtherProperties.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PoolUpdate_OtherProperties.json
      */
     /**
      * Sample code: UpdatePool - Other Properties.
@@ -90,15 +92,18 @@ public final class PoolUpdateSamples {
         Pool resource = manager.pools()
             .getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withMetadata(Arrays.asList(new MetadataItem().withName("key1").withValue("value1")))
+        resource.update()
+            .withMetadata(Arrays.asList(new MetadataItem().withName("key1").withValue("value1")))
             .withCertificates(Arrays.asList(new CertificateReference().withId(
                 "/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/certificates/sha1-1234567")
-                .withStoreLocation(CertificateStoreLocation.LOCAL_MACHINE).withStoreName("MY")))
+                .withStoreLocation(CertificateStoreLocation.LOCAL_MACHINE)
+                .withStoreName("MY")))
             .withApplicationPackages(Arrays.asList(new ApplicationPackageReference().withId(
                 "/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
                 new ApplicationPackageReference().withId(
                     "/subscriptions/subid/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_5678")
                     .withVersion("1.0")))
-            .withTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED).apply();
+            .withTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED)
+            .apply();
     }
 }

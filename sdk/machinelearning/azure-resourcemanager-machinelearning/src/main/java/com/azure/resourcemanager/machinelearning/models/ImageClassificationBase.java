@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ImageClassificationBase model. */
+/**
+ * The ImageClassificationBase model.
+ */
 @Fluent
 public class ImageClassificationBase extends ImageVertical {
     /*
      * Settings used for training the model.
      */
-    @JsonProperty(value = "modelSettings")
     private ImageModelSettingsClassification modelSettings;
 
     /*
      * Search space for sampling different combinations of models and their hyperparameters.
      */
-    @JsonProperty(value = "searchSpace")
     private List<ImageModelDistributionSettingsClassification> searchSpace;
 
-    /** Creates an instance of ImageClassificationBase class. */
+    /**
+     * Creates an instance of ImageClassificationBase class.
+     */
     public ImageClassificationBase() {
     }
 
     /**
      * Get the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @return the modelSettings value.
      */
     public ImageModelSettingsClassification modelSettings() {
@@ -38,7 +43,7 @@ public class ImageClassificationBase extends ImageVertical {
 
     /**
      * Set the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @param modelSettings the modelSettings value to set.
      * @return the ImageClassificationBase object itself.
      */
@@ -50,7 +55,7 @@ public class ImageClassificationBase extends ImageVertical {
     /**
      * Get the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @return the searchSpace value.
      */
     public List<ImageModelDistributionSettingsClassification> searchSpace() {
@@ -60,7 +65,7 @@ public class ImageClassificationBase extends ImageVertical {
     /**
      * Set the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @param searchSpace the searchSpace value to set.
      * @return the ImageClassificationBase object itself.
      */
@@ -69,28 +74,36 @@ public class ImageClassificationBase extends ImageVertical {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageClassificationBase withLimitSettings(ImageLimitSettings limitSettings) {
         super.withLimitSettings(limitSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageClassificationBase withSweepSettings(ImageSweepSettings sweepSettings) {
         super.withSweepSettings(sweepSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageClassificationBase withValidationData(MLTableJobInput validationData) {
         super.withValidationData(validationData);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageClassificationBase withValidationDataSize(Double validationDataSize) {
         super.withValidationDataSize(validationDataSize);
@@ -99,7 +112,7 @@ public class ImageClassificationBase extends ImageVertical {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -111,5 +124,61 @@ public class ImageClassificationBase extends ImageVertical {
         if (searchSpace() != null) {
             searchSpace().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("limitSettings", limitSettings());
+        jsonWriter.writeJsonField("sweepSettings", sweepSettings());
+        jsonWriter.writeJsonField("validationData", validationData());
+        jsonWriter.writeNumberField("validationDataSize", validationDataSize());
+        jsonWriter.writeJsonField("modelSettings", this.modelSettings);
+        jsonWriter.writeArrayField("searchSpace", this.searchSpace, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageClassificationBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageClassificationBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageClassificationBase.
+     */
+    public static ImageClassificationBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageClassificationBase deserializedImageClassificationBase = new ImageClassificationBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limitSettings".equals(fieldName)) {
+                    deserializedImageClassificationBase.withLimitSettings(ImageLimitSettings.fromJson(reader));
+                } else if ("sweepSettings".equals(fieldName)) {
+                    deserializedImageClassificationBase.withSweepSettings(ImageSweepSettings.fromJson(reader));
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedImageClassificationBase.withValidationData(MLTableJobInput.fromJson(reader));
+                } else if ("validationDataSize".equals(fieldName)) {
+                    deserializedImageClassificationBase
+                        .withValidationDataSize(reader.getNullable(JsonReader::getDouble));
+                } else if ("modelSettings".equals(fieldName)) {
+                    deserializedImageClassificationBase.modelSettings
+                        = ImageModelSettingsClassification.fromJson(reader);
+                } else if ("searchSpace".equals(fieldName)) {
+                    List<ImageModelDistributionSettingsClassification> searchSpace
+                        = reader.readArray(reader1 -> ImageModelDistributionSettingsClassification.fromJson(reader1));
+                    deserializedImageClassificationBase.searchSpace = searchSpace;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageClassificationBase;
+        });
     }
 }

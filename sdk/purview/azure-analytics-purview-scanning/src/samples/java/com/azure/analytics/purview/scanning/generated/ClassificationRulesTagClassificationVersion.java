@@ -13,16 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ClassificationRulesTagClassificationVersion {
     public static void main(String[] args) {
-        ClassificationRulesClient classificationRulesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClassificationRulesClient();
+        ClassificationRulesClient classificationRulesClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClassificationRulesClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.classificationrulestagclassificationversion.classificationrulestagclassificationversion
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                classificationRulesClient.tagClassificationVersionWithResponse(
-                        "ClassificationRule1", 3, "Keep", requestOptions);
+        Response<BinaryData> response = classificationRulesClient
+            .tagClassificationVersionWithResponse("ClassificationRule1", 3, "Keep", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.classificationrulestagclassificationversion.classificationrulestagclassificationversion
     }
 }

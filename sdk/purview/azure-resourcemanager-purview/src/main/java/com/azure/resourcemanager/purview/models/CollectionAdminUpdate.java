@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Collection administrator update. */
+/**
+ * Collection administrator update.
+ */
 @Fluent
-public final class CollectionAdminUpdate {
+public final class CollectionAdminUpdate implements JsonSerializable<CollectionAdminUpdate> {
     /*
      * Gets or sets the object identifier of the admin.
      */
-    @JsonProperty(value = "objectId")
     private String objectId;
 
-    /** Creates an instance of CollectionAdminUpdate class. */
+    /**
+     * Creates an instance of CollectionAdminUpdate class.
+     */
     public CollectionAdminUpdate() {
     }
 
     /**
      * Get the objectId property: Gets or sets the object identifier of the admin.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -31,7 +38,7 @@ public final class CollectionAdminUpdate {
 
     /**
      * Set the objectId property: Gets or sets the object identifier of the admin.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the CollectionAdminUpdate object itself.
      */
@@ -42,9 +49,45 @@ public final class CollectionAdminUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectId", this.objectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CollectionAdminUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CollectionAdminUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CollectionAdminUpdate.
+     */
+    public static CollectionAdminUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CollectionAdminUpdate deserializedCollectionAdminUpdate = new CollectionAdminUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectId".equals(fieldName)) {
+                    deserializedCollectionAdminUpdate.objectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCollectionAdminUpdate;
+        });
     }
 }

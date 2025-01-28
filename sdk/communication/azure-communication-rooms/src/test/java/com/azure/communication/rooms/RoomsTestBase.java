@@ -32,22 +32,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class RoomsTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(RoomsTestBase.class);
 
-    protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
-            "COMMUNICATION_CONNECTION_STRING_ROOMS",
+    protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_CONNECTION_STRING_ROOMS",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
     protected RoomsClientBuilder getRoomsClient(HttpClient httpClient) {
-        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(
-                CONNECTION_STRING);
+        CommunicationConnectionString communicationConnectionString
+            = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
         RoomsClientBuilder builder = new RoomsClientBuilder();
-        builder.endpoint(communicationEndpoint).credential(new AzureKeyCredential(communicationAccessKey))
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.endpoint(communicationEndpoint)
+            .credential(new AzureKeyCredential(communicationAccessKey))
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         configureTestMode(builder);
 
@@ -59,8 +60,9 @@ public class RoomsTestBase extends TestProxyTestBase {
             tokenCredential = new MockTokenCredential();
         }
         RoomsClientBuilder builder = new RoomsClientBuilder();
-        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint()).credential(tokenCredential)
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+            .credential(tokenCredential)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         configureTestMode(builder);
 
@@ -68,14 +70,13 @@ public class RoomsTestBase extends TestProxyTestBase {
     }
 
     protected RoomsClientBuilder getRoomsClientWithConnectionString(HttpClient httpClient,
-            RoomsServiceVersion version) {
+        RoomsServiceVersion version) {
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.connectionString(CONNECTION_STRING)
-                .serviceVersion(version)
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+            .serviceVersion(version)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         configureTestMode(builder);
-
 
         return builder;
     }
@@ -87,8 +88,8 @@ public class RoomsTestBase extends TestProxyTestBase {
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         builder.endpoint(endpoint)
-                .credential(new AzureKeyCredential(accessKey))
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+            .credential(new AzureKeyCredential(accessKey))
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -96,8 +97,8 @@ public class RoomsTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                    "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
         if (!interceptorManager.isLiveMode()) {
@@ -115,8 +116,8 @@ public class RoomsTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                    "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
     }
 
@@ -151,9 +152,10 @@ public class RoomsTestBase extends TestProxyTestBase {
     }
 
     protected boolean areParticipantsEqual(RoomParticipant participant1, RoomParticipant participant2) {
-        return participant1.getCommunicationIdentifier().getRawId()
-                .equals(participant1.getCommunicationIdentifier().getRawId())
-                && participant1.getRole().toString().equals(participant2.getRole().toString());
+        return participant1.getCommunicationIdentifier()
+            .getRawId()
+            .equals(participant1.getCommunicationIdentifier().getRawId())
+            && participant1.getRole().toString().equals(participant2.getRole().toString());
     }
 
 }

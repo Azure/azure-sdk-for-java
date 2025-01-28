@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureDeveloperCliCredentialNegativeTest {
 
-
     static Stream<String> invalidCharacters() {
         return Stream.of("|", "&", ";");
     }
@@ -24,17 +23,18 @@ public class AzureDeveloperCliCredentialNegativeTest {
     public void testInvalidScopeFromRequest(String invalidCharacter) {
         TokenRequestContext request = new TokenRequestContext().addScopes("scope" + invalidCharacter);
 
-
         AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
 
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof IllegalArgumentException)
             .verify();
     }
+
     @ParameterizedTest
     @MethodSource("invalidCharacters")
     public void testInvalidTenantFromRequest(String invalidCharacter) {
-        TokenRequestContext request = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
         AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
 
         StepVerifier.create(credential.getToken(request))
@@ -54,7 +54,8 @@ public class AzureDeveloperCliCredentialNegativeTest {
     @ParameterizedTest
     @MethodSource("invalidCharacters")
     public void testInvalidTenantFromRequestSync(String invalidCharacter) {
-        TokenRequestContext request = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("scope").setTenantId("tenant" + invalidCharacter);
         AzureDeveloperCliCredential credential = new AzureDeveloperCliCredentialBuilder().build();
         assertThrows(IllegalArgumentException.class, () -> credential.getTokenSync(request));
     }

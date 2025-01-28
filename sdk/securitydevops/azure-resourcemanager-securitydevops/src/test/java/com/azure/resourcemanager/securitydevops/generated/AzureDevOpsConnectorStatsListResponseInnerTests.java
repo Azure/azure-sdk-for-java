@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsConnectorStatsListResponseInnerTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsConnectorStatsListResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"orgsCount\":2124589833110260151,\"projectsCount\":3582129751960614945,\"reposCount\":5348039389469426548},\"id\":\"mmnkzsmodmgl\",\"name\":\"ugpbkw\",\"type\":\"mutduqktaps\"}],\"nextLink\":\"gcue\"}")
-                .toObject(AzureDevOpsConnectorStatsListResponseInner.class);
+        AzureDevOpsConnectorStatsListResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"orgsCount\":2124589833110260151,\"projectsCount\":3582129751960614945,\"reposCount\":5348039389469426548},\"id\":\"mmnkzsmodmgl\",\"name\":\"ugpbkw\",\"type\":\"mutduqktaps\"}],\"nextLink\":\"gcue\"}")
+            .toObject(AzureDevOpsConnectorStatsListResponseInner.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(2124589833110260151L, model.value().get(0).properties().orgsCount());
         Assertions.assertEquals(3582129751960614945L, model.value().get(0).properties().projectsCount());
@@ -30,19 +28,13 @@ public final class AzureDevOpsConnectorStatsListResponseInnerTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsConnectorStatsListResponseInner model =
-            new AzureDevOpsConnectorStatsListResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureDevOpsConnectorStats()
-                                .withProperties(
-                                    new AzureDevOpsConnectorStatsProperties()
-                                        .withProvisioningState(ProvisioningState.FAILED)
-                                        .withOrgsCount(2124589833110260151L)
-                                        .withProjectsCount(3582129751960614945L)
-                                        .withReposCount(5348039389469426548L))))
-                .withNextLink("gcue");
+        AzureDevOpsConnectorStatsListResponseInner model = new AzureDevOpsConnectorStatsListResponseInner()
+            .withValue(Arrays.asList(new AzureDevOpsConnectorStats().withProperties(
+                new AzureDevOpsConnectorStatsProperties().withProvisioningState(ProvisioningState.FAILED)
+                    .withOrgsCount(2124589833110260151L)
+                    .withProjectsCount(3582129751960614945L)
+                    .withReposCount(5348039389469426548L))))
+            .withNextLink("gcue");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsConnectorStatsListResponseInner.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(2124589833110260151L, model.value().get(0).properties().orgsCount());

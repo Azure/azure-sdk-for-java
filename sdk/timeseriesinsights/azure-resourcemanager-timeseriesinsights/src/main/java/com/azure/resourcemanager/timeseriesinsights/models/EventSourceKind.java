@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the event source. */
+/**
+ * The kind of the event source.
+ */
 public final class EventSourceKind extends ExpandableStringEnum<EventSourceKind> {
-    /** Static value Microsoft.EventHub for EventSourceKind. */
+    /**
+     * Static value Microsoft.EventHub for EventSourceKind.
+     */
     public static final EventSourceKind MICROSOFT_EVENT_HUB = fromString("Microsoft.EventHub");
 
-    /** Static value Microsoft.IoTHub for EventSourceKind. */
+    /**
+     * Static value Microsoft.IoTHub for EventSourceKind.
+     */
     public static final EventSourceKind MICROSOFT_IO_THUB = fromString("Microsoft.IoTHub");
 
     /**
      * Creates a new instance of EventSourceKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EventSourceKind extends ExpandableStringEnum<EventSourceKind>
 
     /**
      * Creates or finds a EventSourceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSourceKind.
      */
-    @JsonCreator
     public static EventSourceKind fromString(String name) {
         return fromString(name, EventSourceKind.class);
     }
 
     /**
      * Gets known EventSourceKind values.
-     *
+     * 
      * @return known EventSourceKind values.
      */
     public static Collection<EventSourceKind> values() {

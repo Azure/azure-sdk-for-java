@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The DiagnoseResponseResultValue model. */
+/**
+ * The DiagnoseResponseResultValue model.
+ */
 @Fluent
-public final class DiagnoseResponseResultValue {
+public final class DiagnoseResponseResultValue implements JsonSerializable<DiagnoseResponseResultValue> {
     /*
      * The userDefinedRouteResults property.
      */
-    @JsonProperty(value = "userDefinedRouteResults")
     private List<DiagnoseResult> userDefinedRouteResults;
 
     /*
      * The networkSecurityRuleResults property.
      */
-    @JsonProperty(value = "networkSecurityRuleResults")
     private List<DiagnoseResult> networkSecurityRuleResults;
 
     /*
      * The resourceLockResults property.
      */
-    @JsonProperty(value = "resourceLockResults")
     private List<DiagnoseResult> resourceLockResults;
 
     /*
      * The dnsResolutionResults property.
      */
-    @JsonProperty(value = "dnsResolutionResults")
     private List<DiagnoseResult> dnsResolutionResults;
 
     /*
      * The storageAccountResults property.
      */
-    @JsonProperty(value = "storageAccountResults")
     private List<DiagnoseResult> storageAccountResults;
 
     /*
      * The keyVaultResults property.
      */
-    @JsonProperty(value = "keyVaultResults")
     private List<DiagnoseResult> keyVaultResults;
 
     /*
      * The containerRegistryResults property.
      */
-    @JsonProperty(value = "containerRegistryResults")
     private List<DiagnoseResult> containerRegistryResults;
 
     /*
      * The applicationInsightsResults property.
      */
-    @JsonProperty(value = "applicationInsightsResults")
     private List<DiagnoseResult> applicationInsightsResults;
 
     /*
      * The otherResults property.
      */
-    @JsonProperty(value = "otherResults")
     private List<DiagnoseResult> otherResults;
 
-    /** Creates an instance of DiagnoseResponseResultValue class. */
+    /**
+     * Creates an instance of DiagnoseResponseResultValue class.
+     */
     public DiagnoseResponseResultValue() {
     }
 
     /**
      * Get the userDefinedRouteResults property: The userDefinedRouteResults property.
-     *
+     * 
      * @return the userDefinedRouteResults value.
      */
     public List<DiagnoseResult> userDefinedRouteResults() {
@@ -80,7 +79,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the userDefinedRouteResults property: The userDefinedRouteResults property.
-     *
+     * 
      * @param userDefinedRouteResults the userDefinedRouteResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -91,7 +90,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the networkSecurityRuleResults property: The networkSecurityRuleResults property.
-     *
+     * 
      * @return the networkSecurityRuleResults value.
      */
     public List<DiagnoseResult> networkSecurityRuleResults() {
@@ -100,7 +99,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the networkSecurityRuleResults property: The networkSecurityRuleResults property.
-     *
+     * 
      * @param networkSecurityRuleResults the networkSecurityRuleResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -111,7 +110,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the resourceLockResults property: The resourceLockResults property.
-     *
+     * 
      * @return the resourceLockResults value.
      */
     public List<DiagnoseResult> resourceLockResults() {
@@ -120,7 +119,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the resourceLockResults property: The resourceLockResults property.
-     *
+     * 
      * @param resourceLockResults the resourceLockResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -131,7 +130,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the dnsResolutionResults property: The dnsResolutionResults property.
-     *
+     * 
      * @return the dnsResolutionResults value.
      */
     public List<DiagnoseResult> dnsResolutionResults() {
@@ -140,7 +139,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the dnsResolutionResults property: The dnsResolutionResults property.
-     *
+     * 
      * @param dnsResolutionResults the dnsResolutionResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -151,7 +150,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the storageAccountResults property: The storageAccountResults property.
-     *
+     * 
      * @return the storageAccountResults value.
      */
     public List<DiagnoseResult> storageAccountResults() {
@@ -160,7 +159,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the storageAccountResults property: The storageAccountResults property.
-     *
+     * 
      * @param storageAccountResults the storageAccountResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -171,7 +170,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the keyVaultResults property: The keyVaultResults property.
-     *
+     * 
      * @return the keyVaultResults value.
      */
     public List<DiagnoseResult> keyVaultResults() {
@@ -180,7 +179,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the keyVaultResults property: The keyVaultResults property.
-     *
+     * 
      * @param keyVaultResults the keyVaultResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -191,7 +190,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the containerRegistryResults property: The containerRegistryResults property.
-     *
+     * 
      * @return the containerRegistryResults value.
      */
     public List<DiagnoseResult> containerRegistryResults() {
@@ -200,7 +199,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the containerRegistryResults property: The containerRegistryResults property.
-     *
+     * 
      * @param containerRegistryResults the containerRegistryResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -211,7 +210,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the applicationInsightsResults property: The applicationInsightsResults property.
-     *
+     * 
      * @return the applicationInsightsResults value.
      */
     public List<DiagnoseResult> applicationInsightsResults() {
@@ -220,7 +219,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the applicationInsightsResults property: The applicationInsightsResults property.
-     *
+     * 
      * @param applicationInsightsResults the applicationInsightsResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -231,7 +230,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Get the otherResults property: The otherResults property.
-     *
+     * 
      * @return the otherResults value.
      */
     public List<DiagnoseResult> otherResults() {
@@ -240,7 +239,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Set the otherResults property: The otherResults property.
-     *
+     * 
      * @param otherResults the otherResults value to set.
      * @return the DiagnoseResponseResultValue object itself.
      */
@@ -251,7 +250,7 @@ public final class DiagnoseResponseResultValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -282,5 +281,90 @@ public final class DiagnoseResponseResultValue {
         if (otherResults() != null) {
             otherResults().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("userDefinedRouteResults", this.userDefinedRouteResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("networkSecurityRuleResults", this.networkSecurityRuleResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("resourceLockResults", this.resourceLockResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dnsResolutionResults", this.dnsResolutionResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageAccountResults", this.storageAccountResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("keyVaultResults", this.keyVaultResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("containerRegistryResults", this.containerRegistryResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationInsightsResults", this.applicationInsightsResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("otherResults", this.otherResults, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnoseResponseResultValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnoseResponseResultValue if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnoseResponseResultValue.
+     */
+    public static DiagnoseResponseResultValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnoseResponseResultValue deserializedDiagnoseResponseResultValue = new DiagnoseResponseResultValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userDefinedRouteResults".equals(fieldName)) {
+                    List<DiagnoseResult> userDefinedRouteResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.userDefinedRouteResults = userDefinedRouteResults;
+                } else if ("networkSecurityRuleResults".equals(fieldName)) {
+                    List<DiagnoseResult> networkSecurityRuleResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.networkSecurityRuleResults = networkSecurityRuleResults;
+                } else if ("resourceLockResults".equals(fieldName)) {
+                    List<DiagnoseResult> resourceLockResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.resourceLockResults = resourceLockResults;
+                } else if ("dnsResolutionResults".equals(fieldName)) {
+                    List<DiagnoseResult> dnsResolutionResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.dnsResolutionResults = dnsResolutionResults;
+                } else if ("storageAccountResults".equals(fieldName)) {
+                    List<DiagnoseResult> storageAccountResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.storageAccountResults = storageAccountResults;
+                } else if ("keyVaultResults".equals(fieldName)) {
+                    List<DiagnoseResult> keyVaultResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.keyVaultResults = keyVaultResults;
+                } else if ("containerRegistryResults".equals(fieldName)) {
+                    List<DiagnoseResult> containerRegistryResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.containerRegistryResults = containerRegistryResults;
+                } else if ("applicationInsightsResults".equals(fieldName)) {
+                    List<DiagnoseResult> applicationInsightsResults
+                        = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.applicationInsightsResults = applicationInsightsResults;
+                } else if ("otherResults".equals(fieldName)) {
+                    List<DiagnoseResult> otherResults = reader.readArray(reader1 -> DiagnoseResult.fromJson(reader1));
+                    deserializedDiagnoseResponseResultValue.otherResults = otherResults;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnoseResponseResultValue;
+        });
     }
 }

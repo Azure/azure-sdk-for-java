@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -40,7 +41,8 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
     private OffsetDateTime uploadTime;
 
     /*
-     * Indicates if the model is decommissioned. Decommissioned models cannot be referenced by newly created digital twins.
+     * Indicates if the model is decommissioned. Decommissioned models cannot be referenced by newly created digital
+     * twins.
      */
     private Boolean decommissioned;
 
@@ -219,7 +221,8 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
                 } else if ("description".equals(fieldName)) {
                     description = reader.readMap(reader1 -> reader1.getString());
                 } else if ("uploadTime".equals(fieldName)) {
-                    uploadTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    uploadTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("decommissioned".equals(fieldName)) {
                     decommissioned = reader.getNullable(JsonReader::getBoolean);
                 } else if ("model".equals(fieldName)) {

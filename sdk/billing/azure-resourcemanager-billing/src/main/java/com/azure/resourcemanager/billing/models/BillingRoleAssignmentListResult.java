@@ -4,56 +4,31 @@
 
 package com.azure.resourcemanager.billing.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.billing.fluent.models.BillingRoleAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.billing.fluent.models.BillingRoleAssignmentListResultInner;
 import java.util.List;
 
-/** The list of role assignments. */
-@Immutable
-public final class BillingRoleAssignmentListResult {
-    /*
-     * The list of role assignments.
-     */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<BillingRoleAssignmentInner> value;
-
-    /*
-     * The link (url) to the next page of results.
-     */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
-
-    /** Creates an instance of BillingRoleAssignmentListResult class. */
-    public BillingRoleAssignmentListResult() {
-    }
-
+/**
+ * An immutable client-side representation of BillingRoleAssignmentListResult.
+ */
+public interface BillingRoleAssignmentListResult {
     /**
-     * Get the value property: The list of role assignments.
-     *
-     * @return the value value.
-     */
-    public List<BillingRoleAssignmentInner> value() {
-        return this.value;
-    }
-
-    /**
-     * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * Gets the nextLink property: The link (url) to the next page of results.
+     * 
      * @return the nextLink value.
      */
-    public String nextLink() {
-        return this.nextLink;
-    }
+    String nextLink();
 
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Gets the value property: The list of resources.
+     * 
+     * @return the value value.
      */
-    public void validate() {
-        if (value() != null) {
-            value().forEach(e -> e.validate());
-        }
-    }
+    List<BillingRoleAssignment> value();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.billing.fluent.models.BillingRoleAssignmentListResultInner object.
+     * 
+     * @return the inner object.
+     */
+    BillingRoleAssignmentListResultInner innerModel();
 }

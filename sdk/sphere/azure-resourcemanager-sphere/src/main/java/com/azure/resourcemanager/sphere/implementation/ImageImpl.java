@@ -60,14 +60,16 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image create() {
-        this.innerObject = serviceManager.serviceClient().getImages().createOrUpdate(resourceGroupName, catalogName,
-            imageName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .createOrUpdate(resourceGroupName, catalogName, imageName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Image create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getImages().createOrUpdate(resourceGroupName, catalogName,
-            imageName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .createOrUpdate(resourceGroupName, catalogName, imageName, this.innerModel(), context);
         return this;
     }
 
@@ -82,14 +84,16 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image apply() {
-        this.innerObject = serviceManager.serviceClient().getImages().createOrUpdate(resourceGroupName, catalogName,
-            imageName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .createOrUpdate(resourceGroupName, catalogName, imageName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Image apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getImages().createOrUpdate(resourceGroupName, catalogName,
-            imageName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .createOrUpdate(resourceGroupName, catalogName, imageName, this.innerModel(), context);
         return this;
     }
 
@@ -102,14 +106,18 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image refresh() {
-        this.innerObject = serviceManager.serviceClient().getImages()
-            .getWithResponse(resourceGroupName, catalogName, imageName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .getWithResponse(resourceGroupName, catalogName, imageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Image refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getImages()
-            .getWithResponse(resourceGroupName, catalogName, imageName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .getWithResponse(resourceGroupName, catalogName, imageName, context)
+            .getValue();
         return this;
     }
 

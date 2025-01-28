@@ -8,34 +8,54 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.orbital.models.SpacecraftLink;
 import com.azure.resourcemanager.orbital.models.SpacecraftsPropertiesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Customer creates a spacecraft resource to schedule a contact. */
+/**
+ * Customer creates a spacecraft resource to schedule a contact.
+ */
 @Fluent
 public final class SpacecraftInner extends Resource {
     /*
      * Spacecraft Properties
      */
-    @JsonProperty(value = "properties", required = true)
     private SpacecraftsProperties innerProperties = new SpacecraftsProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SpacecraftInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SpacecraftInner class.
+     */
     public SpacecraftInner() {
     }
 
     /**
      * Get the innerProperties property: Spacecraft Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SpacecraftsProperties innerProperties() {
@@ -44,21 +64,55 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpacecraftInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SpacecraftInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +121,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the provisioningState property: The current state of the resource's creation, deletion, or modification.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SpacecraftsPropertiesProvisioningState provisioningState() {
@@ -76,7 +130,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Set the provisioningState property: The current state of the resource's creation, deletion, or modification.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SpacecraftInner object itself.
      */
@@ -90,7 +144,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the noradId property: NORAD ID of the spacecraft.
-     *
+     * 
      * @return the noradId value.
      */
     public String noradId() {
@@ -99,7 +153,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Set the noradId property: NORAD ID of the spacecraft.
-     *
+     * 
      * @param noradId the noradId value to set.
      * @return the SpacecraftInner object itself.
      */
@@ -113,7 +167,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the titleLine property: Title line of the two-line element set (TLE).
-     *
+     * 
      * @return the titleLine value.
      */
     public String titleLine() {
@@ -122,7 +176,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Set the titleLine property: Title line of the two-line element set (TLE).
-     *
+     * 
      * @param titleLine the titleLine value to set.
      * @return the SpacecraftInner object itself.
      */
@@ -136,7 +190,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the tleLine1 property: Line 1 of the two-line element set (TLE).
-     *
+     * 
      * @return the tleLine1 value.
      */
     public String tleLine1() {
@@ -145,7 +199,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Set the tleLine1 property: Line 1 of the two-line element set (TLE).
-     *
+     * 
      * @param tleLine1 the tleLine1 value to set.
      * @return the SpacecraftInner object itself.
      */
@@ -159,7 +213,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the tleLine2 property: Line 2 of the two-line element set (TLE).
-     *
+     * 
      * @return the tleLine2 value.
      */
     public String tleLine2() {
@@ -168,7 +222,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Set the tleLine2 property: Line 2 of the two-line element set (TLE).
-     *
+     * 
      * @param tleLine2 the tleLine2 value to set.
      * @return the SpacecraftInner object itself.
      */
@@ -182,7 +236,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Get the links property: Immutable list of Spacecraft links.
-     *
+     * 
      * @return the links value.
      */
     public List<SpacecraftLink> links() {
@@ -191,7 +245,7 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Set the links property: Immutable list of Spacecraft links.
-     *
+     * 
      * @param links the links value to set.
      * @return the SpacecraftInner object itself.
      */
@@ -205,13 +259,13 @@ public final class SpacecraftInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property innerProperties in model SpacecraftInner"));
         } else {
             innerProperties().validate();
@@ -219,4 +273,56 @@ public final class SpacecraftInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SpacecraftInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpacecraftInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpacecraftInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SpacecraftInner.
+     */
+    public static SpacecraftInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpacecraftInner deserializedSpacecraftInner = new SpacecraftInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSpacecraftInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSpacecraftInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSpacecraftInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSpacecraftInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSpacecraftInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSpacecraftInner.innerProperties = SpacecraftsProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSpacecraftInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpacecraftInner;
+        });
+    }
 }

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** An value that determines where the API Version identifier will be located in a HTTP request. */
+/**
+ * An value that determines where the API Version identifier will be located in a HTTP request.
+ */
 public final class VersioningScheme extends ExpandableStringEnum<VersioningScheme> {
-    /** Static value Segment for VersioningScheme. */
+    /**
+     * Static value Segment for VersioningScheme.
+     */
     public static final VersioningScheme SEGMENT = fromString("Segment");
 
-    /** Static value Query for VersioningScheme. */
+    /**
+     * Static value Query for VersioningScheme.
+     */
     public static final VersioningScheme QUERY = fromString("Query");
 
-    /** Static value Header for VersioningScheme. */
+    /**
+     * Static value Header for VersioningScheme.
+     */
     public static final VersioningScheme HEADER = fromString("Header");
 
     /**
      * Creates a new instance of VersioningScheme value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class VersioningScheme extends ExpandableStringEnum<VersioningSchem
 
     /**
      * Creates or finds a VersioningScheme from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VersioningScheme.
      */
-    @JsonCreator
     public static VersioningScheme fromString(String name) {
         return fromString(name, VersioningScheme.class);
     }
 
     /**
      * Gets known VersioningScheme values.
-     *
+     * 
      * @return known VersioningScheme values.
      */
     public static Collection<VersioningScheme> values() {

@@ -21,57 +21,42 @@ public final class JoinRequestsImpl implements JoinRequests {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    public JoinRequestsImpl(
-        JoinRequestsClient innerClient, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    public JoinRequestsImpl(JoinRequestsClient innerClient,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<JoinRequestDetails> list(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        PagedIterable<JoinRequestDetailsInner> inner =
-            this.serviceClient().list(billingAccountName, billingProfileName, invoiceSectionName);
-        return Utils.mapPage(inner, inner1 -> new JoinRequestDetailsImpl(inner1, this.manager()));
+    public PagedIterable<JoinRequestDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
+        PagedIterable<JoinRequestDetailsInner> inner
+            = this.serviceClient().list(billingAccountName, billingProfileName, invoiceSectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JoinRequestDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JoinRequestDetails> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeDenied,
-        Context context) {
-        PagedIterable<JoinRequestDetailsInner> inner =
-            this
-                .serviceClient()
-                .list(billingAccountName, billingProfileName, invoiceSectionName, includeDenied, context);
-        return Utils.mapPage(inner, inner1 -> new JoinRequestDetailsImpl(inner1, this.manager()));
+    public PagedIterable<JoinRequestDetails> list(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDenied, Context context) {
+        PagedIterable<JoinRequestDetailsInner> inner = this.serviceClient()
+            .list(billingAccountName, billingProfileName, invoiceSectionName, includeDenied, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JoinRequestDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<JoinRequestDetails> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
-        Response<JoinRequestDetailsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context);
+    public Response<JoinRequestDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
+        Response<JoinRequestDetailsInner> inner = this.serviceClient()
+            .getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JoinRequestDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public JoinRequestDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
-        JoinRequestDetailsInner inner =
-            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
+    public JoinRequestDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
+        JoinRequestDetailsInner inner
+            = this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
         if (inner != null) {
             return new JoinRequestDetailsImpl(inner, this.manager());
         } else {
@@ -79,35 +64,25 @@ public final class JoinRequestsImpl implements JoinRequests {
         }
     }
 
-    public Response<Void> approveWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> approveWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
+        return this.serviceClient()
             .approveWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context);
     }
 
-    public void approve(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    public void approve(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
         this.serviceClient().approve(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
     }
 
-    public Response<Void> denyWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String joinRequestName,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> denyWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String joinRequestName, Context context) {
+        return this.serviceClient()
             .denyWithResponse(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName, context);
     }
 
-    public void deny(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName) {
+    public void deny(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        String joinRequestName) {
         this.serviceClient().deny(billingAccountName, billingProfileName, invoiceSectionName, joinRequestName);
     }
 

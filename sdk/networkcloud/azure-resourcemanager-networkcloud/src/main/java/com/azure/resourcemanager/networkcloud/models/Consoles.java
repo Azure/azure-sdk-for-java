@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Consoles. */
+/**
+ * Resource collection API of Consoles.
+ */
 public interface Consoles {
     /**
      * List consoles of the virtual machine.
-     *
-     * <p>Get a list of consoles for the provided virtual machine.
-     *
+     * 
+     * Get a list of consoles for the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface Consoles {
 
     /**
      * List consoles of the virtual machine.
-     *
-     * <p>Get a list of consoles for the provided virtual machine.
-     *
+     * 
+     * Get a list of consoles for the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface Consoles {
 
     /**
      * Retrieve the virtual machine console.
-     *
-     * <p>Get properties of the provided virtual machine console.
-     *
+     * 
+     * Get properties of the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -53,14 +55,14 @@ public interface Consoles {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided virtual machine console along with {@link Response}.
      */
-    Response<Console> getWithResponse(
-        String resourceGroupName, String virtualMachineName, String consoleName, Context context);
+    Response<Console> getWithResponse(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context);
 
     /**
      * Retrieve the virtual machine console.
-     *
-     * <p>Get properties of the provided virtual machine console.
-     *
+     * 
+     * Get properties of the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -73,23 +75,24 @@ public interface Consoles {
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String virtualMachineName, String consoleName);
+    OperationStatusResult delete(String resourceGroupName, String virtualMachineName, String consoleName);
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -97,14 +100,16 @@ public interface Consoles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String virtualMachineName, String consoleName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context);
 
     /**
      * Retrieve the virtual machine console.
-     *
-     * <p>Get properties of the provided virtual machine console.
-     *
+     * 
+     * Get properties of the provided virtual machine console.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,9 +120,9 @@ public interface Consoles {
 
     /**
      * Retrieve the virtual machine console.
-     *
-     * <p>Get properties of the provided virtual machine console.
-     *
+     * 
+     * Get properties of the provided virtual machine console.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,32 +134,34 @@ public interface Consoles {
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Console resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Console definition.
      */

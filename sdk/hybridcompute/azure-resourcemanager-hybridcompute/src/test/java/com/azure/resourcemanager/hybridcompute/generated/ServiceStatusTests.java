@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceStatus model
-            = BinaryData.fromString("{\"status\":\"ooch\",\"startupType\":\"onq\"}").toObject(ServiceStatus.class);
-        Assertions.assertEquals("ooch", model.status());
-        Assertions.assertEquals("onq", model.startupType());
+        ServiceStatus model = BinaryData.fromString("{\"status\":\"evfyexfwhybcib\",\"startupType\":\"vdcsitynn\"}")
+            .toObject(ServiceStatus.class);
+        Assertions.assertEquals("evfyexfwhybcib", model.status());
+        Assertions.assertEquals("vdcsitynn", model.startupType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceStatus model = new ServiceStatus().withStatus("ooch").withStartupType("onq");
+        ServiceStatus model = new ServiceStatus().withStatus("evfyexfwhybcib").withStartupType("vdcsitynn");
         model = BinaryData.fromObject(model).toObject(ServiceStatus.class);
-        Assertions.assertEquals("ooch", model.status());
-        Assertions.assertEquals("onq", model.startupType());
+        Assertions.assertEquals("evfyexfwhybcib", model.status());
+        Assertions.assertEquals("vdcsitynn", model.startupType());
     }
 }

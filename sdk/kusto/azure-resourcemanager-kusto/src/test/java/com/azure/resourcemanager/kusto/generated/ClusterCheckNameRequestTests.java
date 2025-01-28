@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"t\"}").toObject(ClusterCheckNameRequest.class);
-        Assertions.assertEquals("t", model.name());
+        ClusterCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"niyqslui\"}").toObject(ClusterCheckNameRequest.class);
+        Assertions.assertEquals("niyqslui", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterCheckNameRequest model = new ClusterCheckNameRequest().withName("t");
+        ClusterCheckNameRequest model = new ClusterCheckNameRequest().withName("niyqslui");
         model = BinaryData.fromObject(model).toObject(ClusterCheckNameRequest.class);
-        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("niyqslui", model.name());
     }
 }

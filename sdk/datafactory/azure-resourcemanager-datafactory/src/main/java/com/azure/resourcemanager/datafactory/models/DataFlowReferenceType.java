@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
      * @param name a name to look for.
      * @return the corresponding DataFlowReferenceType.
      */
-    @JsonCreator
     public static DataFlowReferenceType fromString(String name) {
         return fromString(name, DataFlowReferenceType.class);
     }

@@ -6,8 +6,11 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,30 +18,31 @@ import java.util.List;
  * passing subscription details.
  */
 @Fluent
-public final class CustomerSubscriptionDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerSubscriptionDetails.class);
-
+public final class CustomerSubscriptionDetails implements JsonSerializable<CustomerSubscriptionDetails> {
     /*
      * List of registered feature flags for subscription
      */
-    @JsonProperty(value = "registeredFeatures")
     private List<CustomerSubscriptionRegisteredFeatures> registeredFeatures;
 
     /*
      * Location placement Id of a subscription
      */
-    @JsonProperty(value = "locationPlacementId")
     private String locationPlacementId;
 
     /*
      * Quota ID of a subscription
      */
-    @JsonProperty(value = "quotaId", required = true)
     private String quotaId;
 
     /**
+     * Creates an instance of CustomerSubscriptionDetails class.
+     */
+    public CustomerSubscriptionDetails() {
+    }
+
+    /**
      * Get the registeredFeatures property: List of registered feature flags for subscription.
-     *
+     * 
      * @return the registeredFeatures value.
      */
     public List<CustomerSubscriptionRegisteredFeatures> registeredFeatures() {
@@ -47,19 +51,19 @@ public final class CustomerSubscriptionDetails {
 
     /**
      * Set the registeredFeatures property: List of registered feature flags for subscription.
-     *
+     * 
      * @param registeredFeatures the registeredFeatures value to set.
      * @return the CustomerSubscriptionDetails object itself.
      */
-    public CustomerSubscriptionDetails withRegisteredFeatures(
-        List<CustomerSubscriptionRegisteredFeatures> registeredFeatures) {
+    public CustomerSubscriptionDetails
+        withRegisteredFeatures(List<CustomerSubscriptionRegisteredFeatures> registeredFeatures) {
         this.registeredFeatures = registeredFeatures;
         return this;
     }
 
     /**
      * Get the locationPlacementId property: Location placement Id of a subscription.
-     *
+     * 
      * @return the locationPlacementId value.
      */
     public String locationPlacementId() {
@@ -68,7 +72,7 @@ public final class CustomerSubscriptionDetails {
 
     /**
      * Set the locationPlacementId property: Location placement Id of a subscription.
-     *
+     * 
      * @param locationPlacementId the locationPlacementId value to set.
      * @return the CustomerSubscriptionDetails object itself.
      */
@@ -79,7 +83,7 @@ public final class CustomerSubscriptionDetails {
 
     /**
      * Get the quotaId property: Quota ID of a subscription.
-     *
+     * 
      * @return the quotaId value.
      */
     public String quotaId() {
@@ -88,7 +92,7 @@ public final class CustomerSubscriptionDetails {
 
     /**
      * Set the quotaId property: Quota ID of a subscription.
-     *
+     * 
      * @param quotaId the quotaId value to set.
      * @return the CustomerSubscriptionDetails object itself.
      */
@@ -99,7 +103,7 @@ public final class CustomerSubscriptionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,10 +111,57 @@ public final class CustomerSubscriptionDetails {
             registeredFeatures().forEach(e -> e.validate());
         }
         if (quotaId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property quotaId in model CustomerSubscriptionDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property quotaId in model CustomerSubscriptionDetails"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomerSubscriptionDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("quotaId", this.quotaId);
+        jsonWriter.writeArrayField("registeredFeatures", this.registeredFeatures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("locationPlacementId", this.locationPlacementId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerSubscriptionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerSubscriptionDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomerSubscriptionDetails.
+     */
+    public static CustomerSubscriptionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerSubscriptionDetails deserializedCustomerSubscriptionDetails = new CustomerSubscriptionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("quotaId".equals(fieldName)) {
+                    deserializedCustomerSubscriptionDetails.quotaId = reader.getString();
+                } else if ("registeredFeatures".equals(fieldName)) {
+                    List<CustomerSubscriptionRegisteredFeatures> registeredFeatures
+                        = reader.readArray(reader1 -> CustomerSubscriptionRegisteredFeatures.fromJson(reader1));
+                    deserializedCustomerSubscriptionDetails.registeredFeatures = registeredFeatures;
+                } else if ("locationPlacementId".equals(fieldName)) {
+                    deserializedCustomerSubscriptionDetails.locationPlacementId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerSubscriptionDetails;
+        });
     }
 }

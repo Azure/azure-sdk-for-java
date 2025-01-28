@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for disabling automatic scaling for a Batch Pool.
  */
 public class DisableBatchPoolAutoScaleOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link DisableBatchPoolAutoScaleOptions}.
+     */
+    public DisableBatchPoolAutoScaleOptions() {
+    }
 }

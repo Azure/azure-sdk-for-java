@@ -20,7 +20,10 @@ public final class DataCollectionRuleAssociationsListByDataCollectionEndpointSam
      */
     public static void
         listAssociationsForSpecifiedDataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionRuleAssociations()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionRuleAssociations()
             .listByDataCollectionEndpoint("myResourceGroup", "myDataCollectionEndpointName",
                 com.azure.core.util.Context.NONE);
     }

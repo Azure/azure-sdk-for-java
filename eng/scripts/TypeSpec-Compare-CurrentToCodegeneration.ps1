@@ -21,7 +21,19 @@ param(
 function Reset-Repository {
   # Clean up generated code, so that next step will not be affected.
   git reset --hard
-  git clean -fd $sdkPath
+  git clean -fd .
+}
+
+$tspYamls = Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse
+if ($tspYamls.Count -eq 0) {
+  Write-Host "
+
+  ===========================================
+  No TypeSpec files to regenerate
+  ===========================================
+
+  "
+  exit 0
 }
 
 Write-Host "
@@ -43,7 +55,7 @@ Invoking tsp-client update
 "
 
 $failedSdk = $null
-foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
+foreach ($tspLocationPath in $tspYamls) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
   Push-Location

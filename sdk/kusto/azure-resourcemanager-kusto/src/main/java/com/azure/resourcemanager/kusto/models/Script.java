@@ -8,32 +8,34 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ScriptInner;
 
-/** An immutable client-side representation of Script. */
+/**
+ * An immutable client-side representation of Script.
+ */
 public interface Script {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -41,7 +43,7 @@ public interface Script {
     /**
      * Gets the scriptUrl property: The url to the KQL script blob file. Must not be used together with scriptContent
      * property.
-     *
+     * 
      * @return the scriptUrl value.
      */
     String scriptUrl();
@@ -49,7 +51,7 @@ public interface Script {
     /**
      * Gets the scriptUrlSasToken property: The SaS token that provide read access to the file which contain the script.
      * Must be provided when using scriptUrl property.
-     *
+     * 
      * @return the scriptUrlSasToken value.
      */
     String scriptUrlSasToken();
@@ -57,62 +59,86 @@ public interface Script {
     /**
      * Gets the scriptContent property: The script content. This property should be used when the script is provide
      * inline and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
-     *
+     * 
      * @return the scriptContent value.
      */
     String scriptContent();
 
     /**
      * Gets the forceUpdateTag property: A unique string. If changed the script will be applied again.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     String forceUpdateTag();
 
     /**
      * Gets the continueOnErrors property: Flag that indicates whether to continue if one of the command fails.
-     *
+     * 
      * @return the continueOnErrors value.
      */
     Boolean continueOnErrors();
 
     /**
      * Gets the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
+     * Gets the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @return the scriptLevel value.
+     */
+    ScriptLevel scriptLevel();
+
+    /**
+     * Gets the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @return the principalPermissionsAction value.
+     */
+    PrincipalPermissionsAction principalPermissionsAction();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.ScriptInner object.
-     *
+     * 
      * @return the inner object.
      */
     ScriptInner innerModel();
 
-    /** The entirety of the Script definition. */
+    /**
+     * The entirety of the Script definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Script definition stages. */
+    /**
+     * The Script definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Script definition. */
+        /**
+         * The first stage of the Script definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Script definition allowing to specify parent resource. */
+        /**
+         * The stage of the Script definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, clusterName, databaseName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param clusterName The name of the Kusto cluster.
              * @param databaseName The name of the database in the Kusto cluster.
@@ -125,168 +151,245 @@ public interface Script {
          * The stage of the Script definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithScriptUrl,
-                DefinitionStages.WithScriptUrlSasToken,
-                DefinitionStages.WithScriptContent,
-                DefinitionStages.WithForceUpdateTag,
-                DefinitionStages.WithContinueOnErrors {
+        interface WithCreate extends DefinitionStages.WithScriptUrl, DefinitionStages.WithScriptUrlSasToken,
+            DefinitionStages.WithScriptContent, DefinitionStages.WithForceUpdateTag,
+            DefinitionStages.WithContinueOnErrors, DefinitionStages.WithScriptLevel,
+            DefinitionStages.WithPrincipalPermissionsAction {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Script create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Script create(Context context);
         }
 
-        /** The stage of the Script definition allowing to specify scriptUrl. */
+        /**
+         * The stage of the Script definition allowing to specify scriptUrl.
+         */
         interface WithScriptUrl {
             /**
              * Specifies the scriptUrl property: The url to the KQL script blob file. Must not be used together with
              * scriptContent property.
-             *
+             * 
              * @param scriptUrl The url to the KQL script blob file. Must not be used together with scriptContent
-             *     property.
+             * property.
              * @return the next definition stage.
              */
             WithCreate withScriptUrl(String scriptUrl);
         }
 
-        /** The stage of the Script definition allowing to specify scriptUrlSasToken. */
+        /**
+         * The stage of the Script definition allowing to specify scriptUrlSasToken.
+         */
         interface WithScriptUrlSasToken {
             /**
              * Specifies the scriptUrlSasToken property: The SaS token that provide read access to the file which
              * contain the script. Must be provided when using scriptUrl property..
-             *
+             * 
              * @param scriptUrlSasToken The SaS token that provide read access to the file which contain the script.
-             *     Must be provided when using scriptUrl property.
+             * Must be provided when using scriptUrl property.
              * @return the next definition stage.
              */
             WithCreate withScriptUrlSasToken(String scriptUrlSasToken);
         }
 
-        /** The stage of the Script definition allowing to specify scriptContent. */
+        /**
+         * The stage of the Script definition allowing to specify scriptContent.
+         */
         interface WithScriptContent {
             /**
              * Specifies the scriptContent property: The script content. This property should be used when the script is
              * provide inline and not through file in a SA. Must not be used together with scriptUrl and
              * scriptUrlSasToken properties..
-             *
+             * 
              * @param scriptContent The script content. This property should be used when the script is provide inline
-             *     and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken
-             *     properties.
+             * and not through file in a SA. Must not be used together with scriptUrl and scriptUrlSasToken properties.
              * @return the next definition stage.
              */
             WithCreate withScriptContent(String scriptContent);
         }
 
-        /** The stage of the Script definition allowing to specify forceUpdateTag. */
+        /**
+         * The stage of the Script definition allowing to specify forceUpdateTag.
+         */
         interface WithForceUpdateTag {
             /**
              * Specifies the forceUpdateTag property: A unique string. If changed the script will be applied again..
-             *
+             * 
              * @param forceUpdateTag A unique string. If changed the script will be applied again.
              * @return the next definition stage.
              */
             WithCreate withForceUpdateTag(String forceUpdateTag);
         }
 
-        /** The stage of the Script definition allowing to specify continueOnErrors. */
+        /**
+         * The stage of the Script definition allowing to specify continueOnErrors.
+         */
         interface WithContinueOnErrors {
             /**
              * Specifies the continueOnErrors property: Flag that indicates whether to continue if one of the command
              * fails..
-             *
+             * 
              * @param continueOnErrors Flag that indicates whether to continue if one of the command fails.
              * @return the next definition stage.
              */
             WithCreate withContinueOnErrors(Boolean continueOnErrors);
         }
+
+        /**
+         * The stage of the Script definition allowing to specify scriptLevel.
+         */
+        interface WithScriptLevel {
+            /**
+             * Specifies the scriptLevel property: Differentiates between the type of script commands included -
+             * Database or Cluster. The default is Database..
+             * 
+             * @param scriptLevel Differentiates between the type of script commands included - Database or Cluster. The
+             * default is Database.
+             * @return the next definition stage.
+             */
+            WithCreate withScriptLevel(ScriptLevel scriptLevel);
+        }
+
+        /**
+         * The stage of the Script definition allowing to specify principalPermissionsAction.
+         */
+        interface WithPrincipalPermissionsAction {
+            /**
+             * Specifies the principalPermissionsAction property: Indicates if the permissions for the script caller are
+             * kept following completion of the script..
+             * 
+             * @param principalPermissionsAction Indicates if the permissions for the script caller are kept following
+             * completion of the script.
+             * @return the next definition stage.
+             */
+            WithCreate withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction);
+        }
     }
 
     /**
      * Begins update for the Script resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Script.Update update();
 
-    /** The template for Script update. */
-    interface Update
-        extends UpdateStages.WithScriptUrl, UpdateStages.WithForceUpdateTag, UpdateStages.WithContinueOnErrors {
+    /**
+     * The template for Script update.
+     */
+    interface Update extends UpdateStages.WithScriptUrl, UpdateStages.WithForceUpdateTag,
+        UpdateStages.WithContinueOnErrors, UpdateStages.WithScriptLevel, UpdateStages.WithPrincipalPermissionsAction {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Script apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Script apply(Context context);
     }
 
-    /** The Script update stages. */
+    /**
+     * The Script update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Script update allowing to specify scriptUrl. */
+        /**
+         * The stage of the Script update allowing to specify scriptUrl.
+         */
         interface WithScriptUrl {
             /**
              * Specifies the scriptUrl property: The url to the KQL script blob file. Must not be used together with
              * scriptContent property.
-             *
+             * 
              * @param scriptUrl The url to the KQL script blob file. Must not be used together with scriptContent
-             *     property.
+             * property.
              * @return the next definition stage.
              */
             Update withScriptUrl(String scriptUrl);
         }
 
-        /** The stage of the Script update allowing to specify forceUpdateTag. */
+        /**
+         * The stage of the Script update allowing to specify forceUpdateTag.
+         */
         interface WithForceUpdateTag {
             /**
              * Specifies the forceUpdateTag property: A unique string. If changed the script will be applied again..
-             *
+             * 
              * @param forceUpdateTag A unique string. If changed the script will be applied again.
              * @return the next definition stage.
              */
             Update withForceUpdateTag(String forceUpdateTag);
         }
 
-        /** The stage of the Script update allowing to specify continueOnErrors. */
+        /**
+         * The stage of the Script update allowing to specify continueOnErrors.
+         */
         interface WithContinueOnErrors {
             /**
              * Specifies the continueOnErrors property: Flag that indicates whether to continue if one of the command
              * fails..
-             *
+             * 
              * @param continueOnErrors Flag that indicates whether to continue if one of the command fails.
              * @return the next definition stage.
              */
             Update withContinueOnErrors(Boolean continueOnErrors);
         }
+
+        /**
+         * The stage of the Script update allowing to specify scriptLevel.
+         */
+        interface WithScriptLevel {
+            /**
+             * Specifies the scriptLevel property: Differentiates between the type of script commands included -
+             * Database or Cluster. The default is Database..
+             * 
+             * @param scriptLevel Differentiates between the type of script commands included - Database or Cluster. The
+             * default is Database.
+             * @return the next definition stage.
+             */
+            Update withScriptLevel(ScriptLevel scriptLevel);
+        }
+
+        /**
+         * The stage of the Script update allowing to specify principalPermissionsAction.
+         */
+        interface WithPrincipalPermissionsAction {
+            /**
+             * Specifies the principalPermissionsAction property: Indicates if the permissions for the script caller are
+             * kept following completion of the script..
+             * 
+             * @param principalPermissionsAction Indicates if the permissions for the script caller are kept following
+             * completion of the script.
+             * @return the next definition stage.
+             */
+            Update withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction);
+        }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Script refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -22,14 +22,10 @@ public final class DnsResolversImpl implements DnsResolvers {
 
     private final com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager;
 
-    public DnsResolversImpl(
-        DnsResolversClient innerClient, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    public DnsResolversImpl(DnsResolversClient innerClient,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void delete(String resourceGroupName, String dnsResolverName, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, dnsResolverName, ifMatch);
     }
 
     public void delete(String resourceGroupName, String dnsResolverName) {
@@ -38,6 +34,18 @@ public final class DnsResolversImpl implements DnsResolvers {
 
     public void delete(String resourceGroupName, String dnsResolverName, String ifMatch, Context context) {
         this.serviceClient().delete(resourceGroupName, dnsResolverName, ifMatch, context);
+    }
+
+    public Response<DnsResolver> getByResourceGroupWithResponse(String resourceGroupName, String dnsResolverName,
+        Context context) {
+        Response<DnsResolverInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DnsResolverImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DnsResolver getByResourceGroup(String resourceGroupName, String dnsResolverName) {
@@ -49,124 +57,89 @@ public final class DnsResolversImpl implements DnsResolvers {
         }
     }
 
-    public Response<DnsResolver> getByResourceGroupWithResponse(
-        String resourceGroupName, String dnsResolverName, Context context) {
-        Response<DnsResolverInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DnsResolverImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<DnsResolver> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DnsResolverInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DnsResolver> listByResourceGroup(String resourceGroupName, Integer top, Context context) {
-        PagedIterable<DnsResolverInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
-        return Utils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
+        PagedIterable<DnsResolverInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DnsResolver> list() {
         PagedIterable<DnsResolverInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DnsResolver> list(Integer top, Context context) {
         PagedIterable<DnsResolverInner> inner = this.serviceClient().list(top, context);
-        return Utils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DnsResolverImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName) {
         return this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName);
     }
 
-    public PagedIterable<SubResource> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName, Integer top, Context context) {
+    public PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName,
+        Integer top, Context context) {
         return this.serviceClient().listByVirtualNetwork(resourceGroupName, virtualNetworkName, top, context);
     }
 
     public DnsResolver getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, Context.NONE).getValue();
     }
 
     public Response<DnsResolver> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
         String localIfMatch = null;
         this.delete(resourceGroupName, dnsResolverName, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverName = Utils.getValueFromIdByName(id, "dnsResolvers");
+        String dnsResolverName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolvers");
         if (dnsResolverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolvers'.", id)));
         }
         this.delete(resourceGroupName, dnsResolverName, ifMatch, context);
     }

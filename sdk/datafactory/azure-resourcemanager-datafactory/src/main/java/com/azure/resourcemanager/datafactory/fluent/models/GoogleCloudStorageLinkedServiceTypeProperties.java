@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Google Cloud Storage linked service properties.
  */
 @Fluent
-public final class GoogleCloudStorageLinkedServiceTypeProperties {
+public final class GoogleCloudStorageLinkedServiceTypeProperties
+    implements JsonSerializable<GoogleCloudStorageLinkedServiceTypeProperties> {
     /*
      * The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
 
     /*
      * The secret access key of the Google Cloud Storage Identity and Access Management (IAM) user.
      */
-    @JsonProperty(value = "secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
@@ -31,14 +34,12 @@ public final class GoogleCloudStorageLinkedServiceTypeProperties {
      * property; change it only if you want to try a different service endpoint or want to switch between https and
      * http. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -146,5 +147,52 @@ public final class GoogleCloudStorageLinkedServiceTypeProperties {
         if (secretAccessKey() != null) {
             secretAccessKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+        jsonWriter.writeJsonField("secretAccessKey", this.secretAccessKey);
+        jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleCloudStorageLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleCloudStorageLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GoogleCloudStorageLinkedServiceTypeProperties.
+     */
+    public static GoogleCloudStorageLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleCloudStorageLinkedServiceTypeProperties deserializedGoogleCloudStorageLinkedServiceTypeProperties
+                = new GoogleCloudStorageLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessKeyId".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLinkedServiceTypeProperties.accessKeyId = reader.readUntyped();
+                } else if ("secretAccessKey".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLinkedServiceTypeProperties.secretAccessKey
+                        = SecretBase.fromJson(reader);
+                } else if ("serviceUrl".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLinkedServiceTypeProperties.serviceUrl = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGoogleCloudStorageLinkedServiceTypeProperties;
+        });
     }
 }

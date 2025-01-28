@@ -35,24 +35,28 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlI
 import com.azure.resourcemanager.logic.models.AssemblyCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountAssembliesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountAssembliesClient.
+ */
 public final class IntegrationAccountAssembliesClientImpl implements IntegrationAccountAssembliesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationAccountAssembliesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LogicManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationAccountAssembliesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationAccountAssembliesClientImpl(LogicManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    IntegrationAccountAssembliesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(IntegrationAccountAssembliesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,199 +67,145 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
     public interface IntegrationAccountAssembliesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
-                + "/integrationAccounts/{integrationAccountName}/assemblies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssemblyCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssemblyCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("integrationAccountName") String integrationAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
-                + "/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssemblyDefinitionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssemblyDefinitionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("integrationAccountName") String integrationAccountName,
             @PathParam("assemblyArtifactName") String assemblyArtifactName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
-                + "/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssemblyDefinitionInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssemblyDefinitionInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("integrationAccountName") String integrationAccountName,
             @PathParam("assemblyArtifactName") String assemblyArtifactName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AssemblyDefinitionInner assemblyArtifact,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
-                + "/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("integrationAccountName") String integrationAccountName,
             @PathParam("assemblyArtifactName") String assemblyArtifactName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic"
-                + "/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}"
-                + "/listContentCallbackUrl")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/assemblies/{assemblyArtifactName}/listContentCallbackUrl")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrl(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrl(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("integrationAccountName") String integrationAccountName,
             @PathParam("assemblyArtifactName") String assemblyArtifactName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of assembly definitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssemblyDefinitionInner>> listSinglePageAsync(
-        String resourceGroupName, String integrationAccountName) {
+    private Mono<PagedResponse<AssemblyDefinitionInner>> listSinglePageAsync(String resourceGroupName,
+        String integrationAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            integrationAccountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AssemblyDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, integrationAccountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AssemblyDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of assembly definitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssemblyDefinitionInner>> listSinglePageAsync(
-        String resourceGroupName, String integrationAccountName, Context context) {
+    private Mono<PagedResponse<AssemblyDefinitionInner>> listSinglePageAsync(String resourceGroupName,
+        String integrationAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                integrationAccountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, integrationAccountName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,7 +220,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -280,14 +230,14 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return a collection of assembly definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssemblyDefinitionInner> listAsync(
-        String resourceGroupName, String integrationAccountName, Context context) {
+    private PagedFlux<AssemblyDefinitionInner> listAsync(String resourceGroupName, String integrationAccountName,
+        Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, integrationAccountName, context));
     }
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,7 +252,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -312,46 +262,41 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssemblyDefinitionInner> list(
-        String resourceGroupName, String integrationAccountName, Context context) {
+    public PagedIterable<AssemblyDefinitionInner> list(String resourceGroupName, String integrationAccountName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, integrationAccountName, context));
     }
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an assembly for an integration account along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssemblyDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
+    private Mono<Response<AssemblyDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -360,23 +305,14 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            integrationAccountName,
-                            assemblyArtifactName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    integrationAccountName, assemblyArtifactName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -384,32 +320,27 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an assembly for an integration account along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssemblyDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
+    private Mono<Response<AssemblyDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -417,21 +348,13 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                integrationAccountName,
-                assemblyArtifactName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            integrationAccountName, assemblyArtifactName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -441,15 +364,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return an assembly for an integration account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssemblyDefinitionInner> getAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
+    private Mono<AssemblyDefinitionInner> getAsync(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -460,14 +383,14 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return an assembly for an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssemblyDefinitionInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
+    public Response<AssemblyDefinitionInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName, context).block();
     }
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -477,15 +400,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return an assembly for an integration account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssemblyDefinitionInner get(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
+    public AssemblyDefinitionInner get(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName) {
         return getWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE)
             .getValue();
     }
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -496,31 +419,23 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the assembly definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssemblyDefinitionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact) {
+    private Mono<Response<AssemblyDefinitionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -534,25 +449,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            integrationAccountName,
-                            assemblyArtifactName,
-                            this.client.getApiVersion(),
-                            assemblyArtifact,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, integrationAccountName, assemblyArtifactName, this.client.getApiVersion(),
+                assemblyArtifact, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -564,32 +469,24 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the assembly definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssemblyDefinitionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact,
+    private Mono<Response<AssemblyDefinitionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -603,22 +500,14 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                integrationAccountName,
-                assemblyArtifactName,
-                this.client.getApiVersion(),
-                assemblyArtifact,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            integrationAccountName, assemblyArtifactName, this.client.getApiVersion(), assemblyArtifact, accept,
+            context);
     }
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -629,19 +518,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the assembly definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssemblyDefinitionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, integrationAccountName, assemblyArtifactName, assemblyArtifact)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AssemblyDefinitionInner> createOrUpdateAsync(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName,
+            assemblyArtifact).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -653,20 +538,16 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the assembly definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssemblyDefinitionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact,
+    public Response<AssemblyDefinitionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, integrationAccountName, assemblyArtifactName, assemblyArtifact, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName,
+            assemblyArtifact, context).block();
     }
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -677,19 +558,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the assembly definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssemblyDefinitionInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, integrationAccountName, assemblyArtifactName, assemblyArtifact, Context.NONE)
-            .getValue();
+    public AssemblyDefinitionInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact) {
+        return createOrUpdateWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+            assemblyArtifact, Context.NONE).getValue();
     }
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -699,28 +576,23 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -729,23 +601,14 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            integrationAccountName,
-                            assemblyArtifactName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    integrationAccountName, assemblyArtifactName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -756,28 +619,23 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -785,21 +643,13 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                integrationAccountName,
-                assemblyArtifactName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            integrationAccountName, assemblyArtifactName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -809,15 +659,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -828,15 +678,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName, context)
             .block();
     }
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -851,7 +701,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -859,31 +709,26 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url for an integration account assembly along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -891,24 +736,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listContentCallbackUrl(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            integrationAccountName,
-                            assemblyArtifactName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listContentCallbackUrl(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, integrationAccountName, assemblyArtifactName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -917,31 +753,26 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url for an integration account assembly along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (integrationAccountName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationAccountName is required and cannot be null."));
         }
         if (assemblyArtifactName == null) {
             return Mono
@@ -949,21 +780,14 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listContentCallbackUrl(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                integrationAccountName,
-                assemblyArtifactName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listContentCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, integrationAccountName, assemblyArtifactName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -973,15 +797,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the content callback url for an integration account assembly on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlAsync(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
+    private Mono<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlAsync(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName) {
         return listContentCallbackUrlWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -992,16 +816,15 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the content callback url for an integration account assembly along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context) {
-        return listContentCallbackUrlWithResponseAsync(
-                resourceGroupName, integrationAccountName, assemblyArtifactName, context)
-            .block();
+    public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, Context context) {
+        return listContentCallbackUrlWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName,
+            context).block();
     }
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -1011,10 +834,9 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @return the content callback url for an integration account assembly.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowTriggerCallbackUrlInner listContentCallbackUrl(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
-        return listContentCallbackUrlWithResponse(
-                resourceGroupName, integrationAccountName, assemblyArtifactName, Context.NONE)
-            .getValue();
+    public WorkflowTriggerCallbackUrlInner listContentCallbackUrl(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName) {
+        return listContentCallbackUrlWithResponse(resourceGroupName, integrationAccountName, assemblyArtifactName,
+            Context.NONE).getValue();
     }
 }

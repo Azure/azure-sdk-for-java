@@ -8,25 +8,23 @@ import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.KeyType;
 import java.time.OffsetDateTime;
 
-/** Samples for IntegrationAccountPartners ListContentCallbackUrl. */
+/**
+ * Samples for IntegrationAccountPartners ListContentCallbackUrl.
+ */
 public final class IntegrationAccountPartnersListContentCallbackUrlSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/IntegrationAccountPartners_ListContentCallbackUrl.json
+     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/
+     * IntegrationAccountPartners_ListContentCallbackUrl.json
      */
     /**
      * Sample code: Get the content callback url.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void getTheContentCallbackUrl(com.azure.resourcemanager.logic.LogicManager manager) {
-        manager
-            .integrationAccountPartners()
-            .listContentCallbackUrlWithResponse(
-                "testResourceGroup",
-                "testIntegrationAccount",
-                "testPartner",
-                new GetCallbackUrlParameters()
-                    .withNotAfter(OffsetDateTime.parse("2018-04-19T16:00:00Z"))
+        manager.integrationAccountPartners()
+            .listContentCallbackUrlWithResponse("testResourceGroup", "testIntegrationAccount", "testPartner",
+                new GetCallbackUrlParameters().withNotAfter(OffsetDateTime.parse("2018-04-19T16:00:00Z"))
                     .withKeyType(KeyType.PRIMARY),
                 com.azure.core.util.Context.NONE);
     }

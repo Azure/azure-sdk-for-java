@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Server properties for Oracle, MySQL type source. */
+/**
+ * Server properties for Oracle, MySQL type source.
+ */
 @Immutable
-public final class ServerProperties {
+public final class ServerProperties implements JsonSerializable<ServerProperties> {
     /*
      * Name of the server platform
      */
-    @JsonProperty(value = "serverPlatform", access = JsonProperty.Access.WRITE_ONLY)
     private String serverPlatform;
 
     /*
      * Name of the server
      */
-    @JsonProperty(value = "serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /*
      * Version of the database server
      */
-    @JsonProperty(value = "serverVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String serverVersion;
 
     /*
      * Edition of the database server
      */
-    @JsonProperty(value = "serverEdition", access = JsonProperty.Access.WRITE_ONLY)
     private String serverEdition;
 
     /*
      * Version of the operating system
      */
-    @JsonProperty(value = "serverOperatingSystemVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String serverOperatingSystemVersion;
 
     /*
      * Number of databases in the server
      */
-    @JsonProperty(value = "serverDatabaseCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer serverDatabaseCount;
 
-    /** Creates an instance of ServerProperties class. */
+    /**
+     * Creates an instance of ServerProperties class.
+     */
     public ServerProperties() {
     }
 
     /**
      * Get the serverPlatform property: Name of the server platform.
-     *
+     * 
      * @return the serverPlatform value.
      */
     public String serverPlatform() {
@@ -61,7 +63,7 @@ public final class ServerProperties {
 
     /**
      * Get the serverName property: Name of the server.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -70,7 +72,7 @@ public final class ServerProperties {
 
     /**
      * Get the serverVersion property: Version of the database server.
-     *
+     * 
      * @return the serverVersion value.
      */
     public String serverVersion() {
@@ -79,7 +81,7 @@ public final class ServerProperties {
 
     /**
      * Get the serverEdition property: Edition of the database server.
-     *
+     * 
      * @return the serverEdition value.
      */
     public String serverEdition() {
@@ -88,7 +90,7 @@ public final class ServerProperties {
 
     /**
      * Get the serverOperatingSystemVersion property: Version of the operating system.
-     *
+     * 
      * @return the serverOperatingSystemVersion value.
      */
     public String serverOperatingSystemVersion() {
@@ -97,7 +99,7 @@ public final class ServerProperties {
 
     /**
      * Get the serverDatabaseCount property: Number of databases in the server.
-     *
+     * 
      * @return the serverDatabaseCount value.
      */
     public Integer serverDatabaseCount() {
@@ -106,9 +108,54 @@ public final class ServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerProperties.
+     */
+    public static ServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerProperties deserializedServerProperties = new ServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverPlatform".equals(fieldName)) {
+                    deserializedServerProperties.serverPlatform = reader.getString();
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedServerProperties.serverName = reader.getString();
+                } else if ("serverVersion".equals(fieldName)) {
+                    deserializedServerProperties.serverVersion = reader.getString();
+                } else if ("serverEdition".equals(fieldName)) {
+                    deserializedServerProperties.serverEdition = reader.getString();
+                } else if ("serverOperatingSystemVersion".equals(fieldName)) {
+                    deserializedServerProperties.serverOperatingSystemVersion = reader.getString();
+                } else if ("serverDatabaseCount".equals(fieldName)) {
+                    deserializedServerProperties.serverDatabaseCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerProperties;
+        });
     }
 }

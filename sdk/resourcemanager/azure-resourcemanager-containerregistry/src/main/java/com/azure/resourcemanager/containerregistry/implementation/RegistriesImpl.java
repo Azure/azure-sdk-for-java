@@ -45,17 +45,15 @@ public class RegistriesImpl
 
     @Override
     public PagedFlux<Registry> listAsync() {
-        return PagedConverter.mapPage(this
-            .inner()
-            .listAsync(),
+        return PagedConverter.mapPage(this.inner().listAsync(),
             inner -> new RegistryImpl(inner.name(), inner, this.manager()));
     }
 
     @Override
     public PagedFlux<Registry> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
@@ -95,8 +93,7 @@ public class RegistriesImpl
             return null;
         }
 
-        return new RegistryImpl(
-            containerServiceInner.name(), containerServiceInner, this.manager());
+        return new RegistryImpl(containerServiceInner.name(), containerServiceInner, this.manager());
     }
 
     @Override
@@ -106,30 +103,24 @@ public class RegistriesImpl
 
     @Override
     public Mono<RegistryCredentials> getCredentialsAsync(String resourceGroupName, String registryName) {
-        return this
-            .inner()
+        return this.inner()
             .listCredentialsAsync(resourceGroupName, registryName)
             .map(registryListCredentialsResultInner -> new RegistryCredentialsImpl(registryListCredentialsResultInner));
     }
 
     @Override
-    public RegistryCredentials regenerateCredential(
-        String resourceGroupName, String registryName, AccessKeyType accessKeyType) {
-        return new RegistryCredentialsImpl(
-            this
-                .inner()
-                .regenerateCredential(
-                    resourceGroupName, registryName,
-                    new RegenerateCredentialParameters().withName(PasswordName.fromString(accessKeyType.toString()))));
+    public RegistryCredentials regenerateCredential(String resourceGroupName, String registryName,
+        AccessKeyType accessKeyType) {
+        return new RegistryCredentialsImpl(this.inner()
+            .regenerateCredential(resourceGroupName, registryName,
+                new RegenerateCredentialParameters().withName(PasswordName.fromString(accessKeyType.toString()))));
     }
 
     @Override
-    public Mono<RegistryCredentials> regenerateCredentialAsync(
-        String resourceGroupName, String registryName, AccessKeyType accessKeyType) {
-        return this
-            .inner()
-            .regenerateCredentialAsync(
-                resourceGroupName, registryName,
+    public Mono<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName,
+        AccessKeyType accessKeyType) {
+        return this.inner()
+            .regenerateCredentialAsync(resourceGroupName, registryName,
                 new RegenerateCredentialParameters().withName(PasswordName.fromString(accessKeyType.toString())))
             .map(RegistryCredentialsImpl::new);
     }
@@ -138,35 +129,27 @@ public class RegistriesImpl
     public Collection<RegistryUsage> listQuotaUsages(String resourceGroupName, String registryName) {
         RegistryUsageListResultInner resultInner = this.inner().listUsages(resourceGroupName, registryName);
 
-        return Collections
-            .unmodifiableList(
-                resultInner != null && resultInner.value() != null
-                    ? resultInner.value()
-                    : new ArrayList<>());
+        return Collections.unmodifiableList(
+            resultInner != null && resultInner.value() != null ? resultInner.value() : new ArrayList<>());
     }
 
     @Override
     public PagedFlux<RegistryUsage> listQuotaUsagesAsync(String resourceGroupName, String registryName) {
-        return PagedConverter
-            .convertListToPagedFlux(
-                this
-                    .inner()
-                    .listUsagesWithResponseAsync(resourceGroupName, registryName)
-                    .map(r -> new SimpleResponse<>(
-                        r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())));
+        return PagedConverter.convertListToPagedFlux(this.inner()
+            .listUsagesWithResponseAsync(resourceGroupName, registryName)
+            .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                r.getValue().value() == null ? Collections.emptyList() : r.getValue().value())));
     }
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResultImpl(this.inner()
-            .checkNameAvailability(new RegistryNameCheckRequest().withName(name)));
+        return new CheckNameAvailabilityResultImpl(
+            this.inner().checkNameAvailability(new RegistryNameCheckRequest().withName(name)));
     }
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this
-            .inner()
+        return this.inner()
             .checkNameAvailabilityAsync(new RegistryNameCheckRequest().withName(name))
             .map(registryNameStatusInner -> new CheckNameAvailabilityResultImpl(registryNameStatusInner));
     }
@@ -178,8 +161,7 @@ public class RegistriesImpl
 
     @Override
     public Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String rgName, String acrName) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRegistries()
             .getBuildSourceUploadUrlAsync(rgName, acrName)

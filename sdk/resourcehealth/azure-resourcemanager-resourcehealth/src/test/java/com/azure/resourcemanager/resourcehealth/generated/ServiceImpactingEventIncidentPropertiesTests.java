@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceImpactingEventIncidentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceImpactingEventIncidentProperties model =
-            BinaryData
-                .fromString(
-                    "{\"title\":\"chcbonqvpkvlrxnj\",\"service\":\"seiphe\",\"region\":\"lokeyy\",\"incidentType\":\"nj\"}")
-                .toObject(ServiceImpactingEventIncidentProperties.class);
+        ServiceImpactingEventIncidentProperties model = BinaryData
+            .fromString(
+                "{\"title\":\"chcbonqvpkvlrxnj\",\"service\":\"seiphe\",\"region\":\"lokeyy\",\"incidentType\":\"nj\"}")
+            .toObject(ServiceImpactingEventIncidentProperties.class);
         Assertions.assertEquals("chcbonqvpkvlrxnj", model.title());
         Assertions.assertEquals("seiphe", model.service());
         Assertions.assertEquals("lokeyy", model.region());
@@ -24,9 +23,8 @@ public final class ServiceImpactingEventIncidentPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceImpactingEventIncidentProperties model =
-            new ServiceImpactingEventIncidentProperties()
-                .withTitle("chcbonqvpkvlrxnj")
+        ServiceImpactingEventIncidentProperties model
+            = new ServiceImpactingEventIncidentProperties().withTitle("chcbonqvpkvlrxnj")
                 .withService("seiphe")
                 .withRegion("lokeyy")
                 .withIncidentType("nj");

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomForecastHorizonTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomForecastHorizon model =
-            BinaryData.fromString("{\"mode\":\"Custom\",\"value\":632851650}").toObject(CustomForecastHorizon.class);
-        Assertions.assertEquals(632851650, model.value());
+        CustomForecastHorizon model
+            = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":521751095}").toObject(CustomForecastHorizon.class);
+        Assertions.assertEquals(521751095, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomForecastHorizon model = new CustomForecastHorizon().withValue(632851650);
+        CustomForecastHorizon model = new CustomForecastHorizon().withValue(521751095);
         model = BinaryData.fromObject(model).toObject(CustomForecastHorizon.class);
-        Assertions.assertEquals(632851650, model.value());
+        Assertions.assertEquals(521751095, model.value());
     }
 }

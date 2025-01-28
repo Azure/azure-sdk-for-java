@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomDomainPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomDomainProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Deleting\",\"domainName\":\"ndzwmkrefa\",\"customCertificate\":{\"id\":\"jorwkqnyhgbij\"}}")
-                .toObject(CustomDomainProperties.class);
-        Assertions.assertEquals("ndzwmkrefa", model.domainName());
-        Assertions.assertEquals("jorwkqnyhgbij", model.customCertificate().id());
+        CustomDomainProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"domainName\":\"spughftqsxhq\",\"customCertificate\":{\"id\":\"j\"}}")
+            .toObject(CustomDomainProperties.class);
+        Assertions.assertEquals("spughftqsxhq", model.domainName());
+        Assertions.assertEquals("j", model.customCertificate().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDomainProperties model =
-            new CustomDomainProperties()
-                .withDomainName("ndzwmkrefa")
-                .withCustomCertificate(new ResourceReference().withId("jorwkqnyhgbij"));
+        CustomDomainProperties model = new CustomDomainProperties().withDomainName("spughftqsxhq")
+            .withCustomCertificate(new ResourceReference().withId("j"));
         model = BinaryData.fromObject(model).toObject(CustomDomainProperties.class);
-        Assertions.assertEquals("ndzwmkrefa", model.domainName());
-        Assertions.assertEquals("jorwkqnyhgbij", model.customCertificate().id());
+        Assertions.assertEquals("spughftqsxhq", model.domainName());
+        Assertions.assertEquals("j", model.customCertificate().id());
     }
 }

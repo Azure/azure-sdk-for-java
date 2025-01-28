@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCapacityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCapacityInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"mmhquvgjxpyb\",\"tier\":\"PBIE_Azure\",\"capacity\":1336465504},\"properties\":{\"state\":\"Suspending\",\"provisioningState\":\"Deleting\",\"administration\":{\"members\":[\"h\",\"upi\",\"gsybbejhp\",\"oycmsxaobhdxbmt\"]},\"mode\":\"Gen2\",\"tenantId\":\"jzehtb\",\"friendlyName\":\"fpownoizhwlr\"},\"location\":\"bqsoqijg\",\"tags\":{\"btcqq\":\"bpazlobcufpdzn\",\"lhqgnufooojy\":\"nq\",\"zlhjxrifkwmrvkt\":\"ifsqesaagdfmg\",\"ajpsquc\":\"izntocipao\"},\"id\":\"poyfdkfogkn\",\"name\":\"gjofjd\",\"type\":\"eqsrdeupewnwreit\"}")
-                .toObject(DedicatedCapacityInner.class);
+        DedicatedCapacityInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"mmhquvgjxpyb\",\"tier\":\"PBIE_Azure\",\"capacity\":1336465504},\"properties\":{\"state\":\"Suspending\",\"provisioningState\":\"Deleting\",\"administration\":{\"members\":[\"h\",\"upi\",\"gsybbejhp\",\"oycmsxaobhdxbmt\"]},\"mode\":\"Gen2\",\"tenantId\":\"jzehtb\",\"friendlyName\":\"fpownoizhwlr\"},\"location\":\"bqsoqijg\",\"tags\":{\"btcqq\":\"bpazlobcufpdzn\",\"lhqgnufooojy\":\"nq\",\"zlhjxrifkwmrvkt\":\"ifsqesaagdfmg\",\"ajpsquc\":\"izntocipao\"},\"id\":\"poyfdkfogkn\",\"name\":\"gjofjd\",\"type\":\"eqsrdeupewnwreit\"}")
+            .toObject(DedicatedCapacityInner.class);
         Assertions.assertEquals("bqsoqijg", model.location());
         Assertions.assertEquals("bpazlobcufpdzn", model.tags().get("btcqq"));
         Assertions.assertEquals("mmhquvgjxpyb", model.sku().name());
@@ -34,28 +32,15 @@ public final class DedicatedCapacityInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCapacityInner model =
-            new DedicatedCapacityInner()
-                .withLocation("bqsoqijg")
-                .withTags(
-                    mapOf(
-                        "btcqq",
-                        "bpazlobcufpdzn",
-                        "lhqgnufooojy",
-                        "nq",
-                        "zlhjxrifkwmrvkt",
-                        "ifsqesaagdfmg",
-                        "ajpsquc",
-                        "izntocipao"))
-                .withSku(
-                    new CapacitySku()
-                        .withName("mmhquvgjxpyb")
-                        .withTier(CapacitySkuTier.PBIE_AZURE)
-                        .withCapacity(1336465504))
-                .withAdministration(
-                    new DedicatedCapacityAdministrators()
-                        .withMembers(Arrays.asList("h", "upi", "gsybbejhp", "oycmsxaobhdxbmt")))
-                .withMode(Mode.GEN2);
+        DedicatedCapacityInner model = new DedicatedCapacityInner().withLocation("bqsoqijg")
+            .withTags(mapOf("btcqq", "bpazlobcufpdzn", "lhqgnufooojy", "nq", "zlhjxrifkwmrvkt", "ifsqesaagdfmg",
+                "ajpsquc", "izntocipao"))
+            .withSku(new CapacitySku().withName("mmhquvgjxpyb")
+                .withTier(CapacitySkuTier.PBIE_AZURE)
+                .withCapacity(1336465504))
+            .withAdministration(new DedicatedCapacityAdministrators()
+                .withMembers(Arrays.asList("h", "upi", "gsybbejhp", "oycmsxaobhdxbmt")))
+            .withMode(Mode.GEN2);
         model = BinaryData.fromObject(model).toObject(DedicatedCapacityInner.class);
         Assertions.assertEquals("bqsoqijg", model.location());
         Assertions.assertEquals("bpazlobcufpdzn", model.tags().get("btcqq"));
@@ -66,6 +51,7 @@ public final class DedicatedCapacityInnerTests {
         Assertions.assertEquals(Mode.GEN2, model.mode());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

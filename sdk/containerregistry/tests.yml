@@ -3,9 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
-    UseFederatedAuth: true
     ServiceDirectory: containerregistry
-    SupportedClouds: 'Public,UsGov,China'
     Artifacts:
       - name: azure-containers-containerregistry
         groupId: com.azure

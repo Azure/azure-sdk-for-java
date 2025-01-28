@@ -17,7 +17,6 @@ import java.time.OffsetDateTime;
 @ServiceClient(builder = BlobChangefeedClientBuilder.class, isAsync = true)
 public class BlobChangefeedAsyncClient {
 
-
     final ChangefeedFactory changefeedFactory;
 
     /**

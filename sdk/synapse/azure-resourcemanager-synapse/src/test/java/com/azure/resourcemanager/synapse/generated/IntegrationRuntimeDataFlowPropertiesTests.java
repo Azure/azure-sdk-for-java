@@ -14,33 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeDataFlowPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model =
-            BinaryData
-                .fromString(
-                    "{\"computeType\":\"General\",\"coreCount\":1277865813,\"timeToLive\":92922352,\"cleanup\":true,\"\":{\"bdweade\":\"datad\",\"mvmmagoaqylkjz\":\"datazmwntopagt\"}}")
-                .toObject(IntegrationRuntimeDataFlowProperties.class);
-        Assertions.assertEquals(DataFlowComputeType.GENERAL, model.computeType());
-        Assertions.assertEquals(1277865813, model.coreCount());
-        Assertions.assertEquals(92922352, model.timeToLive());
-        Assertions.assertEquals(true, model.cleanup());
+        IntegrationRuntimeDataFlowProperties model = BinaryData.fromString(
+            "{\"computeType\":\"ComputeOptimized\",\"coreCount\":2063610896,\"timeToLive\":195536215,\"\":{\"lpshhkvpedwqslsr\":\"datayslu\",\"ndcbrwi\":\"datampqvwwsk\"}}")
+            .toObject(IntegrationRuntimeDataFlowProperties.class);
+        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED, model.computeType());
+        Assertions.assertEquals(2063610896, model.coreCount());
+        Assertions.assertEquals(195536215, model.timeToLive());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model =
-            new IntegrationRuntimeDataFlowProperties()
-                .withComputeType(DataFlowComputeType.GENERAL)
-                .withCoreCount(1277865813)
-                .withTimeToLive(92922352)
-                .withCleanup(true)
+        IntegrationRuntimeDataFlowProperties model
+            = new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.COMPUTE_OPTIMIZED)
+                .withCoreCount(2063610896)
+                .withTimeToLive(195536215)
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDataFlowProperties.class);
-        Assertions.assertEquals(DataFlowComputeType.GENERAL, model.computeType());
-        Assertions.assertEquals(1277865813, model.coreCount());
-        Assertions.assertEquals(92922352, model.timeToLive());
-        Assertions.assertEquals(true, model.cleanup());
+        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED, model.computeType());
+        Assertions.assertEquals(2063610896, model.coreCount());
+        Assertions.assertEquals(195536215, model.timeToLive());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

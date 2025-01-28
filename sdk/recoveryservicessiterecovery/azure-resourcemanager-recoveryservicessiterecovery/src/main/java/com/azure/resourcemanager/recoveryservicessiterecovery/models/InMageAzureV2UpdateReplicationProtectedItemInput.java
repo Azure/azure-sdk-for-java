@@ -5,88 +5,88 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
  * InMage Azure V2 input to update replication protected item.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageAzureV2")
 @Fluent
 public final class InMageAzureV2UpdateReplicationProtectedItemInput
     extends UpdateReplicationProtectedItemProviderInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageAzureV2";
+
+    /*
      * The recovery Azure resource group Id for classic deployment.
      */
-    @JsonProperty(value = "recoveryAzureV1ResourceGroupId")
     private String recoveryAzureV1ResourceGroupId;
 
     /*
      * The recovery Azure resource group Id for resource manager deployment.
      */
-    @JsonProperty(value = "recoveryAzureV2ResourceGroupId")
     private String recoveryAzureV2ResourceGroupId;
 
     /*
      * A value indicating whether managed disks should be used during failover.
      */
-    @JsonProperty(value = "useManagedDisks")
     private String useManagedDisks;
 
     /*
      * The target proximity placement group Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target VM tags.
      */
-    @JsonProperty(value = "targetVmTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetVmTags;
 
     /*
      * The tags for the target managed disks.
      */
-    @JsonProperty(value = "targetManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetManagedDiskTags;
 
     /*
      * The tags for the target NICs.
      */
-    @JsonProperty(value = "targetNicTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
     /*
      * The SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
      * The list of disk update properties.
      */
-    @JsonProperty(value = "vmDisks")
     private List<UpdateDiskInput> vmDisks;
 
     /**
      * Creates an instance of InMageAzureV2UpdateReplicationProtectedItemInput class.
      */
     public InMageAzureV2UpdateReplicationProtectedItemInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -303,9 +303,87 @@ public final class InMageAzureV2UpdateReplicationProtectedItemInput
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("recoveryAzureV1ResourceGroupId", this.recoveryAzureV1ResourceGroupId);
+        jsonWriter.writeStringField("recoveryAzureV2ResourceGroupId", this.recoveryAzureV2ResourceGroupId);
+        jsonWriter.writeStringField("useManagedDisks", this.useManagedDisks);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2UpdateReplicationProtectedItemInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2UpdateReplicationProtectedItemInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageAzureV2UpdateReplicationProtectedItemInput.
+     */
+    public static InMageAzureV2UpdateReplicationProtectedItemInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2UpdateReplicationProtectedItemInput deserializedInMageAzureV2UpdateReplicationProtectedItemInput
+                = new InMageAzureV2UpdateReplicationProtectedItemInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.instanceType = reader.getString();
+                } else if ("recoveryAzureV1ResourceGroupId".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.recoveryAzureV1ResourceGroupId
+                        = reader.getString();
+                } else if ("recoveryAzureV2ResourceGroupId".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.recoveryAzureV2ResourceGroupId
+                        = reader.getString();
+                } else if ("useManagedDisks".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.useManagedDisks = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.targetProximityPlacementGroupId
+                        = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.targetAvailabilityZone
+                        = reader.getString();
+                } else if ("targetVmTags".equals(fieldName)) {
+                    Map<String, String> targetVmTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.targetVmTags = targetVmTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> targetManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.targetManagedDiskTags
+                        = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.targetNicTags = targetNicTags;
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("vmDisks".equals(fieldName)) {
+                    List<UpdateDiskInput> vmDisks = reader.readArray(reader1 -> UpdateDiskInput.fromJson(reader1));
+                    deserializedInMageAzureV2UpdateReplicationProtectedItemInput.vmDisks = vmDisks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2UpdateReplicationProtectedItemInput;
+        });
     }
 }

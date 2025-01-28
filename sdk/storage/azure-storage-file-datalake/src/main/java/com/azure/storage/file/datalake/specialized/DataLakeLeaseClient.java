@@ -57,7 +57,7 @@ import java.time.Duration;
  *
  * @see DataLakeLeaseClientBuilder
  */
-@ServiceClient(builder =  DataLakeLeaseClientBuilder.class)
+@ServiceClient(builder = DataLakeLeaseClientBuilder.class)
 public final class DataLakeLeaseClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeLeaseClient.class);
@@ -138,8 +138,8 @@ public final class DataLakeLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> acquireLeaseWithResponse(int durationInSeconds, RequestConditions modifiedRequestConditions,
         Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.acquireLeaseWithResponse(durationInSeconds, modifiedRequestConditions, timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blobLeaseClient
+            .acquireLeaseWithResponse(durationInSeconds, modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -189,8 +189,8 @@ public final class DataLakeLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.renewLeaseWithResponse(modifiedRequestConditions, timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blobLeaseClient.renewLeaseWithResponse(modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -239,8 +239,8 @@ public final class DataLakeLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.releaseLeaseWithResponse(modifiedRequestConditions, timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blobLeaseClient.releaseLeaseWithResponse(modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -298,9 +298,8 @@ public final class DataLakeLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions, timeout,
-                context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blobLeaseClient
+            .breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -350,10 +349,11 @@ public final class DataLakeLeaseClient {
      * @return The new lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> changeLeaseWithResponse(String proposedId,
-        RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions, timeout, context), LOGGER);
+    public Response<String> changeLeaseWithResponse(String proposedId, RequestConditions modifiedRequestConditions,
+        Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blobLeaseClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions, timeout, context),
+            LOGGER);
     }
 
     /**

@@ -6,51 +6,57 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Alert processing rule properties defining scopes, conditions and scheduling logic for alert processing rule. */
+/**
+ * Alert processing rule properties defining scopes, conditions and scheduling logic for alert processing rule.
+ */
 @Fluent
-public final class AlertProcessingRuleProperties {
+public final class AlertProcessingRuleProperties implements JsonSerializable<AlertProcessingRuleProperties> {
     /*
      * Scopes on which alert processing rule will apply.
      */
-    @JsonProperty(value = "scopes", required = true)
     private List<String> scopes;
 
     /*
      * Conditions on which alerts will be filtered.
      */
-    @JsonProperty(value = "conditions")
     private List<Condition> conditions;
 
     /*
      * Scheduling for alert processing rule.
      */
-    @JsonProperty(value = "schedule")
     private Schedule schedule;
 
     /*
      * Actions to be applied.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<Action> actions;
 
     /*
      * Description of alert processing rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Indicates if the given alert processing rule is enabled or disabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
+     * Creates an instance of AlertProcessingRuleProperties class.
+     */
+    public AlertProcessingRuleProperties() {
+    }
+
+    /**
      * Get the scopes property: Scopes on which alert processing rule will apply.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -59,7 +65,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Set the scopes property: Scopes on which alert processing rule will apply.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the AlertProcessingRuleProperties object itself.
      */
@@ -70,7 +76,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Get the conditions property: Conditions on which alerts will be filtered.
-     *
+     * 
      * @return the conditions value.
      */
     public List<Condition> conditions() {
@@ -79,7 +85,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Set the conditions property: Conditions on which alerts will be filtered.
-     *
+     * 
      * @param conditions the conditions value to set.
      * @return the AlertProcessingRuleProperties object itself.
      */
@@ -90,7 +96,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Get the schedule property: Scheduling for alert processing rule.
-     *
+     * 
      * @return the schedule value.
      */
     public Schedule schedule() {
@@ -99,7 +105,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Set the schedule property: Scheduling for alert processing rule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the AlertProcessingRuleProperties object itself.
      */
@@ -110,7 +116,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Get the actions property: Actions to be applied.
-     *
+     * 
      * @return the actions value.
      */
     public List<Action> actions() {
@@ -119,7 +125,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Set the actions property: Actions to be applied.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AlertProcessingRuleProperties object itself.
      */
@@ -130,7 +136,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Get the description property: Description of alert processing rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -139,7 +145,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Set the description property: Description of alert processing rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertProcessingRuleProperties object itself.
      */
@@ -150,7 +156,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Get the enabled property: Indicates if the given alert processing rule is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -159,7 +165,7 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Set the enabled property: Indicates if the given alert processing rule is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AlertProcessingRuleProperties object itself.
      */
@@ -170,15 +176,14 @@ public final class AlertProcessingRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scopes in model AlertProcessingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scopes in model AlertProcessingRuleProperties"));
         }
         if (conditions() != null) {
             conditions().forEach(e -> e.validate());
@@ -187,14 +192,69 @@ public final class AlertProcessingRuleProperties {
             schedule().validate();
         }
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actions in model AlertProcessingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property actions in model AlertProcessingRuleProperties"));
         } else {
             actions().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AlertProcessingRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("conditions", this.conditions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProcessingRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProcessingRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertProcessingRuleProperties.
+     */
+    public static AlertProcessingRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProcessingRuleProperties deserializedAlertProcessingRuleProperties
+                = new AlertProcessingRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertProcessingRuleProperties.scopes = scopes;
+                } else if ("actions".equals(fieldName)) {
+                    List<Action> actions = reader.readArray(reader1 -> Action.fromJson(reader1));
+                    deserializedAlertProcessingRuleProperties.actions = actions;
+                } else if ("conditions".equals(fieldName)) {
+                    List<Condition> conditions = reader.readArray(reader1 -> Condition.fromJson(reader1));
+                    deserializedAlertProcessingRuleProperties.conditions = conditions;
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedAlertProcessingRuleProperties.schedule = Schedule.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertProcessingRuleProperties.description = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAlertProcessingRuleProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProcessingRuleProperties;
+        });
+    }
 }

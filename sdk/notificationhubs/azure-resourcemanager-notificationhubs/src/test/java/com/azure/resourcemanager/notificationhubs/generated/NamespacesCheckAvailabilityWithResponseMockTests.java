@@ -6,70 +6,55 @@ package com.azure.resourcemanager.notificationhubs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.notificationhubs.NotificationHubsManager;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityResult;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.SkuName;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NamespacesCheckAvailabilityWithResponseMockTests {
     @Test
     public void testCheckAvailabilityWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"isAvailiable\":false,\"location\":\"mueedndrdvstk\",\"tags\":{\"tdaaygdvwvg\":\"tchealmf\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"g\",\"size\":\"rtfudxepxg\",\"family\":\"agvrvmnpkuk\",\"capacity\":101100234},\"id\":\"dblx\",\"name\":\"wi\",\"type\":\"fnjhfjxwmszkkfo\"}";
+            = "{\"isAvailiable\":true,\"sku\":{\"name\":\"Free\",\"tier\":\"pfhyhl\",\"size\":\"pmopjmc\",\"family\":\"tuo\",\"capacity\":607140678},\"location\":\"fu\",\"tags\":{\"zydagfuaxbezyiuo\":\"odsfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"ktwh\",\"yocf\":\"o\"},\"id\":\"fksymddystki\",\"name\":\"uxh\",\"type\":\"yudxorrqnbp\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResult response = manager.namespaces()
-            .checkAvailabilityWithResponse(
-                new CheckAvailabilityParameters()
-                    .withName("tllxdyhgsyocogj").withLocation("ocrkvcikh").withTags(mapOf("gxk", "amqgxqquezikyw"))
-                    .withIsAvailiable(false).withSku(new Sku().withName(SkuName.BASIC).withTier("elwuipi")
-                        .withSize("jzkzi").withFamily("vvcnayr").withCapacity(108895877)),
-                com.azure.core.util.Context.NONE)
+            .checkAvailabilityWithResponse(new CheckAvailabilityParameters().withName("amdecte")
+                .withLocation("zrkgqhcjrefovg")
+                .withTags(mapOf("yvxyqjp", "sle"))
+                .withSku(new Sku().withName(SkuName.FREE)
+                    .withTier("tpngjcrcczsqpjh")
+                    .withSize("daj")
+                    .withFamily("ysou")
+                    .withCapacity(104525492))
+                .withIsAvailiable(false), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.isAvailiable());
-        Assertions.assertEquals("mueedndrdvstk", response.location());
-        Assertions.assertEquals("tchealmf", response.tags().get("tdaaygdvwvg"));
-        Assertions.assertEquals(SkuName.BASIC, response.sku().name());
-        Assertions.assertEquals("g", response.sku().tier());
-        Assertions.assertEquals("rtfudxepxg", response.sku().size());
-        Assertions.assertEquals("agvrvmnpkuk", response.sku().family());
-        Assertions.assertEquals(101100234, response.sku().capacity());
+        Assertions.assertEquals("fu", response.location());
+        Assertions.assertEquals("odsfcpkvxodpuozm", response.tags().get("zydagfuaxbezyiuo"));
+        Assertions.assertEquals(true, response.isAvailiable());
+        Assertions.assertEquals(SkuName.FREE, response.sku().name());
+        Assertions.assertEquals("pfhyhl", response.sku().tier());
+        Assertions.assertEquals("pmopjmc", response.sku().size());
+        Assertions.assertEquals("tuo", response.sku().family());
+        Assertions.assertEquals(607140678, response.sku().capacity());
     }
 
     // Use "Map.of" if available

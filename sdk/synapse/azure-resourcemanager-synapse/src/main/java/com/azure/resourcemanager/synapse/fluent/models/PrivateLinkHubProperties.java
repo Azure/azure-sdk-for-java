@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHubBasic;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** PrivateLinkHub properties. */
+/**
+ * PrivateLinkHub properties.
+ */
 @Fluent
-public final class PrivateLinkHubProperties {
+public final class PrivateLinkHubProperties implements JsonSerializable<PrivateLinkHubProperties> {
     /*
      * PrivateLinkHub provisioning state
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * List of private endpoint connections
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections;
 
-    /** Creates an instance of PrivateLinkHubProperties class. */
+    /**
+     * Creates an instance of PrivateLinkHubProperties class.
+     */
     public PrivateLinkHubProperties() {
     }
 
     /**
      * Get the provisioningState property: PrivateLinkHub provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -39,7 +45,7 @@ public final class PrivateLinkHubProperties {
 
     /**
      * Set the provisioningState property: PrivateLinkHub provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the PrivateLinkHubProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class PrivateLinkHubProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections() {
@@ -59,12 +65,52 @@ public final class PrivateLinkHubProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkHubProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkHubProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkHubProperties.
+     */
+    public static PrivateLinkHubProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkHubProperties deserializedPrivateLinkHubProperties = new PrivateLinkHubProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateLinkHubProperties.provisioningState = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections = reader
+                        .readArray(reader1 -> PrivateEndpointConnectionForPrivateLinkHubBasic.fromJson(reader1));
+                    deserializedPrivateLinkHubProperties.privateEndpointConnections = privateEndpointConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkHubProperties;
+        });
     }
 }

@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = DevicesClientBuilder.class)
 public final class DevicesClient {
-    @Generated private final DevicesAsyncClient client;
+    @Generated
+    private final DevicesAsyncClient client;
 
     /**
      * Initializes an instance of DevicesClient class.
@@ -178,8 +179,8 @@ public final class DevicesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String sensorPartnerId, String deviceId, BinaryData deviceDetails, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String sensorPartnerId, String deviceId,
+        BinaryData deviceDetails, RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(sensorPartnerId, deviceId, deviceDetails, requestOptions).block();
     }
 
@@ -227,8 +228,8 @@ public final class DevicesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String sensorPartnerId, String deviceId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String sensorPartnerId, String deviceId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(sensorPartnerId, deviceId, requestOptions).block();
     }
 

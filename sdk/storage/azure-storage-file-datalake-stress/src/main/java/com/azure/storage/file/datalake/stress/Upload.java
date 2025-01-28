@@ -23,6 +23,7 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
     private final DataLakeFileClient syncClient;
     private final DataLakeFileAsyncClient asyncClient;
     private final DataLakeFileAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public Upload(StorageStressOptions options) {
         super(options);
@@ -30,15 +31,15 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
         this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
         this.asyncClient = getAsyncFileSystemClient().getFileAsyncClient(fileName);
         this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
+        this.parallelTransferOptions = new ParallelTransferOptions()
+            .setMaxConcurrency(options.getMaxConcurrency()).setMaxSingleUploadSizeLong(4 * 1024 * 1024L);
     }
 
     @Override
     protected void runInternal(Context span) {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
             syncClient.uploadWithResponse(new FileParallelUploadOptions(inputStream)
-                .setParallelTransferOptions(new ParallelTransferOptions()
-                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1)),
-                null, span);
+                .setParallelTransferOptions(parallelTransferOptions), null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
@@ -48,7 +49,7 @@ public class Upload extends DataLakeScenarioBase<StorageStressOptions> {
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
             .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new FileParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(parallelTransferOptions))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

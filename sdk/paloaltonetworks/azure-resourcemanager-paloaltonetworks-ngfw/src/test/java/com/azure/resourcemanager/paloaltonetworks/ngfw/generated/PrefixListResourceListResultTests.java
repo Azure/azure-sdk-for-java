@@ -25,10 +25,12 @@ public final class PrefixListResourceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixListResourceListResult model
-            = new PrefixListResourceListResult().withValue(Arrays.asList(new PrefixListResourceInner()
-                .withDescription("bzpcpiljhahzvec").withPrefixList(Arrays.asList("dbn", "ieholewjwi"))
-                .withEtag("bwefqsfapaqtfer").withAuditComment("wexjkmfxapjwogq"))).withNextLink("jg");
+        PrefixListResourceListResult model = new PrefixListResourceListResult()
+            .withValue(Arrays.asList(new PrefixListResourceInner().withDescription("bzpcpiljhahzvec")
+                .withPrefixList(Arrays.asList("dbn", "ieholewjwi"))
+                .withEtag("bwefqsfapaqtfer")
+                .withAuditComment("wexjkmfxapjwogq")))
+            .withNextLink("jg");
         model = BinaryData.fromObject(model).toObject(PrefixListResourceListResult.class);
         Assertions.assertEquals("bzpcpiljhahzvec", model.value().get(0).description());
         Assertions.assertEquals("dbn", model.value().get(0).prefixList().get(0));

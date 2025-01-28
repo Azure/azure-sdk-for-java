@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.logic.generated;
 
-/** Samples for WorkflowTriggers Reset. */
+/**
+ * Samples for WorkflowTriggers Reset.
+ */
 public final class WorkflowTriggersResetSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/WorkflowTriggers_Reset.json
+     * x-ms-original-file:
+     * specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/WorkflowTriggers_Reset.json
      */
     /**
      * Sample code: Reset trigger.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void resetTrigger(com.azure.resourcemanager.logic.LogicManager manager) {
-        manager
-            .workflowTriggers()
+        manager.workflowTriggers()
             .resetWithResponse("testResourceGroup", "testWorkflow", "testTrigger", com.azure.core.util.Context.NONE);
     }
 }

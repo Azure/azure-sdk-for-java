@@ -150,7 +150,8 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
                 if ("tasks".equals(fieldName)) {
                     deserializedAnalyzeJobState.tasks = TasksStateTasksOld.fromJson(reader);
                 } else if ("errors".equals(fieldName)) {
-                    deserializedAnalyzeJobState.errors = reader.readArray(reader1 -> TextAnalyticsError.fromJson(reader1));
+                    deserializedAnalyzeJobState.errors
+                        = reader.readArray(reader1 -> TextAnalyticsError.fromJson(reader1));
                 } else if ("statistics".equals(fieldName)) {
                     deserializedAnalyzeJobState.statistics = RequestStatistics.fromJson(reader);
                 } else if ("@nextLink".equals(fieldName)) {

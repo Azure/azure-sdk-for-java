@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databricks.models.CreatedBy;
 public final class CreatedByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreatedBy model =
-            BinaryData
-                .fromString(
-                    "{\"oid\":\"d98edc34-6ad1-4d2d-9641-917b45563bda\",\"puid\":\"ldhugjzzdatqxh\",\"applicationId\":\"c0c78437-4350-418a-9905-82050a57b994\"}")
-                .toObject(CreatedBy.class);
+        CreatedBy model = BinaryData.fromString(
+            "{\"oid\":\"99765cdf-87c8-4cc6-8d6a-b4093fcd481a\",\"puid\":\"ybrk\",\"applicationId\":\"c50a5e68-ae5f-45f9-8823-f286713b0c47\"}")
+            .toObject(CreatedBy.class);
     }
 
     @org.junit.jupiter.api.Test

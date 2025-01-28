@@ -17,12 +17,10 @@ import java.util.Objects;
 /**
  * Implementation for {@link EventHubNamespaceAuthorizationRule}.
  */
-class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubNamespaceAuthorizationRule,
-        EventHubNamespaceAuthorizationRuleImpl>
-        implements
-        EventHubNamespaceAuthorizationRule,
-        EventHubNamespaceAuthorizationRule.Definition,
-        EventHubNamespaceAuthorizationRule.Update {
+class EventHubNamespaceAuthorizationRuleImpl
+    extends AuthorizationRuleBaseImpl<EventHubNamespaceAuthorizationRule, EventHubNamespaceAuthorizationRuleImpl>
+    implements EventHubNamespaceAuthorizationRule, EventHubNamespaceAuthorizationRule.Definition,
+    EventHubNamespaceAuthorizationRule.Update {
 
     private Ancestors.OneAncestor ancestor;
 
@@ -52,8 +50,8 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
     }
 
     @Override
-    public EventHubNamespaceAuthorizationRuleImpl withExistingNamespace(
-        String resourceGroupName, String namespaceName) {
+    public EventHubNamespaceAuthorizationRuleImpl withExistingNamespace(String resourceGroupName,
+        String namespaceName) {
         this.ancestor = new Ancestors().new OneAncestor(resourceGroupName, namespaceName);
         return this;
     }
@@ -66,39 +64,35 @@ class EventHubNamespaceAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<E
 
     @Override
     protected Mono<AuthorizationRuleInner> getInnerAsync() {
-        return this.manager.serviceClient().getNamespaces()
-                .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor1Name(),
-                        this.name());
+        return this.manager.serviceClient()
+            .getNamespaces()
+            .getAuthorizationRuleAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(),
+                this.name());
     }
 
     @Override
     public Mono<EventHubNamespaceAuthorizationRule> createResourceAsync() {
-        return this.manager.serviceClient().getNamespaces()
-                .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor1Name(),
-                        this.name(),
-                        new AuthorizationRuleInner().withRights(this.innerModel().rights()))
-                .map(innerToFluentMap(this));
+        return this.manager.serviceClient()
+            .getNamespaces()
+            .createOrUpdateAuthorizationRuleAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(),
+                this.name(), new AuthorizationRuleInner().withRights(this.innerModel().rights()))
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AccessKeysInner> getKeysInnerAsync() {
-        return this.manager.serviceClient().getNamespaces()
-                .listKeysAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor1Name(),
-                        this.name());
+        return this.manager.serviceClient()
+            .getNamespaces()
+            .listKeysAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(), this.name());
     }
 
     @Override
     protected Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType) {
-        final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters()
-                .withKeyType(keyType);
-        return this.manager.serviceClient().getNamespaces()
-                .regenerateKeysAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor1Name(),
-                        this.name(),
-                        regenKeyInner);
+        final RegenerateAccessKeyParameters regenKeyInner = new RegenerateAccessKeyParameters().withKeyType(keyType);
+        return this.manager.serviceClient()
+            .getNamespaces()
+            .regenerateKeysAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(), this.name(),
+                regenKeyInner);
     }
 
     private Ancestors.OneAncestor ancestor() {

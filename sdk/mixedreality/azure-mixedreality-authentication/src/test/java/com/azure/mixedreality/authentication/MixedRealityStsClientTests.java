@@ -18,8 +18,7 @@ public class MixedRealityStsClientTests extends MixedRealityStsClientTestBase {
     private MixedRealityStsClient client;
 
     private void initializeClient(HttpClient httpClient) {
-        client = new MixedRealityStsClientBuilder()
-            .accountId(super.getAccountId())
+        client = new MixedRealityStsClientBuilder().accountId(super.getAccountId())
             .accountDomain(super.getAccountDomain())
             .pipeline(super.getHttpPipeline(httpClient))
             .buildClient();

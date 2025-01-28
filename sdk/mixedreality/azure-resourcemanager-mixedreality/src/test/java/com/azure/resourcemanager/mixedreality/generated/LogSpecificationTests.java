@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class LogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogSpecification model =
-            BinaryData
-                .fromString("{\"name\":\"dcuf\",\"displayName\":\"srp\",\"blobDuration\":\"zidnsezcxtbzsgfy\"}")
-                .toObject(LogSpecification.class);
-        Assertions.assertEquals("dcuf", model.name());
-        Assertions.assertEquals("srp", model.displayName());
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.blobDuration());
+        LogSpecification model = BinaryData
+            .fromString("{\"name\":\"iachbo\",\"displayName\":\"flnrosfqpteehzz\",\"blobDuration\":\"pyqr\"}")
+            .toObject(LogSpecification.class);
+        Assertions.assertEquals("iachbo", model.name());
+        Assertions.assertEquals("flnrosfqpteehzz", model.displayName());
+        Assertions.assertEquals("pyqr", model.blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogSpecification model =
-            new LogSpecification().withName("dcuf").withDisplayName("srp").withBlobDuration("zidnsezcxtbzsgfy");
+        LogSpecification model
+            = new LogSpecification().withName("iachbo").withDisplayName("flnrosfqpteehzz").withBlobDuration("pyqr");
         model = BinaryData.fromObject(model).toObject(LogSpecification.class);
-        Assertions.assertEquals("dcuf", model.name());
-        Assertions.assertEquals("srp", model.displayName());
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.blobDuration());
+        Assertions.assertEquals("iachbo", model.name());
+        Assertions.assertEquals("flnrosfqpteehzz", model.displayName());
+        Assertions.assertEquals("pyqr", model.blobDuration());
     }
 }

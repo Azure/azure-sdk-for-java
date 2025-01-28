@@ -5,55 +5,58 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** An API key used for authenticating with a configuration store endpoint. */
+/**
+ * An API key used for authenticating with a configuration store endpoint.
+ */
 @Immutable
-public final class ApiKeyInner {
+public final class ApiKeyInner implements JsonSerializable<ApiKeyInner> {
     /*
      * The key ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * A name for the key describing its usage.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The value of the key that is used for authentication purposes.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * A connection string that can be used by supporting clients for authentication.
      */
-    @JsonProperty(value = "connectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String connectionString;
 
     /*
      * The last time any of the key's properties were modified.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * Whether this key can only be used for read operations.
      */
-    @JsonProperty(value = "readOnly", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean readOnly;
 
-    /** Creates an instance of ApiKeyInner class. */
+    /**
+     * Creates an instance of ApiKeyInner class.
+     */
     public ApiKeyInner() {
     }
 
     /**
      * Get the id property: The key ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +65,7 @@ public final class ApiKeyInner {
 
     /**
      * Get the name property: A name for the key describing its usage.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +74,7 @@ public final class ApiKeyInner {
 
     /**
      * Get the value property: The value of the key that is used for authentication purposes.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -80,7 +83,7 @@ public final class ApiKeyInner {
 
     /**
      * Get the connectionString property: A connection string that can be used by supporting clients for authentication.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -89,7 +92,7 @@ public final class ApiKeyInner {
 
     /**
      * Get the lastModified property: The last time any of the key's properties were modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -98,7 +101,7 @@ public final class ApiKeyInner {
 
     /**
      * Get the readOnly property: Whether this key can only be used for read operations.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -107,9 +110,55 @@ public final class ApiKeyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKeyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKeyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiKeyInner.
+     */
+    public static ApiKeyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKeyInner deserializedApiKeyInner = new ApiKeyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiKeyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiKeyInner.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedApiKeyInner.value = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedApiKeyInner.connectionString = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedApiKeyInner.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedApiKeyInner.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKeyInner;
+        });
     }
 }

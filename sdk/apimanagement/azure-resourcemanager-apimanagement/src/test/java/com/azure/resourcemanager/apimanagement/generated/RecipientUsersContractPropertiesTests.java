@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientUsersContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientUsersContractProperties model =
-            BinaryData.fromString("{\"userId\":\"bhbafebzx\"}").toObject(RecipientUsersContractProperties.class);
+        RecipientUsersContractProperties model
+            = BinaryData.fromString("{\"userId\":\"bhbafebzx\"}").toObject(RecipientUsersContractProperties.class);
         Assertions.assertEquals("bhbafebzx", model.userId());
     }
 

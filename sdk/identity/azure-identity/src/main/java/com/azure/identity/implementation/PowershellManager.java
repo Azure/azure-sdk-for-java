@@ -23,7 +23,8 @@ public class PowershellManager {
 
     public PowershellManager(boolean useLegacyPowerShell) {
         if (Platform.isWindows()) {
-            this.powershellPath = useLegacyPowerShell ? LEGACY_WINDOWS_POWERSHELL_PATH : DEFAULT_WINDOWS_POWERSHELL_PATH;
+            this.powershellPath
+                = useLegacyPowerShell ? LEGACY_WINDOWS_POWERSHELL_PATH : DEFAULT_WINDOWS_POWERSHELL_PATH;
         } else {
             this.powershellPath = DEFAULT_NIX_POWERSHELL_PATH;
         }
@@ -33,7 +34,6 @@ public class PowershellManager {
         return Mono.fromCallable(() -> {
             try {
                 String[] command = getCommandLine(input);
-
 
                 ProcessBuilder processBuilder = new ProcessBuilder(command);
                 processBuilder.redirectErrorStream(true);
@@ -58,7 +58,10 @@ public class PowershellManager {
         String base64Input = java.util.Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_16LE));
 
         return Platform.isWindows()
-            ? new String[]{powershellPath, "-NoProfile", "-EncodedCommand", base64Input}
-            : new String[]{"/bin/bash", "-c", String.format("%s -NoProfile -EncodedCommand '%s'", powershellPath, base64Input)};
+            ? new String[] { powershellPath, "-NoProfile", "-EncodedCommand", base64Input }
+            : new String[] {
+                "/bin/bash",
+                "-c",
+                String.format("%s -NoProfile -EncodedCommand '%s'", powershellPath, base64Input) };
     }
 }

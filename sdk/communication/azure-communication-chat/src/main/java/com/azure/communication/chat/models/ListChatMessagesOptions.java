@@ -16,6 +16,12 @@ public final class ListChatMessagesOptions {
     private OffsetDateTime startTime;
 
     /**
+     * Creates an instance of {@link ListChatMessagesOptions}.
+     */
+    public ListChatMessagesOptions() {
+    }
+
+    /**
      * Gets the maximum page size. It represents the number of messages being requested.
      *
      * @return The maximum page size.

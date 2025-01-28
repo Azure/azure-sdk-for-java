@@ -5,51 +5,54 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.ContactDetail;
 import com.azure.resourcemanager.peering.models.ValidationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties that define a peer's ASN. */
+/**
+ * The properties that define a peer's ASN.
+ */
 @Fluent
-public final class PeerAsnProperties {
+public final class PeerAsnProperties implements JsonSerializable<PeerAsnProperties> {
     /*
      * The Autonomous System Number (ASN) of the peer.
      */
-    @JsonProperty(value = "peerAsn")
     private Integer peerAsn;
 
     /*
      * The contact details of the peer.
      */
-    @JsonProperty(value = "peerContactDetail")
     private List<ContactDetail> peerContactDetail;
 
     /*
      * The name of the peer.
      */
-    @JsonProperty(value = "peerName")
     private String peerName;
 
     /*
      * The validation state of the ASN associated with the peer.
      */
-    @JsonProperty(value = "validationState")
     private ValidationState validationState;
 
     /*
      * The error message for the validation state
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of PeerAsnProperties class. */
+    /**
+     * Creates an instance of PeerAsnProperties class.
+     */
     public PeerAsnProperties() {
     }
 
     /**
      * Get the peerAsn property: The Autonomous System Number (ASN) of the peer.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Integer peerAsn() {
@@ -58,7 +61,7 @@ public final class PeerAsnProperties {
 
     /**
      * Set the peerAsn property: The Autonomous System Number (ASN) of the peer.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the PeerAsnProperties object itself.
      */
@@ -69,7 +72,7 @@ public final class PeerAsnProperties {
 
     /**
      * Get the peerContactDetail property: The contact details of the peer.
-     *
+     * 
      * @return the peerContactDetail value.
      */
     public List<ContactDetail> peerContactDetail() {
@@ -78,7 +81,7 @@ public final class PeerAsnProperties {
 
     /**
      * Set the peerContactDetail property: The contact details of the peer.
-     *
+     * 
      * @param peerContactDetail the peerContactDetail value to set.
      * @return the PeerAsnProperties object itself.
      */
@@ -89,7 +92,7 @@ public final class PeerAsnProperties {
 
     /**
      * Get the peerName property: The name of the peer.
-     *
+     * 
      * @return the peerName value.
      */
     public String peerName() {
@@ -98,7 +101,7 @@ public final class PeerAsnProperties {
 
     /**
      * Set the peerName property: The name of the peer.
-     *
+     * 
      * @param peerName the peerName value to set.
      * @return the PeerAsnProperties object itself.
      */
@@ -109,7 +112,7 @@ public final class PeerAsnProperties {
 
     /**
      * Get the validationState property: The validation state of the ASN associated with the peer.
-     *
+     * 
      * @return the validationState value.
      */
     public ValidationState validationState() {
@@ -118,7 +121,7 @@ public final class PeerAsnProperties {
 
     /**
      * Set the validationState property: The validation state of the ASN associated with the peer.
-     *
+     * 
      * @param validationState the validationState value to set.
      * @return the PeerAsnProperties object itself.
      */
@@ -129,7 +132,7 @@ public final class PeerAsnProperties {
 
     /**
      * Get the errorMessage property: The error message for the validation state.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -138,12 +141,63 @@ public final class PeerAsnProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (peerContactDetail() != null) {
             peerContactDetail().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("peerAsn", this.peerAsn);
+        jsonWriter.writeArrayField("peerContactDetail", this.peerContactDetail,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("peerName", this.peerName);
+        jsonWriter.writeStringField("validationState",
+            this.validationState == null ? null : this.validationState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeerAsnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeerAsnProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeerAsnProperties.
+     */
+    public static PeerAsnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeerAsnProperties deserializedPeerAsnProperties = new PeerAsnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peerAsn".equals(fieldName)) {
+                    deserializedPeerAsnProperties.peerAsn = reader.getNullable(JsonReader::getInt);
+                } else if ("peerContactDetail".equals(fieldName)) {
+                    List<ContactDetail> peerContactDetail
+                        = reader.readArray(reader1 -> ContactDetail.fromJson(reader1));
+                    deserializedPeerAsnProperties.peerContactDetail = peerContactDetail;
+                } else if ("peerName".equals(fieldName)) {
+                    deserializedPeerAsnProperties.peerName = reader.getString();
+                } else if ("validationState".equals(fieldName)) {
+                    deserializedPeerAsnProperties.validationState = ValidationState.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedPeerAsnProperties.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeerAsnProperties;
+        });
     }
 }

@@ -12,8 +12,7 @@ public final class PortalSettingValidationKeyContractImpl implements PortalSetti
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    PortalSettingValidationKeyContractImpl(
-        PortalSettingValidationKeyContractInner innerObject,
+    PortalSettingValidationKeyContractImpl(PortalSettingValidationKeyContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

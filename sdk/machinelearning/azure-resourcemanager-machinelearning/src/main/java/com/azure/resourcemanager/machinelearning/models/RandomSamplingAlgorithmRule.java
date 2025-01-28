@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The specific type of random algorithm. */
+/**
+ * The specific type of random algorithm.
+ */
 public final class RandomSamplingAlgorithmRule extends ExpandableStringEnum<RandomSamplingAlgorithmRule> {
-    /** Static value Random for RandomSamplingAlgorithmRule. */
+    /**
+     * Static value Random for RandomSamplingAlgorithmRule.
+     */
     public static final RandomSamplingAlgorithmRule RANDOM = fromString("Random");
 
-    /** Static value Sobol for RandomSamplingAlgorithmRule. */
+    /**
+     * Static value Sobol for RandomSamplingAlgorithmRule.
+     */
     public static final RandomSamplingAlgorithmRule SOBOL = fromString("Sobol");
 
     /**
      * Creates a new instance of RandomSamplingAlgorithmRule value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class RandomSamplingAlgorithmRule extends ExpandableStringEnum<Rand
 
     /**
      * Creates or finds a RandomSamplingAlgorithmRule from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RandomSamplingAlgorithmRule.
      */
-    @JsonCreator
     public static RandomSamplingAlgorithmRule fromString(String name) {
         return fromString(name, RandomSamplingAlgorithmRule.class);
     }
 
     /**
      * Gets known RandomSamplingAlgorithmRule values.
-     *
+     * 
      * @return known RandomSamplingAlgorithmRule values.
      */
     public static Collection<RandomSamplingAlgorithmRule> values() {

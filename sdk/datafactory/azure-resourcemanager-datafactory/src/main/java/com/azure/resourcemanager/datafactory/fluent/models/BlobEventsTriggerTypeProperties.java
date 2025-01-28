@@ -6,21 +6,24 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.BlobEventTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Blob Events Trigger properties.
  */
 @Fluent
-public final class BlobEventsTriggerTypeProperties {
+public final class BlobEventsTriggerTypeProperties implements JsonSerializable<BlobEventsTriggerTypeProperties> {
     /*
      * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/'
      * will only fire the trigger for blobs in the december folder under the records container. At least one of these
      * must be provided: blobPathBeginsWith, blobPathEndsWith.
      */
-    @JsonProperty(value = "blobPathBeginsWith")
     private String blobPathBeginsWith;
 
     /*
@@ -28,25 +31,21 @@ public final class BlobEventsTriggerTypeProperties {
      * fire the trigger for blobs named boxes in a december folder. At least one of these must be provided:
      * blobPathBeginsWith, blobPathEndsWith.
      */
-    @JsonProperty(value = "blobPathEndsWith")
     private String blobPathEndsWith;
 
     /*
      * If set to true, blobs with zero bytes will be ignored.
      */
-    @JsonProperty(value = "ignoreEmptyBlobs")
     private Boolean ignoreEmptyBlobs;
 
     /*
      * The type of events that cause this trigger to fire.
      */
-    @JsonProperty(value = "events", required = true)
     private List<BlobEventTypes> events;
 
     /*
      * The ARM resource ID of the Storage Account.
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
     /**
@@ -182,4 +181,58 @@ public final class BlobEventsTriggerTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobEventsTriggerTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("events", this.events,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("blobPathBeginsWith", this.blobPathBeginsWith);
+        jsonWriter.writeStringField("blobPathEndsWith", this.blobPathEndsWith);
+        jsonWriter.writeBooleanField("ignoreEmptyBlobs", this.ignoreEmptyBlobs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobEventsTriggerTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobEventsTriggerTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobEventsTriggerTypeProperties.
+     */
+    public static BlobEventsTriggerTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobEventsTriggerTypeProperties deserializedBlobEventsTriggerTypeProperties
+                = new BlobEventsTriggerTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("events".equals(fieldName)) {
+                    List<BlobEventTypes> events
+                        = reader.readArray(reader1 -> BlobEventTypes.fromString(reader1.getString()));
+                    deserializedBlobEventsTriggerTypeProperties.events = events;
+                } else if ("scope".equals(fieldName)) {
+                    deserializedBlobEventsTriggerTypeProperties.scope = reader.getString();
+                } else if ("blobPathBeginsWith".equals(fieldName)) {
+                    deserializedBlobEventsTriggerTypeProperties.blobPathBeginsWith = reader.getString();
+                } else if ("blobPathEndsWith".equals(fieldName)) {
+                    deserializedBlobEventsTriggerTypeProperties.blobPathEndsWith = reader.getString();
+                } else if ("ignoreEmptyBlobs".equals(fieldName)) {
+                    deserializedBlobEventsTriggerTypeProperties.ignoreEmptyBlobs
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobEventsTriggerTypeProperties;
+        });
+    }
 }

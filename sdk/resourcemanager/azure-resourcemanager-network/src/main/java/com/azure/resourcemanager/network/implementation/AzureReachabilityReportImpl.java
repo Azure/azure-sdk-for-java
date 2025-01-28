@@ -58,17 +58,15 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
 
     @Override
     public Mono<AzureReachabilityReport> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .getAzureReachabilityReportAsync(parent().resourceGroupName(), parent().name(), parameters)
-            .map(
-                azureReachabilityReportListInner -> {
-                    AzureReachabilityReportImpl.this.inner = azureReachabilityReportListInner;
-                    return AzureReachabilityReportImpl.this;
-                });
+            .map(azureReachabilityReportListInner -> {
+                AzureReachabilityReportImpl.this.inner = azureReachabilityReportListInner;
+                return AzureReachabilityReportImpl.this;
+            });
     }
 
     @Override
@@ -85,9 +83,8 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
 
     @Override
     public AzureReachabilityReportImpl withProviderLocation(String country, String state, String city) {
-        parameters
-            .withProviderLocation(
-                new AzureReachabilityReportLocation().withCountry(country).withState(state).withCity(city));
+        parameters.withProviderLocation(
+            new AzureReachabilityReportLocation().withCountry(country).withState(state).withCity(city));
         return this;
     }
 

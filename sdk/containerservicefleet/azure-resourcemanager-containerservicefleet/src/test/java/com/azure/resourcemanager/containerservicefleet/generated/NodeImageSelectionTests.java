@@ -7,19 +7,25 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelection;
 import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageVersion;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class NodeImageSelectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeImageSelection model = BinaryData.fromString("{\"type\":\"Latest\"}").toObject(NodeImageSelection.class);
-        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.type());
+        NodeImageSelection model = BinaryData.fromString(
+            "{\"type\":\"Custom\",\"customNodeImageVersions\":[{\"version\":\"scjeypv\"},{\"version\":\"zrkgqhcjrefovg\"},{\"version\":\"qsl\"}]}")
+            .toObject(NodeImageSelection.class);
+        Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeImageSelection model = new NodeImageSelection().withType(NodeImageSelectionType.LATEST);
+        NodeImageSelection model = new NodeImageSelection().withType(NodeImageSelectionType.CUSTOM)
+            .withCustomNodeImageVersions(
+                Arrays.asList(new NodeImageVersion(), new NodeImageVersion(), new NodeImageVersion()));
         model = BinaryData.fromObject(model).toObject(NodeImageSelection.class);
-        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.type());
+        Assertions.assertEquals(NodeImageSelectionType.CUSTOM, model.type());
     }
 }

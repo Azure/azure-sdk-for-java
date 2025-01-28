@@ -43,10 +43,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to SqlVirtualMachineManager. The SQL virtual machine management API provides a RESTful set of web APIs
- * that interact with Azure Compute, Network &amp; Storage services to manage your SQL Server virtual machine. The API
- * enables users to create, delete and retrieve a SQL virtual machine, SQL virtual machine group or availability group
- * listener.
+ * Entry point to SqlVirtualMachineManager.
+ * The SQL virtual machine management API provides a RESTful set of web APIs that interact with Azure Compute, Network
+ * &amp; Storage services to manage your SQL Server virtual machine. The API enables users to create, delete and
+ * retrieve a SQL virtual machine, SQL virtual machine group or availability group listener.
  */
 public final class SqlVirtualMachineManager {
     private AvailabilityGroupListeners availabilityGroupListeners;
@@ -64,18 +64,16 @@ public final class SqlVirtualMachineManager {
     private SqlVirtualMachineManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new SqlVirtualMachineManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new SqlVirtualMachineManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of SqlVirtualMachine service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the SqlVirtualMachine service API instance.
@@ -88,7 +86,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Creates an instance of SqlVirtualMachine service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the SqlVirtualMachine service API instance.
@@ -101,14 +99,16 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets a Configurable instance that can be used to create SqlVirtualMachineManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SqlVirtualMachineManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -180,8 +180,8 @@ public final class SqlVirtualMachineManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -198,8 +198,8 @@ public final class SqlVirtualMachineManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -219,15 +219,13 @@ public final class SqlVirtualMachineManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.sqlvirtualmachine")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -252,51 +250,41 @@ public final class SqlVirtualMachineManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SqlVirtualMachineManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of AvailabilityGroupListeners. It manages AvailabilityGroupListener.
-     *
+     * 
      * @return Resource collection API of AvailabilityGroupListeners.
      */
     public AvailabilityGroupListeners availabilityGroupListeners() {
         if (this.availabilityGroupListeners == null) {
-            this.availabilityGroupListeners =
-                new AvailabilityGroupListenersImpl(clientObject.getAvailabilityGroupListeners(), this);
+            this.availabilityGroupListeners
+                = new AvailabilityGroupListenersImpl(clientObject.getAvailabilityGroupListeners(), this);
         }
         return availabilityGroupListeners;
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -308,20 +296,20 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of SqlVirtualMachineGroups. It manages SqlVirtualMachineGroup.
-     *
+     * 
      * @return Resource collection API of SqlVirtualMachineGroups.
      */
     public SqlVirtualMachineGroups sqlVirtualMachineGroups() {
         if (this.sqlVirtualMachineGroups == null) {
-            this.sqlVirtualMachineGroups =
-                new SqlVirtualMachineGroupsImpl(clientObject.getSqlVirtualMachineGroups(), this);
+            this.sqlVirtualMachineGroups
+                = new SqlVirtualMachineGroupsImpl(clientObject.getSqlVirtualMachineGroups(), this);
         }
         return sqlVirtualMachineGroups;
     }
 
     /**
      * Gets the resource collection API of SqlVirtualMachines. It manages SqlVirtualMachine.
-     *
+     * 
      * @return Resource collection API of SqlVirtualMachines.
      */
     public SqlVirtualMachines sqlVirtualMachines() {
@@ -333,20 +321,22 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of SqlVirtualMachineTroubleshoots.
-     *
+     * 
      * @return Resource collection API of SqlVirtualMachineTroubleshoots.
      */
     public SqlVirtualMachineTroubleshoots sqlVirtualMachineTroubleshoots() {
         if (this.sqlVirtualMachineTroubleshoots == null) {
-            this.sqlVirtualMachineTroubleshoots =
-                new SqlVirtualMachineTroubleshootsImpl(clientObject.getSqlVirtualMachineTroubleshoots(), this);
+            this.sqlVirtualMachineTroubleshoots
+                = new SqlVirtualMachineTroubleshootsImpl(clientObject.getSqlVirtualMachineTroubleshoots(), this);
         }
         return sqlVirtualMachineTroubleshoots;
     }
 
     /**
-     * @return Wrapped service client SqlVirtualMachineManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client SqlVirtualMachineManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client SqlVirtualMachineManagementClient.
      */
     public SqlVirtualMachineManagementClient serviceClient() {
         return this.clientObject;

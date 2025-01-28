@@ -10,11 +10,9 @@ import com.azure.resourcemanager.peering.models.OperationDisplayInfo;
 public final class OperationDisplayInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplayInfo model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"ocxscpaierhhbcs\",\"resource\":\"ummajtjaod\",\"operation\":\"bnbdxkqpxokajion\",\"description\":\"mexgstxgcp\"}")
-                .toObject(OperationDisplayInfo.class);
+        OperationDisplayInfo model = BinaryData.fromString(
+            "{\"provider\":\"majtjaod\",\"resource\":\"bnbdxkqpxokajion\",\"operation\":\"mexgstxgcp\",\"description\":\"gmaajrm\"}")
+            .toObject(OperationDisplayInfo.class);
     }
 
     @org.junit.jupiter.api.Test

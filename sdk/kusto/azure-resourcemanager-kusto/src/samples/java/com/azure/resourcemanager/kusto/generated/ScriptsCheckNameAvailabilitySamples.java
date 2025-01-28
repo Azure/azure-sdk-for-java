@@ -6,24 +6,22 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.resourcemanager.kusto.models.ScriptCheckNameRequest;
 
-/** Samples for Scripts CheckNameAvailability. */
+/**
+ * Samples for Scripts CheckNameAvailability.
+ */
 public final class ScriptsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoScriptsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoScriptsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoScriptsCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                "db",
-                new ScriptCheckNameRequest().withName("kustoScriptName1"),
-                com.azure.core.util.Context.NONE);
+        manager.scripts()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster", "db",
+                new ScriptCheckNameRequest().withName("kustoScriptName1"), com.azure.core.util.Context.NONE);
     }
 }

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupIdInformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupIdInformationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"fdnw\",\"requiredMembers\":[\"ewzsyyceuzsoib\",\"ud\"],\"requiredZoneNames\":[\"xtrthz\"]}")
-                .toObject(GroupIdInformationProperties.class);
+        GroupIdInformationProperties model = BinaryData.fromString(
+            "{\"groupId\":\"fdnw\",\"requiredMembers\":[\"ewzsyyceuzsoib\",\"ud\"],\"requiredZoneNames\":[\"xtrthz\"]}")
+            .toObject(GroupIdInformationProperties.class);
         Assertions.assertEquals("fdnw", model.groupId());
         Assertions.assertEquals("ewzsyyceuzsoib", model.requiredMembers().get(0));
         Assertions.assertEquals("xtrthz", model.requiredZoneNames().get(0));
@@ -24,11 +22,9 @@ public final class GroupIdInformationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupIdInformationProperties model =
-            new GroupIdInformationProperties()
-                .withGroupId("fdnw")
-                .withRequiredMembers(Arrays.asList("ewzsyyceuzsoib", "ud"))
-                .withRequiredZoneNames(Arrays.asList("xtrthz"));
+        GroupIdInformationProperties model = new GroupIdInformationProperties().withGroupId("fdnw")
+            .withRequiredMembers(Arrays.asList("ewzsyyceuzsoib", "ud"))
+            .withRequiredZoneNames(Arrays.asList("xtrthz"));
         model = BinaryData.fromObject(model).toObject(GroupIdInformationProperties.class);
         Assertions.assertEquals("fdnw", model.groupId());
         Assertions.assertEquals("ewzsyyceuzsoib", model.requiredMembers().get(0));

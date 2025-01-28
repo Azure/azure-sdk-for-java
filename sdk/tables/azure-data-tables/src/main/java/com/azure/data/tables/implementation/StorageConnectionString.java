@@ -129,8 +129,8 @@ public final class StorageConnectionString {
      * @param accountName The storage account name.
      */
     StorageConnectionString(final StorageAuthenticationSettings storageAuthSettings, final StorageEndpoint blobEndpoint,
-                            final StorageEndpoint queueEndpoint, final StorageEndpoint tableEndpoint,
-                            final StorageEndpoint fileEndpoint, final String accountName) {
+        final StorageEndpoint queueEndpoint, final StorageEndpoint tableEndpoint, final StorageEndpoint fileEndpoint,
+        final String accountName) {
         this.storageAuthSettings = storageAuthSettings;
         this.blobEndpoint = blobEndpoint;
         this.fileEndpoint = fileEndpoint;

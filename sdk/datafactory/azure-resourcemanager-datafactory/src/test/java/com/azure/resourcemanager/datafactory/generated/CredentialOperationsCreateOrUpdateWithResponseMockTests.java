@@ -25,7 +25,7 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"jrncvjs\",\"annotations\":[\"dataurcxtyfbbomugubc\",\"datavvdafbtozxvkoieb\"],\"\":{\"iybfskxuyo\":\"datayxmljnseaog\",\"uclq\":\"dataddry\",\"edtwtukkhuusrm\":\"datacwpgipttp\",\"upkebwses\":\"datatonpgtaz\"}},\"name\":\"sbrwdfoprdyt\",\"type\":\"ypv\",\"etag\":\"zooqzdoytnpk\",\"id\":\"cgtgnhzufhwftjnv\"}";
+            = "{\"properties\":{\"type\":\"Credential\",\"description\":\"uehcrywwfns\",\"annotations\":[\"datajadnwafjiba\",\"datal\",\"datatdije\"],\"\":{\"oxjwlhulvyz\":\"datarrm\",\"adkvld\":\"datavidokvzq\",\"tpwrm\":\"datacxvoltjyzolnqkdt\"}},\"name\":\"aoeghsqplnyp\",\"type\":\"wcevpmtpq\",\"etag\":\"pgsoje\",\"id\":\"jnlvcgar\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,16 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CredentialResource response = manager.credentialOperations()
-            .define("arsva")
-            .withExistingFactory("yxgxohiwkkhth", "ukclayqipwkxfnn")
-            .withProperties(new Credential().withDescription("hme")
-                .withAnnotations(Arrays.asList("dataakpr", "dataajtqyevqtydxkpy", "dataxcjafhctqn"))
+            .define("oiqtvfruyinavbf")
+            .withExistingFactory("sdewnkzwyr", "bhh")
+            .withProperties(new Credential().withDescription("vvrzdbrpdveyx")
+                .withAnnotations(Arrays.asList("datauldtfxedmm", "dataz", "datazhvjfij"))
                 .withAdditionalProperties(mapOf("type", "Credential")))
-            .withIfMatch("blnxquge")
+            .withIfMatch("hfsoiihjkiajo")
             .create();
 
-        Assertions.assertEquals("cgtgnhzufhwftjnv", response.id());
-        Assertions.assertEquals("jrncvjs", response.properties().description());
+        Assertions.assertEquals("jnlvcgar", response.id());
+        Assertions.assertEquals("uehcrywwfns", response.properties().description());
     }
 
     // Use "Map.of" if available

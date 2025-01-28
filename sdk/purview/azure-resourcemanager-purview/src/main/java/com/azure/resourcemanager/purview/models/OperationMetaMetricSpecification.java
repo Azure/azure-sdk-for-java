@@ -5,58 +5,56 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** metric specifications for the operation. */
+/**
+ * metric specifications for the operation.
+ */
 @Fluent
-public final class OperationMetaMetricSpecification {
+public final class OperationMetaMetricSpecification implements JsonSerializable<OperationMetaMetricSpecification> {
     /*
      * aggregation type of metric
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * properties for dimension
      */
-    @JsonProperty(value = "dimensions")
     private List<DimensionProperties> dimensions;
 
     /*
      * description of the metric
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * localized name of the metric
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * enable regional mdm account
      */
-    @JsonProperty(value = "enableRegionalMdmAccount")
     private String enableRegionalMdmAccount;
 
     /*
      * internal metric name
      */
-    @JsonProperty(value = "internalMetricName")
     private String internalMetricName;
 
     /*
      * name of the metric
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * dimension name use to replace resource id if specified
      */
-    @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
 
     /*
@@ -64,34 +62,32 @@ public final class OperationMetaMetricSpecification {
      * Only set the namespace if different from the default value,
      * leaving it empty makes it use the value from the ARM manifest.
      */
-    @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
 
     /*
      * supported aggregation types
      */
-    @JsonProperty(value = "supportedAggregationTypes")
     private List<String> supportedAggregationTypes;
 
     /*
      * supported time grain types
      */
-    @JsonProperty(value = "supportedTimeGrainTypes")
     private List<String> supportedTimeGrainTypes;
 
     /*
      * units for the metric
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
-    /** Creates an instance of OperationMetaMetricSpecification class. */
+    /**
+     * Creates an instance of OperationMetaMetricSpecification class.
+     */
     public OperationMetaMetricSpecification() {
     }
 
     /**
      * Get the aggregationType property: aggregation type of metric.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -100,7 +96,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the aggregationType property: aggregation type of metric.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -111,7 +107,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the dimensions property: properties for dimension.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<DimensionProperties> dimensions() {
@@ -120,7 +116,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the dimensions property: properties for dimension.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -131,7 +127,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the displayDescription property: description of the metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -140,7 +136,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the displayDescription property: description of the metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -151,7 +147,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the displayName property: localized name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -160,7 +156,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the displayName property: localized name of the metric.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -171,7 +167,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the enableRegionalMdmAccount property: enable regional mdm account.
-     *
+     * 
      * @return the enableRegionalMdmAccount value.
      */
     public String enableRegionalMdmAccount() {
@@ -180,7 +176,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the enableRegionalMdmAccount property: enable regional mdm account.
-     *
+     * 
      * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -191,7 +187,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the internalMetricName property: internal metric name.
-     *
+     * 
      * @return the internalMetricName value.
      */
     public String internalMetricName() {
@@ -200,7 +196,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the internalMetricName property: internal metric name.
-     *
+     * 
      * @param internalMetricName the internalMetricName value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -211,7 +207,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the name property: name of the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -220,7 +216,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the name property: name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -231,7 +227,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the resourceIdDimensionNameOverride property: dimension name use to replace resource id if specified.
-     *
+     * 
      * @return the resourceIdDimensionNameOverride value.
      */
     public String resourceIdDimensionNameOverride() {
@@ -240,20 +236,21 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the resourceIdDimensionNameOverride property: dimension name use to replace resource id if specified.
-     *
+     * 
      * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
-    public OperationMetaMetricSpecification withResourceIdDimensionNameOverride(
-        String resourceIdDimensionNameOverride) {
+    public OperationMetaMetricSpecification
+        withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
         return this;
     }
 
     /**
-     * Get the sourceMdmNamespace property: Metric namespace. Only set the namespace if different from the default
-     * value, leaving it empty makes it use the value from the ARM manifest.
-     *
+     * Get the sourceMdmNamespace property: Metric namespace.
+     * Only set the namespace if different from the default value,
+     * leaving it empty makes it use the value from the ARM manifest.
+     * 
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -261,9 +258,10 @@ public final class OperationMetaMetricSpecification {
     }
 
     /**
-     * Set the sourceMdmNamespace property: Metric namespace. Only set the namespace if different from the default
-     * value, leaving it empty makes it use the value from the ARM manifest.
-     *
+     * Set the sourceMdmNamespace property: Metric namespace.
+     * Only set the namespace if different from the default value,
+     * leaving it empty makes it use the value from the ARM manifest.
+     * 
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -274,7 +272,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the supportedAggregationTypes property: supported aggregation types.
-     *
+     * 
      * @return the supportedAggregationTypes value.
      */
     public List<String> supportedAggregationTypes() {
@@ -283,7 +281,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the supportedAggregationTypes property: supported aggregation types.
-     *
+     * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -294,7 +292,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the supportedTimeGrainTypes property: supported time grain types.
-     *
+     * 
      * @return the supportedTimeGrainTypes value.
      */
     public List<String> supportedTimeGrainTypes() {
@@ -303,7 +301,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the supportedTimeGrainTypes property: supported time grain types.
-     *
+     * 
      * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -314,7 +312,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Get the unit property: units for the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -323,7 +321,7 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Set the unit property: units for the metric.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
@@ -334,12 +332,88 @@ public final class OperationMetaMetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("enableRegionalMdmAccount", this.enableRegionalMdmAccount);
+        jsonWriter.writeStringField("internalMetricName", this.internalMetricName);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("resourceIdDimensionNameOverride", this.resourceIdDimensionNameOverride);
+        jsonWriter.writeStringField("sourceMdmNamespace", this.sourceMdmNamespace);
+        jsonWriter.writeArrayField("supportedAggregationTypes", this.supportedAggregationTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("supportedTimeGrainTypes", this.supportedTimeGrainTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetaMetricSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetaMetricSpecification if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetaMetricSpecification.
+     */
+    public static OperationMetaMetricSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetaMetricSpecification deserializedOperationMetaMetricSpecification
+                = new OperationMetaMetricSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregationType".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.aggregationType = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<DimensionProperties> dimensions
+                        = reader.readArray(reader1 -> DimensionProperties.fromJson(reader1));
+                    deserializedOperationMetaMetricSpecification.dimensions = dimensions;
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.displayDescription = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.displayName = reader.getString();
+                } else if ("enableRegionalMdmAccount".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.enableRegionalMdmAccount = reader.getString();
+                } else if ("internalMetricName".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.internalMetricName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.name = reader.getString();
+                } else if ("resourceIdDimensionNameOverride".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.resourceIdDimensionNameOverride = reader.getString();
+                } else if ("sourceMdmNamespace".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.sourceMdmNamespace = reader.getString();
+                } else if ("supportedAggregationTypes".equals(fieldName)) {
+                    List<String> supportedAggregationTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOperationMetaMetricSpecification.supportedAggregationTypes = supportedAggregationTypes;
+                } else if ("supportedTimeGrainTypes".equals(fieldName)) {
+                    List<String> supportedTimeGrainTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOperationMetaMetricSpecification.supportedTimeGrainTypes = supportedTimeGrainTypes;
+                } else if ("unit".equals(fieldName)) {
+                    deserializedOperationMetaMetricSpecification.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetaMetricSpecification;
+        });
     }
 }

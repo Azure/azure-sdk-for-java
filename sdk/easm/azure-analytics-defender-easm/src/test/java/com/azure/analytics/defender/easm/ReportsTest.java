@@ -20,7 +20,8 @@ public class ReportsTest extends EasmClientTestBase {
 
     @Test
     public void testreportsSnapshotWithResult() {
-        ReportAssetSnapshotRequest reportAssetSnapshotRequest = new ReportAssetSnapshotRequest().setMetric(metric).setPage(0).setSize(25);
+        ReportAssetSnapshotRequest reportAssetSnapshotRequest
+            = new ReportAssetSnapshotRequest().setMetric(metric).setPage(0).setSize(25);
         ReportAssetSnapshotResult reportAssetSnapshotResult = easmClient.getSnapshot(reportAssetSnapshotRequest);
         assertNotNull(reportAssetSnapshotResult.getDisplayName());
         assertEquals(metric, reportAssetSnapshotResult.getMetric());
@@ -30,7 +31,8 @@ public class ReportsTest extends EasmClientTestBase {
 
     @Test
     public void testreportsSummaryWithResult() {
-        ReportAssetSummaryRequest reportAssetSummaryRequest = new ReportAssetSummaryRequest().setMetrics(Arrays.asList(metric));
+        ReportAssetSummaryRequest reportAssetSummaryRequest
+            = new ReportAssetSummaryRequest().setMetrics(Arrays.asList(metric));
         ReportAssetSummaryResult reportAssetSummaryResult = easmClient.getSummary(reportAssetSummaryRequest);
         assertTrue(reportAssetSummaryResult.getAssetSummaries().size() > 0);
     }

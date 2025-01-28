@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactDetails model =
-            BinaryData
-                .fromString(
-                    "{\"contactPerson\":\"lmwlxkvugfhzo\",\"companyName\":\"awjvzunluthnnp\",\"phone\":\"nxipeil\",\"emailList\":[\"zuaejxd\",\"ltskzbbtd\",\"umveekgpwozuhkf\",\"bsjyofdx\"]}")
-                .toObject(ContactDetails.class);
-        Assertions.assertEquals("lmwlxkvugfhzo", model.contactPerson());
-        Assertions.assertEquals("awjvzunluthnnp", model.companyName());
-        Assertions.assertEquals("nxipeil", model.phone());
-        Assertions.assertEquals("zuaejxd", model.emailList().get(0));
+        ContactDetails model = BinaryData.fromString(
+            "{\"contactPerson\":\"lfmmdnbbglzpswi\",\"companyName\":\"d\",\"phone\":\"cwyhzdxssa\",\"emailList\":[\"zmnvdfznudaod\",\"xzb\",\"cblylpstdbhhxsr\"]}")
+            .toObject(ContactDetails.class);
+        Assertions.assertEquals("lfmmdnbbglzpswi", model.contactPerson());
+        Assertions.assertEquals("d", model.companyName());
+        Assertions.assertEquals("cwyhzdxssa", model.phone());
+        Assertions.assertEquals("zmnvdfznudaod", model.emailList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactDetails model =
-            new ContactDetails()
-                .withContactPerson("lmwlxkvugfhzo")
-                .withCompanyName("awjvzunluthnnp")
-                .withPhone("nxipeil")
-                .withEmailList(Arrays.asList("zuaejxd", "ltskzbbtd", "umveekgpwozuhkf", "bsjyofdx"));
+        ContactDetails model = new ContactDetails().withContactPerson("lfmmdnbbglzpswi")
+            .withCompanyName("d")
+            .withPhone("cwyhzdxssa")
+            .withEmailList(Arrays.asList("zmnvdfznudaod", "xzb", "cblylpstdbhhxsr"));
         model = BinaryData.fromObject(model).toObject(ContactDetails.class);
-        Assertions.assertEquals("lmwlxkvugfhzo", model.contactPerson());
-        Assertions.assertEquals("awjvzunluthnnp", model.companyName());
-        Assertions.assertEquals("nxipeil", model.phone());
-        Assertions.assertEquals("zuaejxd", model.emailList().get(0));
+        Assertions.assertEquals("lfmmdnbbglzpswi", model.contactPerson());
+        Assertions.assertEquals("d", model.companyName());
+        Assertions.assertEquals("cwyhzdxssa", model.phone());
+        Assertions.assertEquals("zmnvdfznudaod", model.emailList().get(0));
     }
 }

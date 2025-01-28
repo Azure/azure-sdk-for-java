@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlElasticPoolResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlElasticPoolResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Sql/servers/elasticPools\",\"tags\":{\"txmedj\":\"lgqg\",\"lynqwwncwzzh\":\"c\",\"ellwptfdy\":\"gktrmgucnapkte\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"zoneRedundant\":\"Enable\",\"targetResourceName\":\"ahzxctobgbk\",\"targetResourceGroupName\":\"oizpostmgrcfbun\"}")
-                .toObject(SqlElasticPoolResourceSettings.class);
+        SqlElasticPoolResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Sql/servers/elasticPools\",\"tags\":{\"txmedj\":\"lgqg\",\"lynqwwncwzzh\":\"c\",\"ellwptfdy\":\"gktrmgucnapkte\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"zoneRedundant\":\"Enable\",\"targetResourceName\":\"ahzxctobgbk\",\"targetResourceGroupName\":\"oizpostmgrcfbun\"}")
+            .toObject(SqlElasticPoolResourceSettings.class);
         Assertions.assertEquals("ahzxctobgbk", model.targetResourceName());
         Assertions.assertEquals("oizpostmgrcfbun", model.targetResourceGroupName());
         Assertions.assertEquals("lgqg", model.tags().get("txmedj"));
@@ -27,20 +25,11 @@ public final class SqlElasticPoolResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlElasticPoolResourceSettings model =
-            new SqlElasticPoolResourceSettings()
-                .withTargetResourceName("ahzxctobgbk")
+        SqlElasticPoolResourceSettings model
+            = new SqlElasticPoolResourceSettings().withTargetResourceName("ahzxctobgbk")
                 .withTargetResourceGroupName("oizpostmgrcfbun")
-                .withTags(
-                    mapOf(
-                        "txmedj",
-                        "lgqg",
-                        "lynqwwncwzzh",
-                        "c",
-                        "ellwptfdy",
-                        "gktrmgucnapkte",
-                        "rhhuaopppcqeqx",
-                        "pfqbuaceopzf"))
+                .withTags(mapOf("txmedj", "lgqg", "lynqwwncwzzh", "c", "ellwptfdy", "gktrmgucnapkte", "rhhuaopppcqeqx",
+                    "pfqbuaceopzf"))
                 .withZoneRedundant(ZoneRedundant.ENABLE);
         model = BinaryData.fromObject(model).toObject(SqlElasticPoolResourceSettings.class);
         Assertions.assertEquals("ahzxctobgbk", model.targetResourceName());

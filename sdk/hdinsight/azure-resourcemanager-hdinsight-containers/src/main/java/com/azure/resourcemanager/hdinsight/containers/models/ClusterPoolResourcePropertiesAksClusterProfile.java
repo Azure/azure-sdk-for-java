@@ -5,16 +5,35 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of underlying AKS cluster.
  */
 @Fluent
 public final class ClusterPoolResourcePropertiesAksClusterProfile extends AksClusterProfile {
+    /*
+     * AKS control plane and default node pool version of this ClusterPool
+     */
+    private String aksVersion;
+
     /**
      * Creates an instance of ClusterPoolResourcePropertiesAksClusterProfile class.
      */
     public ClusterPoolResourcePropertiesAksClusterProfile() {
+    }
+
+    /**
+     * Get the aksVersion property: AKS control plane and default node pool version of this ClusterPool.
+     * 
+     * @return the aksVersion value.
+     */
+    @Override
+    public String aksVersion() {
+        return this.aksVersion;
     }
 
     /**
@@ -44,5 +63,49 @@ public final class ClusterPoolResourcePropertiesAksClusterProfile extends AksClu
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aksClusterResourceId", aksClusterResourceId());
+        jsonWriter.writeJsonField("aksClusterAgentPoolIdentityProfile", aksClusterAgentPoolIdentityProfile());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolResourcePropertiesAksClusterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolResourcePropertiesAksClusterProfile if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPoolResourcePropertiesAksClusterProfile.
+     */
+    public static ClusterPoolResourcePropertiesAksClusterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolResourcePropertiesAksClusterProfile deserializedClusterPoolResourcePropertiesAksClusterProfile
+                = new ClusterPoolResourcePropertiesAksClusterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aksClusterResourceId".equals(fieldName)) {
+                    deserializedClusterPoolResourcePropertiesAksClusterProfile
+                        .withAksClusterResourceId(reader.getString());
+                } else if ("aksClusterAgentPoolIdentityProfile".equals(fieldName)) {
+                    deserializedClusterPoolResourcePropertiesAksClusterProfile.withAksClusterAgentPoolIdentityProfile(
+                        AksClusterProfileAksClusterAgentPoolIdentityProfile.fromJson(reader));
+                } else if ("aksVersion".equals(fieldName)) {
+                    deserializedClusterPoolResourcePropertiesAksClusterProfile.aksVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolResourcePropertiesAksClusterProfile;
+        });
     }
 }

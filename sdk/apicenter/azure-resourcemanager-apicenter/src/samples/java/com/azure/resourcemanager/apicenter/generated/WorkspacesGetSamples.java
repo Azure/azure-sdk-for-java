@@ -18,7 +18,7 @@ public final class WorkspacesGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void workspacesGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.workspaces().getWithResponse("contoso-resources", "contoso", "default",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .getWithResponse("contoso-resources", "contoso", "default", com.azure.core.util.Context.NONE);
     }
 }

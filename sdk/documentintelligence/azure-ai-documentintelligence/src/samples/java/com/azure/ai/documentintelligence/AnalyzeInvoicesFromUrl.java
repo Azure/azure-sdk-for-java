@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found invoice fields from a file source URL of an invoice document.
- * See fields found on an invoice <a href=https://aka.ms/documentintelligence/invoicefields>here</a>
+ * See fields found on an invoice <a href=https://aka.ms/formrecognizer/invoicefields>here</a>
  */
 public class AnalyzeInvoicesFromUrl {
 
@@ -40,20 +40,13 @@ public class AnalyzeInvoicesFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/samples/sample_forms/forms/sample_invoice.jpg";
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicesPoller
-            = client.beginAnalyzeDocument("prebuilt-invoice",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null, new AnalyzeDocumentRequest().setUrlSource(invoiceUrl));
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeInvoicesPoller
+            = client.beginAnalyzeDocument("prebuilt-invoice", new AnalyzeDocumentOptions(invoiceUrl));
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 
         for (int i = 0; i < analyzeInvoiceResult.getDocuments().size(); i++) {
-            Document analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
+            AnalyzedDocument analyzedInvoice = analyzeInvoiceResult.getDocuments().get(i);
             Map<String, DocumentField> invoiceFields = analyzedInvoice.getFields();
             System.out.printf("----------- Analyzing invoice  %d -----------%n", i);
             DocumentField vendorNameField = invoiceFields.get("VendorName");
@@ -123,13 +116,13 @@ public class AnalyzeInvoicesFromUrl {
             if (invoiceItemsField != null) {
                 System.out.printf("Invoice Items: %n");
                 if (DocumentFieldType.ARRAY == invoiceItemsField.getType()) {
-                    List<DocumentField> invoiceItems = invoiceItemsField.getValueArray();
+                    List<DocumentField> invoiceItems = invoiceItemsField.getValueList();
                     invoiceItems.stream()
                         .filter(invoiceItem -> DocumentFieldType.OBJECT == invoiceItem.getType())
-                        .map(documentField -> documentField.getValueObject())
+                        .map(documentField -> documentField.getValueMap())
                         .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                             // See a full list of fields found on an invoice here:
-                            // https://aka.ms/documentintelligence/invoicefields
+                            // https://aka.ms/formrecognizer/invoicefields
                             if ("Description".equals(key)) {
                                 if (DocumentFieldType.STRING == documentField.getType()) {
                                     String name = documentField.getValueString();

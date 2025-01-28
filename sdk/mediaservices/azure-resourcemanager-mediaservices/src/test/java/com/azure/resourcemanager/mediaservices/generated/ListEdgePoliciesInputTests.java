@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ListEdgePoliciesInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListEdgePoliciesInput model =
-            BinaryData.fromString("{\"deviceId\":\"ftadehxnltyfs\"}").toObject(ListEdgePoliciesInput.class);
-        Assertions.assertEquals("ftadehxnltyfs", model.deviceId());
+        ListEdgePoliciesInput model
+            = BinaryData.fromString("{\"deviceId\":\"nmic\"}").toObject(ListEdgePoliciesInput.class);
+        Assertions.assertEquals("nmic", model.deviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListEdgePoliciesInput model = new ListEdgePoliciesInput().withDeviceId("ftadehxnltyfs");
+        ListEdgePoliciesInput model = new ListEdgePoliciesInput().withDeviceId("nmic");
         model = BinaryData.fromObject(model).toObject(ListEdgePoliciesInput.class);
-        Assertions.assertEquals("ftadehxnltyfs", model.deviceId());
+        Assertions.assertEquals("nmic", model.deviceId());
     }
 }

@@ -15,8 +15,8 @@ public final class KeyListResultImpl implements KeyListResult {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    KeyListResultImpl(
-        KeyListResultInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    KeyListResultImpl(KeyListResultInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

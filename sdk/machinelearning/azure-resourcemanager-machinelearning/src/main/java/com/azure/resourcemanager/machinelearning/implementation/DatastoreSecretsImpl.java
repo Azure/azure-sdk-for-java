@@ -6,17 +6,21 @@ package com.azure.resourcemanager.machinelearning.implementation;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
 import com.azure.resourcemanager.machinelearning.models.DatastoreSecrets;
+import com.azure.resourcemanager.machinelearning.models.SecretsType;
 
 public final class DatastoreSecretsImpl implements DatastoreSecrets {
     private DatastoreSecretsInner innerObject;
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    DatastoreSecretsImpl(
-        DatastoreSecretsInner innerObject,
+    DatastoreSecretsImpl(DatastoreSecretsInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public SecretsType secretsType() {
+        return this.innerModel().secretsType();
     }
 
     public DatastoreSecretsInner innerModel() {

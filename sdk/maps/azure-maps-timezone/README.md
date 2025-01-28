@@ -2,7 +2,7 @@
 
 Azure Maps SDK Timezone client library for Java.
 
-This package contains the Azure Maps SDK Timezone client library which contains Azure Maps Timezone APIs. For documentation on how to use this package, please see [Azure Maps Timezone SDK for Java](https://docs.microsoft.com/rest/api/maps/timezone).
+This package contains the Azure Maps SDK Timezone client library which contains Azure Maps Timezone APIs. For documentation on how to use this package, please see [Azure Maps Timezone SDK for Java](https://learn.microsoft.com/rest/api/maps/timezone).
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-timezone</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,7 +39,9 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+There are 3 ways to authenticate the client: Shared key authentication, Microsoft Entra ID authentication, and shared access signature (SAS) authentication.
+
+By default, Microsoft Entra ID token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
@@ -62,6 +64,8 @@ TimeZoneClient client = new TimeZoneClientBuilder()
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+
+For SAS-based authentication, please refer to [AccountsListSasSamples.java][https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-resourcemanager-maps/src/samples/java/com/azure/resourcemanager/maps/generated/AccountsListSasSamples.java].
 
 See [Authentication][authenticate] for more options.
 
@@ -126,10 +130,10 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src
 [samples]:  https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src/samples
-[rest_docs]: https://docs.microsoft.com/rest/api/maps
-[product_docs]: https://docs.microsoft.com/azure/azure-maps/
+[rest_docs]: https://learn.microsoft.com/rest/api/maps
+[product_docs]: https://learn.microsoft.com/azure/azure-maps/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty

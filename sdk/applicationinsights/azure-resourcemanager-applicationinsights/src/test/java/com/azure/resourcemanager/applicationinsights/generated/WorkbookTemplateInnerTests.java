@@ -16,114 +16,77 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookTemplateInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"priority\":871472535,\"author\":\"rp\",\"templateData\":\"dataxepcyvahfn\",\"galleries\":[{\"name\":\"yq\",\"category\":\"vuujq\",\"type\":\"dokgjl\",\"order\":1769769453,\"resourceType\":\"gvcl\"}],\"localized\":{\"vecxgodebfqkk\":[{\"templateData\":\"datac\",\"galleries\":[{},{}]},{\"templateData\":\"dataesz\",\"galleries\":[{},{},{}]},{\"templateData\":\"datajhtxfvgxbfsmxne\",\"galleries\":[{},{},{}]}],\"kpikadrgvt\":[{\"templateData\":\"datapukgriwflzlfb\",\"galleries\":[{}]},{\"templateData\":\"datazycispn\",\"galleries\":[{},{}]},{\"templateData\":\"datamgkbrpyydhibn\",\"galleries\":[{},{},{},{}]}],\"nhijggmebfsi\":[{\"templateData\":\"datan\",\"galleries\":[{},{},{}]}]}},\"location\":\"rbu\",\"tags\":{\"jrunmpxtt\":\"vpnazzm\",\"bnlankxmyskpb\":\"bh\",\"nrs\":\"enbtkcxywny\",\"lhaaxdbabp\":\"nlqidybyxczf\"},\"id\":\"lwrq\",\"name\":\"fkts\",\"type\":\"hsucoc\"}")
-                .toObject(WorkbookTemplateInner.class);
-        Assertions.assertEquals("rbu", model.location());
-        Assertions.assertEquals("vpnazzm", model.tags().get("jrunmpxtt"));
-        Assertions.assertEquals(871472535, model.priority());
-        Assertions.assertEquals("rp", model.author());
-        Assertions.assertEquals("yq", model.galleries().get(0).name());
-        Assertions.assertEquals("vuujq", model.galleries().get(0).category());
-        Assertions.assertEquals("dokgjl", model.galleries().get(0).type());
-        Assertions.assertEquals(1769769453, model.galleries().get(0).order());
-        Assertions.assertEquals("gvcl", model.galleries().get(0).resourceType());
+        WorkbookTemplateInner model = BinaryData.fromString(
+            "{\"properties\":{\"priority\":1688496747,\"author\":\"eyvjusrtslhspkde\",\"templateData\":\"datamaofmxagkv\",\"galleries\":[{\"name\":\"lmqkrhahvlj\",\"category\":\"haquhcdh\",\"type\":\"ualaexqpvfadmw\",\"order\":448234135,\"resourceType\":\"gvxp\"},{\"name\":\"omzlfmi\",\"category\":\"wbnb\",\"type\":\"ldawkzbaliourqha\",\"order\":30531984,\"resourceType\":\"ashsfwxos\"},{\"name\":\"z\",\"category\":\"ugicjooxdjebw\",\"type\":\"cwwfvovbvme\",\"order\":321338352,\"resourceType\":\"vyhzceuojgjrwj\"}],\"localized\":{\"isk\":[{\"templateData\":\"datawmcdytdxwi\",\"galleries\":[{},{},{}]},{\"templateData\":\"datajawgqwg\",\"galleries\":[{}]}],\"hvylwzbt\":[{\"templateData\":\"datakpycgklwndnhjd\",\"galleries\":[{},{}]}],\"wuwprzqlv\":[{\"templateData\":\"dataujznb\",\"galleries\":[{}]}],\"xzvlvqhjkbegib\":[{\"templateData\":\"datalupj\",\"galleries\":[{},{},{},{}]},{\"templateData\":\"dataxobbcswsrt\",\"galleries\":[{},{},{},{}]},{\"templateData\":\"datalrbpbewtghfgbl\",\"galleries\":[{},{},{}]}]}},\"location\":\"nmxiebwwaloayqc\",\"tags\":{\"gmtsavjcbpwxqpsr\":\"tzjuzgwyzmhtxo\",\"mdyvxqtayriw\":\"nftguvriuhpr\"},\"id\":\"ro\",\"name\":\"qbex\",\"type\":\"mcqibycnojv\"}")
+            .toObject(WorkbookTemplateInner.class);
+        Assertions.assertEquals("nmxiebwwaloayqc", model.location());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.tags().get("gmtsavjcbpwxqpsr"));
+        Assertions.assertEquals(1688496747, model.priority());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.author());
+        Assertions.assertEquals("lmqkrhahvlj", model.galleries().get(0).name());
+        Assertions.assertEquals("haquhcdh", model.galleries().get(0).category());
+        Assertions.assertEquals("ualaexqpvfadmw", model.galleries().get(0).type());
+        Assertions.assertEquals(448234135, model.galleries().get(0).order());
+        Assertions.assertEquals("gvxp", model.galleries().get(0).resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookTemplateInner model =
-            new WorkbookTemplateInner()
-                .withLocation("rbu")
-                .withTags(
-                    mapOf(
-                        "jrunmpxtt",
-                        "vpnazzm",
-                        "bnlankxmyskpb",
-                        "bh",
-                        "nrs",
-                        "enbtkcxywny",
-                        "lhaaxdbabp",
-                        "nlqidybyxczf"))
-                .withPriority(871472535)
-                .withAuthor("rp")
-                .withTemplateData("dataxepcyvahfn")
-                .withGalleries(
-                    Arrays
-                        .asList(
-                            new WorkbookTemplateGallery()
-                                .withName("yq")
-                                .withCategory("vuujq")
-                                .withType("dokgjl")
-                                .withOrder(1769769453)
-                                .withResourceType("gvcl")))
-                .withLocalized(
-                    mapOf(
-                        "vecxgodebfqkk",
-                        Arrays
-                            .asList(
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datac")
-                                    .withGalleries(
-                                        Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("dataesz")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery())),
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datajhtxfvgxbfsmxne")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery()))),
-                        "kpikadrgvt",
-                        Arrays
-                            .asList(
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datapukgriwflzlfb")
-                                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery())),
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datazycispn")
-                                    .withGalleries(
-                                        Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datamgkbrpyydhibn")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery()))),
-                        "nhijggmebfsi",
-                        Arrays
-                            .asList(
-                                new WorkbookTemplateLocalizedGallery()
-                                    .withTemplateData("datan")
-                                    .withGalleries(
-                                        Arrays
-                                            .asList(
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery(),
-                                                new WorkbookTemplateGallery())))));
+        WorkbookTemplateInner model = new WorkbookTemplateInner().withLocation("nmxiebwwaloayqc")
+            .withTags(mapOf("gmtsavjcbpwxqpsr", "tzjuzgwyzmhtxo", "mdyvxqtayriw", "nftguvriuhpr"))
+            .withPriority(1688496747)
+            .withAuthor("eyvjusrtslhspkde")
+            .withTemplateData("datamaofmxagkv")
+            .withGalleries(Arrays.asList(
+                new WorkbookTemplateGallery().withName("lmqkrhahvlj")
+                    .withCategory("haquhcdh")
+                    .withType("ualaexqpvfadmw")
+                    .withOrder(448234135)
+                    .withResourceType("gvxp"),
+                new WorkbookTemplateGallery().withName("omzlfmi")
+                    .withCategory("wbnb")
+                    .withType("ldawkzbaliourqha")
+                    .withOrder(30531984)
+                    .withResourceType("ashsfwxos"),
+                new WorkbookTemplateGallery().withName("z")
+                    .withCategory("ugicjooxdjebw")
+                    .withType("cwwfvovbvme")
+                    .withOrder(321338352)
+                    .withResourceType("vyhzceuojgjrwj")))
+            .withLocalized(mapOf("isk",
+                Arrays.asList(
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datawmcdytdxwi")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
+                            new WorkbookTemplateGallery())),
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datajawgqwg")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery()))),
+                "hvylwzbt",
+                Arrays.asList(new WorkbookTemplateLocalizedGallery().withTemplateData("datakpycgklwndnhjd")
+                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery()))),
+                "wuwprzqlv",
+                Arrays.asList(new WorkbookTemplateLocalizedGallery().withTemplateData("dataujznb")
+                    .withGalleries(Arrays.asList(new WorkbookTemplateGallery()))),
+                "xzvlvqhjkbegib",
+                Arrays.asList(
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datalupj")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
+                            new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("dataxobbcswsrt")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
+                            new WorkbookTemplateGallery(), new WorkbookTemplateGallery())),
+                    new WorkbookTemplateLocalizedGallery().withTemplateData("datalrbpbewtghfgbl")
+                        .withGalleries(Arrays.asList(new WorkbookTemplateGallery(), new WorkbookTemplateGallery(),
+                            new WorkbookTemplateGallery())))));
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateInner.class);
-        Assertions.assertEquals("rbu", model.location());
-        Assertions.assertEquals("vpnazzm", model.tags().get("jrunmpxtt"));
-        Assertions.assertEquals(871472535, model.priority());
-        Assertions.assertEquals("rp", model.author());
-        Assertions.assertEquals("yq", model.galleries().get(0).name());
-        Assertions.assertEquals("vuujq", model.galleries().get(0).category());
-        Assertions.assertEquals("dokgjl", model.galleries().get(0).type());
-        Assertions.assertEquals(1769769453, model.galleries().get(0).order());
-        Assertions.assertEquals("gvcl", model.galleries().get(0).resourceType());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.location());
+        Assertions.assertEquals("tzjuzgwyzmhtxo", model.tags().get("gmtsavjcbpwxqpsr"));
+        Assertions.assertEquals(1688496747, model.priority());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.author());
+        Assertions.assertEquals("lmqkrhahvlj", model.galleries().get(0).name());
+        Assertions.assertEquals("haquhcdh", model.galleries().get(0).category());
+        Assertions.assertEquals("ualaexqpvfadmw", model.galleries().get(0).type());
+        Assertions.assertEquals(448234135, model.galleries().get(0).order());
+        Assertions.assertEquals("gvxp", model.galleries().get(0).resourceType());
     }
 
     // Use "Map.of" if available

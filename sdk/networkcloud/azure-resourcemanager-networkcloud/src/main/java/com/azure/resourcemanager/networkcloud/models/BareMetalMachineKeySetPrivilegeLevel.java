@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The access level allowed for the users in this key set. */
+/**
+ * The access level allowed for the users in this key set.
+ */
 public final class BareMetalMachineKeySetPrivilegeLevel
     extends ExpandableStringEnum<BareMetalMachineKeySetPrivilegeLevel> {
-    /** Static value Standard for BareMetalMachineKeySetPrivilegeLevel. */
+    /**
+     * Static value Standard for BareMetalMachineKeySetPrivilegeLevel.
+     */
     public static final BareMetalMachineKeySetPrivilegeLevel STANDARD = fromString("Standard");
 
-    /** Static value Superuser for BareMetalMachineKeySetPrivilegeLevel. */
+    /**
+     * Static value Superuser for BareMetalMachineKeySetPrivilegeLevel.
+     */
     public static final BareMetalMachineKeySetPrivilegeLevel SUPERUSER = fromString("Superuser");
 
     /**
      * Creates a new instance of BareMetalMachineKeySetPrivilegeLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class BareMetalMachineKeySetPrivilegeLevel
 
     /**
      * Creates or finds a BareMetalMachineKeySetPrivilegeLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BareMetalMachineKeySetPrivilegeLevel.
      */
-    @JsonCreator
     public static BareMetalMachineKeySetPrivilegeLevel fromString(String name) {
         return fromString(name, BareMetalMachineKeySetPrivilegeLevel.class);
     }
 
     /**
      * Gets known BareMetalMachineKeySetPrivilegeLevel values.
-     *
+     * 
      * @return known BareMetalMachineKeySetPrivilegeLevel values.
      */
     public static Collection<BareMetalMachineKeySetPrivilegeLevel> values() {

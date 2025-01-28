@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationTransactionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of listing reservation recommendations. */
+/**
+ * Result of listing reservation recommendations.
+ */
 @Immutable
-public final class ReservationTransactionsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationTransactionsListResult.class);
-
+public final class ReservationTransactionsListResult implements JsonSerializable<ReservationTransactionsListResult> {
     /*
      * The list of reservation recommendations.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReservationTransactionInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of ReservationTransactionsListResult class.
+     */
+    public ReservationTransactionsListResult() {
+    }
+
+    /**
      * Get the value property: The list of reservation recommendations.
-     *
+     * 
      * @return the value value.
      */
     public List<ReservationTransactionInner> value() {
@@ -39,7 +45,7 @@ public final class ReservationTransactionsListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class ReservationTransactionsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationTransactionsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationTransactionsListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationTransactionsListResult.
+     */
+    public static ReservationTransactionsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationTransactionsListResult deserializedReservationTransactionsListResult
+                = new ReservationTransactionsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReservationTransactionInner> value
+                        = reader.readArray(reader1 -> ReservationTransactionInner.fromJson(reader1));
+                    deserializedReservationTransactionsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedReservationTransactionsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationTransactionsListResult;
+        });
     }
 }

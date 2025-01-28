@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.RouteInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +18,15 @@ import java.util.List;
  * results.
  */
 @Fluent
-public final class RouteListResult {
+public final class RouteListResult implements JsonSerializable<RouteListResult> {
     /*
      * List of AzureFrontDoor routes within a profile.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RouteInner> value;
 
     /*
      * URL to get the next set of route objects if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -71,5 +73,44 @@ public final class RouteListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteListResult.
+     */
+    public static RouteListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteListResult deserializedRouteListResult = new RouteListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RouteInner> value = reader.readArray(reader1 -> RouteInner.fromJson(reader1));
+                    deserializedRouteListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRouteListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteListResult;
+        });
     }
 }

@@ -13,49 +13,37 @@ import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
 import com.azure.resourcemanager.apimanagement.models.SamplingType;
 import java.util.Arrays;
 
-/** Samples for Diagnostic Update. */
+/**
+ * Samples for Diagnostic Update.
+ */
 public final class DiagnosticUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateDiagnostic.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdateDiagnostic.json
      */
     /**
      * Sample code: ApiManagementUpdateDiagnostic.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementUpdateDiagnostic(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .diagnostics()
-            .updateWithResponse(
-                "rg1",
-                "apimService1",
-                "applicationinsights",
-                "*",
-                new DiagnosticContractInner()
-                    .withAlwaysLog(AlwaysLog.ALL_ERRORS)
+    public static void
+        apiManagementUpdateDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.diagnostics()
+            .updateWithResponse("rg1", "apimService1", "applicationinsights", "*",
+                new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
                     .withLoggerId("/loggers/applicationinsights")
                     .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
-                    .withFrontend(
-                        new PipelineDiagnosticSettings()
-                            .withRequest(
-                                new HttpMessageDiagnostic()
-                                    .withHeaders(Arrays.asList("Content-type"))
-                                    .withBody(new BodyDiagnosticSettings().withBytes(512)))
-                            .withResponse(
-                                new HttpMessageDiagnostic()
-                                    .withHeaders(Arrays.asList("Content-type"))
-                                    .withBody(new BodyDiagnosticSettings().withBytes(512))))
-                    .withBackend(
-                        new PipelineDiagnosticSettings()
-                            .withRequest(
-                                new HttpMessageDiagnostic()
-                                    .withHeaders(Arrays.asList("Content-type"))
-                                    .withBody(new BodyDiagnosticSettings().withBytes(512)))
-                            .withResponse(
-                                new HttpMessageDiagnostic()
-                                    .withHeaders(Arrays.asList("Content-type"))
-                                    .withBody(new BodyDiagnosticSettings().withBytes(512)))),
+                    .withFrontend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512))))
+                    .withBackend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))),
                 com.azure.core.util.Context.NONE);
     }
 }

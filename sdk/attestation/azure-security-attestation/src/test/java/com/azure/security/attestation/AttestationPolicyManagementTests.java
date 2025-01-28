@@ -33,8 +33,8 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClient client = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationAdministrationClient client
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
 
         AttestationSignerCollection response = client.listPolicyManagementCertificates();
         assertNotNull(response);
@@ -44,15 +44,14 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetPolicyManagementCertificatesAsync(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationAsyncClient client = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildAsyncClient();
+        AttestationAdministrationAsyncClient client
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildAsyncClient();
 
         StepVerifier.create(client.listPolicyManagementCertificates())
             .assertNext(response -> verifyGetPolicyCertificatesResponse(clientUri, response))
             .expectComplete()
             .verify();
     }
-
 
     /**
      * Verify the response to a get policy management certificates API call.
@@ -77,7 +76,6 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         }
     }
 
-
     /**
      * Verifies attestation policy set operations.
      * <p>
@@ -99,19 +97,17 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
-        AttestationAdministrationClient client = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationAdministrationClient client
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
 
-        PolicyCertificatesModificationResult result = client.addPolicyManagementCertificate(
-            new PolicyManagementCertificateOptions(
-                getPolicySigningCertificate0(),
+        PolicyCertificatesModificationResult result = client
+            .addPolicyManagementCertificate(new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
 
         assertEquals(CertificateModification.IS_PRESENT, result.getCertificateResolution());
 
-        result = client.deletePolicyManagementCertificate(
-            new PolicyManagementCertificateOptions(
-                getPolicySigningCertificate0(),
+        result = client
+            .deletePolicyManagementCertificate(new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
 
         assertEquals(CertificateModification.IS_ABSENT, result.getCertificateResolution());
@@ -138,23 +134,27 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
-        AttestationAdministrationClient client = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildClient();
+        AttestationAdministrationClient client
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildClient();
 
-        Response<PolicyCertificatesModificationResult> response = client.addPolicyManagementCertificateWithResponse(
-            new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
-                new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())),
-            Context.NONE);
+        Response<PolicyCertificatesModificationResult> response
+            = client
+                .addPolicyManagementCertificateWithResponse(
+                    new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
+                        new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())),
+                    Context.NONE);
 
         assertEquals(CertificateModification.IS_PRESENT, response.getValue().getCertificateResolution());
 
-        response = client.deletePolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions(
-            getPolicySigningCertificate0(), new AttestationSigningKey(getIsolatedSigningCertificate(),
-            getIsolatedSigningKey())), Context.NONE);
+        response
+            = client
+                .deletePolicyManagementCertificateWithResponse(
+                    new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
+                        new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())),
+                    Context.NONE);
 
         assertEquals(CertificateModification.IS_ABSENT, response.getValue().getCertificateResolution());
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -165,16 +165,16 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         // This test only works on isolated instances.
         assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
-        AttestationAdministrationAsyncClient client = getAttestationAdministrationBuilder(httpClient, clientUri)
-            .buildAsyncClient();
+        AttestationAdministrationAsyncClient client
+            = getAttestationAdministrationBuilder(httpClient, clientUri).buildAsyncClient();
 
         X509Certificate certificate = getPolicySigningCertificate0();
         // Calculate the certificate thumbprint we're adding and removing.
-        String expectedThumbprint = new String(Hex.encode(MessageDigest.getInstance("SHA-1")
-            .digest(certificate.getEncoded())))
-            .toUpperCase();
+        String expectedThumbprint
+            = new String(Hex.encode(MessageDigest.getInstance("SHA-1").digest(certificate.getEncoded()))).toUpperCase();
 
-        StepVerifier.create(client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions(certificate,
+        StepVerifier
+            .create(client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions(certificate,
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey()))))
             .assertNext(modificationResult -> {
                 assertEquals(CertificateModification.IS_PRESENT, modificationResult.getCertificateResolution());
@@ -183,9 +183,10 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .verifyComplete();
 
         // Now remove the certificate we just added.
-        StepVerifier.create(client.deletePolicyManagementCertificate(new PolicyManagementCertificateOptions(
-                getPolicySigningCertificate0(),
-                new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey()))))
+        StepVerifier
+            .create(client.deletePolicyManagementCertificate(
+                new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
+                    new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey()))))
             .assertNext(removeResult -> {
                 assertEquals(CertificateModification.IS_ABSENT, removeResult.getCertificateResolution());
                 assertEquals(expectedThumbprint, removeResult.getCertificateThumbprint());
@@ -194,4 +195,3 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
     }
 
 }
-

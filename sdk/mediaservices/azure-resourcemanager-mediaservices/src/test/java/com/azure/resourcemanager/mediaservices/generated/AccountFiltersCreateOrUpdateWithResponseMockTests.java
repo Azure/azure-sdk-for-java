@@ -6,85 +6,75 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.AccountFilter;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCompareOperation;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCondition;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyType;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccountFiltersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":2020957028887704272,\"endTimestamp\":6984855935225199348,\"presentationWindowDuration\":7711217362168302621,\"liveBackoffDuration\":4698972640391173045,\"timescale\":5996275672713525463,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":1546697227},\"tracks\":[{\"trackSelections\":[{\"property\":\"Language\",\"value\":\"amwabzxrvxcushsp\",\"operation\":\"NotEqual\"},{\"property\":\"Unknown\",\"value\":\"v\",\"operation\":\"NotEqual\"},{\"property\":\"Bitrate\",\"value\":\"asflvg\",\"operation\":\"Equal\"}]}]},\"id\":\"wywa\",\"name\":\"oi\",\"type\":\"knsmjblmljhlnymz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1060707471596059235,\"endTimestamp\":5715685815528517740,\"presentationWindowDuration\":3175873735082287577,\"liveBackoffDuration\":2803834350885370316,\"timescale\":2736442030278845624,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1728557454},\"tracks\":[]},\"id\":\"joylh\",\"name\":\"lmuoyxprimrsopte\",\"type\":\"cjmeislstvasy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AccountFilter response = manager.accountFilters()
+            .define("xrizkzobgop")
+            .withExistingMediaService("kyrioovzid", "xwaabzmifrygznmm")
+            .withPresentationTimeRange(new PresentationTimeRange().withStartTimestamp(3557811767170936371L)
+                .withEndTimestamp(8712138440651640107L)
+                .withPresentationWindowDuration(7537517713996747816L)
+                .withLiveBackoffDuration(5979727275677036097L)
+                .withTimescale(6901751990951988279L)
+                .withForceEndTimestamp(true))
+            .withFirstQuality(new FirstQuality().withBitrate(1222388745))
+            .withTracks(Arrays.asList(
+                new FilterTrackSelection().withTrackSelections(Arrays.asList(
+                    new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                        .withValue("hslhca")
+                        .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL),
+                    new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.BITRATE)
+                        .withValue("tifdwfmvi")
+                        .withOperation(FilterTrackPropertyCompareOperation.EQUAL),
+                    new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.UNKNOWN)
+                        .withValue("qj")
+                        .withOperation(FilterTrackPropertyCompareOperation.EQUAL))),
+                new FilterTrackSelection().withTrackSelections(
+                    Arrays.asList(new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                        .withValue("h")
+                        .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL)))))
+            .create();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AccountFilter response =
-            manager
-                .accountFilters()
-                .define("h")
-                .withExistingMediaService("csheafidltugsr", "smkss")
-                .withPresentationTimeRange(
-                    new PresentationTimeRange()
-                        .withStartTimestamp(7992601978055151170L)
-                        .withEndTimestamp(5511337958940482214L)
-                        .withPresentationWindowDuration(3237549992054377980L)
-                        .withLiveBackoffDuration(3066280000737363730L)
-                        .withTimescale(3447954674598592829L)
-                        .withForceEndTimestamp(false))
-                .withFirstQuality(new FirstQuality().withBitrate(1716023404))
-                .withTracks(Arrays.asList())
-                .create();
-
-        Assertions.assertEquals(1060707471596059235L, response.presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(5715685815528517740L, response.presentationTimeRange().endTimestamp());
-        Assertions.assertEquals(3175873735082287577L, response.presentationTimeRange().presentationWindowDuration());
-        Assertions.assertEquals(2803834350885370316L, response.presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(2736442030278845624L, response.presentationTimeRange().timescale());
-        Assertions.assertEquals(false, response.presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(1728557454, response.firstQuality().bitrate());
+        Assertions.assertEquals(2020957028887704272L, response.presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(6984855935225199348L, response.presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(7711217362168302621L, response.presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(4698972640391173045L, response.presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(5996275672713525463L, response.presentationTimeRange().timescale());
+        Assertions.assertEquals(true, response.presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(1546697227, response.firstQuality().bitrate());
+        Assertions.assertEquals(FilterTrackPropertyType.LANGUAGE,
+            response.tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals("amwabzxrvxcushsp", response.tracks().get(0).trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL,
+            response.tracks().get(0).trackSelections().get(0).operation());
     }
 }

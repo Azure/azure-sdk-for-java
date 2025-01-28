@@ -13,27 +13,32 @@ import com.azure.storage.file.share.models.PermissionCopyModeType;
 @Fluent
 public final class CopyFileSmbInfo {
     /*
-     * Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes to set on a target file.
+     * Specifies either the option to copy file attributes from a source file(source) to a target file or a list of
+     * attributes to set on a target file.
      */
     private String fileAttributes;
 
     /*
-     * Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO 8601 format to set as creation time on a target file.
+     * Specifies either the option to copy file creation time from a source file(source) to a target file or a time
+     * value in ISO 8601 format to set as creation time on a target file.
      */
     private String fileCreationTime;
 
     /*
-     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
+     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time
+     * value in ISO 8601 format to set as last write time on a target file.
      */
     private String fileLastWriteTime;
 
     /*
-     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
+     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time
+     * value in ISO 8601 format to set as last write time on a target file.
      */
     private String fileChangeTime;
 
     /*
-     * Specifies the option to copy file security descriptor from source file or to set it using the value which is defined by the header value of x-ms-file-permission or x-ms-file-permission-key.
+     * Specifies the option to copy file security descriptor from source file or to set it using the value which is
+     * defined by the header value of x-ms-file-permission or x-ms-file-permission-key.
      */
     private PermissionCopyModeType filePermissionCopyMode;
 
@@ -43,7 +48,8 @@ public final class CopyFileSmbInfo {
     private Boolean ignoreReadOnly;
 
     /*
-     * Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a target file despite attribute overrides or a source file state.
+     * Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a
+     * target file despite attribute overrides or a source file state.
      */
     private Boolean setArchiveAttribute;
 

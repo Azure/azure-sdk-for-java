@@ -5,87 +5,85 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import com.azure.resourcemanager.devtestlabs.models.SourceControlType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of an artifact source. */
+/**
+ * Properties of an artifact source.
+ */
 @Fluent
-public final class ArtifactSourceProperties {
+public final class ArtifactSourceProperties implements JsonSerializable<ArtifactSourceProperties> {
     /*
      * The artifact source's display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The artifact source's URI.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * The artifact source's type.
      */
-    @JsonProperty(value = "sourceType")
     private SourceControlType sourceType;
 
     /*
      * The folder containing artifacts.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * The folder containing Azure Resource Manager templates.
      */
-    @JsonProperty(value = "armTemplateFolderPath")
     private String armTemplateFolderPath;
 
     /*
      * The artifact source's branch reference.
      */
-    @JsonProperty(value = "branchRef")
     private String branchRef;
 
     /*
      * The security token to authenticate to the artifact source.
      */
-    @JsonProperty(value = "securityToken")
     private String securityToken;
 
     /*
      * Indicates if the artifact source is enabled (values: Enabled, Disabled).
      */
-    @JsonProperty(value = "status")
     private EnableStatus status;
 
     /*
      * The artifact source's creation date.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * The provisioning status of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique immutable identifier of a resource (Guid).
      */
-    @JsonProperty(value = "uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueIdentifier;
 
-    /** Creates an instance of ArtifactSourceProperties class. */
+    /**
+     * Creates an instance of ArtifactSourceProperties class.
+     */
     public ArtifactSourceProperties() {
     }
 
     /**
      * Get the displayName property: The artifact source's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -94,7 +92,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the displayName property: The artifact source's display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -105,7 +103,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the uri property: The artifact source's URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -114,7 +112,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the uri property: The artifact source's URI.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -125,7 +123,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the sourceType property: The artifact source's type.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceControlType sourceType() {
@@ -134,7 +132,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the sourceType property: The artifact source's type.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -145,7 +143,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the folderPath property: The folder containing artifacts.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -154,7 +152,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the folderPath property: The folder containing artifacts.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -165,7 +163,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the armTemplateFolderPath property: The folder containing Azure Resource Manager templates.
-     *
+     * 
      * @return the armTemplateFolderPath value.
      */
     public String armTemplateFolderPath() {
@@ -174,7 +172,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the armTemplateFolderPath property: The folder containing Azure Resource Manager templates.
-     *
+     * 
      * @param armTemplateFolderPath the armTemplateFolderPath value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -185,7 +183,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the branchRef property: The artifact source's branch reference.
-     *
+     * 
      * @return the branchRef value.
      */
     public String branchRef() {
@@ -194,7 +192,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the branchRef property: The artifact source's branch reference.
-     *
+     * 
      * @param branchRef the branchRef value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -205,7 +203,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the securityToken property: The security token to authenticate to the artifact source.
-     *
+     * 
      * @return the securityToken value.
      */
     public String securityToken() {
@@ -214,7 +212,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the securityToken property: The security token to authenticate to the artifact source.
-     *
+     * 
      * @param securityToken the securityToken value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -225,7 +223,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the status property: Indicates if the artifact source is enabled (values: Enabled, Disabled).
-     *
+     * 
      * @return the status value.
      */
     public EnableStatus status() {
@@ -234,7 +232,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Set the status property: Indicates if the artifact source is enabled (values: Enabled, Disabled).
-     *
+     * 
      * @param status the status value to set.
      * @return the ArtifactSourceProperties object itself.
      */
@@ -245,7 +243,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the createdDate property: The artifact source's creation date.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -254,7 +252,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -263,7 +261,7 @@ public final class ArtifactSourceProperties {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -272,9 +270,73 @@ public final class ArtifactSourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeStringField("armTemplateFolderPath", this.armTemplateFolderPath);
+        jsonWriter.writeStringField("branchRef", this.branchRef);
+        jsonWriter.writeStringField("securityToken", this.securityToken);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactSourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactSourceProperties.
+     */
+    public static ArtifactSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactSourceProperties deserializedArtifactSourceProperties = new ArtifactSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.displayName = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.uri = reader.getString();
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.sourceType = SourceControlType.fromString(reader.getString());
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.folderPath = reader.getString();
+                } else if ("armTemplateFolderPath".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.armTemplateFolderPath = reader.getString();
+                } else if ("branchRef".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.branchRef = reader.getString();
+                } else if ("securityToken".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.securityToken = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.status = EnableStatus.fromString(reader.getString());
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.provisioningState = reader.getString();
+                } else if ("uniqueIdentifier".equals(fieldName)) {
+                    deserializedArtifactSourceProperties.uniqueIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactSourceProperties;
+        });
     }
 }

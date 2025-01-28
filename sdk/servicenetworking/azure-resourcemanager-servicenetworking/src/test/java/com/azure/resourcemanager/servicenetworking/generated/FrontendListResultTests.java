@@ -17,23 +17,35 @@ public final class FrontendListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"fqdn\":\"ewmdw\",\"provisioningState\":\"Provisioning\"},\"location\":\"ac\",\"tags\":{\"osfqpteehzzv\":\"osfln\",\"mzinpvswjdk\":\"pyqr\"},\"id\":\"rsoodqxhcrmnoh\",\"name\":\"t\",\"type\":\"kwh\"}],\"nextLink\":\"oifiyipjxsqwpgr\"}")
+            "{\"value\":[{\"properties\":{\"fqdn\":\"nrosfqpte\",\"provisioningState\":\"Canceled\"},\"location\":\"vypyqrimzinpv\",\"tags\":{\"nohjt\":\"dkirsoodqxhcr\",\"soifiyipjxsqw\":\"kwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"},{\"properties\":{\"fqdn\":\"idtqajzyu\",\"provisioningState\":\"Deleting\"},\"location\":\"dj\",\"tags\":{\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"},{\"properties\":{\"fqdn\":\"bdxkqpxokaj\",\"provisioningState\":\"Canceled\"},\"location\":\"imexgstxgcpodgma\",\"tags\":{\"whijcoejctbza\":\"mvdjwzrlovmc\"},\"id\":\"s\",\"name\":\"sycbkbfk\",\"type\":\"ukdkexxppofmxa\"}],\"nextLink\":\"fjpgddtocjjxhvp\"}")
             .toObject(FrontendListResult.class);
-        Assertions.assertEquals("ac", model.value().get(0).location());
-        Assertions.assertEquals("osfln", model.value().get(0).tags().get("osfqpteehzzv"));
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.nextLink());
+        Assertions.assertEquals("vypyqrimzinpv", model.value().get(0).location());
+        Assertions.assertEquals("dkirsoodqxhcr", model.value().get(0).tags().get("nohjt"));
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendListResult model = new FrontendListResult().withValue(Arrays.asList(
-            new FrontendInner().withLocation("ac").withTags(mapOf("osfqpteehzzv", "osfln", "mzinpvswjdk", "pyqr"))
-                .withProperties(new FrontendProperties())))
-            .withNextLink("oifiyipjxsqwpgr");
+        FrontendListResult model
+            = new FrontendListResult()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new FrontendInner().withLocation("vypyqrimzinpv")
+                                .withTags(
+                                    mapOf("nohjt", "dkirsoodqxhcr", "soifiyipjxsqw", "kwh", "bznorcjxvsnby", "gr"))
+                                .withProperties(new FrontendProperties()),
+                            new FrontendInner().withLocation("dj")
+                                .withTags(mapOf("e", "khbzhfepgzg", "scpai", "zloc"))
+                                .withProperties(new FrontendProperties()),
+                            new FrontendInner().withLocation("imexgstxgcpodgma")
+                                .withTags(mapOf("whijcoejctbza", "mvdjwzrlovmc"))
+                                .withProperties(new FrontendProperties())))
+                .withNextLink("fjpgddtocjjxhvp");
         model = BinaryData.fromObject(model).toObject(FrontendListResult.class);
-        Assertions.assertEquals("ac", model.value().get(0).location());
-        Assertions.assertEquals("osfln", model.value().get(0).tags().get("osfqpteehzzv"));
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.nextLink());
+        Assertions.assertEquals("vypyqrimzinpv", model.value().get(0).location());
+        Assertions.assertEquals("dkirsoodqxhcr", model.value().get(0).tags().get("nohjt"));
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.nextLink());
     }
 
     // Use "Map.of" if available

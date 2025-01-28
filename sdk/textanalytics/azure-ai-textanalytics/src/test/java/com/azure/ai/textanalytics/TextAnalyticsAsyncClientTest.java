@@ -73,18 +73,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     private TextAnalyticsAsyncClient getTextAnalyticsAsyncClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         return getTextAnalyticsClientBuilder(
-            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion,
-            isStaticResource)
-            .buildAsyncClient();
+            buildAsyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+            serviceVersion, isStaticResource).buildAsyncClient();
     }
 
     // Detected Languages
@@ -94,10 +91,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void detectLanguagesBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void detectLanguagesBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageShowStatisticsRunner((inputs, options) ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, options))
+        detectLanguageShowStatisticsRunner(
+            (inputs, options) -> StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, options))
                 .assertNext(response -> validateDetectLanguageResultCollectionWithResponse(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -110,11 +108,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguagesBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageRunner((inputs) ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, null))
-                .assertNext(response -> validateDetectLanguageResultCollectionWithResponse(false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        detectLanguageRunner((inputs) -> StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, null))
+            .assertNext(response -> validateDetectLanguageResultCollectionWithResponse(false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -124,8 +121,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguagesBatchListCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguagesCountryHintRunner((inputs, countryHint) ->
-            StepVerifier.create(client.detectLanguageBatch(inputs, countryHint, null))
+        detectLanguagesCountryHintRunner(
+            (inputs, countryHint) -> StepVerifier.create(client.detectLanguageBatch(inputs, countryHint, null))
                 .assertNext(actualResults -> validateDetectLanguageResultCollection(false, actualResults))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -136,10 +133,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void detectLanguagesBatchListCountryHintWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void detectLanguagesBatchListCountryHintWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguagesBatchListCountryHintWithOptionsRunner((inputs, options) ->
-            StepVerifier.create(client.detectLanguageBatch(inputs, null, options))
+        detectLanguagesBatchListCountryHintWithOptionsRunner(
+            (inputs, options) -> StepVerifier.create(client.detectLanguageBatch(inputs, null, options))
                 .assertNext(response -> validateDetectLanguageResultCollection(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -152,11 +150,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguagesBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageStringInputRunner((inputs) ->
-            StepVerifier.create(client.detectLanguageBatch(inputs, null, null))
-                .assertNext(response -> validateDetectLanguageResultCollection(false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        detectLanguageStringInputRunner((inputs) -> StepVerifier.create(client.detectLanguageBatch(inputs, null, null))
+            .assertNext(response -> validateDetectLanguageResultCollection(false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -166,11 +163,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectSingleTextLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectSingleTextLanguageRunner(input ->
-            StepVerifier.create(client.detectLanguage(input))
-                .assertNext(response -> validatePrimaryLanguage(response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        detectSingleTextLanguageRunner(input -> StepVerifier.create(client.detectLanguage(input))
+            .assertNext(response -> validatePrimaryLanguage(response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -180,8 +176,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageInvalidCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageInvalidCountryHintRunner((input, countryHint) ->
-            StepVerifier.create(client.detectLanguage(input, countryHint))
+        detectLanguageInvalidCountryHintRunner(
+            (input, countryHint) -> StepVerifier.create(client.detectLanguage(input, countryHint))
                 .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                     && INVALID_COUNTRY_HINT.equals(((TextAnalyticsException) throwable).getErrorCode()))
                 .verify(DEFAULT_TIMEOUT));
@@ -194,11 +190,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyTextRunner(input ->
-            StepVerifier.create(client.detectLanguage(input))
-                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                    && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
-                .verify(DEFAULT_TIMEOUT));
+        emptyTextRunner(input -> StepVerifier.create(client.detectLanguage(input))
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -208,8 +203,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageDuplicateIdRunner((inputs, options) ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, options))
+        detectLanguageDuplicateIdRunner(
+            (inputs, options) -> StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, options))
                 .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
                 .verify(DEFAULT_TIMEOUT));
     }
@@ -221,8 +216,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageInputEmptyIdRunner(inputs ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, null))
+        detectLanguageInputEmptyIdRunner(
+            inputs -> StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, null))
                 .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
@@ -238,8 +233,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageEmptyCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageEmptyCountryHintRunner((input, countryHint) ->
-            StepVerifier.create(client.detectLanguage(input, countryHint))
+        detectLanguageEmptyCountryHintRunner(
+            (input, countryHint) -> StepVerifier.create(client.detectLanguage(input, countryHint))
                 .assertNext(response -> validatePrimaryLanguage(response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -252,8 +247,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageNoneCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        detectLanguageNoneCountryHintRunner((input, countryHint) ->
-            StepVerifier.create(client.detectLanguage(input, countryHint))
+        detectLanguageNoneCountryHintRunner(
+            (input, countryHint) -> StepVerifier.create(client.detectLanguage(input, countryHint))
                 .assertNext(response -> validatePrimaryLanguage(response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -264,8 +259,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeCategorizedEntitiesForSingleTextInputRunner(input ->
-            StepVerifier.create(client.recognizeEntities(input))
+        recognizeCategorizedEntitiesForSingleTextInputRunner(
+            input -> StepVerifier.create(client.recognizeEntities(input))
                 .assertNext(response -> validateCategorizedEntities(response.stream().collect(Collectors.toList())))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -275,47 +270,46 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyTextRunner(input ->
-            StepVerifier.create(client.recognizeEntities(input))
-                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                    && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
-                .verify(DEFAULT_TIMEOUT)
-        );
+        emptyTextRunner(input -> StepVerifier.create(client.recognizeEntities(input))
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
-                .verify(DEFAULT_TIMEOUT));
+        duplicateIdRunner(inputs -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        emptyDocumentIdRunner(inputs -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesBatchInputSingleError(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchCategorizedEntitySingleErrorRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
+        recognizeBatchCategorizedEntitySingleErrorRunner(
+            (inputs) -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
                 .assertNext(resultCollection -> resultCollection.getValue().forEach(recognizeEntitiesResult -> {
-                    Exception exception = assertThrows(TextAnalyticsException.class, recognizeEntitiesResult::getEntities);
-                    assertEquals(String.format(BATCH_ERROR_EXCEPTION_MESSAGE, "RecognizeEntitiesResult"), exception.getMessage());
+                    Exception exception
+                        = assertThrows(TextAnalyticsException.class, recognizeEntitiesResult::getEntities);
+                    assertEquals(String.format(BATCH_ERROR_EXCEPTION_MESSAGE, "RecognizeEntitiesResult"),
+                        exception.getMessage());
                 }))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -325,18 +319,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchCategorizedEntityRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
+        recognizeBatchCategorizedEntityRunner(
+            (inputs) -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
                 .assertNext(response -> validateCategorizedEntitiesResultCollectionWithResponse(false, response))
                 .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, options))
+        recognizeBatchCategorizedEntitiesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, options))
                 .assertNext(response -> validateCategorizedEntitiesResultCollectionWithResponse(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -344,10 +339,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeCategorizedEntityStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
+        recognizeCategorizedEntityStringInputRunner(
+            (inputs) -> StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
                 .assertNext(response -> validateCategorizedEntitiesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -355,10 +351,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, language, null))
+        recognizeCategorizedEntitiesLanguageHintRunner(
+            (inputs, language) -> StepVerifier.create(client.recognizeEntitiesBatch(inputs, language, null))
                 .assertNext(response -> validateCategorizedEntitiesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -368,8 +365,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForListWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, options))
+        recognizeStringBatchCategorizedEntitiesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, options))
                 .assertNext(response -> validateCategorizedEntitiesResultCollection(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -377,31 +374,29 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeEntitiesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        tooManyDocumentsRunner(inputs -> StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(13, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        emojiRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(13, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -409,28 +404,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(15, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        emojiWithSkinToneModifierRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(15, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(22, categorizedEntity.getOffset());
-                })).verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        emojiFamilyRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(22, categorizedEntity.getOffset());
+            }))
+            .verifyComplete(), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -438,90 +430,78 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(30, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        emojiFamilyWithSkinToneModifierRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(30, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfcRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(14, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        diacriticsNfcRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(14, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfdRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(15, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        diacriticsNfdRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(15, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfcRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(13, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        koreanNfcRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(13, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfdRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(13, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        koreanNfdRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(13, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        zalgoTextRunner(document ->
-            StepVerifier.create(client.recognizeEntities(document))
-                .assertNext(result -> result.forEach(categorizedEntity -> {
-                    assertEquals(9, categorizedEntity.getLength());
-                    assertEquals(126, categorizedEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+        zalgoTextRunner(document -> StepVerifier.create(client.recognizeEntities(document))
+            .assertNext(result -> result.forEach(categorizedEntity -> {
+                assertEquals(9, categorizedEntity.getLength());
+                assertEquals(126, categorizedEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), CATEGORIZED_ENTITY_INPUTS.get(1));
     }
 
     // Recognize Personally Identifiable Information entity
@@ -530,11 +510,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizePiiSingleDocumentRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(response -> validatePiiEntities(response.stream().collect(Collectors.toList())))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        recognizePiiSingleDocumentRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(response -> validatePiiEntities(response.stream().collect(Collectors.toList())))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -549,37 +528,39 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesDuplicateIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
-                .verify(DEFAULT_TIMEOUT));
+        duplicateIdRunner(inputs -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        emptyDocumentIdRunner(inputs -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesBatchInputSingleError(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchPiiEntitySingleErrorRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+        recognizeBatchPiiEntitySingleErrorRunner(
+            (inputs) -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
                 .assertNext(resultCollection -> resultCollection.getValue().forEach(recognizePiiEntitiesResult -> {
-                    Exception exception = assertThrows(TextAnalyticsException.class, recognizePiiEntitiesResult::getEntities);
-                    assertEquals(String.format(BATCH_ERROR_EXCEPTION_MESSAGE, "RecognizePiiEntitiesResult"), exception.getMessage());
+                    Exception exception
+                        = assertThrows(TextAnalyticsException.class, recognizePiiEntitiesResult::getEntities);
+                    assertEquals(String.format(BATCH_ERROR_EXCEPTION_MESSAGE, "RecognizePiiEntitiesResult"),
+                        exception.getMessage());
                 }))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -589,8 +570,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchPiiEntitiesRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+        recognizeBatchPiiEntitiesRunner(
+            (inputs) -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
                 .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -598,10 +579,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, options))
+        recognizeBatchPiiEntitiesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, options))
                 .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -609,10 +591,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null))
+        recognizePiiLanguageHintRunner(
+            (inputs, language) -> StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null))
                 .assertNext(response -> validatePiiEntitiesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -620,10 +603,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesForListStringWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options))
+        recognizeStringBatchPiiEntitiesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options))
                 .assertNext(response -> validatePiiEntitiesResultCollection(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -631,31 +615,29 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        tooManyDocumentsRunner(inputs -> StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(8, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        emojiRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(8, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -663,30 +645,26 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizePiiEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(10, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        emojiWithSkinToneModifierRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(10, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(17, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        emojiFamilyRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(17, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -694,98 +672,86 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizePiiEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(25, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        emojiFamilyWithSkinToneModifierRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(25, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfcRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(9, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        diacriticsNfcRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(9, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfdRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(10, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        diacriticsNfdRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(10, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfcRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(8, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        koreanNfcRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(8, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfdRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(8, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        koreanNfdRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(8, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        zalgoTextRunner(document ->
-            StepVerifier.create(client.recognizePiiEntities(document))
-                .assertNext(result -> result.forEach(piiEntity -> {
-                    assertEquals(11, piiEntity.getLength());
-                    assertEquals(121, piiEntity.getOffset());
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT
-        );
+        zalgoTextRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
+            .assertNext(result -> result.forEach(piiEntity -> {
+                assertEquals(11, piiEntity.getLength());
+                assertEquals(121, piiEntity.getOffset());
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), PII_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizePiiDomainFilterRunner((document, options) ->
-            StepVerifier.create(client.recognizePiiEntities(document, "en", options))
+        recognizePiiDomainFilterRunner(
+            (document, options) -> StepVerifier.create(client.recognizePiiEntities(document, "en", options))
                 .assertNext(response -> validatePiiEntities(response.stream().collect(Collectors.toList())))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -793,26 +759,31 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language,
-                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION)))
-                .assertNext(response -> validatePiiEntitiesResultCollection(false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        recognizePiiLanguageHintRunner(
+            (inputs,
+                language) -> StepVerifier
+                    .create(client.recognizePiiEntitiesBatch(inputs, language,
+                        new RecognizePiiEntitiesOptions()
+                            .setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION)))
+                    .assertNext(response -> validatePiiEntitiesResultCollection(false, response))
+                    .expectComplete()
+                    .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchPiiEntitiesRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs,
+        recognizeBatchPiiEntitiesRunner((inputs) -> StepVerifier
+            .create(client.recognizePiiEntitiesBatchWithResponse(inputs,
                 new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION)))
-                .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+            .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -821,12 +792,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
-            (inputs, options) ->
-                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
-                    .assertNext(
-                        resultCollection -> validatePiiEntitiesResultCollection(false, resultCollection))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT));
+            (inputs, options) -> StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
+                .assertNext(resultCollection -> validatePiiEntitiesResultCollection(false, resultCollection))
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -834,35 +803,33 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizePiiEntityWithCategoriesFilterFromOtherResult(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeStringBatchPiiEntitiesForCategoriesFilterRunner(
-            (inputs, options) -> {
-                List<PiiEntityCategory> categories = new ArrayList<>();
-                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
-                    .assertNext(
-                        resultCollection -> {
-                            resultCollection.forEach(result -> result.getEntities().forEach(piiEntity -> {
-                                final PiiEntityCategory category = piiEntity.getCategory();
-                                if (PiiEntityCategory.ABA_ROUTING_NUMBER == category
-                                        || PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER == category) {
-                                    categories.add(category);
-                                }
-                            }));
-                            validatePiiEntitiesResultCollection(false, resultCollection);
-                        })
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+        recognizeStringBatchPiiEntitiesForCategoriesFilterRunner((inputs, options) -> {
+            List<PiiEntityCategory> categories = new ArrayList<>();
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
+                .assertNext(resultCollection -> {
+                    resultCollection.forEach(result -> result.getEntities().forEach(piiEntity -> {
+                        final PiiEntityCategory category = piiEntity.getCategory();
+                        if (PiiEntityCategory.ABA_ROUTING_NUMBER == category
+                            || PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER == category) {
+                            categories.add(category);
+                        }
+                    }));
+                    validatePiiEntitiesResultCollection(false, resultCollection);
+                })
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
-                // Override whatever the categoriesFiler has currently
-                final PiiEntityCategory[] piiEntityCategories = categories.toArray(new PiiEntityCategory[categories.size()]);
-                options.setCategoriesFilter(piiEntityCategories);
+            // Override whatever the categoriesFiler has currently
+            final PiiEntityCategory[] piiEntityCategories
+                = categories.toArray(new PiiEntityCategory[categories.size()]);
+            options.setCategoriesFilter(piiEntityCategories);
 
-                // Use the categories from another endpoint to call.
-                StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
-                    .assertNext(
-                        resultCollection -> validatePiiEntitiesResultCollection(false, resultCollection))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
-            });
+            // Use the categories from another endpoint to call.
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, "en", options))
+                .assertNext(resultCollection -> validatePiiEntitiesResultCollection(false, resultCollection))
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
+        });
     }
 
     // Linked Entities
@@ -870,8 +837,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeLinkedEntitiesForSingleTextInputRunner(input ->
-            StepVerifier.create(client.recognizeLinkedEntities(input))
+        recognizeLinkedEntitiesForSingleTextInputRunner(
+            input -> StepVerifier.create(client.recognizeLinkedEntities(input))
                 .assertNext(response -> validateLinkedEntity(response.iterator().next()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -881,29 +848,28 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyTextRunner(input ->
-            StepVerifier.create(client.recognizeLinkedEntities(input))
-                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                    && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
-                .verify(DEFAULT_TIMEOUT));
+        emptyTextRunner(input -> StepVerifier.create(client.recognizeLinkedEntities(input))
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
-                .verify(DEFAULT_TIMEOUT));
+        duplicateIdRunner(inputs -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
+        emptyDocumentIdRunner(
+            inputs -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
                 .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
@@ -914,10 +880,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesForBatchInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchLinkedEntityRunner((inputs) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
+        recognizeBatchLinkedEntityRunner(
+            (inputs) -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
                 .assertNext(response -> validateLinkedEntitiesResultCollectionWithResponse(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -925,10 +892,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchLinkedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, options))
+        recognizeBatchLinkedEntitiesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, options))
                 .assertNext(response -> validateLinkedEntitiesResultCollectionWithResponse(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -936,10 +904,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeLinkedStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, null))
+        recognizeLinkedStringInputRunner(
+            (inputs) -> StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, null))
                 .assertNext(response -> validateLinkedEntitiesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -947,10 +916,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeLinkedLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, language, null))
+        recognizeLinkedLanguageHintRunner(
+            (inputs, language) -> StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, language, null))
                 .assertNext(response -> validateLinkedEntitiesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -958,10 +928,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesForListStringWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options))
+        recognizeBatchStringLinkedEntitiesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options))
                 .assertNext(response -> validateLinkedEntitiesResultCollection(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -969,33 +940,31 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        tooManyDocumentsRunner(inputs -> StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(13, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        emojiRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(13, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1003,34 +972,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(15, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        emojiWithSkinToneModifierRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(15, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(22, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        emojiFamilyRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(22, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1038,102 +1003,92 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyWithSkinToneModifierRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(30, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        emojiFamilyWithSkinToneModifierRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(30, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesDiacriticsNfc(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfcRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(14, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        diacriticsNfcRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(14, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void recognizeLinkedEntitiesDiacriticsNfd(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfdRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(15, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        diacriticsNfdRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(15, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfcRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(13, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        koreanNfcRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(13, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfdRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(13, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        koreanNfdRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(13, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        zalgoTextRunner(document ->
-            StepVerifier.create(client.recognizeLinkedEntities(document))
-                .assertNext(result -> result.forEach(linkedEntity -> {
-                    linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                        assertEquals(9, linkedEntityMatch.getLength());
-                        assertEquals(126, linkedEntityMatch.getOffset());
-                    });
-                }))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1)
-        );
+        zalgoTextRunner(document -> StepVerifier.create(client.recognizeLinkedEntities(document))
+            .assertNext(result -> result.forEach(linkedEntity -> {
+                linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+                    assertEquals(9, linkedEntityMatch.getLength());
+                    assertEquals(126, linkedEntityMatch.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), LINKED_ENTITY_INPUTS.get(1));
     }
 
     // Key Phrases
@@ -1141,55 +1096,51 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesForSingleTextInputRunner(input ->
-            StepVerifier.create(client.extractKeyPhrases(input))
-                .assertNext(keyPhrasesCollection ->
-                        validateKeyPhrases(keyPhrasesCollection.stream().collect(Collectors.toList())))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        extractKeyPhrasesForSingleTextInputRunner(input -> StepVerifier.create(client.extractKeyPhrases(input))
+            .assertNext(
+                keyPhrasesCollection -> validateKeyPhrases(keyPhrasesCollection.stream().collect(Collectors.toList())))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyTextRunner(input ->
-            StepVerifier.create(client.extractKeyPhrases(input))
-                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                    && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
-                .verify(DEFAULT_TIMEOUT));
+        emptyTextRunner(input -> StepVerifier.create(client.extractKeyPhrases(input))
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs ->
-            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
-                .verify(DEFAULT_TIMEOUT));
+        duplicateIdRunner(inputs -> StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs ->
-            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        emptyDocumentIdRunner(inputs -> StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void extractKeyPhrasesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractBatchKeyPhrasesRunner((inputs) ->
-            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
+        extractBatchKeyPhrasesRunner(
+            (inputs) -> StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
                 .assertNext(response -> validateExtractKeyPhrasesResultCollectionWithResponse(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1198,10 +1149,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, options))
+        extractBatchKeyPhrasesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, options))
                 .assertNext(response -> validateExtractKeyPhrasesResultCollectionWithResponse(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1209,10 +1161,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void extractKeyPhrasesForBatchStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesStringInputRunner((inputs) ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, null))
+        extractKeyPhrasesStringInputRunner(
+            (inputs) -> StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, null))
                 .assertNext(response -> validateExtractKeyPhrasesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1220,10 +1173,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void extractKeyPhrasesForListLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language, null))
+        extractKeyPhrasesLanguageHintRunner(
+            (inputs, language) -> StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language, null))
                 .assertNext(response -> validateExtractKeyPhrasesResultCollection(false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1231,10 +1185,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, options))
+        extractBatchStringKeyPhrasesShowStatsRunner(
+            (inputs, options) -> StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, options))
                 .assertNext(response -> validateExtractKeyPhrasesResultCollection(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1242,16 +1197,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void extractKeyPhrasesBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        tooManyDocumentsRunner(inputs -> StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     // Sentiment
@@ -1263,12 +1218,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeSentimentForSingleTextInputRunner(input ->
-            StepVerifier.create(client.analyzeSentiment(input))
-                .assertNext(response -> validateDocumentSentiment(false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT)
-        );
+        analyzeSentimentForSingleTextInputRunner(input -> StepVerifier.create(client.analyzeSentiment(input))
+            .assertNext(response -> validateDocumentSentiment(false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1276,14 +1229,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeSentimentForSingleTextInputRunner(input ->
-            StepVerifier.create(client.analyzeSentiment(input, null))
-                .assertNext(response -> validateDocumentSentiment(false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT)
-        );
+        analyzeSentimentForSingleTextInputRunner(input -> StepVerifier.create(client.analyzeSentiment(input, null))
+            .assertNext(response -> validateDocumentSentiment(false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1291,10 +1243,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeSentimentForTextInputWithOpinionMiningRunner((input, options) ->
-            StepVerifier.create(client.analyzeSentiment(input, "en", options))
+        analyzeSentimentForTextInputWithOpinionMiningRunner(
+            (input, options) -> StepVerifier.create(client.analyzeSentiment(input, "en", options))
                 .assertNext(response -> validateDocumentSentiment(true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1307,12 +1260,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyTextRunner(document ->
-            StepVerifier.create(client.analyzeSentiment(document))
-                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                    && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
-                .verify(DEFAULT_TIMEOUT)
-        );
+        emptyTextRunner(document -> StepVerifier.create(client.analyzeSentiment(document))
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && INVALID_DOCUMENT.equals(((TextAnalyticsException) throwable).getErrorCode()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1322,10 +1273,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        duplicateIdRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, new TextAnalyticsRequestOptions()))
-                .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
-                .verify(DEFAULT_TIMEOUT));
+        duplicateIdRunner(inputs -> StepVerifier
+            .create(client.analyzeSentimentBatchWithResponse(inputs, new TextAnalyticsRequestOptions()))
+            .expectErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1335,14 +1286,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        emptyDocumentIdRunner(inputs -> StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            })
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1357,8 +1307,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeSentimentStringInputRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, new TextAnalyticsRequestOptions()))
+        analyzeSentimentStringInputRunner(
+            inputs -> StepVerifier.create(client.analyzeSentimentBatch(inputs, null, new TextAnalyticsRequestOptions()))
                 .assertNext(response -> validateAnalyzeSentimentResultCollection(false, false, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1373,13 +1323,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForListStringWithLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForListStringWithLanguageHint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeSentimentLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, language, new TextAnalyticsRequestOptions()))
-                .assertNext(response -> validateAnalyzeSentimentResultCollection(false, false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        analyzeSentimentLanguageHintRunner((inputs, language) -> StepVerifier
+            .create(client.analyzeSentimentBatch(inputs, language, new TextAnalyticsRequestOptions()))
+            .assertNext(response -> validateAnalyzeSentimentResultCollection(false, false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1391,13 +1342,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForListStringShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForListStringShowStatisticsExcludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, options.setIncludeOpinionMining(false)))
-                .assertNext(response -> validateAnalyzeSentimentResultCollection(true, false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner((inputs, options) -> StepVerifier
+            .create(client.analyzeSentimentBatch(inputs, null, options.setIncludeOpinionMining(false)))
+            .assertNext(response -> validateAnalyzeSentimentResultCollection(true, false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1409,7 +1361,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForListStringNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForListStringNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner((inputs, options) -> {
             options.setIncludeStatistics(false);
@@ -1429,10 +1382,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForListStringShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForListStringShowStatisticsAndIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, options))
+        analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner(
+            (inputs, options) -> StepVerifier.create(client.analyzeSentimentBatch(inputs, null, options))
                 .assertNext(response -> validateAnalyzeSentimentResultCollection(true, true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1447,13 +1401,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForBatchInputWithNullRequestOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForBatchInputWithNullRequestOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchSentimentRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, (TextAnalyticsRequestOptions) null))
-                .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(false, false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        analyzeBatchSentimentRunner(inputs -> StepVerifier
+            .create(client.analyzeSentimentBatchWithResponse(inputs, (TextAnalyticsRequestOptions) null))
+            .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(false, false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1465,13 +1420,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForBatchInputShowStatistics(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchSentimentShowStatsRunner((inputs, requestOptions) ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, requestOptions))
-                .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(true, false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        analyzeBatchSentimentShowStatsRunner((inputs, requestOptions) -> StepVerifier
+            .create(client.analyzeSentimentBatchWithResponse(inputs, requestOptions))
+            .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(true, false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1483,13 +1439,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForBatchInputWithNullAnalyzeSentimentOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForBatchInputWithNullAnalyzeSentimentOptions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchSentimentOpinionMining((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, (AnalyzeSentimentOptions) null))
-                .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(false, false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        analyzeBatchSentimentOpinionMining((inputs, options) -> StepVerifier
+            .create(client.analyzeSentimentBatchWithResponse(inputs, (AnalyzeSentimentOptions) null))
+            .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(false, false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1501,13 +1458,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForBatchInputShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForBatchInputShowStatisticsExcludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchSentimentOpinionMining((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options.setIncludeOpinionMining(false)))
-                .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(true, false, response))
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT));
+        analyzeBatchSentimentOpinionMining((inputs, options) -> StepVerifier
+            .create(client.analyzeSentimentBatchWithResponse(inputs, options.setIncludeOpinionMining(false)))
+            .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(true, false, response))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -1519,13 +1477,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForBatchInputNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForBatchInputNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeBatchSentimentOpinionMining((inputs, options) -> {
             options.setIncludeStatistics(false);
             StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options))
-                .assertNext(response ->
-                    validateAnalyzeSentimentResultCollectionWithResponse(false, true, response))
+                .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(false, true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
         });
@@ -1540,10 +1498,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeBatchSentimentOpinionMining((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options))
+        analyzeBatchSentimentOpinionMining(
+            (inputs, options) -> StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options))
                 .assertNext(response -> validateAnalyzeSentimentResultCollectionWithResponse(true, true, response))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT));
@@ -1554,100 +1513,88 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, null))
-                .expectErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-                    assertNotNull(textAnalyticsError.getErrorCode());
-                })
-                .verify(DEFAULT_TIMEOUT));
+        tooManyDocumentsRunner(
+            inputs -> StepVerifier.create(client.analyzeSentimentBatch(inputs, null, null)).expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
+                assertNotNull(textAnalyticsError.getErrorCode());
+            }).verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                        assertEquals(25, sentenceSentiment.getLength());
-                        assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(opinion -> {
-                            opinion.getAssessments().forEach(opinionSentiment -> {
-                                assertEquals(7, opinionSentiment.getLength());
-                                assertEquals(17, opinionSentiment.getOffset());
-                            });
-                            final TargetSentiment targetSentiment = opinion.getTarget();
-                            assertEquals(5, targetSentiment.getLength());
-                            assertEquals(7, targetSentiment.getOffset());
-                        });
-                    }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        emojiRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(25, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(opinionSentiment -> {
+                        assertEquals(7, opinionSentiment.getLength());
+                        assertEquals(17, opinionSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(7, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeSentimentEmojiWithSkinToneModifier(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiWithSkinToneModifierRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                        assertEquals(27, sentenceSentiment.getLength());
-                        assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(opinion -> {
-                            opinion.getAssessments().forEach(assessmentSentiment -> {
-                                assertEquals(7, assessmentSentiment.getLength());
-                                assertEquals(19, assessmentSentiment.getOffset());
-                            });
-                            final TargetSentiment targetSentiment = opinion.getTarget();
-                            assertEquals(5, targetSentiment.getLength());
-                            assertEquals(9, targetSentiment.getOffset());
-                        });
-                    }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        emojiWithSkinToneModifierRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(27, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(19, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(9, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(
-                        result -> result.getSentences().forEach(
-                            sentenceSentiment -> {
-                                assertEquals(34, sentenceSentiment.getLength());
-                                assertEquals(0, sentenceSentiment.getOffset());
-                                sentenceSentiment.getOpinions().forEach(opinion -> {
-                                    opinion.getAssessments().forEach(assessmentSentiment -> {
-                                        assertEquals(7, assessmentSentiment.getLength());
-                                        assertEquals(26, assessmentSentiment.getOffset());
-                                    });
-                                    final TargetSentiment targetSentiment = opinion.getTarget();
-                                    assertEquals(5, targetSentiment.getLength());
-                                    assertEquals(16, targetSentiment.getOffset());
-                                });
-                            })
-                    )
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        emojiFamilyRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(34, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(26, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(16, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1655,165 +1602,144 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyWithSkinToneModifierRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(
-                        result -> result.getSentences().forEach(
-                            sentenceSentiment -> {
-                                assertEquals(42, sentenceSentiment.getLength());
-                                assertEquals(0, sentenceSentiment.getOffset());
-                                sentenceSentiment.getOpinions().forEach(opinion -> {
-                                    opinion.getAssessments().forEach(assessmentSentiment -> {
-                                        assertEquals(7, assessmentSentiment.getLength());
-                                        assertEquals(34, assessmentSentiment.getOffset());
-                                    });
-                                    final TargetSentiment targetSentiment = opinion.getTarget();
-                                    assertEquals(5, targetSentiment.getLength());
-                                    assertEquals(24, targetSentiment.getOffset());
-                                });
-                            }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        emojiFamilyWithSkinToneModifierRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(42, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(34, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(24, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentDiacriticsNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfcRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                        assertEquals(26, sentenceSentiment.getLength());
-                        assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(opinion -> {
-                            opinion.getAssessments().forEach(assessmentSentiment -> {
-                                assertEquals(7, assessmentSentiment.getLength());
-                                assertEquals(18, assessmentSentiment.getOffset());
-                            });
-                            final TargetSentiment targetSentiment = opinion.getTarget();
-                            assertEquals(5, targetSentiment.getLength());
-                            assertEquals(8, targetSentiment.getOffset());
-                        });
-                    }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        diacriticsNfcRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(26, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(18, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(8, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentDiacriticsNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfdRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(
-                        sentenceSentiment -> {
-                            assertEquals(27, sentenceSentiment.getLength());
-                            assertEquals(0, sentenceSentiment.getOffset());
-                            sentenceSentiment.getOpinions().forEach(opinion -> {
-                                opinion.getAssessments().forEach(assessmentSentiment -> {
-                                    assertEquals(7, assessmentSentiment.getLength());
-                                    assertEquals(19, assessmentSentiment.getOffset());
-                                });
-                                final TargetSentiment targetSentiment = opinion.getTarget();
-                                assertEquals(5, targetSentiment.getLength());
-                                assertEquals(9, targetSentiment.getOffset());
-                            });
-                        }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        diacriticsNfdRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(27, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(19, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(9, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfcRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                        assertEquals(25, sentenceSentiment.getLength());
-                        assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(opinion -> {
-                            opinion.getAssessments().forEach(assessmentSentiment -> {
-                                assertEquals(7, assessmentSentiment.getLength());
-                                assertEquals(17, assessmentSentiment.getOffset());
-                            });
-                            final TargetSentiment targetSentiment = opinion.getTarget();
-                            assertEquals(5, targetSentiment.getLength());
-                            assertEquals(7, targetSentiment.getOffset());
-                        });
-                    }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        koreanNfcRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(25, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(17, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(7, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfdRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                        assertEquals(25, sentenceSentiment.getLength());
-                        assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(opinion -> {
-                            opinion.getAssessments().forEach(assessmentSentiment -> {
-                                assertEquals(7, assessmentSentiment.getLength());
-                                assertEquals(17, assessmentSentiment.getOffset());
-                            });
-                            final TargetSentiment targetSentiment = opinion.getTarget();
-                            assertEquals(5, targetSentiment.getLength());
-                            assertEquals(7, targetSentiment.getOffset());
-                        });
-                    }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        koreanNfdRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(25, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(17, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(7, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        zalgoTextRunner(
-            document ->
-                StepVerifier.create(client.analyzeSentiment(document, null,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
-                    .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
-                        assertEquals(138, sentenceSentiment.getLength());
-                        assertEquals(0, sentenceSentiment.getOffset());
-                        sentenceSentiment.getOpinions().forEach(opinion -> {
-                            opinion.getAssessments().forEach(assessmentSentiment -> {
-                                assertEquals(7, assessmentSentiment.getLength());
-                                assertEquals(130, assessmentSentiment.getOffset());
-                            });
-                            final TargetSentiment targetSentiment = opinion.getTarget();
-                            assertEquals(5, targetSentiment.getLength());
-                            assertEquals(120, targetSentiment.getOffset());
-                        });
-                    }))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT),
-            SENTIMENT_OFFSET_INPUT
-        );
+        zalgoTextRunner(document -> StepVerifier
+            .create(
+                client.analyzeSentiment(document, null, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)))
+            .assertNext(result -> result.getSentences().forEach(sentenceSentiment -> {
+                assertEquals(138, sentenceSentiment.getLength());
+                assertEquals(0, sentenceSentiment.getOffset());
+                sentenceSentiment.getOpinions().forEach(opinion -> {
+                    opinion.getAssessments().forEach(assessmentSentiment -> {
+                        assertEquals(7, assessmentSentiment.getLength());
+                        assertEquals(130, assessmentSentiment.getOffset());
+                    });
+                    final TargetSentiment targetSentiment = opinion.getTarget();
+                    assertEquals(5, targetSentiment.getLength());
+                    assertEquals(120, targetSentiment.getOffset());
+                });
+            }))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT), SENTIMENT_OFFSET_INPUT);
     }
 
     // Healthcare LRO
@@ -1822,13 +1748,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void healthcareStringInputWithoutOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         healthcareStringInputRunner((documents, dummyOptions) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller
+                = client.beginAnalyzeHealthcareEntities(documents).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-            validateAnalyzeHealthcareEntitiesResultCollectionList(
-                false, analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
+            validateAnalyzeHealthcareEntitiesResultCollectionList(false,
+                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -1842,8 +1768,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             if (isValidApiVersionForDisplayName) {
                 options.setDisplayName("operationName");
             }
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller
+                = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<AnalyzeHealthcareEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
             if (isValidApiVersionForDisplayName) {
@@ -1851,11 +1777,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             }
             AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
 
-            validateAnalyzeHealthcareEntitiesResultCollectionList(
-                options.isIncludeStatistics(),
+            validateAnalyzeHealthcareEntitiesResultCollectionList(options.isIncludeStatistics(),
                 analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
@@ -1866,31 +1792,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             if (isValidApiVersionForDisplayName) {
                 options.setDisplayName("operationName");
             }
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller
+                = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<AnalyzeHealthcareEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
             if (isValidApiVersionForDisplayName) {
                 assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             }
             AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-            validateAnalyzeHealthcareEntitiesResultCollectionList(
-                options.isIncludeStatistics(),
+            validateAnalyzeHealthcareEntitiesResultCollectionList(options.isIncludeStatistics(),
                 analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller
+                = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-            validateAnalyzeHealthcareEntitiesResultCollectionList(
-                options.isIncludeStatistics(),
+            validateAnalyzeHealthcareEntitiesResultCollectionList(options.isIncludeStatistics(),
                 analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         }, 10);
     }
@@ -1910,51 +1835,49 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
-    public void analyzeHealthcareEntitiesEmojiUnicodeCodePoint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeHealthcareEntitiesEmojiUnicodeCodePoint(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-//        emojiRunner(
-//            document -> {
-//                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
-//                    syncPoller = client.beginAnalyzeHealthcareEntities(
-//                        Collections.singletonList(new TextDocumentInput("0", document)),
-//                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
-//                                     .getSyncPoller();
-//                syncPoller = setPollInterval(syncPoller);
-//                syncPoller.waitForCompletion();
-//                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-//                    = syncPoller.getFinalResult();
-//                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-//                    result.forEach(entitiesResult ->
-//                        entitiesResult.getEntities().forEach(entity -> {
-//                            assertEquals(11, entity.getLength());
-//                            assertEquals(19, entity.getOffset());
-//                        }));
-//                });
-//            },
-//            HEALTHCARE_ENTITY_OFFSET_INPUT
-//        );
+        //        emojiRunner(
+        //            document -> {
+        //                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+        //                    syncPoller = client.beginAnalyzeHealthcareEntities(
+        //                        Collections.singletonList(new TextDocumentInput("0", document)),
+        //                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
+        //                                     .getSyncPoller();
+        //                syncPoller = setPollInterval(syncPoller);
+        //                syncPoller.waitForCompletion();
+        //                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+        //                    = syncPoller.getFinalResult();
+        //                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+        //                    result.forEach(entitiesResult ->
+        //                        entitiesResult.getEntities().forEach(entity -> {
+        //                            assertEquals(11, entity.getLength());
+        //                            assertEquals(19, entity.getOffset());
+        //                        }));
+        //                });
+        //            },
+        //            HEALTHCARE_ENTITY_OFFSET_INPUT
+        //        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(20, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        emojiRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(20, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1962,44 +1885,39 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiWithSkinToneModifierRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(22, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        emojiWithSkinToneModifierRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(22, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeHealthcareEntitiesEmojiFamily(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeHealthcareEntitiesEmojiFamily(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(29, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        emojiFamilyRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(29, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2007,22 +1925,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareEntitiesEmojiFamilyWithSkinToneModifier(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emojiFamilyWithSkinToneModifierRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(37, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        emojiFamilyWithSkinToneModifierRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(37, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2030,22 +1945,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareEntitiesDiacriticsNfc(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfcRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(21, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        diacriticsNfcRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(21, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2053,109 +1965,103 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareEntitiesDiacriticsNfd(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        diacriticsNfdRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(22, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        diacriticsNfdRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(22, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesKoreanNfc(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfcRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(20, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        koreanNfcRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(20, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesKoreanNfd(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        koreanNfdRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(20, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        koreanNfdRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(20, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        zalgoTextRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                    Collections.singletonList(new TextDocumentInput("0", document)), null).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
-                analyzeHealthcareEntitiesPagedFlux.toStream().forEach(result -> result.forEach(
-                    entitiesResult -> entitiesResult.getEntities().forEach(
-                        entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(133, entity.getOffset());
-                        })));
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT);
+        zalgoTextRunner(document -> {
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller = client
+                .beginAnalyzeHealthcareEntities(Collections.singletonList(new TextDocumentInput("0", document)), null)
+                .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
+            analyzeHealthcareEntitiesPagedFlux.toStream()
+                .forEach(result -> result.forEach(entitiesResult -> entitiesResult.getEntities().forEach(entity -> {
+                    assertEquals(11, entity.getLength());
+                    assertEquals(133, entity.getOffset());
+                })));
+        }, HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
     @Disabled("Regression, Missing Assertion, it is null now")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeHealthcareEntitiesForAssertionRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller
+                = client.beginAnalyzeHealthcareEntities(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             // "All female participants that are premenopausal will be required to have a pregnancy test;
             // any participant who is pregnant or breastfeeding will not be included"
-            final HealthcareEntityAssertion assertion =
-                analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList())
-                    .get(0).stream().collect(Collectors.toList()) // List of document result
-                    .get(0).getEntities().stream().collect(Collectors.toList()) // List of entities
-                    .get(1) // "premenopausal" is the second entity recognized.
-                    .getAssertion();
+            final HealthcareEntityAssertion assertion = analyzeHealthcareEntitiesPagedFlux.toStream()
+                .collect(Collectors.toList())
+                .get(0)
+                .stream()
+                .collect(Collectors.toList()) // List of document result
+                .get(0)
+                .getEntities()
+                .stream()
+                .collect(Collectors.toList()) // List of entities
+                .get(1) // "premenopausal" is the second entity recognized.
+                .getAssertion();
             assertEquals(EntityConditionality.HYPOTHETICAL, assertion.getConditionality());
             assertNull(assertion.getAssociation());
             assertNull(assertion.getCertainty());
@@ -2169,8 +2075,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
-                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
+            SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux> syncPoller
+                = client.beginAnalyzeHealthcareEntities(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.cancelOperation();
             LongRunningOperationStatus operationStatus = syncPoller.poll().getStatus();
@@ -2188,14 +2094,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeActionsStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeActionsStringInputRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            validateAnalyzeBatchActionsResultList(false, false,
-                    result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2204,15 +2109,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeBatchActionsRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks,
-                    new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false))
+                    .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2223,8 +2127,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeActionsWithMultiSameKindActionsRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
@@ -2244,21 +2148,37 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeActionsWithActionNames(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeActionsWithActionNamesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
             actionsResults.forEach(actionsResult -> {
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeEntitiesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizePiiEntitiesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getAnalyzeSentimentResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
-                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getExtractKeyPhrasesResults().stream()
-                                                     .collect(Collectors.toList()).get(0).getActionName());
+                assertEquals(CUSTOM_ACTION_NAME,
+                    actionsResult.getRecognizeEntitiesResults()
+                        .stream()
+                        .collect(Collectors.toList())
+                        .get(0)
+                        .getActionName());
+                assertEquals(CUSTOM_ACTION_NAME,
+                    actionsResult.getRecognizePiiEntitiesResults()
+                        .stream()
+                        .collect(Collectors.toList())
+                        .get(0)
+                        .getActionName());
+                assertEquals(CUSTOM_ACTION_NAME,
+                    actionsResult.getAnalyzeSentimentResults()
+                        .stream()
+                        .collect(Collectors.toList())
+                        .get(0)
+                        .getActionName());
+                assertEquals(CUSTOM_ACTION_NAME,
+                    actionsResult.getExtractKeyPhrasesResults()
+                        .stream()
+                        .collect(Collectors.toList())
+                        .get(0)
+                        .getActionName());
             });
         });
     }
@@ -2269,14 +2189,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux>
-                syncPoller = client.beginAnalyzeActions(
-                    documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false))
+                    .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         }, 22);
     }
 
@@ -2284,32 +2203,28 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        emptyListRunner((documents, errorMessage) ->
-            StepVerifier.create(client.beginAnalyzeActions(documents,
-                new TextAnalyticsActions()
-                    .setRecognizeEntitiesActions(new RecognizeEntitiesAction()), null))
-                .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                    && errorMessage.equals(throwable.getMessage()))
-                .verify(DEFAULT_TIMEOUT));
+        emptyListRunner((documents, errorMessage) -> StepVerifier
+            .create(client.beginAnalyzeActions(documents,
+                new TextAnalyticsActions().setRecognizeEntitiesActions(new RecognizeEntitiesAction()), null))
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
+                && errorMessage.equals(throwable.getMessage()))
+            .verify(DEFAULT_TIMEOUT));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzeEntitiesRecognitionRunner(
-            (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                    client.beginAnalyzeActions(documents, tasks,
-                        new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+        analyzeEntitiesRecognitionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false))
+                    .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-                validateAnalyzeBatchActionsResultList(false, false,
-                    result.toStream().collect(Collectors.toList()));
-            }
-        );
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2317,19 +2232,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
-            (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                    client.beginAnalyzeActions(documents, tasks,
-                        new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+        analyzePiiEntityRecognitionWithCategoriesFiltersRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false))
+                    .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-                validateAnalyzeBatchActionsResultList(false, false,
-                    result.toStream().collect(Collectors.toList()));
-            }
-        );
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2337,19 +2249,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzePiiEntityRecognitionWithDomainFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        analyzePiiEntityRecognitionWithDomainFiltersRunner(
-            (documents, tasks) -> {
-                SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                    client.beginAnalyzeActions(documents, tasks,
-                        new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+        analyzePiiEntityRecognitionWithDomainFiltersRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, new AnalyzeActionsOptions().setIncludeStatistics(false))
+                    .getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-                validateAnalyzeBatchActionsResultList(false, false,
-                    result.toStream().collect(Collectors.toList()));
-            }
-        );
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2357,15 +2266,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeLinkedEntityActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeLinkedEntityRecognitionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en",
-                    new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller = client
+                .beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions().setIncludeStatistics(false))
+                .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2374,15 +2282,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeKeyPhrasesExtractionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractKeyPhrasesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en",
-                    new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller = client
+                .beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions().setIncludeStatistics(false))
+                .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2391,14 +2298,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeSentimentRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en",
-                    new AnalyzeActionsOptions().setIncludeStatistics(false)).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller = client
+                .beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions().setIncludeStatistics(false))
+                .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2407,13 +2313,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeHealthcareAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         analyzeHealthcareEntitiesRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         });
     }
 
@@ -2423,19 +2328,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeCustomEntitiesAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         recognizeCustomEntitiesActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getRecognizeCustomEntitiesResults().forEach(
-                    customEntitiesActionResult -> customEntitiesActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCategorizedEntities(
-                            documentResult.getEntities().stream().collect(Collectors.toList())))));
+            actionsResults.forEach(actionsResult -> actionsResult.getRecognizeCustomEntitiesResults()
+                .forEach(customEntitiesActionResult -> customEntitiesActionResult.getDocumentsResults()
+                    .forEach(documentResult -> validateCategorizedEntities(
+                        documentResult.getEntities().stream().collect(Collectors.toList())))));
         });
     }
 
@@ -2445,18 +2349,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void singleLabelClassificationAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getSingleLabelClassifyResults().forEach(
-                    customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateLabelClassificationResult(documentResult))));
+            actionsResults.forEach(actionsResult -> actionsResult.getSingleLabelClassifyResults()
+                .forEach(customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults()
+                    .forEach(documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 
@@ -2466,18 +2369,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void multiCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         classifyCustomMultiCategoryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getMultiLabelClassifyResults().forEach(
-                    customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateLabelClassificationResult(documentResult))));
+            actionsResults.forEach(actionsResult -> actionsResult.getMultiLabelClassifyResults()
+                .forEach(customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults()
+                    .forEach(documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 
@@ -2487,14 +2389,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeCustomEntitiesStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         recognizeCustomEntitiesRunner((documents, parameters) -> {
-            SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux> syncPoller =
-                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1)).getSyncPoller();
+            SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux> syncPoller
+                = client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             RecognizeCustomEntitiesPagedFlux pagedFlux = syncPoller.getFinalResult();
-            pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
-                resultCollection.forEach(documentResult ->
-                    validateCategorizedEntities(documentResult.getEntities().stream().collect(Collectors.toList()))));
+            pagedFlux.toStream()
+                .collect(Collectors.toList())
+                .forEach(resultCollection -> resultCollection.forEach(documentResult -> validateCategorizedEntities(
+                    documentResult.getEntities().stream().collect(Collectors.toList()))));
         });
     }
 
@@ -2504,35 +2407,38 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         recognizeCustomEntitiesRunner((documents, parameters) -> {
-            RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions()
-                .setDisplayName("operationName");
-            SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux> syncPoller =
-                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en", options)
+            RecognizeCustomEntitiesOptions options
+                = new RecognizeCustomEntitiesOptions().setDisplayName("operationName");
+            SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux> syncPoller
+                = client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en", options)
                     .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<RecognizeCustomEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
             assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             RecognizeCustomEntitiesPagedFlux pagedFlux = syncPoller.getFinalResult();
-            pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
-                resultCollection.forEach(documentResult ->
-                    validateCategorizedEntities(documentResult.getEntities().stream().collect(Collectors.toList()))));
+            pagedFlux.toStream()
+                .collect(Collectors.toList())
+                .forEach(resultCollection -> resultCollection.forEach(documentResult -> validateCategorizedEntities(
+                    documentResult.getEntities().stream().collect(Collectors.toList()))));
         });
     }
 
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33555")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void singleLabelClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void singleLabelClassificationStringInput(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         classifyCustomSingleLabelRunner((documents, parameters) -> {
-            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1))
-                    .getSyncPoller();
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller
+                = client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
-            pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
-                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
+            pagedFlux.toStream()
+                .collect(Collectors.toList())
+                .forEach(resultCollection -> resultCollection
+                    .forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
     }
 
@@ -2543,15 +2449,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         classifyCustomSingleLabelRunner((documents, parameters) -> {
             SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setDisplayName("operationName");
-            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller
+                = client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
                     .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
             assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
-            pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
-                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
+            pagedFlux.toStream()
+                .collect(Collectors.toList())
+                .forEach(resultCollection -> resultCollection
+                    .forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
     }
 
@@ -2561,14 +2469,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void multiLabelClassificationStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         classifyCustomMultiLabelRunner((documents, parameters) -> {
-            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1))
-                    .getSyncPoller();
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller
+                = client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1)).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
-            pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
-                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
+            pagedFlux.toStream()
+                .collect(Collectors.toList())
+                .forEach(resultCollection -> resultCollection
+                    .forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
     }
 
@@ -2579,15 +2488,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, true);
         classifyCustomMultiLabelRunner((documents, parameters) -> {
             MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setDisplayName("operationName");
-            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller
+                = client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
                     .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
             assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
-            pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
-                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
+            pagedFlux.toStream()
+                .collect(Collectors.toList())
+                .forEach(resultCollection -> resultCollection
+                    .forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
     }
 
@@ -2597,14 +2508,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
             // We are expecting the top 3 highest rank score and these scores are sorted by offset by default
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         }, null, null);
     }
 
@@ -2614,16 +2524,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            result.toStream().collect(Collectors.toList()).forEach(
-                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
-                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertTrue(isAscendingOrderByOffSet(
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(actionsResult -> actionsResult.getExtractiveSummaryResults()
+                    .forEach(extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults()
+                        .forEach(documentResult -> assertTrue(isAscendingOrderByOffSet(
                             documentResult.getSentences().stream().collect(Collectors.toList()))))));
         }, 4, ExtractiveSummarySentencesOrder.OFFSET);
     }
@@ -2634,15 +2545,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
-                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertTrue(isDescendingOrderByRankScore(
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(actionsResult -> actionsResult.getExtractiveSummaryResults()
+                    .forEach(extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults()
+                        .forEach(documentResult -> assertTrue(isDescendingOrderByRankScore(
                             documentResult.getSentences().stream().collect(Collectors.toList()))))));
         }, 4, ExtractiveSummarySentencesOrder.RANK);
     }
@@ -2653,16 +2565,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            result.toStream().collect(Collectors.toList()).forEach(
-                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
-                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertTrue(
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(actionsResult -> actionsResult.getExtractiveSummaryResults()
+                    .forEach(extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults()
+                        .forEach(documentResult -> assertTrue(
                             documentResult.getSentences().stream().collect(Collectors.toList()).size() < 20))));
         }, 20, null);
     }
@@ -2673,19 +2586,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
-            actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
-                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
-                        documentResult -> assertEquals(
-                            documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5))));
+            actionsResults.forEach(actionsResult -> actionsResult.getExtractiveSummaryResults()
+                .forEach(extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults()
+                    .forEach(documentResult -> assertEquals(
+                        documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5))));
         }, 5, null);
     }
 
@@ -2695,23 +2607,20 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         // The range of max sentences count is at between 1 and 20.
-        int[] invalidMaxSentenceCounts = {0, 21};
+        int[] invalidMaxSentenceCounts = { 0, 21 };
 
-        for (int invalidCount: invalidMaxSentenceCounts) {
-            extractiveSummaryActionRunner(
-                (documents, tasks) -> {
-                    HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
-                        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                            client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions())
-                                .getSyncPoller();
-                        syncPoller = setPollInterval(syncPoller);
-                        syncPoller.waitForCompletion();
-                        AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
-                    });
-                    assertEquals(
-                        INVALID_PARAMETER_VALUE,
-                        ((TextAnalyticsError) exception.getValue()).getErrorCode());
-                }, invalidCount, null);
+        for (int invalidCount : invalidMaxSentenceCounts) {
+            extractiveSummaryActionRunner((documents, tasks) -> {
+                HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+                    SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                        = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions())
+                            .getSyncPoller();
+                    syncPoller = setPollInterval(syncPoller);
+                    syncPoller.waitForCompletion();
+                    AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+                });
+                assertEquals(INVALID_PARAMETER_VALUE, ((TextAnalyticsError) exception.getValue()).getErrorCode());
+            }, invalidCount, null);
         }
     }
 
@@ -2721,14 +2630,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         abstractiveSummaryActionRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
-                client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller
+                = client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions()).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
 
-            validateAnalyzeBatchActionsResultList(false, false,
-                result.toStream().collect(Collectors.toList()));
+            validateAnalyzeBatchActionsResultList(false, false, result.toStream().collect(Collectors.toList()));
         }, null);
     }
 
@@ -2749,14 +2657,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void beginAbstractSummaryStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         abstractiveSummaryRunner((documents, options) -> {
-            SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> syncPoller =
-                client.beginAbstractSummary(documents)
-                    .getSyncPoller();
+            SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> syncPoller
+                = client.beginAbstractSummary(documents).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AbstractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                documentResult -> validateAbstractiveSummaryResultCollection(false, documentResult));
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(documentResult -> validateAbstractiveSummaryResultCollection(false, documentResult));
         }, 4);
     }
 
@@ -2765,33 +2673,31 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void beginAbstractSummaryMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         abstractiveSummaryMaxOverloadRunner((documents, options) -> {
-            SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> syncPoller =
-                client.beginAbstractSummary(documents, options)
-                    .getSyncPoller();
+            SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> syncPoller
+                = client.beginAbstractSummary(documents, options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             AbstractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                documentResult -> validateAbstractiveSummaryResultCollection(false, documentResult));
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(documentResult -> validateAbstractiveSummaryResultCollection(false, documentResult));
         }, 4);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void beginExtractSummarySortedByOffset(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
+    public void beginExtractSummarySortedByOffset(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller =
-                client.beginExtractSummary(documents, "en", options).getSyncPoller();
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller
+                = client.beginExtractSummary(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             ExtractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                documentResultCollection -> documentResultCollection.forEach(
-                    documentResult -> assertTrue(
-                        isAscendingOrderByOffSet(documentResult.getSentences().stream().collect(Collectors.toList())))
-                ));
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(documentResultCollection -> documentResultCollection.forEach(documentResult -> assertTrue(
+                    isAscendingOrderByOffSet(documentResult.getSentences().stream().collect(Collectors.toList())))));
         }, 4, ExtractiveSummarySentencesOrder.OFFSET);
     }
 
@@ -2801,16 +2707,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller =
-                client.beginExtractSummary(documents, "en", options).getSyncPoller();
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller
+                = client.beginExtractSummary(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             ExtractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                documentResultCollection -> documentResultCollection.forEach(
-                    documentResult -> assertTrue(
-                        isDescendingOrderByRankScore(documentResult.getSentences().stream().collect(Collectors.toList())))
-                ));
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(documentResultCollection -> documentResultCollection
+                    .forEach(documentResult -> assertTrue(isDescendingOrderByRankScore(
+                        documentResult.getSentences().stream().collect(Collectors.toList())))));
         }, 4, ExtractiveSummarySentencesOrder.RANK);
     }
 
@@ -2820,16 +2726,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller =
-                client.beginExtractSummary(documents, "en", options).getSyncPoller();
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller
+                = client.beginExtractSummary(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
 
             ExtractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                documentResultCollection -> documentResultCollection.forEach(
-                    documentResult -> assertTrue(
-                        documentResult.getSentences().stream().collect(Collectors.toList()).size() < 20)));
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(documentResultCollection -> documentResultCollection.forEach(documentResult -> assertTrue(
+                    documentResult.getSentences().stream().collect(Collectors.toList()).size() < 20)));
         }, 20, null);
     }
 
@@ -2839,15 +2745,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         extractiveSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller =
-                client.beginExtractSummary(documents, "en", options).getSyncPoller();
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller
+                = client.beginExtractSummary(documents, "en", options).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
             ExtractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-            result.toStream().collect(Collectors.toList()).forEach(
-                documentResultCollection -> documentResultCollection.forEach(
-                    documentResult -> assertEquals(
-                        documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5)));
+            result.toStream()
+                .collect(Collectors.toList())
+                .forEach(documentResultCollection -> documentResultCollection.forEach(documentResult -> assertEquals(
+                    documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5)));
         }, 5, null);
     }
 
@@ -2857,23 +2763,19 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
         // The range of max sentences count is at between 1 and 20.
-        int[] invalidMaxSentenceCounts = {0, 21};
+        int[] invalidMaxSentenceCounts = { 0, 21 };
 
-        for (int invalidCount: invalidMaxSentenceCounts) {
-            extractiveSummaryRunner(
-                (documents, options) -> {
-                    HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
-                        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller =
-                            client.beginExtractSummary(documents, "en", options)
-                                .getSyncPoller();
-                        syncPoller = setPollInterval(syncPoller);
-                        syncPoller.waitForCompletion();
-                        ExtractiveSummaryPagedFlux result = syncPoller.getFinalResult();
-                    });
-                    assertEquals(
-                        INVALID_PARAMETER_VALUE,
-                        ((TextAnalyticsError) exception.getValue()).getErrorCode());
-                }, invalidCount, null);
+        for (int invalidCount : invalidMaxSentenceCounts) {
+            extractiveSummaryRunner((documents, options) -> {
+                HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
+                    SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> syncPoller
+                        = client.beginExtractSummary(documents, "en", options).getSyncPoller();
+                    syncPoller = setPollInterval(syncPoller);
+                    syncPoller.waitForCompletion();
+                    ExtractiveSummaryPagedFlux result = syncPoller.getFinalResult();
+                });
+                assertEquals(INVALID_PARAMETER_VALUE, ((TextAnalyticsError) exception.getValue()).getErrorCode());
+            }, invalidCount, null);
         }
     }
 }

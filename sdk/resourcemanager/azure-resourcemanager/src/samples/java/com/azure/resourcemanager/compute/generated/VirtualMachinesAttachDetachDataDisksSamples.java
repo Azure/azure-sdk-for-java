@@ -19,7 +19,7 @@ import java.util.Arrays;
 public final class VirtualMachinesAttachDetachDataDisksSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
      */
     /**
@@ -43,7 +43,7 @@ public final class VirtualMachinesAttachDetachDataDisksSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
      */
     /**

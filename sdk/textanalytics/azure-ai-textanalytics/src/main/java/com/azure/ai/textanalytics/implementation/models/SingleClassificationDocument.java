@@ -152,7 +152,8 @@ public final class SingleClassificationDocument implements JsonSerializable<Sing
                 } else if ("classification".equals(fieldName)) {
                     deserializedSingleClassificationDocument.classification = ClassificationResult.fromJson(reader);
                 } else if ("warnings".equals(fieldName)) {
-                    deserializedSingleClassificationDocument.warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedSingleClassificationDocument.warnings
+                        = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
                 } else if ("statistics".equals(fieldName)) {
                     deserializedSingleClassificationDocument.statistics = DocumentStatistics.fromJson(reader);
                 } else {

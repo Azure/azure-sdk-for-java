@@ -31,14 +31,16 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
         String publisherName) {
         PagedIterable<NetworkFunctionDefinitionGroupInner> inner
             = this.serviceClient().listByPublisher(resourceGroupName, publisherName);
-        return Utils.mapPage(inner, inner1 -> new NetworkFunctionDefinitionGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NetworkFunctionDefinitionGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkFunctionDefinitionGroup> listByPublisher(String resourceGroupName, String publisherName,
         Context context) {
         PagedIterable<NetworkFunctionDefinitionGroupInner> inner
             = this.serviceClient().listByPublisher(resourceGroupName, publisherName, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkFunctionDefinitionGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NetworkFunctionDefinitionGroupImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName) {
@@ -52,8 +54,8 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
 
     public Response<NetworkFunctionDefinitionGroup> getWithResponse(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, Context context) {
-        Response<NetworkFunctionDefinitionGroupInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            publisherName, networkFunctionDefinitionGroupName, context);
+        Response<NetworkFunctionDefinitionGroupInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkFunctionDefinitionGroupImpl(inner.getValue(), this.manager()));
@@ -74,17 +76,18 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
     }
 
     public NetworkFunctionDefinitionGroup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkFunctionDefinitionGroupName = Utils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
+        String networkFunctionDefinitionGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
         if (networkFunctionDefinitionGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkFunctionDefinitionGroups'.", id)));
@@ -94,17 +97,18 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
     }
 
     public Response<NetworkFunctionDefinitionGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkFunctionDefinitionGroupName = Utils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
+        String networkFunctionDefinitionGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
         if (networkFunctionDefinitionGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkFunctionDefinitionGroups'.", id)));
@@ -113,17 +117,18 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkFunctionDefinitionGroupName = Utils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
+        String networkFunctionDefinitionGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
         if (networkFunctionDefinitionGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkFunctionDefinitionGroups'.", id)));
@@ -132,17 +137,18 @@ public final class NetworkFunctionDefinitionGroupsImpl implements NetworkFunctio
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String publisherName = Utils.getValueFromIdByName(id, "publishers");
+        String publisherName = ResourceManagerUtils.getValueFromIdByName(id, "publishers");
         if (publisherName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'publishers'.", id)));
         }
-        String networkFunctionDefinitionGroupName = Utils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
+        String networkFunctionDefinitionGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "networkFunctionDefinitionGroups");
         if (networkFunctionDefinitionGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkFunctionDefinitionGroups'.", id)));

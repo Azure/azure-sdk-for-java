@@ -13,41 +13,37 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentFavoriteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentFavoriteInner model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"dzxibqeojnxqbzvd\",\"Config\":\"t\",\"Version\":\"deicbtwnpzao\",\"FavoriteId\":\"uhrhcffcyddgl\",\"FavoriteType\":\"shared\",\"SourceType\":\"jqkwpyeicx\",\"TimeModified\":\"ciwqvhk\",\"Tags\":[\"uigdtopbobjog\",\"m\",\"w\"],\"Category\":\"m\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"z\"}")
-                .toObject(ApplicationInsightsComponentFavoriteInner.class);
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.name());
-        Assertions.assertEquals("t", model.config());
-        Assertions.assertEquals("deicbtwnpzao", model.version());
+        ApplicationInsightsComponentFavoriteInner model = BinaryData.fromString(
+            "{\"Name\":\"v\",\"Config\":\"dgwdslfhot\",\"Version\":\"cynpwlbjnp\",\"FavoriteId\":\"cftadeh\",\"FavoriteType\":\"shared\",\"SourceType\":\"yfsoppu\",\"TimeModified\":\"esnzwde\",\"Tags\":[\"vorxzdmohct\"],\"Category\":\"vudwx\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"vo\"}")
+            .toObject(ApplicationInsightsComponentFavoriteInner.class);
+        Assertions.assertEquals("v", model.name());
+        Assertions.assertEquals("dgwdslfhot", model.config());
+        Assertions.assertEquals("cynpwlbjnp", model.version());
         Assertions.assertEquals(FavoriteType.SHARED, model.favoriteType());
-        Assertions.assertEquals("jqkwpyeicx", model.sourceType());
-        Assertions.assertEquals("uigdtopbobjog", model.tags().get(0));
-        Assertions.assertEquals("m", model.category());
-        Assertions.assertEquals(true, model.isGeneratedFromTemplate());
+        Assertions.assertEquals("yfsoppu", model.sourceType());
+        Assertions.assertEquals("vorxzdmohct", model.tags().get(0));
+        Assertions.assertEquals("vudwx", model.category());
+        Assertions.assertEquals(false, model.isGeneratedFromTemplate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentFavoriteInner model =
-            new ApplicationInsightsComponentFavoriteInner()
-                .withName("dzxibqeojnxqbzvd")
-                .withConfig("t")
-                .withVersion("deicbtwnpzao")
-                .withFavoriteType(FavoriteType.SHARED)
-                .withSourceType("jqkwpyeicx")
-                .withTags(Arrays.asList("uigdtopbobjog", "m", "w"))
-                .withCategory("m")
-                .withIsGeneratedFromTemplate(true);
+        ApplicationInsightsComponentFavoriteInner model = new ApplicationInsightsComponentFavoriteInner().withName("v")
+            .withConfig("dgwdslfhot")
+            .withVersion("cynpwlbjnp")
+            .withFavoriteType(FavoriteType.SHARED)
+            .withSourceType("yfsoppu")
+            .withTags(Arrays.asList("vorxzdmohct"))
+            .withCategory("vudwx")
+            .withIsGeneratedFromTemplate(false);
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentFavoriteInner.class);
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.name());
-        Assertions.assertEquals("t", model.config());
-        Assertions.assertEquals("deicbtwnpzao", model.version());
+        Assertions.assertEquals("v", model.name());
+        Assertions.assertEquals("dgwdslfhot", model.config());
+        Assertions.assertEquals("cynpwlbjnp", model.version());
         Assertions.assertEquals(FavoriteType.SHARED, model.favoriteType());
-        Assertions.assertEquals("jqkwpyeicx", model.sourceType());
-        Assertions.assertEquals("uigdtopbobjog", model.tags().get(0));
-        Assertions.assertEquals("m", model.category());
-        Assertions.assertEquals(true, model.isGeneratedFromTemplate());
+        Assertions.assertEquals("yfsoppu", model.sourceType());
+        Assertions.assertEquals("vorxzdmohct", model.tags().get(0));
+        Assertions.assertEquals("vudwx", model.category());
+        Assertions.assertEquals(false, model.isGeneratedFromTemplate());
     }
 }

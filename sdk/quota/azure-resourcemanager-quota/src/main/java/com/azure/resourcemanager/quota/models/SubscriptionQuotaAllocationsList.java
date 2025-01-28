@@ -4,71 +4,52 @@
 
 package com.azure.resourcemanager.quota.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaAllocationsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaAllocationsListInner;
 
 /**
- * Subscription quota list.
+ * An immutable client-side representation of SubscriptionQuotaAllocationsList.
  */
-@Fluent
-public final class SubscriptionQuotaAllocationsList {
-    /*
-     * Subscription quota list.
-     */
-    @JsonProperty(value = "value")
-    private List<SubscriptionQuotaAllocationsInner> value;
-
-    /*
-     * The URL to use for getting the next set of results.
-     */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
-
+public interface SubscriptionQuotaAllocationsList {
     /**
-     * Creates an instance of SubscriptionQuotaAllocationsList class.
-     */
-    public SubscriptionQuotaAllocationsList() {
-    }
-
-    /**
-     * Get the value property: Subscription quota list.
+     * Gets the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the value value.
+     * @return the id value.
      */
-    public List<SubscriptionQuotaAllocationsInner> value() {
-        return this.value;
-    }
+    String id();
 
     /**
-     * Set the value property: Subscription quota list.
+     * Gets the name property: The name of the resource.
      * 
-     * @param value the value value to set.
-     * @return the SubscriptionQuotaAllocationsList object itself.
+     * @return the name value.
      */
-    public SubscriptionQuotaAllocationsList withValue(List<SubscriptionQuotaAllocationsInner> value) {
-        this.value = value;
-        return this;
-    }
+    String name();
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
+     * Gets the type property: The type of the resource.
      * 
-     * @return the nextLink value.
+     * @return the type value.
      */
-    public String nextLink() {
-        return this.nextLink;
-    }
+    String type();
 
     /**
-     * Validates the instance.
+     * Gets the properties property: The properties property.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the properties value.
      */
-    public void validate() {
-        if (value() != null) {
-            value().forEach(e -> e.validate());
-        }
-    }
+    SubscriptionQuotaAllocationsListProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaAllocationsListInner object.
+     * 
+     * @return the inner object.
+     */
+    SubscriptionQuotaAllocationsListInner innerModel();
 }

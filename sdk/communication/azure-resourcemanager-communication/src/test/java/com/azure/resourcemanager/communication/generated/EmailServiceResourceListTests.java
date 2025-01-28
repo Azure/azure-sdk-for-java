@@ -26,19 +26,20 @@ public final class EmailServiceResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailServiceResourceList model = new EmailServiceResourceList()
-            .withValue(Arrays.asList(
-                new EmailServiceResourceInner().withLocation("nfnbacfionlebxe")
-                    .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng")).withDataLocation("c"),
-                new EmailServiceResourceInner().withLocation("asxazjpqyegualhb")
-                    .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy")).withDataLocation("bdlwtgrhpdjpj"),
-                new EmailServiceResourceInner().withLocation("udwxdndnvowguj")
-                    .withTags(mapOf("zj", "wdkcglhsl", "kuofqweykhme", "yggdtjixh", "yvdcsitynnaa", "evfyexfwhybcib"))
-                    .withDataLocation("mohctb"),
-                new EmailServiceResourceInner().withLocation("cr")
-                    .withTags(mapOf("sounqecanoaeu", "sqpjhvmdajvn", "u", "fhyhltrpmopjmcma", "aodsfcpkv", "kthfui",
-                        "uaxbezyiuokkt", "odpuozmyzydag"))
-                    .withDataLocation("yyvxyqjpkcattpn")))
+        EmailServiceResourceList model = new EmailServiceResourceList().withValue(Arrays.asList(
+            new EmailServiceResourceInner().withLocation("nfnbacfionlebxe")
+                .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng"))
+                .withDataLocation("c"),
+            new EmailServiceResourceInner().withLocation("asxazjpqyegualhb")
+                .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy"))
+                .withDataLocation("bdlwtgrhpdjpj"),
+            new EmailServiceResourceInner().withLocation("udwxdndnvowguj")
+                .withTags(mapOf("zj", "wdkcglhsl", "kuofqweykhme", "yggdtjixh", "yvdcsitynnaa", "evfyexfwhybcib"))
+                .withDataLocation("mohctb"),
+            new EmailServiceResourceInner().withLocation("cr")
+                .withTags(mapOf("sounqecanoaeu", "sqpjhvmdajvn", "u", "fhyhltrpmopjmcma", "aodsfcpkv", "kthfui",
+                    "uaxbezyiuokkt", "odpuozmyzydag"))
+                .withDataLocation("yyvxyqjpkcattpn")))
             .withNextLink("stkiiuxhqyud");
         model = BinaryData.fromObject(model).toObject(EmailServiceResourceList.class);
         Assertions.assertEquals("nfnbacfionlebxe", model.value().get(0).location());

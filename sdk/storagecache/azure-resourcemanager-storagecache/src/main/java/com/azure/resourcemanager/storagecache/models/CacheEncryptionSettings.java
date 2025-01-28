@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cache encryption settings.
  */
 @Fluent
-public final class CacheEncryptionSettings {
+public final class CacheEncryptionSettings implements JsonSerializable<CacheEncryptionSettings> {
     /*
      * Specifies the location of the key encryption key in key vault.
      */
-    @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultKeyReference keyEncryptionKey;
 
     /*
      * Specifies whether the service will automatically rotate to the newest version of the key in the key vault.
      */
-    @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
 
     /**
@@ -81,5 +83,45 @@ public final class CacheEncryptionSettings {
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyEncryptionKey", this.keyEncryptionKey);
+        jsonWriter.writeBooleanField("rotationToLatestKeyVersionEnabled", this.rotationToLatestKeyVersionEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheEncryptionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheEncryptionSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheEncryptionSettings.
+     */
+    public static CacheEncryptionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheEncryptionSettings deserializedCacheEncryptionSettings = new CacheEncryptionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedCacheEncryptionSettings.keyEncryptionKey = KeyVaultKeyReference.fromJson(reader);
+                } else if ("rotationToLatestKeyVersionEnabled".equals(fieldName)) {
+                    deserializedCacheEncryptionSettings.rotationToLatestKeyVersionEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheEncryptionSettings;
+        });
     }
 }

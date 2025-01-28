@@ -6,32 +6,34 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.resourcemanager.hdinsight.fluent.models.HostInfoInner;
 
-/** An immutable client-side representation of HostInfo. */
+/**
+ * An immutable client-side representation of HostInfo.
+ */
 public interface HostInfo {
     /**
      * Gets the name property: The host name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the fqdn property: The Fully Qualified Domain Name of host.
-     *
+     * 
      * @return the fqdn value.
      */
     String fqdn();
 
     /**
      * Gets the effectiveDiskEncryptionKeyUrl property: The effective disk encryption key URL used by the host.
-     *
+     * 
      * @return the effectiveDiskEncryptionKeyUrl value.
      */
     String effectiveDiskEncryptionKeyUrl();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.HostInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     HostInfoInner innerModel();

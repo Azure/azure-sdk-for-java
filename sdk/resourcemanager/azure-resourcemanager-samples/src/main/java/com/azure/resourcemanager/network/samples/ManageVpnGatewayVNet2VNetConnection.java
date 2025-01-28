@@ -73,75 +73,81 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             //============================================================
             // Create 2 virtual networks with subnets and 2 virtual network gateways corresponding to each network
             System.out.println("Creating virtual network...");
-            Network network1 = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("10.11.0.0/16")
-                    .withSubnet("GatewaySubnet", "10.11.255.0/27")
-                    .withSubnet("Subnet1", "10.11.0.0/24")
-                    .create();
+            Network network1 = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.11.0.0/16")
+                .withSubnet("GatewaySubnet", "10.11.255.0/27")
+                .withSubnet("Subnet1", "10.11.0.0/24")
+                .create();
             System.out.println("Created network");
             // Print the virtual network
             Utils.print(network1);
 
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways().define(vpnGatewayName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingNetwork(network1)
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .create();
+            VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways()
+                .define(vpnGatewayName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingNetwork(network1)
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .create();
             System.out.println("Created virtual network gateway");
 
             System.out.println("Creating virtual network...");
-            Network network2 = azureResourceManager.networks().define(vnet2Name)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("10.41.0.0/16")
-                    .withSubnet("GatewaySubnet", "10.41.255.0/27")
-                    .withSubnet("Subnet2", "10.41.0.0/24")
-                    .create();
+            Network network2 = azureResourceManager.networks()
+                .define(vnet2Name)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.41.0.0/16")
+                .withSubnet("GatewaySubnet", "10.41.255.0/27")
+                .withSubnet("Subnet2", "10.41.0.0/24")
+                .create();
             System.out.println("Created virtual network");
 
             System.out.println("Creating virtual network gateway...");
-            VirtualNetworkGateway vngw2 = azureResourceManager.virtualNetworkGateways().define(vpnGateway2Name)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingNetwork(network2)
-                    .withRouteBasedVpn()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .create();
+            VirtualNetworkGateway vngw2 = azureResourceManager.virtualNetworkGateways()
+                .define(vpnGateway2Name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingNetwork(network2)
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .create();
             System.out.println("Created virtual network gateway");
 
             System.out.println("Creating virtual network gateway connection...");
             VirtualNetworkGatewayConnection connection = vngw1.connections()
-                    .define(connectionName)
-                    .withVNetToVNet()
-                    .withSecondVirtualNetworkGateway(vngw2)
-                    .withSharedKey("MySecretKey")
-                    .create();
+                .define(connectionName)
+                .withVNetToVNet()
+                .withSecondVirtualNetworkGateway(vngw2)
+                .withSharedKey("MySecretKey")
+                .create();
             System.out.println("Created virtual network gateway connection");
 
             //============================================================
             // Troubleshoot the connection
 
             // create Network Watcher
-            NetworkWatcher nw = azureResourceManager.networkWatchers().define(nwName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+            NetworkWatcher nw = azureResourceManager.networkWatchers()
+                .define(nwName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .create();
             // Create storage account to store troubleshooting information
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define("sa" + Utils.randomResourceName(azureResourceManager, "", 8))
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define("sa" + Utils.randomResourceName(azureResourceManager, "", 8))
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .create();
 
             // Create storage container to store troubleshooting results
             String accountKey = storageAccount.getKeys().get(0).value();
-            String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s", storageAccount.name(), accountKey);
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-                .connectionString(connectionString)
+            String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
+                storageAccount.name(), accountKey);
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString)
                 .httpClient(storageAccount.manager().httpPipeline().getHttpClient())
                 .buildClient();
             BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(storageContainerName);
@@ -149,26 +155,26 @@ public final class ManageVpnGatewayVNet2VNetConnection {
 
             // Run troubleshooting for the connection - result will be 'UnHealthy' as need to create symmetrical connection from second gateway to the first
             Troubleshooting troubleshooting = nw.troubleshoot()
-                    .withTargetResourceId(connection.id())
-                    .withStorageAccount(storageAccount.id())
-                    .withStoragePath(storageAccount.endPoints().primary().blob() + storageContainerName)
-                    .execute();
+                .withTargetResourceId(connection.id())
+                .withStorageAccount(storageAccount.id())
+                .withStoragePath(storageAccount.endPoints().primary().blob() + storageContainerName)
+                .execute();
             System.out.println("Troubleshooting status is: " + troubleshooting.code());
 
             //============================================================
             //  Create virtual network connection from second gateway to the first and run troubleshooting. Result will be 'Healthy'.
             vngw2.connections()
-                    .define(connection2Name)
-                    .withVNetToVNet()
-                    .withSecondVirtualNetworkGateway(vngw1)
-                    .withSharedKey("MySecretKey")
-                    .create();
+                .define(connection2Name)
+                .withVNetToVNet()
+                .withSecondVirtualNetworkGateway(vngw1)
+                .withSharedKey("MySecretKey")
+                .create();
             ResourceManagerUtils.sleep(Duration.ofSeconds(250));
             troubleshooting = nw.troubleshoot()
-                    .withTargetResourceId(connection.id())
-                    .withStorageAccount(storageAccount.id())
-                    .withStoragePath(storageAccount.endPoints().primary().blob() + storageContainerName)
-                    .execute();
+                .withTargetResourceId(connection.id())
+                .withStorageAccount(storageAccount.id())
+                .withStoragePath(storageAccount.endPoints().primary().blob() + storageContainerName)
+                .execute();
             System.out.println("Troubleshooting status is: " + troubleshooting.code());
 
             //============================================================
@@ -181,47 +187,49 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             // Create 2 virtual machines, each one in its network and verify connectivity between them
             List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
 
-            vmDefinitions.add(azureResourceManager.virtualMachines().define(vm1Name)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network1)
-                    .withSubnet("Subnet1")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(rootname)
-                    .withRootPassword(password)
-                    // Extension currently needed for network watcher support
-                    .defineNewExtension("networkWatcher")
-                    .withPublisher("Microsoft.Azure.NetworkWatcher")
-                    .withType("NetworkWatcherAgentLinux")
-                    .withVersion("1.4")
-                    .attach());
-            vmDefinitions.add(azureResourceManager.virtualMachines().define(vm2Name)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network2)
-                    .withSubnet("Subnet2")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(rootname)
-                    .withRootPassword(password)
-                    // Extension currently needed for network watcher support
-                    .defineNewExtension("networkWatcher")
-                    .withPublisher("Microsoft.Azure.NetworkWatcher")
-                    .withType("NetworkWatcherAgentLinux")
-                    .withVersion("1.4")
-                    .attach());
+            vmDefinitions.add(azureResourceManager.virtualMachines()
+                .define(vm1Name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network1)
+                .withSubnet("Subnet1")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(rootname)
+                .withRootPassword(password)
+                // Extension currently needed for network watcher support
+                .defineNewExtension("networkWatcher")
+                .withPublisher("Microsoft.Azure.NetworkWatcher")
+                .withType("NetworkWatcherAgentLinux")
+                .withVersion("1.4")
+                .attach());
+            vmDefinitions.add(azureResourceManager.virtualMachines()
+                .define(vm2Name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network2)
+                .withSubnet("Subnet2")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(rootname)
+                .withRootPassword(password)
+                // Extension currently needed for network watcher support
+                .defineNewExtension("networkWatcher")
+                .withPublisher("Microsoft.Azure.NetworkWatcher")
+                .withType("NetworkWatcherAgentLinux")
+                .withVersion("1.4")
+                .attach());
             CreatedResources<VirtualMachine> createdVMs = azureResourceManager.virtualMachines().create(vmDefinitions);
             VirtualMachine vm1 = createdVMs.get(vmDefinitions.get(0).key());
             VirtualMachine vm2 = createdVMs.get(vmDefinitions.get(1).key());
 
             ConnectivityCheck connectivity = nw.checkConnectivity()
-                    .toDestinationResourceId(vm2.id())
-                    .toDestinationPort(22)
-                    .fromSourceVirtualMachine(vm1.id())
-                    .execute();
+                .toDestinationResourceId(vm2.id())
+                .toDestinationPort(22)
+                .fromSourceVirtualMachine(vm1.id())
+                .execute();
             System.out.println("Connectivity status: " + connectivity.connectionStatus());
             return true;
         } finally {
@@ -251,8 +259,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -11,7 +11,9 @@ import com.beust.jcommander.Parameter;
  * @see GetPartitionInformationTest
  */
 public class EventHubsPartitionOptions extends EventHubsOptions {
-    @Parameter(names = {"--partitionId"}, description = "Partition to send, receive, or get information from.",
+    @Parameter(
+        names = { "--partitionId" },
+        description = "Partition to send, receive, or get information from.",
         required = true)
     private String partitionId;
 

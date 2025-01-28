@@ -21,14 +21,15 @@ public class TestUtils {
         switch (testMode) {
             case RECORD:
                 return new DefaultAzureCredentialBuilder().build();
+
             case LIVE:
                 Configuration config = Configuration.getGlobalConfiguration();
 
-                ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-                    .addLast(new EnvironmentCredentialBuilder().build())
-                    .addLast(new AzureCliCredentialBuilder().build())
-                    .addLast(new AzureDeveloperCliCredentialBuilder().build())
-                    .addLast(new AzurePowerShellCredentialBuilder().build());
+                ChainedTokenCredentialBuilder builder
+                    = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                        .addLast(new AzureCliCredentialBuilder().build())
+                        .addLast(new AzureDeveloperCliCredentialBuilder().build())
+                        .addLast(new AzurePowerShellCredentialBuilder().build());
 
                 String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
                 String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -40,8 +41,7 @@ public class TestUtils {
                     && !CoreUtils.isNullOrEmpty(tenantId)
                     && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-                    builder.addLast(new AzurePipelinesCredentialBuilder()
-                        .systemAccessToken(systemAccessToken)
+                    builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                         .clientId(clientId)
                         .tenantId(tenantId)
                         .serviceConnectionId(serviceConnectionId)
@@ -49,6 +49,7 @@ public class TestUtils {
                 }
 
                 return builder.build();
+
             default:
                 // On PLAYBACK mode
                 return new MockTokenCredential();

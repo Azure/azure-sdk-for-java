@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareProfile model =
-            BinaryData
-                .fromString(
-                    "{\"memorySizeMB\":1064191938,\"numCPUs\":413797833,\"numCoresPerSocket\":607796900,\"cpuHotAddEnabled\":false,\"cpuHotRemoveEnabled\":false,\"memoryHotAddEnabled\":false}")
-                .toObject(HardwareProfile.class);
+        HardwareProfile model = BinaryData.fromString(
+            "{\"memorySizeMB\":1064191938,\"numCPUs\":413797833,\"numCoresPerSocket\":607796900,\"cpuHotAddEnabled\":false,\"cpuHotRemoveEnabled\":false,\"memoryHotAddEnabled\":false}")
+            .toObject(HardwareProfile.class);
         Assertions.assertEquals(1064191938, model.memorySizeMB());
         Assertions.assertEquals(413797833, model.numCPUs());
         Assertions.assertEquals(607796900, model.numCoresPerSocket());
@@ -23,8 +21,9 @@ public final class HardwareProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HardwareProfile model =
-            new HardwareProfile().withMemorySizeMB(1064191938).withNumCPUs(413797833).withNumCoresPerSocket(607796900);
+        HardwareProfile model = new HardwareProfile().withMemorySizeMB(1064191938)
+            .withNumCPUs(413797833)
+            .withNumCoresPerSocket(607796900);
         model = BinaryData.fromObject(model).toObject(HardwareProfile.class);
         Assertions.assertEquals(1064191938, model.memorySizeMB());
         Assertions.assertEquals(413797833, model.numCPUs());

@@ -8,30 +8,31 @@ import com.azure.core.management.SubResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DnsResolvers CreateOrUpdate. */
+/**
+ * Samples for DnsResolvers CreateOrUpdate.
+ */
 public final class DnsResolversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsResolver_Put.json
      */
     /**
      * Sample code: Upsert DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
     public static void upsertDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .dnsResolvers()
+        manager.dnsResolvers()
             .define("sampleDnsResolver")
             .withRegion("westus2")
             .withExistingResourceGroup("sampleResourceGroup")
-            .withVirtualNetwork(
-                new SubResource()
-                    .withId(
-                        "/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
-            .withTags(mapOf("key1", "value1"))
+            .withVirtualNetwork(new SubResource().withId(
+                "/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

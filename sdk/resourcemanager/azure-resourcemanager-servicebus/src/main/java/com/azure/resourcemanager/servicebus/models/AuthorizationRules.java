@@ -16,9 +16,6 @@ import com.azure.resourcemanager.servicebus.ServiceBusManager;
  * @param <RuleT> the specific rule type
  */
 @Fluent
-public interface AuthorizationRules<RuleT> extends
-    SupportsListing<RuleT>,
-    SupportsGettingByName<RuleT>,
-    SupportsDeletingByName,
-    HasManager<ServiceBusManager> {
+public interface AuthorizationRules<RuleT> extends SupportsListing<RuleT>, SupportsGettingByName<RuleT>,
+    SupportsDeletingByName, HasManager<ServiceBusManager> {
 }

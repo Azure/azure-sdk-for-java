@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomModelJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomModelJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"custom_model\",\"mode\":\"ReadWriteMount\",\"uri\":\"tjknsxfwushcdp\",\"description\":\"pn\"}")
-                .toObject(CustomModelJobOutput.class);
-        Assertions.assertEquals("pn", model.description());
+        CustomModelJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"custom_model\",\"uri\":\"howgomvvhxo\",\"mode\":\"ReadWriteMount\",\"description\":\"apnpxraqawbmp\"}")
+            .toObject(CustomModelJobOutput.class);
+        Assertions.assertEquals("apnpxraqawbmp", model.description());
+        Assertions.assertEquals("howgomvvhxo", model.uri());
         Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("tjknsxfwushcdp", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomModelJobOutput model =
-            new CustomModelJobOutput()
-                .withDescription("pn")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("tjknsxfwushcdp");
+        CustomModelJobOutput model = new CustomModelJobOutput().withDescription("apnpxraqawbmp")
+            .withUri("howgomvvhxo")
+            .withMode(OutputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(CustomModelJobOutput.class);
-        Assertions.assertEquals("pn", model.description());
+        Assertions.assertEquals("apnpxraqawbmp", model.description());
+        Assertions.assertEquals("howgomvvhxo", model.uri());
         Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("tjknsxfwushcdp", model.uri());
     }
 }

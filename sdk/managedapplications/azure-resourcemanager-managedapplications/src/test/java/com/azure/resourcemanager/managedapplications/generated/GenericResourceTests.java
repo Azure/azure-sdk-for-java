@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GenericResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenericResource model =
-            BinaryData
-                .fromString(
-                    "{\"managedBy\":\"kwy\",\"sku\":{\"name\":\"gfgibm\",\"tier\":\"gakeqsr\",\"size\":\"bzqqedqytbciq\",\"family\":\"uflmm\",\"model\":\"zsm\",\"capacity\":269319267},\"location\":\"lougpbkw\",\"tags\":{\"umkdosvqwhbmd\":\"tduqktapspwgcuer\",\"bhtqqrolfpfpsa\":\"bbjfddgmbmbexp\",\"jgzjaoyfhrtx\":\"gbquxigj\",\"fqawrlyxw\":\"lnerkujysvleju\"},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}")
-                .toObject(GenericResource.class);
+        GenericResource model = BinaryData.fromString(
+            "{\"managedBy\":\"kwy\",\"sku\":{\"name\":\"gfgibm\",\"tier\":\"gakeqsr\",\"size\":\"bzqqedqytbciq\",\"family\":\"uflmm\",\"model\":\"zsm\",\"capacity\":269319267},\"location\":\"lougpbkw\",\"tags\":{\"umkdosvqwhbmd\":\"tduqktapspwgcuer\",\"bhtqqrolfpfpsa\":\"bbjfddgmbmbexp\",\"jgzjaoyfhrtx\":\"gbquxigj\",\"fqawrlyxw\":\"lnerkujysvleju\"},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}")
+            .toObject(GenericResource.class);
         Assertions.assertEquals("lougpbkw", model.location());
         Assertions.assertEquals("tduqktapspwgcuer", model.tags().get("umkdosvqwhbmd"));
         Assertions.assertEquals("kwy", model.managedBy());
@@ -32,28 +30,16 @@ public final class GenericResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericResource model =
-            new GenericResource()
-                .withLocation("lougpbkw")
-                .withTags(
-                    mapOf(
-                        "umkdosvqwhbmd",
-                        "tduqktapspwgcuer",
-                        "bhtqqrolfpfpsa",
-                        "bbjfddgmbmbexp",
-                        "jgzjaoyfhrtx",
-                        "gbquxigj",
-                        "fqawrlyxw",
-                        "lnerkujysvleju"))
-                .withManagedBy("kwy")
-                .withSku(
-                    new Sku()
-                        .withName("gfgibm")
-                        .withTier("gakeqsr")
-                        .withSize("bzqqedqytbciq")
-                        .withFamily("uflmm")
-                        .withModel("zsm")
-                        .withCapacity(269319267));
+        GenericResource model = new GenericResource().withLocation("lougpbkw")
+            .withTags(mapOf("umkdosvqwhbmd", "tduqktapspwgcuer", "bhtqqrolfpfpsa", "bbjfddgmbmbexp", "jgzjaoyfhrtx",
+                "gbquxigj", "fqawrlyxw", "lnerkujysvleju"))
+            .withManagedBy("kwy")
+            .withSku(new Sku().withName("gfgibm")
+                .withTier("gakeqsr")
+                .withSize("bzqqedqytbciq")
+                .withFamily("uflmm")
+                .withModel("zsm")
+                .withCapacity(269319267));
         model = BinaryData.fromObject(model).toObject(GenericResource.class);
         Assertions.assertEquals("lougpbkw", model.location());
         Assertions.assertEquals("tduqktapspwgcuer", model.tags().get("umkdosvqwhbmd"));

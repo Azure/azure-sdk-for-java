@@ -6,77 +6,45 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.education.EducationManager;
 import com.azure.resourcemanager.education.models.StudentDetails;
 import com.azure.resourcemanager.education.models.StudentRole;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StudentsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"firstName\":\"mpukgriw\",\"lastName\":\"lzlfbxzpuz\",\"email\":\"cispnqzahmgkbr\",\"role\":\"Admin\",\"budget\":{\"currency\":\"dhibnuq\",\"value\":26.127296},\"subscriptionId\":\"kadrgvt\",\"expirationDate\":\"2021-08-17T08:36:52Z\",\"status\":\"Deleted\",\"effectiveDate\":\"2021-06-01T06:43:51Z\",\"subscriptionAlias\":\"nhijggmebfsi\",\"subscriptionInviteLastSentDate\":\"2021-12-10T14:18:05Z\"},\"id\":\"trcvpnazzmh\",\"name\":\"runmp\",\"type\":\"ttdbhrbnl\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"firstName\":\"t\",\"lastName\":\"pngjcrcczsqpjhvm\",\"email\":\"ajvnysounqe\",\"role\":\"Student\",\"budget\":{\"currency\":\"oaeupfhyhltrpmo\",\"value\":87.11093},\"subscriptionId\":\"matuok\",\"expirationDate\":\"2021-09-23T02:42:43Z\",\"status\":\"Deleted\",\"effectiveDate\":\"2021-07-12T12:37:48Z\",\"subscriptionAlias\":\"odsfcpkvxodpuozm\",\"subscriptionInviteLastSentDate\":\"2021-06-16T00:33:51Z\"},\"id\":\"agfuaxbezyiu\",\"name\":\"kktwhrdxw\",\"type\":\"ywqsmbsurexim\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EducationManager manager = EducationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<StudentDetails> response = manager.students()
+            .list("bgsncghkjeszzhb", "jhtxfvgxbfsmxne", "mpvecxgodebfqk", true, com.azure.core.util.Context.NONE);
 
-        EducationManager manager =
-            EducationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<StudentDetails> response =
-            manager.students().list("hcjrefovgmk", "sle", "yvxyqjp", true, Context.NONE);
-
-        Assertions.assertEquals("t", response.iterator().next().firstName());
-        Assertions.assertEquals("pngjcrcczsqpjhvm", response.iterator().next().lastName());
-        Assertions.assertEquals("ajvnysounqe", response.iterator().next().email());
-        Assertions.assertEquals(StudentRole.STUDENT, response.iterator().next().role());
-        Assertions.assertEquals("oaeupfhyhltrpmo", response.iterator().next().budget().currency());
-        Assertions.assertEquals(87.11093F, response.iterator().next().budget().value());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-09-23T02:42:43Z"), response.iterator().next().expirationDate());
-        Assertions.assertEquals("odsfcpkvxodpuozm", response.iterator().next().subscriptionAlias());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-16T00:33:51Z"),
-                response.iterator().next().subscriptionInviteLastSentDate());
+        Assertions.assertEquals("mpukgriw", response.iterator().next().firstName());
+        Assertions.assertEquals("lzlfbxzpuz", response.iterator().next().lastName());
+        Assertions.assertEquals("cispnqzahmgkbr", response.iterator().next().email());
+        Assertions.assertEquals(StudentRole.ADMIN, response.iterator().next().role());
+        Assertions.assertEquals("dhibnuq", response.iterator().next().budget().currency());
+        Assertions.assertEquals(26.127296F, response.iterator().next().budget().value());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T08:36:52Z"),
+            response.iterator().next().expirationDate());
+        Assertions.assertEquals("nhijggmebfsi", response.iterator().next().subscriptionAlias());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-10T14:18:05Z"),
+            response.iterator().next().subscriptionInviteLastSentDate());
     }
 }

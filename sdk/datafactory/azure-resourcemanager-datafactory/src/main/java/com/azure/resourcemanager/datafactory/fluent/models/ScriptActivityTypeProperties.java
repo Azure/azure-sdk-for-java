@@ -5,34 +5,41 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ScriptActivityScriptBlock;
 import com.azure.resourcemanager.datafactory.models.ScriptActivityTypePropertiesLogSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Script activity properties.
  */
 @Fluent
-public final class ScriptActivityTypeProperties {
+public final class ScriptActivityTypeProperties implements JsonSerializable<ScriptActivityTypeProperties> {
     /*
      * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "scriptBlockExecutionTimeout")
     private Object scriptBlockExecutionTimeout;
 
     /*
      * Array of script blocks. Type: array.
      */
-    @JsonProperty(value = "scripts")
     private List<ScriptActivityScriptBlock> scripts;
 
     /*
      * Log settings of script activity.
      */
-    @JsonProperty(value = "logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
+
+    /*
+     * Enable to retrieve result sets from multiple SQL statements and the number of rows affected by the DML statement.
+     * Supported connector: SnowflakeV2. Type: boolean (or Expression with resultType boolean).
+     */
+    private Object returnMultistatementResult;
 
     /**
      * Creates an instance of ScriptActivityTypeProperties class.
@@ -103,6 +110,30 @@ public final class ScriptActivityTypeProperties {
     }
 
     /**
+     * Get the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @return the returnMultistatementResult value.
+     */
+    public Object returnMultistatementResult() {
+        return this.returnMultistatementResult;
+    }
+
+    /**
+     * Set the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @param returnMultistatementResult the returnMultistatementResult value to set.
+     * @return the ScriptActivityTypeProperties object itself.
+     */
+    public ScriptActivityTypeProperties withReturnMultistatementResult(Object returnMultistatementResult) {
+        this.returnMultistatementResult = returnMultistatementResult;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -114,5 +145,53 @@ public final class ScriptActivityTypeProperties {
         if (logSettings() != null) {
             logSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
+        jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("logSettings", this.logSettings);
+        jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptActivityTypeProperties.
+     */
+    public static ScriptActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActivityTypeProperties deserializedScriptActivityTypeProperties = new ScriptActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scriptBlockExecutionTimeout".equals(fieldName)) {
+                    deserializedScriptActivityTypeProperties.scriptBlockExecutionTimeout = reader.readUntyped();
+                } else if ("scripts".equals(fieldName)) {
+                    List<ScriptActivityScriptBlock> scripts
+                        = reader.readArray(reader1 -> ScriptActivityScriptBlock.fromJson(reader1));
+                    deserializedScriptActivityTypeProperties.scripts = scripts;
+                } else if ("logSettings".equals(fieldName)) {
+                    deserializedScriptActivityTypeProperties.logSettings
+                        = ScriptActivityTypePropertiesLogSettings.fromJson(reader);
+                } else if ("returnMultistatementResult".equals(fieldName)) {
+                    deserializedScriptActivityTypeProperties.returnMultistatementResult = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActivityTypeProperties;
+        });
     }
 }

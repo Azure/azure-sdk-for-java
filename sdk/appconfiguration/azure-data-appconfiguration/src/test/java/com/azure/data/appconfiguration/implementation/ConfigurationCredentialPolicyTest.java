@@ -40,15 +40,11 @@ public class ConfigurationCredentialPolicyTest {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(configurationCredentialsPolicy, auditorPolicy)
             .build();
 
-        SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline),
-            () -> sendRequest(pipeline)
-        );
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
     }
 
     private Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {

@@ -5,57 +5,62 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The IncidentPropertiesAction model. */
+/**
+ * The IncidentPropertiesAction model.
+ */
 @Fluent
-public final class IncidentPropertiesAction {
+public final class IncidentPropertiesAction implements JsonSerializable<IncidentPropertiesAction> {
     /*
      * The severity of the incident
      */
-    @JsonProperty(value = "severity")
     private IncidentSeverity severity;
 
     /*
      * The status of the incident
      */
-    @JsonProperty(value = "status")
     private IncidentStatus status;
 
     /*
      * The reason the incident was closed
      */
-    @JsonProperty(value = "classification")
     private IncidentClassification classification;
 
     /*
      * The classification reason the incident was closed with
      */
-    @JsonProperty(value = "classificationReason")
     private IncidentClassificationReason classificationReason;
 
     /*
      * Describes the reason the incident was closed.
      */
-    @JsonProperty(value = "classificationComment")
     private String classificationComment;
 
     /*
      * Information on the user an incident is assigned to
      */
-    @JsonProperty(value = "owner")
     private IncidentOwnerInfo owner;
 
     /*
      * List of labels to add to the incident.
      */
-    @JsonProperty(value = "labels")
     private List<IncidentLabel> labels;
 
     /**
+     * Creates an instance of IncidentPropertiesAction class.
+     */
+    public IncidentPropertiesAction() {
+    }
+
+    /**
      * Get the severity property: The severity of the incident.
-     *
+     * 
      * @return the severity value.
      */
     public IncidentSeverity severity() {
@@ -64,7 +69,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the severity property: The severity of the incident.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -75,7 +80,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Get the status property: The status of the incident.
-     *
+     * 
      * @return the status value.
      */
     public IncidentStatus status() {
@@ -84,7 +89,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the status property: The status of the incident.
-     *
+     * 
      * @param status the status value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -95,7 +100,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Get the classification property: The reason the incident was closed.
-     *
+     * 
      * @return the classification value.
      */
     public IncidentClassification classification() {
@@ -104,7 +109,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the classification property: The reason the incident was closed.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -115,7 +120,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Get the classificationReason property: The classification reason the incident was closed with.
-     *
+     * 
      * @return the classificationReason value.
      */
     public IncidentClassificationReason classificationReason() {
@@ -124,7 +129,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the classificationReason property: The classification reason the incident was closed with.
-     *
+     * 
      * @param classificationReason the classificationReason value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -135,7 +140,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Get the classificationComment property: Describes the reason the incident was closed.
-     *
+     * 
      * @return the classificationComment value.
      */
     public String classificationComment() {
@@ -144,7 +149,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the classificationComment property: Describes the reason the incident was closed.
-     *
+     * 
      * @param classificationComment the classificationComment value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -155,7 +160,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Get the owner property: Information on the user an incident is assigned to.
-     *
+     * 
      * @return the owner value.
      */
     public IncidentOwnerInfo owner() {
@@ -164,7 +169,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the owner property: Information on the user an incident is assigned to.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -175,7 +180,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Get the labels property: List of labels to add to the incident.
-     *
+     * 
      * @return the labels value.
      */
     public List<IncidentLabel> labels() {
@@ -184,7 +189,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Set the labels property: List of labels to add to the incident.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the IncidentPropertiesAction object itself.
      */
@@ -195,7 +200,7 @@ public final class IncidentPropertiesAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -205,5 +210,64 @@ public final class IncidentPropertiesAction {
         if (labels() != null) {
             labels().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("classification",
+            this.classification == null ? null : this.classification.toString());
+        jsonWriter.writeStringField("classificationReason",
+            this.classificationReason == null ? null : this.classificationReason.toString());
+        jsonWriter.writeStringField("classificationComment", this.classificationComment);
+        jsonWriter.writeJsonField("owner", this.owner);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentPropertiesAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentPropertiesAction if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IncidentPropertiesAction.
+     */
+    public static IncidentPropertiesAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentPropertiesAction deserializedIncidentPropertiesAction = new IncidentPropertiesAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("severity".equals(fieldName)) {
+                    deserializedIncidentPropertiesAction.severity = IncidentSeverity.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedIncidentPropertiesAction.status = IncidentStatus.fromString(reader.getString());
+                } else if ("classification".equals(fieldName)) {
+                    deserializedIncidentPropertiesAction.classification
+                        = IncidentClassification.fromString(reader.getString());
+                } else if ("classificationReason".equals(fieldName)) {
+                    deserializedIncidentPropertiesAction.classificationReason
+                        = IncidentClassificationReason.fromString(reader.getString());
+                } else if ("classificationComment".equals(fieldName)) {
+                    deserializedIncidentPropertiesAction.classificationComment = reader.getString();
+                } else if ("owner".equals(fieldName)) {
+                    deserializedIncidentPropertiesAction.owner = IncidentOwnerInfo.fromJson(reader);
+                } else if ("labels".equals(fieldName)) {
+                    List<IncidentLabel> labels = reader.readArray(reader1 -> IncidentLabel.fromJson(reader1));
+                    deserializedIncidentPropertiesAction.labels = labels;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentPropertiesAction;
+        });
     }
 }

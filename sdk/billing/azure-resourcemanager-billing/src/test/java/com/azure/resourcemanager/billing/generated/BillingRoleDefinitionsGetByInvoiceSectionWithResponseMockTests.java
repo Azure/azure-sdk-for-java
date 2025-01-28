@@ -6,63 +6,36 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
 import com.azure.resourcemanager.billing.models.BillingRoleDefinition;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BillingRoleDefinitionsGetByInvoiceSectionWithResponseMockTests {
     @Test
     public void testGetByInvoiceSectionWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"uyyaescjxna\",\"permissions\":[{\"actions\":[\"bkx\",\"tbfkihainzkef\",\"zl\",\"vcozcgoeozli\"],\"notActions\":[\"nunzuysajvvq\",\"honyonelivgtibt\",\"qjqjcajgofytkhhk\",\"mrvkxeojtdyulglh\"]},{\"actions\":[\"ru\",\"lfqfxspxgogypbzt\"],\"notActions\":[\"xjnskvc\",\"vuzimbwttmhlvryc\",\"xrnwukfajnp\"]},{\"actions\":[\"jggkwdepem\",\"iayfiqiidxco\"],\"notActions\":[\"udyhgtrttcuayiqy\",\"nkmm\",\"zifb\",\"gqexowq\"]}],\"roleName\":\"rtgqrqkk\"},\"tags\":{\"gobot\":\"gkuobpwain\",\"zyvextchslro\":\"xiewhpnyjtuq\"},\"id\":\"owuwhd\",\"name\":\"rifiozttcbiichg\",\"type\":\"udsozodwjcfqoy\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"s\",\"permissions\":[],\"roleName\":\"jszlb\"},\"id\":\"cmnlzijiufehg\",\"name\":\"vflnwyvqkxrerln\",\"type\":\"ylyl\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        BillingRoleDefinition response = manager.billingRoleDefinitions()
+            .getByInvoiceSectionWithResponse("mprklatwiuujxsuj", "rwgxeegxbnjnczep", "pc", "mgbf",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BillingRoleDefinition response =
-            manager
-                .billingRoleDefinitions()
-                .getByInvoiceSectionWithResponse(
-                    "qxfx", "elgcmpzqjhhhqx", "w", "vcacoyv", com.azure.core.util.Context.NONE)
-                .getValue();
+        Assertions.assertEquals("gkuobpwain", response.tags().get("gobot"));
+        Assertions.assertEquals("rtgqrqkk", response.properties().roleName());
     }
 }

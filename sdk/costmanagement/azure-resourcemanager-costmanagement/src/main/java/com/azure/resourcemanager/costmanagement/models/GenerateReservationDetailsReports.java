@@ -6,13 +6,15 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of GenerateReservationDetailsReports. */
+/**
+ * Resource collection API of GenerateReservationDetailsReports.
+ */
 public interface GenerateReservationDetailsReports {
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
-     *
+     * 
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
      * @param endDate End Date.
@@ -27,7 +29,7 @@ public interface GenerateReservationDetailsReports {
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
      * Reservation usage details can be viewed only by certain enterprise roles. For more details on the roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/manage/understand-ea-roles#usage-and-costs-access-by-role.
-     *
+     * 
      * @param billingAccountId Enrollment ID (Legacy BillingAccount ID).
      * @param startDate Start Date.
      * @param endDate End Date.
@@ -44,7 +46,7 @@ public interface GenerateReservationDetailsReports {
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
@@ -54,15 +56,15 @@ public interface GenerateReservationDetailsReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the long running operation.
      */
-    OperationStatus byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate);
+    OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
      * Reservation usage details can be viewed by only certain enterprise roles by default. For more details on the
      * roles see,
      * https://docs.microsoft.com/azure/cost-management-billing/reservations/reservation-utilization#view-utilization-in-the-azure-portal-with-azure-rbac-access.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param startDate Start Date.
@@ -73,6 +75,6 @@ public interface GenerateReservationDetailsReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the long running operation.
      */
-    OperationStatus byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
+    OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate, Context context);
 }

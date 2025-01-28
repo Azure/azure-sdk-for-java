@@ -30,11 +30,16 @@ public final class HyperVReplicaBluePolicyInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaBluePolicyInput model = new HyperVReplicaBluePolicyInput().withRecoveryPoints(1923596622)
-            .withApplicationConsistentSnapshotFrequencyInHours(1537790283).withCompression("nrholhujb")
-            .withInitialReplicationMethod("xiplkysolsyj").withOnlineReplicationStartTime("xslwhd")
-            .withOfflineReplicationImportPath("vhtbbzjhfvh").withOfflineReplicationExportPath("zb")
-            .withReplicationPort(1668972402).withAllowedAuthenticationType(1931538005)
-            .withReplicaDeletion("ihotjecohmxv").withReplicationFrequencyInSeconds(635322642);
+            .withApplicationConsistentSnapshotFrequencyInHours(1537790283)
+            .withCompression("nrholhujb")
+            .withInitialReplicationMethod("xiplkysolsyj")
+            .withOnlineReplicationStartTime("xslwhd")
+            .withOfflineReplicationImportPath("vhtbbzjhfvh")
+            .withOfflineReplicationExportPath("zb")
+            .withReplicationPort(1668972402)
+            .withAllowedAuthenticationType(1931538005)
+            .withReplicaDeletion("ihotjecohmxv")
+            .withReplicationFrequencyInSeconds(635322642);
         model = BinaryData.fromObject(model).toObject(HyperVReplicaBluePolicyInput.class);
         Assertions.assertEquals(1923596622, model.recoveryPoints());
         Assertions.assertEquals(1537790283, model.applicationConsistentSnapshotFrequencyInHours());

@@ -13,8 +13,7 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
 
     private final com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager;
 
-    CheckNameAvailabilityResponseImpl(
-        CheckNameAvailabilityResponseInner innerObject,
+    CheckNameAvailabilityResponseImpl(CheckNameAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

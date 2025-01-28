@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.dynatrace.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dynatrace.models.DynatraceEnvironmentProperties;
 import com.azure.resourcemanager.dynatrace.models.LiftrResourceCategories;
 import com.azure.resourcemanager.dynatrace.models.MarketplaceSubscriptionStatus;
@@ -12,66 +16,62 @@ import com.azure.resourcemanager.dynatrace.models.MonitoringStatus;
 import com.azure.resourcemanager.dynatrace.models.PlanData;
 import com.azure.resourcemanager.dynatrace.models.ProvisioningState;
 import com.azure.resourcemanager.dynatrace.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties specific to the monitor resource. */
+/**
+ * Properties specific to the monitor resource.
+ */
 @Fluent
-public final class MonitorProperties {
+public final class MonitorProperties implements JsonSerializable<MonitorProperties> {
     /*
      * Status of the monitor.
      */
-    @JsonProperty(value = "monitoringStatus")
     private MonitoringStatus monitoringStatus;
 
     /*
      * Marketplace subscription status.
      */
-    @JsonProperty(value = "marketplaceSubscriptionStatus")
     private MarketplaceSubscriptionStatus marketplaceSubscriptionStatus;
 
     /*
      * Properties of the Dynatrace environment.
      */
-    @JsonProperty(value = "dynatraceEnvironmentProperties")
     private DynatraceEnvironmentProperties dynatraceEnvironmentProperties;
 
     /*
      * User info.
      */
-    @JsonProperty(value = "userInfo")
     private UserInfo userInfo;
 
     /*
      * Billing plan information.
      */
-    @JsonProperty(value = "planData")
     private PlanData planData;
 
     /*
      * Liftr Resource category.
      */
-    @JsonProperty(value = "liftrResourceCategory", access = JsonProperty.Access.WRITE_ONLY)
     private LiftrResourceCategories liftrResourceCategory;
 
     /*
      * The priority of the resource.
      */
-    @JsonProperty(value = "liftrResourcePreference", access = JsonProperty.Access.WRITE_ONLY)
     private Integer liftrResourcePreference;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of MonitorProperties class. */
+    /**
+     * Creates an instance of MonitorProperties class.
+     */
     public MonitorProperties() {
     }
 
     /**
      * Get the monitoringStatus property: Status of the monitor.
-     *
+     * 
      * @return the monitoringStatus value.
      */
     public MonitoringStatus monitoringStatus() {
@@ -80,7 +80,7 @@ public final class MonitorProperties {
 
     /**
      * Set the monitoringStatus property: Status of the monitor.
-     *
+     * 
      * @param monitoringStatus the monitoringStatus value to set.
      * @return the MonitorProperties object itself.
      */
@@ -91,7 +91,7 @@ public final class MonitorProperties {
 
     /**
      * Get the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
+     * 
      * @return the marketplaceSubscriptionStatus value.
      */
     public MarketplaceSubscriptionStatus marketplaceSubscriptionStatus() {
@@ -100,19 +100,19 @@ public final class MonitorProperties {
 
     /**
      * Set the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
+     * 
      * @param marketplaceSubscriptionStatus the marketplaceSubscriptionStatus value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
+    public MonitorProperties
+        withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
         this.marketplaceSubscriptionStatus = marketplaceSubscriptionStatus;
         return this;
     }
 
     /**
      * Get the dynatraceEnvironmentProperties property: Properties of the Dynatrace environment.
-     *
+     * 
      * @return the dynatraceEnvironmentProperties value.
      */
     public DynatraceEnvironmentProperties dynatraceEnvironmentProperties() {
@@ -121,19 +121,19 @@ public final class MonitorProperties {
 
     /**
      * Set the dynatraceEnvironmentProperties property: Properties of the Dynatrace environment.
-     *
+     * 
      * @param dynatraceEnvironmentProperties the dynatraceEnvironmentProperties value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withDynatraceEnvironmentProperties(
-        DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
+    public MonitorProperties
+        withDynatraceEnvironmentProperties(DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
         this.dynatraceEnvironmentProperties = dynatraceEnvironmentProperties;
         return this;
     }
 
     /**
      * Get the userInfo property: User info.
-     *
+     * 
      * @return the userInfo value.
      */
     public UserInfo userInfo() {
@@ -142,7 +142,7 @@ public final class MonitorProperties {
 
     /**
      * Set the userInfo property: User info.
-     *
+     * 
      * @param userInfo the userInfo value to set.
      * @return the MonitorProperties object itself.
      */
@@ -153,7 +153,7 @@ public final class MonitorProperties {
 
     /**
      * Get the planData property: Billing plan information.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -162,7 +162,7 @@ public final class MonitorProperties {
 
     /**
      * Set the planData property: Billing plan information.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the MonitorProperties object itself.
      */
@@ -173,7 +173,7 @@ public final class MonitorProperties {
 
     /**
      * Get the liftrResourceCategory property: Liftr Resource category.
-     *
+     * 
      * @return the liftrResourceCategory value.
      */
     public LiftrResourceCategories liftrResourceCategory() {
@@ -182,7 +182,7 @@ public final class MonitorProperties {
 
     /**
      * Get the liftrResourcePreference property: The priority of the resource.
-     *
+     * 
      * @return the liftrResourcePreference value.
      */
     public Integer liftrResourcePreference() {
@@ -191,7 +191,7 @@ public final class MonitorProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -200,7 +200,7 @@ public final class MonitorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -213,5 +213,64 @@ public final class MonitorProperties {
         if (planData() != null) {
             planData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("monitoringStatus",
+            this.monitoringStatus == null ? null : this.monitoringStatus.toString());
+        jsonWriter.writeStringField("marketplaceSubscriptionStatus",
+            this.marketplaceSubscriptionStatus == null ? null : this.marketplaceSubscriptionStatus.toString());
+        jsonWriter.writeJsonField("dynatraceEnvironmentProperties", this.dynatraceEnvironmentProperties);
+        jsonWriter.writeJsonField("userInfo", this.userInfo);
+        jsonWriter.writeJsonField("planData", this.planData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorProperties.
+     */
+    public static MonitorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorProperties deserializedMonitorProperties = new MonitorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("monitoringStatus".equals(fieldName)) {
+                    deserializedMonitorProperties.monitoringStatus = MonitoringStatus.fromString(reader.getString());
+                } else if ("marketplaceSubscriptionStatus".equals(fieldName)) {
+                    deserializedMonitorProperties.marketplaceSubscriptionStatus
+                        = MarketplaceSubscriptionStatus.fromString(reader.getString());
+                } else if ("dynatraceEnvironmentProperties".equals(fieldName)) {
+                    deserializedMonitorProperties.dynatraceEnvironmentProperties
+                        = DynatraceEnvironmentProperties.fromJson(reader);
+                } else if ("userInfo".equals(fieldName)) {
+                    deserializedMonitorProperties.userInfo = UserInfo.fromJson(reader);
+                } else if ("planData".equals(fieldName)) {
+                    deserializedMonitorProperties.planData = PlanData.fromJson(reader);
+                } else if ("liftrResourceCategory".equals(fieldName)) {
+                    deserializedMonitorProperties.liftrResourceCategory
+                        = LiftrResourceCategories.fromString(reader.getString());
+                } else if ("liftrResourcePreference".equals(fieldName)) {
+                    deserializedMonitorProperties.liftrResourcePreference = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMonitorProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorProperties;
+        });
     }
 }

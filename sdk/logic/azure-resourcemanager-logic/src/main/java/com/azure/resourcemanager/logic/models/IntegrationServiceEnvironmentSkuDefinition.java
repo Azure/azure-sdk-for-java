@@ -6,25 +6,27 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSkuDefinitionInner;
 
-/** An immutable client-side representation of IntegrationServiceEnvironmentSkuDefinition. */
+/**
+ * An immutable client-side representation of IntegrationServiceEnvironmentSkuDefinition.
+ */
 public interface IntegrationServiceEnvironmentSkuDefinition {
     /**
      * Gets the resourceType property: The resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     String resourceType();
 
     /**
      * Gets the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     IntegrationServiceEnvironmentSkuDefinitionSku sku();
 
     /**
      * Gets the capacity property: The sku capacity.
-     *
+     * 
      * @return the capacity value.
      */
     IntegrationServiceEnvironmentSkuCapacity capacity();
@@ -32,7 +34,7 @@ public interface IntegrationServiceEnvironmentSkuDefinition {
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSkuDefinitionInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationServiceEnvironmentSkuDefinitionInner innerModel();

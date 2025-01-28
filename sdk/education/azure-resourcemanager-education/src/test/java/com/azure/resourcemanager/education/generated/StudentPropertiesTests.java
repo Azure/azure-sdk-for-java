@@ -10,48 +10,43 @@ import com.azure.resourcemanager.education.fluent.models.StudentProperties;
 import com.azure.resourcemanager.education.models.StudentRole;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StudentPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        StudentProperties model =
-            BinaryData
-                .fromString(
-                    "{\"firstName\":\"idf\",\"lastName\":\"zwdzuh\",\"email\":\"ymwisdkft\",\"role\":\"Admin\",\"budget\":{\"currency\":\"mnteiwao\",\"value\":6.2815723},\"subscriptionId\":\"ijcmmx\",\"expirationDate\":\"2021-07-13T15:29:37Z\",\"status\":\"Active\",\"effectiveDate\":\"2021-10-30T06:34:46Z\",\"subscriptionAlias\":\"rpymzidnsez\",\"subscriptionInviteLastSentDate\":\"2021-01-24T00:04:31Z\"}")
-                .toObject(StudentProperties.class);
-        Assertions.assertEquals("idf", model.firstName());
-        Assertions.assertEquals("zwdzuh", model.lastName());
-        Assertions.assertEquals("ymwisdkft", model.email());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        StudentProperties model = BinaryData.fromString(
+            "{\"firstName\":\"km\",\"lastName\":\"jcmmxdcufufsrp\",\"email\":\"mzidnsezcxtb\",\"role\":\"Admin\",\"budget\":{\"currency\":\"fycc\",\"value\":29.16742},\"subscriptionId\":\"mdwzjeiachboo\",\"expirationDate\":\"2021-05-15T06:55:08Z\",\"status\":\"Expired\",\"effectiveDate\":\"2021-10-01T08:17:31Z\",\"subscriptionAlias\":\"fqpte\",\"subscriptionInviteLastSentDate\":\"2021-06-28T09:00:21Z\"}")
+            .toObject(StudentProperties.class);
+        Assertions.assertEquals("km", model.firstName());
+        Assertions.assertEquals("jcmmxdcufufsrp", model.lastName());
+        Assertions.assertEquals("mzidnsezcxtb", model.email());
         Assertions.assertEquals(StudentRole.ADMIN, model.role());
-        Assertions.assertEquals("mnteiwao", model.budget().currency());
-        Assertions.assertEquals(6.2815723F, model.budget().value());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T15:29:37Z"), model.expirationDate());
-        Assertions.assertEquals("rpymzidnsez", model.subscriptionAlias());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T00:04:31Z"), model.subscriptionInviteLastSentDate());
+        Assertions.assertEquals("fycc", model.budget().currency());
+        Assertions.assertEquals(29.16742F, model.budget().value());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T06:55:08Z"), model.expirationDate());
+        Assertions.assertEquals("fqpte", model.subscriptionAlias());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T09:00:21Z"), model.subscriptionInviteLastSentDate());
     }
 
-    @Test
-    public void testSerialize() {
-        StudentProperties model =
-            new StudentProperties()
-                .withFirstName("idf")
-                .withLastName("zwdzuh")
-                .withEmail("ymwisdkft")
-                .withRole(StudentRole.ADMIN)
-                .withBudget(new Amount().withCurrency("mnteiwao").withValue(6.2815723F))
-                .withExpirationDate(OffsetDateTime.parse("2021-07-13T15:29:37Z"))
-                .withSubscriptionAlias("rpymzidnsez")
-                .withSubscriptionInviteLastSentDate(OffsetDateTime.parse("2021-01-24T00:04:31Z"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        StudentProperties model = new StudentProperties().withFirstName("km")
+            .withLastName("jcmmxdcufufsrp")
+            .withEmail("mzidnsezcxtb")
+            .withRole(StudentRole.ADMIN)
+            .withBudget(new Amount().withCurrency("fycc").withValue(29.16742F))
+            .withExpirationDate(OffsetDateTime.parse("2021-05-15T06:55:08Z"))
+            .withSubscriptionAlias("fqpte")
+            .withSubscriptionInviteLastSentDate(OffsetDateTime.parse("2021-06-28T09:00:21Z"));
         model = BinaryData.fromObject(model).toObject(StudentProperties.class);
-        Assertions.assertEquals("idf", model.firstName());
-        Assertions.assertEquals("zwdzuh", model.lastName());
-        Assertions.assertEquals("ymwisdkft", model.email());
+        Assertions.assertEquals("km", model.firstName());
+        Assertions.assertEquals("jcmmxdcufufsrp", model.lastName());
+        Assertions.assertEquals("mzidnsezcxtb", model.email());
         Assertions.assertEquals(StudentRole.ADMIN, model.role());
-        Assertions.assertEquals("mnteiwao", model.budget().currency());
-        Assertions.assertEquals(6.2815723F, model.budget().value());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T15:29:37Z"), model.expirationDate());
-        Assertions.assertEquals("rpymzidnsez", model.subscriptionAlias());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T00:04:31Z"), model.subscriptionInviteLastSentDate());
+        Assertions.assertEquals("fycc", model.budget().currency());
+        Assertions.assertEquals(29.16742F, model.budget().value());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T06:55:08Z"), model.expirationDate());
+        Assertions.assertEquals("fqpte", model.subscriptionAlias());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T09:00:21Z"), model.subscriptionInviteLastSentDate());
     }
 }

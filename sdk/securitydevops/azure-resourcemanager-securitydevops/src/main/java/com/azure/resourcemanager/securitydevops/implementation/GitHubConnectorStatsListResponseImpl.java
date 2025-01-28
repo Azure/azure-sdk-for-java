@@ -15,8 +15,7 @@ public final class GitHubConnectorStatsListResponseImpl implements GitHubConnect
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    GitHubConnectorStatsListResponseImpl(
-        GitHubConnectorStatsListResponseInner innerObject,
+    GitHubConnectorStatsListResponseImpl(GitHubConnectorStatsListResponseInner innerObject,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.AssemblyDefinitionInner;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountAssembliesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountAssembliesClient.
+ */
 public interface IntegrationAccountAssembliesClient {
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface IntegrationAccountAssembliesClient {
 
     /**
      * List the assemblies for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -39,12 +41,12 @@ public interface IntegrationAccountAssembliesClient {
      * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AssemblyDefinitionInner> list(
-        String resourceGroupName, String integrationAccountName, Context context);
+    PagedIterable<AssemblyDefinitionInner> list(String resourceGroupName, String integrationAccountName,
+        Context context);
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -55,12 +57,12 @@ public interface IntegrationAccountAssembliesClient {
      * @return an assembly for an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssemblyDefinitionInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
+    Response<AssemblyDefinitionInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context);
 
     /**
      * Get an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -74,7 +76,7 @@ public interface IntegrationAccountAssembliesClient {
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -86,16 +88,13 @@ public interface IntegrationAccountAssembliesClient {
      * @return the assembly definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssemblyDefinitionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact,
+    Response<AssemblyDefinitionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact,
         Context context);
 
     /**
      * Create or update an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -106,15 +105,12 @@ public interface IntegrationAccountAssembliesClient {
      * @return the assembly definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssemblyDefinitionInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String assemblyArtifactName,
-        AssemblyDefinitionInner assemblyArtifact);
+    AssemblyDefinitionInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, AssemblyDefinitionInner assemblyArtifact);
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -125,12 +121,12 @@ public interface IntegrationAccountAssembliesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName, Context context);
 
     /**
      * Delete an assembly for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -143,7 +139,7 @@ public interface IntegrationAccountAssembliesClient {
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -154,12 +150,12 @@ public interface IntegrationAccountAssembliesClient {
      * @return the content callback url for an integration account assembly along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName, Context context);
+    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String assemblyArtifactName, Context context);
 
     /**
      * Get the content callback url for an integration account assembly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param assemblyArtifactName The assembly artifact name.
@@ -169,6 +165,6 @@ public interface IntegrationAccountAssembliesClient {
      * @return the content callback url for an integration account assembly.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerCallbackUrlInner listContentCallbackUrl(
-        String resourceGroupName, String integrationAccountName, String assemblyArtifactName);
+    WorkflowTriggerCallbackUrlInner listContentCallbackUrl(String resourceGroupName, String integrationAccountName,
+        String assemblyArtifactName);
 }

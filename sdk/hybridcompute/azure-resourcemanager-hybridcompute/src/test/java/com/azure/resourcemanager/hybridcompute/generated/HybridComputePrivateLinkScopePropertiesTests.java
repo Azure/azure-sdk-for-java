@@ -13,16 +13,16 @@ public final class HybridComputePrivateLinkScopePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridComputePrivateLinkScopeProperties model = BinaryData.fromString(
-            "{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"qamvdkfwynwcvtbv\",\"privateLinkScopeId\":\"yhmtnvyqiat\",\"privateEndpointConnections\":[{\"id\":\"cnpwzcjaesgvvscc\",\"name\":\"jguq\",\"type\":\"wygzlvdnkfxusem\",\"properties\":{\"privateEndpoint\":{\"id\":\"muhapfcqdpsqxqv\"},\"privateLinkServiceConnectionState\":{\"status\":\"vuoy\",\"description\":\"gc\",\"actionsRequired\":\"lvez\"},\"provisioningState\":\"pqlmfe\",\"groupIds\":[\"rqwky\",\"kobopgxed\",\"owepbqpcrfkb\",\"ccsnjvcdwxlpq\"]}}]}")
+            "{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"ihwqknfdntwjchr\",\"privateLinkScopeId\":\"oihxumwctondzjlu\",\"privateEndpointConnections\":[{\"id\":\"lwg\",\"name\":\"tsbwtovvtgse\",\"type\":\"qfi\",\"properties\":{\"privateEndpoint\":{\"id\":\"knpirgnepttwq\"},\"privateLinkServiceConnectionState\":{\"status\":\"niffcdmqnroj\",\"description\":\"pij\",\"actionsRequired\":\"rxfrddhc\"},\"provisioningState\":\"tizzronasxif\",\"groupIds\":[\"qyzhf\"]}},{\"id\":\"esgogc\",\"name\":\"onnxkrlgnyhm\",\"type\":\"sxkkg\",\"properties\":{\"privateEndpoint\":{\"id\":\"gh\"},\"privateLinkServiceConnectionState\":{\"status\":\"bdhqxvcxgf\",\"description\":\"pdso\",\"actionsRequired\":\"shrnsvbuswdvz\"},\"provisioningState\":\"bycnunvjsrtkf\",\"groupIds\":[\"opqgikyzirtxdyux\",\"ejnt\",\"sewgioilqukr\",\"dxtqmieoxo\"]}}]}")
             .toObject(HybridComputePrivateLinkScopeProperties.class);
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HybridComputePrivateLinkScopeProperties model
-            = new HybridComputePrivateLinkScopeProperties().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED);
+        HybridComputePrivateLinkScopeProperties model = new HybridComputePrivateLinkScopeProperties()
+            .withPublicNetworkAccess(PublicNetworkAccessType.SECURED_BY_PERIMETER);
         model = BinaryData.fromObject(model).toObject(HybridComputePrivateLinkScopeProperties.class);
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.publicNetworkAccess());
     }
 }

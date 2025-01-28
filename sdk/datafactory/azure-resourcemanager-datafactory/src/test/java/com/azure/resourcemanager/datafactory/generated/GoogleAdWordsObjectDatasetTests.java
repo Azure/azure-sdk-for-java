@@ -19,32 +19,31 @@ public final class GoogleAdWordsObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"GoogleAdWordsObject\",\"typeProperties\":{\"tableName\":\"datamhp\"},\"description\":\"sfgvrvq\",\"structure\":\"datawbdrwroqkljnzpqh\",\"schema\":\"datasarkyulfa\",\"linkedServiceName\":{\"referenceName\":\"ea\",\"parameters\":{\"geytlplslfc\":\"dataqenhekzaz\",\"ksuowt\":\"datae\",\"rhnxzmfvmw\":\"datalkyqfnjo\",\"rawwhyxf\":\"datanrtc\"}},\"parameters\":{\"uns\":{\"type\":\"String\",\"defaultValue\":\"datadmvwn\"}},\"annotations\":[\"dataevzshqykebmps\",\"dataaezc\",\"datadkckr\"],\"folder\":{\"name\":\"qdmhcejstfs\"},\"\":{\"wxqd\":\"datajakgk\",\"wdjox\":\"dataoqzh\",\"sobvcnsb\":\"datakbd\"}}")
+            "{\"type\":\"GoogleAdWordsObject\",\"typeProperties\":{\"tableName\":\"datainrkj\"},\"description\":\"gzfsu\",\"structure\":\"dataybhozlsbufnhb\",\"schema\":\"datantpoe\",\"linkedServiceName\":{\"referenceName\":\"ytrsljzmzui\",\"parameters\":{\"p\":\"datagsxzn\",\"ma\":\"datamkqbylbbnjldicq\"}},\"parameters\":{\"fzoidy\":{\"type\":\"Int\",\"defaultValue\":\"dataenitvkyahfo\"}},\"annotations\":[\"datarev\"],\"folder\":{\"name\":\"kfalw\"},\"\":{\"ucnusnylfhicrj\":\"datachcayvqbeq\"}}")
             .toObject(GoogleAdWordsObjectDataset.class);
-        Assertions.assertEquals("sfgvrvq", model.description());
-        Assertions.assertEquals("ea", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uns").type());
-        Assertions.assertEquals("qdmhcejstfs", model.folder().name());
+        Assertions.assertEquals("gzfsu", model.description());
+        Assertions.assertEquals("ytrsljzmzui", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("fzoidy").type());
+        Assertions.assertEquals("kfalw", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsObjectDataset model = new GoogleAdWordsObjectDataset().withDescription("sfgvrvq")
-            .withStructure("datawbdrwroqkljnzpqh")
-            .withSchema("datasarkyulfa")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ea")
-                .withParameters(mapOf("geytlplslfc", "dataqenhekzaz", "ksuowt", "datae", "rhnxzmfvmw", "datalkyqfnjo",
-                    "rawwhyxf", "datanrtc")))
-            .withParameters(
-                mapOf("uns", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datadmvwn")))
-            .withAnnotations(Arrays.asList("dataevzshqykebmps", "dataaezc", "datadkckr"))
-            .withFolder(new DatasetFolder().withName("qdmhcejstfs"))
-            .withTableName("datamhp");
+        GoogleAdWordsObjectDataset model = new GoogleAdWordsObjectDataset().withDescription("gzfsu")
+            .withStructure("dataybhozlsbufnhb")
+            .withSchema("datantpoe")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ytrsljzmzui")
+                .withParameters(mapOf("p", "datagsxzn", "ma", "datamkqbylbbnjldicq")))
+            .withParameters(mapOf("fzoidy",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataenitvkyahfo")))
+            .withAnnotations(Arrays.asList("datarev"))
+            .withFolder(new DatasetFolder().withName("kfalw"))
+            .withTableName("datainrkj");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsObjectDataset.class);
-        Assertions.assertEquals("sfgvrvq", model.description());
-        Assertions.assertEquals("ea", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("uns").type());
-        Assertions.assertEquals("qdmhcejstfs", model.folder().name());
+        Assertions.assertEquals("gzfsu", model.description());
+        Assertions.assertEquals("ytrsljzmzui", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("fzoidy").type());
+        Assertions.assertEquals("kfalw", model.folder().name());
     }
 
     // Use "Map.of" if available

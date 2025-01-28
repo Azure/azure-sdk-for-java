@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The pattern type to be used for resource naming. */
+/**
+ * The pattern type to be used for resource naming.
+ */
 public final class NamingPatternType extends ExpandableStringEnum<NamingPatternType> {
-    /** Static value FullResourceName for NamingPatternType. */
+    /**
+     * Static value FullResourceName for NamingPatternType.
+     */
     public static final NamingPatternType FULL_RESOURCE_NAME = fromString("FullResourceName");
 
     /**
      * Creates a new instance of NamingPatternType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class NamingPatternType extends ExpandableStringEnum<NamingPatternT
 
     /**
      * Creates or finds a NamingPatternType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NamingPatternType.
      */
-    @JsonCreator
     public static NamingPatternType fromString(String name) {
         return fromString(name, NamingPatternType.class);
     }
 
     /**
      * Gets known NamingPatternType values.
-     *
+     * 
      * @return known NamingPatternType values.
      */
     public static Collection<NamingPatternType> values() {

@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: TestPipeline
     type: boolean
     default: false
@@ -49,9 +52,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: JavadocSafeJavaBuildVersion
-    type: string
-    default: $(JavadocSafeJavaBuildVersion)
   - name: IgnoreVerifyTypeSpecCodeGenerationError
     type: boolean
     default: false
@@ -61,15 +61,21 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: VersionOverride
+    type: string
+    default: $(VersionOverride)
 
 jobs:
   - job: 'Build'
 
     variables:
       ArtifactName: 'packages'
+      # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
+      # 'auto' shouldn't cause any problems
       Codeql.Enabled: true
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
+      SDKType: ${{ parameters.SDKType }}
 
     pool:
       name: $(LINUXPOOL)
@@ -85,8 +91,18 @@ jobs:
             Paths:
               - '**/*.xml'
               - '**/*.md'
+              - '**/ci*.yml' # necessary for save-package-properties.yml
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
+
+      # This is the case for the PullReqest pipeline which has a ServiceDirectory of 'auto'.
+      # For the PullRequest pipeline, the packageInfo files generated from the diff end up
+      # being the source of truth for the artifacts list.
+      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+          parameters:
+            ServiceDirectory: ${{parameters.ServiceDirectory}}
+            ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -129,9 +145,13 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
-        parameters:
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
+      # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
+      # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
+      # PR pipeline, whose ServiceDirectory is 'auto' since the packageInfo files will be generated above.
+      - ${{if ne(parameters.ServiceDirectory, 'auto')}}:
+        - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+          parameters:
+            ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -162,15 +182,15 @@ jobs:
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
-      - task: Maven@3
-        displayName: 'Build and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
+      - task: Maven@4
+        displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -196,6 +216,15 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
+
+      - task: Powershell@2
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
+          arguments: >
+            -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
+        displayName: Update package properties with namespaces
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
@@ -224,8 +253,6 @@ jobs:
           Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
@@ -267,6 +294,11 @@ jobs:
           workingDirectory: $(Build.SourcesDirectory)
           filePath: $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
+
+      - task: PythonScript@0
+        displayName: 'Verify version text files'
+        inputs:
+          scriptPath: eng/versioning/find_unused_dependencies.py
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -358,7 +390,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
-          JavadocSafeJavaBuildVersion: ${{ parameters.JavadocSafeJavaBuildVersion }}
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           RunLinting: true
@@ -391,7 +422,11 @@ jobs:
       OsVmImage: $(LINUXVMIMAGE)
       Pool: $(LINUXPOOL)
       Os: linux
-      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixConfigs:
+        - ${{ each config in parameters.MatrixConfigs }}:
+          - ${{ config }}
+        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+          - ${{ config }}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
@@ -409,3 +444,4 @@ jobs:
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}
+        VersionOverride: ${{ parameters.VersionOverride }}

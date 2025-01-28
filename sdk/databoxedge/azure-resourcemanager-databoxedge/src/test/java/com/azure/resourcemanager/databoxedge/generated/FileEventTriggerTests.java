@@ -13,26 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class FileEventTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileEventTrigger model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"FileEvent\",\"properties\":{\"sourceInfo\":{\"shareId\":\"cormr\"},\"sinkInfo\":{\"roleId\":\"xqtvcofu\"},\"customContextTag\":\"lvkgju\"},\"id\":\"gdknnqv\",\"name\":\"aznqntoru\",\"type\":\"sgsahmkycgr\"}")
-                .toObject(FileEventTrigger.class);
-        Assertions.assertEquals("cormr", model.sourceInfo().shareId());
-        Assertions.assertEquals("xqtvcofu", model.sinkInfo().roleId());
-        Assertions.assertEquals("lvkgju", model.customContextTag());
+        FileEventTrigger model = BinaryData.fromString(
+            "{\"kind\":\"FileEvent\",\"properties\":{\"sourceInfo\":{\"shareId\":\"twdw\"},\"sinkInfo\":{\"roleId\":\"ftswibyrcdlbhsh\"},\"customContextTag\":\"p\"},\"id\":\"acstwityk\",\"name\":\"evxccedcp\",\"type\":\"md\"}")
+            .toObject(FileEventTrigger.class);
+        Assertions.assertEquals("twdw", model.sourceInfo().shareId());
+        Assertions.assertEquals("ftswibyrcdlbhsh", model.sinkInfo().roleId());
+        Assertions.assertEquals("p", model.customContextTag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileEventTrigger model =
-            new FileEventTrigger()
-                .withSourceInfo(new FileSourceInfo().withShareId("cormr"))
-                .withSinkInfo(new RoleSinkInfo().withRoleId("xqtvcofu"))
-                .withCustomContextTag("lvkgju");
+        FileEventTrigger model = new FileEventTrigger().withSourceInfo(new FileSourceInfo().withShareId("twdw"))
+            .withSinkInfo(new RoleSinkInfo().withRoleId("ftswibyrcdlbhsh"))
+            .withCustomContextTag("p");
         model = BinaryData.fromObject(model).toObject(FileEventTrigger.class);
-        Assertions.assertEquals("cormr", model.sourceInfo().shareId());
-        Assertions.assertEquals("xqtvcofu", model.sinkInfo().roleId());
-        Assertions.assertEquals("lvkgju", model.customContextTag());
+        Assertions.assertEquals("twdw", model.sourceInfo().shareId());
+        Assertions.assertEquals("ftswibyrcdlbhsh", model.sinkInfo().roleId());
+        Assertions.assertEquals("p", model.customContextTag());
     }
 }

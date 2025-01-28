@@ -40,8 +40,8 @@ public class SqlSyncMemberImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncMemberImpl(
-        String name, SqlSyncGroupImpl parent, SyncMemberInner innerObject, SqlServerManager sqlServerManager) {
+    SqlSyncMemberImpl(String name, SqlSyncGroupImpl parent, SyncMemberInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -64,14 +64,8 @@ public class SqlSyncMemberImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncMemberImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        String sqlDatabaseName,
-        String sqlSyncGroupName,
-        String name,
-        SyncMemberInner innerObject,
-        SqlServerManager sqlServerManager) {
+    SqlSyncMemberImpl(String resourceGroupName, String sqlServerName, String sqlDatabaseName, String sqlSyncGroupName,
+        String name, SyncMemberInner innerObject, SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -177,22 +171,14 @@ public class SqlSyncMemberImpl
     @Override
     public Mono<SqlSyncMember> createResourceAsync() {
         final SqlSyncMemberImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .createOrUpdateAsync(
-                this.resourceGroupName,
-                this.sqlServerName,
-                this.sqlDatabaseName,
-                this.sqlSyncGroupName,
-                this.name(),
-                this.innerModel())
-            .map(
-                syncMemberInner -> {
-                    self.setInner(syncMemberInner);
-                    return self;
-                });
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName,
+                this.sqlSyncGroupName, this.name(), this.innerModel())
+            .map(syncMemberInner -> {
+                self.setInner(syncMemberInner);
+                return self;
+            });
     }
 
     @Override
@@ -202,32 +188,26 @@ public class SqlSyncMemberImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .deleteAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName,
+                this.name());
     }
 
     @Override
     protected Mono<SyncMemberInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .getAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName,
+                this.name());
     }
 
     @Override
     public void delete() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .delete(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+            .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName,
+                this.name());
     }
 
     @Override
@@ -243,44 +223,37 @@ public class SqlSyncMemberImpl
 
     @Override
     public PagedIterable<SqlSyncFullSchemaProperty> listMemberSchemas() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
+        return PagedConverter.mapPage(this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .listMemberSchemas(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name()),
+            .listMemberSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName,
+                this.name()),
             inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncFullSchemaProperty> listMemberSchemasAsync() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getSyncMembers()
-            .listMemberSchemasAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name()),
+        return PagedConverter.mapPage(
+            this.sqlServerManager.serviceClient()
+                .getSyncMembers()
+                .listMemberSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName,
+                    this.sqlSyncGroupName, this.name()),
             syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
 
     @Override
     public void refreshMemberSchema() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .refreshMemberSchema(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+            .refreshMemberSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName,
+                this.sqlSyncGroupName, this.name());
     }
 
     @Override
     public Mono<Void> refreshMemberSchemaAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncMembers()
-            .refreshMemberSchemaAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+            .refreshMemberSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName,
+                this.sqlSyncGroupName, this.name());
     }
 
     @Override

@@ -41,8 +41,7 @@ import java.io.InputStream;
  *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.construct -->
  * <pre>
- * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;&quot;&lt;PATH-TO-PEM-CERTIFICATE&gt;&quot;&#41;
  *     .build&#40;&#41;;
@@ -60,8 +59,7 @@ import java.io.InputStream;
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
  * <pre>
  * ByteArrayInputStream certificateStream = new ByteArrayInputStream&#40;certificateBytes&#41;;
- * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;certificateStream&#41;
  *     .build&#40;&#41;;
@@ -79,8 +77,7 @@ import java.io.InputStream;
  *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
  * <pre>
- * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pfxCertificate&#40;&quot;&lt;PATH-TO-PFX-CERTIFICATE&gt;&quot;, &quot;P&#64;s$w0rd&quot;&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
@@ -104,6 +101,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     public ClientCertificateCredentialBuilder() {
         super();
     }
+
     /**
      * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
      *
@@ -138,8 +136,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     @Deprecated
-    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
-                                                             String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath, String clientCertificatePassword) {
         this.clientCertificatePath = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
@@ -209,8 +206,8 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public ClientCertificateCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public ClientCertificateCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -234,16 +231,17 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link ClientCertificateCredential} with the current configurations.
      */
     public ClientCertificateCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientCertificate", (clientCertificateBytes == null || clientCertificateBytes.length == 0)
-                ? clientCertificatePath : clientCertificateBytes);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId, "clientCertificate",
+            (clientCertificateBytes == null || clientCertificateBytes.length == 0)
+                ? clientCertificatePath
+                : clientCertificateBytes);
 
         if (clientCertificateBytes != null && clientCertificatePath != null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
-                    + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
-                    + "be provided."));
+                + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
+                + "be provided."));
         }
-        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath,
-            clientCertificateBytes, clientCertificatePassword, identityClientOptions);
+        return new ClientCertificateCredential(tenantId, clientId, clientCertificatePath, clientCertificateBytes,
+            clientCertificatePassword, identityClientOptions);
     }
 }

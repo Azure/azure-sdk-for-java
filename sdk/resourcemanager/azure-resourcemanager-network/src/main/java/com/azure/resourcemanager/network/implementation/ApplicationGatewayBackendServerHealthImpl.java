@@ -16,8 +16,7 @@ public class ApplicationGatewayBackendServerHealthImpl implements ApplicationGat
     private final ApplicationGatewayBackendHealthServerInner inner;
     private final ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth;
 
-    ApplicationGatewayBackendServerHealthImpl(
-        ApplicationGatewayBackendHealthServerInner inner,
+    ApplicationGatewayBackendServerHealthImpl(ApplicationGatewayBackendHealthServerInner inner,
         ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth) {
         this.inner = inner;
         this.httpConfigHealth = httpConfigHealth;

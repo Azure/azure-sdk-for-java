@@ -6,26 +6,36 @@ package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input values. */
+/**
+ * Input values.
+ */
 @Fluent
-public final class OperationInputs {
+public final class OperationInputs implements JsonSerializable<OperationInputs> {
     /*
      * The name of the IoT Central application instance to check.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The type of the IoT Central resource to query.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
+     * Creates an instance of OperationInputs class.
+     */
+    public OperationInputs() {
+    }
+
+    /**
      * Get the name property: The name of the IoT Central application instance to check.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +44,7 @@ public final class OperationInputs {
 
     /**
      * Set the name property: The name of the IoT Central application instance to check.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationInputs object itself.
      */
@@ -45,7 +55,7 @@ public final class OperationInputs {
 
     /**
      * Get the type property: The type of the IoT Central resource to query.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -54,7 +64,7 @@ public final class OperationInputs {
 
     /**
      * Set the type property: The type of the IoT Central resource to query.
-     *
+     * 
      * @param type the type value to set.
      * @return the OperationInputs object itself.
      */
@@ -65,16 +75,55 @@ public final class OperationInputs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model OperationInputs"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model OperationInputs"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationInputs.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationInputs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationInputs if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationInputs.
+     */
+    public static OperationInputs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationInputs deserializedOperationInputs = new OperationInputs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationInputs.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOperationInputs.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationInputs;
+        });
+    }
 }

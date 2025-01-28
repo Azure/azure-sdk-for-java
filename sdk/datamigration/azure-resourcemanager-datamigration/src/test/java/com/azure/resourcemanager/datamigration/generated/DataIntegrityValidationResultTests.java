@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.DataIntegrityValidationRes
 public final class DataIntegrityValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataIntegrityValidationResult model =
-            BinaryData
-                .fromString(
-                    "{\"failedObjects\":{\"zdwvvbalxl\":\"egfnmntfpmvmemfn\",\"fukuvsjcswsmystu\":\"lchpodbzevwrdn\",\"chpqbmfpjba\":\"uqypfcvle\"},\"validationErrors\":{\"text\":\"dfc\",\"severity\":\"Error\"}}")
-                .toObject(DataIntegrityValidationResult.class);
+        DataIntegrityValidationResult model = BinaryData.fromString(
+            "{\"failedObjects\":{\"fzqlqhycavod\":\"ilcbtgnhnzeyqxtj\",\"nlrariaawiuagy\":\"gxdbeesmie\",\"ojocqwogf\":\"wqfbylyrfgiagt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\"},\"validationErrors\":{\"text\":\"nbtgkbugrjqctoj\",\"severity\":\"Warning\"}}")
+            .toObject(DataIntegrityValidationResult.class);
     }
 
     @org.junit.jupiter.api.Test

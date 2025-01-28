@@ -5,42 +5,121 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AdditionalLocation;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBaseProperties;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
+import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
 import com.azure.resourcemanager.apimanagement.models.RemotePrivateEndpointConnectionWrapper;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkConfiguration;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of an API Management service resource description. */
+/**
+ * Properties of an API Management service resource description.
+ */
 @Fluent
 public final class ApiManagementServiceUpdateProperties extends ApiManagementServiceBaseProperties {
     /*
      * Publisher email.
      */
-    @JsonProperty(value = "publisherEmail")
     private String publisherEmail;
 
     /*
      * Publisher name.
      */
-    @JsonProperty(value = "publisherName")
     private String publisherName;
 
-    /** Creates an instance of ApiManagementServiceUpdateProperties class. */
+    /*
+     * Compute Platform Version running the service in this location.
+     */
+    private PlatformVersion platformVersion;
+
+    /*
+     * Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
+     * SKU on stv2 platform.
+     */
+    private List<String> outboundPublicIpAddresses;
+
+    /*
+     * Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in an
+     * Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated SKU.
+     */
+    private List<String> privateIpAddresses;
+
+    /*
+     * Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
+     * Basic, Standard, Premium and Isolated SKU.
+     */
+    private List<String> publicIpAddresses;
+
+    /*
+     * DEveloper Portal endpoint URL of the API Management service.
+     */
+    private String developerPortalUrl;
+
+    /*
+     * SCM endpoint URL of the API Management service.
+     */
+    private String scmUrl;
+
+    /*
+     * Management API endpoint URL of the API Management service.
+     */
+    private String managementApiUrl;
+
+    /*
+     * Publisher portal endpoint Url of the API Management service.
+     */
+    private String portalUrl;
+
+    /*
+     * Gateway URL of the API Management service in the Default Region.
+     */
+    private String gatewayRegionalUrl;
+
+    /*
+     * Gateway URL of the API Management service.
+     */
+    private String gatewayUrl;
+
+    /*
+     * Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ`
+     * as specified by the ISO 8601 standard.
+     */
+    private OffsetDateTime createdAtUtc;
+
+    /*
+     * The provisioning state of the API Management service, which is targeted by the long running operation started on
+     * the service.
+     */
+    private String targetProvisioningState;
+
+    /*
+     * The current provisioning state of the API Management service which can be one of the following:
+     * Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+     */
+    private String provisioningState;
+
+    /**
+     * Creates an instance of ApiManagementServiceUpdateProperties class.
+     */
     public ApiManagementServiceUpdateProperties() {
     }
 
     /**
      * Get the publisherEmail property: Publisher email.
-     *
+     * 
      * @return the publisherEmail value.
      */
     public String publisherEmail() {
@@ -49,7 +128,7 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
 
     /**
      * Set the publisherEmail property: Publisher email.
-     *
+     * 
      * @param publisherEmail the publisherEmail value to set.
      * @return the ApiManagementServiceUpdateProperties object itself.
      */
@@ -60,7 +139,7 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
 
     /**
      * Get the publisherName property: Publisher name.
-     *
+     * 
      * @return the publisherName value.
      */
     public String publisherName() {
@@ -69,7 +148,7 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
 
     /**
      * Set the publisherName property: Publisher name.
-     *
+     * 
      * @param publisherName the publisherName value to set.
      * @return the ApiManagementServiceUpdateProperties object itself.
      */
@@ -78,121 +157,446 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the platformVersion property: Compute Platform Version running the service in this location.
+     * 
+     * @return the platformVersion value.
+     */
+    @Override
+    public PlatformVersion platformVersion() {
+        return this.platformVersion;
+    }
+
+    /**
+     * Get the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
+     * deployed service. Available only for Premium SKU on stv2 platform.
+     * 
+     * @return the outboundPublicIpAddresses value.
+     */
+    @Override
+    public List<String> outboundPublicIpAddresses() {
+        return this.outboundPublicIpAddresses;
+    }
+
+    /**
+     * Get the privateIpAddresses property: Private Static Load Balanced IP addresses of the API Management service in
+     * Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard, Premium and
+     * Isolated SKU.
+     * 
+     * @return the privateIpAddresses value.
+     */
+    @Override
+    public List<String> privateIpAddresses() {
+        return this.privateIpAddresses;
+    }
+
+    /**
+     * Get the publicIpAddresses property: Public Static Load Balanced IP addresses of the API Management service in
+     * Primary region. Available only for Basic, Standard, Premium and Isolated SKU.
+     * 
+     * @return the publicIpAddresses value.
+     */
+    @Override
+    public List<String> publicIpAddresses() {
+        return this.publicIpAddresses;
+    }
+
+    /**
+     * Get the developerPortalUrl property: DEveloper Portal endpoint URL of the API Management service.
+     * 
+     * @return the developerPortalUrl value.
+     */
+    @Override
+    public String developerPortalUrl() {
+        return this.developerPortalUrl;
+    }
+
+    /**
+     * Get the scmUrl property: SCM endpoint URL of the API Management service.
+     * 
+     * @return the scmUrl value.
+     */
+    @Override
+    public String scmUrl() {
+        return this.scmUrl;
+    }
+
+    /**
+     * Get the managementApiUrl property: Management API endpoint URL of the API Management service.
+     * 
+     * @return the managementApiUrl value.
+     */
+    @Override
+    public String managementApiUrl() {
+        return this.managementApiUrl;
+    }
+
+    /**
+     * Get the portalUrl property: Publisher portal endpoint Url of the API Management service.
+     * 
+     * @return the portalUrl value.
+     */
+    @Override
+    public String portalUrl() {
+        return this.portalUrl;
+    }
+
+    /**
+     * Get the gatewayRegionalUrl property: Gateway URL of the API Management service in the Default Region.
+     * 
+     * @return the gatewayRegionalUrl value.
+     */
+    @Override
+    public String gatewayRegionalUrl() {
+        return this.gatewayRegionalUrl;
+    }
+
+    /**
+     * Get the gatewayUrl property: Gateway URL of the API Management service.
+     * 
+     * @return the gatewayUrl value.
+     */
+    @Override
+    public String gatewayUrl() {
+        return this.gatewayUrl;
+    }
+
+    /**
+     * Get the createdAtUtc property: Creation UTC date of the API Management service.The date conforms to the following
+     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * 
+     * @return the createdAtUtc value.
+     */
+    @Override
+    public OffsetDateTime createdAtUtc() {
+        return this.createdAtUtc;
+    }
+
+    /**
+     * Get the targetProvisioningState property: The provisioning state of the API Management service, which is targeted
+     * by the long running operation started on the service.
+     * 
+     * @return the targetProvisioningState value.
+     */
+    @Override
+    public String targetProvisioningState() {
+        return this.targetProvisioningState;
+    }
+
+    /**
+     * Get the provisioningState property: The current provisioning state of the API Management service which can be one
+     * of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withNotificationSenderEmail(String notificationSenderEmail) {
         super.withNotificationSenderEmail(notificationSenderEmail);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ApiManagementServiceUpdateProperties withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceUpdateProperties
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         super.withHostnameConfigurations(hostnameConfigurations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withPublicIpAddressId(String publicIpAddressId) {
         super.withPublicIpAddressId(publicIpAddressId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ApiManagementServiceUpdateProperties withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceUpdateProperties
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         super.withVirtualNetworkConfiguration(virtualNetworkConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withAdditionalLocations(List<AdditionalLocation> additionalLocations) {
         super.withAdditionalLocations(additionalLocations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withCustomProperties(Map<String, String> customProperties) {
         super.withCustomProperties(customProperties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withCertificates(List<CertificateConfiguration> certificates) {
         super.withCertificates(certificates);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withEnableClientCertificate(Boolean enableClientCertificate) {
         super.withEnableClientCertificate(enableClientCertificate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withNatGatewayState(NatGatewayState natGatewayState) {
         super.withNatGatewayState(natGatewayState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withDisableGateway(Boolean disableGateway) {
         super.withDisableGateway(disableGateway);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
         super.withVirtualNetworkType(virtualNetworkType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withApiVersionConstraint(ApiVersionConstraint apiVersionConstraint) {
         super.withApiVersionConstraint(apiVersionConstraint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiManagementServiceUpdateProperties withRestore(Boolean restore) {
         super.withRestore(restore);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ApiManagementServiceUpdateProperties withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceUpdateProperties
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         super.withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (hostnameConfigurations() != null) {
+            hostnameConfigurations().forEach(e -> e.validate());
+        }
+        if (virtualNetworkConfiguration() != null) {
+            virtualNetworkConfiguration().validate();
+        }
+        if (additionalLocations() != null) {
+            additionalLocations().forEach(e -> e.validate());
+        }
+        if (certificates() != null) {
+            certificates().forEach(e -> e.validate());
+        }
+        if (apiVersionConstraint() != null) {
+            apiVersionConstraint().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notificationSenderEmail", notificationSenderEmail());
+        jsonWriter.writeArrayField("hostnameConfigurations", hostnameConfigurations(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicIpAddressId", publicIpAddressId());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        jsonWriter.writeJsonField("virtualNetworkConfiguration", virtualNetworkConfiguration());
+        jsonWriter.writeArrayField("additionalLocations", additionalLocations(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("customProperties", customProperties(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("certificates", certificates(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableClientCertificate", enableClientCertificate());
+        jsonWriter.writeStringField("natGatewayState", natGatewayState() == null ? null : natGatewayState().toString());
+        jsonWriter.writeBooleanField("disableGateway", disableGateway());
+        jsonWriter.writeStringField("virtualNetworkType",
+            virtualNetworkType() == null ? null : virtualNetworkType().toString());
+        jsonWriter.writeJsonField("apiVersionConstraint", apiVersionConstraint());
+        jsonWriter.writeBooleanField("restore", restore());
+        jsonWriter.writeArrayField("privateEndpointConnections", privateEndpointConnections(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publisherEmail", this.publisherEmail);
+        jsonWriter.writeStringField("publisherName", this.publisherName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiManagementServiceUpdateProperties.
+     */
+    public static ApiManagementServiceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceUpdateProperties deserializedApiManagementServiceUpdateProperties
+                = new ApiManagementServiceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notificationSenderEmail".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.withNotificationSenderEmail(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.provisioningState = reader.getString();
+                } else if ("targetProvisioningState".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.targetProvisioningState = reader.getString();
+                } else if ("createdAtUtc".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.createdAtUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("gatewayUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.gatewayUrl = reader.getString();
+                } else if ("gatewayRegionalUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.gatewayRegionalUrl = reader.getString();
+                } else if ("portalUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.portalUrl = reader.getString();
+                } else if ("managementApiUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.managementApiUrl = reader.getString();
+                } else if ("scmUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.scmUrl = reader.getString();
+                } else if ("developerPortalUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.developerPortalUrl = reader.getString();
+                } else if ("hostnameConfigurations".equals(fieldName)) {
+                    List<HostnameConfiguration> hostnameConfigurations
+                        = reader.readArray(reader1 -> HostnameConfiguration.fromJson(reader1));
+                    deserializedApiManagementServiceUpdateProperties.withHostnameConfigurations(hostnameConfigurations);
+                } else if ("publicIPAddresses".equals(fieldName)) {
+                    List<String> publicIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceUpdateProperties.publicIpAddresses = publicIpAddresses;
+                } else if ("privateIPAddresses".equals(fieldName)) {
+                    List<String> privateIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceUpdateProperties.privateIpAddresses = privateIpAddresses;
+                } else if ("publicIpAddressId".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.withPublicIpAddressId(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withPublicNetworkAccess(PublicNetworkAccess.fromString(reader.getString()));
+                } else if ("virtualNetworkConfiguration".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withVirtualNetworkConfiguration(VirtualNetworkConfiguration.fromJson(reader));
+                } else if ("additionalLocations".equals(fieldName)) {
+                    List<AdditionalLocation> additionalLocations
+                        = reader.readArray(reader1 -> AdditionalLocation.fromJson(reader1));
+                    deserializedApiManagementServiceUpdateProperties.withAdditionalLocations(additionalLocations);
+                } else if ("customProperties".equals(fieldName)) {
+                    Map<String, String> customProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceUpdateProperties.withCustomProperties(customProperties);
+                } else if ("certificates".equals(fieldName)) {
+                    List<CertificateConfiguration> certificates
+                        = reader.readArray(reader1 -> CertificateConfiguration.fromJson(reader1));
+                    deserializedApiManagementServiceUpdateProperties.withCertificates(certificates);
+                } else if ("enableClientCertificate".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withEnableClientCertificate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("natGatewayState".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withNatGatewayState(NatGatewayState.fromString(reader.getString()));
+                } else if ("outboundPublicIPAddresses".equals(fieldName)) {
+                    List<String> outboundPublicIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceUpdateProperties.outboundPublicIpAddresses
+                        = outboundPublicIpAddresses;
+                } else if ("disableGateway".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withDisableGateway(reader.getNullable(JsonReader::getBoolean));
+                } else if ("virtualNetworkType".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withVirtualNetworkType(VirtualNetworkType.fromString(reader.getString()));
+                } else if ("apiVersionConstraint".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withApiVersionConstraint(ApiVersionConstraint.fromJson(reader));
+                } else if ("restore".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties
+                        .withRestore(reader.getNullable(JsonReader::getBoolean));
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections
+                        = reader.readArray(reader1 -> RemotePrivateEndpointConnectionWrapper.fromJson(reader1));
+                    deserializedApiManagementServiceUpdateProperties
+                        .withPrivateEndpointConnections(privateEndpointConnections);
+                } else if ("platformVersion".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.platformVersion
+                        = PlatformVersion.fromString(reader.getString());
+                } else if ("publisherEmail".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.publisherEmail = reader.getString();
+                } else if ("publisherName".equals(fieldName)) {
+                    deserializedApiManagementServiceUpdateProperties.publisherName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceUpdateProperties;
+        });
     }
 }

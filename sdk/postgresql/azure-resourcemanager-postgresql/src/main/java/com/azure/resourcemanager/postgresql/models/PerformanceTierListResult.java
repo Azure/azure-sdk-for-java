@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.fluent.models.PerformanceTierPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of performance tiers. */
+/**
+ * A list of performance tiers.
+ */
 @Fluent
-public final class PerformanceTierListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierListResult.class);
-
+public final class PerformanceTierListResult implements JsonSerializable<PerformanceTierListResult> {
     /*
      * The list of performance tiers
      */
-    @JsonProperty(value = "value")
     private List<PerformanceTierPropertiesInner> value;
 
     /**
+     * Creates an instance of PerformanceTierListResult class.
+     */
+    public PerformanceTierListResult() {
+    }
+
+    /**
      * Get the value property: The list of performance tiers.
-     *
+     * 
      * @return the value value.
      */
     public List<PerformanceTierPropertiesInner> value() {
@@ -33,7 +40,7 @@ public final class PerformanceTierListResult {
 
     /**
      * Set the value property: The list of performance tiers.
-     *
+     * 
      * @param value the value value to set.
      * @return the PerformanceTierListResult object itself.
      */
@@ -44,12 +51,50 @@ public final class PerformanceTierListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerformanceTierListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerformanceTierListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerformanceTierListResult.
+     */
+    public static PerformanceTierListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerformanceTierListResult deserializedPerformanceTierListResult = new PerformanceTierListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PerformanceTierPropertiesInner> value
+                        = reader.readArray(reader1 -> PerformanceTierPropertiesInner.fromJson(reader1));
+                    deserializedPerformanceTierListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerformanceTierListResult;
+        });
     }
 }

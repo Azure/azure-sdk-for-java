@@ -41,28 +41,34 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricsListResult;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkFabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkFabricsClient.
+ */
 public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkFabricsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkFabricsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkFabricsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(NetworkFabricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NetworkFabricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,267 +79,200 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NetworkFabricsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricName") String networkFabricName,
-            @BodyParam("application/json") NetworkFabricInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkFabricInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkFabricInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkFabricInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NetworkFabricPatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @BodyParam("application/json") NetworkFabricPatch body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkFabricsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkFabricsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkFabrics")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkFabricsListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkFabricsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/provision")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> provision(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/provision")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/deprovision")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> provision(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> deprovision(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/upgrade")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpgradeNetworkFabricProperties body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/deprovision")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deprovision(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> refreshConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/upgrade")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateWorkloadManagementBfdConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> upgrade(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateWorkloadManagementBfdConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricName") String networkFabricName,
-            @BodyParam("application/json") UpdateVersion body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/refreshConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateInfraManagementBfdConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> refreshConfiguration(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateInfraManagementBfdConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") UpdateAdministrativeState body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateWorkloadManagementBfdConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/validateConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateWorkloadManagementBfdConfiguration(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("networkFabricName") String networkFabricName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ValidateConfigurationProperties body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/updateInfraManagementBfdConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/getTopology")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateInfraManagementBfdConfiguration(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> getTopology(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @BodyParam("application/json") UpdateAdministrativeState body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/validateConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/commitConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateConfiguration(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @BodyParam("application/json") ValidateConfigurationProperties body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkFabricName") String networkFabricName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/getTopology")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> getTopology(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/commitConfiguration")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> commitConfiguration(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricName") String networkFabricName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkFabricsListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkFabricsListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -350,26 +289,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -377,23 +306,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -410,23 +335,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, body, accept, context);
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -436,24 +353,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreateAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body) {
+    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreateAsync(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this
-            .client
-            .<NetworkFabricInner, NetworkFabricInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkFabricInner.class,
-                NetworkFabricInner.class,
-                this.client.getContext());
+        return this.client.<NetworkFabricInner, NetworkFabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkFabricInner.class, NetworkFabricInner.class, this.client.getContext());
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -464,22 +375,20 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreateAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context) {
+    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreateAsync(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, networkFabricName, body, context);
-        return this
-            .client
-            .<NetworkFabricInner, NetworkFabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkFabricInner.class, NetworkFabricInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, networkFabricName, body, context);
+        return this.client.<NetworkFabricInner, NetworkFabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkFabricInner.class, NetworkFabricInner.class, context);
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -489,16 +398,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body) {
+    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body) {
         return this.beginCreateAsync(resourceGroupName, networkFabricName, body).getSyncPoller();
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -509,16 +418,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context) {
+    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginCreate(String resourceGroupName,
+        String networkFabricName, NetworkFabricInner body, Context context) {
         return this.beginCreateAsync(resourceGroupName, networkFabricName, body, context).getSyncPoller();
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -528,18 +437,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the Network Fabric resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricInner> createAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body) {
-        return beginCreateAsync(resourceGroupName, networkFabricName, body)
-            .last()
+    private Mono<NetworkFabricInner> createAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricInner body) {
+        return beginCreateAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -550,18 +458,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the Network Fabric resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricInner> createAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, networkFabricName, body, context)
-            .last()
+    private Mono<NetworkFabricInner> createAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, networkFabricName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -577,9 +484,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Create Network Fabric.
-     *
-     * <p>Create Network Fabric resource.
-     *
+     * 
+     * Create Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -590,16 +497,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricInner create(
-        String resourceGroupName, String networkFabricName, NetworkFabricInner body, Context context) {
+    public NetworkFabricInner create(String resourceGroupName, String networkFabricName, NetworkFabricInner body,
+        Context context) {
         return createAsync(resourceGroupName, networkFabricName, body, context).block();
     }
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -608,19 +515,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return network Fabric resource details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkFabricInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<NetworkFabricInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -633,24 +536,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -660,19 +555,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return network Fabric resource details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkFabricInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<NetworkFabricInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -684,22 +575,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -715,9 +599,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -727,16 +611,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return network Fabric resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkFabricInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public Response<NetworkFabricInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkFabricName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkFabricName, context).block();
     }
 
     /**
      * Gets a Network Fabric.
-     *
-     * <p>Get Network Fabric resource details.
-     *
+     * 
+     * Get Network Fabric resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -751,32 +635,28 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricPatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -793,26 +673,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -820,23 +690,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric resource definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Network Fabric resource definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricPatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -853,23 +719,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, body, accept, context);
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -879,24 +737,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdateAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body) {
+    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdateAsync(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this
-            .client
-            .<NetworkFabricInner, NetworkFabricInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkFabricInner.class,
-                NetworkFabricInner.class,
-                this.client.getContext());
+        return this.client.<NetworkFabricInner, NetworkFabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkFabricInner.class, NetworkFabricInner.class, this.client.getContext());
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -907,22 +759,20 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdateAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context) {
+    private PollerFlux<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdateAsync(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, networkFabricName, body, context);
-        return this
-            .client
-            .<NetworkFabricInner, NetworkFabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkFabricInner.class, NetworkFabricInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, networkFabricName, body, context);
+        return this.client.<NetworkFabricInner, NetworkFabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkFabricInner.class, NetworkFabricInner.class, context);
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -932,16 +782,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body) {
+    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body) {
         return this.beginUpdateAsync(resourceGroupName, networkFabricName, body).getSyncPoller();
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -952,16 +802,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context) {
+    public SyncPoller<PollResult<NetworkFabricInner>, NetworkFabricInner> beginUpdate(String resourceGroupName,
+        String networkFabricName, NetworkFabricPatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, networkFabricName, body, context).getSyncPoller();
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -971,18 +821,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the Network Fabric resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricInner> updateAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body) {
-        return beginUpdateAsync(resourceGroupName, networkFabricName, body)
-            .last()
+    private Mono<NetworkFabricInner> updateAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricPatch body) {
+        return beginUpdateAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -993,18 +842,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the Network Fabric resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkFabricInner> updateAsync(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, networkFabricName, body, context)
-            .last()
+    private Mono<NetworkFabricInner> updateAsync(String resourceGroupName, String networkFabricName,
+        NetworkFabricPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, networkFabricName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -1020,9 +868,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Updates a Network Fabric.
-     *
-     * <p>Update certain properties of the Network Fabric resource.
-     *
+     * 
+     * Update certain properties of the Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -1033,16 +881,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the Network Fabric resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkFabricInner update(
-        String resourceGroupName, String networkFabricName, NetworkFabricPatch body, Context context) {
+    public NetworkFabricInner update(String resourceGroupName, String networkFabricName, NetworkFabricPatch body,
+        Context context) {
         return updateAsync(resourceGroupName, networkFabricName, body, context).block();
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1051,19 +899,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1075,25 +919,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1103,19 +938,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkFabricName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1127,22 +958,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,17 +977,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkFabricName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkFabricName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1173,20 +995,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkFabricName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkFabricName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1201,9 +1022,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1213,16 +1034,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkFabricName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1232,16 +1053,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkFabricName) {
-        return beginDeleteAsync(resourceGroupName, networkFabricName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkFabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1252,16 +1072,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkFabricName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkFabricName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkFabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1275,9 +1094,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Deletes a Network Fabric.
-     *
-     * <p>Delete Network Fabric resource.
-     *
+     * 
+     * Delete Network Fabric resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1292,9 +1111,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1304,16 +1123,12 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1321,33 +1136,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkFabricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkFabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1356,19 +1156,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return list of Network Fabrics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkFabricInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1377,29 +1173,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1408,16 +1192,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1427,16 +1210,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1450,9 +1232,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by resource group.
-     *
-     * <p>List all the Network Fabric resources in the given resource group.
-     *
+     * 
+     * List all the Network Fabric resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1467,9 +1249,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1477,45 +1259,27 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkFabricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkFabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1525,57 +1289,42 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFabricInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1584,15 +1333,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
@@ -1604,9 +1353,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * List Network Fabrics by subscription.
-     *
-     * <p>List all the Network Fabric resources in the given subscription.
-     *
+     * 
+     * List all the Network Fabric resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1620,9 +1369,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1631,19 +1380,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> provisionWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> provisionWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1655,25 +1400,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .provision(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+            .withContext(context -> service.provision(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1683,19 +1419,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> provisionWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> provisionWithResponseAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1707,22 +1439,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .provision(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.provision(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1731,25 +1456,21 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginProvisionAsync(String resourceGroupName, String networkFabricName) {
         Mono<Response<Flux<ByteBuffer>>> mono = provisionWithResponseAsync(resourceGroupName, networkFabricName);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1759,27 +1480,23 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginProvisionAsync(String resourceGroupName, String networkFabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            provisionWithResponseAsync(resourceGroupName, networkFabricName, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = provisionWithResponseAsync(resourceGroupName, networkFabricName, context);
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1788,17 +1505,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginProvision(String resourceGroupName, String networkFabricName) {
         return this.beginProvisionAsync(resourceGroupName, networkFabricName).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1808,17 +1525,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginProvision(String resourceGroupName, String networkFabricName, Context context) {
         return this.beginProvisionAsync(resourceGroupName, networkFabricName, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1827,18 +1544,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> provisionAsync(
-        String resourceGroupName, String networkFabricName) {
-        return beginProvisionAsync(resourceGroupName, networkFabricName)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> provisionAsync(String resourceGroupName,
+        String networkFabricName) {
+        return beginProvisionAsync(resourceGroupName, networkFabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1848,18 +1564,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> provisionAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
-        return beginProvisionAsync(resourceGroupName, networkFabricName, context)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> provisionAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
+        return beginProvisionAsync(resourceGroupName, networkFabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1874,9 +1589,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Provisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Provisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1886,16 +1601,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner provision(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public CommonPostActionResponseForDeviceUpdateInner provision(String resourceGroupName, String networkFabricName,
+        Context context) {
         return provisionAsync(resourceGroupName, networkFabricName, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1904,19 +1619,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deprovisionWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> deprovisionWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1928,25 +1639,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deprovision(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+            .withContext(context -> service.deprovision(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -1956,19 +1658,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deprovisionWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deprovisionWithResponseAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1980,22 +1678,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deprovision(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.deprovision(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2004,25 +1695,21 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginDeprovisionAsync(String resourceGroupName, String networkFabricName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deprovisionWithResponseAsync(resourceGroupName, networkFabricName);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2032,27 +1719,23 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginDeprovisionAsync(String resourceGroupName, String networkFabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deprovisionWithResponseAsync(resourceGroupName, networkFabricName, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deprovisionWithResponseAsync(resourceGroupName, networkFabricName, context);
+        return this.client
             .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForDeviceUpdateInner.class,
+                CommonPostActionResponseForDeviceUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2061,17 +1744,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginDeprovision(String resourceGroupName, String networkFabricName) {
         return this.beginDeprovisionAsync(resourceGroupName, networkFabricName).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2081,17 +1764,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginDeprovision(String resourceGroupName, String networkFabricName, Context context) {
         return this.beginDeprovisionAsync(resourceGroupName, networkFabricName, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2100,18 +1783,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> deprovisionAsync(
-        String resourceGroupName, String networkFabricName) {
-        return beginDeprovisionAsync(resourceGroupName, networkFabricName)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> deprovisionAsync(String resourceGroupName,
+        String networkFabricName) {
+        return beginDeprovisionAsync(resourceGroupName, networkFabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2121,18 +1803,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForDeviceUpdateInner> deprovisionAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
-        return beginDeprovisionAsync(resourceGroupName, networkFabricName, context)
-            .last()
+    private Mono<CommonPostActionResponseForDeviceUpdateInner> deprovisionAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
+        return beginDeprovisionAsync(resourceGroupName, networkFabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2141,16 +1822,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner deprovision(
-        String resourceGroupName, String networkFabricName) {
+    public CommonPostActionResponseForDeviceUpdateInner deprovision(String resourceGroupName,
+        String networkFabricName) {
         return deprovisionAsync(resourceGroupName, networkFabricName).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Deprovisions the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Deprovisions the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2160,39 +1841,35 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForDeviceUpdateInner deprovision(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public CommonPostActionResponseForDeviceUpdateInner deprovision(String resourceGroupName, String networkFabricName,
+        Context context) {
         return deprovisionAsync(resourceGroupName, networkFabricName, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String networkFabricName, UpdateVersion body) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
+        String networkFabricName, UpgradeNetworkFabricProperties body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2209,26 +1886,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .upgrade(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.upgrade(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2236,23 +1903,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(
-        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
+        String networkFabricName, UpgradeNetworkFabricProperties body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2269,23 +1932,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .upgrade(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                body,
-                accept,
-                context);
+        return service.upgrade(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, body, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2295,25 +1950,21 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpdateVersion body) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body) {
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this
-            .client
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2324,27 +1975,24 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgradeAsync(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            upgradeWithResponseAsync(resourceGroupName, networkFabricName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeWithResponseAsync(resourceGroupName, networkFabricName, body, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2354,17 +2002,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body) {
         return this.beginUpgradeAsync(resourceGroupName, networkFabricName, body).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2375,17 +2023,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpgrade(String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpgrade(String resourceGroupName, String networkFabricName, UpgradeNetworkFabricProperties body,
+            Context context) {
         return this.beginUpgradeAsync(resourceGroupName, networkFabricName, body, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2395,18 +2044,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(
-        String resourceGroupName, String networkFabricName, UpdateVersion body) {
-        return beginUpgradeAsync(resourceGroupName, networkFabricName, body)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(String resourceGroupName,
+        String networkFabricName, UpgradeNetworkFabricProperties body) {
+        return beginUpgradeAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2417,18 +2065,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(
-        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
-        return beginUpgradeAsync(resourceGroupName, networkFabricName, body, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> upgradeAsync(String resourceGroupName,
+        String networkFabricName, UpgradeNetworkFabricProperties body, Context context) {
+        return beginUpgradeAsync(resourceGroupName, networkFabricName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2438,16 +2085,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body) {
+    public CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
+        UpgradeNetworkFabricProperties body) {
         return upgradeAsync(resourceGroupName, networkFabricName, body).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Upgrades the version of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Network Fabric properties to update.
@@ -2458,38 +2105,34 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+    public CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkFabricName,
+        UpgradeNetworkFabricProperties body, Context context) {
         return upgradeAsync(resourceGroupName, networkFabricName, body, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2502,47 +2145,35 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .refreshConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+                context -> service.refreshConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshConfigurationWithResponseAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2554,22 +2185,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .refreshConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.refreshConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2578,26 +2202,22 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginRefreshConfigurationAsync(String resourceGroupName, String networkFabricName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2607,27 +2227,23 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginRefreshConfigurationAsync(String resourceGroupName, String networkFabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = refreshConfigurationWithResponseAsync(resourceGroupName, networkFabricName, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2636,17 +2252,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginRefreshConfiguration(String resourceGroupName, String networkFabricName) {
         return this.beginRefreshConfigurationAsync(resourceGroupName, networkFabricName).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2656,17 +2272,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginRefreshConfiguration(String resourceGroupName, String networkFabricName, Context context) {
         return this.beginRefreshConfigurationAsync(resourceGroupName, networkFabricName, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2675,18 +2291,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> refreshConfigurationAsync(
-        String resourceGroupName, String networkFabricName) {
-        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> refreshConfigurationAsync(String resourceGroupName,
+        String networkFabricName) {
+        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2696,18 +2311,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> refreshConfigurationAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
-        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> refreshConfigurationAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
+        return beginRefreshConfigurationAsync(resourceGroupName, networkFabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2716,16 +2330,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkFabricName) {
+    public CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName,
+        String networkFabricName) {
         return refreshConfigurationAsync(resourceGroupName, networkFabricName).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -2735,40 +2349,36 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName,
+        String networkFabricName, Context context) {
         return refreshConfigurationAsync(resourceGroupName, networkFabricName, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWorkloadManagementBfdConfigurationWithResponseAsync(
         String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2785,27 +2395,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateWorkloadManagementBfdConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.updateWorkloadManagementBfdConfiguration(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), networkFabricName,
+                body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2813,23 +2414,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWorkloadManagementBfdConfigurationWithResponseAsync(
         String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2846,24 +2443,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateWorkloadManagementBfdConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                body,
-                accept,
-                context);
+        return service.updateWorkloadManagementBfdConfiguration(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), networkFabricName, body,
+            accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2873,28 +2463,24 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfigurationAsync(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWorkloadManagementBfdConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateWorkloadManagementBfdConfigurationAsync(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWorkloadManagementBfdConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2905,30 +2491,25 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfigurationAsync(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateWorkloadManagementBfdConfigurationAsync(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWorkloadManagementBfdConfigurationWithResponseAsync(
-                resourceGroupName, networkFabricName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWorkloadManagementBfdConfigurationWithResponseAsync(
+            resourceGroupName, networkFabricName, body, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2938,21 +2519,20 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
-        return this
-            .beginUpdateWorkloadManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body)
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateWorkloadManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body) {
+        return this.beginUpdateWorkloadManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body)
             .getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2963,10 +2543,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateWorkloadManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateWorkloadManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context) {
         return this
             .beginUpdateWorkloadManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body, context)
             .getSyncPoller();
@@ -2974,10 +2554,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -2989,17 +2569,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForStateUpdateInner> updateWorkloadManagementBfdConfigurationAsync(
         String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
-        return beginUpdateWorkloadManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body)
-            .last()
+        return beginUpdateWorkloadManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3019,10 +2598,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3039,10 +2618,10 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * 
+     * Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
      * instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3061,33 +2640,28 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateInfraManagementBfdConfigurationWithResponseAsync(
         String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3104,27 +2678,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateInfraManagementBfdConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.updateInfraManagementBfdConfiguration(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), networkFabricName,
+                body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3132,23 +2696,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateInfraManagementBfdConfigurationWithResponseAsync(
         String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3165,24 +2725,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateInfraManagementBfdConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                body,
-                accept,
-                context);
+        return service.updateInfraManagementBfdConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkFabricName, body, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3192,28 +2743,23 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfigurationAsync(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateInfraManagementBfdConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this
-            .client
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfigurationAsync(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateInfraManagementBfdConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3224,29 +2770,24 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfigurationAsync(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfigurationAsync(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateInfraManagementBfdConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono = updateInfraManagementBfdConfigurationWithResponseAsync(
+            resourceGroupName, networkFabricName, body, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3256,21 +2797,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
-        return this
-            .beginUpdateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body)
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body) {
+        return this.beginUpdateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body)
             .getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3281,21 +2820,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateInfraManagementBfdConfiguration(
-            String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
-        return this
-            .beginUpdateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body, context)
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateInfraManagementBfdConfiguration(String resourceGroupName, String networkFabricName,
+            UpdateAdministrativeState body, Context context) {
+        return this.beginUpdateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3307,17 +2844,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommonPostActionResponseForStateUpdateInner> updateInfraManagementBfdConfigurationAsync(
         String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
-        return beginUpdateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body)
-            .last()
+        return beginUpdateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3337,10 +2872,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3350,17 +2884,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
+    public CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body) {
         return updateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
-     * instance.
-     *
+     * 
+     * Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Request payload.
@@ -3371,16 +2904,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(
-        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
+    public CommonPostActionResponseForStateUpdateInner updateInfraManagementBfdConfiguration(String resourceGroupName,
+        String networkFabricName, UpdateAdministrativeState body, Context context) {
         return updateInfraManagementBfdConfigurationAsync(resourceGroupName, networkFabricName, body, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3388,22 +2921,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
+        String networkFabricName, ValidateConfigurationProperties body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3421,25 +2950,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .validateConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            body,
-                            accept,
-                            context))
+                context -> service.validateConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkFabricName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3448,22 +2968,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the action validate configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateConfigurationWithResponseAsync(String resourceGroupName,
+        String networkFabricName, ValidateConfigurationProperties body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3480,23 +2996,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                body,
-                accept,
-                context);
+        return service.validateConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkFabricName, body, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3507,25 +3015,20 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfigurationAsync(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                this.client.getContext());
+        beginValidateConfigurationAsync(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3537,26 +3040,21 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfigurationAsync(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context) {
+        beginValidateConfigurationAsync(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body, context);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateConfigurationWithResponseAsync(resourceGroupName, networkFabricName, body, context);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3567,16 +3065,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfiguration(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body) {
+        beginValidateConfiguration(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body) {
         return this.beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3588,18 +3086,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
-        beginValidateConfiguration(
-            String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context) {
-        return this
-            .beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body, context)
+        beginValidateConfiguration(String resourceGroupName, String networkFabricName,
+            ValidateConfigurationProperties body, Context context) {
+        return this.beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3609,18 +3106,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body) {
-        return beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+        String networkFabricName, ValidateConfigurationProperties body) {
+        return beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3631,18 +3127,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context) {
-        return beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body, context)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> validateConfigurationAsync(String resourceGroupName,
+        String networkFabricName, ValidateConfigurationProperties body, Context context) {
+        return beginValidateConfigurationAsync(resourceGroupName, networkFabricName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3652,16 +3147,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body) {
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body) {
         return validateConfigurationAsync(resourceGroupName, networkFabricName, body).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Validates the configuration of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param body Validate configuration properties.
@@ -3672,38 +3167,34 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context) {
+    public ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkFabricName,
+        ValidateConfigurationProperties body, Context context) {
         return validateConfigurationAsync(resourceGroupName, networkFabricName, body, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getTopologyWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> getTopologyWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3715,25 +3206,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getTopology(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+            .withContext(context -> service.getTopology(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3741,22 +3223,18 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> getTopologyWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getTopologyWithResponseAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3768,49 +3246,37 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getTopology(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.getTopology(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginGetTopologyAsync(String resourceGroupName, String networkFabricName) {
         Mono<Response<Flux<ByteBuffer>>> mono = getTopologyWithResponseAsync(resourceGroupName, networkFabricName);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                this.client.getContext());
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3818,36 +3284,31 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
         beginGetTopologyAsync(String resourceGroupName, String networkFabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            getTopologyWithResponseAsync(resourceGroupName, networkFabricName, context);
-        return this
-            .client
-            .<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ValidateConfigurationResponseInner.class,
-                ValidateConfigurationResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getTopologyWithResponseAsync(resourceGroupName, networkFabricName, context);
+        return this.client.<ValidateConfigurationResponseInner, ValidateConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ValidateConfigurationResponseInner.class,
+            ValidateConfigurationResponseInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
@@ -3857,9 +3318,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3867,7 +3328,7 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of topology of the underlying resources in the given Network Fabric
-     *     instance.
+     * instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
@@ -3877,30 +3338,29 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> getTopologyAsync(
-        String resourceGroupName, String networkFabricName) {
-        return beginGetTopologyAsync(resourceGroupName, networkFabricName)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> getTopologyAsync(String resourceGroupName,
+        String networkFabricName) {
+        return beginGetTopologyAsync(resourceGroupName, networkFabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3908,21 +3368,20 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return topology of the underlying resources in the given Network Fabric instance on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateConfigurationResponseInner> getTopologyAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
-        return beginGetTopologyAsync(resourceGroupName, networkFabricName, context)
-            .last()
+    private Mono<ValidateConfigurationResponseInner> getTopologyAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
+        return beginGetTopologyAsync(resourceGroupName, networkFabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3937,9 +3396,9 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
-     *
+     * 
+     * Gets Topology of the underlying resources in the given Network Fabric instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -3949,38 +3408,34 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return topology of the underlying resources in the given Network Fabric instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateConfigurationResponseInner getTopology(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public ValidateConfigurationResponseInner getTopology(String resourceGroupName, String networkFabricName,
+        Context context) {
         return getTopologyAsync(resourceGroupName, networkFabricName, context).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
-        String resourceGroupName, String networkFabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
+        String networkFabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3993,47 +3448,35 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .commitConfiguration(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricName,
-                            accept,
-                            context))
+                context -> service.commitConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> commitConfigurationWithResponseAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4045,22 +3488,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .commitConfiguration(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricName,
-                accept,
-                context);
+        return service.commitConfiguration(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), networkFabricName, accept, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4069,26 +3505,22 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfigurationAsync(String resourceGroupName, String networkFabricName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            commitConfigurationWithResponseAsync(resourceGroupName, networkFabricName);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitConfigurationWithResponseAsync(resourceGroupName, networkFabricName);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -4098,27 +3530,23 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link PollerFlux} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    private
+        PollerFlux<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfigurationAsync(String resourceGroupName, String networkFabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            commitConfigurationWithResponseAsync(resourceGroupName, networkFabricName, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitConfigurationWithResponseAsync(resourceGroupName, networkFabricName, context);
+        return this.client
             .<CommonPostActionResponseForStateUpdateInner, CommonPostActionResponseForStateUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommonPostActionResponseForStateUpdateInner.class,
-                CommonPostActionResponseForStateUpdateInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CommonPostActionResponseForStateUpdateInner.class,
+                CommonPostActionResponseForStateUpdateInner.class, context);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4127,17 +3555,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfiguration(String resourceGroupName, String networkFabricName) {
         return this.beginCommitConfigurationAsync(resourceGroupName, networkFabricName).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -4147,17 +3575,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+    public
+        SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
         beginCommitConfiguration(String resourceGroupName, String networkFabricName, Context context) {
         return this.beginCommitConfigurationAsync(resourceGroupName, networkFabricName, context).getSyncPoller();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4166,18 +3594,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
-        String resourceGroupName, String networkFabricName) {
-        return beginCommitConfigurationAsync(resourceGroupName, networkFabricName)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(String resourceGroupName,
+        String networkFabricName) {
+        return beginCommitConfigurationAsync(resourceGroupName, networkFabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -4187,18 +3614,17 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(
-        String resourceGroupName, String networkFabricName, Context context) {
-        return beginCommitConfigurationAsync(resourceGroupName, networkFabricName, context)
-            .last()
+    private Mono<CommonPostActionResponseForStateUpdateInner> commitConfigurationAsync(String resourceGroupName,
+        String networkFabricName, Context context) {
+        return beginCommitConfigurationAsync(resourceGroupName, networkFabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4207,16 +3633,16 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String networkFabricName) {
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String networkFabricName) {
         return commitConfigurationAsync(resourceGroupName, networkFabricName).block();
     }
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
-     *
+     * 
+     * Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
@@ -4226,16 +3652,15 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String networkFabricName, Context context) {
+    public CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String networkFabricName, Context context) {
         return commitConfigurationAsync(resourceGroupName, networkFabricName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4247,32 +3672,22 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkFabricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkFabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4280,37 +3695,26 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return list of Network Fabrics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkFabricInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4322,32 +3726,22 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkFabricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkFabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4355,29 +3749,19 @@ public final class NetworkFabricsClientImpl implements NetworkFabricsClient {
      * @return list of Network Fabrics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkFabricInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkFabricInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

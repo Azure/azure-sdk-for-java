@@ -18,7 +18,8 @@ public final class DeviceGroupsGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deviceGroupsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deviceGroups().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
-            com.azure.core.util.Context.NONE);
+        manager.deviceGroups()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", "MyDeviceGroup1",
+                com.azure.core.util.Context.NONE);
     }
 }

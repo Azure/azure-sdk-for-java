@@ -37,23 +37,35 @@ public final class MetricAlertsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnAlertRuleOnSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest",
-            "MetricAlertAtSubscriptionLevel",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
-                .withScopes(Arrays.asList("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7"))
-                .withEvaluationFrequency(Duration.parse("PT1M")).withWindowSize(Duration.parse("PT15M"))
-                .withTargetResourceType("Microsoft.Compute/virtualMachines").withTargetResourceRegion("southcentralus")
-                .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
-                    .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
-                        .withMetricName("Percentage CPU").withMetricNamespace("microsoft.compute/virtualmachines")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
-                        .withOperator(Operator.GREATER_THAN).withThreshold(80.5))))
-                .withAutoMitigate(true)
-                .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
-                    "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
-                    .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "MetricAlertAtSubscriptionLevel",
+                new MetricAlertResourceInner().withLocation("global")
+                    .withTags(mapOf())
+                    .withDescription("This is the description of the rule1")
+                    .withSeverity(3)
+                    .withEnabled(true)
+                    .withScopes(Arrays.asList("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7"))
+                    .withEvaluationFrequency(Duration.parse("PT1M"))
+                    .withWindowSize(Duration.parse("PT15M"))
+                    .withTargetResourceType("Microsoft.Compute/virtualMachines")
+                    .withTargetResourceRegion("southcentralus")
+                    .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
+                        .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
+                            .withMetricName("Percentage CPU")
+                            .withMetricNamespace("microsoft.compute/virtualmachines")
+                            .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                            .withDimensions(Arrays.asList())
+                            .withOperator(Operator.GREATER_THAN)
+                            .withThreshold(80.5))))
+                    .withAutoMitigate(true)
+                    .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
+                        "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
+                        .withWebhookProperties(
+                            mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -66,24 +78,35 @@ public final class MetricAlertsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnAlertRuleOnResourceGroupS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest1",
-            "MetricAlertAtResourceGroupLevel",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest1", "MetricAlertAtResourceGroupLevel", new MetricAlertResourceInner()
+                .withLocation("global")
+                .withTags(mapOf())
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest1",
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest2"))
-                .withEvaluationFrequency(Duration.parse("PT1M")).withWindowSize(Duration.parse("PT15M"))
-                .withTargetResourceType("Microsoft.Compute/virtualMachines").withTargetResourceRegion("southcentralus")
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withWindowSize(Duration.parse("PT15M"))
+                .withTargetResourceType("Microsoft.Compute/virtualMachines")
+                .withTargetResourceRegion("southcentralus")
                 .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
                     .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
-                        .withMetricName("Percentage CPU").withMetricNamespace("microsoft.compute/virtualmachines")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
-                        .withOperator(Operator.GREATER_THAN).withThreshold(80.5))))
+                        .withMetricName("Percentage CPU")
+                        .withMetricNamespace("microsoft.compute/virtualmachines")
+                        .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                        .withDimensions(Arrays.asList())
+                        .withOperator(Operator.GREATER_THAN)
+                        .withThreshold(80.5))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -96,28 +119,39 @@ public final class MetricAlertsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnAlertRulesWithDimensions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest",
-            "MetricAlertOnMultipleDimensions",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "MetricAlertOnMultipleDimensions", new MetricAlertResourceInner()
+                .withLocation("global")
+                .withTags(mapOf())
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.KeyVault/vaults/keyVaultResource"))
-                .withEvaluationFrequency(Duration.parse("PT1H")).withWindowSize(Duration.parse("P1D"))
+                .withEvaluationFrequency(Duration.parse("PT1H"))
+                .withWindowSize(Duration.parse("P1D"))
                 .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
-                    .withAllOf(Arrays.asList(new MetricCriteria().withName("Metric1").withMetricName("Availability")
+                    .withAllOf(Arrays.asList(new MetricCriteria().withName("Metric1")
+                        .withMetricName("Availability")
                         .withMetricNamespace("Microsoft.KeyVault/vaults")
                         .withTimeAggregation(AggregationTypeEnum.AVERAGE)
                         .withDimensions(Arrays.asList(
-                            new MetricDimension().withName("ActivityName").withOperator("Include")
+                            new MetricDimension().withName("ActivityName")
+                                .withOperator("Include")
                                 .withValues(Arrays.asList("*")),
-                            new MetricDimension().withName("StatusCode").withOperator("Include")
+                            new MetricDimension().withName("StatusCode")
+                                .withOperator("Include")
                                 .withValues(Arrays.asList("200"))))
-                        .withOperator(Operator.GREATER_THAN).withThreshold(55.0))))
+                        .withOperator(Operator.GREATER_THAN)
+                        .withThreshold(55.0))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -130,26 +164,31 @@ public final class MetricAlertsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAWebTestAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("rg-example",
-            "webtest-name-example",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf(
-                "hidden-link:/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/components/webtest-name-example",
-                "Resource",
-                "hidden-link:/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/webtests/component-example",
-                "Resource"))
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("rg-example", "webtest-name-example", new MetricAlertResourceInner()
+                .withLocation("global")
+                .withTags(mapOf(
+                    "hidden-link:/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/components/webtest-name-example",
+                    "Resource",
+                    "hidden-link:/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/webtests/component-example",
+                    "Resource"))
                 .withDescription("Automatically created alert rule for availability test \"component-example\" a")
-                .withSeverity(4).withEnabled(true)
+                .withSeverity(4)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/webtests/component-example",
                     "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/components/webtest-name-example"))
-                .withEvaluationFrequency(Duration.parse("PT1M")).withWindowSize(Duration.parse("PT15M"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withWindowSize(Duration.parse("PT15M"))
                 .withCriteria(new WebtestLocationAvailabilityCriteria().withWebTestId(
                     "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/webtests/component-example")
                     .withComponentId(
                         "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/components/webtest-name-example")
                     .withFailedLocationCount(2f))
-                .withActions(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                .withActions(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -163,17 +202,25 @@ public final class MetricAlertsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateADynamicAlertRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest",
-            "chiricutin",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "chiricutin", new MetricAlertResourceInner().withLocation("global")
+                .withTags(mapOf())
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"))
-                .withEvaluationFrequency(Duration.parse("PT1M")).withWindowSize(Duration.parse("PT15M"))
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withWindowSize(Duration.parse("PT15M"))
                 .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
                     .withAllOf(Arrays.asList(new DynamicMetricCriteria().withName("High_CPU_80")
-                        .withMetricName("Percentage CPU").withMetricNamespace("microsoft.compute/virtualmachines")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
+                        .withMetricName("Percentage CPU")
+                        .withMetricNamespace("microsoft.compute/virtualmachines")
+                        .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                        .withDimensions(Arrays.asList())
                         .withOperator(DynamicThresholdOperator.GREATER_OR_LESS_THAN)
                         .withAlertSensitivity(DynamicThresholdSensitivity.MEDIUM)
                         .withFailingPeriods(new DynamicThresholdFailingPeriods().withNumberOfEvaluationPeriods(4f)
@@ -183,7 +230,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -197,22 +244,31 @@ public final class MetricAlertsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAnAlertRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest",
-            "chiricutin",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "chiricutin", new MetricAlertResourceInner().withLocation("global")
+                .withTags(mapOf())
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme"))
-                .withEvaluationFrequency(Duration.parse("Pt1m")).withWindowSize(Duration.parse("Pt15m"))
-                .withCriteria(new MetricAlertSingleResourceMultipleMetricCriteria().withAllOf(Arrays.asList(
-                    new MetricCriteria().withName("High_CPU_80").withMetricName("\\Processor(_Total)\\% Processor Time")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
-                        .withOperator(Operator.GREATER_THAN).withThreshold(80.5))))
+                .withEvaluationFrequency(Duration.parse("Pt1m"))
+                .withWindowSize(Duration.parse("Pt15m"))
+                .withCriteria(new MetricAlertSingleResourceMultipleMetricCriteria()
+                    .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
+                        .withMetricName("\\Processor(_Total)\\% Processor Time")
+                        .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                        .withDimensions(Arrays.asList())
+                        .withOperator(Operator.GREATER_THAN)
+                        .withThreshold(80.5))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -226,25 +282,36 @@ public final class MetricAlertsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAnAlertRuleForMultipleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest",
-            "MetricAlertOnMultipleResources",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "MetricAlertOnMultipleResources", new MetricAlertResourceInner()
+                .withLocation("global")
+                .withTags(mapOf())
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme1",
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme2"))
-                .withEvaluationFrequency(Duration.parse("PT1M")).withWindowSize(Duration.parse("PT15M"))
-                .withTargetResourceType("Microsoft.Compute/virtualMachines").withTargetResourceRegion("southcentralus")
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withWindowSize(Duration.parse("PT15M"))
+                .withTargetResourceType("Microsoft.Compute/virtualMachines")
+                .withTargetResourceRegion("southcentralus")
                 .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
                     .withAllOf(Arrays.asList(new MetricCriteria().withName("High_CPU_80")
-                        .withMetricName("Percentage CPU").withMetricNamespace("microsoft.compute/virtualmachines")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
-                        .withOperator(Operator.GREATER_THAN).withThreshold(80.5))))
+                        .withMetricName("Percentage CPU")
+                        .withMetricNamespace("microsoft.compute/virtualmachines")
+                        .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                        .withDimensions(Arrays.asList())
+                        .withOperator(Operator.GREATER_THAN)
+                        .withThreshold(80.5))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -258,28 +325,38 @@ public final class MetricAlertsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateADynamicAlertRuleForMultipleResources(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getMetricAlerts().createOrUpdateWithResponse("gigtest",
-            "MetricAlertOnMultipleResources",
-            new MetricAlertResourceInner().withLocation("global").withTags(mapOf())
-                .withDescription("This is the description of the rule1").withSeverity(3).withEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getMetricAlerts()
+            .createOrUpdateWithResponse("gigtest", "MetricAlertOnMultipleResources", new MetricAlertResourceInner()
+                .withLocation("global")
+                .withTags(mapOf())
+                .withDescription("This is the description of the rule1")
+                .withSeverity(3)
+                .withEnabled(true)
                 .withScopes(Arrays.asList(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme1",
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme2"))
-                .withEvaluationFrequency(Duration.parse("PT1M")).withWindowSize(Duration.parse("PT15M"))
-                .withTargetResourceType("Microsoft.Compute/virtualMachines").withTargetResourceRegion("southcentralus")
+                .withEvaluationFrequency(Duration.parse("PT1M"))
+                .withWindowSize(Duration.parse("PT15M"))
+                .withTargetResourceType("Microsoft.Compute/virtualMachines")
+                .withTargetResourceRegion("southcentralus")
                 .withCriteria(new MetricAlertMultipleResourceMultipleMetricCriteria()
                     .withAllOf(Arrays.asList(new DynamicMetricCriteria().withName("High_CPU_80")
-                        .withMetricName("Percentage CPU").withMetricNamespace("microsoft.compute/virtualmachines")
-                        .withTimeAggregation(AggregationTypeEnum.AVERAGE).withDimensions(Arrays.asList())
+                        .withMetricName("Percentage CPU")
+                        .withMetricNamespace("microsoft.compute/virtualmachines")
+                        .withTimeAggregation(AggregationTypeEnum.AVERAGE)
+                        .withDimensions(Arrays.asList())
                         .withOperator(DynamicThresholdOperator.GREATER_OR_LESS_THAN)
                         .withAlertSensitivity(DynamicThresholdSensitivity.MEDIUM)
-                        .withFailingPeriods(new DynamicThresholdFailingPeriods()
-                            .withNumberOfEvaluationPeriods(4f).withMinFailingPeriodsToAlert(4f)))))
+                        .withFailingPeriods(new DynamicThresholdFailingPeriods().withNumberOfEvaluationPeriods(4f)
+                            .withMinFailingPeriodsToAlert(4f)))))
                 .withAutoMitigate(true)
                 .withActions(Arrays.asList(new MetricAlertAction().withActionGroupId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                     .withWebhookProperties(mapOf("key11", "fakeTokenPlaceholder", "key12", "fakeTokenPlaceholder")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

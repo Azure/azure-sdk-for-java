@@ -5,26 +5,31 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.Hls;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** The JSON object that contains the properties required to create a live output. */
+/**
+ * The JSON object that contains the properties required to create a live output.
+ */
 @Fluent
-public final class LiveOutputProperties {
+public final class LiveOutputProperties implements JsonSerializable<LiveOutputProperties> {
     /*
      * The description of the live output.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The asset that the live output will write to.
      */
-    @JsonProperty(value = "assetName", required = true)
     private String assetName;
 
     /*
@@ -32,67 +37,60 @@ public final class LiveOutputProperties {
      * asset for this live output. This also sets the maximum content length for the rewind window. For example, use
      * PT1H30M to indicate 1 hour and 30 minutes of archive window.
      */
-    @JsonProperty(value = "archiveWindowLength", required = true)
     private Duration archiveWindowLength;
 
     /*
      * ISO 8601 time between 1 minute to the duration of archiveWindowLength to control seek-able window length during
      * Live. The service won't use this property once LiveOutput stops. The archived VOD will have full content with
-     * original ArchiveWindowLength. For example, use PT1H30M to indicate 1 hour and 30 minutes of rewind window
-     * length. Service will use implicit default value 30m only if Live Event enables LL.
+     * original ArchiveWindowLength. For example, use PT1H30M to indicate 1 hour and 30 minutes of rewind window length.
+     * Service will use implicit default value 30m only if Live Event enables LL.
      */
-    @JsonProperty(value = "rewindWindowLength")
     private Duration rewindWindowLength;
 
     /*
      * The manifest file name. If not provided, the service will generate one automatically.
      */
-    @JsonProperty(value = "manifestName")
     private String manifestName;
 
     /*
      * HTTP Live Streaming (HLS) packing setting for the live output.
      */
-    @JsonProperty(value = "hls")
     private Hls hls;
 
     /*
      * The initial timestamp that the live output will start at, any content before this value will not be archived.
      */
-    @JsonProperty(value = "outputSnapTime")
     private Long outputSnapTime;
 
     /*
      * The creation time the live output.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * The time the live output was last modified.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * The provisioning state of the live output.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The resource state of the live output.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private LiveOutputResourceState resourceState;
 
-    /** Creates an instance of LiveOutputProperties class. */
+    /**
+     * Creates an instance of LiveOutputProperties class.
+     */
     public LiveOutputProperties() {
     }
 
     /**
      * Get the description property: The description of the live output.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -101,7 +99,7 @@ public final class LiveOutputProperties {
 
     /**
      * Set the description property: The description of the live output.
-     *
+     * 
      * @param description the description value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -112,7 +110,7 @@ public final class LiveOutputProperties {
 
     /**
      * Get the assetName property: The asset that the live output will write to.
-     *
+     * 
      * @return the assetName value.
      */
     public String assetName() {
@@ -121,7 +119,7 @@ public final class LiveOutputProperties {
 
     /**
      * Set the assetName property: The asset that the live output will write to.
-     *
+     * 
      * @param assetName the assetName value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -134,7 +132,7 @@ public final class LiveOutputProperties {
      * Get the archiveWindowLength property: ISO 8601 time between 1 minute to 25 hours to indicate the maximum content
      * length that can be archived in the asset for this live output. This also sets the maximum content length for the
      * rewind window. For example, use PT1H30M to indicate 1 hour and 30 minutes of archive window.
-     *
+     * 
      * @return the archiveWindowLength value.
      */
     public Duration archiveWindowLength() {
@@ -145,7 +143,7 @@ public final class LiveOutputProperties {
      * Set the archiveWindowLength property: ISO 8601 time between 1 minute to 25 hours to indicate the maximum content
      * length that can be archived in the asset for this live output. This also sets the maximum content length for the
      * rewind window. For example, use PT1H30M to indicate 1 hour and 30 minutes of archive window.
-     *
+     * 
      * @param archiveWindowLength the archiveWindowLength value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -160,7 +158,7 @@ public final class LiveOutputProperties {
      * archived VOD will have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1
      * hour and 30 minutes of rewind window length. Service will use implicit default value 30m only if Live Event
      * enables LL.
-     *
+     * 
      * @return the rewindWindowLength value.
      */
     public Duration rewindWindowLength() {
@@ -173,7 +171,7 @@ public final class LiveOutputProperties {
      * archived VOD will have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1
      * hour and 30 minutes of rewind window length. Service will use implicit default value 30m only if Live Event
      * enables LL.
-     *
+     * 
      * @param rewindWindowLength the rewindWindowLength value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -185,7 +183,7 @@ public final class LiveOutputProperties {
     /**
      * Get the manifestName property: The manifest file name. If not provided, the service will generate one
      * automatically.
-     *
+     * 
      * @return the manifestName value.
      */
     public String manifestName() {
@@ -195,7 +193,7 @@ public final class LiveOutputProperties {
     /**
      * Set the manifestName property: The manifest file name. If not provided, the service will generate one
      * automatically.
-     *
+     * 
      * @param manifestName the manifestName value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -206,7 +204,7 @@ public final class LiveOutputProperties {
 
     /**
      * Get the hls property: HTTP Live Streaming (HLS) packing setting for the live output.
-     *
+     * 
      * @return the hls value.
      */
     public Hls hls() {
@@ -215,7 +213,7 @@ public final class LiveOutputProperties {
 
     /**
      * Set the hls property: HTTP Live Streaming (HLS) packing setting for the live output.
-     *
+     * 
      * @param hls the hls value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -227,7 +225,7 @@ public final class LiveOutputProperties {
     /**
      * Get the outputSnapTime property: The initial timestamp that the live output will start at, any content before
      * this value will not be archived.
-     *
+     * 
      * @return the outputSnapTime value.
      */
     public Long outputSnapTime() {
@@ -237,7 +235,7 @@ public final class LiveOutputProperties {
     /**
      * Set the outputSnapTime property: The initial timestamp that the live output will start at, any content before
      * this value will not be archived.
-     *
+     * 
      * @param outputSnapTime the outputSnapTime value to set.
      * @return the LiveOutputProperties object itself.
      */
@@ -248,7 +246,7 @@ public final class LiveOutputProperties {
 
     /**
      * Get the created property: The creation time the live output.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -257,7 +255,7 @@ public final class LiveOutputProperties {
 
     /**
      * Get the lastModified property: The time the live output was last modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -266,7 +264,7 @@ public final class LiveOutputProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the live output.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -275,7 +273,7 @@ public final class LiveOutputProperties {
 
     /**
      * Get the resourceState property: The resource state of the live output.
-     *
+     * 
      * @return the resourceState value.
      */
     public LiveOutputResourceState resourceState() {
@@ -284,20 +282,18 @@ public final class LiveOutputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (assetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property assetName in model LiveOutputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property assetName in model LiveOutputProperties"));
         }
         if (archiveWindowLength() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property archiveWindowLength in model LiveOutputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property archiveWindowLength in model LiveOutputProperties"));
         }
         if (hls() != null) {
             hls().validate();
@@ -305,4 +301,73 @@ public final class LiveOutputProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LiveOutputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assetName", this.assetName);
+        jsonWriter.writeStringField("archiveWindowLength",
+            CoreUtils.durationToStringWithDays(this.archiveWindowLength));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("rewindWindowLength", CoreUtils.durationToStringWithDays(this.rewindWindowLength));
+        jsonWriter.writeStringField("manifestName", this.manifestName);
+        jsonWriter.writeJsonField("hls", this.hls);
+        jsonWriter.writeNumberField("outputSnapTime", this.outputSnapTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveOutputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveOutputProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LiveOutputProperties.
+     */
+    public static LiveOutputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveOutputProperties deserializedLiveOutputProperties = new LiveOutputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assetName".equals(fieldName)) {
+                    deserializedLiveOutputProperties.assetName = reader.getString();
+                } else if ("archiveWindowLength".equals(fieldName)) {
+                    deserializedLiveOutputProperties.archiveWindowLength
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedLiveOutputProperties.description = reader.getString();
+                } else if ("rewindWindowLength".equals(fieldName)) {
+                    deserializedLiveOutputProperties.rewindWindowLength
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("manifestName".equals(fieldName)) {
+                    deserializedLiveOutputProperties.manifestName = reader.getString();
+                } else if ("hls".equals(fieldName)) {
+                    deserializedLiveOutputProperties.hls = Hls.fromJson(reader);
+                } else if ("outputSnapTime".equals(fieldName)) {
+                    deserializedLiveOutputProperties.outputSnapTime = reader.getNullable(JsonReader::getLong);
+                } else if ("created".equals(fieldName)) {
+                    deserializedLiveOutputProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedLiveOutputProperties.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLiveOutputProperties.provisioningState = reader.getString();
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedLiveOutputProperties.resourceState
+                        = LiveOutputResourceState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveOutputProperties;
+        });
+    }
 }

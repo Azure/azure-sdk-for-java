@@ -5,36 +5,110 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * File Share configuration details, populated with information on storage configuration mounted on the VIS. The
  * createAndMount option is selected in case of missing input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "configurationType",
-    defaultImpl = FileShareConfiguration.class)
-@JsonTypeName("FileShareConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Skip", value = SkipFileShareConfiguration.class),
-    @JsonSubTypes.Type(name = "CreateAndMount", value = CreateAndMountFileShareConfiguration.class),
-    @JsonSubTypes.Type(name = "Mount", value = MountFileShareConfiguration.class)
-})
 @Immutable
-public class FileShareConfiguration {
-    /** Creates an instance of FileShareConfiguration class. */
+public class FileShareConfiguration implements JsonSerializable<FileShareConfiguration> {
+    /*
+     * The type of file share config.
+     */
+    private ConfigurationType configurationType = ConfigurationType.fromString("FileShareConfiguration");
+
+    /**
+     * Creates an instance of FileShareConfiguration class.
+     */
     public FileShareConfiguration() {
     }
 
     /**
+     * Get the configurationType property: The type of file share config.
+     * 
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.configurationType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationType",
+            this.configurationType == null ? null : this.configurationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileShareConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileShareConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileShareConfiguration.
+     */
+    public static FileShareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("configurationType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Skip".equals(discriminatorValue)) {
+                    return SkipFileShareConfiguration.fromJson(readerToUse.reset());
+                } else if ("CreateAndMount".equals(discriminatorValue)) {
+                    return CreateAndMountFileShareConfiguration.fromJson(readerToUse.reset());
+                } else if ("Mount".equals(discriminatorValue)) {
+                    return MountFileShareConfiguration.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FileShareConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileShareConfiguration deserializedFileShareConfiguration = new FileShareConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationType".equals(fieldName)) {
+                    deserializedFileShareConfiguration.configurationType
+                        = ConfigurationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileShareConfiguration;
+        });
     }
 }

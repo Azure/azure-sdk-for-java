@@ -30,7 +30,7 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
     private String description;
 
     /*
-     * BlocklistItem content.
+     * BlocklistItem content. The length is counted using Unicode code point.
      */
     @Generated
     private final String text;
@@ -78,7 +78,7 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
     }
 
     /**
-     * Get the text property: BlocklistItem content.
+     * Get the text property: BlocklistItem content. The length is counted using Unicode code point.
      *
      * @return the text value.
      */

@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkDevicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkDeviceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"yeiihfymkou\",\"networkDeviceSku\":\"yese\",\"networkDeviceRole\":\"ToR\",\"networkRackId\":\"igzhogsmgbvmtdw\",\"managementIpv4Address\":\"bebjn\",\"managementIpv6Address\":\"eglabtvkbiwznhtf\",\"configurationState\":\"Failed\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"hostName\":\"izpacz\",\"serialNumber\":\"hbcakznhokhoit\",\"annotation\":\"rjsdmmazdnck\"}")
-                .toObject(NetworkDeviceProperties.class);
-        Assertions.assertEquals("rjsdmmazdnck", model.annotation());
-        Assertions.assertEquals("yese", model.networkDeviceSku());
-        Assertions.assertEquals("izpacz", model.hostname());
-        Assertions.assertEquals("hbcakznhokhoit", model.serialNumber());
+        NetworkDeviceProperties model = BinaryData.fromString(
+            "{\"version\":\"nhpcselqx\",\"networkDeviceSku\":\"ppqib\",\"networkDeviceRole\":\"Management\",\"networkRackId\":\"vzrlrmlcc\",\"managementIpv4Address\":\"tjsczivfq\",\"managementIpv6Address\":\"nasd\",\"configurationState\":\"Rejected\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"hostName\":\"uscplhyvdg\",\"serialNumber\":\"yzkxitds\",\"annotation\":\"zsvko\"}")
+            .toObject(NetworkDeviceProperties.class);
+        Assertions.assertEquals("zsvko", model.annotation());
+        Assertions.assertEquals("ppqib", model.networkDeviceSku());
+        Assertions.assertEquals("uscplhyvdg", model.hostname());
+        Assertions.assertEquals("yzkxitds", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDeviceProperties model =
-            new NetworkDeviceProperties()
-                .withAnnotation("rjsdmmazdnck")
-                .withNetworkDeviceSku("yese")
-                .withHostname("izpacz")
-                .withSerialNumber("hbcakznhokhoit");
+        NetworkDeviceProperties model = new NetworkDeviceProperties().withAnnotation("zsvko")
+            .withNetworkDeviceSku("ppqib")
+            .withHostname("uscplhyvdg")
+            .withSerialNumber("yzkxitds");
         model = BinaryData.fromObject(model).toObject(NetworkDeviceProperties.class);
-        Assertions.assertEquals("rjsdmmazdnck", model.annotation());
-        Assertions.assertEquals("yese", model.networkDeviceSku());
-        Assertions.assertEquals("izpacz", model.hostname());
-        Assertions.assertEquals("hbcakznhokhoit", model.serialNumber());
+        Assertions.assertEquals("zsvko", model.annotation());
+        Assertions.assertEquals("ppqib", model.networkDeviceSku());
+        Assertions.assertEquals("uscplhyvdg", model.hostname());
+        Assertions.assertEquals("yzkxitds", model.serialNumber());
     }
 }

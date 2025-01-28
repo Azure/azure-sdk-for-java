@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmTemplateListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmTemplateList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"ashsfwxos\",\"description\":\"z\",\"publisher\":\"ugicjooxdjebw\",\"icon\":\"cwwfvovbvme\",\"contents\":\"datacivyhzceuo\",\"createdDate\":\"2020-12-29T21:09:26Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ueiotwmcdyt\",\"parametersValueInfo\":\"datawit\"}],\"enabled\":false},\"location\":\"jawgqwg\",\"tags\":{\"fbkp\":\"isk\"},\"id\":\"cg\",\"name\":\"lwn\",\"type\":\"nhjdauw\"},{\"properties\":{\"displayName\":\"ylwz\",\"description\":\"dhxujznbmpo\",\"publisher\":\"wpr\",\"icon\":\"lve\",\"contents\":\"datalupj\",\"createdDate\":\"2021-04-21T08:53:38Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"bbcswsrtjri\",\"parametersValueInfo\":\"datarbpbewtghfgblcg\"},{\"fileName\":\"zvlvqhjkbegib\",\"parametersValueInfo\":\"datamxiebw\"},{\"fileName\":\"loayqcgw\",\"parametersValueInfo\":\"datazjuzgwyz\"}],\"enabled\":false},\"location\":\"xongmtsavjcbpwxq\",\"tags\":{\"rwmdyvxqtay\":\"knftguvriuh\",\"ibycno\":\"iwwroyqbexrmc\",\"nmefqsgzvahapj\":\"v\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\"},\"id\":\"vawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"},{\"properties\":{\"displayName\":\"ltskzbbtd\",\"description\":\"mv\",\"publisher\":\"kgpwoz\",\"icon\":\"kfpbs\",\"contents\":\"dataofd\",\"createdDate\":\"2021-04-25T06:48:17Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ttouwaboekqvkel\",\"parametersValueInfo\":\"datamvb\"}],\"enabled\":true},\"location\":\"jsflhhcaalnjix\",\"tags\":{\"oyaqcslyjpkiid\":\"yaw\",\"eli\":\"yexz\"},\"id\":\"hnrztfol\",\"name\":\"bnxknalaulppg\",\"type\":\"dtpnapnyiropuhp\"}],\"nextLink\":\"vpgylgqgitxmed\"}")
-                .toObject(ArmTemplateList.class);
+        ArmTemplateList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"ashsfwxos\",\"description\":\"z\",\"publisher\":\"ugicjooxdjebw\",\"icon\":\"cwwfvovbvme\",\"contents\":\"datacivyhzceuo\",\"createdDate\":\"2020-12-29T21:09:26Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ueiotwmcdyt\",\"parametersValueInfo\":\"datawit\"}],\"enabled\":false},\"location\":\"jawgqwg\",\"tags\":{\"fbkp\":\"isk\"},\"id\":\"cg\",\"name\":\"lwn\",\"type\":\"nhjdauw\"},{\"properties\":{\"displayName\":\"ylwz\",\"description\":\"dhxujznbmpo\",\"publisher\":\"wpr\",\"icon\":\"lve\",\"contents\":\"datalupj\",\"createdDate\":\"2021-04-21T08:53:38Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"bbcswsrtjri\",\"parametersValueInfo\":\"datarbpbewtghfgblcg\"},{\"fileName\":\"zvlvqhjkbegib\",\"parametersValueInfo\":\"datamxiebw\"},{\"fileName\":\"loayqcgw\",\"parametersValueInfo\":\"datazjuzgwyz\"}],\"enabled\":false},\"location\":\"xongmtsavjcbpwxq\",\"tags\":{\"rwmdyvxqtay\":\"knftguvriuh\",\"ibycno\":\"iwwroyqbexrmc\",\"nmefqsgzvahapj\":\"v\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\"},\"id\":\"vawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"},{\"properties\":{\"displayName\":\"ltskzbbtd\",\"description\":\"mv\",\"publisher\":\"kgpwoz\",\"icon\":\"kfpbs\",\"contents\":\"dataofd\",\"createdDate\":\"2021-04-25T06:48:17Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ttouwaboekqvkel\",\"parametersValueInfo\":\"datamvb\"}],\"enabled\":true},\"location\":\"jsflhhcaalnjix\",\"tags\":{\"oyaqcslyjpkiid\":\"yaw\",\"eli\":\"yexz\"},\"id\":\"hnrztfol\",\"name\":\"bnxknalaulppg\",\"type\":\"dtpnapnyiropuhp\"}],\"nextLink\":\"vpgylgqgitxmed\"}")
+            .toObject(ArmTemplateList.class);
         Assertions.assertEquals("jawgqwg", model.value().get(0).location());
         Assertions.assertEquals("isk", model.value().get(0).tags().get("fbkp"));
         Assertions.assertEquals("vpgylgqgitxmed", model.nextLink());
@@ -27,28 +25,14 @@ public final class ArmTemplateListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmTemplateList model =
-            new ArmTemplateList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ArmTemplateInner().withLocation("jawgqwg").withTags(mapOf("fbkp", "isk")),
-                            new ArmTemplateInner()
-                                .withLocation("xongmtsavjcbpwxq")
-                                .withTags(
-                                    mapOf(
-                                        "rwmdyvxqtay",
-                                        "knftguvriuh",
-                                        "ibycno",
-                                        "iwwroyqbexrmc",
-                                        "nmefqsgzvahapj",
-                                        "v",
-                                        "zlmwlxkvugfhz",
-                                        "zhpvgqzcjrvxd")),
-                            new ArmTemplateInner()
-                                .withLocation("jsflhhcaalnjix")
-                                .withTags(mapOf("oyaqcslyjpkiid", "yaw", "eli", "yexz"))))
-                .withNextLink("vpgylgqgitxmed");
+        ArmTemplateList model = new ArmTemplateList()
+            .withValue(Arrays.asList(new ArmTemplateInner().withLocation("jawgqwg").withTags(mapOf("fbkp", "isk")),
+                new ArmTemplateInner().withLocation("xongmtsavjcbpwxq")
+                    .withTags(mapOf("rwmdyvxqtay", "knftguvriuh", "ibycno", "iwwroyqbexrmc", "nmefqsgzvahapj", "v",
+                        "zlmwlxkvugfhz", "zhpvgqzcjrvxd")),
+                new ArmTemplateInner().withLocation("jsflhhcaalnjix")
+                    .withTags(mapOf("oyaqcslyjpkiid", "yaw", "eli", "yexz"))))
+            .withNextLink("vpgylgqgitxmed");
         model = BinaryData.fromObject(model).toObject(ArmTemplateList.class);
         Assertions.assertEquals("jawgqwg", model.value().get(0).location());
         Assertions.assertEquals("isk", model.value().get(0).tags().get("fbkp"));

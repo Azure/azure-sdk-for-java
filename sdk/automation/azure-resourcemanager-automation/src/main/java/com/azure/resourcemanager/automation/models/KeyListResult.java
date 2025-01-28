@@ -7,18 +7,20 @@ package com.azure.resourcemanager.automation.models;
 import com.azure.resourcemanager.automation.fluent.models.KeyListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of KeyListResult. */
+/**
+ * An immutable client-side representation of KeyListResult.
+ */
 public interface KeyListResult {
     /**
      * Gets the keys property: Lists the automation keys.
-     *
+     * 
      * @return the keys value.
      */
     List<Key> keys();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.KeyListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     KeyListResultInner innerModel();

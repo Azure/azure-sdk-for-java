@@ -23,11 +23,15 @@ public final class ProfilesMigrateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilesMigrate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getProfiles().migrate("RG",
-            new MigrationParameters().withSku(new Sku().withName(SkuName.STANDARD_AZURE_FRONT_DOOR))
-                .withClassicResourceReference(new ResourceReference().withId(
-                    "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoors/frontdoorname"))
-                .withProfileName("profile1"),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .migrate("RG",
+                new MigrationParameters().withSku(new Sku().withName(SkuName.STANDARD_AZURE_FRONT_DOOR))
+                    .withClassicResourceReference(new ResourceReference().withId(
+                        "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.Network/frontdoors/frontdoorname"))
+                    .withProfileName("profile1"),
+                com.azure.core.util.Context.NONE);
     }
 }

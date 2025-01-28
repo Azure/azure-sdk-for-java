@@ -6,24 +6,25 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.resourcemanager.datamigration.models.DataMigrationService;
 
-/** Samples for Services Update. */
+/**
+ * Samples for Services Update.
+ */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Update.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_Update.
+     * json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        DataMigrationService resource =
-            manager
-                .services()
-                .getByResourceGroupWithResponse("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        DataMigrationService resource = manager.services()
+            .getByResourceGroupWithResponse("DmsSdkRg", "DmsSdkService", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withVirtualSubnetId(
                 "/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default")
             .apply();

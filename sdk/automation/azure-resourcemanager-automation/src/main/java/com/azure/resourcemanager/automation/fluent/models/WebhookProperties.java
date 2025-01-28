@@ -5,85 +5,86 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Definition of the webhook properties. */
+/**
+ * Definition of the webhook properties.
+ */
 @Fluent
-public final class WebhookProperties {
+public final class WebhookProperties implements JsonSerializable<WebhookProperties> {
     /*
      * Gets or sets the value of the enabled flag of the webhook.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Gets or sets the webhook uri.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Gets or sets the expiry time.
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * Gets or sets the last invoked time.
      */
-    @JsonProperty(value = "lastInvokedTime")
     private OffsetDateTime lastInvokedTime;
 
     /*
      * Gets or sets the parameters of the job that is created when the webhook calls the runbook it is associated with.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Gets or sets the runbook the webhook is associated with.
      */
-    @JsonProperty(value = "runbook")
     private RunbookAssociationProperty runbook;
 
     /*
      * Gets or sets the name of the hybrid worker group the webhook job will run on.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Details of the user who last modified the Webhook
      */
-    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of WebhookProperties class.
+     */
+    public WebhookProperties() {
+    }
+
+    /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of the webhook.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -92,7 +93,7 @@ public final class WebhookProperties {
 
     /**
      * Set the isEnabled property: Gets or sets the value of the enabled flag of the webhook.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the WebhookProperties object itself.
      */
@@ -103,7 +104,7 @@ public final class WebhookProperties {
 
     /**
      * Get the uri property: Gets or sets the webhook uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -112,7 +113,7 @@ public final class WebhookProperties {
 
     /**
      * Set the uri property: Gets or sets the webhook uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the WebhookProperties object itself.
      */
@@ -123,7 +124,7 @@ public final class WebhookProperties {
 
     /**
      * Get the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -132,7 +133,7 @@ public final class WebhookProperties {
 
     /**
      * Set the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the WebhookProperties object itself.
      */
@@ -143,7 +144,7 @@ public final class WebhookProperties {
 
     /**
      * Get the lastInvokedTime property: Gets or sets the last invoked time.
-     *
+     * 
      * @return the lastInvokedTime value.
      */
     public OffsetDateTime lastInvokedTime() {
@@ -152,7 +153,7 @@ public final class WebhookProperties {
 
     /**
      * Set the lastInvokedTime property: Gets or sets the last invoked time.
-     *
+     * 
      * @param lastInvokedTime the lastInvokedTime value to set.
      * @return the WebhookProperties object itself.
      */
@@ -164,7 +165,7 @@ public final class WebhookProperties {
     /**
      * Get the parameters property: Gets or sets the parameters of the job that is created when the webhook calls the
      * runbook it is associated with.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -174,7 +175,7 @@ public final class WebhookProperties {
     /**
      * Set the parameters property: Gets or sets the parameters of the job that is created when the webhook calls the
      * runbook it is associated with.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WebhookProperties object itself.
      */
@@ -185,7 +186,7 @@ public final class WebhookProperties {
 
     /**
      * Get the runbook property: Gets or sets the runbook the webhook is associated with.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -194,7 +195,7 @@ public final class WebhookProperties {
 
     /**
      * Set the runbook property: Gets or sets the runbook the webhook is associated with.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the WebhookProperties object itself.
      */
@@ -205,7 +206,7 @@ public final class WebhookProperties {
 
     /**
      * Get the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -214,7 +215,7 @@ public final class WebhookProperties {
 
     /**
      * Set the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the WebhookProperties object itself.
      */
@@ -225,7 +226,7 @@ public final class WebhookProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -234,7 +235,7 @@ public final class WebhookProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the WebhookProperties object itself.
      */
@@ -245,7 +246,7 @@ public final class WebhookProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -254,7 +255,7 @@ public final class WebhookProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the WebhookProperties object itself.
      */
@@ -265,7 +266,7 @@ public final class WebhookProperties {
 
     /**
      * Get the lastModifiedBy property: Details of the user who last modified the Webhook.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -274,7 +275,7 @@ public final class WebhookProperties {
 
     /**
      * Set the lastModifiedBy property: Details of the user who last modified the Webhook.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the WebhookProperties object itself.
      */
@@ -285,7 +286,7 @@ public final class WebhookProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -294,7 +295,7 @@ public final class WebhookProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the WebhookProperties object itself.
      */
@@ -305,12 +306,89 @@ public final class WebhookProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runbook() != null) {
             runbook().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeStringField("lastInvokedTime",
+            this.lastInvokedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastInvokedTime));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("runbook", this.runbook);
+        jsonWriter.writeStringField("runOn", this.runOn);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookProperties.
+     */
+    public static WebhookProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookProperties deserializedWebhookProperties = new WebhookProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedWebhookProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("uri".equals(fieldName)) {
+                    deserializedWebhookProperties.uri = reader.getString();
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedWebhookProperties.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastInvokedTime".equals(fieldName)) {
+                    deserializedWebhookProperties.lastInvokedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookProperties.parameters = parameters;
+                } else if ("runbook".equals(fieldName)) {
+                    deserializedWebhookProperties.runbook = RunbookAssociationProperty.fromJson(reader);
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedWebhookProperties.runOn = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedWebhookProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedWebhookProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedWebhookProperties.lastModifiedBy = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWebhookProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookProperties;
+        });
     }
 }

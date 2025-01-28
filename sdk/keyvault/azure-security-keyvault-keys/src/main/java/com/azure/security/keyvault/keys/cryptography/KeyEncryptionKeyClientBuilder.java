@@ -64,10 +64,9 @@ import reactor.core.publisher.Mono;
  * @see KeyEncryptionKeyAsyncClient
  * @see KeyEncryptionKeyClient
  */
-@ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class })
 public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
-    TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
-    HttpTrait<KeyEncryptionKeyClientBuilder>,
+    TokenCredentialTrait<KeyEncryptionKeyClientBuilder>, HttpTrait<KeyEncryptionKeyClientBuilder>,
     ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
 
@@ -108,8 +107,9 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
                     + "the key encryption key client."));
         }
 
-        CryptographyServiceVersion serviceVersion =
-            builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null
+            ? builder.getServiceVersion()
+            : CryptographyServiceVersion.getLatest();
 
         if (builder.getPipeline() != null) {
             return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion, isKeyCachingDisabled);
@@ -143,8 +143,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
         } else if (key.getId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("JSON Web Key's id property is not configured."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("JSON Web Key's id property is not configured."));
         }
 
         if (isKeyCachingDisabled) {
@@ -187,13 +187,13 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
                     + "the key encryption key client."));
         }
 
-        CryptographyServiceVersion serviceVersion =
-            builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null
+            ? builder.getServiceVersion()
+            : CryptographyServiceVersion.getLatest();
 
         if (builder.getPipeline() != null) {
-            return Mono.defer(() ->
-                Mono.just(new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion,
-                    isKeyCachingDisabled)));
+            return Mono.defer(() -> Mono.just(
+                new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion, isKeyCachingDisabled)));
         }
 
         if (builder.getCredential() == null) {
@@ -203,8 +203,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         HttpPipeline pipeline = builder.setupPipeline();
 
-        return Mono.defer(() ->
-            Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled)));
+        return Mono.defer(
+            () -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled)));
     }
 
     /**
@@ -226,8 +226,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
         } else if (key.getId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("JSON Web Key's id property is not configured."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("JSON Web Key's id property is not configured."));
         }
 
         if (isKeyCachingDisabled) {
@@ -370,7 +370,6 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         return this;
     }
 
-
     /**
      * Sets the {@link CryptographyServiceVersion} that is used when making API requests.
      * <p>
@@ -465,8 +464,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
-     * Disables the ability to perform cryptographic operations locally, performing all cryptographic operations on the
-     * service side instead.
+     * Disables local key caching and defers all cryptographic operations to the service.
      *
      * <p>This method will have no effect if
      * {@link KeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(JsonWebKey)} or
@@ -474,7 +472,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
-    public KeyEncryptionKeyClientBuilder disableLocalCryptography() {
+    public KeyEncryptionKeyClientBuilder disableKeyCaching() {
         this.isKeyCachingDisabled = true;
 
         return this;

@@ -7,38 +7,61 @@ package com.azure.resourcemanager.fluidrelay.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.models.EncryptionProperties;
 import com.azure.resourcemanager.fluidrelay.models.FluidRelayEndpoints;
 import com.azure.resourcemanager.fluidrelay.models.Identity;
 import com.azure.resourcemanager.fluidrelay.models.ProvisioningState;
 import com.azure.resourcemanager.fluidrelay.models.StorageSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A FluidRelay Server. */
+/**
+ * A FluidRelay Server.
+ */
 @Fluent
 public final class FluidRelayServerInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private FluidRelayServerProperties innerProperties;
 
     /*
      * System meta data for this resource, including creation and modification information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The type of identity used for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FluidRelayServerInner class.
+     */
+    public FluidRelayServerInner() {
+    }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FluidRelayServerProperties innerProperties() {
@@ -47,7 +70,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Get the systemData property: System meta data for this resource, including creation and modification information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +79,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Get the identity property: The type of identity used for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -65,7 +88,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Set the identity property: The type of identity used for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FluidRelayServerInner object itself.
      */
@@ -74,14 +97,48 @@ public final class FluidRelayServerInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FluidRelayServerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FluidRelayServerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -90,7 +147,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Get the frsTenantId property: The Fluid tenantId for this server.
-     *
+     * 
      * @return the frsTenantId value.
      */
     public String frsTenantId() {
@@ -99,7 +156,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Get the fluidRelayEndpoints property: The Fluid Relay Service endpoints for this server.
-     *
+     * 
      * @return the fluidRelayEndpoints value.
      */
     public FluidRelayEndpoints fluidRelayEndpoints() {
@@ -108,7 +165,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Get the provisioningState property: Provision states for FluidRelay RP.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -117,7 +174,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Set the provisioningState property: Provision states for FluidRelay RP.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the FluidRelayServerInner object itself.
      */
@@ -131,7 +188,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Get the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -140,7 +197,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Set the encryption property: All encryption configuration for a resource.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the FluidRelayServerInner object itself.
      */
@@ -153,10 +210,8 @@ public final class FluidRelayServerInner extends Resource {
     }
 
     /**
-     * Get the storagesku property: StorageSKU
-     *
-     * <p>Sku of the storage associated with the resource.
-     *
+     * Get the storagesku property: Sku of the storage associated with the resource.
+     * 
      * @return the storagesku value.
      */
     public StorageSku storagesku() {
@@ -164,10 +219,8 @@ public final class FluidRelayServerInner extends Resource {
     }
 
     /**
-     * Set the storagesku property: StorageSKU
-     *
-     * <p>Sku of the storage associated with the resource.
-     *
+     * Set the storagesku property: Sku of the storage associated with the resource.
+     * 
      * @param storagesku the storagesku value to set.
      * @return the FluidRelayServerInner object itself.
      */
@@ -181,7 +234,7 @@ public final class FluidRelayServerInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -191,5 +244,60 @@ public final class FluidRelayServerInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayServerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayServerInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FluidRelayServerInner.
+     */
+    public static FluidRelayServerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayServerInner deserializedFluidRelayServerInner = new FluidRelayServerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFluidRelayServerInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.innerProperties = FluidRelayServerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFluidRelayServerInner.identity = Identity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayServerInner;
+        });
     }
 }

@@ -279,8 +279,8 @@ class WebSiteBaseImpl implements WebSiteBase {
         }
         this.possibleOutboundIPAddressesSet.clear();
         if (innerModel().possibleOutboundIpAddresses() != null) {
-            this.possibleOutboundIPAddressesSet.addAll(Arrays.asList(
-                innerModel().possibleOutboundIpAddresses().split(",[ ]*")));
+            this.possibleOutboundIPAddressesSet
+                .addAll(Arrays.asList(innerModel().possibleOutboundIpAddresses().split(",[ ]*")));
         }
         this.hostNameSslStateMap.clear();
         if (innerModel().hostnameSslStates() != null) {
@@ -294,8 +294,8 @@ class WebSiteBaseImpl implements WebSiteBase {
         }
         this.clientCertExclusionPathSet.clear();
         if (innerModel().clientCertExclusionPaths() != null) {
-            this.clientCertExclusionPathSet.addAll(Arrays.asList(
-                innerModel().clientCertExclusionPaths().split(",[ ]*")));
+            this.clientCertExclusionPathSet
+                .addAll(Arrays.asList(innerModel().clientCertExclusionPaths().split(",[ ]*")));
         }
     }
 

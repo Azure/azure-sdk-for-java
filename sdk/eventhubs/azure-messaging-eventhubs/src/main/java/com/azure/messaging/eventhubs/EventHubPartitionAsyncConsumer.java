@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -30,25 +29,24 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
+    private final MessageFluxWrapper messageFlux;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
     private final boolean trackLastEnqueuedEventProperties;
-    private final Flux<PartitionEvent> emitterProcessor;
+    private final Flux<PartitionEvent> partitionEvents;
     private final EventPosition initialPosition;
 
     private volatile Long currentOffset;
 
-    EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
-        MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
-        String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
-        boolean trackLastEnqueuedEventProperties) {
+    EventHubPartitionAsyncConsumer(MessageFluxWrapper messageFlux, MessageSerializer messageSerializer,
+        String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
+        AtomicReference<Supplier<EventPosition>> currentEventPosition, boolean trackLastEnqueuedEventProperties) {
         this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
             "'currentEventPosition.get().get()' cannot be null.");
-        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
+        this.messageFlux = messageFlux;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
@@ -62,26 +60,22 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
 
         currentEventPosition.set(() -> {
             final Long offset = currentOffset;
-            return offset == null
-                ? initialPosition
-                : EventPosition.fromOffset(offset);
+            return offset == null ? initialPosition : EventPosition.fromOffset(offset);
         });
 
-        this.emitterProcessor = amqpReceiveLinkProcessor
-            .map(this::onMessageReceived)
-            .doOnNext(event -> {
-                // Keep track of the last position so if the link goes down, we don't start from the original location.
-                final Long offset = event.getData().getOffset();
-                if (offset != null) {
-                    currentOffset = offset;
-                } else {
-                    LOGGER.atWarning()
-                        .addKeyValue(PARTITION_ID_KEY,  event.getPartitionContext().getPartitionId())
-                        .addKeyValue(CONSUMER_GROUP_KEY, event.getPartitionContext().getConsumerGroup())
-                        .addKeyValue("data", () -> event.getData().getBodyAsString())
-                        .log("Offset for received event should not be null.");
-                }
-            });
+        this.partitionEvents = messageFlux.flux().map(this::onMessageReceived).doOnNext(event -> {
+            // Keep track of the last position so if the link goes down, we don't start from the original location.
+            final Long offset = event.getData().getOffset();
+            if (offset != null) {
+                currentOffset = offset;
+            } else {
+                LOGGER.atWarning()
+                    .addKeyValue(PARTITION_ID_KEY, event.getPartitionContext().getPartitionId())
+                    .addKeyValue(CONSUMER_GROUP_KEY, event.getPartitionContext().getConsumerGroup())
+                    .addKeyValue("data", () -> event.getData().getBodyAsString())
+                    .log("Offset for received event should not be null.");
+            }
+        });
     }
 
     /**
@@ -90,13 +84,11 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            if (!amqpReceiveLinkProcessor.isTerminated()) {
+            if (!messageFlux.isTerminated()) {
                 // cancel only if the processor is not already terminated.
-                amqpReceiveLinkProcessor.cancel();
+                messageFlux.cancel();
             }
-            LOGGER.atInfo()
-                .addKeyValue(PARTITION_ID_KEY, this.partitionId)
-                .log("Closed consumer.");
+            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, this.partitionId).log("Closed consumer.");
         }
     }
 
@@ -106,7 +98,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     Flux<PartitionEvent> receive() {
-        return emitterProcessor;
+        return partitionEvents;
     }
 
     /**
@@ -125,8 +117,8 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         final EventData event = messageSerializer.deserialize(message, EventData.class);
 
         if (trackLastEnqueuedEventProperties) {
-            final LastEnqueuedEventProperties enqueuedEventProperties =
-                messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
+            final LastEnqueuedEventProperties enqueuedEventProperties
+                = messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
 
             if (enqueuedEventProperties != null) {
                 final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
@@ -136,8 +128,8 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             }
         }
 
-        final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
-            consumerGroup, partitionId);
+        final PartitionContext partitionContext
+            = new PartitionContext(fullyQualifiedNamespace, eventHubName, consumerGroup, partitionId);
         return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get());
     }
 }

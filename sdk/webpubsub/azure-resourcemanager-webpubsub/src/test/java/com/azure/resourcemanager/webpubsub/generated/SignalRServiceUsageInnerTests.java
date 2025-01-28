@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRServiceUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRServiceUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"vyvdcs\",\"currentValue\":6235593202680912824,\"limit\":7516654710743281273,\"name\":{\"value\":\"ectehf\",\"localizedValue\":\"scjeypv\"},\"unit\":\"zrkgqhcjrefovg\"}")
-                .toObject(SignalRServiceUsageInner.class);
+        SignalRServiceUsageInner model = BinaryData.fromString(
+            "{\"id\":\"vyvdcs\",\"currentValue\":6235593202680912824,\"limit\":7516654710743281273,\"name\":{\"value\":\"ectehf\",\"localizedValue\":\"scjeypv\"},\"unit\":\"zrkgqhcjrefovg\"}")
+            .toObject(SignalRServiceUsageInner.class);
         Assertions.assertEquals("vyvdcs", model.id());
         Assertions.assertEquals(6235593202680912824L, model.currentValue());
         Assertions.assertEquals(7516654710743281273L, model.limit());
@@ -27,13 +25,11 @@ public final class SignalRServiceUsageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRServiceUsageInner model =
-            new SignalRServiceUsageInner()
-                .withId("vyvdcs")
-                .withCurrentValue(6235593202680912824L)
-                .withLimit(7516654710743281273L)
-                .withName(new SignalRServiceUsageName().withValue("ectehf").withLocalizedValue("scjeypv"))
-                .withUnit("zrkgqhcjrefovg");
+        SignalRServiceUsageInner model = new SignalRServiceUsageInner().withId("vyvdcs")
+            .withCurrentValue(6235593202680912824L)
+            .withLimit(7516654710743281273L)
+            .withName(new SignalRServiceUsageName().withValue("ectehf").withLocalizedValue("scjeypv"))
+            .withUnit("zrkgqhcjrefovg");
         model = BinaryData.fromObject(model).toObject(SignalRServiceUsageInner.class);
         Assertions.assertEquals("vyvdcs", model.id());
         Assertions.assertEquals(6235593202680912824L, model.currentValue());

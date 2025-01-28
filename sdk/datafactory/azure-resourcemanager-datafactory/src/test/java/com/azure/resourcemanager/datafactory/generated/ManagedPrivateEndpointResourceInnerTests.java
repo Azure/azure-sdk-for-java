@@ -17,27 +17,27 @@ public final class ManagedPrivateEndpointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpointResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"x\",\"description\":\"unin\",\"status\":\"db\"},\"fqdns\":[\"qdtvqecrqctmxx\",\"tddmf\",\"huytxzvtzn\",\"pxbannovvoxc\"],\"groupId\":\"tprwnw\",\"isReserved\":true,\"privateLinkResourceId\":\"vytlyokrrrouuxvn\",\"provisioningState\":\"sbcrymodizrxklo\",\"\":{\"lmv\":\"datanazpmk\",\"zxlioh\":\"datavfxzopjh\",\"dtfgxqbawpcbb\":\"datad\"}},\"name\":\"qcy\",\"type\":\"apqofyuicdhz\",\"etag\":\"ybww\",\"id\":\"d\"}")
+            "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"ietgbebjfu\",\"description\":\"moichdlpnfpubntn\",\"status\":\"tzviqsowsaaelcat\"},\"fqdns\":[\"uhplrvkmjcwmjv\"],\"groupId\":\"fggc\",\"isReserved\":false,\"privateLinkResourceId\":\"lizrzbjpsfxsfuz\",\"provisioningState\":\"vtmva\",\"\":{\"oveofizrvjfnmj\":\"dataidqlvhu\"}},\"name\":\"lwyzgib\",\"type\":\"ujr\",\"etag\":\"fojuidjpuuyj\",\"id\":\"ejikzoeovvtzejet\"}")
             .toObject(ManagedPrivateEndpointResourceInner.class);
-        Assertions.assertEquals("d", model.id());
-        Assertions.assertEquals("qdtvqecrqctmxx", model.properties().fqdns().get(0));
-        Assertions.assertEquals("tprwnw", model.properties().groupId());
-        Assertions.assertEquals("vytlyokrrrouuxvn", model.properties().privateLinkResourceId());
+        Assertions.assertEquals("ejikzoeovvtzejet", model.id());
+        Assertions.assertEquals("uhplrvkmjcwmjv", model.properties().fqdns().get(0));
+        Assertions.assertEquals("fggc", model.properties().groupId());
+        Assertions.assertEquals("lizrzbjpsfxsfuz", model.properties().privateLinkResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointResourceInner model = new ManagedPrivateEndpointResourceInner().withId("d")
+        ManagedPrivateEndpointResourceInner model = new ManagedPrivateEndpointResourceInner().withId("ejikzoeovvtzejet")
             .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                .withFqdns(Arrays.asList("qdtvqecrqctmxx", "tddmf", "huytxzvtzn", "pxbannovvoxc"))
-                .withGroupId("tprwnw")
-                .withPrivateLinkResourceId("vytlyokrrrouuxvn")
-                .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "sbcrymodizrxklo")));
+                .withFqdns(Arrays.asList("uhplrvkmjcwmjv"))
+                .withGroupId("fggc")
+                .withPrivateLinkResourceId("lizrzbjpsfxsfuz")
+                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "vtmva")));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointResourceInner.class);
-        Assertions.assertEquals("d", model.id());
-        Assertions.assertEquals("qdtvqecrqctmxx", model.properties().fqdns().get(0));
-        Assertions.assertEquals("tprwnw", model.properties().groupId());
-        Assertions.assertEquals("vytlyokrrrouuxvn", model.properties().privateLinkResourceId());
+        Assertions.assertEquals("ejikzoeovvtzejet", model.id());
+        Assertions.assertEquals("uhplrvkmjcwmjv", model.properties().fqdns().get(0));
+        Assertions.assertEquals("fggc", model.properties().groupId());
+        Assertions.assertEquals("lizrzbjpsfxsfuz", model.properties().privateLinkResourceId());
     }
 
     // Use "Map.of" if available

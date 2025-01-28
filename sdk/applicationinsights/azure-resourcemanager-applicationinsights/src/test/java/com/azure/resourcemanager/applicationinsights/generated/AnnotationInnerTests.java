@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AnnotationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AnnotationInner model =
-            BinaryData
-                .fromString(
-                    "{\"AnnotationName\":\"eg\",\"Category\":\"wmfdatscmdvpjhul\",\"EventTime\":\"2021-11-19T18:36:28Z\",\"Id\":\"mkjozkrwf\",\"Properties\":\"iodjp\",\"RelatedAnnotation\":\"w\"}")
-                .toObject(AnnotationInner.class);
+        AnnotationInner model = BinaryData.fromString(
+            "{\"AnnotationName\":\"eg\",\"Category\":\"wmfdatscmdvpjhul\",\"EventTime\":\"2021-11-19T18:36:28Z\",\"Id\":\"mkjozkrwf\",\"Properties\":\"iodjp\",\"RelatedAnnotation\":\"w\"}")
+            .toObject(AnnotationInner.class);
         Assertions.assertEquals("eg", model.annotationName());
         Assertions.assertEquals("wmfdatscmdvpjhul", model.category());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T18:36:28Z"), model.eventTime());
@@ -27,14 +25,12 @@ public final class AnnotationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnnotationInner model =
-            new AnnotationInner()
-                .withAnnotationName("eg")
-                .withCategory("wmfdatscmdvpjhul")
-                .withEventTime(OffsetDateTime.parse("2021-11-19T18:36:28Z"))
-                .withId("mkjozkrwf")
-                .withProperties("iodjp")
-                .withRelatedAnnotation("w");
+        AnnotationInner model = new AnnotationInner().withAnnotationName("eg")
+            .withCategory("wmfdatscmdvpjhul")
+            .withEventTime(OffsetDateTime.parse("2021-11-19T18:36:28Z"))
+            .withId("mkjozkrwf")
+            .withProperties("iodjp")
+            .withRelatedAnnotation("w");
         model = BinaryData.fromObject(model).toObject(AnnotationInner.class);
         Assertions.assertEquals("eg", model.annotationName());
         Assertions.assertEquals("wmfdatscmdvpjhul", model.category());

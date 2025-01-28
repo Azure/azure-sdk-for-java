@@ -6,18 +6,20 @@ package com.azure.resourcemanager.subscription.models;
 
 import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionIdInner;
 
-/** An immutable client-side representation of EnabledSubscriptionId. */
+/**
+ * An immutable client-side representation of EnabledSubscriptionId.
+ */
 public interface EnabledSubscriptionId {
     /**
      * Gets the subscriptionId property: The ID of the subscriptions that is being enabled.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionIdInner object.
-     *
+     * 
      * @return the inner object.
      */
     EnabledSubscriptionIdInner innerModel();

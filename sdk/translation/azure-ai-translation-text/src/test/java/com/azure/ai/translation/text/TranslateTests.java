@@ -11,6 +11,7 @@ import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslateOptions;
 import org.junit.jupiter.api.Test;
+import com.azure.core.test.annotation.PlaybackOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,7 @@ public class TranslateTests extends TextTranslationClientBase {
     @Test
     @LiveOnly
     public void translateOneItemWithOptions() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
         TranslatedTextItem response = getTranslationClient().translate("Hola mundo", translateOptions);
 
@@ -52,8 +52,7 @@ public class TranslateTests extends TextTranslationClientBase {
         content.add("This is a test sentence two.");
         content.add("This is another test.");
 
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
         List<TranslatedTextItem> response = getTranslationClient().translate(content, translateOptions);
 
@@ -65,8 +64,7 @@ public class TranslateTests extends TextTranslationClientBase {
     @Test
     @LiveOnly
     public void translateWithAutoDetect() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
         TranslatedTextItem response = getTranslationClient().translate("This is a test.", translateOptions);
 
@@ -79,12 +77,11 @@ public class TranslateTests extends TextTranslationClientBase {
     @Test
     @LiveOnly
     public void translateWithNoTranslateTag() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("en")
-            .setSourceLanguage("zh-Hans")
-            .setTextType(TextType.HTML);
+        TranslateOptions translateOptions
+            = new TranslateOptions().addTargetLanguage("en").setSourceLanguage("zh-Hans").setTextType(TextType.HTML);
 
-        TranslatedTextItem response = getTranslationClient().translate("<span class=notranslate>今天是怎么回事是</span>非常可怕的", translateOptions);
+        TranslatedTextItem response
+            = getTranslationClient().translate("<span class=notranslate>今天是怎么回事是</span>非常可怕的", translateOptions);
 
         assertEquals(1, response.getTranslations().size());
         assertTrue(response.getTranslations().get(0).getText().contains("今天是怎么回事是"));
@@ -93,11 +90,11 @@ public class TranslateTests extends TextTranslationClientBase {
     @Test
     @LiveOnly
     public void translateWithDictionaryTag() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .setSourceLanguage("en")
-            .addTargetLanguage("es");
+        TranslateOptions translateOptions = new TranslateOptions().setSourceLanguage("en").addTargetLanguage("es");
 
-        TranslatedTextItem response = getTranslationClient().translate("The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.", translateOptions);
+        TranslatedTextItem response = getTranslationClient().translate(
+            "The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.",
+            translateOptions);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("es", response.getTranslations().get(0).getTargetLanguage());
@@ -107,8 +104,7 @@ public class TranslateTests extends TextTranslationClientBase {
     @Test
     @LiveOnly
     public void translateWithTransliteration() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("zh-Hans")
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("zh-Hans")
             .setSourceLanguage("ar")
             .setSourceLanguageScript("Latn")
             .setTargetLanguageScript("Latn");
@@ -122,8 +118,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateFromLatinToLatinScript() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("ta")
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("ta")
             .setSourceLanguage("hi")
             .setSourceLanguageScript("Latn")
             .setTargetLanguageScript("Latn");
@@ -141,8 +136,7 @@ public class TranslateTests extends TextTranslationClientBase {
         content.add("Esto es una prueba.");
         content.add("Dies ist ein Test.");
 
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
         List<TranslatedTextItem> response = getTranslationClient().translate(content, translateOptions);
 
@@ -162,10 +156,8 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateMultipleTargetLanguages() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs")
-            .addTargetLanguage("es")
-            .addTargetLanguage("de");
+        TranslateOptions translateOptions
+            = new TranslateOptions().addTargetLanguage("cs").addTargetLanguage("es").addTargetLanguage("de");
 
         TranslatedTextItem response = getTranslationClient().translate("This is a test.", translateOptions);
 
@@ -179,11 +171,10 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateDifferentTextTypes() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs")
-            .setTextType(TextType.HTML);
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs").setTextType(TextType.HTML);
 
-        TranslatedTextItem response = getTranslationClient().translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
+        TranslatedTextItem response
+            = getTranslationClient().translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
@@ -192,12 +183,12 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateWithProfanity() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("zh-Hans")
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("zh-Hans")
             .setProfanityAction(ProfanityAction.MARKED)
             .setProfanityMarker(ProfanityMarker.ASTERISK);
 
-        TranslatedTextItem response = getTranslationClient().translate("shit this is fucking crazy", translateOptions);
+        TranslatedTextItem response
+            = getTranslationClient().translate("shit this is fucking crazy shit fuck", translateOptions);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
@@ -207,9 +198,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateWithAlignment() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs")
-            .setIncludeAlignment(true);
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs").setIncludeAlignment(true);
 
         TranslatedTextItem response = getTranslationClient().translate("It is a beautiful morning", translateOptions);
 
@@ -221,25 +210,27 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateWithIncludeSentenceLength() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("fr")
-            .setIncludeSentenceLength(true);
+        TranslateOptions translateOptions
+            = new TranslateOptions().addTargetLanguage("fr").setIncludeSentenceLength(true);
 
-        TranslatedTextItem response = getTranslationClient().translate("La réponse se trouve dans la traduction automatique. La meilleure technologie de traduction automatique ne peut pas toujours fournir des traductions adaptées à un site ou des utilisateurs comme un être humain. Il suffit de copier et coller un extrait de code n'importe où.", translateOptions);
+        TranslatedTextItem response = getTranslationClient().translate(
+            "La réponse se trouve dans la traduction automatique. La meilleure technologie de traduction automatique ne peut pas toujours fournir des traductions adaptées à un site ou des utilisateurs comme un être humain. Il suffit de copier et coller un extrait de code n'importe où.",
+            translateOptions);
 
         assertEquals("fr", response.getDetectedLanguage().getLanguage());
         assertEquals(1, response.getDetectedLanguage().getConfidence());
         assertEquals(1, response.getTranslations().size());
         assertEquals(3, response.getTranslations().get(0).getSentenceBoundaries().getSourceSentencesLengths().size());
-        assertEquals(3, response.getTranslations().get(0).getSentenceBoundaries().getTranslatedSentencesLengths().size());
+        assertEquals(3,
+            response.getTranslations().get(0).getSentenceBoundaries().getTranslatedSentencesLengths().size());
     }
 
     @Test
     public void translateWithCustomEndpoint() {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
-        TranslatedTextItem response = getTranslationClientWithCustomEndpoint().translate("It is a beautiful morning", translateOptions);
+        TranslatedTextItem response
+            = getTranslationClientWithCustomEndpoint().translate("It is a beautiful morning", translateOptions);
 
         assertEquals("en", response.getDetectedLanguage().getLanguage());
         assertEquals(1, response.getDetectedLanguage().getConfidence());
@@ -249,8 +240,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
     @Test
     public void translateWithToken() throws Exception {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
         TranslatedTextItem response = getTranslationClientWithToken().translate("This is a test.", translateOptions);
 
@@ -262,9 +252,9 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @PlaybackOnly
     public void translateWithAad() throws Exception {
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("cs");
+        TranslateOptions translateOptions = new TranslateOptions().addTargetLanguage("cs");
 
         TranslatedTextItem response = getTranslationClientWithAadAuth().translate("This is a test.", translateOptions);
 

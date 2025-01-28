@@ -27,9 +27,12 @@ public final class TestUtils {
 
     public static void print(ManagementLock lock) {
         StringBuilder info = new StringBuilder();
-        info.append("\nLock ID: ").append(lock.id())
-            .append("\nLocked resource ID: ").append(lock.lockedResourceId())
-            .append("\nLevel: ").append(lock.level());
+        info.append("\nLock ID: ")
+            .append(lock.id())
+            .append("\nLocked resource ID: ")
+            .append(lock.lockedResourceId())
+            .append("\nLevel: ")
+            .append(lock.level());
         LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 
@@ -63,14 +66,11 @@ public final class TestUtils {
             }
             if (resource.storageProfile().osDisk().encryptionSettings() != null) {
                 storageProfile.append("\n\t\t\tEncryptionSettings: ");
-                storageProfile
-                    .append("\n\t\t\t\tEnabled: ")
+                storageProfile.append("\n\t\t\t\tEnabled: ")
                     .append(resource.storageProfile().osDisk().encryptionSettings().enabled());
-                storageProfile
-                    .append("\n\t\t\t\tDiskEncryptionKey Uri: ")
+                storageProfile.append("\n\t\t\t\tDiskEncryptionKey Uri: ")
                     .append(resource.storageProfile().osDisk().encryptionSettings().diskEncryptionKey().secretUrl());
-                storageProfile
-                    .append("\n\t\t\t\tKeyEncryptionKey Uri: ")
+                storageProfile.append("\n\t\t\t\tKeyEncryptionKey Uri: ")
                     .append(resource.storageProfile().osDisk().encryptionSettings().keyEncryptionKey().keyUrl());
             }
         }
@@ -103,19 +103,16 @@ public final class TestUtils {
         osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
         if (resource.osProfile().windowsConfiguration() != null) {
             osProfile.append("\n\t\t\tWindowsConfiguration: ");
-            osProfile
-                .append("\n\t\t\t\tProvisionVMAgent: ")
+            osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
                 .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
-            osProfile
-                .append("\n\t\t\t\tEnableAutomaticUpdates: ")
+            osProfile.append("\n\t\t\t\tEnableAutomaticUpdates: ")
                 .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
             osProfile.append("\n\t\t\t\tTimeZone: ").append(resource.osProfile().windowsConfiguration().timeZone());
         }
 
         if (resource.osProfile().linuxConfiguration() != null) {
             osProfile.append("\n\t\t\tLinuxConfiguration: ");
-            osProfile
-                .append("\n\t\t\t\tDisablePasswordAuthentication: ")
+            osProfile.append("\n\t\t\t\tDisablePasswordAuthentication: ")
                 .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
         }
 
@@ -124,9 +121,10 @@ public final class TestUtils {
             networkProfile.append("\n\t\tId:").append(networkInterfaceId);
         }
 
-        LOGGER.log(LogLevel.VERBOSE, () -> "Virtual Machine: " + resource.id() + "Name: " + resource.name()
-            + "\n\tResource group: " + resource.resourceGroupName() + "\n\tRegion: " + resource.region() + "\n\tTags: "
-            + resource.tags() + "\n\tHardwareProfile: " + "\n\t\tSize: " + resource.size() + storageProfile + osProfile
-            + networkProfile);
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> "Virtual Machine: " + resource.id() + "Name: " + resource.name() + "\n\tResource group: "
+                + resource.resourceGroupName() + "\n\tRegion: " + resource.region() + "\n\tTags: " + resource.tags()
+                + "\n\tHardwareProfile: " + "\n\t\tSize: " + resource.size() + storageProfile + osProfile
+                + networkProfile);
     }
 }

@@ -5,39 +5,41 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.SupportInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Lab plan resource properties for updates. */
+/**
+ * Lab plan resource properties for updates.
+ */
 @Fluent
-public class LabPlanUpdateProperties {
+public class LabPlanUpdateProperties implements JsonSerializable<LabPlanUpdateProperties> {
     /*
      * The default lab connection profile. This can be changed on a lab resource and only provides a default profile.
      */
-    @JsonProperty(value = "defaultConnectionProfile")
     private ConnectionProfile defaultConnectionProfile;
 
     /*
      * The default lab shutdown profile. This can be changed on a lab resource and only provides a default profile.
      */
-    @JsonProperty(value = "defaultAutoShutdownProfile")
     private AutoShutdownProfile defaultAutoShutdownProfile;
 
     /*
      * The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed
      * when there are existing labs associated with this lab plan.
      */
-    @JsonProperty(value = "defaultNetworkProfile")
     private LabPlanNetworkProfile defaultNetworkProfile;
 
     /*
      * The allowed regions for the lab creator to use when creating labs using this lab plan.
      */
-    @JsonProperty(value = "allowedRegions")
     private List<String> allowedRegions;
 
     /*
@@ -45,26 +47,29 @@ public class LabPlanUpdateProperties {
      * image it will be persisted in this gallery. Shared images from the gallery can be made available to use when
      * creating new labs.
      */
-    @JsonProperty(value = "sharedGalleryId")
     private String sharedGalleryId;
 
     /*
      * Support contact information and instructions for users of the lab plan. This information is displayed to lab
      * owners and virtual machine users for all labs in the lab plan.
      */
-    @JsonProperty(value = "supportInfo")
     private SupportInfo supportInfo;
 
     /*
      * Base Url of the lms instance this lab plan can link lab rosters against.
      */
-    @JsonProperty(value = "linkedLmsInstance")
     private String linkedLmsInstance;
+
+    /**
+     * Creates an instance of LabPlanUpdateProperties class.
+     */
+    public LabPlanUpdateProperties() {
+    }
 
     /**
      * Get the defaultConnectionProfile property: The default lab connection profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @return the defaultConnectionProfile value.
      */
     public ConnectionProfile defaultConnectionProfile() {
@@ -74,7 +79,7 @@ public class LabPlanUpdateProperties {
     /**
      * Set the defaultConnectionProfile property: The default lab connection profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @param defaultConnectionProfile the defaultConnectionProfile value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -86,7 +91,7 @@ public class LabPlanUpdateProperties {
     /**
      * Get the defaultAutoShutdownProfile property: The default lab shutdown profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @return the defaultAutoShutdownProfile value.
      */
     public AutoShutdownProfile defaultAutoShutdownProfile() {
@@ -96,7 +101,7 @@ public class LabPlanUpdateProperties {
     /**
      * Set the defaultAutoShutdownProfile property: The default lab shutdown profile. This can be changed on a lab
      * resource and only provides a default profile.
-     *
+     * 
      * @param defaultAutoShutdownProfile the defaultAutoShutdownProfile value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -108,7 +113,7 @@ public class LabPlanUpdateProperties {
     /**
      * Get the defaultNetworkProfile property: The lab plan network profile. To enforce lab network policies they must
      * be defined here and cannot be changed when there are existing labs associated with this lab plan.
-     *
+     * 
      * @return the defaultNetworkProfile value.
      */
     public LabPlanNetworkProfile defaultNetworkProfile() {
@@ -118,7 +123,7 @@ public class LabPlanUpdateProperties {
     /**
      * Set the defaultNetworkProfile property: The lab plan network profile. To enforce lab network policies they must
      * be defined here and cannot be changed when there are existing labs associated with this lab plan.
-     *
+     * 
      * @param defaultNetworkProfile the defaultNetworkProfile value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -130,7 +135,7 @@ public class LabPlanUpdateProperties {
     /**
      * Get the allowedRegions property: The allowed regions for the lab creator to use when creating labs using this lab
      * plan.
-     *
+     * 
      * @return the allowedRegions value.
      */
     public List<String> allowedRegions() {
@@ -140,7 +145,7 @@ public class LabPlanUpdateProperties {
     /**
      * Set the allowedRegions property: The allowed regions for the lab creator to use when creating labs using this lab
      * plan.
-     *
+     * 
      * @param allowedRegions the allowedRegions value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -153,7 +158,7 @@ public class LabPlanUpdateProperties {
      * Get the sharedGalleryId property: Resource ID of the Shared Image Gallery attached to this lab plan. When saving
      * a lab template virtual machine image it will be persisted in this gallery. Shared images from the gallery can be
      * made available to use when creating new labs.
-     *
+     * 
      * @return the sharedGalleryId value.
      */
     public String sharedGalleryId() {
@@ -164,7 +169,7 @@ public class LabPlanUpdateProperties {
      * Set the sharedGalleryId property: Resource ID of the Shared Image Gallery attached to this lab plan. When saving
      * a lab template virtual machine image it will be persisted in this gallery. Shared images from the gallery can be
      * made available to use when creating new labs.
-     *
+     * 
      * @param sharedGalleryId the sharedGalleryId value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -176,7 +181,7 @@ public class LabPlanUpdateProperties {
     /**
      * Get the supportInfo property: Support contact information and instructions for users of the lab plan. This
      * information is displayed to lab owners and virtual machine users for all labs in the lab plan.
-     *
+     * 
      * @return the supportInfo value.
      */
     public SupportInfo supportInfo() {
@@ -186,7 +191,7 @@ public class LabPlanUpdateProperties {
     /**
      * Set the supportInfo property: Support contact information and instructions for users of the lab plan. This
      * information is displayed to lab owners and virtual machine users for all labs in the lab plan.
-     *
+     * 
      * @param supportInfo the supportInfo value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -197,7 +202,7 @@ public class LabPlanUpdateProperties {
 
     /**
      * Get the linkedLmsInstance property: Base Url of the lms instance this lab plan can link lab rosters against.
-     *
+     * 
      * @return the linkedLmsInstance value.
      */
     public String linkedLmsInstance() {
@@ -206,7 +211,7 @@ public class LabPlanUpdateProperties {
 
     /**
      * Set the linkedLmsInstance property: Base Url of the lms instance this lab plan can link lab rosters against.
-     *
+     * 
      * @param linkedLmsInstance the linkedLmsInstance value to set.
      * @return the LabPlanUpdateProperties object itself.
      */
@@ -217,7 +222,7 @@ public class LabPlanUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -233,5 +238,62 @@ public class LabPlanUpdateProperties {
         if (supportInfo() != null) {
             supportInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("defaultConnectionProfile", this.defaultConnectionProfile);
+        jsonWriter.writeJsonField("defaultAutoShutdownProfile", this.defaultAutoShutdownProfile);
+        jsonWriter.writeJsonField("defaultNetworkProfile", this.defaultNetworkProfile);
+        jsonWriter.writeArrayField("allowedRegions", this.allowedRegions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sharedGalleryId", this.sharedGalleryId);
+        jsonWriter.writeJsonField("supportInfo", this.supportInfo);
+        jsonWriter.writeStringField("linkedLmsInstance", this.linkedLmsInstance);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabPlanUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabPlanUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabPlanUpdateProperties.
+     */
+    public static LabPlanUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabPlanUpdateProperties deserializedLabPlanUpdateProperties = new LabPlanUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultConnectionProfile".equals(fieldName)) {
+                    deserializedLabPlanUpdateProperties.defaultConnectionProfile = ConnectionProfile.fromJson(reader);
+                } else if ("defaultAutoShutdownProfile".equals(fieldName)) {
+                    deserializedLabPlanUpdateProperties.defaultAutoShutdownProfile
+                        = AutoShutdownProfile.fromJson(reader);
+                } else if ("defaultNetworkProfile".equals(fieldName)) {
+                    deserializedLabPlanUpdateProperties.defaultNetworkProfile = LabPlanNetworkProfile.fromJson(reader);
+                } else if ("allowedRegions".equals(fieldName)) {
+                    List<String> allowedRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLabPlanUpdateProperties.allowedRegions = allowedRegions;
+                } else if ("sharedGalleryId".equals(fieldName)) {
+                    deserializedLabPlanUpdateProperties.sharedGalleryId = reader.getString();
+                } else if ("supportInfo".equals(fieldName)) {
+                    deserializedLabPlanUpdateProperties.supportInfo = SupportInfo.fromJson(reader);
+                } else if ("linkedLmsInstance".equals(fieldName)) {
+                    deserializedLabPlanUpdateProperties.linkedLmsInstance = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabPlanUpdateProperties;
+        });
     }
 }

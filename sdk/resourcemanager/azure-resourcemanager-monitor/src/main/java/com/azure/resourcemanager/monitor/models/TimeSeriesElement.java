@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A time series result type. The discriminator value is always TimeSeries in this case.
  */
 @Fluent
-public final class TimeSeriesElement {
+public final class TimeSeriesElement implements JsonSerializable<TimeSeriesElement> {
     /*
      * the metadata values returned if $filter was specified in the call.
      */
-    @JsonProperty(value = "metadatavalues")
     private List<MetadataValueInner> metadatavalues;
 
     /*
      * An array of data points representing the metric values. This is only returned if a result type of data is
      * specified.
      */
-    @JsonProperty(value = "data")
     private List<MetricValue> data;
 
     /**
@@ -54,8 +56,8 @@ public final class TimeSeriesElement {
     }
 
     /**
-     * Get the data property: An array of data points representing the metric values. This is only returned if a
-     * result type of data is specified.
+     * Get the data property: An array of data points representing the metric values. This is only returned if a result
+     * type of data is specified.
      * 
      * @return the data value.
      */
@@ -64,8 +66,8 @@ public final class TimeSeriesElement {
     }
 
     /**
-     * Set the data property: An array of data points representing the metric values. This is only returned if a
-     * result type of data is specified.
+     * Set the data property: An array of data points representing the metric values. This is only returned if a result
+     * type of data is specified.
      * 
      * @param data the data value to set.
      * @return the TimeSeriesElement object itself.
@@ -87,5 +89,48 @@ public final class TimeSeriesElement {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metadatavalues", this.metadatavalues,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeSeriesElement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeSeriesElement if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TimeSeriesElement.
+     */
+    public static TimeSeriesElement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeSeriesElement deserializedTimeSeriesElement = new TimeSeriesElement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadatavalues".equals(fieldName)) {
+                    List<MetadataValueInner> metadatavalues
+                        = reader.readArray(reader1 -> MetadataValueInner.fromJson(reader1));
+                    deserializedTimeSeriesElement.metadatavalues = metadatavalues;
+                } else if ("data".equals(fieldName)) {
+                    List<MetricValue> data = reader.readArray(reader1 -> MetricValue.fromJson(reader1));
+                    deserializedTimeSeriesElement.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeSeriesElement;
+        });
     }
 }

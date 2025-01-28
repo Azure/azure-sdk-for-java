@@ -7,22 +7,19 @@ package com.azure.resourcemanager.networkfunction.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficCollectorPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.ResourceReference;
-import org.junit.jupiter.api.Test;
 
 public final class AzureTrafficCollectorPropertiesFormatTests {
-    @Test
-    public void testDeserialize() {
-        AzureTrafficCollectorPropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"collectorPolicies\":[{\"id\":\"cjrwzoxxjtfellu\"}],\"virtualHub\":{\"id\":\"it\"},\"provisioningState\":\"Deleting\"}")
-                .toObject(AzureTrafficCollectorPropertiesFormat.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureTrafficCollectorPropertiesFormat model = BinaryData.fromString(
+            "{\"collectorPolicies\":[{\"id\":\"ubljofxqe\"},{\"id\":\"jaeq\"}],\"virtualHub\":{\"id\":\"jbasvmsmjqulngs\"},\"provisioningState\":\"Failed\"}")
+            .toObject(AzureTrafficCollectorPropertiesFormat.class);
     }
 
-    @Test
-    public void testSerialize() {
-        AzureTrafficCollectorPropertiesFormat model =
-            new AzureTrafficCollectorPropertiesFormat().withVirtualHub(new ResourceReference());
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureTrafficCollectorPropertiesFormat model
+            = new AzureTrafficCollectorPropertiesFormat().withVirtualHub(new ResourceReference());
         model = BinaryData.fromObject(model).toObject(AzureTrafficCollectorPropertiesFormat.class);
     }
 }

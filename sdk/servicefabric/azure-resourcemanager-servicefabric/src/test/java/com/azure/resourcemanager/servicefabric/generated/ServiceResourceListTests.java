@@ -50,32 +50,42 @@ public final class ServiceResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourceList model = new ServiceResourceList().withValue(Arrays.asList(new ServiceResourceInner()
-            .withProperties(new ServiceResourceProperties().withPlacementConstraints("utwpfhp")
-                .withCorrelationScheme(Arrays.asList(new ServiceCorrelationDescription()
-                    .withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY).withServiceName("r")))
-                .withServiceLoadMetrics(Arrays.asList(
-                    new ServiceLoadMetricDescription().withName("snfdsdoakgtdl")
-                        .withWeight(ServiceLoadMetricWeight.HIGH).withPrimaryDefaultLoad(1323542271)
-                        .withSecondaryDefaultLoad(1591125890).withDefaultLoad(973934778),
-                    new ServiceLoadMetricDescription().withName("ewpusdsttwvogvb")
-                        .withWeight(ServiceLoadMetricWeight.LOW).withPrimaryDefaultLoad(1690092543)
-                        .withSecondaryDefaultLoad(764265895).withDefaultLoad(963593520),
-                    new ServiceLoadMetricDescription().withName("m").withWeight(ServiceLoadMetricWeight.LOW)
-                        .withPrimaryDefaultLoad(840228808).withSecondaryDefaultLoad(127978460)
-                        .withDefaultLoad(328261823),
-                    new ServiceLoadMetricDescription().withName("rwr").withWeight(ServiceLoadMetricWeight.MEDIUM)
-                        .withPrimaryDefaultLoad(739471239).withSecondaryDefaultLoad(354795976)
-                        .withDefaultLoad(130436359)))
-                .withServicePlacementPolicies(
-                    Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-                .withDefaultMoveCost(MoveCost.MEDIUM).withServiceTypeName("guxawqaldsyuuxi")
-                .withPartitionDescription(
-                    new PartitionSchemeDescription())
-                .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
-                .withServiceDnsName("obwyznkb"))
-            .withLocation("bminrfdwoyuhhzi")
-            .withTags(mapOf("rmaequ", "fozbhdmsmlmzqhof", "icslfaoq", "ah", "kaivwit", "piyylhalnswhccsp")),
+        ServiceResourceList model = new ServiceResourceList().withValue(Arrays.asList(
+            new ServiceResourceInner()
+                .withProperties(new ServiceResourceProperties().withPlacementConstraints("utwpfhp")
+                    .withCorrelationScheme(Arrays.asList(
+                        new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
+                            .withServiceName("r")))
+                    .withServiceLoadMetrics(Arrays.asList(
+                        new ServiceLoadMetricDescription().withName("snfdsdoakgtdl")
+                            .withWeight(ServiceLoadMetricWeight.HIGH)
+                            .withPrimaryDefaultLoad(1323542271)
+                            .withSecondaryDefaultLoad(1591125890)
+                            .withDefaultLoad(973934778),
+                        new ServiceLoadMetricDescription().withName("ewpusdsttwvogvb")
+                            .withWeight(ServiceLoadMetricWeight.LOW)
+                            .withPrimaryDefaultLoad(1690092543)
+                            .withSecondaryDefaultLoad(764265895)
+                            .withDefaultLoad(963593520),
+                        new ServiceLoadMetricDescription().withName("m")
+                            .withWeight(ServiceLoadMetricWeight.LOW)
+                            .withPrimaryDefaultLoad(840228808)
+                            .withSecondaryDefaultLoad(127978460)
+                            .withDefaultLoad(328261823),
+                        new ServiceLoadMetricDescription().withName("rwr")
+                            .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                            .withPrimaryDefaultLoad(739471239)
+                            .withSecondaryDefaultLoad(354795976)
+                            .withDefaultLoad(130436359)))
+                    .withServicePlacementPolicies(
+                        Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+                    .withDefaultMoveCost(MoveCost.MEDIUM)
+                    .withServiceTypeName("guxawqaldsyuuxi")
+                    .withPartitionDescription(new PartitionSchemeDescription())
+                    .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
+                    .withServiceDnsName("obwyznkb"))
+                .withLocation("bminrfdwoyuhhzi")
+                .withTags(mapOf("rmaequ", "fozbhdmsmlmzqhof", "icslfaoq", "ah", "kaivwit", "piyylhalnswhccsp")),
             new ServiceResourceInner()
                 .withProperties(new ServiceResourceProperties().withPlacementConstraints("emhzrncsdtc")
                     .withCorrelationScheme(Arrays.asList(
@@ -84,17 +94,24 @@ public final class ServiceResourceListTests {
                         new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
                             .withServiceName("gq")))
                     .withServiceLoadMetrics(Arrays.asList(
-                        new ServiceLoadMetricDescription().withName("hejhzisx").withWeight(ServiceLoadMetricWeight.LOW)
-                            .withPrimaryDefaultLoad(843863757).withSecondaryDefaultLoad(196039433)
+                        new ServiceLoadMetricDescription().withName("hejhzisx")
+                            .withWeight(ServiceLoadMetricWeight.LOW)
+                            .withPrimaryDefaultLoad(843863757)
+                            .withSecondaryDefaultLoad(196039433)
                             .withDefaultLoad(517582343),
-                        new ServiceLoadMetricDescription().withName("vk").withWeight(ServiceLoadMetricWeight.HIGH)
-                            .withPrimaryDefaultLoad(500405809).withSecondaryDefaultLoad(900186733)
+                        new ServiceLoadMetricDescription().withName("vk")
+                            .withWeight(ServiceLoadMetricWeight.HIGH)
+                            .withPrimaryDefaultLoad(500405809)
+                            .withSecondaryDefaultLoad(900186733)
                             .withDefaultLoad(653973034),
-                        new ServiceLoadMetricDescription().withName("aehtwd").withWeight(ServiceLoadMetricWeight.HIGH)
-                            .withPrimaryDefaultLoad(1438579727).withSecondaryDefaultLoad(767551661)
+                        new ServiceLoadMetricDescription().withName("aehtwd")
+                            .withWeight(ServiceLoadMetricWeight.HIGH)
+                            .withPrimaryDefaultLoad(1438579727)
+                            .withSecondaryDefaultLoad(767551661)
                             .withDefaultLoad(1720208183)))
                     .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription()))
-                    .withDefaultMoveCost(MoveCost.ZERO).withServiceTypeName("huexmk")
+                    .withDefaultMoveCost(MoveCost.ZERO)
+                    .withServiceTypeName("huexmk")
                     .withPartitionDescription(new PartitionSchemeDescription())
                     .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS)
                     .withServiceDnsName("vlz"))

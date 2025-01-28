@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The API backend service. */
+/**
+ * The API backend service.
+ */
 @Fluent
-public final class ApiResourceBackendService {
+public final class ApiResourceBackendService implements JsonSerializable<ApiResourceBackendService> {
     /*
      * The service URL.
      */
-    @JsonProperty(value = "serviceUrl")
     private String serviceUrl;
 
-    /** Creates an instance of ApiResourceBackendService class. */
+    /**
+     * Creates an instance of ApiResourceBackendService class.
+     */
     public ApiResourceBackendService() {
     }
 
     /**
      * Get the serviceUrl property: The service URL.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -31,7 +38,7 @@ public final class ApiResourceBackendService {
 
     /**
      * Set the serviceUrl property: The service URL.
-     *
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the ApiResourceBackendService object itself.
      */
@@ -42,9 +49,45 @@ public final class ApiResourceBackendService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceUrl", this.serviceUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiResourceBackendService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiResourceBackendService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiResourceBackendService.
+     */
+    public static ApiResourceBackendService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiResourceBackendService deserializedApiResourceBackendService = new ApiResourceBackendService();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceUrl".equals(fieldName)) {
+                    deserializedApiResourceBackendService.serviceUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiResourceBackendService;
+        });
     }
 }

@@ -5,57 +5,54 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Zoho server linked service properties.
  */
 @Fluent
-public final class ZohoLinkedServiceTypeProperties {
+public final class ZohoLinkedServiceTypeProperties implements JsonSerializable<ZohoLinkedServiceTypeProperties> {
     /*
      * Properties used to connect to Zoho. It is mutually exclusive with any other properties in the linked service.
      * Type: object.
      */
-    @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
      * The endpoint of the Zoho server. (i.e. crm.zoho.com/crm/private)
      */
-    @JsonProperty(value = "endpoint")
     private Object endpoint;
 
     /*
      * The access token for Zoho authentication.
      */
-    @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -223,5 +220,60 @@ public final class ZohoLinkedServiceTypeProperties {
         if (accessToken() != null) {
             accessToken().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ZohoLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ZohoLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ZohoLinkedServiceTypeProperties.
+     */
+    public static ZohoLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ZohoLinkedServiceTypeProperties deserializedZohoLinkedServiceTypeProperties
+                = new ZohoLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionProperties".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.connectionProperties = reader.readUntyped();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.accessToken = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedZohoLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedZohoLinkedServiceTypeProperties;
+        });
     }
 }

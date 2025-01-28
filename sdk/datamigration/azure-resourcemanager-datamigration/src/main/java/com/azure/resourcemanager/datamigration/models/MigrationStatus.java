@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current status of migration. */
+/**
+ * Current status of migration.
+ */
 public final class MigrationStatus extends ExpandableStringEnum<MigrationStatus> {
-    /** Static value Default for MigrationStatus. */
+    /**
+     * Static value Default for MigrationStatus.
+     */
     public static final MigrationStatus DEFAULT = fromString("Default");
 
-    /** Static value Connecting for MigrationStatus. */
+    /**
+     * Static value Connecting for MigrationStatus.
+     */
     public static final MigrationStatus CONNECTING = fromString("Connecting");
 
-    /** Static value SourceAndTargetSelected for MigrationStatus. */
+    /**
+     * Static value SourceAndTargetSelected for MigrationStatus.
+     */
     public static final MigrationStatus SOURCE_AND_TARGET_SELECTED = fromString("SourceAndTargetSelected");
 
-    /** Static value SelectLogins for MigrationStatus. */
+    /**
+     * Static value SelectLogins for MigrationStatus.
+     */
     public static final MigrationStatus SELECT_LOGINS = fromString("SelectLogins");
 
-    /** Static value Configured for MigrationStatus. */
+    /**
+     * Static value Configured for MigrationStatus.
+     */
     public static final MigrationStatus CONFIGURED = fromString("Configured");
 
-    /** Static value Running for MigrationStatus. */
+    /**
+     * Static value Running for MigrationStatus.
+     */
     public static final MigrationStatus RUNNING = fromString("Running");
 
-    /** Static value Error for MigrationStatus. */
+    /**
+     * Static value Error for MigrationStatus.
+     */
     public static final MigrationStatus ERROR = fromString("Error");
 
-    /** Static value Stopped for MigrationStatus. */
+    /**
+     * Static value Stopped for MigrationStatus.
+     */
     public static final MigrationStatus STOPPED = fromString("Stopped");
 
-    /** Static value Completed for MigrationStatus. */
+    /**
+     * Static value Completed for MigrationStatus.
+     */
     public static final MigrationStatus COMPLETED = fromString("Completed");
 
-    /** Static value CompletedWithWarnings for MigrationStatus. */
+    /**
+     * Static value CompletedWithWarnings for MigrationStatus.
+     */
     public static final MigrationStatus COMPLETED_WITH_WARNINGS = fromString("CompletedWithWarnings");
 
     /**
      * Creates a new instance of MigrationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +72,17 @@ public final class MigrationStatus extends ExpandableStringEnum<MigrationStatus>
 
     /**
      * Creates or finds a MigrationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationStatus.
      */
-    @JsonCreator
     public static MigrationStatus fromString(String name) {
         return fromString(name, MigrationStatus.class);
     }
 
     /**
      * Gets known MigrationStatus values.
-     *
+     * 
      * @return known MigrationStatus values.
      */
     public static Collection<MigrationStatus> values() {

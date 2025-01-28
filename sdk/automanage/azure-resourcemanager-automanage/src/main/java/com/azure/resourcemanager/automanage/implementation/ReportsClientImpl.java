@@ -30,17 +30,23 @@ import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
 import com.azure.resourcemanager.automanage.models.ReportList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReportsClient.
+ */
 public final class ReportsClientImpl implements ReportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomanageClientImpl client;
 
     /**
      * Initializes an instance of ReportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReportsClientImpl(AutomanageClientImpl client) {
@@ -54,46 +60,33 @@ public final class ReportsClientImpl implements ReportsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomanageClientRepo")
-    private interface ReportsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments"
-                + "/{configurationProfileAssignmentName}/reports/{reportName}")
-        @ExpectedResponses({200})
+    public interface ReportsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments/{configurationProfileAssignmentName}/reports/{reportName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReportInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configurationProfileAssignmentName") String configurationProfileAssignmentName,
-            @PathParam("reportName") String reportName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("vmName") String vmName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("reportName") String reportName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("vmName") String vmName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments"
-                + "/{configurationProfileAssignmentName}/reports")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments/{configurationProfileAssignmentName}/reports")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReportList>> listByConfigurationProfileAssignments(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReportList>> listByConfigurationProfileAssignments(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("configurationProfileAssignmentName") String configurationProfileAssignmentName,
-            @PathParam("vmName") String vmName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("vmName") String vmName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get information about a report associated with a configuration profile assignment run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param reportName The report name.
@@ -101,36 +94,30 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return information about a report associated with a configuration profile assignment run along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReportInner>> getWithResponseAsync(
-        String resourceGroupName, String configurationProfileAssignmentName, String reportName, String vmName) {
+    private Mono<Response<ReportInner>> getWithResponseAsync(String resourceGroupName,
+        String configurationProfileAssignmentName, String reportName, String vmName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configurationProfileAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configurationProfileAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter configurationProfileAssignmentName is required and cannot be null."));
         }
         if (reportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter reportName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
@@ -138,24 +125,14 @@ public final class ReportsClientImpl implements ReportsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            configurationProfileAssignmentName,
-                            reportName,
-                            this.client.getSubscriptionId(),
-                            vmName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, configurationProfileAssignmentName,
+                    reportName, this.client.getSubscriptionId(), vmName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get information about a report associated with a configuration profile assignment run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param reportName The report name.
@@ -164,62 +141,43 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return information about a report associated with a configuration profile assignment run along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReportInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String configurationProfileAssignmentName,
-        String reportName,
-        String vmName,
-        Context context) {
+    private Mono<Response<ReportInner>> getWithResponseAsync(String resourceGroupName,
+        String configurationProfileAssignmentName, String reportName, String vmName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configurationProfileAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configurationProfileAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter configurationProfileAssignmentName is required and cannot be null."));
         }
         if (reportName == null) {
             return Mono.error(new IllegalArgumentException("Parameter reportName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                configurationProfileAssignmentName,
-                reportName,
-                this.client.getSubscriptionId(),
-                vmName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, configurationProfileAssignmentName, reportName,
+            this.client.getSubscriptionId(), vmName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get information about a report associated with a configuration profile assignment run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param reportName The report name.
@@ -228,18 +186,39 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a report associated with a configuration profile assignment run on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReportInner> getAsync(
-        String resourceGroupName, String configurationProfileAssignmentName, String reportName, String vmName) {
+    private Mono<ReportInner> getAsync(String resourceGroupName, String configurationProfileAssignmentName,
+        String reportName, String vmName) {
         return getWithResponseAsync(resourceGroupName, configurationProfileAssignmentName, reportName, vmName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get information about a report associated with a configuration profile assignment run.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configurationProfileAssignmentName The configuration profile assignment name.
+     * @param reportName The report name.
+     * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a report associated with a configuration profile assignment run along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReportInner> getWithResponse(String resourceGroupName, String configurationProfileAssignmentName,
+        String reportName, String vmName, Context context) {
+        return getWithResponseAsync(resourceGroupName, configurationProfileAssignmentName, reportName, vmName, context)
+            .block();
+    }
+
+    /**
+     * Get information about a report associated with a configuration profile assignment run.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param reportName The report name.
@@ -250,39 +229,15 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return information about a report associated with a configuration profile assignment run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReportInner get(
-        String resourceGroupName, String configurationProfileAssignmentName, String reportName, String vmName) {
-        return getAsync(resourceGroupName, configurationProfileAssignmentName, reportName, vmName).block();
-    }
-
-    /**
-     * Get information about a report associated with a configuration profile assignment run.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configurationProfileAssignmentName The configuration profile assignment name.
-     * @param reportName The report name.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReportInner> getWithResponse(
-        String resourceGroupName,
-        String configurationProfileAssignmentName,
-        String reportName,
-        String vmName,
-        Context context) {
-        return getWithResponseAsync(resourceGroupName, configurationProfileAssignmentName, reportName, vmName, context)
-            .block();
+    public ReportInner get(String resourceGroupName, String configurationProfileAssignmentName, String reportName,
+        String vmName) {
+        return getWithResponse(resourceGroupName, configurationProfileAssignmentName, reportName, vmName, Context.NONE)
+            .getValue();
     }
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -290,60 +245,43 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list report operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReportInner>> listByConfigurationProfileAssignmentsSinglePageAsync(
         String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configurationProfileAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configurationProfileAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter configurationProfileAssignmentName is required and cannot be null."));
         }
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByConfigurationProfileAssignments(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configurationProfileAssignmentName,
-                            vmName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ReportInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByConfigurationProfileAssignments(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, configurationProfileAssignmentName, vmName,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ReportInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -352,57 +290,41 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list report operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReportInner>> listByConfigurationProfileAssignmentsSinglePageAsync(
         String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (configurationProfileAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configurationProfileAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter configurationProfileAssignmentName is required and cannot be null."));
         }
         if (vmName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByConfigurationProfileAssignments(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configurationProfileAssignmentName,
-                vmName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.listByConfigurationProfileAssignments(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, configurationProfileAssignmentName, vmName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -412,17 +334,15 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the response of the list report operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportInner> listByConfigurationProfileAssignmentsAsync(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
-        return new PagedFlux<>(
-            () ->
-                listByConfigurationProfileAssignmentsSinglePageAsync(
-                    resourceGroupName, configurationProfileAssignmentName, vmName));
+    private PagedFlux<ReportInner> listByConfigurationProfileAssignmentsAsync(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName) {
+        return new PagedFlux<>(() -> listByConfigurationProfileAssignmentsSinglePageAsync(resourceGroupName,
+            configurationProfileAssignmentName, vmName));
     }
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -433,17 +353,15 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the response of the list report operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReportInner> listByConfigurationProfileAssignmentsAsync(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByConfigurationProfileAssignmentsSinglePageAsync(
-                    resourceGroupName, configurationProfileAssignmentName, vmName, context));
+    private PagedFlux<ReportInner> listByConfigurationProfileAssignmentsAsync(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName, Context context) {
+        return new PagedFlux<>(() -> listByConfigurationProfileAssignmentsSinglePageAsync(resourceGroupName,
+            configurationProfileAssignmentName, vmName, context));
     }
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -453,15 +371,15 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportInner> listByConfigurationProfileAssignments(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
+    public PagedIterable<ReportInner> listByConfigurationProfileAssignments(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName) {
         return new PagedIterable<>(
             listByConfigurationProfileAssignmentsAsync(resourceGroupName, configurationProfileAssignmentName, vmName));
     }
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -472,10 +390,9 @@ public final class ReportsClientImpl implements ReportsClient {
      * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReportInner> listByConfigurationProfileAssignments(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context) {
-        return new PagedIterable<>(
-            listByConfigurationProfileAssignmentsAsync(
-                resourceGroupName, configurationProfileAssignmentName, vmName, context));
+    public PagedIterable<ReportInner> listByConfigurationProfileAssignments(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName, Context context) {
+        return new PagedIterable<>(listByConfigurationProfileAssignmentsAsync(resourceGroupName,
+            configurationProfileAssignmentName, vmName, context));
     }
 }

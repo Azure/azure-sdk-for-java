@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class MetricsSeriesUnit extends ExpandableStringEnum<MetricsSeriesU
      * @param name a name to look for.
      * @return the corresponding MetricsSeriesUnit.
      */
-    @JsonCreator
     public static MetricsSeriesUnit fromString(String name) {
         return fromString(name, MetricsSeriesUnit.class);
     }

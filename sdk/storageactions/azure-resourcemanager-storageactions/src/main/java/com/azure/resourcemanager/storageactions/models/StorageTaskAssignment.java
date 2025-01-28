@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignm
  */
 public interface StorageTaskAssignment {
     /**
-     * Gets the id property: ARM Id of the storage task assignments, associated with the storage tasks.
+     * Gets the id property: Resource ID of the Storage Task Assignment.
      * 
      * @return the id value.
      */

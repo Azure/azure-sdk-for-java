@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of cluster job.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "jobType",
-    defaultImpl = ClusterJobProperties.class)
-@JsonTypeName("ClusterJobProperties")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "FlinkJob", value = FlinkJobProperties.class) })
 @Immutable
-public class ClusterJobProperties {
+public class ClusterJobProperties implements JsonSerializable<ClusterJobProperties> {
+    /*
+     * Type of cluster job.
+     */
+    private JobType jobType = JobType.fromString("ClusterJobProperties");
+
     /**
      * Creates an instance of ClusterJobProperties class.
      */
     public ClusterJobProperties() {
+    }
+
+    /**
+     * Get the jobType property: Type of cluster job.
+     * 
+     * @return the jobType value.
+     */
+    public JobType jobType() {
+        return this.jobType;
     }
 
     /**
@@ -33,5 +42,66 @@ public class ClusterJobProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterJobProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterJobProperties.
+     */
+    public static ClusterJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("jobType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("FlinkJob".equals(discriminatorValue)) {
+                    return FlinkJobProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ClusterJobProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterJobProperties deserializedClusterJobProperties = new ClusterJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobType".equals(fieldName)) {
+                    deserializedClusterJobProperties.jobType = JobType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterJobProperties;
+        });
     }
 }

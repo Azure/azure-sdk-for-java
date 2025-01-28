@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateOrUpdateTrustedIdProviderParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateOrUpdateTrustedIdProviderParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"idProvider\":\"zscxaqwo\"}}")
+        CreateOrUpdateTrustedIdProviderParameters model
+            = BinaryData.fromString("{\"properties\":{\"idProvider\":\"scpai\"}}")
                 .toObject(CreateOrUpdateTrustedIdProviderParameters.class);
-        Assertions.assertEquals("zscxaqwo", model.idProvider());
+        Assertions.assertEquals("scpai", model.idProvider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateOrUpdateTrustedIdProviderParameters model =
-            new CreateOrUpdateTrustedIdProviderParameters().withIdProvider("zscxaqwo");
+        CreateOrUpdateTrustedIdProviderParameters model
+            = new CreateOrUpdateTrustedIdProviderParameters().withIdProvider("scpai");
         model = BinaryData.fromObject(model).toObject(CreateOrUpdateTrustedIdProviderParameters.class);
-        Assertions.assertEquals("zscxaqwo", model.idProvider());
+        Assertions.assertEquals("scpai", model.idProvider());
     }
 }

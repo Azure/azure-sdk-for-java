@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TagDescriptionCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagDescriptionCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"tagId\":\"tb\",\"displayName\":\"exreu\",\"description\":\"owtljvfw\",\"externalDocsUrl\":\"eagk\",\"externalDocsDescription\":\"xv\"},\"id\":\"qtvbczsu\",\"name\":\"mdgglmepjpfs\",\"type\":\"ykgsangpszng\"},{\"properties\":{\"tagId\":\"g\",\"displayName\":\"kvec\",\"description\":\"jcngoadyed\",\"externalDocsUrl\":\"rgjfoknubnoi\",\"externalDocsDescription\":\"kpztrgd\"},\"id\":\"x\",\"name\":\"coqra\",\"type\":\"wugyx\"},{\"properties\":{\"tagId\":\"tweialwvskbuhzac\",\"displayName\":\"ty\",\"description\":\"co\",\"externalDocsUrl\":\"ujpdsxzak\",\"externalDocsDescription\":\"jkmvbi\"},\"id\":\"tjo\",\"name\":\"qcvov\",\"type\":\"uf\"},{\"properties\":{\"tagId\":\"jmlbemyejiriux\",\"displayName\":\"thor\",\"description\":\"dawlpjfelqerpp\",\"externalDocsUrl\":\"bgqnz\",\"externalDocsDescription\":\"h\"},\"id\":\"ilialwcjgc\",\"name\":\"bbcccgz\",\"type\":\"raoxnyuff\"}],\"count\":9173171906821807545,\"nextLink\":\"tipwcxbyubhiqd\"}")
-                .toObject(TagDescriptionCollection.class);
+        TagDescriptionCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"tagId\":\"tb\",\"displayName\":\"exreu\",\"description\":\"owtljvfw\",\"externalDocsUrl\":\"eagk\",\"externalDocsDescription\":\"xv\"},\"id\":\"qtvbczsu\",\"name\":\"mdgglmepjpfs\",\"type\":\"ykgsangpszng\"},{\"properties\":{\"tagId\":\"g\",\"displayName\":\"kvec\",\"description\":\"jcngoadyed\",\"externalDocsUrl\":\"rgjfoknubnoi\",\"externalDocsDescription\":\"kpztrgd\"},\"id\":\"x\",\"name\":\"coqra\",\"type\":\"wugyx\"},{\"properties\":{\"tagId\":\"tweialwvskbuhzac\",\"displayName\":\"ty\",\"description\":\"co\",\"externalDocsUrl\":\"ujpdsxzak\",\"externalDocsDescription\":\"jkmvbi\"},\"id\":\"tjo\",\"name\":\"qcvov\",\"type\":\"uf\"},{\"properties\":{\"tagId\":\"jmlbemyejiriux\",\"displayName\":\"thor\",\"description\":\"dawlpjfelqerpp\",\"externalDocsUrl\":\"bgqnz\",\"externalDocsDescription\":\"h\"},\"id\":\"ilialwcjgc\",\"name\":\"bbcccgz\",\"type\":\"raoxnyuff\"}],\"count\":9173171906821807545,\"nextLink\":\"tipwcxbyubhiqd\"}")
+            .toObject(TagDescriptionCollection.class);
         Assertions.assertEquals("tb", model.value().get(0).tagId());
         Assertions.assertEquals("exreu", model.value().get(0).displayName());
         Assertions.assertEquals("owtljvfw", model.value().get(0).description());
@@ -29,35 +27,29 @@ public final class TagDescriptionCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionCollection model =
-            new TagDescriptionCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TagDescriptionContractInner()
-                                .withTagId("tb")
-                                .withDisplayName("exreu")
-                                .withDescription("owtljvfw")
-                                .withExternalDocsUrl("eagk")
-                                .withExternalDocsDescription("xv"),
-                            new TagDescriptionContractInner()
-                                .withTagId("g")
-                                .withDisplayName("kvec")
-                                .withDescription("jcngoadyed")
-                                .withExternalDocsUrl("rgjfoknubnoi")
-                                .withExternalDocsDescription("kpztrgd"),
-                            new TagDescriptionContractInner()
-                                .withTagId("tweialwvskbuhzac")
-                                .withDisplayName("ty")
-                                .withDescription("co")
-                                .withExternalDocsUrl("ujpdsxzak")
-                                .withExternalDocsDescription("jkmvbi"),
-                            new TagDescriptionContractInner()
-                                .withTagId("jmlbemyejiriux")
-                                .withDisplayName("thor")
-                                .withDescription("dawlpjfelqerpp")
-                                .withExternalDocsUrl("bgqnz")
-                                .withExternalDocsDescription("h")))
+        TagDescriptionCollection model
+            = new TagDescriptionCollection()
+                .withValue(Arrays.asList(
+                    new TagDescriptionContractInner().withTagId("tb")
+                        .withDisplayName("exreu")
+                        .withDescription("owtljvfw")
+                        .withExternalDocsUrl("eagk")
+                        .withExternalDocsDescription("xv"),
+                    new TagDescriptionContractInner().withTagId("g")
+                        .withDisplayName("kvec")
+                        .withDescription("jcngoadyed")
+                        .withExternalDocsUrl("rgjfoknubnoi")
+                        .withExternalDocsDescription("kpztrgd"),
+                    new TagDescriptionContractInner().withTagId("tweialwvskbuhzac")
+                        .withDisplayName("ty")
+                        .withDescription("co")
+                        .withExternalDocsUrl("ujpdsxzak")
+                        .withExternalDocsDescription("jkmvbi"),
+                    new TagDescriptionContractInner().withTagId("jmlbemyejiriux")
+                        .withDisplayName("thor")
+                        .withDescription("dawlpjfelqerpp")
+                        .withExternalDocsUrl("bgqnz")
+                        .withExternalDocsDescription("h")))
                 .withCount(9173171906821807545L)
                 .withNextLink("tipwcxbyubhiqd");
         model = BinaryData.fromObject(model).toObject(TagDescriptionCollection.class);

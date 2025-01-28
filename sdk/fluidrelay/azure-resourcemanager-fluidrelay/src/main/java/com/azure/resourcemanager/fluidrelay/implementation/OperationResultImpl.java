@@ -13,8 +13,8 @@ public final class OperationResultImpl implements OperationResult {
 
     private final com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager;
 
-    OperationResultImpl(
-        OperationResultInner innerObject, com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
+    OperationResultImpl(OperationResultInner innerObject,
+        com.azure.resourcemanager.fluidrelay.FluidRelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

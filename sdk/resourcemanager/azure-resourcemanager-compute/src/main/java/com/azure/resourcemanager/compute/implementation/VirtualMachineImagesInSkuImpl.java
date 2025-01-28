@@ -31,26 +31,14 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
     public PagedFlux<VirtualMachineImage> listAsync() {
         final VirtualMachineImagesInSkuImpl self = this;
         PagedFlux<VirtualMachineImageResourceInner> virtualMachineImageResourcePagedFlux
-            = PagedConverter.convertListToPagedFlux(innerCollection.listWithResponseAsync(
-                sku.region().toString(), sku.publisher().name(), sku.offer().name(), sku.name(),
-                null, null, null));
+            = PagedConverter.convertListToPagedFlux(innerCollection.listWithResponseAsync(sku.region().toString(),
+                sku.publisher().name(), sku.offer().name(), sku.name(), null, null, null));
         return PagedConverter.flatMapPage(virtualMachineImageResourcePagedFlux,
             resourceInner -> innerCollection
-                .getAsync(
-                    self.sku.region().toString(),
-                    self.sku.publisher().name(),
-                    self.sku.offer().name(),
-                    self.sku.name(),
-                    resourceInner.name())
-                .map(
-                    imageInner ->
-                        (VirtualMachineImage)
-                            new VirtualMachineImageImpl(
-                                self.sku.region(),
-                                self.sku.publisher().name(),
-                                self.sku.offer().name(),
-                                self.sku.name(),
-                                resourceInner.name(),
-                                imageInner)));
+                .getAsync(self.sku.region().toString(), self.sku.publisher().name(), self.sku.offer().name(),
+                    self.sku.name(), resourceInner.name())
+                .map(imageInner -> (VirtualMachineImage) new VirtualMachineImageImpl(self.sku.region(),
+                    self.sku.publisher().name(), self.sku.offer().name(), self.sku.name(), resourceInner.name(),
+                    imageInner)));
     }
 }

@@ -32,44 +32,32 @@ public final class ServiceTopologiesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"artifactSourceId\":\"lphox\"},\"location\":\"scrpabgyepsbjt\",\"tags\":{\"zwfqkqujidsuyon\":\"ugxywpmueef\",\"yudxytlmoy\":\"bglaocqxtccm\",\"fudwpznt\":\"xv\",\"hckfrlhrx\":\"hdzhlrqj\"},\"id\":\"bkyvp\",\"name\":\"ca\",\"type\":\"uzbpzkafku\"}";
+        String responseStr
+            = "{\"properties\":{\"artifactSourceId\":\"lphox\"},\"location\":\"scrpabgyepsbjt\",\"tags\":{\"zwfqkqujidsuyon\":\"ugxywpmueef\",\"yudxytlmoy\":\"bglaocqxtccm\",\"fudwpznt\":\"xv\",\"hckfrlhrx\":\"hdzhlrqj\"},\"id\":\"bkyvp\",\"name\":\"ca\",\"type\":\"uzbpzkafku\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DeploymentManager manager =
-            DeploymentManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeploymentManager manager = DeploymentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServiceTopologyResource response =
-            manager
-                .serviceTopologies()
-                .define("tkncwsc")
-                .withRegion("nmic")
-                .withExistingResourceGroup("jdhtldwkyzxu")
-                .withTags(mapOf("yfjfcnjbkcn", "ceoveilovno"))
-                .withArtifactSourceId("vlxotogtwrupqsx")
-                .create();
+        ServiceTopologyResource response = manager.serviceTopologies()
+            .define("tkncwsc")
+            .withRegion("nmic")
+            .withExistingResourceGroup("jdhtldwkyzxu")
+            .withTags(mapOf("yfjfcnjbkcn", "ceoveilovno"))
+            .withArtifactSourceId("vlxotogtwrupqsx")
+            .create();
 
         Assertions.assertEquals("scrpabgyepsbjt", response.location());
         Assertions.assertEquals("ugxywpmueef", response.tags().get("zwfqkqujidsuyon"));

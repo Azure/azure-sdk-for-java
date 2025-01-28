@@ -4,120 +4,83 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
-import com.azure.resourcemanager.billing.models.SpendingLimitForBillingProfile;
-import com.azure.resourcemanager.billing.models.StatusReasonCodeForBillingProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.billing.models.BillingProfileStatusReasonCode;
+import com.azure.resourcemanager.billing.models.SpendingLimit;
+import java.io.IOException;
 import java.util.List;
 
-/** Invoice section properties with create subscription permission. */
-@Fluent
-public final class InvoiceSectionWithCreateSubPermissionInner {
+/**
+ * Invoice section properties with create subscription permission.
+ */
+@Immutable
+public final class InvoiceSectionWithCreateSubPermissionInner
+    implements JsonSerializable<InvoiceSectionWithCreateSubPermissionInner> {
     /*
-     * The ID of the invoice section.
+     * The name of the billing profile.
      */
-    @JsonProperty(value = "invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
+    private String billingProfileDisplayName;
 
     /*
-     * The name of the invoice section.
+     * The fully qualified ID that uniquely identifies a billing profile.
      */
-    @JsonProperty(value = "invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionDisplayName;
-
-    /*
-     * The system generated unique identifier for an invoice section.
-     */
-    @JsonProperty(value = "invoiceSectionSystemId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionSystemId;
-
-    /*
-     * The ID of the billing profile for the invoice section.
-     */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileId;
 
     /*
-     * The name of the billing profile for the invoice section.
+     * The system generated unique identifier for a billing profile.
      */
-    @JsonProperty(value = "billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
+    private String billingProfileSystemId;
 
     /*
      * The status of the billing profile.
      */
-    @JsonProperty(value = "billingProfileStatus", access = JsonProperty.Access.WRITE_ONLY)
     private BillingProfileStatus billingProfileStatus;
 
     /*
      * Reason for the specified billing profile status.
      */
-    @JsonProperty(value = "billingProfileStatusReasonCode", access = JsonProperty.Access.WRITE_ONLY)
-    private StatusReasonCodeForBillingProfile billingProfileStatusReasonCode;
+    private BillingProfileStatusReasonCode billingProfileStatusReasonCode;
 
     /*
      * The billing profile spending limit.
      */
-    @JsonProperty(value = "billingProfileSpendingLimit", access = JsonProperty.Access.WRITE_ONLY)
-    private SpendingLimitForBillingProfile billingProfileSpendingLimit;
-
-    /*
-     * The system generated unique identifier for a billing profile.
-     */
-    @JsonProperty(value = "billingProfileSystemId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileSystemId;
+    private SpendingLimit billingProfileSpendingLimit;
 
     /*
      * Enabled azure plans for the associated billing profile.
      */
-    @JsonProperty(value = "enabledAzurePlans")
     private List<AzurePlan> enabledAzurePlans;
 
-    /** Creates an instance of InvoiceSectionWithCreateSubPermissionInner class. */
+    /*
+     * The name of the invoice section.
+     */
+    private String invoiceSectionDisplayName;
+
+    /*
+     * The fully qualified ID that uniquely identifies an invoice section.
+     */
+    private String invoiceSectionId;
+
+    /*
+     * The system generated unique identifier for an invoice section.
+     */
+    private String invoiceSectionSystemId;
+
+    /**
+     * Creates an instance of InvoiceSectionWithCreateSubPermissionInner class.
+     */
     public InvoiceSectionWithCreateSubPermissionInner() {
     }
 
     /**
-     * Get the invoiceSectionId property: The ID of the invoice section.
-     *
-     * @return the invoiceSectionId value.
-     */
-    public String invoiceSectionId() {
-        return this.invoiceSectionId;
-    }
-
-    /**
-     * Get the invoiceSectionDisplayName property: The name of the invoice section.
-     *
-     * @return the invoiceSectionDisplayName value.
-     */
-    public String invoiceSectionDisplayName() {
-        return this.invoiceSectionDisplayName;
-    }
-
-    /**
-     * Get the invoiceSectionSystemId property: The system generated unique identifier for an invoice section.
-     *
-     * @return the invoiceSectionSystemId value.
-     */
-    public String invoiceSectionSystemId() {
-        return this.invoiceSectionSystemId;
-    }
-
-    /**
-     * Get the billingProfileId property: The ID of the billing profile for the invoice section.
-     *
-     * @return the billingProfileId value.
-     */
-    public String billingProfileId() {
-        return this.billingProfileId;
-    }
-
-    /**
-     * Get the billingProfileDisplayName property: The name of the billing profile for the invoice section.
-     *
+     * Get the billingProfileDisplayName property: The name of the billing profile.
+     * 
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
@@ -125,8 +88,26 @@ public final class InvoiceSectionWithCreateSubPermissionInner {
     }
 
     /**
+     * Get the billingProfileId property: The fully qualified ID that uniquely identifies a billing profile.
+     * 
+     * @return the billingProfileId value.
+     */
+    public String billingProfileId() {
+        return this.billingProfileId;
+    }
+
+    /**
+     * Get the billingProfileSystemId property: The system generated unique identifier for a billing profile.
+     * 
+     * @return the billingProfileSystemId value.
+     */
+    public String billingProfileSystemId() {
+        return this.billingProfileSystemId;
+    }
+
+    /**
      * Get the billingProfileStatus property: The status of the billing profile.
-     *
+     * 
      * @return the billingProfileStatus value.
      */
     public BillingProfileStatus billingProfileStatus() {
@@ -135,34 +116,25 @@ public final class InvoiceSectionWithCreateSubPermissionInner {
 
     /**
      * Get the billingProfileStatusReasonCode property: Reason for the specified billing profile status.
-     *
+     * 
      * @return the billingProfileStatusReasonCode value.
      */
-    public StatusReasonCodeForBillingProfile billingProfileStatusReasonCode() {
+    public BillingProfileStatusReasonCode billingProfileStatusReasonCode() {
         return this.billingProfileStatusReasonCode;
     }
 
     /**
      * Get the billingProfileSpendingLimit property: The billing profile spending limit.
-     *
+     * 
      * @return the billingProfileSpendingLimit value.
      */
-    public SpendingLimitForBillingProfile billingProfileSpendingLimit() {
+    public SpendingLimit billingProfileSpendingLimit() {
         return this.billingProfileSpendingLimit;
     }
 
     /**
-     * Get the billingProfileSystemId property: The system generated unique identifier for a billing profile.
-     *
-     * @return the billingProfileSystemId value.
-     */
-    public String billingProfileSystemId() {
-        return this.billingProfileSystemId;
-    }
-
-    /**
      * Get the enabledAzurePlans property: Enabled azure plans for the associated billing profile.
-     *
+     * 
      * @return the enabledAzurePlans value.
      */
     public List<AzurePlan> enabledAzurePlans() {
@@ -170,24 +142,100 @@ public final class InvoiceSectionWithCreateSubPermissionInner {
     }
 
     /**
-     * Set the enabledAzurePlans property: Enabled azure plans for the associated billing profile.
-     *
-     * @param enabledAzurePlans the enabledAzurePlans value to set.
-     * @return the InvoiceSectionWithCreateSubPermissionInner object itself.
+     * Get the invoiceSectionDisplayName property: The name of the invoice section.
+     * 
+     * @return the invoiceSectionDisplayName value.
      */
-    public InvoiceSectionWithCreateSubPermissionInner withEnabledAzurePlans(List<AzurePlan> enabledAzurePlans) {
-        this.enabledAzurePlans = enabledAzurePlans;
-        return this;
+    public String invoiceSectionDisplayName() {
+        return this.invoiceSectionDisplayName;
+    }
+
+    /**
+     * Get the invoiceSectionId property: The fully qualified ID that uniquely identifies an invoice section.
+     * 
+     * @return the invoiceSectionId value.
+     */
+    public String invoiceSectionId() {
+        return this.invoiceSectionId;
+    }
+
+    /**
+     * Get the invoiceSectionSystemId property: The system generated unique identifier for an invoice section.
+     * 
+     * @return the invoiceSectionSystemId value.
+     */
+    public String invoiceSectionSystemId() {
+        return this.invoiceSectionSystemId;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (enabledAzurePlans() != null) {
             enabledAzurePlans().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InvoiceSectionWithCreateSubPermissionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InvoiceSectionWithCreateSubPermissionInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InvoiceSectionWithCreateSubPermissionInner.
+     */
+    public static InvoiceSectionWithCreateSubPermissionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InvoiceSectionWithCreateSubPermissionInner deserializedInvoiceSectionWithCreateSubPermissionInner
+                = new InvoiceSectionWithCreateSubPermissionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingProfileDisplayName".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.billingProfileDisplayName
+                        = reader.getString();
+                } else if ("billingProfileId".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.billingProfileId = reader.getString();
+                } else if ("billingProfileSystemId".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.billingProfileSystemId = reader.getString();
+                } else if ("billingProfileStatus".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.billingProfileStatus
+                        = BillingProfileStatus.fromString(reader.getString());
+                } else if ("billingProfileStatusReasonCode".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.billingProfileStatusReasonCode
+                        = BillingProfileStatusReasonCode.fromString(reader.getString());
+                } else if ("billingProfileSpendingLimit".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.billingProfileSpendingLimit
+                        = SpendingLimit.fromString(reader.getString());
+                } else if ("enabledAzurePlans".equals(fieldName)) {
+                    List<AzurePlan> enabledAzurePlans = reader.readArray(reader1 -> AzurePlan.fromJson(reader1));
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.enabledAzurePlans = enabledAzurePlans;
+                } else if ("invoiceSectionDisplayName".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.invoiceSectionDisplayName
+                        = reader.getString();
+                } else if ("invoiceSectionId".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.invoiceSectionId = reader.getString();
+                } else if ("invoiceSectionSystemId".equals(fieldName)) {
+                    deserializedInvoiceSectionWithCreateSubPermissionInner.invoiceSectionSystemId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInvoiceSectionWithCreateSubPermissionInner;
+        });
     }
 }

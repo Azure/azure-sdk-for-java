@@ -20,862 +20,579 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Query Usage. */
+/**
+ * Samples for Query Usage.
+ */
 public final class QueryUsageSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * SubscriptionQueryGrouping.json
      */
     /**
      * Sample code: SubscriptionQueryGrouping-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void subscriptionQueryGroupingLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        subscriptionQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("subscriptions/00000000-0000-0000-0000-000000000000",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * EnrollmentAccountQueryGrouping.json
      */
     /**
      * Sample code: EnrollmentAccountQueryGrouping-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void enrollmentAccountQueryGroupingLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        enrollmentAccountQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * DepartmentQuery.json
      */
     /**
      * Sample code: DepartmentQuery-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void departmentQueryLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/departments/123",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/100/departments/123",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCABillingAccountQuery.json
      */
     /**
      * Sample code: BillingAccountQuery-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void billingAccountQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * BillingAccountQueryGrouping.json
      */
     /**
      * Sample code: BillingAccountQueryGrouping-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountQueryGroupingLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/70664866",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        billingAccountQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/70664866",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * SubscriptionQuery.json
      */
     /**
      * Sample code: SubscriptionQuery-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void subscriptionQueryLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+        manager.queries()
+            .usageWithResponse("subscriptions/00000000-0000-0000-0000-000000000000",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCABillingAccountQueryGrouping.json
      */
     /**
      * Sample code: BillingAccountQueryGrouping-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountQueryGroupingMCA(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        billingAccountQueryGroupingMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCAInvoiceSectionQueryGrouping.json
      */
     /**
      * Sample code: InvoiceSectionQueryGrouping-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void invoiceSectionQueryGroupingMCA(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
+    public static void
+        invoiceSectionQueryGroupingMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * EnrollmentAccountQuery.json
      */
     /**
      * Sample code: EnrollmentAccountQuery-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void enrollmentAccountQueryLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        enrollmentAccountQueryLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ResourceGroupQueryGrouping.json
      */
     /**
      * Sample code: ResourceGroupQueryGrouping-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupQueryGroupingLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
+    public static void
+        resourceGroupQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
             .usageWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceType")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays
+                            .asList(new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceType")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * BillingAccountQuery.json
      */
     /**
      * Sample code: BillingAccountQuery-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountQueryLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/70664866",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        billingAccountQueryLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/70664866",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCABillingProfileQueryGrouping.json
      */
     /**
      * Sample code: BillingProfileQueryGrouping-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingProfileQueryGroupingMCA(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        billingProfileQueryGroupingMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ResourceGroupQuery.json
      */
     /**
      * Sample code: ResourceGroupQuery-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void resourceGroupQueryLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
+    public static void
+        resourceGroupQueryLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
             .usageWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCAInvoiceSectionQuery.json
      */
     /**
      * Sample code: InvoiceSectionQuery-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void invoiceSectionQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
+        manager.queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCACustomerQuery.json
      */
     /**
      * Sample code: CustomerQuery-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void customerQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ManagementGroupQuery.json
      */
     /**
      * Sample code: ManagementGroupQuery-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void managementGroupQueryLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Management/managementGroups/MyMgId",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        managementGroupQueryLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Management/managementGroups/MyMgId",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * DepartmentQueryGrouping.json
      */
     /**
      * Sample code: DepartmentQueryGrouping-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void departmentQueryGroupingLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/departments/123",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        departmentQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/100/departments/123",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileQuery.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCABillingProfileQuery.json
      */
     /**
      * Sample code: BillingProfileQuery-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void billingProfileQueryMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.DAILY)
-                            .withFilter(
-                                new QueryFilter()
-                                    .withAnd(
-                                        Arrays
-                                            .asList(
-                                                new QueryFilter()
-                                                    .withOr(
-                                                        Arrays
-                                                            .asList(
-                                                                new QueryFilter()
-                                                                    .withDimensions(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("ResourceLocation")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays
-                                                                                    .asList("East US", "West Europe"))),
-                                                                new QueryFilter()
-                                                                    .withTags(
-                                                                        new QueryComparisonExpression()
-                                                                            .withName("Environment")
-                                                                            .withOperator(QueryOperatorType.IN)
-                                                                            .withValues(
-                                                                                Arrays.asList("UAT", "Prod"))))),
-                                                new QueryFilter()
-                                                    .withDimensions(
-                                                        new QueryComparisonExpression()
-                                                            .withName("ResourceGroup")
-                                                            .withOperator(QueryOperatorType.IN)
-                                                            .withValues(Arrays.asList("API"))))))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                        .withFilter(new QueryFilter().withAnd(Arrays.asList(
+                            new QueryFilter()
+                                .withOr(Arrays.asList(
+                                    new QueryFilter().withDimensions(
+                                        new QueryComparisonExpression().withName("ResourceLocation")
+                                            .withOperator(QueryOperatorType.IN)
+                                            .withValues(Arrays.asList("East US", "West Europe"))),
+                                    new QueryFilter().withTags(new QueryComparisonExpression().withName("Environment")
+                                        .withOperator(QueryOperatorType.IN)
+                                        .withValues(Arrays.asList("UAT", "Prod"))))),
+                            new QueryFilter().withDimensions(new QueryComparisonExpression().withName("ResourceGroup")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("API"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ManagementGroupQueryGrouping.json
      */
     /**
      * Sample code: ManagementGroupQueryGrouping-Legacy.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void managementGroupQueryGroupingLegacy(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Management/managementGroups/MyMgId",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        managementGroupQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Management/managementGroups/MyMgId",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerQueryGrouping.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * MCACustomerQueryGrouping.json
      */
     /**
      * Sample code: CustomerQueryGrouping-MCA.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void customerQueryGroupingMCA(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .queries()
-            .usageWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                new QueryDefinition()
-                    .withType(ExportType.USAGE)
+    public static void
+        customerQueryGroupingMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                new QueryDefinition().withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(
-                        new QueryDataset()
-                            .withGranularity(GranularityType.fromString("None"))
-                            .withAggregation(
-                                mapOf(
-                                    "totalCost",
-                                    new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                            .withGrouping(
-                                Arrays
-                                    .asList(
-                                        new QueryGrouping()
-                                            .withType(QueryColumnType.DIMENSION)
-                                            .withName("ResourceGroup")))),
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -15,8 +15,7 @@ public final class ExternalFqdnResponseImpl implements ExternalFqdnResponse {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    ExternalFqdnResponseImpl(
-        ExternalFqdnResponseInner innerObject,
+    ExternalFqdnResponseImpl(ExternalFqdnResponseInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

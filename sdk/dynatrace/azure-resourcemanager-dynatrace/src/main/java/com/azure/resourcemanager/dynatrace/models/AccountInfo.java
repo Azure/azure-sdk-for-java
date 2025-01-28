@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dynatrace Account Information. */
+/**
+ * Dynatrace Account Information.
+ */
 @Fluent
-public final class AccountInfo {
+public final class AccountInfo implements JsonSerializable<AccountInfo> {
     /*
      * Account Id of the account this environment is linked to
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
      * Region in which the account is created
      */
-    @JsonProperty(value = "regionId")
     private String regionId;
 
-    /** Creates an instance of AccountInfo class. */
+    /**
+     * Creates an instance of AccountInfo class.
+     */
     public AccountInfo() {
     }
 
     /**
      * Get the accountId property: Account Id of the account this environment is linked to.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -37,7 +43,7 @@ public final class AccountInfo {
 
     /**
      * Set the accountId property: Account Id of the account this environment is linked to.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the AccountInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class AccountInfo {
 
     /**
      * Get the regionId property: Region in which the account is created.
-     *
+     * 
      * @return the regionId value.
      */
     public String regionId() {
@@ -57,7 +63,7 @@ public final class AccountInfo {
 
     /**
      * Set the regionId property: Region in which the account is created.
-     *
+     * 
      * @param regionId the regionId value to set.
      * @return the AccountInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class AccountInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountId", this.accountId);
+        jsonWriter.writeStringField("regionId", this.regionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountInfo.
+     */
+    public static AccountInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountInfo deserializedAccountInfo = new AccountInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountId".equals(fieldName)) {
+                    deserializedAccountInfo.accountId = reader.getString();
+                } else if ("regionId".equals(fieldName)) {
+                    deserializedAccountInfo.regionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountInfo;
+        });
     }
 }

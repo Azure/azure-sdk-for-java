@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as
- * Chinese, Japanese, and Korean, each character is represented as its own word.
+ * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as Chinese,
+ * Japanese, and Korean, each character is represented as its own word.
  */
 @Fluent
 public final class DocumentWord implements JsonSerializable<DocumentWord> {
@@ -99,6 +99,9 @@ public final class DocumentWord implements JsonSerializable<DocumentWord> {
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -22,9 +22,13 @@ public final class PoliciesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsSpecificPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getPolicies().update("rg1", "MicrosoftCdnWafPolicy",
-            new CdnWebApplicationFirewallPolicyPatchParameters().withTags(mapOf("foo", "bar")),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getPolicies()
+            .update("rg1", "MicrosoftCdnWafPolicy",
+                new CdnWebApplicationFirewallPolicyPatchParameters().withTags(mapOf("foo", "bar")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

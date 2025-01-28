@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMigrationServiceStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMigrationServiceStatusResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"agentVersion\":\"jzzd\",\"status\":\"qxhocdgeablgphut\",\"vmSize\":\"ndv\",\"supportedTaskTypes\":[\"zwyiftyhxhur\",\"k\",\"tyxolniwpwc\",\"kjfkg\"]}")
-                .toObject(DataMigrationServiceStatusResponseInner.class);
-        Assertions.assertEquals("jzzd", model.agentVersion());
-        Assertions.assertEquals("qxhocdgeablgphut", model.status());
-        Assertions.assertEquals("ndv", model.vmSize());
-        Assertions.assertEquals("zwyiftyhxhur", model.supportedTaskTypes().get(0));
+        DataMigrationServiceStatusResponseInner model = BinaryData.fromString(
+            "{\"agentVersion\":\"wzo\",\"status\":\"j\",\"vmSize\":\"elluwfziton\",\"supportedTaskTypes\":[\"fpjkjlxofp\",\"vhpfxxypininmay\"]}")
+            .toObject(DataMigrationServiceStatusResponseInner.class);
+        Assertions.assertEquals("wzo", model.agentVersion());
+        Assertions.assertEquals("j", model.status());
+        Assertions.assertEquals("elluwfziton", model.vmSize());
+        Assertions.assertEquals("fpjkjlxofp", model.supportedTaskTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMigrationServiceStatusResponseInner model =
-            new DataMigrationServiceStatusResponseInner()
-                .withAgentVersion("jzzd")
-                .withStatus("qxhocdgeablgphut")
-                .withVmSize("ndv")
-                .withSupportedTaskTypes(Arrays.asList("zwyiftyhxhur", "k", "tyxolniwpwc", "kjfkg"));
+        DataMigrationServiceStatusResponseInner model
+            = new DataMigrationServiceStatusResponseInner().withAgentVersion("wzo")
+                .withStatus("j")
+                .withVmSize("elluwfziton")
+                .withSupportedTaskTypes(Arrays.asList("fpjkjlxofp", "vhpfxxypininmay"));
         model = BinaryData.fromObject(model).toObject(DataMigrationServiceStatusResponseInner.class);
-        Assertions.assertEquals("jzzd", model.agentVersion());
-        Assertions.assertEquals("qxhocdgeablgphut", model.status());
-        Assertions.assertEquals("ndv", model.vmSize());
-        Assertions.assertEquals("zwyiftyhxhur", model.supportedTaskTypes().get(0));
+        Assertions.assertEquals("wzo", model.agentVersion());
+        Assertions.assertEquals("j", model.status());
+        Assertions.assertEquals("elluwfziton", model.vmSize());
+        Assertions.assertEquals("fpjkjlxofp", model.supportedTaskTypes().get(0));
     }
 }

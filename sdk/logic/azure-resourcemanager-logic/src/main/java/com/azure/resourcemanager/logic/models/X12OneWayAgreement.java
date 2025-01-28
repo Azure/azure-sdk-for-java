@@ -6,36 +6,41 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 one-way agreement. */
+/**
+ * The X12 one-way agreement.
+ */
 @Fluent
-public final class X12OneWayAgreement {
+public final class X12OneWayAgreement implements JsonSerializable<X12OneWayAgreement> {
     /*
      * The sender business identity
      */
-    @JsonProperty(value = "senderBusinessIdentity", required = true)
     private BusinessIdentity senderBusinessIdentity;
 
     /*
      * The receiver business identity
      */
-    @JsonProperty(value = "receiverBusinessIdentity", required = true)
     private BusinessIdentity receiverBusinessIdentity;
 
     /*
      * The X12 protocol settings.
      */
-    @JsonProperty(value = "protocolSettings", required = true)
     private X12ProtocolSettings protocolSettings;
 
-    /** Creates an instance of X12OneWayAgreement class. */
+    /**
+     * Creates an instance of X12OneWayAgreement class.
+     */
     public X12OneWayAgreement() {
     }
 
     /**
      * Get the senderBusinessIdentity property: The sender business identity.
-     *
+     * 
      * @return the senderBusinessIdentity value.
      */
     public BusinessIdentity senderBusinessIdentity() {
@@ -44,7 +49,7 @@ public final class X12OneWayAgreement {
 
     /**
      * Set the senderBusinessIdentity property: The sender business identity.
-     *
+     * 
      * @param senderBusinessIdentity the senderBusinessIdentity value to set.
      * @return the X12OneWayAgreement object itself.
      */
@@ -55,7 +60,7 @@ public final class X12OneWayAgreement {
 
     /**
      * Get the receiverBusinessIdentity property: The receiver business identity.
-     *
+     * 
      * @return the receiverBusinessIdentity value.
      */
     public BusinessIdentity receiverBusinessIdentity() {
@@ -64,7 +69,7 @@ public final class X12OneWayAgreement {
 
     /**
      * Set the receiverBusinessIdentity property: The receiver business identity.
-     *
+     * 
      * @param receiverBusinessIdentity the receiverBusinessIdentity value to set.
      * @return the X12OneWayAgreement object itself.
      */
@@ -75,7 +80,7 @@ public final class X12OneWayAgreement {
 
     /**
      * Get the protocolSettings property: The X12 protocol settings.
-     *
+     * 
      * @return the protocolSettings value.
      */
     public X12ProtocolSettings protocolSettings() {
@@ -84,7 +89,7 @@ public final class X12OneWayAgreement {
 
     /**
      * Set the protocolSettings property: The X12 protocol settings.
-     *
+     * 
      * @param protocolSettings the protocolSettings value to set.
      * @return the X12OneWayAgreement object itself.
      */
@@ -95,35 +100,75 @@ public final class X12OneWayAgreement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (senderBusinessIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property senderBusinessIdentity in model X12OneWayAgreement"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property senderBusinessIdentity in model X12OneWayAgreement"));
         } else {
             senderBusinessIdentity().validate();
         }
         if (receiverBusinessIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property receiverBusinessIdentity in model X12OneWayAgreement"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property receiverBusinessIdentity in model X12OneWayAgreement"));
         } else {
             receiverBusinessIdentity().validate();
         }
         if (protocolSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocolSettings in model X12OneWayAgreement"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocolSettings in model X12OneWayAgreement"));
         } else {
             protocolSettings().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(X12OneWayAgreement.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("senderBusinessIdentity", this.senderBusinessIdentity);
+        jsonWriter.writeJsonField("receiverBusinessIdentity", this.receiverBusinessIdentity);
+        jsonWriter.writeJsonField("protocolSettings", this.protocolSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12OneWayAgreement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12OneWayAgreement if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12OneWayAgreement.
+     */
+    public static X12OneWayAgreement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12OneWayAgreement deserializedX12OneWayAgreement = new X12OneWayAgreement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("senderBusinessIdentity".equals(fieldName)) {
+                    deserializedX12OneWayAgreement.senderBusinessIdentity = BusinessIdentity.fromJson(reader);
+                } else if ("receiverBusinessIdentity".equals(fieldName)) {
+                    deserializedX12OneWayAgreement.receiverBusinessIdentity = BusinessIdentity.fromJson(reader);
+                } else if ("protocolSettings".equals(fieldName)) {
+                    deserializedX12OneWayAgreement.protocolSettings = X12ProtocolSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12OneWayAgreement;
+        });
+    }
 }

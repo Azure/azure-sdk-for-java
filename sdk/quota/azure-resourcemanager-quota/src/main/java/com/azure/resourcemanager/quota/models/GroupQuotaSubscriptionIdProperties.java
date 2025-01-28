@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.quota.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GroupQuotaSubscriptionIdProperties model.
  */
-@Immutable
-public final class GroupQuotaSubscriptionIdProperties {
+@Fluent
+public final class GroupQuotaSubscriptionIdProperties implements JsonSerializable<GroupQuotaSubscriptionIdProperties> {
     /*
      * An Azure subscriptionId.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * Status of this subscriptionId being associated with the GroupQuotasEntity.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RequestState provisioningState;
 
     /**
@@ -40,6 +42,17 @@ public final class GroupQuotaSubscriptionIdProperties {
     }
 
     /**
+     * Set the subscriptionId property: An Azure subscriptionId.
+     * 
+     * @param subscriptionId the subscriptionId value to set.
+     * @return the GroupQuotaSubscriptionIdProperties object itself.
+     */
+    public GroupQuotaSubscriptionIdProperties withSubscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Status of this subscriptionId being associated with the GroupQuotasEntity.
      * 
      * @return the provisioningState value.
@@ -54,5 +67,45 @@ public final class GroupQuotaSubscriptionIdProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupQuotaSubscriptionIdProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupQuotaSubscriptionIdProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupQuotaSubscriptionIdProperties.
+     */
+    public static GroupQuotaSubscriptionIdProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupQuotaSubscriptionIdProperties deserializedGroupQuotaSubscriptionIdProperties
+                = new GroupQuotaSubscriptionIdProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedGroupQuotaSubscriptionIdProperties.subscriptionId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGroupQuotaSubscriptionIdProperties.provisioningState
+                        = RequestState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupQuotaSubscriptionIdProperties;
+        });
     }
 }

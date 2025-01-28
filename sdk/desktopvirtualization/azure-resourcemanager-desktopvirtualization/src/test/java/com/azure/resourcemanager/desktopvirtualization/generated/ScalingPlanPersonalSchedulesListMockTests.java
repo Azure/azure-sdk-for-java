@@ -6,101 +6,70 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedule;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOperation;
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.StartupBehavior;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScalingPlanPersonalSchedulesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"daysOfWeek\":[\"Monday\",\"Friday\"],\"rampUpStartTime\":{\"hour\":384841052,\"minute\":1302563571},\"rampUpAutoStartHosts\":\"All\",\"rampUpStartVMOnConnect\":\"Disable\",\"rampUpActionOnDisconnect\":\"None\",\"rampUpMinutesToWaitOnDisconnect\":569544642,\"rampUpActionOnLogoff\":\"Hibernate\",\"rampUpMinutesToWaitOnLogoff\":937935605,\"peakStartTime\":{\"hour\":149368324,\"minute\":1258404942},\"peakStartVMOnConnect\":\"Enable\",\"peakActionOnDisconnect\":\"Hibernate\",\"peakMinutesToWaitOnDisconnect\":1055328892,\"peakActionOnLogoff\":\"Hibernate\",\"peakMinutesToWaitOnLogoff\":716318057,\"rampDownStartTime\":{\"hour\":1761348556,\"minute\":620018681},\"rampDownStartVMOnConnect\":\"Disable\",\"rampDownActionOnDisconnect\":\"Deallocate\",\"rampDownMinutesToWaitOnDisconnect\":971775646,\"rampDownActionOnLogoff\":\"None\",\"rampDownMinutesToWaitOnLogoff\":1389401676,\"offPeakStartTime\":{\"hour\":537279980,\"minute\":2138808813},\"offPeakStartVMOnConnect\":\"Disable\",\"offPeakActionOnDisconnect\":\"Hibernate\",\"offPeakMinutesToWaitOnDisconnect\":1546615539,\"offPeakActionOnLogoff\":\"None\",\"offPeakMinutesToWaitOnLogoff\":1583480383},\"id\":\"tnjadhq\",\"name\":\"aw\",\"type\":\"qoyueayfbpcmsplb\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"daysOfWeek\":[\"Saturday\",\"Saturday\"],\"rampUpStartTime\":{\"hour\":1124530948,\"minute\":499319607},\"rampUpAutoStartHosts\":\"None\",\"rampUpStartVMOnConnect\":\"Enable\",\"rampUpActionOnDisconnect\":\"Deallocate\",\"rampUpMinutesToWaitOnDisconnect\":1014248956,\"rampUpActionOnLogoff\":\"Deallocate\",\"rampUpMinutesToWaitOnLogoff\":1964077679,\"peakStartTime\":{\"hour\":325210544,\"minute\":2124129380},\"peakStartVMOnConnect\":\"Disable\",\"peakActionOnDisconnect\":\"Hibernate\",\"peakMinutesToWaitOnDisconnect\":543218524,\"peakActionOnLogoff\":\"Hibernate\",\"peakMinutesToWaitOnLogoff\":150528067,\"rampDownStartTime\":{\"hour\":20952661,\"minute\":1138832682},\"rampDownStartVMOnConnect\":\"Enable\",\"rampDownActionOnDisconnect\":\"None\",\"rampDownMinutesToWaitOnDisconnect\":996292120,\"rampDownActionOnLogoff\":\"None\",\"rampDownMinutesToWaitOnLogoff\":988577798,\"offPeakStartTime\":{\"hour\":290904524,\"minute\":1604128038},\"offPeakStartVMOnConnect\":\"Enable\",\"offPeakActionOnDisconnect\":\"Hibernate\",\"offPeakMinutesToWaitOnDisconnect\":709462942,\"offPeakActionOnLogoff\":\"None\",\"offPeakMinutesToWaitOnLogoff\":1900039321},\"id\":\"rqctmxxdtdd\",\"name\":\"flhuytxzv\",\"type\":\"zna\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DesktopVirtualizationManager manager = DesktopVirtualizationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ScalingPlanPersonalSchedule> response = manager.scalingPlanPersonalSchedules()
+            .list("gypxrxvbfihwuhvc", "a", 64697059, true, 2010585731, com.azure.core.util.Context.NONE);
 
-        DesktopVirtualizationManager manager =
-            DesktopVirtualizationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ScalingPlanPersonalSchedule> response =
-            manager
-                .scalingPlanPersonalSchedules()
-                .list("kfuarenlv", "htkln", 1009916095, false, 672713653, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(DayOfWeek.SATURDAY, response.iterator().next().daysOfWeek().get(0));
-        Assertions.assertEquals(1124530948, response.iterator().next().rampUpStartTime().hour());
-        Assertions.assertEquals(499319607, response.iterator().next().rampUpStartTime().minute());
-        Assertions.assertEquals(StartupBehavior.NONE, response.iterator().next().rampUpAutoStartHosts());
-        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, response.iterator().next().rampUpStartVMOnConnect());
-        Assertions
-            .assertEquals(SessionHandlingOperation.DEALLOCATE, response.iterator().next().rampUpActionOnDisconnect());
-        Assertions.assertEquals(1014248956, response.iterator().next().rampUpMinutesToWaitOnDisconnect());
-        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE, response.iterator().next().rampUpActionOnLogoff());
-        Assertions.assertEquals(1964077679, response.iterator().next().rampUpMinutesToWaitOnLogoff());
-        Assertions.assertEquals(325210544, response.iterator().next().peakStartTime().hour());
-        Assertions.assertEquals(2124129380, response.iterator().next().peakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.iterator().next().peakStartVMOnConnect());
-        Assertions
-            .assertEquals(SessionHandlingOperation.HIBERNATE, response.iterator().next().peakActionOnDisconnect());
-        Assertions.assertEquals(543218524, response.iterator().next().peakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(DayOfWeek.MONDAY, response.iterator().next().daysOfWeek().get(0));
+        Assertions.assertEquals(384841052, response.iterator().next().rampUpStartTime().hour());
+        Assertions.assertEquals(1302563571, response.iterator().next().rampUpStartTime().minute());
+        Assertions.assertEquals(StartupBehavior.ALL, response.iterator().next().rampUpAutoStartHosts());
+        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.iterator().next().rampUpStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.NONE, response.iterator().next().rampUpActionOnDisconnect());
+        Assertions.assertEquals(569544642, response.iterator().next().rampUpMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, response.iterator().next().rampUpActionOnLogoff());
+        Assertions.assertEquals(937935605, response.iterator().next().rampUpMinutesToWaitOnLogoff());
+        Assertions.assertEquals(149368324, response.iterator().next().peakStartTime().hour());
+        Assertions.assertEquals(1258404942, response.iterator().next().peakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, response.iterator().next().peakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE,
+            response.iterator().next().peakActionOnDisconnect());
+        Assertions.assertEquals(1055328892, response.iterator().next().peakMinutesToWaitOnDisconnect());
         Assertions.assertEquals(SessionHandlingOperation.HIBERNATE, response.iterator().next().peakActionOnLogoff());
-        Assertions.assertEquals(150528067, response.iterator().next().peakMinutesToWaitOnLogoff());
-        Assertions.assertEquals(20952661, response.iterator().next().rampDownStartTime().hour());
-        Assertions.assertEquals(1138832682, response.iterator().next().rampDownStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, response.iterator().next().rampDownStartVMOnConnect());
-        Assertions.assertEquals(SessionHandlingOperation.NONE, response.iterator().next().rampDownActionOnDisconnect());
-        Assertions.assertEquals(996292120, response.iterator().next().rampDownMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(716318057, response.iterator().next().peakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1761348556, response.iterator().next().rampDownStartTime().hour());
+        Assertions.assertEquals(620018681, response.iterator().next().rampDownStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.iterator().next().rampDownStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.DEALLOCATE,
+            response.iterator().next().rampDownActionOnDisconnect());
+        Assertions.assertEquals(971775646, response.iterator().next().rampDownMinutesToWaitOnDisconnect());
         Assertions.assertEquals(SessionHandlingOperation.NONE, response.iterator().next().rampDownActionOnLogoff());
-        Assertions.assertEquals(988577798, response.iterator().next().rampDownMinutesToWaitOnLogoff());
-        Assertions.assertEquals(290904524, response.iterator().next().offPeakStartTime().hour());
-        Assertions.assertEquals(1604128038, response.iterator().next().offPeakStartTime().minute());
-        Assertions.assertEquals(SetStartVMOnConnect.ENABLE, response.iterator().next().offPeakStartVMOnConnect());
-        Assertions
-            .assertEquals(SessionHandlingOperation.HIBERNATE, response.iterator().next().offPeakActionOnDisconnect());
-        Assertions.assertEquals(709462942, response.iterator().next().offPeakMinutesToWaitOnDisconnect());
+        Assertions.assertEquals(1389401676, response.iterator().next().rampDownMinutesToWaitOnLogoff());
+        Assertions.assertEquals(537279980, response.iterator().next().offPeakStartTime().hour());
+        Assertions.assertEquals(2138808813, response.iterator().next().offPeakStartTime().minute());
+        Assertions.assertEquals(SetStartVMOnConnect.DISABLE, response.iterator().next().offPeakStartVMOnConnect());
+        Assertions.assertEquals(SessionHandlingOperation.HIBERNATE,
+            response.iterator().next().offPeakActionOnDisconnect());
+        Assertions.assertEquals(1546615539, response.iterator().next().offPeakMinutesToWaitOnDisconnect());
         Assertions.assertEquals(SessionHandlingOperation.NONE, response.iterator().next().offPeakActionOnLogoff());
-        Assertions.assertEquals(1900039321, response.iterator().next().offPeakMinutesToWaitOnLogoff());
+        Assertions.assertEquals(1583480383, response.iterator().next().offPeakMinutesToWaitOnLogoff());
     }
 }

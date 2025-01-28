@@ -9,11 +9,14 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.serializer.json.jackson.implementation.nojackson.Simple;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -387,6 +390,68 @@ public class JacksonAdapterTests {
         OffsetDateTime getDate() {
             return (date == null) ? null : date.getDateTime();
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataWithJsonSerializableContainerSerializationSupplier")
+    public void binaryDataWithJsonSerializableContainerSerialization(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryData.toString());
+    }
+
+    private static Stream<Arguments> binaryDataWithJsonSerializableContainerSerializationSupplier() {
+        Simple[] array = new Simple[] { new Simple("id", "name") };
+        List<Simple> list = Collections.singletonList(new Simple("id", "name"));
+        Iterable<Simple> iterable = () -> Collections.singletonList(new Simple("id", "name")).iterator();
+        Map<String, Simple> map = Collections.singletonMap("key", new Simple("id", "name"));
+
+        return Stream.of(
+            // Should use modifyArraySerializer
+            Arguments.of(BinaryData.fromObject(array, new JacksonJsonSerializerProvider().createInstance()),
+                "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyCollectionSerializer or modifyCollectionLikeSerializer
+            Arguments.of(BinaryData.fromObject(list, new JacksonJsonSerializerProvider().createInstance()),
+                "[{\"id\":\"id\",\"name\":\"name\"}]"),
+            Arguments.of(BinaryData.fromObject(iterable, new JacksonJsonSerializerProvider().createInstance()),
+                "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyMapSerializer or modifyMapLikeSerializer
+            Arguments.of(BinaryData.fromObject(map, new JacksonJsonSerializerProvider().createInstance()),
+                "{\"key\":{\"id\":\"id\",\"name\":\"name\"}}"));
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayDeserialization() {
+        Simple[] expected = new Simple[] { new Simple("id", "name") };
+        Simple[] actual = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]")
+            .toObject(Simple[].class, new JacksonJsonSerializerProvider().createInstance());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayArrayDeserialization() {
+        Simple[][] expected = new Simple[][] { { new Simple("id", "name") } };
+        Simple[][] actual = BinaryData.fromString("[[{\"id\":\"id\",\"name\":\"name\"}]]")
+            .toObject(Simple[][].class, new JacksonJsonSerializerProvider().createInstance());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerListDeserialization() {
+        List<Simple> expected = Collections.singletonList(new Simple("id", "name"));
+        List<Simple> actual
+            = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]").toObject(new TypeReference<List<Simple>>() {
+            }, new JacksonJsonSerializerProvider().createInstance());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerMapDeserialization() {
+        Map<String, Simple> expected = Collections.singletonMap("key", new Simple("id", "name"));
+        Map<String, Simple> actual = BinaryData.fromString("{\"key\":{\"id\":\"id\",\"name\":\"name\"}}")
+            .toObject(new TypeReference<Map<String, Simple>>() {
+            }, new JacksonJsonSerializerProvider().createInstance());
+        assertEquals(expected, actual);
     }
 
     public static final class InvalidStronglyTypedHeaders {

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.fluent.models.ScheduledActionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Scheduled actions list result. It contains a list of scheduled actions. */
+/**
+ * Scheduled actions list result. It contains a list of scheduled actions.
+ */
 @Immutable
-public final class ScheduledActionListResult {
+public final class ScheduledActionListResult implements JsonSerializable<ScheduledActionListResult> {
     /*
      * The list of scheduled actions.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ScheduledActionInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ScheduledActionListResult class. */
+    /**
+     * Creates an instance of ScheduledActionListResult class.
+     */
     public ScheduledActionListResult() {
     }
 
     /**
      * Get the value property: The list of scheduled actions.
-     *
+     * 
      * @return the value value.
      */
     public List<ScheduledActionInner> value() {
@@ -39,7 +45,7 @@ public final class ScheduledActionListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class ScheduledActionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledActionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledActionListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledActionListResult.
+     */
+    public static ScheduledActionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledActionListResult deserializedScheduledActionListResult = new ScheduledActionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ScheduledActionInner> value
+                        = reader.readArray(reader1 -> ScheduledActionInner.fromJson(reader1));
+                    deserializedScheduledActionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedScheduledActionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledActionListResult;
+        });
     }
 }

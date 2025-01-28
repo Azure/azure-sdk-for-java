@@ -66,28 +66,23 @@ public final class ManagementConfigurationImpl
     }
 
     public ManagementConfiguration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagementConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, managementConfigurationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagementConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagementConfiguration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagementConfigurations()
-                .createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagementConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ManagementConfigurationImpl(
-        String name, com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
+    ManagementConfigurationImpl(String name,
+        com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = new ManagementConfigurationInner();
         this.serviceManager = serviceManager;
         this.managementConfigurationName = name;
@@ -98,52 +93,43 @@ public final class ManagementConfigurationImpl
     }
 
     public ManagementConfiguration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagementConfigurations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, managementConfigurationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagementConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagementConfiguration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagementConfigurations()
-                .createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagementConfigurations()
+            .createOrUpdateWithResponse(resourceGroupName, managementConfigurationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ManagementConfigurationImpl(
-        ManagementConfigurationInner innerObject,
+    ManagementConfigurationImpl(ManagementConfigurationInner innerObject,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.managementConfigurationName = Utils.getValueFromIdByName(innerObject.id(), "ManagementConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.managementConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ManagementConfigurations");
     }
 
     public ManagementConfiguration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagementConfigurations()
-                .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagementConfigurations()
+            .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagementConfiguration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagementConfigurations()
-                .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagementConfigurations()
+            .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context)
+            .getValue();
         return this;
     }
 

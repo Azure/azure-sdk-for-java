@@ -22,7 +22,7 @@ public final class SitesListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"networkFunctions\":[{\"id\":\"ozoolzq\"},{\"id\":\"arkuzl\"},{\"id\":\"nndtsnxa\"}]},\"location\":\"ytllhdyzmy\",\"tags\":{\"akckywym\":\"exn\",\"hfaogzv\":\"gaabjkdtf\",\"iwdyjqurykcrraue\":\"iwr\"},\"id\":\"kcsueho\",\"name\":\"ddacbcbgydlqidy\",\"type\":\"mhmpty\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"networkFunctions\":[{\"id\":\"dndoabhjxw\"}]},\"location\":\"weuipmpvksmi\",\"tags\":{\"l\":\"qx\",\"fhyrfrakk\":\"clkrdpq\",\"rcwfcmfcnrjajq\":\"d\",\"zqgxx\":\"atxjtiel\"},\"id\":\"fbbmtlp\",\"name\":\"agynoi\",\"type\":\"rnzcalinc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class SitesListByMobileNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Site> response
-            = manager.sites().listByMobileNetwork("hefkwabsolronqq", "mgnlqxsjxtel", com.azure.core.util.Context.NONE);
+            = manager.sites().listByMobileNetwork("n", "oywsxvjabjqqaxu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ytllhdyzmy", response.iterator().next().location());
-        Assertions.assertEquals("exn", response.iterator().next().tags().get("akckywym"));
+        Assertions.assertEquals("weuipmpvksmi", response.iterator().next().location());
+        Assertions.assertEquals("qx", response.iterator().next().tags().get("l"));
     }
 }

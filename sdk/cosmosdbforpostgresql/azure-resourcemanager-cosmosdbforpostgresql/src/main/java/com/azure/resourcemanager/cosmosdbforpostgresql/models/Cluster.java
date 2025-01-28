@@ -52,11 +52,25 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Describes the identity of the cluster.
+     * 
+     * @return the identity value.
+     */
+    IdentityProperties identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the aadAuthEnabled property: Indicates whether the cluster was created using AAD authentication.
+     * 
+     * @return the aadAuthEnabled value.
+     */
+    AadEnabledEnum aadAuthEnabled();
 
     /**
      * Gets the administratorLogin property: The administrator's login name of the servers in the cluster.
@@ -71,6 +85,13 @@ public interface Cluster {
      * @return the administratorLoginPassword value.
      */
     String administratorLoginPassword();
+
+    /**
+     * Gets the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @return the dataEncryption value.
+     */
+    DataEncryption dataEncryption();
 
     /**
      * Gets the provisioningState property: Provisioning state of the cluster.
@@ -221,6 +242,14 @@ public interface Cluster {
     String sourceLocation();
 
     /**
+     * Gets the passwordEnabled property: Indicates whether the cluster was created with a password or using AAD
+     * authentication.
+     * 
+     * @return the passwordEnabled value.
+     */
+    PasswordEnabledEnum passwordEnabled();
+
+    /**
      * Gets the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
      * 
      * @return the pointInTimeUtc value.
@@ -353,7 +382,8 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAdministratorLoginPassword,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithDataEncryption,
             DefinitionStages.WithPostgresqlVersion, DefinitionStages.WithCitusVersion,
             DefinitionStages.WithMaintenanceWindow, DefinitionStages.WithPreferredPrimaryZone,
             DefinitionStages.WithEnableShardsOnCoordinator, DefinitionStages.WithEnableHa,
@@ -394,6 +424,19 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the identity of the cluster..
+             * 
+             * @param identity Describes the identity of the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(IdentityProperties identity);
+        }
+
+        /**
          * The stage of the Cluster definition allowing to specify administratorLoginPassword.
          */
         interface WithAdministratorLoginPassword {
@@ -405,6 +448,19 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify dataEncryption.
+         */
+        interface WithDataEncryption {
+            /**
+             * Specifies the dataEncryption property: The data encryption properties of a cluster..
+             * 
+             * @param dataEncryption The data encryption properties of a cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withDataEncryption(DataEncryption dataEncryption);
         }
 
         /**
@@ -711,13 +767,13 @@ public interface Cluster {
     /**
      * The template for Cluster update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithAdministratorLoginPassword,
-        UpdateStages.WithPostgresqlVersion, UpdateStages.WithCitusVersion, UpdateStages.WithEnableShardsOnCoordinator,
-        UpdateStages.WithEnableHa, UpdateStages.WithPreferredPrimaryZone, UpdateStages.WithCoordinatorServerEdition,
-        UpdateStages.WithCoordinatorStorageQuotaInMb, UpdateStages.WithCoordinatorVCores,
-        UpdateStages.WithCoordinatorEnablePublicIpAccess, UpdateStages.WithNodeServerEdition,
-        UpdateStages.WithNodeCount, UpdateStages.WithNodeStorageQuotaInMb, UpdateStages.WithNodeVCores,
-        UpdateStages.WithMaintenanceWindow {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity,
+        UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithPostgresqlVersion, UpdateStages.WithCitusVersion,
+        UpdateStages.WithEnableShardsOnCoordinator, UpdateStages.WithEnableHa, UpdateStages.WithPreferredPrimaryZone,
+        UpdateStages.WithCoordinatorServerEdition, UpdateStages.WithCoordinatorStorageQuotaInMb,
+        UpdateStages.WithCoordinatorVCores, UpdateStages.WithCoordinatorEnablePublicIpAccess,
+        UpdateStages.WithNodeServerEdition, UpdateStages.WithNodeCount, UpdateStages.WithNodeStorageQuotaInMb,
+        UpdateStages.WithNodeVCores, UpdateStages.WithMaintenanceWindow {
         /**
          * Executes the update request.
          * 
@@ -749,6 +805,19 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Cluster update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Describes the identity of the cluster..
+             * 
+             * @param identity Describes the identity of the cluster.
+             * @return the next definition stage.
+             */
+            Update withIdentity(IdentityProperties identity);
         }
 
         /**

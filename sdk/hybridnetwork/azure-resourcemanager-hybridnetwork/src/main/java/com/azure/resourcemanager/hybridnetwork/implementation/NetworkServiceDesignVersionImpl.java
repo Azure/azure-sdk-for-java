@@ -94,16 +94,18 @@ public final class NetworkServiceDesignVersionImpl
     }
 
     public NetworkServiceDesignVersion create() {
-        this.innerObject = serviceManager.serviceClient().getNetworkServiceDesignVersions().createOrUpdate(
-            resourceGroupName, publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignVersions()
+            .createOrUpdate(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkServiceDesignVersion create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNetworkServiceDesignVersions().createOrUpdate(
-            resourceGroupName, publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignVersions()
+            .createOrUpdate(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, this.innerModel(), context);
         return this;
     }
 
@@ -120,19 +122,20 @@ public final class NetworkServiceDesignVersionImpl
     }
 
     public NetworkServiceDesignVersion apply() {
-        this.innerObject = serviceManager
-            .serviceClient().getNetworkServiceDesignVersions().updateWithResponse(resourceGroupName, publisherName,
-                networkServiceDesignGroupName, networkServiceDesignVersionName, updateParameters, Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignVersions()
+            .updateWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public NetworkServiceDesignVersion apply(Context context) {
-        this.innerObject
-            = serviceManager
-                .serviceClient().getNetworkServiceDesignVersions().updateWithResponse(resourceGroupName, publisherName,
-                    networkServiceDesignGroupName, networkServiceDesignVersionName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignVersions()
+            .updateWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -140,36 +143,43 @@ public final class NetworkServiceDesignVersionImpl
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publisherName = Utils.getValueFromIdByName(innerObject.id(), "publishers");
-        this.networkServiceDesignGroupName = Utils.getValueFromIdByName(innerObject.id(), "networkServiceDesignGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.publisherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publishers");
+        this.networkServiceDesignGroupName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkServiceDesignGroups");
         this.networkServiceDesignVersionName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkServiceDesignVersions");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkServiceDesignVersions");
     }
 
     public NetworkServiceDesignVersion refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getNetworkServiceDesignVersions().getWithResponse(resourceGroupName,
-                publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignVersions()
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkServiceDesignVersion refresh(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getNetworkServiceDesignVersions().getWithResponse(resourceGroupName,
-                publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkServiceDesignVersions()
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, context)
+            .getValue();
         return this;
     }
 
     public NetworkServiceDesignVersionUpdateState updateState(NetworkServiceDesignVersionUpdateStateInner parameters) {
-        return serviceManager.networkServiceDesignVersions().updateState(resourceGroupName, publisherName,
-            networkServiceDesignGroupName, networkServiceDesignVersionName, parameters);
+        return serviceManager.networkServiceDesignVersions()
+            .updateState(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters);
     }
 
     public NetworkServiceDesignVersionUpdateState updateState(NetworkServiceDesignVersionUpdateStateInner parameters,
         Context context) {
-        return serviceManager.networkServiceDesignVersions().updateState(resourceGroupName, publisherName,
-            networkServiceDesignGroupName, networkServiceDesignVersionName, parameters, context);
+        return serviceManager.networkServiceDesignVersions()
+            .updateState(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters, context);
     }
 
     public NetworkServiceDesignVersionImpl withRegion(Region location) {

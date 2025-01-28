@@ -21,39 +21,29 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
 
     private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
-    public AvailabilityGroupListenersImpl(
-        AvailabilityGroupListenersClient innerClient,
+    public AvailabilityGroupListenersImpl(AvailabilityGroupListenersClient innerClient,
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AvailabilityGroupListener> getWithResponse(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand,
-        Context context) {
-        Response<AvailabilityGroupListenerInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, context);
+    public Response<AvailabilityGroupListener> getWithResponse(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, String expand, Context context) {
+        Response<AvailabilityGroupListenerInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AvailabilityGroupListenerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AvailabilityGroupListener get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        AvailabilityGroupListenerInner inner =
-            this.serviceClient().get(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
+    public AvailabilityGroupListener get(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
+        AvailabilityGroupListenerInner inner
+            = this.serviceClient().get(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
         if (inner != null) {
             return new AvailabilityGroupListenerImpl(inner, this.manager());
         } else {
@@ -61,165 +51,112 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
     }
 
-    public void delete(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+    public void delete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName) {
         this.serviceClient().delete(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context) {
-        this
-            .serviceClient()
+    public void delete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, Context context) {
+        this.serviceClient()
             .delete(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context);
     }
 
-    public PagedIterable<AvailabilityGroupListener> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
-        PagedIterable<AvailabilityGroupListenerInner> inner =
-            this.serviceClient().listByGroup(resourceGroupName, sqlVirtualMachineGroupName);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
+    public PagedIterable<AvailabilityGroupListener> listByGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
+        PagedIterable<AvailabilityGroupListenerInner> inner
+            = this.serviceClient().listByGroup(resourceGroupName, sqlVirtualMachineGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AvailabilityGroupListener> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
-        PagedIterable<AvailabilityGroupListenerInner> inner =
-            this.serviceClient().listByGroup(resourceGroupName, sqlVirtualMachineGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
+    public PagedIterable<AvailabilityGroupListener> listByGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
+        PagedIterable<AvailabilityGroupListenerInner> inner
+            = this.serviceClient().listByGroup(resourceGroupName, sqlVirtualMachineGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
     }
 
     public AvailabilityGroupListener getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
+        String sqlVirtualMachineGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.", id)));
         }
-        String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
+        String availabilityGroupListenerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.", id)));
         }
         String localExpand = null;
         return this
-            .getWithResponse(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, localExpand, Context.NONE)
+            .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, localExpand,
+                Context.NONE)
             .getValue();
     }
 
     public Response<AvailabilityGroupListener> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
+        String sqlVirtualMachineGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.", id)));
         }
-        String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
+        String availabilityGroupListenerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.", id)));
         }
-        return this
-            .getWithResponse(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, context);
+        return this.getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+            expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
+        String sqlVirtualMachineGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.", id)));
         }
-        String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
+        String availabilityGroupListenerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.", id)));
         }
         this.delete(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
+        String sqlVirtualMachineGroupName = ResourceManagerUtils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachineGroups'.", id)));
         }
-        String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
+        String availabilityGroupListenerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.", id)));
         }
         this.delete(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context);
     }

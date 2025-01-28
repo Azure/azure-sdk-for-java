@@ -21,11 +21,22 @@ public final class AgentRegistrationInformationsImpl implements AgentRegistratio
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public AgentRegistrationInformationsImpl(
-        AgentRegistrationInformationsClient innerClient,
+    public AgentRegistrationInformationsImpl(AgentRegistrationInformationsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<AgentRegistration> getWithResponse(String resourceGroupName, String automationAccountName,
+        Context context) {
+        Response<AgentRegistrationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AgentRegistrationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AgentRegistration get(String resourceGroupName, String automationAccountName) {
@@ -37,47 +48,24 @@ public final class AgentRegistrationInformationsImpl implements AgentRegistratio
         }
     }
 
-    public Response<AgentRegistration> getWithResponse(
-        String resourceGroupName, String automationAccountName, Context context) {
-        Response<AgentRegistrationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, context);
+    public Response<AgentRegistration> regenerateKeyWithResponse(String resourceGroupName, String automationAccountName,
+        AgentRegistrationRegenerateKeyParameter parameters, Context context) {
+        Response<AgentRegistrationInner> inner = this.serviceClient()
+            .regenerateKeyWithResponse(resourceGroupName, automationAccountName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AgentRegistrationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AgentRegistration regenerateKey(
-        String resourceGroupName, String automationAccountName, AgentRegistrationRegenerateKeyParameter parameters) {
-        AgentRegistrationInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, automationAccountName, parameters);
+    public AgentRegistration regenerateKey(String resourceGroupName, String automationAccountName,
+        AgentRegistrationRegenerateKeyParameter parameters) {
+        AgentRegistrationInner inner
+            = this.serviceClient().regenerateKey(resourceGroupName, automationAccountName, parameters);
         if (inner != null) {
             return new AgentRegistrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AgentRegistration> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        AgentRegistrationRegenerateKeyParameter parameters,
-        Context context) {
-        Response<AgentRegistrationInner> inner =
-            this
-                .serviceClient()
-                .regenerateKeyWithResponse(resourceGroupName, automationAccountName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AgentRegistrationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

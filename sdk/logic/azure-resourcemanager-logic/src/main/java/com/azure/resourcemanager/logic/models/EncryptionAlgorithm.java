@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The encryption algorithm. */
+/**
+ * The encryption algorithm.
+ */
 public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAlgorithm> {
-    /** Static value NotSpecified for EncryptionAlgorithm. */
+    /**
+     * Static value NotSpecified for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value None for EncryptionAlgorithm. */
+    /**
+     * Static value None for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm NONE = fromString("None");
 
-    /** Static value DES3 for EncryptionAlgorithm. */
+    /**
+     * Static value DES3 for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm DES3 = fromString("DES3");
 
-    /** Static value RC2 for EncryptionAlgorithm. */
+    /**
+     * Static value RC2 for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm RC2 = fromString("RC2");
 
-    /** Static value AES128 for EncryptionAlgorithm. */
+    /**
+     * Static value AES128 for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm AES128 = fromString("AES128");
 
-    /** Static value AES192 for EncryptionAlgorithm. */
+    /**
+     * Static value AES192 for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm AES192 = fromString("AES192");
 
-    /** Static value AES256 for EncryptionAlgorithm. */
+    /**
+     * Static value AES256 for EncryptionAlgorithm.
+     */
     public static final EncryptionAlgorithm AES256 = fromString("AES256");
 
     /**
      * Creates a new instance of EncryptionAlgorithm value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
 
     /**
      * Creates or finds a EncryptionAlgorithm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionAlgorithm.
      */
-    @JsonCreator
     public static EncryptionAlgorithm fromString(String name) {
         return fromString(name, EncryptionAlgorithm.class);
     }
 
     /**
      * Gets known EncryptionAlgorithm values.
-     *
+     * 
      * @return known EncryptionAlgorithm values.
      */
     public static Collection<EncryptionAlgorithm> values() {

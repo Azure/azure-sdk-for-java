@@ -26,8 +26,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Supp
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * SupportedOperatingSystemsOperationsClient.
+ * An instance of this class provides access to all the operations defined in SupportedOperatingSystemsOperationsClient.
  */
 public final class SupportedOperatingSystemsOperationsClientImpl implements SupportedOperatingSystemsOperationsClient {
     /**
@@ -52,8 +51,8 @@ public final class SupportedOperatingSystemsOperationsClientImpl implements Supp
     }
 
     /**
-     * The interface defining all the services for SiteRecoveryManagementClientSupportedOperatingSystemsOperations to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for SiteRecoveryManagementClientSupportedOperatingSystemsOperations to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SiteRecoveryManageme")

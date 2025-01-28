@@ -42,7 +42,7 @@ public final class DetectedLanguage {
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public DetectedLanguage(String name, String iso6391Name, double confidenceScore,
-                            IterableStream<TextAnalyticsWarning> warnings) {
+        IterableStream<TextAnalyticsWarning> warnings) {
         this.name = name;
         this.iso6391Name = iso6391Name;
         this.confidenceScore = confidenceScore;

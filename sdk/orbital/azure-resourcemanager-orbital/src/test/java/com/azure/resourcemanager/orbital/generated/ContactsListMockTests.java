@@ -6,74 +6,42 @@ package com.azure.resourcemanager.orbital.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.orbital.OrbitalManager;
 import com.azure.resourcemanager.orbital.models.Contact;
 import com.azure.resourcemanager.orbital.models.ContactsPropertiesProvisioningState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContactsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"canceled\",\"status\":\"failed\",\"reservationStartTime\":\"2021-07-29T01:36:25Z\",\"reservationEndTime\":\"2021-05-24T12:41:33Z\",\"rxStartTime\":\"2021-04-01T03:58:48Z\",\"rxEndTime\":\"2020-12-28T18:13:42Z\",\"txStartTime\":\"2021-10-21T00:35:55Z\",\"txEndTime\":\"2020-12-22T05:34:35Z\",\"errorMessage\":\"jylwbtlhflsj\",\"maximumElevationDegrees\":49.928276,\"startAzimuthDegrees\":59.380924,\"endAzimuthDegrees\":62.8989,\"groundStationName\":\"vfbgofeljagrqmqh\",\"startElevationDegrees\":31.824005,\"endElevationDegrees\":64.267334,\"antennaConfiguration\":{\"destinationIp\":\"ojnal\",\"sourceIps\":[\"kvtvsexso\"]},\"contactProfile\":{\"id\":\"ueluqhhahhxvrhmz\"}},\"id\":\"pjgwwspug\",\"name\":\"ftqsxhqxujxuk\",\"type\":\"dxdigr\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"status\":\"providerCancelled\",\"reservationStartTime\":\"2021-02-02T03:25:54Z\",\"reservationEndTime\":\"2021-06-29T22:28:15Z\",\"rxStartTime\":\"2021-08-06T12:01:01Z\",\"rxEndTime\":\"2021-08-14T03:50:42Z\",\"txStartTime\":\"2021-09-20T16:59Z\",\"txEndTime\":\"2021-05-30T09:03:19Z\",\"errorMessage\":\"caalnjixisxyaw\",\"maximumElevationDegrees\":82.835205,\"startAzimuthDegrees\":64.62957,\"endAzimuthDegrees\":50.503685,\"groundStationName\":\"lyjpk\",\"startElevationDegrees\":70.68801,\"endElevationDegrees\":22.889233,\"antennaConfiguration\":{\"destinationIp\":\"znelixhnrztfolh\",\"sourceIps\":[]},\"contactProfile\":{\"id\":\"xknalaulppg\"}},\"id\":\"tpnapnyiropuhpig\",\"name\":\"pgylg\",\"type\":\"git\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Contact> response
+            = manager.contacts().list("rjqc", "rgz", "frl", com.azure.core.util.Context.NONE);
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Contact> response =
-            manager.contacts().list("bsjyofdx", "uusdttouwa", "oekqvk", com.azure.core.util.Context.NONE);
-
-        Assertions
-            .assertEquals(
-                ContactsPropertiesProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-02-02T03:25:54Z"), response.iterator().next().reservationStartTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-29T22:28:15Z"), response.iterator().next().reservationEndTime());
-        Assertions.assertEquals("lyjpk", response.iterator().next().groundStationName());
-        Assertions.assertEquals("xknalaulppg", response.iterator().next().contactProfile().id());
+        Assertions.assertEquals(ContactsPropertiesProvisioningState.CANCELED,
+            response.iterator().next().provisioningState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T01:36:25Z"),
+            response.iterator().next().reservationStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T12:41:33Z"),
+            response.iterator().next().reservationEndTime());
+        Assertions.assertEquals("vfbgofeljagrqmqh", response.iterator().next().groundStationName());
+        Assertions.assertEquals("ueluqhhahhxvrhmz", response.iterator().next().contactProfile().id());
     }
 }

@@ -41,31 +41,36 @@ public final class ProvisionedClusterInstancesCreateOrUpdateSamples {
      */
     public static void putProvisionedClusterInstance(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.provisionedClusterInstances().createOrUpdate(
-            "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
-            new ProvisionedClusterInner()
-                .withProperties(new ProvisionedClusterProperties()
-                    .withLinuxProfile(new LinuxProfileProperties()
-                        .withSsh(new LinuxProfilePropertiesSsh().withPublicKeys(Arrays.asList(
-                            new LinuxProfilePropertiesSshPublicKeysItem().withKeyData("fakeTokenPlaceholder")))))
-                    .withControlPlane(new ControlPlaneProfile().withCount(1).withVmSize("Standard_A4_v2"))
-                    .withKubernetesVersion("v1.20.5")
-                    .withNetworkProfile(
-                        new NetworkProfile().withNetworkPolicy(NetworkPolicy.CALICO).withPodCidr("10.244.0.0/16"))
-                    .withClusterVMAccessProfile(
-                        new ClusterVMAccessProfile().withAuthorizedIpRanges("127.0.0.1,127.0.0.2"))
-                    .withAgentPoolProfiles(Arrays.asList(new NamedAgentPoolProfile().withOsType(OsType.LINUX)
-                        .withNodeLabels(mapOf("env", "dev", "goal", "test"))
-                        .withNodeTaints(Arrays.asList("env=prod:NoSchedule", "sku=gpu:NoSchedule")).withCount(1)
-                        .withVmSize("Standard_A4_v2").withName("default-nodepool-1")))
-                    .withCloudProviderProfile(new CloudProviderProfile().withInfraNetworkProfile(
-                        new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList(
-                            "/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.AzureStackHCI/logicalNetworks/test-vnet-static"))))
-                    .withLicenseProfile(new ProvisionedClusterLicenseProfile()
-                        .withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE)))
-                .withExtendedLocation(new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName(
-                    "/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation")),
-            com.azure.core.util.Context.NONE);
+        manager.provisionedClusterInstances()
+            .createOrUpdate(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                new ProvisionedClusterInner()
+                    .withProperties(new ProvisionedClusterProperties()
+                        .withLinuxProfile(new LinuxProfileProperties()
+                            .withSsh(new LinuxProfilePropertiesSsh().withPublicKeys(Arrays.asList(
+                                new LinuxProfilePropertiesSshPublicKeysItem().withKeyData("fakeTokenPlaceholder")))))
+                        .withControlPlane(new ControlPlaneProfile().withCount(1).withVmSize("Standard_A4_v2"))
+                        .withKubernetesVersion("v1.20.5")
+                        .withNetworkProfile(
+                            new NetworkProfile().withNetworkPolicy(NetworkPolicy.CALICO).withPodCidr("10.244.0.0/16"))
+                        .withClusterVMAccessProfile(
+                            new ClusterVMAccessProfile().withAuthorizedIpRanges("127.0.0.1,127.0.0.2"))
+                        .withAgentPoolProfiles(Arrays
+                            .asList(new NamedAgentPoolProfile().withOsType(OsType.LINUX)
+                                .withNodeLabels(mapOf("env", "dev", "goal", "test"))
+                                .withNodeTaints(Arrays.asList("env=prod:NoSchedule", "sku=gpu:NoSchedule"))
+                                .withCount(1)
+                                .withVmSize("Standard_A4_v2")
+                                .withName("default-nodepool-1")))
+                        .withCloudProviderProfile(new CloudProviderProfile().withInfraNetworkProfile(
+                            new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList(
+                                "/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourceGroups/test-arcappliance-resgrp/providers/Microsoft.AzureStackHCI/logicalNetworks/test-vnet-static"))))
+                        .withLicenseProfile(new ProvisionedClusterLicenseProfile()
+                            .withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE)))
+                    .withExtendedLocation(new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                        .withName(
+                            "/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -11,30 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationInner;
 import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigurationListResultInner;
 
-/** An instance of this class provides access to all the operations defined in SoftwareUpdateConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SoftwareUpdateConfigurationsClient.
+ */
 public interface SoftwareUpdateConfigurationsClient {
     /**
      * Create a new software update configuration with the name given in the URI.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
-     * @param parameters Request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return software update configuration properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareUpdateConfigurationInner create(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        SoftwareUpdateConfigurationInner parameters);
-
-    /**
-     * Create a new software update configuration with the name given in the URI.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
@@ -47,32 +30,29 @@ public interface SoftwareUpdateConfigurationsClient {
      * @return software update configuration properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SoftwareUpdateConfigurationInner> createWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        SoftwareUpdateConfigurationInner parameters,
-        String clientRequestId,
-        Context context);
+    Response<SoftwareUpdateConfigurationInner> createWithResponse(String resourceGroupName,
+        String automationAccountName, String softwareUpdateConfigurationName,
+        SoftwareUpdateConfigurationInner parameters, String clientRequestId, Context context);
 
     /**
-     * Get a single software update configuration by name.
-     *
+     * Create a new software update configuration with the name given in the URI.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
+     * @param parameters Request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software update configuration by name.
+     * @return software update configuration properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareUpdateConfigurationInner getByName(
-        String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
+    SoftwareUpdateConfigurationInner create(String resourceGroupName, String automationAccountName,
+        String softwareUpdateConfigurationName, SoftwareUpdateConfigurationInner parameters);
 
     /**
      * Get a single software update configuration by name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
@@ -84,29 +64,27 @@ public interface SoftwareUpdateConfigurationsClient {
      * @return a single software update configuration by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SoftwareUpdateConfigurationInner> getByNameWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        String clientRequestId,
-        Context context);
+    Response<SoftwareUpdateConfigurationInner> getByNameWithResponse(String resourceGroupName,
+        String automationAccountName, String softwareUpdateConfigurationName, String clientRequestId, Context context);
 
     /**
-     * delete a specific software update configuration.
-     *
+     * Get a single software update configuration by name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single software update configuration by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
+    SoftwareUpdateConfigurationInner getByName(String resourceGroupName, String automationAccountName,
+        String softwareUpdateConfigurationName);
 
     /**
      * delete a specific software update configuration.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
@@ -118,29 +96,25 @@ public interface SoftwareUpdateConfigurationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String softwareUpdateConfigurationName,
-        String clientRequestId,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String softwareUpdateConfigurationName, String clientRequestId, Context context);
 
     /**
-     * Get all software update configurations for the account.
-     *
+     * delete a specific software update configuration.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
+     * @param softwareUpdateConfigurationName The name of the software update configuration to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all software update configurations for the account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SoftwareUpdateConfigurationListResultInner list(String resourceGroupName, String automationAccountName);
+    void delete(String resourceGroupName, String automationAccountName, String softwareUpdateConfigurationName);
 
     /**
      * Get all software update configurations for the account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param clientRequestId Identifies this specific client request.
@@ -152,6 +126,19 @@ public interface SoftwareUpdateConfigurationsClient {
      * @return all software update configurations for the account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SoftwareUpdateConfigurationListResultInner> listWithResponse(
-        String resourceGroupName, String automationAccountName, String clientRequestId, String filter, Context context);
+    Response<SoftwareUpdateConfigurationListResultInner> listWithResponse(String resourceGroupName,
+        String automationAccountName, String clientRequestId, String filter, Context context);
+
+    /**
+     * Get all software update configurations for the account.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all software update configurations for the account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SoftwareUpdateConfigurationListResultInner list(String resourceGroupName, String automationAccountName);
 }

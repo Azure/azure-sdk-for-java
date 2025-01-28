@@ -16,15 +16,14 @@ class DdosProtectionPlanImpl
     extends GroupableResourceImpl<DdosProtectionPlan, DdosProtectionPlanInner, DdosProtectionPlanImpl, NetworkManager>
     implements DdosProtectionPlan, DdosProtectionPlan.Definition, DdosProtectionPlan.Update {
 
-    DdosProtectionPlanImpl(
-        final String name, final DdosProtectionPlanInner innerModel, final NetworkManager networkManager) {
+    DdosProtectionPlanImpl(final String name, final DdosProtectionPlanInner innerModel,
+        final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
     @Override
     protected Mono<DdosProtectionPlanInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDdosProtectionPlans()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -32,8 +31,7 @@ class DdosProtectionPlanImpl
 
     @Override
     public Mono<DdosProtectionPlan> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDdosProtectionPlans()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())

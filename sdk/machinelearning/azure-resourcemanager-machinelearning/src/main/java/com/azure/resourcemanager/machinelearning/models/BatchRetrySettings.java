@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Retry settings for a batch inference operation. */
+/**
+ * Retry settings for a batch inference operation.
+ */
 @Fluent
-public final class BatchRetrySettings {
+public final class BatchRetrySettings implements JsonSerializable<BatchRetrySettings> {
     /*
      * Maximum retry count for a mini-batch
      */
-    @JsonProperty(value = "maxRetries")
     private Integer maxRetries;
 
     /*
      * Invocation timeout for a mini-batch, in ISO 8601 format.
      */
-    @JsonProperty(value = "timeout")
     private Duration timeout;
 
-    /** Creates an instance of BatchRetrySettings class. */
+    /**
+     * Creates an instance of BatchRetrySettings class.
+     */
     public BatchRetrySettings() {
     }
 
     /**
      * Get the maxRetries property: Maximum retry count for a mini-batch.
-     *
+     * 
      * @return the maxRetries value.
      */
     public Integer maxRetries() {
@@ -38,7 +45,7 @@ public final class BatchRetrySettings {
 
     /**
      * Set the maxRetries property: Maximum retry count for a mini-batch.
-     *
+     * 
      * @param maxRetries the maxRetries value to set.
      * @return the BatchRetrySettings object itself.
      */
@@ -49,7 +56,7 @@ public final class BatchRetrySettings {
 
     /**
      * Get the timeout property: Invocation timeout for a mini-batch, in ISO 8601 format.
-     *
+     * 
      * @return the timeout value.
      */
     public Duration timeout() {
@@ -58,7 +65,7 @@ public final class BatchRetrySettings {
 
     /**
      * Set the timeout property: Invocation timeout for a mini-batch, in ISO 8601 format.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the BatchRetrySettings object itself.
      */
@@ -69,9 +76,49 @@ public final class BatchRetrySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxRetries", this.maxRetries);
+        jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchRetrySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchRetrySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchRetrySettings.
+     */
+    public static BatchRetrySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchRetrySettings deserializedBatchRetrySettings = new BatchRetrySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxRetries".equals(fieldName)) {
+                    deserializedBatchRetrySettings.maxRetries = reader.getNullable(JsonReader::getInt);
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedBatchRetrySettings.timeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchRetrySettings;
+        });
     }
 }

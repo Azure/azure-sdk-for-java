@@ -14,34 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class PeriodicTimerEventTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeriodicTimerEventTrigger model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"PeriodicTimerEvent\",\"properties\":{\"sourceInfo\":{\"startTime\":\"2021-05-03T02:40:47Z\",\"schedule\":\"w\",\"topic\":\"ggicccnxqhue\"},\"sinkInfo\":{\"roleId\":\"mkttlstvlzywem\"},\"customContextTag\":\"rncsdtclu\"},\"id\":\"iypbsfgytgusl\",\"name\":\"eadcygqukyhejhz\",\"type\":\"sx\"}")
-                .toObject(PeriodicTimerEventTrigger.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T02:40:47Z"), model.sourceInfo().startTime());
-        Assertions.assertEquals("w", model.sourceInfo().schedule());
-        Assertions.assertEquals("ggicccnxqhue", model.sourceInfo().topic());
-        Assertions.assertEquals("mkttlstvlzywem", model.sinkInfo().roleId());
-        Assertions.assertEquals("rncsdtclu", model.customContextTag());
+        PeriodicTimerEventTrigger model = BinaryData.fromString(
+            "{\"kind\":\"PeriodicTimerEvent\",\"properties\":{\"sourceInfo\":{\"startTime\":\"2021-03-25T05:44:29Z\",\"schedule\":\"sybbqwr\",\"topic\":\"ldgmfpgvmpip\"},\"sinkInfo\":{\"roleId\":\"slthaq\"},\"customContextTag\":\"ss\"},\"id\":\"wutwbdsre\",\"name\":\"pdrhne\",\"type\":\"yowqkdwytisibir\"}")
+            .toObject(PeriodicTimerEventTrigger.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T05:44:29Z"), model.sourceInfo().startTime());
+        Assertions.assertEquals("sybbqwr", model.sourceInfo().schedule());
+        Assertions.assertEquals("ldgmfpgvmpip", model.sourceInfo().topic());
+        Assertions.assertEquals("slthaq", model.sinkInfo().roleId());
+        Assertions.assertEquals("ss", model.customContextTag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeriodicTimerEventTrigger model =
-            new PeriodicTimerEventTrigger()
-                .withSourceInfo(
-                    new PeriodicTimerSourceInfo()
-                        .withStartTime(OffsetDateTime.parse("2021-05-03T02:40:47Z"))
-                        .withSchedule("w")
-                        .withTopic("ggicccnxqhue"))
-                .withSinkInfo(new RoleSinkInfo().withRoleId("mkttlstvlzywem"))
-                .withCustomContextTag("rncsdtclu");
+        PeriodicTimerEventTrigger model = new PeriodicTimerEventTrigger()
+            .withSourceInfo(new PeriodicTimerSourceInfo().withStartTime(OffsetDateTime.parse("2021-03-25T05:44:29Z"))
+                .withSchedule("sybbqwr")
+                .withTopic("ldgmfpgvmpip"))
+            .withSinkInfo(new RoleSinkInfo().withRoleId("slthaq"))
+            .withCustomContextTag("ss");
         model = BinaryData.fromObject(model).toObject(PeriodicTimerEventTrigger.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T02:40:47Z"), model.sourceInfo().startTime());
-        Assertions.assertEquals("w", model.sourceInfo().schedule());
-        Assertions.assertEquals("ggicccnxqhue", model.sourceInfo().topic());
-        Assertions.assertEquals("mkttlstvlzywem", model.sinkInfo().roleId());
-        Assertions.assertEquals("rncsdtclu", model.customContextTag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-25T05:44:29Z"), model.sourceInfo().startTime());
+        Assertions.assertEquals("sybbqwr", model.sourceInfo().schedule());
+        Assertions.assertEquals("ldgmfpgvmpip", model.sourceInfo().topic());
+        Assertions.assertEquals("slthaq", model.sinkInfo().roleId());
+        Assertions.assertEquals("ss", model.customContextTag());
     }
 }

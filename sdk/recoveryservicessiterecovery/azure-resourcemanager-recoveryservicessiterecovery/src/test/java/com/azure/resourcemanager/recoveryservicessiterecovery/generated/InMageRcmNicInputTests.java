@@ -25,9 +25,13 @@ public final class InMageRcmNicInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmNicInput model = new InMageRcmNicInput().withNicId("urz").withIsPrimaryNic("vktjhffecqkoq")
-            .withIsSelectedForFailover("uergaghpuzxkpye").withTargetSubnetName("fdyldhgyed")
-            .withTargetStaticIpAddress("zqiyuqhtder").withTestSubnetName("n").withTestStaticIpAddress("a");
+        InMageRcmNicInput model = new InMageRcmNicInput().withNicId("urz")
+            .withIsPrimaryNic("vktjhffecqkoq")
+            .withIsSelectedForFailover("uergaghpuzxkpye")
+            .withTargetSubnetName("fdyldhgyed")
+            .withTargetStaticIpAddress("zqiyuqhtder")
+            .withTestSubnetName("n")
+            .withTestStaticIpAddress("a");
         model = BinaryData.fromObject(model).toObject(InMageRcmNicInput.class);
         Assertions.assertEquals("urz", model.nicId());
         Assertions.assertEquals("vktjhffecqkoq", model.isPrimaryNic());

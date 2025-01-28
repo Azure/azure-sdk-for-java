@@ -3,7 +3,6 @@
 
 package com.azure.identity.extensions.implementation.token;
 
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
@@ -18,7 +17,7 @@ public class AccessTokenResolverOptions {
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenResolverOptions.class);
     private static final Map<String, String> OSS_RDBMS_SCOPE_MAP = new HashMap<String, String>() {
         {
-            put(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,  "https://ossrdbms-aad.database.windows.net/.default");
+            put(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, "https://ossrdbms-aad.database.windows.net/.default");
             put(AzureAuthorityHosts.AZURE_CHINA, "https://ossrdbms-aad.database.chinacloudapi.cn/.default");
             put(AzureAuthorityHosts.AZURE_GERMANY, "https://ossrdbms-aad.database.cloudapi.de/.default");
             put(AzureAuthorityHosts.AZURE_GOVERNMENT, "https://ossrdbms-aad.database.usgovcloudapi.net/.default");

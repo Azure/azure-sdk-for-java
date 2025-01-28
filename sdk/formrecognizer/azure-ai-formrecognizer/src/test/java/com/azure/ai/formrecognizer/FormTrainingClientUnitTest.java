@@ -10,8 +10,10 @@ import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientBuilderTest.TEST_FILE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
@@ -32,9 +34,10 @@ public class FormTrainingClientUnitTest {
 
     @BeforeAll
     protected static void beforeTest() {
-        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
-            .endpoint(VALID_HTTPS_LOCALHOST)
-            .credential(new AzureKeyCredential("fakeKey"));
+        FormTrainingClientBuilder builder
+            = new FormTrainingClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .endpoint(VALID_HTTPS_LOCALHOST)
+                .credential(new AzureKeyCredential("fakeKey"));
 
         client = builder.buildClient();
         asyncClient = builder.buildAsyncClient();
@@ -45,10 +48,9 @@ public class FormTrainingClientUnitTest {
      */
     @SyncAsyncTest
     public void getCustomModelInvalidModelId() {
-        IllegalArgumentException throwable =
-            assertThrows(IllegalArgumentException.class, () ->
-                SyncAsyncExtension.execute(() -> client.getCustomModel(INVALID_MODEL_ID),
-                    () -> asyncClient.getCustomModel(INVALID_MODEL_ID)));
+        IllegalArgumentException throwable = assertThrows(IllegalArgumentException.class,
+            () -> SyncAsyncExtension.execute(() -> client.getCustomModel(INVALID_MODEL_ID),
+                () -> asyncClient.getCustomModel(INVALID_MODEL_ID)));
         assertEquals(throwable.getMessage(), INVALID_MODEL_ID_ERROR);
     }
 
@@ -57,10 +59,8 @@ public class FormTrainingClientUnitTest {
      */
     @SyncAsyncTest
     public void deleteModelInvalidModelId() {
-        IllegalArgumentException throwable =
-            assertThrows(IllegalArgumentException.class, () ->
-                SyncAsyncExtension.execute(() -> client.deleteModel(INVALID_MODEL_ID),
-                    () -> asyncClient.deleteModel(INVALID_MODEL_ID)));
+        IllegalArgumentException throwable = assertThrows(IllegalArgumentException.class, () -> SyncAsyncExtension
+            .execute(() -> client.deleteModel(INVALID_MODEL_ID), () -> asyncClient.deleteModel(INVALID_MODEL_ID)));
         assertEquals(throwable.getMessage(), INVALID_MODEL_ID_ERROR);
     }
 
@@ -69,9 +69,8 @@ public class FormTrainingClientUnitTest {
      */
     @SyncAsyncTest
     public void getCustomModelNullModelId() {
-        assertThrows(IllegalArgumentException.class, () ->
-            SyncAsyncExtension.execute(() -> client.getCustomModel(null),
-                () -> asyncClient.getCustomModel(null)));
+        assertThrows(IllegalArgumentException.class, () -> SyncAsyncExtension.execute(() -> client.getCustomModel(null),
+            () -> asyncClient.getCustomModel(null)));
     }
 
     /**
@@ -79,10 +78,10 @@ public class FormTrainingClientUnitTest {
      */
     @Test
     public void beginTrainingNullInput() {
-        NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> asyncClient.beginTraining(null, false,
-                new TrainingOptions().setPollInterval(ONE_NANO_DURATION)).getSyncPoller().getFinalResult());
+        NullPointerException thrown = assertThrows(NullPointerException.class,
+            () -> asyncClient.beginTraining(null, false, new TrainingOptions().setPollInterval(ONE_NANO_DURATION))
+                .getSyncPoller()
+                .getFinalResult());
 
         assertEquals(NULL_SOURCE_URL_ERROR, thrown.getMessage());
     }
@@ -92,20 +91,17 @@ public class FormTrainingClientUnitTest {
      */
     @Test
     public void beginTrainingNullInputSync() {
-        Exception exception = assertThrows(NullPointerException.class, () ->
-            client.beginTraining(null, false));
+        Exception exception = assertThrows(NullPointerException.class, () -> client.beginTraining(null, false));
         assertEquals(NULL_SOURCE_URL_ERROR, exception.getMessage());
     }
-
 
     /**
      * Test for invalid endpoint.
      */
     @Test
     public void trainingClientBuilderInvalidEndpoint() {
-        assertThrows(RuntimeException.class, () -> client
-            .getFormRecognizerClient()
-            .beginRecognizeContentFromUrl(TEST_FILE).getFinalResult());
+        assertThrows(RuntimeException.class,
+            () -> client.getFormRecognizerClient().beginRecognizeContentFromUrl(TEST_FILE).getFinalResult());
     }
 
 }

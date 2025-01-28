@@ -34,7 +34,9 @@ public final class DocumentKeyValueElementHelper {
      */
     public interface DocumentKeyValueElementAccessor {
         void setContent(DocumentKeyValueElement documentKeyValueElement, String content);
+
         void setBoundingRegions(DocumentKeyValueElement documentKeyValueElement, List<BoundingRegion> boundingRegions);
+
         void setSpans(DocumentKeyValueElement documentKeyValueElement, List<DocumentSpan> spans);
 
     }
@@ -43,7 +45,8 @@ public final class DocumentKeyValueElementHelper {
         accessor.setContent(documentKeyValueElement, content);
     }
 
-    static void setBoundingRegions(DocumentKeyValueElement documentKeyValueElement, List<BoundingRegion> boundingRegions) {
+    static void setBoundingRegions(DocumentKeyValueElement documentKeyValueElement,
+        List<BoundingRegion> boundingRegions) {
         accessor.setBoundingRegions(documentKeyValueElement, boundingRegions);
     }
 

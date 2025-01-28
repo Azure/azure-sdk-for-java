@@ -5,111 +5,176 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Appliance’s health and state of connection to on-prem. */
+/**
+ * Appliance’s health and state of connection to on-prem.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value WaitingForHeartbeat for Status. */
+    /**
+     * Static value WaitingForHeartbeat for Status.
+     */
     public static final Status WAITING_FOR_HEARTBEAT = fromString("WaitingForHeartbeat");
 
-    /** Static value Validating for Status. */
+    /**
+     * Static value Validating for Status.
+     */
     public static final Status VALIDATING = fromString("Validating");
 
-    /** Static value Connecting for Status. */
+    /**
+     * Static value Connecting for Status.
+     */
     public static final Status CONNECTING = fromString("Connecting");
 
-    /** Static value Connected for Status. */
+    /**
+     * Static value Connected for Status.
+     */
     public static final Status CONNECTED = fromString("Connected");
 
-    /** Static value Running for Status. */
+    /**
+     * Static value Running for Status.
+     */
     public static final Status RUNNING = fromString("Running");
 
-    /** Static value PreparingForUpgrade for Status. */
+    /**
+     * Static value PreparingForUpgrade for Status.
+     */
     public static final Status PREPARING_FOR_UPGRADE = fromString("PreparingForUpgrade");
 
-    /** Static value ETCDSnapshotFailed for Status. */
+    /**
+     * Static value ETCDSnapshotFailed for Status.
+     */
     public static final Status ETCDSNAPSHOT_FAILED = fromString("ETCDSnapshotFailed");
 
-    /** Static value UpgradePrerequisitesCompleted for Status. */
+    /**
+     * Static value UpgradePrerequisitesCompleted for Status.
+     */
     public static final Status UPGRADE_PREREQUISITES_COMPLETED = fromString("UpgradePrerequisitesCompleted");
 
-    /** Static value ValidatingSFSConnectivity for Status. */
+    /**
+     * Static value ValidatingSFSConnectivity for Status.
+     */
     public static final Status VALIDATING_SFSCONNECTIVITY = fromString("ValidatingSFSConnectivity");
 
-    /** Static value ValidatingImageDownload for Status. */
+    /**
+     * Static value ValidatingImageDownload for Status.
+     */
     public static final Status VALIDATING_IMAGE_DOWNLOAD = fromString("ValidatingImageDownload");
 
-    /** Static value ValidatingImageUpload for Status. */
+    /**
+     * Static value ValidatingImageUpload for Status.
+     */
     public static final Status VALIDATING_IMAGE_UPLOAD = fromString("ValidatingImageUpload");
 
-    /** Static value ValidatingETCDHealth for Status. */
+    /**
+     * Static value ValidatingETCDHealth for Status.
+     */
     public static final Status VALIDATING_ETCDHEALTH = fromString("ValidatingETCDHealth");
 
-    /** Static value PreUpgrade for Status. */
+    /**
+     * Static value PreUpgrade for Status.
+     */
     public static final Status PRE_UPGRADE = fromString("PreUpgrade");
 
-    /** Static value UpgradingKVAIO for Status. */
+    /**
+     * Static value UpgradingKVAIO for Status.
+     */
     public static final Status UPGRADING_KVAIO = fromString("UpgradingKVAIO");
 
-    /** Static value WaitingForKVAIO for Status. */
+    /**
+     * Static value WaitingForKVAIO for Status.
+     */
     public static final Status WAITING_FOR_KVAIO = fromString("WaitingForKVAIO");
 
-    /** Static value ImagePending for Status. */
+    /**
+     * Static value ImagePending for Status.
+     */
     public static final Status IMAGE_PENDING = fromString("ImagePending");
 
-    /** Static value ImageProvisioning for Status. */
+    /**
+     * Static value ImageProvisioning for Status.
+     */
     public static final Status IMAGE_PROVISIONING = fromString("ImageProvisioning");
 
-    /** Static value ImageProvisioned for Status. */
+    /**
+     * Static value ImageProvisioned for Status.
+     */
     public static final Status IMAGE_PROVISIONED = fromString("ImageProvisioned");
 
-    /** Static value ImageDownloading for Status. */
+    /**
+     * Static value ImageDownloading for Status.
+     */
     public static final Status IMAGE_DOWNLOADING = fromString("ImageDownloading");
 
-    /** Static value ImageDownloaded for Status. */
+    /**
+     * Static value ImageDownloaded for Status.
+     */
     public static final Status IMAGE_DOWNLOADED = fromString("ImageDownloaded");
 
-    /** Static value ImageDeprovisioning for Status. */
+    /**
+     * Static value ImageDeprovisioning for Status.
+     */
     public static final Status IMAGE_DEPROVISIONING = fromString("ImageDeprovisioning");
 
-    /** Static value ImageUnknown for Status. */
+    /**
+     * Static value ImageUnknown for Status.
+     */
     public static final Status IMAGE_UNKNOWN = fromString("ImageUnknown");
 
-    /** Static value UpdatingCloudOperator for Status. */
+    /**
+     * Static value UpdatingCloudOperator for Status.
+     */
     public static final Status UPDATING_CLOUD_OPERATOR = fromString("UpdatingCloudOperator");
 
-    /** Static value WaitingForCloudOperator for Status. */
+    /**
+     * Static value WaitingForCloudOperator for Status.
+     */
     public static final Status WAITING_FOR_CLOUD_OPERATOR = fromString("WaitingForCloudOperator");
 
-    /** Static value UpdatingCAPI for Status. */
+    /**
+     * Static value UpdatingCAPI for Status.
+     */
     public static final Status UPDATING_CAPI = fromString("UpdatingCAPI");
 
-    /** Static value UpdatingCluster for Status. */
+    /**
+     * Static value UpdatingCluster for Status.
+     */
     public static final Status UPDATING_CLUSTER = fromString("UpdatingCluster");
 
-    /** Static value PostUpgrade for Status. */
+    /**
+     * Static value PostUpgrade for Status.
+     */
     public static final Status POST_UPGRADE = fromString("PostUpgrade");
 
-    /** Static value UpgradeComplete for Status. */
+    /**
+     * Static value UpgradeComplete for Status.
+     */
     public static final Status UPGRADE_COMPLETE = fromString("UpgradeComplete");
 
-    /** Static value UpgradeClusterExtensionFailedToDelete for Status. */
-    public static final Status UPGRADE_CLUSTER_EXTENSION_FAILED_TO_DELETE =
-        fromString("UpgradeClusterExtensionFailedToDelete");
+    /**
+     * Static value UpgradeClusterExtensionFailedToDelete for Status.
+     */
+    public static final Status UPGRADE_CLUSTER_EXTENSION_FAILED_TO_DELETE
+        = fromString("UpgradeClusterExtensionFailedToDelete");
 
-    /** Static value UpgradeFailed for Status. */
+    /**
+     * Static value UpgradeFailed for Status.
+     */
     public static final Status UPGRADE_FAILED = fromString("UpgradeFailed");
 
-    /** Static value Offline for Status. */
+    /**
+     * Static value Offline for Status.
+     */
     public static final Status OFFLINE = fromString("Offline");
 
-    /** Static value None for Status. */
+    /**
+     * Static value None for Status.
+     */
     public static final Status NONE = fromString("None");
 
     /**
      * Creates a new instance of Status value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -118,18 +183,17 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
-    @JsonCreator
     public static Status fromString(String name) {
         return fromString(name, Status.class);
     }
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

@@ -55,7 +55,7 @@ public class TransferToParticipantCallOptions {
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 
@@ -73,7 +73,7 @@ public class TransferToParticipantCallOptions {
      *
      * @return the userToUserInformation
      */
-    public String  getUserToUserInformation() {
+    public String getUserToUserInformation() {
         return userToUserInformation;
     }
 

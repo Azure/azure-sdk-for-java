@@ -12,9 +12,6 @@ parameters:
   - name: ArtifactName
     type: string
     default: 'not-specified'
-  - name: TargetDocRepoName
-    type: string
-    default: ''
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
@@ -260,8 +257,8 @@ stages:
                           - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
                             - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                       WorkingDirectory: $(System.DefaultWorkingDirectory)
-                      TargetDocRepoOwner: 'Azure'
-                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      TargetDocRepoOwner: $(DocRepoOwner)
+                      TargetDocRepoName: $(DocRepoName)
                       Language: 'java'
                       SparseCheckoutPaths:
                         - docs-ref-services/
@@ -296,8 +293,5 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
                           FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
-                          BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                          # we override the regular script path because we have cloned the build tools repo as a separate artifact.
-                          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'

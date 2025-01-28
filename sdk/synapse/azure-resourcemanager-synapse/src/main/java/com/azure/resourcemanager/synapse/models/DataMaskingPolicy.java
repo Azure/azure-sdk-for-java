@@ -8,53 +8,55 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingPolicyInner;
 
-/** An immutable client-side representation of DataMaskingPolicy. */
+/**
+ * An immutable client-side representation of DataMaskingPolicy.
+ */
 public interface DataMaskingPolicy {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The location of the data masking policy.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the kind property: The kind of data masking policy. Metadata, used for Azure portal.
-     *
+     * 
      * @return the kind value.
      */
     String kind();
 
     /**
      * Gets the managedBy property: Fully qualified resource ID of the sql pool.
-     *
+     * 
      * @return the managedBy value.
      */
     String managedBy();
 
     /**
      * Gets the dataMaskingState property: The state of the data masking policy.
-     *
+     * 
      * @return the dataMaskingState value.
      */
     DataMaskingState dataMaskingState();
@@ -63,7 +65,7 @@ public interface DataMaskingPolicy {
      * Gets the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
      * database users for which the data masking policy does not apply. The specified users receive data results without
      * masking for all of the database queries.
-     *
+     * 
      * @return the exemptPrincipals value.
      */
     String exemptPrincipals();
@@ -71,60 +73,70 @@ public interface DataMaskingPolicy {
     /**
      * Gets the applicationPrincipals property: The list of the application principals. This is a legacy parameter and
      * is no longer used.
-     *
+     * 
      * @return the applicationPrincipals value.
      */
     String applicationPrincipals();
 
     /**
      * Gets the maskingLevel property: The masking level. This is a legacy parameter and is no longer used.
-     *
+     * 
      * @return the maskingLevel value.
      */
     String maskingLevel();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.DataMaskingPolicyInner object.
-     *
+     * 
      * @return the inner object.
      */
     DataMaskingPolicyInner innerModel();
 
-    /** The entirety of the DataMaskingPolicy definition. */
+    /**
+     * The entirety of the DataMaskingPolicy definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The DataMaskingPolicy definition stages. */
+
+    /**
+     * The DataMaskingPolicy definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DataMaskingPolicy definition. */
+        /**
+         * The first stage of the DataMaskingPolicy definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the DataMaskingPolicy definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the DataMaskingPolicy definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName, sqlPoolName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName The name of the workspace.
              * @param sqlPoolName SQL pool name.
@@ -132,6 +144,7 @@ public interface DataMaskingPolicy {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the DataMaskingPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -139,105 +152,123 @@ public interface DataMaskingPolicy {
         interface WithCreate extends DefinitionStages.WithDataMaskingState, DefinitionStages.WithExemptPrincipals {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DataMaskingPolicy create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DataMaskingPolicy create(Context context);
         }
-        /** The stage of the DataMaskingPolicy definition allowing to specify dataMaskingState. */
+
+        /**
+         * The stage of the DataMaskingPolicy definition allowing to specify dataMaskingState.
+         */
         interface WithDataMaskingState {
             /**
              * Specifies the dataMaskingState property: The state of the data masking policy..
-             *
+             * 
              * @param dataMaskingState The state of the data masking policy.
              * @return the next definition stage.
              */
             WithCreate withDataMaskingState(DataMaskingState dataMaskingState);
         }
-        /** The stage of the DataMaskingPolicy definition allowing to specify exemptPrincipals. */
+
+        /**
+         * The stage of the DataMaskingPolicy definition allowing to specify exemptPrincipals.
+         */
         interface WithExemptPrincipals {
             /**
              * Specifies the exemptPrincipals property: The list of the exempt principals. Specifies the
              * semicolon-separated list of database users for which the data masking policy does not apply. The
              * specified users receive data results without masking for all of the database queries..
-             *
+             * 
              * @param exemptPrincipals The list of the exempt principals. Specifies the semicolon-separated list of
-             *     database users for which the data masking policy does not apply. The specified users receive data
-             *     results without masking for all of the database queries.
+             * database users for which the data masking policy does not apply. The specified users receive data results
+             * without masking for all of the database queries.
              * @return the next definition stage.
              */
             WithCreate withExemptPrincipals(String exemptPrincipals);
         }
     }
+
     /**
      * Begins update for the DataMaskingPolicy resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DataMaskingPolicy.Update update();
 
-    /** The template for DataMaskingPolicy update. */
+    /**
+     * The template for DataMaskingPolicy update.
+     */
     interface Update extends UpdateStages.WithDataMaskingState, UpdateStages.WithExemptPrincipals {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DataMaskingPolicy apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DataMaskingPolicy apply(Context context);
     }
-    /** The DataMaskingPolicy update stages. */
+
+    /**
+     * The DataMaskingPolicy update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DataMaskingPolicy update allowing to specify dataMaskingState. */
+        /**
+         * The stage of the DataMaskingPolicy update allowing to specify dataMaskingState.
+         */
         interface WithDataMaskingState {
             /**
              * Specifies the dataMaskingState property: The state of the data masking policy..
-             *
+             * 
              * @param dataMaskingState The state of the data masking policy.
              * @return the next definition stage.
              */
             Update withDataMaskingState(DataMaskingState dataMaskingState);
         }
-        /** The stage of the DataMaskingPolicy update allowing to specify exemptPrincipals. */
+
+        /**
+         * The stage of the DataMaskingPolicy update allowing to specify exemptPrincipals.
+         */
         interface WithExemptPrincipals {
             /**
              * Specifies the exemptPrincipals property: The list of the exempt principals. Specifies the
              * semicolon-separated list of database users for which the data masking policy does not apply. The
              * specified users receive data results without masking for all of the database queries..
-             *
+             * 
              * @param exemptPrincipals The list of the exempt principals. Specifies the semicolon-separated list of
-             *     database users for which the data masking policy does not apply. The specified users receive data
-             *     results without masking for all of the database queries.
+             * database users for which the data masking policy does not apply. The specified users receive data results
+             * without masking for all of the database queries.
              * @return the next definition stage.
              */
             Update withExemptPrincipals(String exemptPrincipals);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DataMaskingPolicy refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

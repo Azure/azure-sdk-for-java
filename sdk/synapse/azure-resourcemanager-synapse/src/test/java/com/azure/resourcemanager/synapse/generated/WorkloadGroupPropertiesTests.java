@@ -11,35 +11,31 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"minResourcePercent\":1527085818,\"maxResourcePercent\":1296747978,\"minResourcePercentPerRequest\":84.31488864287606,\"maxResourcePercentPerRequest\":21.38076853827919,\"importance\":\"yo\",\"queryExecutionTimeout\":853520386}")
-                .toObject(WorkloadGroupProperties.class);
-        Assertions.assertEquals(1527085818, model.minResourcePercent());
-        Assertions.assertEquals(1296747978, model.maxResourcePercent());
-        Assertions.assertEquals(84.31488864287606, model.minResourcePercentPerRequest());
-        Assertions.assertEquals(21.38076853827919D, model.maxResourcePercentPerRequest());
-        Assertions.assertEquals("yo", model.importance());
-        Assertions.assertEquals(853520386, model.queryExecutionTimeout());
+        WorkloadGroupProperties model = BinaryData.fromString(
+            "{\"minResourcePercent\":1981390532,\"maxResourcePercent\":29183092,\"minResourcePercentPerRequest\":59.62316253580416,\"maxResourcePercentPerRequest\":73.38620327467183,\"importance\":\"kzebrqbsm\",\"queryExecutionTimeout\":1700673148}")
+            .toObject(WorkloadGroupProperties.class);
+        Assertions.assertEquals(1981390532, model.minResourcePercent());
+        Assertions.assertEquals(29183092, model.maxResourcePercent());
+        Assertions.assertEquals(59.62316253580416, model.minResourcePercentPerRequest());
+        Assertions.assertEquals(73.38620327467183D, model.maxResourcePercentPerRequest());
+        Assertions.assertEquals("kzebrqbsm", model.importance());
+        Assertions.assertEquals(1700673148, model.queryExecutionTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadGroupProperties model =
-            new WorkloadGroupProperties()
-                .withMinResourcePercent(1527085818)
-                .withMaxResourcePercent(1296747978)
-                .withMinResourcePercentPerRequest(84.31488864287606)
-                .withMaxResourcePercentPerRequest(21.38076853827919D)
-                .withImportance("yo")
-                .withQueryExecutionTimeout(853520386);
+        WorkloadGroupProperties model = new WorkloadGroupProperties().withMinResourcePercent(1981390532)
+            .withMaxResourcePercent(29183092)
+            .withMinResourcePercentPerRequest(59.62316253580416)
+            .withMaxResourcePercentPerRequest(73.38620327467183D)
+            .withImportance("kzebrqbsm")
+            .withQueryExecutionTimeout(1700673148);
         model = BinaryData.fromObject(model).toObject(WorkloadGroupProperties.class);
-        Assertions.assertEquals(1527085818, model.minResourcePercent());
-        Assertions.assertEquals(1296747978, model.maxResourcePercent());
-        Assertions.assertEquals(84.31488864287606, model.minResourcePercentPerRequest());
-        Assertions.assertEquals(21.38076853827919D, model.maxResourcePercentPerRequest());
-        Assertions.assertEquals("yo", model.importance());
-        Assertions.assertEquals(853520386, model.queryExecutionTimeout());
+        Assertions.assertEquals(1981390532, model.minResourcePercent());
+        Assertions.assertEquals(29183092, model.maxResourcePercent());
+        Assertions.assertEquals(59.62316253580416, model.minResourcePercentPerRequest());
+        Assertions.assertEquals(73.38620327467183D, model.maxResourcePercentPerRequest());
+        Assertions.assertEquals("kzebrqbsm", model.importance());
+        Assertions.assertEquals(1700673148, model.queryExecutionTimeout());
     }
 }

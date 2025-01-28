@@ -6,7 +6,9 @@ package com.azure.resourcemanager.postgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresql.models.InfrastructureEncryption;
 import com.azure.resourcemanager.postgresql.models.MinimalTlsVersionEnum;
 import com.azure.resourcemanager.postgresql.models.PublicNetworkAccessEnum;
@@ -17,38 +19,55 @@ import com.azure.resourcemanager.postgresql.models.ServerVersion;
 import com.azure.resourcemanager.postgresql.models.Sku;
 import com.azure.resourcemanager.postgresql.models.SslEnforcementEnum;
 import com.azure.resourcemanager.postgresql.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Represents a server. */
+/**
+ * Represents a server.
+ */
 @Fluent
 public final class ServerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
-
     /*
      * The Azure Active Directory identity of the server.
      */
-    @JsonProperty(value = "identity")
     private ResourceIdentity identity;
 
     /*
      * The SKU (pricing tier) of the server.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Properties of the server.
      */
-    @JsonProperty(value = "properties")
     private ServerProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ServerInner class.
+     */
+    public ServerInner() {
+    }
 
     /**
      * Get the identity property: The Azure Active Directory identity of the server.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -57,7 +76,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the identity property: The Azure Active Directory identity of the server.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
      */
@@ -68,7 +87,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -77,7 +96,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServerInner object itself.
      */
@@ -88,21 +107,55 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the server.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -112,7 +165,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
      * server is being created (and is required for creation).
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -122,7 +175,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
      * server is being created (and is required for creation).
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerInner object itself.
      */
@@ -136,7 +189,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the version property: Server version.
-     *
+     * 
      * @return the version value.
      */
     public ServerVersion version() {
@@ -145,7 +198,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the version property: Server version.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerInner object itself.
      */
@@ -159,7 +212,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
@@ -168,7 +221,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @param sslEnforcement the sslEnforcement value to set.
      * @return the ServerInner object itself.
      */
@@ -182,7 +235,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
@@ -191,7 +244,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerInner object itself.
      */
@@ -206,7 +259,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the byokEnforcement property: Status showing whether the server data encryption is enabled with
      * customer-managed keys.
-     *
+     * 
      * @return the byokEnforcement value.
      */
     public String byokEnforcement() {
@@ -215,7 +268,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
-     *
+     * 
      * @return the infrastructureEncryption value.
      */
     public InfrastructureEncryption infrastructureEncryption() {
@@ -224,7 +277,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
-     *
+     * 
      * @param infrastructureEncryption the infrastructureEncryption value to set.
      * @return the ServerInner object itself.
      */
@@ -238,7 +291,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the userVisibleState property: A state of a server that is visible to user.
-     *
+     * 
      * @return the userVisibleState value.
      */
     public ServerState userVisibleState() {
@@ -247,7 +300,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the userVisibleState property: A state of a server that is visible to user.
-     *
+     * 
      * @param userVisibleState the userVisibleState value to set.
      * @return the ServerInner object itself.
      */
@@ -261,7 +314,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -270,7 +323,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set.
      * @return the ServerInner object itself.
      */
@@ -284,7 +337,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -293,7 +346,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
-     *
+     * 
      * @param earliestRestoreDate the earliestRestoreDate value to set.
      * @return the ServerInner object itself.
      */
@@ -307,7 +360,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -316,7 +369,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ServerInner object itself.
      */
@@ -330,7 +383,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the replicationRole property: The replication role of the server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public String replicationRole() {
@@ -339,7 +392,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the replicationRole property: The replication role of the server.
-     *
+     * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerInner object itself.
      */
@@ -353,7 +406,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the masterServerId property: The master server id of a replica server.
-     *
+     * 
      * @return the masterServerId value.
      */
     public String masterServerId() {
@@ -362,7 +415,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the masterServerId property: The master server id of a replica server.
-     *
+     * 
      * @param masterServerId the masterServerId value to set.
      * @return the ServerInner object itself.
      */
@@ -376,7 +429,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the replicaCapacity property: The maximum number of replicas that a master server can have.
-     *
+     * 
      * @return the replicaCapacity value.
      */
     public Integer replicaCapacity() {
@@ -385,7 +438,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the replicaCapacity property: The maximum number of replicas that a master server can have.
-     *
+     * 
      * @param replicaCapacity the replicaCapacity value to set.
      * @return the ServerInner object itself.
      */
@@ -400,7 +453,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
@@ -410,7 +463,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
@@ -424,7 +477,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections on a server.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
@@ -433,7 +486,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -446,5 +499,61 @@ public final class ServerInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerInner.
+     */
+    public static ServerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerInner deserializedServerInner = new ServerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServerInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedServerInner.identity = ResourceIdentity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedServerInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerInner.innerProperties = ServerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerInner;
+        });
     }
 }

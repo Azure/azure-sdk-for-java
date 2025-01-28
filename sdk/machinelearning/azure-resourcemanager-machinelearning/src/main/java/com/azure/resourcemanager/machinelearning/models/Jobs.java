@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Jobs. */
+/**
+ * Resource collection API of Jobs.
+ */
 public interface Jobs {
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,31 +26,27 @@ public interface Jobs {
 
     /**
      * Lists Jobs in the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
+     * @param properties Comma-separated list of user property names (and optionally values). Example:
+     * prop1,prop2=value2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobBase> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        String jobType,
-        String tag,
-        ListViewType listViewType,
-        Context context);
+    PagedIterable<JobBase> list(String resourceGroupName, String workspaceName, String skip, String jobType, String tag,
+        ListViewType listViewType, String properties, Context context);
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -60,7 +58,7 @@ public interface Jobs {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -73,7 +71,7 @@ public interface Jobs {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -87,7 +85,7 @@ public interface Jobs {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -100,7 +98,7 @@ public interface Jobs {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -112,7 +110,7 @@ public interface Jobs {
 
     /**
      * Cancels a Job (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param id The name and identifier for the Job. This is case-sensitive.
@@ -125,7 +123,7 @@ public interface Jobs {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,7 +134,7 @@ public interface Jobs {
 
     /**
      * Gets a Job by name/id.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +146,7 @@ public interface Jobs {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +156,7 @@ public interface Jobs {
 
     /**
      * Deletes a Job (asynchronous).
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +167,7 @@ public interface Jobs {
 
     /**
      * Begins definition for a new JobBase resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new JobBase definition.
      */

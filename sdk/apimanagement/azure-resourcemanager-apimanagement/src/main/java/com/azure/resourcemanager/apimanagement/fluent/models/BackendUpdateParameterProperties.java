@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.BackendBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.BackendProperties;
 import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
 import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Update Backend operation. */
+/**
+ * Parameters supplied to the Update Backend operation.
+ */
 @Fluent
 public final class BackendUpdateParameterProperties extends BackendBaseParameters {
     /*
      * Runtime Url of the Backend.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Backend communication protocol.
      */
-    @JsonProperty(value = "protocol")
     private BackendProtocol protocol;
 
-    /** Creates an instance of BackendUpdateParameterProperties class. */
+    /**
+     * Creates an instance of BackendUpdateParameterProperties class.
+     */
     public BackendUpdateParameterProperties() {
     }
 
     /**
      * Get the url property: Runtime Url of the Backend.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -43,7 +48,7 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
 
     /**
      * Set the url property: Runtime Url of the Backend.
-     *
+     * 
      * @param url the url value to set.
      * @return the BackendUpdateParameterProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
 
     /**
      * Get the protocol property: Backend communication protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public BackendProtocol protocol() {
@@ -63,7 +68,7 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
 
     /**
      * Set the protocol property: Backend communication protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the BackendUpdateParameterProperties object itself.
      */
@@ -72,49 +77,63 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withTitle(String title) {
         super.withTitle(title);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withResourceId(String resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withProperties(BackendProperties properties) {
         super.withProperties(properties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withCredentials(BackendCredentialsContract credentials) {
         super.withCredentials(credentials);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withProxy(BackendProxyContract proxy) {
         super.withProxy(proxy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendUpdateParameterProperties withTls(BackendTlsProperties tls) {
         super.withTls(tls);
@@ -123,11 +142,85 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
+        if (credentials() != null) {
+            credentials().validate();
+        }
+        if (proxy() != null) {
+            proxy().validate();
+        }
+        if (tls() != null) {
+            tls().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", title());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("resourceId", resourceId());
+        jsonWriter.writeJsonField("properties", properties());
+        jsonWriter.writeJsonField("credentials", credentials());
+        jsonWriter.writeJsonField("proxy", proxy());
+        jsonWriter.writeJsonField("tls", tls());
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendUpdateParameterProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendUpdateParameterProperties.
+     */
+    public static BackendUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendUpdateParameterProperties deserializedBackendUpdateParameterProperties
+                = new BackendUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withTitle(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withDescription(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withResourceId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withProperties(BackendProperties.fromJson(reader));
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties
+                        .withCredentials(BackendCredentialsContract.fromJson(reader));
+                } else if ("proxy".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withProxy(BackendProxyContract.fromJson(reader));
+                } else if ("tls".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withTls(BackendTlsProperties.fromJson(reader));
+                } else if ("url".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.url = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.protocol
+                        = BackendProtocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendUpdateParameterProperties;
+        });
     }
 }

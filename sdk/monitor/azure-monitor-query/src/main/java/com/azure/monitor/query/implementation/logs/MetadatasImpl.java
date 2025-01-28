@@ -49,8 +49,8 @@ public final class MetadatasImpl {
     }
 
     /**
-     * The interface defining all the services for AzureLogAnalyticsMetadatas to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureLogAnalyticsMetadatas to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureLogAnalyticsMet")
@@ -95,8 +95,7 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> getWithResponseAsync(String workspaceId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getHost(), workspaceId, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(workspaceId, context));
     }
 
     /**
@@ -209,8 +208,7 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> postWithResponseAsync(String workspaceId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.post(this.client.getHost(), workspaceId, accept, context));
+        return FluxUtil.withContext(context -> postWithResponseAsync(workspaceId, context));
     }
 
     /**

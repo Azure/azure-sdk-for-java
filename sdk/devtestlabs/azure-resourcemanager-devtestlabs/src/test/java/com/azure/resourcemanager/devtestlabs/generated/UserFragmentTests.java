@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UserFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"cxfhbcporxv\":\"djhlimm\",\"xfpxtgqscja\":\"cjzhqi\",\"qaz\":\"ftjuh\"}}")
-                .toObject(UserFragment.class);
+        UserFragment model = BinaryData
+            .fromString("{\"tags\":{\"cxfhbcporxv\":\"djhlimm\",\"xfpxtgqscja\":\"cjzhqi\",\"qaz\":\"ftjuh\"}}")
+            .toObject(UserFragment.class);
         Assertions.assertEquals("djhlimm", model.tags().get("cxfhbcporxv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserFragment model =
-            new UserFragment().withTags(mapOf("cxfhbcporxv", "djhlimm", "xfpxtgqscja", "cjzhqi", "qaz", "ftjuh"));
+        UserFragment model
+            = new UserFragment().withTags(mapOf("cxfhbcporxv", "djhlimm", "xfpxtgqscja", "cjzhqi", "qaz", "ftjuh"));
         model = BinaryData.fromObject(model).toObject(UserFragment.class);
         Assertions.assertEquals("djhlimm", model.tags().get("cxfhbcporxv"));
     }

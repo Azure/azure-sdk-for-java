@@ -22,11 +22,10 @@ public class App {
      * @param args Performance test configurations.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             GetManifestPropertiesTest.class,
             ListRepositoryTests.class,
             UploadBlobTests.class,
-            DownloadBlobTests.class
-        }, args);
+            DownloadBlobTests.class }, args);
     }
 }

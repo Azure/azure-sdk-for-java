@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.devhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The fields needed for OIDC with GitHub. */
+/**
+ * The fields needed for OIDC with GitHub.
+ */
 @Fluent
-public final class GitHubWorkflowProfileOidcCredentials {
+public final class GitHubWorkflowProfileOidcCredentials
+    implements JsonSerializable<GitHubWorkflowProfileOidcCredentials> {
     /*
      * Azure Application Client ID
      */
-    @JsonProperty(value = "azureClientId")
     private String azureClientId;
 
     /*
      * Azure Directory (tenant) ID
      */
-    @JsonProperty(value = "azureTenantId")
     private String azureTenantId;
 
-    /** Creates an instance of GitHubWorkflowProfileOidcCredentials class. */
+    /**
+     * Creates an instance of GitHubWorkflowProfileOidcCredentials class.
+     */
     public GitHubWorkflowProfileOidcCredentials() {
     }
 
     /**
      * Get the azureClientId property: Azure Application Client ID.
-     *
+     * 
      * @return the azureClientId value.
      */
     public String azureClientId() {
@@ -37,7 +44,7 @@ public final class GitHubWorkflowProfileOidcCredentials {
 
     /**
      * Set the azureClientId property: Azure Application Client ID.
-     *
+     * 
      * @param azureClientId the azureClientId value to set.
      * @return the GitHubWorkflowProfileOidcCredentials object itself.
      */
@@ -48,7 +55,7 @@ public final class GitHubWorkflowProfileOidcCredentials {
 
     /**
      * Get the azureTenantId property: Azure Directory (tenant) ID.
-     *
+     * 
      * @return the azureTenantId value.
      */
     public String azureTenantId() {
@@ -57,7 +64,7 @@ public final class GitHubWorkflowProfileOidcCredentials {
 
     /**
      * Set the azureTenantId property: Azure Directory (tenant) ID.
-     *
+     * 
      * @param azureTenantId the azureTenantId value to set.
      * @return the GitHubWorkflowProfileOidcCredentials object itself.
      */
@@ -68,9 +75,49 @@ public final class GitHubWorkflowProfileOidcCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureClientId", this.azureClientId);
+        jsonWriter.writeStringField("azureTenantId", this.azureTenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubWorkflowProfileOidcCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubWorkflowProfileOidcCredentials if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitHubWorkflowProfileOidcCredentials.
+     */
+    public static GitHubWorkflowProfileOidcCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubWorkflowProfileOidcCredentials deserializedGitHubWorkflowProfileOidcCredentials
+                = new GitHubWorkflowProfileOidcCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureClientId".equals(fieldName)) {
+                    deserializedGitHubWorkflowProfileOidcCredentials.azureClientId = reader.getString();
+                } else if ("azureTenantId".equals(fieldName)) {
+                    deserializedGitHubWorkflowProfileOidcCredentials.azureTenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubWorkflowProfileOidcCredentials;
+        });
     }
 }

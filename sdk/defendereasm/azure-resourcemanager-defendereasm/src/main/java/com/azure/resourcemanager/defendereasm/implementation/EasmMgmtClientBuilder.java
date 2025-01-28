@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the EasmMgmtClientImpl type. */
-@ServiceClientBuilder(serviceClients = {EasmMgmtClientImpl.class})
+/**
+ * A builder for creating a new instance of the EasmMgmtClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { EasmMgmtClientImpl.class })
 public final class EasmMgmtClientBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +26,7 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the EasmMgmtClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the EasmMgmtClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the EasmMgmtClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the EasmMgmtClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the EasmMgmtClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the EasmMgmtClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class EasmMgmtClientBuilder {
 
     /**
      * Builds an instance of EasmMgmtClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of EasmMgmtClientImpl.
      */
     public EasmMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        EasmMgmtClientImpl client =
-            new EasmMgmtClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        EasmMgmtClientImpl client = new EasmMgmtClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

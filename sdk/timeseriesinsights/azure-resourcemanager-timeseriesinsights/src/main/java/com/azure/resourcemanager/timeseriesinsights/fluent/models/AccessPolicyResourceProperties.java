@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.AccessPolicyRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The AccessPolicyResourceProperties model. */
+/**
+ * The AccessPolicyResourceProperties model.
+ */
 @Fluent
-public final class AccessPolicyResourceProperties {
+public final class AccessPolicyResourceProperties implements JsonSerializable<AccessPolicyResourceProperties> {
     /*
      * The objectId of the principal in Azure Active Directory.
      */
-    @JsonProperty(value = "principalObjectId")
     private String principalObjectId;
 
     /*
      * An description of the access policy.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The list of roles the principal is assigned on the environment.
      */
-    @JsonProperty(value = "roles")
     private List<AccessPolicyRole> roles;
 
-    /** Creates an instance of AccessPolicyResourceProperties class. */
+    /**
+     * Creates an instance of AccessPolicyResourceProperties class.
+     */
     public AccessPolicyResourceProperties() {
     }
 
     /**
      * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
-     *
+     * 
      * @return the principalObjectId value.
      */
     public String principalObjectId() {
@@ -45,7 +50,7 @@ public final class AccessPolicyResourceProperties {
 
     /**
      * Set the principalObjectId property: The objectId of the principal in Azure Active Directory.
-     *
+     * 
      * @param principalObjectId the principalObjectId value to set.
      * @return the AccessPolicyResourceProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class AccessPolicyResourceProperties {
 
     /**
      * Get the description property: An description of the access policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +70,7 @@ public final class AccessPolicyResourceProperties {
 
     /**
      * Set the description property: An description of the access policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the AccessPolicyResourceProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class AccessPolicyResourceProperties {
 
     /**
      * Get the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
@@ -85,7 +90,7 @@ public final class AccessPolicyResourceProperties {
 
     /**
      * Set the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the AccessPolicyResourceProperties object itself.
      */
@@ -96,9 +101,55 @@ public final class AccessPolicyResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalObjectId", this.principalObjectId);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("roles", this.roles,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicyResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicyResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessPolicyResourceProperties.
+     */
+    public static AccessPolicyResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicyResourceProperties deserializedAccessPolicyResourceProperties
+                = new AccessPolicyResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalObjectId".equals(fieldName)) {
+                    deserializedAccessPolicyResourceProperties.principalObjectId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAccessPolicyResourceProperties.description = reader.getString();
+                } else if ("roles".equals(fieldName)) {
+                    List<AccessPolicyRole> roles
+                        = reader.readArray(reader1 -> AccessPolicyRole.fromString(reader1.getString()));
+                    deserializedAccessPolicyResourceProperties.roles = roles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicyResourceProperties;
+        });
     }
 }

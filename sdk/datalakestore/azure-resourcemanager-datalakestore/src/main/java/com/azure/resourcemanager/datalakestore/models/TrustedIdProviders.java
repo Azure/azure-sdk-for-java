@@ -8,38 +8,40 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TrustedIdProviders. */
+/**
+ * Resource collection API of TrustedIdProviders.
+ */
 public interface TrustedIdProviders {
     /**
      * Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information as paginated response with {@link
-     *     PagedIterable}.
+     * @return data Lake Store trusted identity provider list information as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<TrustedIdProvider> listByAccount(String resourceGroupName, String accountName);
 
     /**
      * Lists the Data Lake Store trusted identity providers within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information as paginated response with {@link
-     *     PagedIterable}.
+     * @return data Lake Store trusted identity provider list information as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<TrustedIdProvider> listByAccount(String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the specified Data Lake Store trusted identity provider.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
@@ -49,12 +51,12 @@ public interface TrustedIdProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
      */
-    Response<TrustedIdProvider> getWithResponse(
-        String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
+    Response<TrustedIdProvider> getWithResponse(String resourceGroupName, String accountName,
+        String trustedIdProviderName, Context context);
 
     /**
      * Gets the specified Data Lake Store trusted identity provider.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param trustedIdProviderName The name of the trusted identity provider to retrieve.
@@ -67,7 +69,7 @@ public interface TrustedIdProviders {
 
     /**
      * Deletes the specified trusted identity provider from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param trustedIdProviderName The name of the trusted identity provider to delete.
@@ -77,12 +79,12 @@ public interface TrustedIdProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String trustedIdProviderName,
+        Context context);
 
     /**
      * Deletes the specified trusted identity provider from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param trustedIdProviderName The name of the trusted identity provider to delete.
@@ -94,7 +96,7 @@ public interface TrustedIdProviders {
 
     /**
      * Gets the specified Data Lake Store trusted identity provider.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +107,7 @@ public interface TrustedIdProviders {
 
     /**
      * Gets the specified Data Lake Store trusted identity provider.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +119,7 @@ public interface TrustedIdProviders {
 
     /**
      * Deletes the specified trusted identity provider from the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +129,7 @@ public interface TrustedIdProviders {
 
     /**
      * Deletes the specified trusted identity provider from the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface TrustedIdProviders {
 
     /**
      * Begins definition for a new TrustedIdProvider resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new TrustedIdProvider definition.
      */

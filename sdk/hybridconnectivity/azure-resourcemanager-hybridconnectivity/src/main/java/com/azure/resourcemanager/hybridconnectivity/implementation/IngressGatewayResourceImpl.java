@@ -12,8 +12,7 @@ public final class IngressGatewayResourceImpl implements IngressGatewayResource 
 
     private final com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager;
 
-    IngressGatewayResourceImpl(
-        IngressGatewayResourceInner innerObject,
+    IngressGatewayResourceImpl(IngressGatewayResourceInner innerObject,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

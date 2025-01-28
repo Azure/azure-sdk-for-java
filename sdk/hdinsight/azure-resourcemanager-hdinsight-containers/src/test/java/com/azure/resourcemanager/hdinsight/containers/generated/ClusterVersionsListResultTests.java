@@ -15,29 +15,33 @@ public final class ClusterVersionsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterVersionsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clusterType\":\"vyqia\",\"clusterVersion\":\"zwpcnpwzcjaesg\",\"ossVersion\":\"sccyajguqf\",\"clusterPoolVersion\":\"ygz\",\"isPreview\":false,\"components\":[{\"name\":\"xu\",\"version\":\"mdwzrmuhapfcqdps\"}]},\"id\":\"qvpsvuoymg\",\"name\":\"celve\",\"type\":\"rypqlmfeo\"},{\"properties\":{\"clusterType\":\"qwkyhkobop\",\"clusterVersion\":\"edkowepbqpcrfk\",\"ossVersion\":\"ccsnjvcdwxlpq\",\"clusterPoolVersion\":\"ftnkhtj\",\"isPreview\":false,\"components\":[{\"name\":\"fq\",\"version\":\"mtdh\"},{\"name\":\"dvypgikdgsz\",\"version\":\"kbir\"}]},\"id\":\"uzhlhkjoqrv\",\"name\":\"qaatjinrv\",\"type\":\"oupmfii\"}],\"nextLink\":\"ggjioolvr\"}")
+            "{\"value\":[{\"properties\":{\"clusterType\":\"fzg\",\"clusterVersion\":\"jdftuljltd\",\"ossVersion\":\"eamtmcz\",\"clusterPoolVersion\":\"m\",\"isPreview\":false,\"components\":[{\"name\":\"qioknssxmojm\",\"version\":\"p\"}]},\"id\":\"prvkwcfzqljyxgtc\",\"name\":\"heyd\",\"type\":\"sdshmkxmaehvb\"},{\"properties\":{\"clusterType\":\"ripltf\",\"clusterVersion\":\"tbaxk\",\"ossVersion\":\"ywrckp\",\"clusterPoolVersion\":\"lyhpluodpvruud\",\"isPreview\":false,\"components\":[{\"name\":\"hostgktstvdxecl\",\"version\":\"dqbcvhzlhplod\"}]},\"id\":\"dlwwqfbumlkxt\",\"name\":\"qjfsmlmbtxhw\",\"type\":\"fwsrtawcoezbrhu\"}],\"nextLink\":\"kh\"}")
             .toObject(ClusterVersionsListResult.class);
-        Assertions.assertEquals("vyqia", model.value().get(0).properties().clusterType());
-        Assertions.assertEquals("zwpcnpwzcjaesg", model.value().get(0).properties().clusterVersion());
-        Assertions.assertEquals("sccyajguqf", model.value().get(0).properties().ossVersion());
-        Assertions.assertEquals("ygz", model.value().get(0).properties().clusterPoolVersion());
+        Assertions.assertEquals("fzg", model.value().get(0).properties().clusterType());
+        Assertions.assertEquals("jdftuljltd", model.value().get(0).properties().clusterVersion());
+        Assertions.assertEquals("eamtmcz", model.value().get(0).properties().ossVersion());
+        Assertions.assertEquals("m", model.value().get(0).properties().clusterPoolVersion());
         Assertions.assertEquals(false, model.value().get(0).properties().isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterVersionsListResult model = new ClusterVersionsListResult().withValue(Arrays.asList(
-            new ClusterVersionInner().withProperties(
-                new ClusterVersionProperties().withClusterType("vyqia").withClusterVersion("zwpcnpwzcjaesg")
-                    .withOssVersion("sccyajguqf").withClusterPoolVersion("ygz").withIsPreview(false)),
-            new ClusterVersionInner().withProperties(
-                new ClusterVersionProperties().withClusterType("qwkyhkobop").withClusterVersion("edkowepbqpcrfk")
-                    .withOssVersion("ccsnjvcdwxlpq").withClusterPoolVersion("ftnkhtj").withIsPreview(false))));
+            new ClusterVersionInner().withProperties(new ClusterVersionProperties().withClusterType("fzg")
+                .withClusterVersion("jdftuljltd")
+                .withOssVersion("eamtmcz")
+                .withClusterPoolVersion("m")
+                .withIsPreview(false)),
+            new ClusterVersionInner().withProperties(new ClusterVersionProperties().withClusterType("ripltf")
+                .withClusterVersion("tbaxk")
+                .withOssVersion("ywrckp")
+                .withClusterPoolVersion("lyhpluodpvruud")
+                .withIsPreview(false))));
         model = BinaryData.fromObject(model).toObject(ClusterVersionsListResult.class);
-        Assertions.assertEquals("vyqia", model.value().get(0).properties().clusterType());
-        Assertions.assertEquals("zwpcnpwzcjaesg", model.value().get(0).properties().clusterVersion());
-        Assertions.assertEquals("sccyajguqf", model.value().get(0).properties().ossVersion());
-        Assertions.assertEquals("ygz", model.value().get(0).properties().clusterPoolVersion());
+        Assertions.assertEquals("fzg", model.value().get(0).properties().clusterType());
+        Assertions.assertEquals("jdftuljltd", model.value().get(0).properties().clusterVersion());
+        Assertions.assertEquals("eamtmcz", model.value().get(0).properties().ossVersion());
+        Assertions.assertEquals("m", model.value().get(0).properties().clusterPoolVersion());
         Assertions.assertEquals(false, model.value().get(0).properties().isPreview());
     }
 }

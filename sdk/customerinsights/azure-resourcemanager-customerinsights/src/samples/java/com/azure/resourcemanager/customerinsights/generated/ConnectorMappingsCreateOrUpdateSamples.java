@@ -16,53 +16,47 @@ import com.azure.resourcemanager.customerinsights.models.ErrorManagementTypes;
 import com.azure.resourcemanager.customerinsights.models.FrequencyTypes;
 import java.util.Arrays;
 
-/** Samples for ConnectorMappings CreateOrUpdate. */
+/**
+ * Samples for ConnectorMappings CreateOrUpdate.
+ */
 public final class ConnectorMappingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/ConnectorMappingsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * ConnectorMappingsCreateOrUpdate.json
      */
     /**
      * Sample code: ConnectorMappings_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
-    public static void connectorMappingsCreateOrUpdate(
-        com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
-        manager
-            .connectorMappings()
+    public static void
+        connectorMappingsCreateOrUpdate(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
+        manager.connectorMappings()
             .define("testMapping12491")
             .withExistingConnector("TestHubRG", "sdkTestHub", "testConnector8858")
             .withEntityType(EntityTypes.INTERACTION)
             .withEntityTypeName("TestInteractionType2967")
             .withDisplayName("testMapping12491")
             .withDescription("Test mapping")
-            .withMappingProperties(
-                new ConnectorMappingProperties()
-                    .withFolderPath("http://sample.dne/file")
-                    .withFileFilter("unknown")
-                    .withHasHeader(false)
-                    .withErrorManagement(
-                        new ConnectorMappingErrorManagement()
-                            .withErrorManagementType(ErrorManagementTypes.STOP_IMPORT)
-                            .withErrorLimit(10))
-                    .withFormat(new ConnectorMappingFormat().withColumnDelimiter("|"))
-                    .withAvailability(
-                        new ConnectorMappingAvailability().withFrequency(FrequencyTypes.HOUR).withInterval(5))
-                    .withStructure(
-                        Arrays
-                            .asList(
-                                new ConnectorMappingStructure()
-                                    .withPropertyName("unknwon1")
-                                    .withColumnName("unknown1")
-                                    .withIsEncrypted(false),
-                                new ConnectorMappingStructure()
-                                    .withPropertyName("unknwon2")
-                                    .withColumnName("unknown2")
-                                    .withIsEncrypted(true)))
-                    .withCompleteOperation(
-                        new ConnectorMappingCompleteOperation()
-                            .withCompletionOperationType(CompletionOperationTypes.DELETE_FILE)
-                            .withDestinationFolder("fakePath")))
+            .withMappingProperties(new ConnectorMappingProperties().withFolderPath("http://sample.dne/file")
+                .withFileFilter("unknown")
+                .withHasHeader(false)
+                .withErrorManagement(
+                    new ConnectorMappingErrorManagement().withErrorManagementType(ErrorManagementTypes.STOP_IMPORT)
+                        .withErrorLimit(10))
+                .withFormat(new ConnectorMappingFormat().withColumnDelimiter("|"))
+                .withAvailability(new ConnectorMappingAvailability().withFrequency(FrequencyTypes.HOUR).withInterval(5))
+                .withStructure(Arrays.asList(
+                    new ConnectorMappingStructure().withPropertyName("unknwon1")
+                        .withColumnName("unknown1")
+                        .withIsEncrypted(false),
+                    new ConnectorMappingStructure().withPropertyName("unknwon2")
+                        .withColumnName("unknown2")
+                        .withIsEncrypted(true)))
+                .withCompleteOperation(new ConnectorMappingCompleteOperation()
+                    .withCompletionOperationType(CompletionOperationTypes.DELETE_FILE)
+                    .withDestinationFolder("fakePath")))
             .create();
     }
 }

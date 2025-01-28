@@ -17,10 +17,18 @@ import java.util.List;
 @Fluent
 public interface ActiveDirectoryGroup
     extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphGroupInner>, Updatable<ActiveDirectoryGroup.Update> {
-    /** @return security enabled field. */
+    /**
+     * Check whether security enabled field.
+     *
+     * @return security enabled field.
+     */
     boolean securityEnabled();
 
-    /** @return mail field. */
+    /**
+     * Gets mail field.
+     *
+     * @return mail field.
+     */
     String mail();
 
     /**

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.SavingsPlanPurchaseRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Request body for savings plan purchase. */
+/**
+ * Request body for savings plan purchase.
+ */
 @Fluent
-public final class SavingsPlanPurchaseRequest {
+public final class SavingsPlanPurchaseRequest implements JsonSerializable<SavingsPlanPurchaseRequest> {
     /*
      * The name of sku
      */
-    @JsonProperty(value = "sku")
     private SkuName sku;
 
     /*
      * Properties of a savings plan purchase
      */
-    @JsonProperty(value = "properties")
     private SavingsPlanPurchaseRequestProperties innerProperties;
 
-    /** Creates an instance of SavingsPlanPurchaseRequest class. */
+    /**
+     * Creates an instance of SavingsPlanPurchaseRequest class.
+     */
     public SavingsPlanPurchaseRequest() {
     }
 
     /**
      * Get the sku property: The name of sku.
-     *
+     * 
      * @return the sku value.
      */
     public SkuName sku() {
@@ -38,7 +44,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Set the sku property: The name of sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -49,7 +55,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Get the innerProperties property: Properties of a savings plan purchase.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SavingsPlanPurchaseRequestProperties innerProperties() {
@@ -58,7 +64,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Get the displayName property: Friendly name of the savings plan.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -67,7 +73,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Set the displayName property: Friendly name of the savings plan.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -81,7 +87,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -90,7 +96,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -104,7 +110,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Get the term property: Represent savings plan term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public SavingsPlanTerm term() {
@@ -113,7 +119,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Set the term property: Represent savings plan term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -128,7 +134,7 @@ public final class SavingsPlanPurchaseRequest {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -138,7 +144,7 @@ public final class SavingsPlanPurchaseRequest {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -152,7 +158,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -161,7 +167,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -176,7 +182,7 @@ public final class SavingsPlanPurchaseRequest {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -186,7 +192,7 @@ public final class SavingsPlanPurchaseRequest {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -200,7 +206,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Get the commitment property: Commitment towards the benefit.
-     *
+     * 
      * @return the commitment value.
      */
     public Commitment commitment() {
@@ -209,7 +215,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Set the commitment property: Commitment towards the benefit.
-     *
+     * 
      * @param commitment the commitment value to set.
      * @return the SavingsPlanPurchaseRequest object itself.
      */
@@ -223,7 +229,7 @@ public final class SavingsPlanPurchaseRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -233,5 +239,45 @@ public final class SavingsPlanPurchaseRequest {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanPurchaseRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanPurchaseRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanPurchaseRequest.
+     */
+    public static SavingsPlanPurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanPurchaseRequest deserializedSavingsPlanPurchaseRequest = new SavingsPlanPurchaseRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequest.sku = SkuName.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequest.innerProperties
+                        = SavingsPlanPurchaseRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanPurchaseRequest;
+        });
     }
 }

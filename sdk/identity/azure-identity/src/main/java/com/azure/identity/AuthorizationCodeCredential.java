@@ -40,8 +40,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <!-- src_embed com.azure.identity.credential.authorizationcodecredential.construct -->
  * <pre>
- * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;
- *     .authorizationCode&#40;&quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
+ * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;.authorizationCode&#40;
+ *         &quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
  *     .redirectUrl&#40;&quot;&#123;redirectUrl-where-authorization-code-is-received&#125;&quot;&#41;
  *     .clientId&#40;&quot;&#123;clientId-of-application-being-authenticated&quot;&#41;
  *     .build&#40;&#41;;
@@ -74,10 +74,9 @@ public class AuthorizationCodeCredential implements TokenCredential {
      * @param redirectUri the redirect URI used to authenticate to Microsoft Entra ID
      * @param identityClientOptions the options for configuring the identity client
      */
-    AuthorizationCodeCredential(String clientId, String clientSecret, String tenantId, String authCode,
-                                URI redirectUri, IdentityClientOptions identityClientOptions) {
-        identityClient = new IdentityClientBuilder()
-            .tenantId(tenantId)
+    AuthorizationCodeCredential(String clientId, String clientSecret, String tenantId, String authCode, URI redirectUri,
+        IdentityClientOptions identityClientOptions) {
+        identityClient = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
@@ -103,26 +102,28 @@ public class AuthorizationCodeCredential implements TokenCredential {
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(request, authCode, redirectUri)))
-               .map(msalToken -> {
-                   cachedToken.set(new MsalAuthenticationAccount(
-                                new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                        identityClient.getTenantId(), identityClient.getClientId())));
-                   if (request.isCaeEnabled()) {
-                       isCaeEnabledRequestCached = true;
-                   } else {
-                       isCaeDisabledRequestCached = true;
-                   }
-                   return (AccessToken) msalToken;
-               })
+        })
+            .switchIfEmpty(
+                Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(request, authCode, redirectUri)))
+            .map(msalToken -> {
+                cachedToken
+                    .set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                        identityClient.getTenantId(), identityClient.getClientId())));
+                if (request.isCaeEnabled()) {
+                    isCaeEnabledRequestCached = true;
+                } else {
+                    isCaeDisabledRequestCached = true;
+                }
+                return (AccessToken) msalToken;
+            })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
-            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
+        return (cachedToken.get() != null)
+            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+                || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

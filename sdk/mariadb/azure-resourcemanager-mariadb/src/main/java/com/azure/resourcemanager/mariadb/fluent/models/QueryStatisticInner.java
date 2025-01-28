@@ -6,26 +6,47 @@ package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents a Query Statistic. */
+/**
+ * Represents a Query Statistic.
+ */
 @Fluent
 public final class QueryStatisticInner extends ProxyResource {
     /*
      * The properties of a query statistic.
      */
-    @JsonProperty(value = "properties")
     private QueryStatisticProperties innerProperties;
 
-    /** Creates an instance of QueryStatisticInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of QueryStatisticInner class.
+     */
     public QueryStatisticInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a query statistic.
-     *
+     * 
      * @return the innerProperties value.
      */
     private QueryStatisticProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class QueryStatisticInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the queryId property: Database query identifier.
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -43,7 +94,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the queryId property: Database query identifier.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -57,7 +108,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the startTime property: Observation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -66,7 +117,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the startTime property: Observation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -80,7 +131,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the endTime property: Observation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -89,7 +140,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the endTime property: Observation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -103,7 +154,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @return the aggregationFunction value.
      */
     public String aggregationFunction() {
@@ -112,7 +163,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @param aggregationFunction the aggregationFunction value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -126,7 +177,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the databaseNames property: The list of database names.
-     *
+     * 
      * @return the databaseNames value.
      */
     public List<String> databaseNames() {
@@ -135,7 +186,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the databaseNames property: The list of database names.
-     *
+     * 
      * @param databaseNames the databaseNames value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -149,7 +200,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the queryExecutionCount property: Number of query executions in this time interval.
-     *
+     * 
      * @return the queryExecutionCount value.
      */
     public Long queryExecutionCount() {
@@ -158,7 +209,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the queryExecutionCount property: Number of query executions in this time interval.
-     *
+     * 
      * @param queryExecutionCount the queryExecutionCount value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -172,7 +223,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the metricName property: Metric name.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -181,7 +232,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the metricName property: Metric name.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -195,7 +246,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the metricDisplayName property: Metric display name.
-     *
+     * 
      * @return the metricDisplayName value.
      */
     public String metricDisplayName() {
@@ -204,7 +255,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the metricDisplayName property: Metric display name.
-     *
+     * 
      * @param metricDisplayName the metricDisplayName value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -218,7 +269,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the metricValue property: Metric value.
-     *
+     * 
      * @return the metricValue value.
      */
     public Double metricValue() {
@@ -227,7 +278,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the metricValue property: Metric value.
-     *
+     * 
      * @param metricValue the metricValue value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -241,7 +292,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Get the metricValueUnit property: Metric value unit.
-     *
+     * 
      * @return the metricValueUnit value.
      */
     public String metricValueUnit() {
@@ -250,7 +301,7 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Set the metricValueUnit property: Metric value unit.
-     *
+     * 
      * @param metricValueUnit the metricValueUnit value to set.
      * @return the QueryStatisticInner object itself.
      */
@@ -264,12 +315,55 @@ public final class QueryStatisticInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryStatisticInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryStatisticInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryStatisticInner.
+     */
+    public static QueryStatisticInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryStatisticInner deserializedQueryStatisticInner = new QueryStatisticInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQueryStatisticInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQueryStatisticInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedQueryStatisticInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedQueryStatisticInner.innerProperties = QueryStatisticProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryStatisticInner;
+        });
     }
 }

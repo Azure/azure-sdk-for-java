@@ -17,8 +17,8 @@ public final class BlobItemProperties {
     private final BlobItemPropertiesInternal internalProperties;
 
     static {
-        BlobItemPropertiesConstructorProxy.setAccessor(
-            new BlobItemPropertiesConstructorProxy.BlobItemPropertiesConstructorAccessor() {
+        BlobItemPropertiesConstructorProxy
+            .setAccessor(new BlobItemPropertiesConstructorProxy.BlobItemPropertiesConstructorAccessor() {
                 @Override
                 public BlobItemProperties create(BlobItemPropertiesInternal internalProperties) {
                     return new BlobItemProperties(internalProperties);
@@ -798,9 +798,9 @@ public final class BlobItemProperties {
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
         if (convertedImmutabilityPolicy == null) {
-            convertedImmutabilityPolicy = new BlobImmutabilityPolicy()
-                .setExpiryTime(internalProperties.getImmutabilityPolicyExpiresOn())
-                .setPolicyMode(internalProperties.getImmutabilityPolicyMode());
+            convertedImmutabilityPolicy
+                = new BlobImmutabilityPolicy().setExpiryTime(internalProperties.getImmutabilityPolicyExpiresOn())
+                    .setPolicyMode(internalProperties.getImmutabilityPolicyMode());
         }
 
         return convertedImmutabilityPolicy;

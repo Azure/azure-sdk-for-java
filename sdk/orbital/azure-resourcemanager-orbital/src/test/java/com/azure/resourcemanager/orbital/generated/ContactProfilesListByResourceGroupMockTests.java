@@ -6,75 +6,70 @@ package com.azure.resourcemanager.orbital.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.orbital.OrbitalManager;
 import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfile;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.orbital.models.Direction;
+import com.azure.resourcemanager.orbital.models.Polarization;
+import com.azure.resourcemanager.orbital.models.Protocol;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContactProfilesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"canceled\",\"minimumViableContactDuration\":\"mwks\",\"minimumElevationDegrees\":50.755978,\"autoTrackingConfiguration\":\"sBand\",\"eventHubUri\":\"jxv\",\"networkConfiguration\":{\"subnetId\":\"dfcea\"},\"thirdPartyConfigurations\":[{\"providerName\":\"hvygdyftumr\",\"missionConfiguration\":\"wnawjslbiw\"},{\"providerName\":\"ojgcyzt\",\"missionConfiguration\":\"fmznba\"},{\"providerName\":\"qphchqnrnrpxehuw\",\"missionConfiguration\":\"ykqgaifmvik\"}],\"links\":[{\"name\":\"ydv\",\"polarization\":\"linearHorizontal\",\"direction\":\"Downlink\",\"gainOverTemperature\":16.89176,\"eirpdBW\":37.95228,\"channels\":[{\"name\":\"xcv\",\"centerFrequencyMHz\":47.618546,\"bandwidthMHz\":21.644152,\"endPoint\":{\"ipAddress\":\"hnjivo\",\"endPointName\":\"v\",\"port\":\"novqfzge\",\"protocol\":\"UDP\"}},{\"name\":\"dftuljltduce\",\"centerFrequencyMHz\":50.251114,\"bandwidthMHz\":91.42662,\"endPoint\":{\"ipAddress\":\"mczuo\",\"endPointName\":\"ejwcwwqiok\",\"port\":\"ssxmojms\",\"protocol\":\"TCP\"}}]},{\"name\":\"kjprvk\",\"polarization\":\"RHCP\",\"direction\":\"Uplink\",\"gainOverTemperature\":8.026451,\"eirpdBW\":44.8669,\"channels\":[{\"name\":\"x\",\"centerFrequencyMHz\":91.69459,\"bandwidthMHz\":34.803844,\"endPoint\":{\"ipAddress\":\"zheydbsdshmk\",\"endPointName\":\"maehvbbxurip\",\"port\":\"tfnhtbaxkgxywr\",\"protocol\":\"TCP\"}},{\"name\":\"pyklyhpluodpvru\",\"centerFrequencyMHz\":87.415924,\"bandwidthMHz\":23.560375,\"endPoint\":{\"ipAddress\":\"gzibthostgktstv\",\"endPointName\":\"xeclzedqbcvhzlhp\",\"port\":\"odqkdlwwqfb\",\"protocol\":\"UDP\"}}]},{\"name\":\"lkxt\",\"polarization\":\"linearVertical\",\"direction\":\"Downlink\",\"gainOverTemperature\":98.33682,\"eirpdBW\":79.85167,\"channels\":[{\"name\":\"btx\",\"centerFrequencyMHz\":0.37645698,\"bandwidthMHz\":47.412045,\"endPoint\":{\"ipAddress\":\"fwsrtawcoezbrhu\",\"endPointName\":\"skh\",\"port\":\"dyg\",\"protocol\":\"TCP\"}},{\"name\":\"okkqfqjbvleo\",\"centerFrequencyMHz\":90.28293,\"bandwidthMHz\":10.981679,\"endPoint\":{\"ipAddress\":\"luiqtqzfavyvnqq\",\"endPointName\":\"bar\",\"port\":\"euayjkqabqgzsles\",\"protocol\":\"UDP\"}}]}]},\"location\":\"hernntiewdjc\",\"tags\":{\"uffkmrqemvvh\":\"uwrbehwagoh\",\"futacoebjvewzc\":\"xtdr\",\"guaadraufactkahz\":\"znmwcp\"},\"id\":\"v\",\"name\":\"jjziuxxpsh\",\"type\":\"eekulfgslqubkwd\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"minimumViableContactDuration\":\"hfwdsjnkaljutiis\",\"minimumElevationDegrees\":63.025497,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"dkzzewkfvhqcrail\",\"networkConfiguration\":{\"subnetId\":\"pnppfuf\"},\"thirdPartyConfigurations\":[],\"links\":[]},\"location\":\"hdlxyjrxsagafcn\",\"tags\":{\"vq\":\"wqapnedgfbcvk\"},\"id\":\"pkeqdcvdrhvoo\",\"name\":\"sotbob\",\"type\":\"dopcjwvnh\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ContactProfile> response
+            = manager.contactProfiles().listByResourceGroup("qg", "zpnfqntcypsxj", com.azure.core.util.Context.NONE);
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ContactProfile> response =
-            manager.contactProfiles().listByResourceGroup("zx", "lvithhqzonosgg", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("hdlxyjrxsagafcn", response.iterator().next().location());
-        Assertions.assertEquals("wqapnedgfbcvk", response.iterator().next().tags().get("vq"));
-        Assertions
-            .assertEquals(
-                ContactProfilesPropertiesProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals("hfwdsjnkaljutiis", response.iterator().next().minimumViableContactDuration());
-        Assertions.assertEquals(63.025497F, response.iterator().next().minimumElevationDegrees());
-        Assertions
-            .assertEquals(AutoTrackingConfiguration.DISABLED, response.iterator().next().autoTrackingConfiguration());
-        Assertions.assertEquals("dkzzewkfvhqcrail", response.iterator().next().eventHubUri());
-        Assertions.assertEquals("pnppfuf", response.iterator().next().networkConfiguration().subnetId());
+        Assertions.assertEquals("hernntiewdjc", response.iterator().next().location());
+        Assertions.assertEquals("uwrbehwagoh", response.iterator().next().tags().get("uffkmrqemvvh"));
+        Assertions.assertEquals(ContactProfilesPropertiesProvisioningState.CANCELED,
+            response.iterator().next().provisioningState());
+        Assertions.assertEquals("mwks", response.iterator().next().minimumViableContactDuration());
+        Assertions.assertEquals(50.755978F, response.iterator().next().minimumElevationDegrees());
+        Assertions.assertEquals(AutoTrackingConfiguration.S_BAND,
+            response.iterator().next().autoTrackingConfiguration());
+        Assertions.assertEquals("jxv", response.iterator().next().eventHubUri());
+        Assertions.assertEquals("dfcea", response.iterator().next().networkConfiguration().subnetId());
+        Assertions.assertEquals("hvygdyftumr",
+            response.iterator().next().thirdPartyConfigurations().get(0).providerName());
+        Assertions.assertEquals("wnawjslbiw",
+            response.iterator().next().thirdPartyConfigurations().get(0).missionConfiguration());
+        Assertions.assertEquals("ydv", response.iterator().next().links().get(0).name());
+        Assertions.assertEquals(Polarization.LINEAR_HORIZONTAL,
+            response.iterator().next().links().get(0).polarization());
+        Assertions.assertEquals(Direction.DOWNLINK, response.iterator().next().links().get(0).direction());
+        Assertions.assertEquals(16.89176F, response.iterator().next().links().get(0).gainOverTemperature());
+        Assertions.assertEquals(37.95228F, response.iterator().next().links().get(0).eirpdBW());
+        Assertions.assertEquals("xcv", response.iterator().next().links().get(0).channels().get(0).name());
+        Assertions.assertEquals(47.618546f,
+            response.iterator().next().links().get(0).channels().get(0).centerFrequencyMHz());
+        Assertions.assertEquals(21.644152f, response.iterator().next().links().get(0).channels().get(0).bandwidthMHz());
+        Assertions.assertEquals("hnjivo",
+            response.iterator().next().links().get(0).channels().get(0).endPoint().ipAddress());
+        Assertions.assertEquals("v",
+            response.iterator().next().links().get(0).channels().get(0).endPoint().endPointName());
+        Assertions.assertEquals("novqfzge",
+            response.iterator().next().links().get(0).channels().get(0).endPoint().port());
+        Assertions.assertEquals(Protocol.UDP,
+            response.iterator().next().links().get(0).channels().get(0).endPoint().protocol());
     }
 }

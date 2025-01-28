@@ -23,14 +23,15 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.implementation.util.UrlBuilder;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.ExpandableEnum;
 import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.util.serializer.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,7 +71,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // to search the raw value on each call.
     private final String rawHost;
     private final String fullyQualifiedMethodName;
-    private final ClientLogger methodLogger;
+    private final ClientLogger logger;
     private final HttpMethod httpMethod;
     private final String relativePath;
     private final Map<String, List<String>> queryParams = new LinkedHashMap<>();
@@ -108,7 +109,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.rawHost = interfaceParser.getHost();
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
-        methodLogger = new ClientLogger(fullyQualifiedMethodName);
+        logger = new ClientLogger(fullyQualifiedMethodName);
 
         if (!swaggerMethod.isAnnotationPresent(HttpRequestInformation.class)) {
             // Should this also check whether there are multiple HTTP method annotations as well?
@@ -116,8 +117,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 swaggerMethod);
         }
 
-        HttpRequestInformation httpRequestInformation =
-            swaggerMethod.getAnnotation(HttpRequestInformation.class);
+        HttpRequestInformation httpRequestInformation = swaggerMethod.getAnnotation(HttpRequestInformation.class);
 
         this.httpMethod = httpRequestInformation.method();
         this.relativePath = httpRequestInformation.path();
@@ -165,16 +165,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 final String paramValue;
 
                 if (equalsIndex >= 0) {
-                    paramName = UrlEscapers.QUERY_ESCAPER.escape(queryParam.substring(0, equalsIndex));
+                    paramName = UriEscapers.QUERY_ESCAPER.escape(queryParam.substring(0, equalsIndex));
 
                     if (!paramName.isEmpty()) {
-                        paramValue = UrlEscapers.QUERY_ESCAPER.escape(queryParam.substring(equalsIndex + 1));
+                        paramValue = UriEscapers.QUERY_ESCAPER.escape(queryParam.substring(equalsIndex + 1));
                     } else {
                         throw new IllegalStateException("Names for query parameters cannot be empty.");
                     }
                 } else {
                     // No equals sign was found, so the entire string is considered the name of the query parameter.
-                    paramName = UrlEscapers.QUERY_ESCAPER.escape(queryParam);
+                    paramName = UriEscapers.QUERY_ESCAPER.escape(queryParam);
                     paramValue = null;
                 }
 
@@ -196,7 +196,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         Class<?> returnValueWireType = httpRequestInformation.returnValueWireType();
 
-        if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
+        if (returnValueWireType == Base64Uri.class || returnValueWireType == DateTimeRfc1123.class) {
             this.returnValueWireType = returnValueWireType;
         } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
             this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
@@ -216,8 +216,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             expectedStatusCodes = null;
         }
 
-        unexpectedResponseExceptionDetails =
-            swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionDetail.class);
+        unexpectedResponseExceptionDetails
+            = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionDetail.class);
 
         Integer bodyContentMethodParameterIndex = null;
         String bodyContentType = null;
@@ -248,8 +248,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
 
-                    headerSubstitutions.add(new HeaderSubstitution(headerParamAnnotation.value(), parameterIndex,
-                        false));
+                    headerSubstitutions
+                        .add(new HeaderSubstitution(headerParamAnnotation.value(), parameterIndex, false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
@@ -258,8 +258,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else if (annotationType.equals(FormParam.class)) {
                     final FormParam formParamAnnotation = (FormParam) annotation;
 
-                    formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex,
-                        !formParamAnnotation.encoded()));
+                    formSubstitutions.add(
+                        new Substitution(formParamAnnotation.value(), parameterIndex, !formParamAnnotation.encoded()));
 
                     bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
                     bodyJavaType = String.class;
@@ -308,7 +308,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The {@link ClientLogger} that will be used to log during the request and response.
      */
     public ClientLogger getMethodLogger() {
-        return methodLogger;
+        return logger;
     }
 
     /**
@@ -324,30 +324,31 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Sets the scheme and host to use for HTTP requests for this Swagger method.
      *
      * @param swaggerMethodArguments The arguments to use for scheme and host substitutions.
-     * @param urlBuilder The {@link UrlBuilder} that will have its scheme and host set.
-     * @param serializer {@link ObjectSerializer} that is used to encode host substitutions.
+     * @param uriBuilder The {@link UriBuilder} that will have its scheme and host set.
+     * @param serializer {@link CompositeSerializer} that is used to encode host substitutions.
      */
-    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder, ObjectSerializer serializer) {
-        setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, urlBuilder, serializer);
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UriBuilder uriBuilder,
+        CompositeSerializer serializer) {
+        setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, uriBuilder, serializer);
     }
 
     static void setSchemeAndHost(String rawHost, List<RangeReplaceSubstitution> hostSubstitutions,
-                                 Object[] swaggerMethodArguments, UrlBuilder urlBuilder, ObjectSerializer serializer) {
-        final String substitutedHost =
-            applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, serializer);
+        Object[] swaggerMethodArguments, UriBuilder uriBuilder, CompositeSerializer serializer) {
+        final String substitutedHost
+            = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, serializer);
         int index = substitutedHost.indexOf("://");
 
         if (index == -1) {
-            urlBuilder.setHost(substitutedHost);
+            uriBuilder.setHost(substitutedHost);
         } else {
-            urlBuilder.setScheme(substitutedHost.substring(0, index));
+            uriBuilder.setScheme(substitutedHost.substring(0, index));
 
             String host = substitutedHost.substring(index + 3);
 
             if (!isNullOrEmpty(host)) {
-                urlBuilder.setHost(host);
+                uriBuilder.setHost(host);
             } else {
-                urlBuilder.setHost(substitutedHost);
+                uriBuilder.setHost(substitutedHost);
             }
         }
     }
@@ -356,32 +357,32 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the path that will be used to complete the Swagger method's request.
      *
      * @param methodArguments The method arguments to use with the path substitutions.
-     * @param serializer {@link ObjectSerializer} that is used to encode path substitutions.
+     * @param serializer {@link CompositeSerializer} that is used to encode path substitutions.
      *
      * @return The path value with its placeholders replaced by the matching substitutions.
      */
-    public String setPath(Object[] methodArguments, ObjectSerializer serializer) {
+    public String setPath(Object[] methodArguments, CompositeSerializer serializer) {
         return applySubstitutions(relativePath, pathSubstitutions, methodArguments, serializer);
     }
 
     /**
      * Sets the encoded query parameters that have been added to this value based on the provided method arguments into
-     * the passed {@link UrlBuilder}.
+     * the passed {@link UriBuilder}.
      *
      * @param swaggerMethodArguments The arguments that will be used to create the query parameters' values.
-     * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
-     * @param serializer {@link ObjectSerializer} that is used to encode the query parameters.
+     * @param uriBuilder The {@link UriBuilder} where the encoded query parameters will be set.
+     * @param serializer {@link CompositeSerializer} that is used to encode the query parameters.
      */
     @SuppressWarnings("unchecked")
-    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder,
-                                          ObjectSerializer serializer) {
+    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UriBuilder uriBuilder,
+        CompositeSerializer serializer) {
         // First we add the constant query parameters.
         for (Map.Entry<String, List<String>> entry : queryParams.entrySet()) {
             if (entry.getValue() == null || entry.getValue().isEmpty()) {
-                urlBuilder.addQueryParameter(entry.getKey(), null);
+                uriBuilder.addQueryParameter(entry.getKey(), null);
             } else {
                 for (String paramValue : entry.getValue()) {
-                    urlBuilder.addQueryParameter(entry.getKey(), paramValue);
+                    uriBuilder.addQueryParameter(entry.getKey(), paramValue);
                 }
             }
         }
@@ -402,12 +403,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     List<Object> methodArguments = (List<Object>) methodArgument;
 
                     for (Object argument : methodArguments) {
-                        addSerializedQueryParameter(serializer, argument, substitution.shouldEncode(),
-                            urlBuilder, substitution.getUrlParameterName());
+                        addSerializedQueryParameter(serializer, argument, substitution.shouldEncode(), uriBuilder,
+                            substitution.getUriParameterName());
                     }
                 } else {
-                    addSerializedQueryParameter(serializer, methodArgument, substitution.shouldEncode(),
-                        urlBuilder, substitution.getUrlParameterName());
+                    addSerializedQueryParameter(serializer, methodArgument, substitution.shouldEncode(), uriBuilder,
+                        substitution.getUriParameterName());
                 }
             }
         }
@@ -419,9 +420,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
      * @param headers The {@link HttpHeaders} where the header values will be set.
-     * @param serializer {@link ObjectSerializer} that is used to serialize the header values.
+     * @param serializer {@link CompositeSerializer} that is used to serialize the header values.
      */
-    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, ObjectSerializer serializer) {
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, CompositeSerializer serializer) {
         headers.setAll(requestHeaders);
 
         if (swaggerMethodArguments == null) {
@@ -435,9 +436,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 final Object methodArgument = swaggerMethodArguments[headerSubstitution.getMethodParameterIndex()];
 
                 if (methodArgument instanceof Map) {
-                    @SuppressWarnings("unchecked") final Map<HttpHeaderName, ?> headerCollection =
-                        (Map<HttpHeaderName, ?>) methodArgument;
-                    final String headerCollectionPrefix = headerSubstitution.getUrlParameterName();
+                    @SuppressWarnings("unchecked")
+                    final Map<HttpHeaderName, ?> headerCollection = (Map<HttpHeaderName, ?>) methodArgument;
+                    final String headerCollectionPrefix = headerSubstitution.getUriParameterName();
 
                     for (final Map.Entry<HttpHeaderName, ?> headerCollectionEntry : headerCollection.entrySet()) {
                         final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
@@ -477,7 +478,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The server sent event listener.
      */
     public ServerSentEventListener setServerSentEventListener(Object[] swaggerMethodArguments) {
-        return serverSentEventListenerPosition < 0 ? null
+        return serverSentEventListenerPosition < 0
+            ? null
             : (ServerSentEventListener) swaggerMethodArguments[serverSentEventListenerPosition];
     }
 
@@ -487,7 +489,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * <ol>
      *     <li>If the returned {@code int[]} is {@code null}, then all {@code 2XX} status codes are considered as
      * success code.</li>
- *         <li>If the returned {@code int[]} is not {@code null}, only the codes in the array are considered as success
+    *         <li>If the returned {@code int[]} is not {@code null}, only the codes in the array are considered as success
      * code.</li>
      * </ol>
      *
@@ -524,12 +526,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the object to be used as the value of the HTTP request.
      *
      * @param swaggerMethodArguments The method arguments to get the value object from.
-     * @param serializer The {@link ObjectSerializer} used to encode the request body if it's an
+     * @param serializer The {@link CompositeSerializer} used to encode the request body if it's an
      * {@code application/x-www-form-urlencoded} request.
      *
      * @return The object that will be used as the body of the HTTP request.
      */
-    public Object setBody(Object[] swaggerMethodArguments, ObjectSerializer serializer) {
+    public Object setBody(Object[] swaggerMethodArguments, CompositeSerializer serializer) {
         Object result = null;
 
         if (bodyContentMethodParameterIndex != null
@@ -542,7 +544,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (!isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
             result = formSubstitutions.stream()
-                .map(substitution -> serializeFormData(serializer, substitution.getUrlParameterName(),
+                .map(substitution -> serializeFormData(serializer, substitution.getUriParameterName(),
                     swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining("&"));
@@ -570,7 +572,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return returnType;
     }
 
-
     /**
      * Get the type of the body parameter to this method, if present.
      *
@@ -591,21 +592,21 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return returnValueWireType;
     }
 
-    private static void addSerializedQueryParameter(ObjectSerializer adapter, Object value, boolean shouldEncode,
-                                                    UrlBuilder urlBuilder, String parameterName) {
+    private static void addSerializedQueryParameter(CompositeSerializer adapter, Object value, boolean shouldEncode,
+        UriBuilder uriBuilder, String parameterName) {
         String parameterValue = serialize(adapter, value);
 
         if (parameterValue != null) {
             if (shouldEncode) {
-                parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
+                parameterValue = UriEscapers.QUERY_ESCAPER.escape(parameterValue);
             }
 
-            // Add parameter to the urlBuilder.
-            urlBuilder.addQueryParameter(parameterName, parameterValue);
+            // Add parameter to the uriBuilder.
+            uriBuilder.addQueryParameter(parameterName, parameterValue);
         }
     }
 
-    private static String serialize(ObjectSerializer serializer, Object value) {
+    private static String serialize(CompositeSerializer serializer, Object value) {
         if (value == null) {
             return null;
         }
@@ -628,7 +629,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else {
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream()) {
-                serializer.serializeToStream(outputStream, value);
+                serializer.serializeToStream(outputStream, value, SerializationFormat.JSON);
 
                 return outputStream.toString(StandardCharsets.UTF_8);
             } catch (IOException e) {
@@ -637,13 +638,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
-    private static String serializeFormData(ObjectSerializer serializer, String key, Object value,
-                                            boolean shouldEncode) {
+    private static String serializeFormData(CompositeSerializer serializer, String key, Object value,
+        boolean shouldEncode) {
         if (value == null) {
             return null;
         }
 
-        String encodedKey = UrlEscapers.FORM_ESCAPER.escape(key);
+        String encodedKey = UriEscapers.FORM_ESCAPER.escape(key);
 
         if (value instanceof List<?>) {
             return ((List<?>) value).stream()
@@ -656,18 +657,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
-    private static String serializeAndEncodeFormValue(ObjectSerializer serializer, Object value, boolean shouldEncode) {
+    private static String serializeAndEncodeFormValue(CompositeSerializer serializer, Object value,
+        boolean shouldEncode) {
         if (value == null) {
             return null;
         }
 
         String serializedValue = serialize(serializer, value);
 
-        return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
+        return shouldEncode ? UriEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
     private static String applySubstitutions(String originalValue, List<RangeReplaceSubstitution> substitutions,
-                                             Object[] methodArguments, ObjectSerializer serializer) {
+        Object[] methodArguments, CompositeSerializer serializer) {
         if (methodArguments == null || isNullOrEmpty(substitutions)) {
             return originalValue;
         }
@@ -685,7 +687,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 String substitutionValue = serialize(serializer, methodArgument);
 
                 if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode()) {
-                    substitutionValue = UrlEscapers.PATH_ESCAPER.escape(substitutionValue);
+                    substitutionValue = UriEscapers.PATH_ESCAPER.escape(substitutionValue);
                 }
                 // if a parameter is null, we treat it as empty string. This is
                 // assuming no {...} will be allowed otherwise in a path template
@@ -725,10 +727,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         HashMap<Integer, UnexpectedExceptionInformation> exceptionHashMap = new HashMap<>();
 
         for (UnexpectedResponseExceptionDetail exceptionAnnotation : unexpectedResponseExceptionDetails) {
-            UnexpectedExceptionInformation exception =
-                new UnexpectedExceptionInformation(
-                    HttpExceptionType.fromString(exceptionAnnotation.exceptionTypeName()),
-                    exceptionAnnotation.exceptionBodyClass());
+            UnexpectedExceptionInformation exception = new UnexpectedExceptionInformation(
+                HttpExceptionType.fromString(exceptionAnnotation.exceptionTypeName()),
+                exceptionAnnotation.exceptionBodyClass());
 
             if (exceptionAnnotation.statusCode().length == 0) {
                 defaultException = exception;

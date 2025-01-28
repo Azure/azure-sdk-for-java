@@ -6,25 +6,46 @@ package com.azure.resourcemanager.subscription.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.subscription.models.PutAliasResponseProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Subscription Information with the alias. */
+/**
+ * Subscription Information with the alias.
+ */
 @Fluent
 public final class PutAliasResponseInner extends ProxyResource {
     /*
      * Put Alias response properties.
      */
-    @JsonProperty(value = "properties")
     private PutAliasResponseProperties properties;
 
-    /** Creates an instance of PutAliasResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PutAliasResponseInner class.
+     */
     public PutAliasResponseInner() {
     }
 
     /**
      * Get the properties property: Put Alias response properties.
-     *
+     * 
      * @return the properties value.
      */
     public PutAliasResponseProperties properties() {
@@ -33,7 +54,7 @@ public final class PutAliasResponseInner extends ProxyResource {
 
     /**
      * Set the properties property: Put Alias response properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PutAliasResponseInner object itself.
      */
@@ -43,13 +64,86 @@ public final class PutAliasResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PutAliasResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PutAliasResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PutAliasResponseInner.
+     */
+    public static PutAliasResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PutAliasResponseInner deserializedPutAliasResponseInner = new PutAliasResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPutAliasResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPutAliasResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPutAliasResponseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPutAliasResponseInner.properties = PutAliasResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPutAliasResponseInner;
+        });
     }
 }

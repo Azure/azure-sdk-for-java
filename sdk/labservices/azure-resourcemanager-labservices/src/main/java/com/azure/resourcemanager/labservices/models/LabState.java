@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The state of a virtual machine. */
+/**
+ * The state of a virtual machine.
+ */
 public enum LabState {
-    /** Enum value Draft. */
+    /**
+     * Enum value Draft.
+     */
     DRAFT("Draft"),
 
-    /** Enum value Publishing. */
+    /**
+     * Enum value Publishing.
+     */
     PUBLISHING("Publishing"),
 
-    /** Enum value Scaling. */
+    /**
+     * Enum value Scaling.
+     */
     SCALING("Scaling"),
 
-    /** Enum value Syncing. */
+    /**
+     * Enum value Syncing.
+     */
     SYNCING("Syncing"),
 
-    /** Enum value Published. */
+    /**
+     * Enum value Published.
+     */
     PUBLISHED("Published");
 
-    /** The actual serialized value for a LabState instance. */
+    /**
+     * The actual serialized value for a LabState instance.
+     */
     private final String value;
 
     LabState(String value) {
@@ -33,11 +44,10 @@ public enum LabState {
 
     /**
      * Parses a serialized value to a LabState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LabState object, or null if unable to parse.
      */
-    @JsonCreator
     public static LabState fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum LabState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

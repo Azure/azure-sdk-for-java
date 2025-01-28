@@ -18,7 +18,10 @@ public final class OperationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAListOfOperationsForAResourceProvider(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getOperations()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getOperations()
             .listWithResponse(com.azure.core.util.Context.NONE);
     }
 }

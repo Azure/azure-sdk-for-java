@@ -22,8 +22,7 @@ public final class ProductFamiliesMetadataDetailsImpl implements ProductFamilies
 
     private final com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager;
 
-    ProductFamiliesMetadataDetailsImpl(
-        ProductFamiliesMetadataDetailsInner innerObject,
+    ProductFamiliesMetadataDetailsImpl(ProductFamiliesMetadataDetailsInner innerObject,
         com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AssessmentType;
 import com.azure.resourcemanager.security.models.Categories;
 import com.azure.resourcemanager.security.models.ImplementationEffort;
@@ -15,7 +19,7 @@ import com.azure.resourcemanager.security.models.Tactics;
 import com.azure.resourcemanager.security.models.Techniques;
 import com.azure.resourcemanager.security.models.Threats;
 import com.azure.resourcemanager.security.models.UserImpact;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,26 +30,27 @@ public final class SecurityAssessmentMetadataPropertiesResponse extends Security
     /*
      * The publishDates property.
      */
-    @JsonProperty(value = "publishDates")
     private SecurityAssessmentMetadataPropertiesResponsePublishDates publishDates;
 
     /*
      * The plannedDeprecationDate property.
      */
-    @JsonProperty(value = "plannedDeprecationDate")
     private String plannedDeprecationDate;
 
     /*
      * The tactics property.
      */
-    @JsonProperty(value = "tactics")
     private List<Tactics> tactics;
 
     /*
      * The techniques property.
      */
-    @JsonProperty(value = "techniques")
     private List<Techniques> techniques;
+
+    /*
+     * Azure resource ID of the policy definition that turns this assessment calculation on
+     */
+    private String policyDefinitionId;
 
     /**
      * Creates an instance of SecurityAssessmentMetadataPropertiesResponse class.
@@ -132,6 +137,17 @@ public final class SecurityAssessmentMetadataPropertiesResponse extends Security
     public SecurityAssessmentMetadataPropertiesResponse withTechniques(List<Techniques> techniques) {
         this.techniques = techniques;
         return this;
+    }
+
+    /**
+     * Get the policyDefinitionId property: Azure resource ID of the policy definition that turns this assessment
+     * calculation on.
+     * 
+     * @return the policyDefinitionId value.
+     */
+    @Override
+    public String policyDefinitionId() {
+        return this.policyDefinitionId;
     }
 
     /**
@@ -242,9 +258,130 @@ public final class SecurityAssessmentMetadataPropertiesResponse extends Security
      */
     @Override
     public void validate() {
-        super.validate();
         if (publishDates() != null) {
             publishDates().validate();
         }
+        if (displayName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model SecurityAssessmentMetadataPropertiesResponse"));
+        }
+        if (severity() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property severity in model SecurityAssessmentMetadataPropertiesResponse"));
+        }
+        if (assessmentType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property assessmentType in model SecurityAssessmentMetadataPropertiesResponse"));
+        }
+        if (partnerData() != null) {
+            partnerData().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentMetadataPropertiesResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("severity", severity() == null ? null : severity().toString());
+        jsonWriter.writeStringField("assessmentType", assessmentType() == null ? null : assessmentType().toString());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("remediationDescription", remediationDescription());
+        jsonWriter.writeArrayField("categories", categories(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("userImpact", userImpact() == null ? null : userImpact().toString());
+        jsonWriter.writeStringField("implementationEffort",
+            implementationEffort() == null ? null : implementationEffort().toString());
+        jsonWriter.writeArrayField("threats", threats(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeBooleanField("preview", preview());
+        jsonWriter.writeJsonField("partnerData", partnerData());
+        jsonWriter.writeJsonField("publishDates", this.publishDates);
+        jsonWriter.writeStringField("plannedDeprecationDate", this.plannedDeprecationDate);
+        jsonWriter.writeArrayField("tactics", this.tactics,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("techniques", this.techniques,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentMetadataPropertiesResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentMetadataPropertiesResponse if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentMetadataPropertiesResponse.
+     */
+    public static SecurityAssessmentMetadataPropertiesResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentMetadataPropertiesResponse deserializedSecurityAssessmentMetadataPropertiesResponse
+                = new SecurityAssessmentMetadataPropertiesResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.withDisplayName(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withSeverity(Severity.fromString(reader.getString()));
+                } else if ("assessmentType".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withAssessmentType(AssessmentType.fromString(reader.getString()));
+                } else if ("policyDefinitionId".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.policyDefinitionId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.withDescription(reader.getString());
+                } else if ("remediationDescription".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withRemediationDescription(reader.getString());
+                } else if ("categories".equals(fieldName)) {
+                    List<Categories> categories
+                        = reader.readArray(reader1 -> Categories.fromString(reader1.getString()));
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.withCategories(categories);
+                } else if ("userImpact".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withUserImpact(UserImpact.fromString(reader.getString()));
+                } else if ("implementationEffort".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withImplementationEffort(ImplementationEffort.fromString(reader.getString()));
+                } else if ("threats".equals(fieldName)) {
+                    List<Threats> threats = reader.readArray(reader1 -> Threats.fromString(reader1.getString()));
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.withThreats(threats);
+                } else if ("preview".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withPreview(reader.getNullable(JsonReader::getBoolean));
+                } else if ("partnerData".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse
+                        .withPartnerData(SecurityAssessmentMetadataPartnerData.fromJson(reader));
+                } else if ("publishDates".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.publishDates
+                        = SecurityAssessmentMetadataPropertiesResponsePublishDates.fromJson(reader);
+                } else if ("plannedDeprecationDate".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.plannedDeprecationDate
+                        = reader.getString();
+                } else if ("tactics".equals(fieldName)) {
+                    List<Tactics> tactics = reader.readArray(reader1 -> Tactics.fromString(reader1.getString()));
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.tactics = tactics;
+                } else if ("techniques".equals(fieldName)) {
+                    List<Techniques> techniques
+                        = reader.readArray(reader1 -> Techniques.fromString(reader1.getString()));
+                    deserializedSecurityAssessmentMetadataPropertiesResponse.techniques = techniques;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentMetadataPropertiesResponse;
+        });
     }
 }

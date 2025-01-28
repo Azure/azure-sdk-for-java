@@ -1,0 +1,91 @@
+{
+  "displayNames": {
+    "io.clientcore.core.http.client.DefaultHttpClientProvider": "DefaultHttpClient",
+    "io.clientcore.http.okhttp3.OkHttpHttpClientProvider": "OkHttpHttpClient"
+  },
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
+      "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
+    },
+    "JavaTestVersion": [ "1.17", "1.21" ],
+    "TEST_HTTP_CLIENT_IMPLEMENTATION": [ "io.clientcore.core.http.client.DefaultHttpClientProvider", "io.clientcore.http.okhttp3.OkHttpHttpClientProvider" ],
+    "Options": {
+      "NotFromSource_TestsOnly": {
+        "TestFromSource": false,
+        "RunAggregateReports": false,
+        "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+        "TestGoals": "verify"
+      }
+    }
+  },
+  "exclude": [
+    {
+      "Pool": "env:LINUXPOOL",
+      "JavaTestVersion": "1.21"
+    }
+  ],
+  "include": [
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.8",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.11",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+          "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.21",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
+      "Options": {
+        "TestFromSource_SkipRebuild_Verify": {
+          "TestFromSource": true,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.21",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
+      "Options": {
+        "NotFromSource_AggregateReports_SkipRebuild_Verify": {
+          "TestFromSource": false,
+          "RunAggregateReports": true,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+          "TestGoals": "verify"
+        }
+      }
+    }
+  ]
+}

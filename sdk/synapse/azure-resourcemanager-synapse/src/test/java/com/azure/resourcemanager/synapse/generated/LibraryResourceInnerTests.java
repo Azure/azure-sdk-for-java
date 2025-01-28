@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"name\":\"tmwwi\",\"path\":\"ehfqpofvwbc\",\"containerName\":\"embnkbw\",\"uploadedTimestamp\":\"2021-03-18T02:40:22Z\",\"type\":\"kdi\",\"provisioningStatus\":\"ihebwtsw\",\"creatorId\":\"uwfmduragegizvc\"},\"etag\":\"elisdjub\",\"id\":\"gbqi\",\"name\":\"kxkbsazgakgacyr\",\"type\":\"m\"}")
-                .toObject(LibraryResourceInner.class);
-        Assertions.assertEquals("tmwwi", model.namePropertiesName());
-        Assertions.assertEquals("ehfqpofvwbc", model.path());
-        Assertions.assertEquals("embnkbw", model.containerName());
-        Assertions.assertEquals("kdi", model.typePropertiesType());
+        LibraryResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"name\":\"misgwbnb\",\"path\":\"ldawkzbaliourqha\",\"containerName\":\"uhashsfwx\",\"uploadedTimestamp\":\"2021-10-19T13:09:56Z\",\"type\":\"z\",\"provisioningStatus\":\"ugicjooxdjebw\",\"creatorId\":\"cwwfvovbvme\"},\"etag\":\"civyhzceuo\",\"id\":\"gjrwjueiotwmcdyt\",\"name\":\"x\",\"type\":\"it\"}")
+            .toObject(LibraryResourceInner.class);
+        Assertions.assertEquals("misgwbnb", model.namePropertiesName());
+        Assertions.assertEquals("ldawkzbaliourqha", model.path());
+        Assertions.assertEquals("uhashsfwx", model.containerName());
+        Assertions.assertEquals("z", model.typePropertiesType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryResourceInner model =
-            new LibraryResourceInner()
-                .withNamePropertiesName("tmwwi")
-                .withPath("ehfqpofvwbc")
-                .withContainerName("embnkbw")
-                .withTypePropertiesType("kdi");
+        LibraryResourceInner model = new LibraryResourceInner().withNamePropertiesName("misgwbnb")
+            .withPath("ldawkzbaliourqha")
+            .withContainerName("uhashsfwx")
+            .withTypePropertiesType("z");
         model = BinaryData.fromObject(model).toObject(LibraryResourceInner.class);
-        Assertions.assertEquals("tmwwi", model.namePropertiesName());
-        Assertions.assertEquals("ehfqpofvwbc", model.path());
-        Assertions.assertEquals("embnkbw", model.containerName());
-        Assertions.assertEquals("kdi", model.typePropertiesType());
+        Assertions.assertEquals("misgwbnb", model.namePropertiesName());
+        Assertions.assertEquals("ldawkzbaliourqha", model.path());
+        Assertions.assertEquals("uhashsfwx", model.containerName());
+        Assertions.assertEquals("z", model.typePropertiesType());
     }
 }

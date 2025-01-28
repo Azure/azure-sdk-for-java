@@ -10,16 +10,16 @@ import java.io.*;
  * processing during write operations.
  */
 @SuppressWarnings("serial")
-public abstract class OutputDecorator implements java.io.Serializable // since 2.1
+public abstract class OutputDecorator implements Serializable // since 2.1
 {
     /**
      * Method called by {@link com.azure.json.implementation.jackson.core.JsonFactory} instance when
      * creating generator for given {@link OutputStream}, when this decorator
      * has been registered.
-     * 
+     *
      * @param ctxt IO context in use (provides access to declared encoding)
      * @param out Original output destination
-     * 
+     *
      * @return OutputStream to use; either passed in argument, or something that
      *   calls it
      *
@@ -31,10 +31,10 @@ public abstract class OutputDecorator implements java.io.Serializable // since 2
      * Method called by {@link com.azure.json.implementation.jackson.core.JsonFactory} instance when
      * creating generator for given {@link Writer}, when this decorator
      * has been registered.
-     * 
+     *
      * @param ctxt IO context in use (provides access to declared encoding)
      * @param w Original output writer
-     * 
+     *
      * @return Writer to use; either passed in argument, or something that calls it
      *
      * @throws IOException if construction of decorated {@link Writer} fails

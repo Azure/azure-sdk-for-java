@@ -14,7 +14,7 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgrade;
 public final class ClustersUpgradeSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * UpgradeAKSPatchVersionForCluster.json
      */
     /**
@@ -24,14 +24,15 @@ public final class ClustersUpgradeSamples {
      */
     public static void clustersUpgradeAKSPatchVersion(
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().upgrade("hiloResourcegroup", "clusterpool1", "cluster1",
-            new ClusterUpgrade().withProperties(new ClusterAksPatchVersionUpgradeProperties()),
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .upgrade("hiloResourcegroup", "clusterpool1", "cluster1",
+                new ClusterUpgrade().withProperties(new ClusterAksPatchVersionUpgradeProperties()),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * UpgradeHotfixForCluster.json
      */
     /**
@@ -41,9 +42,12 @@ public final class ClustersUpgradeSamples {
      */
     public static void
         clustersUpgradeHotfix(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusters().upgrade("hiloResourcegroup", "clusterpool1", "cluster1",
-            new ClusterUpgrade().withProperties(new ClusterHotfixUpgradeProperties().withTargetOssVersion("1.16.0")
-                .withTargetClusterVersion("1.0.6").withTargetBuildNumber("3").withComponentName("historyserver")),
-            com.azure.core.util.Context.NONE);
+        manager.clusters()
+            .upgrade("hiloResourcegroup", "clusterpool1", "cluster1",
+                new ClusterUpgrade().withProperties(new ClusterHotfixUpgradeProperties().withTargetOssVersion("1.16.0")
+                    .withTargetClusterVersion("1.0.6")
+                    .withTargetBuildNumber("3")
+                    .withComponentName("historyserver")),
+                com.azure.core.util.Context.NONE);
     }
 }

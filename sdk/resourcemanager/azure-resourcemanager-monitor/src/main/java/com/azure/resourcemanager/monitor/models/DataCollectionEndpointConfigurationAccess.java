@@ -5,16 +5,35 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The endpoint used by clients to access their configuration.
  */
 @Immutable
 public final class DataCollectionEndpointConfigurationAccess extends ConfigurationAccessEndpointSpec {
+    /*
+     * The endpoint. This property is READ-ONLY.
+     */
+    private String endpoint;
+
     /**
      * Creates an instance of DataCollectionEndpointConfigurationAccess class.
      */
     public DataCollectionEndpointConfigurationAccess() {
+    }
+
+    /**
+     * Get the endpoint property: The endpoint. This property is READ-ONLY.
+     * 
+     * @return the endpoint value.
+     */
+    @Override
+    public String endpoint() {
+        return this.endpoint;
     }
 
     /**
@@ -25,5 +44,41 @@ public final class DataCollectionEndpointConfigurationAccess extends Configurati
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionEndpointConfigurationAccess from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionEndpointConfigurationAccess if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataCollectionEndpointConfigurationAccess.
+     */
+    public static DataCollectionEndpointConfigurationAccess fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionEndpointConfigurationAccess deserializedDataCollectionEndpointConfigurationAccess
+                = new DataCollectionEndpointConfigurationAccess();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedDataCollectionEndpointConfigurationAccess.endpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionEndpointConfigurationAccess;
+        });
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Schemas. */
+/**
+ * Resource collection API of Schemas.
+ */
 public interface Schemas {
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -24,7 +26,7 @@ public interface Schemas {
 
     /**
      * Gets the schema for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

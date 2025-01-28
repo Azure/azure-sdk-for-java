@@ -28,21 +28,10 @@ import reactor.core.publisher.Mono;
  * @param <ManagerT> the manager type for this resource provider type
  * @param <ParentT> the type of the parent resource
  */
-public abstract class IndependentChildrenImpl<
-        T extends IndependentChild<ManagerT>,
-        ImplT extends T,
-        InnerT,
-        InnerCollectionT,
-        ManagerT extends Manager<?>,
-        ParentT extends Resource & HasResourceGroup>
-        extends CreatableResourcesImpl<T, ImplT, InnerT>
-        implements
-        SupportsGettingById<T>,
-        SupportsGettingByParent<T, ParentT, ManagerT>,
-        SupportsListingByParent<T, ParentT, ManagerT>,
-        SupportsDeletingByParent,
-        HasManager<ManagerT>,
-        HasInnerModel<InnerCollectionT> {
+public abstract class IndependentChildrenImpl<T extends IndependentChild<ManagerT>, ImplT extends T, InnerT, InnerCollectionT, ManagerT extends Manager<?>, ParentT extends Resource & HasResourceGroup>
+    extends CreatableResourcesImpl<T, ImplT, InnerT> implements SupportsGettingById<T>,
+    SupportsGettingByParent<T, ParentT, ManagerT>, SupportsListingByParent<T, ParentT, ManagerT>,
+    SupportsDeletingByParent, HasManager<ManagerT>, HasInnerModel<InnerCollectionT> {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 

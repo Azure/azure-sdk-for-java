@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"vyvdcs\",\"currentValue\":6235593202680912824,\"limit\":7516654710743281273,\"name\":{\"value\":\"ectehf\",\"localizedValue\":\"scjeypv\"},\"unit\":\"zrkgqhcjrefovg\"}")
-                .toObject(SignalRUsageInner.class);
+        SignalRUsageInner model = BinaryData.fromString(
+            "{\"id\":\"vyvdcs\",\"currentValue\":6235593202680912824,\"limit\":7516654710743281273,\"name\":{\"value\":\"ectehf\",\"localizedValue\":\"scjeypv\"},\"unit\":\"zrkgqhcjrefovg\"}")
+            .toObject(SignalRUsageInner.class);
         Assertions.assertEquals("vyvdcs", model.id());
         Assertions.assertEquals(6235593202680912824L, model.currentValue());
         Assertions.assertEquals(7516654710743281273L, model.limit());
@@ -27,13 +25,11 @@ public final class SignalRUsageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRUsageInner model =
-            new SignalRUsageInner()
-                .withId("vyvdcs")
-                .withCurrentValue(6235593202680912824L)
-                .withLimit(7516654710743281273L)
-                .withName(new SignalRUsageName().withValue("ectehf").withLocalizedValue("scjeypv"))
-                .withUnit("zrkgqhcjrefovg");
+        SignalRUsageInner model = new SignalRUsageInner().withId("vyvdcs")
+            .withCurrentValue(6235593202680912824L)
+            .withLimit(7516654710743281273L)
+            .withName(new SignalRUsageName().withValue("ectehf").withLocalizedValue("scjeypv"))
+            .withUnit("zrkgqhcjrefovg");
         model = BinaryData.fromObject(model).toObject(SignalRUsageInner.class);
         Assertions.assertEquals("vyvdcs", model.id());
         Assertions.assertEquals(6235593202680912824L, model.currentValue());

@@ -23,11 +23,6 @@ public final class PageBlobsUploadPagesHeaders {
     private String xMsVersion;
 
     /*
-     * The ETag property.
-     */
-    private String eTag;
-
-    /*
      * The x-ms-content-crc64 property.
      */
     private byte[] xMsContentCrc64;
@@ -48,19 +43,14 @@ public final class PageBlobsUploadPagesHeaders {
     private String xMsEncryptionKeySha256;
 
     /*
-     * The x-ms-request-id property.
+     * The x-ms-structured-body property.
      */
-    private String xMsRequestId;
+    private String xMsStructuredBody;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
     private Boolean xMsRequestServerEncrypted;
-
-    /*
-     * The x-ms-client-request-id property.
-     */
-    private String xMsClientRequestId;
 
     /*
      * The Date property.
@@ -71,6 +61,21 @@ public final class PageBlobsUploadPagesHeaders {
      * The Content-MD5 property.
      */
     private byte[] contentMD5;
+
+    /*
+     * The ETag property.
+     */
+    private String eTag;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-client-request-id property.
+     */
+    private String xMsClientRequestId;
 
     /*
      * The x-ms-encryption-scope property.
@@ -87,6 +92,8 @@ public final class PageBlobsUploadPagesHeaders {
     private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
         = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
+
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
@@ -100,7 +107,6 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public PageBlobsUploadPagesHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
@@ -114,12 +120,11 @@ public final class PageBlobsUploadPagesHeaders {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -128,6 +133,9 @@ public final class PageBlobsUploadPagesHeaders {
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         }
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
 
@@ -148,26 +156,6 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public PageBlobsUploadPagesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The ETag property.
-     * 
-     * @return the eTag value.
-     */
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The ETag property.
-     * 
-     * @param eTag the eTag value to set.
-     * @return the PageBlobsUploadPagesHeaders object itself.
-     */
-    public PageBlobsUploadPagesHeaders setETag(String eTag) {
-        this.eTag = eTag;
         return this;
     }
 
@@ -259,22 +247,22 @@ public final class PageBlobsUploadPagesHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
      * 
-     * @return the xMsRequestId value.
+     * @return the xMsStructuredBody value.
      */
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobsUploadPagesHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public PageBlobsUploadPagesHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 
@@ -295,26 +283,6 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public PageBlobsUploadPagesHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @return the xMsClientRequestId value.
-     */
-    public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
-    }
-
-    /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the PageBlobsUploadPagesHeaders object itself.
-     */
-    public PageBlobsUploadPagesHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 
@@ -362,6 +330,66 @@ public final class PageBlobsUploadPagesHeaders {
      */
     public PageBlobsUploadPagesHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
+     * Get the eTag property: The ETag property.
+     * 
+     * @return the eTag value.
+     */
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The ETag property.
+     * 
+     * @param eTag the eTag value to set.
+     * @return the PageBlobsUploadPagesHeaders object itself.
+     */
+    public PageBlobsUploadPagesHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the PageBlobsUploadPagesHeaders object itself.
+     */
+    public PageBlobsUploadPagesHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @return the xMsClientRequestId value.
+     */
+    public String getXMsClientRequestId() {
+        return this.xMsClientRequestId;
+    }
+
+    /**
+     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
+     * 
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @return the PageBlobsUploadPagesHeaders object itself.
+     */
+    public PageBlobsUploadPagesHeaders setXMsClientRequestId(String xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-/** Samples for TagRules Get. */
+/**
+ * Samples for TagRules Get.
+ */
 public final class TagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/TagRules_Get.json
+     * x-ms-original-file:
+     * specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/TagRules_Get.json
      */
     /**
      * Sample code: TagRules_Get.
-     *
+     * 
      * @param manager Entry point to ElasticManager.
      */
     public static void tagRulesGet(com.azure.resourcemanager.elastic.ElasticManager manager) {

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.automanage.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfileAssignments ListByResourceGroup. */
+/**
+ * Samples for ConfigurationProfileAssignments ListByResourceGroup.
+ */
 public final class ConfigurationProfileAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/listConfigurationProfileAssignmentsByResourceGroup.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * listConfigurationProfileAssignmentsByResourceGroup.json
      */
     /**
      * Sample code: List configuration profile assignments by resourceGroup.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
     public static void listConfigurationProfileAssignmentsByResourceGroup(
         com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager.configurationProfileAssignments().listByResourceGroup("myResourceGroupName", Context.NONE);
+        manager.configurationProfileAssignments()
+            .listByResourceGroup("myResourceGroupName", com.azure.core.util.Context.NONE);
     }
 }

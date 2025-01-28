@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state. */
+/**
+ * Provisioning state.
+ */
 public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningStates> {
-    /** Static value Provisioning for ProvisioningStates. */
+    /**
+     * Static value Provisioning for ProvisioningStates.
+     */
     public static final ProvisioningStates PROVISIONING = fromString("Provisioning");
 
-    /** Static value Succeeded for ProvisioningStates. */
+    /**
+     * Static value Succeeded for ProvisioningStates.
+     */
     public static final ProvisioningStates SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Expiring for ProvisioningStates. */
+    /**
+     * Static value Expiring for ProvisioningStates.
+     */
     public static final ProvisioningStates EXPIRING = fromString("Expiring");
 
-    /** Static value Deleting for ProvisioningStates. */
+    /**
+     * Static value Deleting for ProvisioningStates.
+     */
     public static final ProvisioningStates DELETING = fromString("Deleting");
 
-    /** Static value HumanIntervention for ProvisioningStates. */
+    /**
+     * Static value HumanIntervention for ProvisioningStates.
+     */
     public static final ProvisioningStates HUMAN_INTERVENTION = fromString("HumanIntervention");
 
-    /** Static value Failed for ProvisioningStates. */
+    /**
+     * Static value Failed for ProvisioningStates.
+     */
     public static final ProvisioningStates FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ProvisioningStates value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningS
 
     /**
      * Creates or finds a ProvisioningStates from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningStates.
      */
-    @JsonCreator
     public static ProvisioningStates fromString(String name) {
         return fromString(name, ProvisioningStates.class);
     }
 
     /**
      * Gets known ProvisioningStates values.
-     *
+     * 
      * @return known ProvisioningStates values.
      */
     public static Collection<ProvisioningStates> values() {

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Database migration errors for online migration. */
+/**
+ * Database migration errors for online migration.
+ */
 @Immutable
-public final class SyncMigrationDatabaseErrorEvent {
+public final class SyncMigrationDatabaseErrorEvent implements JsonSerializable<SyncMigrationDatabaseErrorEvent> {
     /*
      * String value of timestamp.
      */
-    @JsonProperty(value = "timestampString", access = JsonProperty.Access.WRITE_ONLY)
     private String timestampString;
 
     /*
      * Event type.
      */
-    @JsonProperty(value = "eventTypeString", access = JsonProperty.Access.WRITE_ONLY)
     private String eventTypeString;
 
     /*
      * Event text.
      */
-    @JsonProperty(value = "eventText", access = JsonProperty.Access.WRITE_ONLY)
     private String eventText;
 
-    /** Creates an instance of SyncMigrationDatabaseErrorEvent class. */
+    /**
+     * Creates an instance of SyncMigrationDatabaseErrorEvent class.
+     */
     public SyncMigrationDatabaseErrorEvent() {
     }
 
     /**
      * Get the timestampString property: String value of timestamp.
-     *
+     * 
      * @return the timestampString value.
      */
     public String timestampString() {
@@ -43,7 +48,7 @@ public final class SyncMigrationDatabaseErrorEvent {
 
     /**
      * Get the eventTypeString property: Event type.
-     *
+     * 
      * @return the eventTypeString value.
      */
     public String eventTypeString() {
@@ -52,7 +57,7 @@ public final class SyncMigrationDatabaseErrorEvent {
 
     /**
      * Get the eventText property: Event text.
-     *
+     * 
      * @return the eventText value.
      */
     public String eventText() {
@@ -61,9 +66,49 @@ public final class SyncMigrationDatabaseErrorEvent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncMigrationDatabaseErrorEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncMigrationDatabaseErrorEvent if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncMigrationDatabaseErrorEvent.
+     */
+    public static SyncMigrationDatabaseErrorEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncMigrationDatabaseErrorEvent deserializedSyncMigrationDatabaseErrorEvent
+                = new SyncMigrationDatabaseErrorEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestampString".equals(fieldName)) {
+                    deserializedSyncMigrationDatabaseErrorEvent.timestampString = reader.getString();
+                } else if ("eventTypeString".equals(fieldName)) {
+                    deserializedSyncMigrationDatabaseErrorEvent.eventTypeString = reader.getString();
+                } else if ("eventText".equals(fieldName)) {
+                    deserializedSyncMigrationDatabaseErrorEvent.eventText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncMigrationDatabaseErrorEvent;
+        });
     }
 }

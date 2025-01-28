@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for restarting a Batch Compute Node.
  */
 public class RebootBatchNodeOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link RebootBatchNodeOptions}.
+     */
+    public RebootBatchNodeOptions() {
+    }
 }

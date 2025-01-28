@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found receipt fields from a file source URL.
- * See fields found on a receipt <a href=https://aka.ms/documentintelligence/receiptfields>here</a>
+ * See fields found on a receipt <a href=https://aka.ms/formrecognizer/receiptfields>here</a>
  */
 public class AnalyzeReceiptsFromUrlAsync {
 
@@ -40,15 +40,9 @@ public class AnalyzeReceiptsFromUrlAsync {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence"
                 + "/azure-ai-documentintelligence/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
-            client.beginAnalyzeDocument("prebuilt-receipt", null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentRequest().setUrlSource(receiptUrl));
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeReceiptPoller =
+            client.beginAnalyzeDocument("prebuilt-receipt",
+                new AnalyzeDocumentOptions(receiptUrl));
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller
             .last()
@@ -64,7 +58,7 @@ public class AnalyzeReceiptsFromUrlAsync {
 
         receiptResultsMono.subscribe(receiptResults -> {
             for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
-                Document analyzedReceipt = receiptResults.getDocuments().get(i);
+                AnalyzedDocument analyzedReceipt = receiptResults.getDocuments().get(i);
                 Map<String, DocumentField> receiptFields = analyzedReceipt.getFields();
                 System.out.printf("----------- Analyzing receipt info %d -----------%n", i);
                 DocumentField merchantNameField = receiptFields.get("MerchantName");
@@ -107,10 +101,10 @@ public class AnalyzeReceiptsFromUrlAsync {
                 if (receiptItemsField != null) {
                     System.out.printf("Receipt Items: %n");
                     if (DocumentFieldType.ARRAY == receiptItemsField.getType()) {
-                        List<DocumentField> receiptItems = receiptItemsField.getValueArray();
+                        List<DocumentField> receiptItems = receiptItemsField.getValueList();
                         receiptItems.stream()
                             .filter(receiptItem -> DocumentFieldType.OBJECT == receiptItem.getType())
-                            .map(documentField -> documentField.getValueObject())
+                            .map(documentField -> documentField.getValueMap())
                             .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                                 if ("Name".equals(key)) {
                                     if (DocumentFieldType.STRING == documentField.getType()) {

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.advisor.fluent.models.SuppressionContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of Advisor suppressions. */
+/**
+ * The list of Advisor suppressions.
+ */
 @Fluent
-public final class SuppressionContractListResult {
+public final class SuppressionContractListResult implements JsonSerializable<SuppressionContractListResult> {
     /*
      * The link used to get the next page of suppressions.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of suppressions.
      */
-    @JsonProperty(value = "value")
     private List<SuppressionContractInner> value;
 
-    /** Creates an instance of SuppressionContractListResult class. */
+    /**
+     * Creates an instance of SuppressionContractListResult class.
+     */
     public SuppressionContractListResult() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of suppressions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class SuppressionContractListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of suppressions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SuppressionContractListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class SuppressionContractListResult {
 
     /**
      * Get the value property: The list of suppressions.
-     *
+     * 
      * @return the value value.
      */
     public List<SuppressionContractInner> value() {
@@ -59,7 +65,7 @@ public final class SuppressionContractListResult {
 
     /**
      * Set the value property: The list of suppressions.
-     *
+     * 
      * @param value the value value to set.
      * @return the SuppressionContractListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class SuppressionContractListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuppressionContractListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuppressionContractListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SuppressionContractListResult.
+     */
+    public static SuppressionContractListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuppressionContractListResult deserializedSuppressionContractListResult
+                = new SuppressionContractListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedSuppressionContractListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<SuppressionContractInner> value
+                        = reader.readArray(reader1 -> SuppressionContractInner.fromJson(reader1));
+                    deserializedSuppressionContractListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuppressionContractListResult;
+        });
     }
 }

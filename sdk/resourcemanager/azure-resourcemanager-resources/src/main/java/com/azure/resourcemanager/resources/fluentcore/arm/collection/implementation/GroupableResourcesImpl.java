@@ -25,25 +25,14 @@ import reactor.core.publisher.Mono;
  * @param <InnerCollectionT> the inner type of the collection object
  * @param <ManagerT> the manager type for this resource provider type
  */
-public abstract class GroupableResourcesImpl<
-        T extends GroupableResource<ManagerT, InnerT>,
-        ImplT extends T,
-        InnerT extends Resource,
-        InnerCollectionT,
-        ManagerT extends Manager<?>>
-        extends CreatableResourcesImpl<T, ImplT, InnerT>
-        implements
-        SupportsGettingById<T>,
-        SupportsGettingByResourceGroup<T>,
-        SupportsDeletingByResourceGroup,
-        HasManager<ManagerT> {
+public abstract class GroupableResourcesImpl<T extends GroupableResource<ManagerT, InnerT>, ImplT extends T, InnerT extends Resource, InnerCollectionT, ManagerT extends Manager<?>>
+    extends CreatableResourcesImpl<T, ImplT, InnerT> implements SupportsGettingById<T>,
+    SupportsGettingByResourceGroup<T>, SupportsDeletingByResourceGroup, HasManager<ManagerT> {
 
     private final InnerCollectionT innerCollection;
     private final ManagerT myManager;
 
-    protected GroupableResourcesImpl(
-            InnerCollectionT innerCollection,
-            ManagerT manager) {
+    protected GroupableResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         this.innerCollection = innerCollection;
         this.myManager = manager;
     }
@@ -65,8 +54,7 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<T> getByIdAsync(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
         }
         ResourceId resourceId = ResourceId.fromString(id);
 
@@ -81,12 +69,11 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         return this.deleteInnerAsync(resourceGroupName, name)
             .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
@@ -95,8 +82,7 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
         }
         return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
@@ -109,15 +95,13 @@ public abstract class GroupableResourcesImpl<
     @Override
     public Mono<T> getByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
-        return this.getInnerAsync(resourceGroupName, name)
-                .map(this::wrapModel);
+        return this.getInnerAsync(resourceGroupName, name).map(this::wrapModel);
     }
 
     protected abstract Mono<InnerT> getInnerAsync(String resourceGroupName, String name);

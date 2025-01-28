@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.ApiCollectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Page of a list of API collections as represented by Microsoft Defender for APIs.
  */
 @Immutable
-public final class ApiCollectionList {
+public final class ApiCollectionList implements JsonSerializable<ApiCollectionList> {
     /*
      * API collections in this page.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiCollectionInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,43 @@ public final class ApiCollectionList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiCollectionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiCollectionList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiCollectionList.
+     */
+    public static ApiCollectionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiCollectionList deserializedApiCollectionList = new ApiCollectionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApiCollectionInner> value = reader.readArray(reader1 -> ApiCollectionInner.fromJson(reader1));
+                    deserializedApiCollectionList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApiCollectionList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiCollectionList;
+        });
     }
 }

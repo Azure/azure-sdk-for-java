@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Polarization. e.g. (RHCP, LHCP). */
+/**
+ * Polarization. e.g. (RHCP, LHCP).
+ */
 public final class Polarization extends ExpandableStringEnum<Polarization> {
-    /** Static value RHCP for Polarization. */
+    /**
+     * Static value RHCP for Polarization.
+     */
     public static final Polarization RHCP = fromString("RHCP");
 
-    /** Static value LHCP for Polarization. */
+    /**
+     * Static value LHCP for Polarization.
+     */
     public static final Polarization LHCP = fromString("LHCP");
 
-    /** Static value linearVertical for Polarization. */
+    /**
+     * Static value linearVertical for Polarization.
+     */
     public static final Polarization LINEAR_VERTICAL = fromString("linearVertical");
 
-    /** Static value linearHorizontal for Polarization. */
+    /**
+     * Static value linearHorizontal for Polarization.
+     */
     public static final Polarization LINEAR_HORIZONTAL = fromString("linearHorizontal");
 
     /**
      * Creates a new instance of Polarization value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class Polarization extends ExpandableStringEnum<Polarization> {
 
     /**
      * Creates or finds a Polarization from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Polarization.
      */
-    @JsonCreator
     public static Polarization fromString(String name) {
         return fromString(name, Polarization.class);
     }
 
     /**
      * Gets known Polarization values.
-     *
+     * 
      * @return known Polarization values.
      */
     public static Collection<Polarization> values() {

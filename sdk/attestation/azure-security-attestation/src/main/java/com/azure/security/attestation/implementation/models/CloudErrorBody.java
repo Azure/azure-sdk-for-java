@@ -84,6 +84,9 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
     public void validate() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"swt\",\"description\":\"qqcqikclsmal\",\"terms\":\"swoykdn\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":2138658673,\"state\":\"published\"}")
-                .toObject(ProductUpdateProperties.class);
+        ProductUpdateProperties model = BinaryData.fromString(
+            "{\"displayName\":\"swt\",\"description\":\"qqcqikclsmal\",\"terms\":\"swoykdn\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":2138658673,\"state\":\"published\"}")
+            .toObject(ProductUpdateProperties.class);
         Assertions.assertEquals("qqcqikclsmal", model.description());
         Assertions.assertEquals("swoykdn", model.terms());
         Assertions.assertEquals(false, model.subscriptionRequired());
@@ -28,15 +26,13 @@ public final class ProductUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductUpdateProperties model =
-            new ProductUpdateProperties()
-                .withDescription("qqcqikclsmal")
-                .withTerms("swoykdn")
-                .withSubscriptionRequired(false)
-                .withApprovalRequired(true)
-                .withSubscriptionsLimit(2138658673)
-                .withState(ProductState.PUBLISHED)
-                .withDisplayName("swt");
+        ProductUpdateProperties model = new ProductUpdateProperties().withDescription("qqcqikclsmal")
+            .withTerms("swoykdn")
+            .withSubscriptionRequired(false)
+            .withApprovalRequired(true)
+            .withSubscriptionsLimit(2138658673)
+            .withState(ProductState.PUBLISHED)
+            .withDisplayName("swt");
         model = BinaryData.fromObject(model).toObject(ProductUpdateProperties.class);
         Assertions.assertEquals("qqcqikclsmal", model.description());
         Assertions.assertEquals("swoykdn", model.terms());

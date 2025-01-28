@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Group the result set. */
+/**
+ * Group the result set.
+ */
 @Fluent
-public final class AlertsSummaryGroup {
+public final class AlertsSummaryGroup implements JsonSerializable<AlertsSummaryGroup> {
     /*
      * Total count of the result set.
      */
-    @JsonProperty(value = "total")
     private Long total;
 
     /*
      * Total count of the smart groups.
      */
-    @JsonProperty(value = "smartGroupsCount")
     private Long smartGroupsCount;
 
     /*
      * Name of the field aggregated
      */
-    @JsonProperty(value = "groupedby")
     private String groupedby;
 
     /*
      * List of the items
      */
-    @JsonProperty(value = "values")
     private List<AlertsSummaryGroupItem> values;
 
     /**
+     * Creates an instance of AlertsSummaryGroup class.
+     */
+    public AlertsSummaryGroup() {
+    }
+
+    /**
      * Get the total property: Total count of the result set.
-     *
+     * 
      * @return the total value.
      */
     public Long total() {
@@ -46,7 +54,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Set the total property: Total count of the result set.
-     *
+     * 
      * @param total the total value to set.
      * @return the AlertsSummaryGroup object itself.
      */
@@ -57,7 +65,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Get the smartGroupsCount property: Total count of the smart groups.
-     *
+     * 
      * @return the smartGroupsCount value.
      */
     public Long smartGroupsCount() {
@@ -66,7 +74,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Set the smartGroupsCount property: Total count of the smart groups.
-     *
+     * 
      * @param smartGroupsCount the smartGroupsCount value to set.
      * @return the AlertsSummaryGroup object itself.
      */
@@ -77,7 +85,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Get the groupedby property: Name of the field aggregated.
-     *
+     * 
      * @return the groupedby value.
      */
     public String groupedby() {
@@ -86,7 +94,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Set the groupedby property: Name of the field aggregated.
-     *
+     * 
      * @param groupedby the groupedby value to set.
      * @return the AlertsSummaryGroup object itself.
      */
@@ -97,7 +105,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Get the values property: List of the items.
-     *
+     * 
      * @return the values value.
      */
     public List<AlertsSummaryGroupItem> values() {
@@ -106,7 +114,7 @@ public final class AlertsSummaryGroup {
 
     /**
      * Set the values property: List of the items.
-     *
+     * 
      * @param values the values value to set.
      * @return the AlertsSummaryGroup object itself.
      */
@@ -117,12 +125,59 @@ public final class AlertsSummaryGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("total", this.total);
+        jsonWriter.writeNumberField("smartGroupsCount", this.smartGroupsCount);
+        jsonWriter.writeStringField("groupedby", this.groupedby);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertsSummaryGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertsSummaryGroup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertsSummaryGroup.
+     */
+    public static AlertsSummaryGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertsSummaryGroup deserializedAlertsSummaryGroup = new AlertsSummaryGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("total".equals(fieldName)) {
+                    deserializedAlertsSummaryGroup.total = reader.getNullable(JsonReader::getLong);
+                } else if ("smartGroupsCount".equals(fieldName)) {
+                    deserializedAlertsSummaryGroup.smartGroupsCount = reader.getNullable(JsonReader::getLong);
+                } else if ("groupedby".equals(fieldName)) {
+                    deserializedAlertsSummaryGroup.groupedby = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<AlertsSummaryGroupItem> values
+                        = reader.readArray(reader1 -> AlertsSummaryGroupItem.fromJson(reader1));
+                    deserializedAlertsSummaryGroup.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertsSummaryGroup;
+        });
     }
 }

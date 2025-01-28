@@ -21,6 +21,15 @@ public final class ServiceEndpointType extends ExpandableStringEnum<ServiceEndpo
     public static final ServiceEndpointType MICROSOFT_WEB = fromString("Microsoft.Web");
 
     /**
+     * Creates a new instance of ServiceEndpointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceEndpointType() {
+    }
+
+    /**
      * Creates or finds a ServiceEndpointType from its string representation.
      *
      * @param name a name to look for
@@ -30,7 +39,11 @@ public final class ServiceEndpointType extends ExpandableStringEnum<ServiceEndpo
         return fromString(name, ServiceEndpointType.class);
     }
 
-    /** @return known ServiceEndpointType values */
+    /**
+     * Gets known ServiceEndpointType values.
+     *
+     * @return known ServiceEndpointType values
+     */
     public static Collection<ServiceEndpointType> values() {
         return values(ServiceEndpointType.class);
     }

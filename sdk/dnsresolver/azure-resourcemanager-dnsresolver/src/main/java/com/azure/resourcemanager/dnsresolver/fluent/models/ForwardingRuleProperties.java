@@ -6,52 +6,57 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Represents the properties of a forwarding rule within a DNS forwarding ruleset. */
+/**
+ * Represents the properties of a forwarding rule within a DNS forwarding ruleset.
+ */
 @Fluent
-public final class ForwardingRuleProperties {
+public final class ForwardingRuleProperties implements JsonSerializable<ForwardingRuleProperties> {
     /*
      * The domain name for the forwarding rule.
      */
-    @JsonProperty(value = "domainName", required = true)
     private String domainName;
 
     /*
      * DNS servers to forward the DNS query to.
      */
-    @JsonProperty(value = "targetDnsServers", required = true)
     private List<TargetDnsServer> targetDnsServers;
 
     /*
      * Metadata attached to the forwarding rule.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The state of forwarding rule.
      */
-    @JsonProperty(value = "forwardingRuleState")
     private ForwardingRuleState forwardingRuleState;
 
     /*
      * The current provisioning state of the forwarding rule. This is a read-only property and any attempt to set this
      * value will be ignored.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
+     * Creates an instance of ForwardingRuleProperties class.
+     */
+    public ForwardingRuleProperties() {
+    }
+
+    /**
      * Get the domainName property: The domain name for the forwarding rule.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -60,7 +65,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Set the domainName property: The domain name for the forwarding rule.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the ForwardingRuleProperties object itself.
      */
@@ -71,7 +76,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Get the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @return the targetDnsServers value.
      */
     public List<TargetDnsServer> targetDnsServers() {
@@ -80,7 +85,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Set the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @param targetDnsServers the targetDnsServers value to set.
      * @return the ForwardingRuleProperties object itself.
      */
@@ -91,7 +96,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Get the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -100,7 +105,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Set the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ForwardingRuleProperties object itself.
      */
@@ -111,7 +116,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Get the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @return the forwardingRuleState value.
      */
     public ForwardingRuleState forwardingRuleState() {
@@ -120,7 +125,7 @@ public final class ForwardingRuleProperties {
 
     /**
      * Set the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @param forwardingRuleState the forwardingRuleState value to set.
      * @return the ForwardingRuleProperties object itself.
      */
@@ -132,7 +137,7 @@ public final class ForwardingRuleProperties {
     /**
      * Get the provisioningState property: The current provisioning state of the forwarding rule. This is a read-only
      * property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -141,25 +146,78 @@ public final class ForwardingRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainName in model ForwardingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainName in model ForwardingRuleProperties"));
         }
         if (targetDnsServers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetDnsServers in model ForwardingRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetDnsServers in model ForwardingRuleProperties"));
         } else {
             targetDnsServers().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForwardingRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeArrayField("targetDnsServers", this.targetDnsServers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("forwardingRuleState",
+            this.forwardingRuleState == null ? null : this.forwardingRuleState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForwardingRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForwardingRuleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForwardingRuleProperties.
+     */
+    public static ForwardingRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForwardingRuleProperties deserializedForwardingRuleProperties = new ForwardingRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainName".equals(fieldName)) {
+                    deserializedForwardingRuleProperties.domainName = reader.getString();
+                } else if ("targetDnsServers".equals(fieldName)) {
+                    List<TargetDnsServer> targetDnsServers
+                        = reader.readArray(reader1 -> TargetDnsServer.fromJson(reader1));
+                    deserializedForwardingRuleProperties.targetDnsServers = targetDnsServers;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedForwardingRuleProperties.metadata = metadata;
+                } else if ("forwardingRuleState".equals(fieldName)) {
+                    deserializedForwardingRuleProperties.forwardingRuleState
+                        = ForwardingRuleState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedForwardingRuleProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForwardingRuleProperties;
+        });
+    }
 }

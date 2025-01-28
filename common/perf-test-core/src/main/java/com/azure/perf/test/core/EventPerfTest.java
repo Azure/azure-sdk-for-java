@@ -47,6 +47,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         completedOps.getAndIncrement();
         lastCompletionNanoTime = System.nanoTime() - startTime;
     }
+
     /**
      * Indicates an error was raised, and stops the performance test flow.
      */
@@ -69,7 +70,8 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         synchronized (this) {
             try {
                 wait((endNanoTime - startTime) / 1000000);
-            } catch (InterruptedException e) { }
+            } catch (InterruptedException e) {
+            }
             if (errorRaised) {
                 throw new RuntimeException(throwable);
             }

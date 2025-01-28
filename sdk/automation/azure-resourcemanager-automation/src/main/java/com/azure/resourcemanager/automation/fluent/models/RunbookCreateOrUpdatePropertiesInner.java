@@ -6,58 +6,64 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentLink;
 import com.azure.resourcemanager.automation.models.RunbookTypeEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create or update runbook properties. */
+/**
+ * The parameters supplied to the create or update runbook properties.
+ */
 @Fluent
-public final class RunbookCreateOrUpdatePropertiesInner {
+public final class RunbookCreateOrUpdatePropertiesInner
+    implements JsonSerializable<RunbookCreateOrUpdatePropertiesInner> {
     /*
      * Gets or sets verbose log option.
      */
-    @JsonProperty(value = "logVerbose")
     private Boolean logVerbose;
 
     /*
      * Gets or sets progress log option.
      */
-    @JsonProperty(value = "logProgress")
     private Boolean logProgress;
 
     /*
      * Gets or sets the type of the runbook.
      */
-    @JsonProperty(value = "runbookType", required = true)
     private RunbookTypeEnum runbookType;
 
     /*
      * Gets or sets the draft runbook properties.
      */
-    @JsonProperty(value = "draft")
     private RunbookDraftInner draft;
 
     /*
      * Gets or sets the published runbook content link.
      */
-    @JsonProperty(value = "publishContentLink")
     private ContentLink publishContentLink;
 
     /*
      * Gets or sets the description of the runbook.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets the activity-level tracing options of the runbook.
      */
-    @JsonProperty(value = "logActivityTrace")
     private Integer logActivityTrace;
 
     /**
+     * Creates an instance of RunbookCreateOrUpdatePropertiesInner class.
+     */
+    public RunbookCreateOrUpdatePropertiesInner() {
+    }
+
+    /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -66,7 +72,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -77,7 +83,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Get the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @return the logProgress value.
      */
     public Boolean logProgress() {
@@ -86,7 +92,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the logProgress property: Gets or sets progress log option.
-     *
+     * 
      * @param logProgress the logProgress value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -97,7 +103,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Get the runbookType property: Gets or sets the type of the runbook.
-     *
+     * 
      * @return the runbookType value.
      */
     public RunbookTypeEnum runbookType() {
@@ -106,7 +112,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the runbookType property: Gets or sets the type of the runbook.
-     *
+     * 
      * @param runbookType the runbookType value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -117,7 +123,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Get the draft property: Gets or sets the draft runbook properties.
-     *
+     * 
      * @return the draft value.
      */
     public RunbookDraftInner draft() {
@@ -126,7 +132,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the draft property: Gets or sets the draft runbook properties.
-     *
+     * 
      * @param draft the draft value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -137,7 +143,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Get the publishContentLink property: Gets or sets the published runbook content link.
-     *
+     * 
      * @return the publishContentLink value.
      */
     public ContentLink publishContentLink() {
@@ -146,7 +152,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the publishContentLink property: Gets or sets the published runbook content link.
-     *
+     * 
      * @param publishContentLink the publishContentLink value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -157,7 +163,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Get the description property: Gets or sets the description of the runbook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -166,7 +172,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the description property: Gets or sets the description of the runbook.
-     *
+     * 
      * @param description the description value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -177,7 +183,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Get the logActivityTrace property: Gets or sets the activity-level tracing options of the runbook.
-     *
+     * 
      * @return the logActivityTrace value.
      */
     public Integer logActivityTrace() {
@@ -186,7 +192,7 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Set the logActivityTrace property: Gets or sets the activity-level tracing options of the runbook.
-     *
+     * 
      * @param logActivityTrace the logActivityTrace value to set.
      * @return the RunbookCreateOrUpdatePropertiesInner object itself.
      */
@@ -197,15 +203,14 @@ public final class RunbookCreateOrUpdatePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runbookType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runbookType in model RunbookCreateOrUpdatePropertiesInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runbookType in model RunbookCreateOrUpdatePropertiesInner"));
         }
         if (draft() != null) {
             draft().validate();
@@ -216,4 +221,64 @@ public final class RunbookCreateOrUpdatePropertiesInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunbookCreateOrUpdatePropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runbookType", this.runbookType == null ? null : this.runbookType.toString());
+        jsonWriter.writeBooleanField("logVerbose", this.logVerbose);
+        jsonWriter.writeBooleanField("logProgress", this.logProgress);
+        jsonWriter.writeJsonField("draft", this.draft);
+        jsonWriter.writeJsonField("publishContentLink", this.publishContentLink);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeNumberField("logActivityTrace", this.logActivityTrace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookCreateOrUpdatePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookCreateOrUpdatePropertiesInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunbookCreateOrUpdatePropertiesInner.
+     */
+    public static RunbookCreateOrUpdatePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookCreateOrUpdatePropertiesInner deserializedRunbookCreateOrUpdatePropertiesInner
+                = new RunbookCreateOrUpdatePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runbookType".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.runbookType
+                        = RunbookTypeEnum.fromString(reader.getString());
+                } else if ("logVerbose".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.logVerbose
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logProgress".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.logProgress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("draft".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.draft = RunbookDraftInner.fromJson(reader);
+                } else if ("publishContentLink".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.publishContentLink = ContentLink.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.description = reader.getString();
+                } else if ("logActivityTrace".equals(fieldName)) {
+                    deserializedRunbookCreateOrUpdatePropertiesInner.logActivityTrace
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookCreateOrUpdatePropertiesInner;
+        });
+    }
 }

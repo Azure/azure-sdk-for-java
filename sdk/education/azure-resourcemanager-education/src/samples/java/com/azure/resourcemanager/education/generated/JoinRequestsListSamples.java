@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for JoinRequests List. */
+/**
+ * Samples for JoinRequests List.
+ */
 public final class JoinRequestsListSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestList.
+     * json
      */
     /**
      * Sample code: JoinRequestList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void joinRequestList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .joinRequests()
-            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false, Context.NONE);
+        manager.joinRequests()
+            .list("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}", false,
+                com.azure.core.util.Context.NONE);
     }
 }

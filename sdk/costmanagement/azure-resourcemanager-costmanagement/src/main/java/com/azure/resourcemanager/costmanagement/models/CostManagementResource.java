@@ -6,31 +6,51 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Resource model definition. */
+/**
+ * The Resource model definition.
+ */
 @Fluent
 public class CostManagementResource extends Resource {
     /*
      * SKU of the resource.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private String sku;
 
     /*
      * ETag of the resource.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of CostManagementResource class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CostManagementResource class.
+     */
     public CostManagementResource() {
     }
 
     /**
      * Get the sku property: SKU of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -38,22 +58,78 @@ public class CostManagementResource extends Resource {
     }
 
     /**
+     * Set the sku property: SKU of the resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the CostManagementResource object itself.
+     */
+    CostManagementResource withSku(String sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the etag property: ETag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the etag property: ETag of the resource.
+     * 
+     * @param etag the etag value to set.
+     * @return the CostManagementResource object itself.
+     */
+    CostManagementResource withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CostManagementResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CostManagementResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -62,9 +138,60 @@ public class CostManagementResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CostManagementResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CostManagementResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CostManagementResource.
+     */
+    public static CostManagementResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CostManagementResource deserializedCostManagementResource = new CostManagementResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCostManagementResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCostManagementResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCostManagementResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCostManagementResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCostManagementResource.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCostManagementResource.sku = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedCostManagementResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCostManagementResource;
+        });
     }
 }

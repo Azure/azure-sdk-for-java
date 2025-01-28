@@ -6,92 +6,86 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.ParticipantProfilePropertyReference;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipLinkFieldMapping;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The definition of relationship link. */
+/**
+ * The definition of relationship link.
+ */
 @Fluent
-public final class RelationshipLinkDefinition {
+public final class RelationshipLinkDefinition implements JsonSerializable<RelationshipLinkDefinition> {
     /*
      * Localized display name for the Relationship Link.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized descriptions for the Relationship Link.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * The InteractionType associated with the Relationship Link.
      */
-    @JsonProperty(value = "interactionType", required = true)
     private String interactionType;
 
     /*
      * The name of the Relationship Link.
      */
-    @JsonProperty(value = "linkName", access = JsonProperty.Access.WRITE_ONLY)
     private String linkName;
 
     /*
      * The mappings between Interaction and Relationship fields.
      */
-    @JsonProperty(value = "mappings")
     private List<RelationshipLinkFieldMapping> mappings;
 
     /*
      * The property references for the Profile of the Relationship.
      */
-    @JsonProperty(value = "profilePropertyReferences", required = true)
     private List<ParticipantProfilePropertyReference> profilePropertyReferences;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * The property references for the Related Profile of the Relationship.
      */
-    @JsonProperty(value = "relatedProfilePropertyReferences", required = true)
     private List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences;
 
     /*
      * The Relationship associated with the Link.
      */
-    @JsonProperty(value = "relationshipName", required = true)
     private String relationshipName;
 
     /*
      * The relationship guid id.
      */
-    @JsonProperty(value = "relationshipGuidId", access = JsonProperty.Access.WRITE_ONLY)
     private String relationshipGuidId;
 
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of RelationshipLinkDefinition class. */
+    /**
+     * Creates an instance of RelationshipLinkDefinition class.
+     */
     public RelationshipLinkDefinition() {
     }
 
     /**
      * Get the displayName property: Localized display name for the Relationship Link.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -100,7 +94,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Set the displayName property: Localized display name for the Relationship Link.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
@@ -111,7 +105,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the description property: Localized descriptions for the Relationship Link.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -120,7 +114,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Set the description property: Localized descriptions for the Relationship Link.
-     *
+     * 
      * @param description the description value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
@@ -131,7 +125,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the interactionType property: The InteractionType associated with the Relationship Link.
-     *
+     * 
      * @return the interactionType value.
      */
     public String interactionType() {
@@ -140,7 +134,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Set the interactionType property: The InteractionType associated with the Relationship Link.
-     *
+     * 
      * @param interactionType the interactionType value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
@@ -151,7 +145,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the linkName property: The name of the Relationship Link.
-     *
+     * 
      * @return the linkName value.
      */
     public String linkName() {
@@ -160,7 +154,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the mappings property: The mappings between Interaction and Relationship fields.
-     *
+     * 
      * @return the mappings value.
      */
     public List<RelationshipLinkFieldMapping> mappings() {
@@ -169,7 +163,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Set the mappings property: The mappings between Interaction and Relationship fields.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
@@ -180,7 +174,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the profilePropertyReferences property: The property references for the Profile of the Relationship.
-     *
+     * 
      * @return the profilePropertyReferences value.
      */
     public List<ParticipantProfilePropertyReference> profilePropertyReferences() {
@@ -189,19 +183,19 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Set the profilePropertyReferences property: The property references for the Profile of the Relationship.
-     *
+     * 
      * @param profilePropertyReferences the profilePropertyReferences value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
-    public RelationshipLinkDefinition withProfilePropertyReferences(
-        List<ParticipantProfilePropertyReference> profilePropertyReferences) {
+    public RelationshipLinkDefinition
+        withProfilePropertyReferences(List<ParticipantProfilePropertyReference> profilePropertyReferences) {
         this.profilePropertyReferences = profilePropertyReferences;
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -211,7 +205,7 @@ public final class RelationshipLinkDefinition {
     /**
      * Get the relatedProfilePropertyReferences property: The property references for the Related Profile of the
      * Relationship.
-     *
+     * 
      * @return the relatedProfilePropertyReferences value.
      */
     public List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences() {
@@ -221,7 +215,7 @@ public final class RelationshipLinkDefinition {
     /**
      * Set the relatedProfilePropertyReferences property: The property references for the Related Profile of the
      * Relationship.
-     *
+     * 
      * @param relatedProfilePropertyReferences the relatedProfilePropertyReferences value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
@@ -233,7 +227,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the relationshipName property: The Relationship associated with the Link.
-     *
+     * 
      * @return the relationshipName value.
      */
     public String relationshipName() {
@@ -242,7 +236,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Set the relationshipName property: The Relationship associated with the Link.
-     *
+     * 
      * @param relationshipName the relationshipName value to set.
      * @return the RelationshipLinkDefinition object itself.
      */
@@ -253,7 +247,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the relationshipGuidId property: The relationship guid id.
-     *
+     * 
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
@@ -262,7 +256,7 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -271,43 +265,113 @@ public final class RelationshipLinkDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (interactionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property interactionType in model RelationshipLinkDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property interactionType in model RelationshipLinkDefinition"));
         }
         if (mappings() != null) {
             mappings().forEach(e -> e.validate());
         }
         if (profilePropertyReferences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property profilePropertyReferences in model RelationshipLinkDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property profilePropertyReferences in model RelationshipLinkDefinition"));
         } else {
             profilePropertyReferences().forEach(e -> e.validate());
         }
         if (relatedProfilePropertyReferences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relatedProfilePropertyReferences in model"
-                            + " RelationshipLinkDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relatedProfilePropertyReferences in model RelationshipLinkDefinition"));
         } else {
             relatedProfilePropertyReferences().forEach(e -> e.validate());
         }
         if (relationshipName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relationshipName in model RelationshipLinkDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relationshipName in model RelationshipLinkDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelationshipLinkDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("interactionType", this.interactionType);
+        jsonWriter.writeArrayField("profilePropertyReferences", this.profilePropertyReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("relatedProfilePropertyReferences", this.relatedProfilePropertyReferences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("relationshipName", this.relationshipName);
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("mappings", this.mappings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipLinkDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipLinkDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipLinkDefinition.
+     */
+    public static RelationshipLinkDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipLinkDefinition deserializedRelationshipLinkDefinition = new RelationshipLinkDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interactionType".equals(fieldName)) {
+                    deserializedRelationshipLinkDefinition.interactionType = reader.getString();
+                } else if ("profilePropertyReferences".equals(fieldName)) {
+                    List<ParticipantProfilePropertyReference> profilePropertyReferences
+                        = reader.readArray(reader1 -> ParticipantProfilePropertyReference.fromJson(reader1));
+                    deserializedRelationshipLinkDefinition.profilePropertyReferences = profilePropertyReferences;
+                } else if ("relatedProfilePropertyReferences".equals(fieldName)) {
+                    List<ParticipantProfilePropertyReference> relatedProfilePropertyReferences
+                        = reader.readArray(reader1 -> ParticipantProfilePropertyReference.fromJson(reader1));
+                    deserializedRelationshipLinkDefinition.relatedProfilePropertyReferences
+                        = relatedProfilePropertyReferences;
+                } else if ("relationshipName".equals(fieldName)) {
+                    deserializedRelationshipLinkDefinition.relationshipName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRelationshipLinkDefinition.displayName = displayName;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRelationshipLinkDefinition.description = description;
+                } else if ("linkName".equals(fieldName)) {
+                    deserializedRelationshipLinkDefinition.linkName = reader.getString();
+                } else if ("mappings".equals(fieldName)) {
+                    List<RelationshipLinkFieldMapping> mappings
+                        = reader.readArray(reader1 -> RelationshipLinkFieldMapping.fromJson(reader1));
+                    deserializedRelationshipLinkDefinition.mappings = mappings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRelationshipLinkDefinition.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("relationshipGuidId".equals(fieldName)) {
+                    deserializedRelationshipLinkDefinition.relationshipGuidId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedRelationshipLinkDefinition.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipLinkDefinition;
+        });
+    }
 }

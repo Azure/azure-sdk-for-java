@@ -149,8 +149,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Metrics Advisor supported by this client library.
      */
-    MetricsAdvisorAdministrationAsyncClient(MetricsAdvisorImpl service,
-        MetricsAdvisorServiceVersion serviceVersion) {
+    MetricsAdvisorAdministrationAsyncClient(MetricsAdvisorImpl service, MetricsAdvisorServiceVersion serviceVersion) {
         this.service = service;
     }
 
@@ -256,11 +255,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         final DataFeedIngestionSettings dataFeedIngestionSettings = dataFeed.getIngestionSettings();
 
         if (dataFeedSchema == null) {
-            throw logger.logExceptionAsError(
-                new NullPointerException("'dataFeedSchema.metrics' cannot be null or empty."));
+            throw logger
+                .logExceptionAsError(new NullPointerException("'dataFeedSchema.metrics' cannot be null or empty."));
         } else {
-            Objects.requireNonNull(dataFeedSchema.getMetrics(),
-                "'dataFeedSchema.metrics' cannot be null or empty.");
+            Objects.requireNonNull(dataFeedSchema.getMetrics(), "'dataFeedSchema.metrics' cannot be null or empty.");
         }
 
         if (dataFeedGranularity == null) {
@@ -277,60 +275,69 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
 
         if (dataFeedIngestionSettings == null) {
-            throw logger.logExceptionAsError(
-                new NullPointerException(
-                    "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException(
+                "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null."));
         } else {
             Objects.requireNonNull(dataFeedIngestionSettings.getIngestionStartTime(),
                 "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.");
         }
 
-        final DataFeedOptions finalDataFeedOptions = dataFeed.getOptions() == null
-            ? new DataFeedOptions() : dataFeed.getOptions();
+        final DataFeedOptions finalDataFeedOptions
+            = dataFeed.getOptions() == null ? new DataFeedOptions() : dataFeed.getOptions();
         final DataFeedRollupSettings dataFeedRollupSettings = finalDataFeedOptions.getRollupSettings() == null
-            ? new DataFeedRollupSettings() : finalDataFeedOptions.getRollupSettings();
-        final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings =
-            finalDataFeedOptions.getMissingDataPointFillSettings() == null
-                ? new DataFeedMissingDataPointFillSettings() : finalDataFeedOptions.getMissingDataPointFillSettings();
+            ? new DataFeedRollupSettings()
+            : finalDataFeedOptions.getRollupSettings();
+        final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings
+            = finalDataFeedOptions.getMissingDataPointFillSettings() == null
+                ? new DataFeedMissingDataPointFillSettings()
+                : finalDataFeedOptions.getMissingDataPointFillSettings();
 
-        return service.createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
+        return service
+            .createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
                 .setDataFeedName(dataFeed.getName())
                 .setDataFeedDescription(finalDataFeedOptions.getDescription())
                 .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
-                    ? null : dataFeedGranularity.getGranularityType().toString()))
+                    ? null
+                    : dataFeedGranularity.getGranularityType().toString()))
                 .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
                 .setDimension(DataFeedTransforms.toInnerDimensionsListForCreate(dataFeedSchema.getDimensions()))
                 .setMetrics(DataFeedTransforms.toInnerMetricsListForCreate(dataFeedSchema.getMetrics()))
                 .setTimestampColumn(dataFeedSchema.getTimestampColumn())
                 .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
                 .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
-                    ? null : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
                 .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
                 .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
-                    ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                    ? null
+                    : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
                 .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
-                    ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
                 .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-                .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings
-                    .getDataFeedAutoRollUpMethod() == null
-                    ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
+                    ? null
+                    : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
                 .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
-                    ? null : dataFeedRollupSettings.getRollupType().toString()))
+                    ? null
+                    : dataFeedRollupSettings.getRollupType().toString()))
                 .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-                .setFillMissingPointType(FillMissingPointType.fromString(
-                    dataFeedMissingDataPointFillSettings.getFillType() == null
-                        ? null : dataFeedMissingDataPointFillSettings.getFillType().toString()))
+                .setFillMissingPointType(
+                    FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType() == null
+                        ? null
+                        : dataFeedMissingDataPointFillSettings.getFillType().toString()))
                 .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
                 .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
-                    ? null : finalDataFeedOptions.getAccessMode().toString()))
+                    ? null
+                    : finalDataFeedOptions.getAccessMode().toString()))
                 .setViewers(finalDataFeedOptions.getViewers())
                 .setAdmins(finalDataFeedOptions.getAdmins())
                 .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), context)
-                .flatMap(createDataFeedResponse -> {
-                    final String dataFeedId =
-                        parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
-                    return getDataFeedWithResponse(dataFeedId);
-                });
+            .flatMap(createDataFeedResponse -> {
+                final String dataFeedId
+                    = parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
+                return getDataFeedWithResponse(dataFeedId);
+            });
     }
 
     /**
@@ -473,59 +480,56 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<DataFeed>> updateDataFeedWithResponse(DataFeed dataFeed, Context context) {
 
         final DataFeedIngestionSettings dataFeedIngestionSettings = dataFeed.getIngestionSettings();
-        final DataFeedOptions dataFeedOptions = dataFeed.getOptions() == null
-            ? new DataFeedOptions() : dataFeed.getOptions();
+        final DataFeedOptions dataFeedOptions
+            = dataFeed.getOptions() == null ? new DataFeedOptions() : dataFeed.getOptions();
         final DataFeedRollupSettings dataFeedRollupSettings = dataFeedOptions.getRollupSettings() == null
-            ? new DataFeedRollupSettings() : dataFeedOptions.getRollupSettings();
-        final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings =
-            dataFeedOptions.getMissingDataPointFillSettings() == null
-                ? new DataFeedMissingDataPointFillSettings() : dataFeedOptions.getMissingDataPointFillSettings();
+            ? new DataFeedRollupSettings()
+            : dataFeedOptions.getRollupSettings();
+        final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings
+            = dataFeedOptions.getMissingDataPointFillSettings() == null
+                ? new DataFeedMissingDataPointFillSettings()
+                : dataFeedOptions.getMissingDataPointFillSettings();
 
-        return service.updateDataFeedWithResponseAsync(UUID.fromString(dataFeed.getId()),
-            DataFeedTransforms.toInnerForUpdate(dataFeed.getSource())
+        return service
+            .updateDataFeedWithResponseAsync(UUID.fromString(dataFeed.getId()), DataFeedTransforms
+                .toInnerForUpdate(dataFeed.getSource())
                 .setDataFeedName(dataFeed.getName())
                 .setDataFeedDescription(dataFeedOptions.getDescription())
-                .setTimestampColumn(dataFeed.getSchema() == null
-                    ? null : dataFeed.getSchema().getTimestampColumn())
+                .setTimestampColumn(dataFeed.getSchema() == null ? null : dataFeed.getSchema().getTimestampColumn())
                 .setDataStartFrom(dataFeed.getIngestionSettings().getIngestionStartTime())
                 .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
-                    ? null : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
                 .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
                 .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
-                    ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                    ? null
+                    : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
                 .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
-                    ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-                .setNeedRollup(
-                    dataFeedRollupSettings.getRollupType() != null
-                        ? NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType().toString())
-                        : null)
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                .setNeedRollup(dataFeedRollupSettings.getRollupType() != null
+                    ? NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType().toString())
+                    : null)
                 .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-                .setRollUpMethod(
-                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
-                        ? RollUpMethod.fromString(
-                        dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
-                        : null)
+                .setRollUpMethod(dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
+                    ? RollUpMethod.fromString(dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
+                    : null)
                 .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-                .setFillMissingPointType(
-                    dataFeedMissingDataPointFillSettings.getFillType() != null
-                        ? FillMissingPointType.fromString(
-                        dataFeedMissingDataPointFillSettings.getFillType().toString())
-                        : null)
+                .setFillMissingPointType(dataFeedMissingDataPointFillSettings.getFillType() != null
+                    ? FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType().toString())
+                    : null)
                 .setFillMissingPointValue(
                     // For PATCH send 'fill-custom-value' over wire only for 'fill-custom-type'.
                     dataFeedMissingDataPointFillSettings.getFillType() == DataFeedMissingDataPointFillType.CUSTOM_VALUE
                         ? dataFeedMissingDataPointFillSettings.getCustomFillValue()
                         : null)
-                .setViewMode(
-                    dataFeedOptions.getAccessMode() != null
-                        ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
-                        : null)
+                .setViewMode(dataFeedOptions.getAccessMode() != null
+                    ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
+                    : null)
                 .setViewers(dataFeedOptions.getViewers())
                 .setAdmins(dataFeedOptions.getAdmins())
                 .setStatus(
-                    dataFeed.getStatus() != null
-                        ? EntityStatus.fromString(dataFeed.getStatus().toString())
-                        : null)
+                    dataFeed.getStatus() != null ? EntityStatus.fromString(dataFeed.getStatus().toString()) : null)
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), context)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
     }
@@ -640,11 +644,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFeed> listDataFeeds(ListDataFeedOptions listDataFeedOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context ->
-                    listDataFeedsSinglePageAsync(listDataFeedOptions, context)),
-                continuationToken ->
-                    withContext(context -> listDataFeedsNextPageAsync(continuationToken, context)));
+            return new PagedFlux<>(
+                () -> withContext(context -> listDataFeedsSinglePageAsync(listDataFeedOptions, context)),
+                continuationToken -> withContext(context -> listDataFeedsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -653,28 +655,24 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     private Mono<PagedResponse<DataFeed>> listDataFeedsSinglePageAsync(ListDataFeedOptions options, Context context) {
 
         options = options != null ? options : new ListDataFeedOptions();
-        final ListDataFeedFilter dataFeedFilter =
-            options.getListDataFeedFilter() != null ? options.getListDataFeedFilter() : new ListDataFeedFilter();
+        final ListDataFeedFilter dataFeedFilter
+            = options.getListDataFeedFilter() != null ? options.getListDataFeedFilter() : new ListDataFeedFilter();
 
         return service.listDataFeedsSinglePageAsync(dataFeedFilter.getName(),
             dataFeedFilter.getSourceType() != null
-                ? DataSourceType.fromString(dataFeedFilter.getSourceType().toString()) : null,
+                ? DataSourceType.fromString(dataFeedFilter.getSourceType().toString())
+                : null,
             dataFeedFilter.getGranularityType() != null
-                ? Granularity.fromString(dataFeedFilter.getGranularityType().toString()) : null,
-            dataFeedFilter.getStatus() != null
-                ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
-            dataFeedFilter.getCreator(),
-            options.getSkip(), options.getMaxPageSize(), context)
+                ? Granularity.fromString(dataFeedFilter.getGranularityType().toString())
+                : null,
+            dataFeedFilter.getStatus() != null ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
+            dataFeedFilter.getCreator(), options.getSkip(), options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data feeds"))
             .doOnSuccess(response -> logger.info("Listed data feeds {}", response))
             .doOnError(error -> logger.warning("Failed to list all data feeds information - {}", error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().stream().map(DataFeedTransforms::fromInner).collect(Collectors.toList()),
-                res.getContinuationToken(),
-                null));
+                res.getContinuationToken(), null));
     }
 
     private Mono<PagedResponse<DataFeed>> listDataFeedsNextPageAsync(String nextPageLink, Context context) {
@@ -685,15 +683,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         return service.listDataFeedsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().stream().map(DataFeedTransforms::fromInner).collect(Collectors.toList()),
-                res.getContinuationToken(),
-                null));
+                res.getContinuationToken(), null));
     }
 
     /**
@@ -724,75 +718,56 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code options.endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId,
+    public PagedFlux<DataFeedIngestionStatus> listDataFeedIngestionStatus(String dataFeedId,
         ListDataFeedIngestionOptions listDataFeedIngestionOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context ->
-                    listDataFeedIngestionStatusSinglePageAsync(dataFeedId, listDataFeedIngestionOptions, context)),
-                continuationToken ->
-                    withContext(context -> listDataFeedIngestionStatusNextPageAsync(continuationToken,
-                        listDataFeedIngestionOptions,
-                        context)));
+            return new PagedFlux<>(
+                () -> withContext(context -> listDataFeedIngestionStatusSinglePageAsync(dataFeedId,
+                    listDataFeedIngestionOptions, context)),
+                continuationToken -> withContext(context -> listDataFeedIngestionStatusNextPageAsync(continuationToken,
+                    listDataFeedIngestionOptions, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
-    private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusSinglePageAsync(
-        String dataFeedId,
+
+    private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusSinglePageAsync(String dataFeedId,
         ListDataFeedIngestionOptions options, Context context) {
         Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
         Objects.requireNonNull(options, "'options' is required.");
         Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
         Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
 
-        IngestionStatusQueryOptions queryOptions = new IngestionStatusQueryOptions()
-            .setStartTime(options.getStartTime())
-            .setEndTime(options.getEndTime());
+        IngestionStatusQueryOptions queryOptions
+            = new IngestionStatusQueryOptions().setStartTime(options.getStartTime()).setEndTime(options.getEndTime());
 
-        return service.getDataFeedIngestionStatusSinglePageAsync(
-            UUID.fromString(dataFeedId),
-            queryOptions,
-            options.getSkip(),
-            options.getMaxPageSize(),
-            context)
+        return service
+            .getDataFeedIngestionStatusSinglePageAsync(UUID.fromString(dataFeedId), queryOptions, options.getSkip(),
+                options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
             .doOnError(error -> logger.warning("Failed to ingestion status for data feed", error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toDataFeedIngestionStatus(res.getValue()),
-                res.getContinuationToken(),
-                null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                toDataFeedIngestionStatus(res.getValue()), res.getContinuationToken(), null));
     }
-    private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(
-        String nextPageLink,
-        ListDataFeedIngestionOptions options,
-        Context context) {
+
+    private Mono<PagedResponse<DataFeedIngestionStatus>> listDataFeedIngestionStatusNextPageAsync(String nextPageLink,
+        ListDataFeedIngestionOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
 
-        IngestionStatusQueryOptions queryOptions = new IngestionStatusQueryOptions()
-            .setStartTime(options.getStartTime())
-            .setEndTime(options.getEndTime());
+        IngestionStatusQueryOptions queryOptions
+            = new IngestionStatusQueryOptions().setStartTime(options.getStartTime()).setEndTime(options.getEndTime());
 
         return service.getDataFeedIngestionStatusNextSinglePageAsync(nextPageLink, queryOptions, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
-                nextPageLink, response))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                toDataFeedIngestionStatus(res.getValue()),
-                res.getContinuationToken(),
-                null));
+            .doOnSuccess(
+                response -> logger.info("Retrieved the next listing page - Page {} {}", nextPageLink, response))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                toDataFeedIngestionStatus(res.getValue()), res.getContinuationToken(), null));
     }
 
     /**
@@ -823,13 +798,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException If {@code dataFeedId}, {@code startTime}, {@code endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> refreshDataFeedIngestion(
-        String dataFeedId,
-        OffsetDateTime startTime,
-        OffsetDateTime endTime) {
-        return refreshDataFeedIngestionWithResponse(dataFeedId,
-            startTime,
-            endTime).then();
+    public Mono<Void> refreshDataFeedIngestion(String dataFeedId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return refreshDataFeedIngestionWithResponse(dataFeedId, startTime, endTime).then();
     }
 
     /**
@@ -863,32 +833,25 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException If {@code dataFeedId}, {@code startTime}, {@code endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> refreshDataFeedIngestionWithResponse(
-        String dataFeedId,
-        OffsetDateTime startTime,
+    public Mono<Response<Void>> refreshDataFeedIngestionWithResponse(String dataFeedId, OffsetDateTime startTime,
         OffsetDateTime endTime) {
         try {
-            return withContext(context -> refreshDataFeedIngestionWithResponse(dataFeedId,
-                startTime,
-                endTime, context));
+            return withContext(
+                context -> refreshDataFeedIngestionWithResponse(dataFeedId, startTime, endTime, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<Void>> refreshDataFeedIngestionWithResponse(
-        String dataFeedId,
-        OffsetDateTime startTime,
+    Mono<Response<Void>> refreshDataFeedIngestionWithResponse(String dataFeedId, OffsetDateTime startTime,
         OffsetDateTime endTime, Context context) {
         Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
         Objects.requireNonNull(startTime, "'startTime' is required.");
         Objects.requireNonNull(endTime, "'endTime' is required.");
 
-        return service.resetDataFeedIngestionStatusWithResponseAsync(UUID.fromString(dataFeedId),
-            new IngestionProgressResetOptions()
-                .setStartTime(startTime)
-                .setEndTime(endTime),
-            context)
+        return service
+            .resetDataFeedIngestionStatusWithResponseAsync(UUID.fromString(dataFeedId),
+                new IngestionProgressResetOptions().setStartTime(startTime).setEndTime(endTime), context)
             .doOnRequest(ignoredValue -> logger.info("Resetting ingestion status for the data feed"))
             .doOnSuccess(response -> logger.info("Ingestion status got reset {}", response))
             .doOnError(error -> logger.warning("Failed to reset ingestion status for the data feed", error));
@@ -917,8 +880,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedIngestionProgress> getDataFeedIngestionProgress(String dataFeedId) {
-        return getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE)
-            .map(Response::getValue);
+        return getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE).map(Response::getValue);
     }
 
     /**
@@ -954,7 +916,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     Mono<Response<DataFeedIngestionProgress>> getDataFeedIngestionProgressWithResponse(String dataFeedId,
-                                                                                       Context context) {
+        Context context) {
         Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
         return service.getIngestionProgressWithResponseAsync(UUID.fromString(dataFeedId), context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ingestion progress for metric"))
@@ -1020,11 +982,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyDetectionConfiguration> createDetectionConfig(
-        String metricId,
+    public Mono<AnomalyDetectionConfiguration> createDetectionConfig(String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
-        return createDetectionConfigWithResponse(metricId, detectionConfiguration)
-            .map(Response::getValue);
+        return createDetectionConfigWithResponse(metricId, detectionConfiguration).map(Response::getValue);
     }
 
     /**
@@ -1086,29 +1046,22 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyDetectionConfiguration>> createDetectionConfigWithResponse(
-        String metricId,
+    public Mono<Response<AnomalyDetectionConfiguration>> createDetectionConfigWithResponse(String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
         try {
-            return withContext(context -> createDetectionConfigWithResponse(metricId,
-                detectionConfiguration,
-                context));
+            return withContext(context -> createDetectionConfigWithResponse(metricId, detectionConfiguration, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<AnomalyDetectionConfiguration>> createDetectionConfigWithResponse(
-        String metricId,
-        AnomalyDetectionConfiguration detectionConfiguration,
-        Context context) {
+    Mono<Response<AnomalyDetectionConfiguration>> createDetectionConfigWithResponse(String metricId,
+        AnomalyDetectionConfiguration detectionConfiguration, Context context) {
         Objects.requireNonNull(metricId, "metricId is required");
         Objects.requireNonNull(detectionConfiguration, "detectionConfiguration is required");
 
-        final com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration
-            innerDetectionConfiguration = DetectionConfigurationTransforms.toInnerForCreate(logger,
-            metricId,
-            detectionConfiguration);
+        final com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration innerDetectionConfiguration
+            = DetectionConfigurationTransforms.toInnerForCreate(logger, metricId, detectionConfiguration);
         return service.createAnomalyDetectionConfigurationWithResponseAsync(innerDetectionConfiguration, context)
             .doOnSubscribe(ignoredValue -> logger.info("Creating AnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Created AnomalyDetectionConfiguration"))
@@ -1118,11 +1071,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                     = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
                 return getDetectionConfigWithResponse(configurationId, context)
                     .map(configurationResponse -> new ResponseBase<Void, AnomalyDetectionConfiguration>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        configurationResponse.getValue(),
-                        null));
+                        response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        configurationResponse.getValue(), null));
             });
     }
 
@@ -1311,8 +1261,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyDetectionConfiguration> getDetectionConfig(
-        String detectionConfigurationId) {
+    public Mono<AnomalyDetectionConfiguration> getDetectionConfig(String detectionConfigurationId) {
         return getDetectionConfigWithResponse(detectionConfigurationId).map(Response::getValue);
     }
 
@@ -1505,23 +1454,23 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyDetectionConfiguration>> getDetectionConfigWithResponse(
-        String detectionConfigurationId) {
+    public Mono<Response<AnomalyDetectionConfiguration>>
+        getDetectionConfigWithResponse(String detectionConfigurationId) {
         try {
-            return withContext(context -> getDetectionConfigWithResponse(detectionConfigurationId,
-                context));
+            return withContext(context -> getDetectionConfigWithResponse(detectionConfigurationId, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<AnomalyDetectionConfiguration>> getDetectionConfigWithResponse(
-        String detectionConfigurationId, Context context) {
+    Mono<Response<AnomalyDetectionConfiguration>> getDetectionConfigWithResponse(String detectionConfigurationId,
+        Context context) {
         Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
 
-        return service.getAnomalyDetectionConfigurationWithResponseAsync(UUID.fromString(detectionConfigurationId), context)
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving AnomalyDetectionConfiguration - {}",
-                detectionConfigurationId))
+        return service
+            .getAnomalyDetectionConfigurationWithResponseAsync(UUID.fromString(detectionConfigurationId), context)
+            .doOnSubscribe(
+                ignoredValue -> logger.info("Retrieving AnomalyDetectionConfiguration - {}", detectionConfigurationId))
             .doOnSuccess(response -> logger.info("Retrieved AnomalyDetectionConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve AnomalyDetectionConfiguration - {}",
                 detectionConfigurationId, error))
@@ -1529,10 +1478,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 AnomalyDetectionConfiguration configuration
                     = DetectionConfigurationTransforms.fromInner(response.getValue());
                 return new ResponseBase<Void, AnomalyDetectionConfiguration>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    configuration,
-                    null);
+                    response.getStatusCode(), response.getHeaders(), configuration, null);
             });
     }
 
@@ -1575,10 +1521,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyDetectionConfiguration> updateDetectionConfig(
-        AnomalyDetectionConfiguration detectionConfiguration) {
-        return updateDetectionConfigWithResponse(detectionConfiguration)
-            .map(Response::getValue);
+    public Mono<AnomalyDetectionConfiguration>
+        updateDetectionConfig(AnomalyDetectionConfiguration detectionConfiguration) {
+        return updateDetectionConfigWithResponse(detectionConfiguration).map(Response::getValue);
     }
 
     /**
@@ -1621,39 +1566,33 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyDetectionConfiguration>> updateDetectionConfigWithResponse(
-        AnomalyDetectionConfiguration detectionConfiguration) {
+    public Mono<Response<AnomalyDetectionConfiguration>>
+        updateDetectionConfigWithResponse(AnomalyDetectionConfiguration detectionConfiguration) {
         try {
-            return withContext(context -> updateDetectionConfigWithResponse(detectionConfiguration,
-                context));
+            return withContext(context -> updateDetectionConfigWithResponse(detectionConfiguration, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<AnomalyDetectionConfiguration>> updateDetectionConfigWithResponse(
-        AnomalyDetectionConfiguration detectionConfiguration,
-        Context context) {
+    Mono<Response<AnomalyDetectionConfiguration>>
+        updateDetectionConfigWithResponse(AnomalyDetectionConfiguration detectionConfiguration, Context context) {
         Objects.requireNonNull(detectionConfiguration, "detectionConfiguration is required");
         Objects.requireNonNull(detectionConfiguration.getId(), "detectionConfiguration.id is required");
 
         final AnomalyDetectionConfigurationPatch innerDetectionConfigurationPatch
             = DetectionConfigurationTransforms.toInnerForUpdate(logger, detectionConfiguration);
-        return service.updateAnomalyDetectionConfigurationWithResponseAsync(
-            UUID.fromString(detectionConfiguration.getId()),
-            innerDetectionConfigurationPatch,
-            context)
+        return service
+            .updateAnomalyDetectionConfigurationWithResponseAsync(UUID.fromString(detectionConfiguration.getId()),
+                innerDetectionConfigurationPatch, context)
             .doOnSubscribe(ignoredValue -> logger.info("Updating AnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Updated AnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to update AnomalyDetectionConfiguration", error))
             .flatMap(response -> {
                 return getDetectionConfigWithResponse(detectionConfiguration.getId(), context)
                     .map(configurationResponse -> new ResponseBase<Void, AnomalyDetectionConfiguration>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        configurationResponse.getValue(),
-                        null));
+                        response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        configurationResponse.getValue(), null));
             });
     }
 
@@ -1704,19 +1643,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *     format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDetectionConfigWithResponse(
-        String detectionConfigurationId) {
+    public Mono<Response<Void>> deleteDetectionConfigWithResponse(String detectionConfigurationId) {
         try {
-            return withContext(context -> deleteDetectionConfigWithResponse(
-                detectionConfigurationId,
-                context));
+            return withContext(context -> deleteDetectionConfigWithResponse(detectionConfigurationId, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<Void>> deleteDetectionConfigWithResponse(String detectionConfigurationId,
-                                                           Context context) {
+    Mono<Response<Void>> deleteDetectionConfigWithResponse(String detectionConfigurationId, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
         return service.deleteHookWithResponseAsync(UUID.fromString(detectionConfigurationId), context)
             .doOnRequest(ignoredValue -> logger.info("Deleting MetricAnomalyDetectionConfiguration"))
@@ -1747,8 +1682,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
-        String metricId) {
+    public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(String metricId) {
         return listDetectionConfigs(metricId, null);
     }
 
@@ -1777,16 +1711,13 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
-        String metricId,
+    public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(String metricId,
         ListDetectionConfigsOptions listDetectionConfigsOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context ->
-                    listAnomalyDetectionConfigsSinglePageAsync(metricId, listDetectionConfigsOptions, context)),
-                continuationToken ->
-                    withContext(context -> listAnomalyDetectionConfigsNextPageAsync(continuationToken,
-                        context)));
+            return new PagedFlux<>(() -> withContext(
+                context -> listAnomalyDetectionConfigsSinglePageAsync(metricId, listDetectionConfigsOptions, context)),
+                continuationToken -> withContext(
+                    context -> listAnomalyDetectionConfigsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
@@ -1794,32 +1725,30 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsSinglePageAsync(
-        String metricId,
-        ListDetectionConfigsOptions options,
-        Context context) {
+        String metricId, ListDetectionConfigsOptions options, Context context) {
         if (options == null) {
             options = new ListDetectionConfigsOptions();
         }
-        return service.getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
-            UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(), context)
+        return service
+            .getAnomalyDetectionConfigurationsByMetricSinglePageAsync(UUID.fromString(metricId), options.getSkip(),
+                options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing MetricAnomalyDetectionConfigs"))
             .doOnSuccess(response -> logger.info("Listed MetricAnomalyDetectionConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the MetricAnomalyDetectionConfigs", error))
             .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
     }
 
-    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listAnomalyDetectionConfigsNextPageAsync(
-        String nextPageLink, Context context) {
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>>
+        listAnomalyDetectionConfigsNextPageAsync(String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
         return service.getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
-                nextPageLink,
-                response))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnSuccess(
+                response -> logger.info("Retrieved the next listing page - Page {} {}", nextPageLink, response))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .map(DetectionConfigurationTransforms::fromInnerPagedResponse);
     }
 
@@ -1858,8 +1787,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotificationHook> createHook(NotificationHook notificationHook) {
-        return createHookWithResponse(notificationHook)
-            .map(Response::getValue);
+        return createHookWithResponse(notificationHook).map(Response::getValue);
     }
 
     /**
@@ -1916,10 +1844,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 final String hookId = parseOperationId(hookUri);
                 return getHookWithResponse(hookId, context)
                     .map(hookResponse -> new ResponseBase<Void, NotificationHook>(response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        hookResponse.getValue(),
-                        null));
+                        response.getStatusCode(), response.getHeaders(), hookResponse.getValue(), null));
             });
     }
 
@@ -2017,10 +1942,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve hook", error))
             .map(innerResponse -> new ResponseBase<Void, NotificationHook>(innerResponse.getRequest(),
-                innerResponse.getStatusCode(),
-                innerResponse.getHeaders(),
-                HookTransforms.fromInner(logger, innerResponse.getValue()),
-                null));
+                innerResponse.getStatusCode(), innerResponse.getHeaders(),
+                HookTransforms.fromInner(logger, innerResponse.getValue()), null));
     }
 
     /**
@@ -2109,17 +2032,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<NotificationHook>> updateHookWithResponse(NotificationHook notificationHook, Context context) {
         Objects.requireNonNull(notificationHook, "'notificationHook' cannot be null.");
         Objects.requireNonNull(notificationHook.getId(), "'notificationHook.id' cannot be null.");
-        return service.updateHookWithResponseAsync(UUID.fromString(notificationHook.getId()),
-            HookTransforms.toInnerForUpdate(logger, notificationHook), context)
+        return service
+            .updateHookWithResponseAsync(UUID.fromString(notificationHook.getId()),
+                HookTransforms.toInnerForUpdate(logger, notificationHook), context)
             .doOnRequest(ignoredValue -> logger.info("Updating NotificationHook"))
             .doOnSuccess(response -> logger.info("Updated NotificationHook {}", response))
             .doOnError(error -> logger.warning("Failed to update notificationHook", error))
             .flatMap(response -> getHookWithResponse(notificationHook.getId(), context)
                 .map(hookResponse -> new ResponseBase<Void, NotificationHook>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    hookResponse.getValue(),
-                    null)));
+                    response.getStatusCode(), response.getHeaders(), hookResponse.getValue(), null)));
     }
 
     /**
@@ -2260,23 +2181,17 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotificationHook> listHooks(ListHookOptions listHookOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context ->
-                    listHooksSinglePageAsync(listHookOptions, context)),
-                continuationToken ->
-                    withContext(context -> listHooksNextPageAsync(continuationToken,
-                        context)));
+            return new PagedFlux<>(() -> withContext(context -> listHooksSinglePageAsync(listHookOptions, context)),
+                continuationToken -> withContext(context -> listHooksNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
 
     private Mono<PagedResponse<NotificationHook>> listHooksSinglePageAsync(ListHookOptions options, Context context) {
-        return service.listHooksSinglePageAsync(
-            options != null ? options.getHookNameFilter() : null,
-            options != null ? options.getSkip() : null,
-            options != null ? options.getMaxPageSize() : null,
-            context)
+        return service
+            .listHooksSinglePageAsync(options != null ? options.getHookNameFilter() : null,
+                options != null ? options.getSkip() : null, options != null ? options.getMaxPageSize() : null, context)
             .doOnRequest(ignoredValue -> logger.info("Listing hooks"))
             .doOnSuccess(response -> logger.info("Listed hooks {}", response))
             .doOnError(error -> logger.warning("Failed to list the hooks", error))
@@ -2289,11 +2204,10 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
         return service.listHooksNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
-                nextPageLink,
-                response))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnSuccess(
+                response -> logger.info("Retrieved the next listing page - Page {} {}", nextPageLink, response))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .map(response -> HookTransforms.fromInnerPagedResponse(logger, response));
     }
 
@@ -2339,8 +2253,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> createAlertConfig(
-        AnomalyAlertConfiguration alertConfiguration) {
+    public Mono<AnomalyAlertConfiguration> createAlertConfig(AnomalyAlertConfiguration alertConfiguration) {
         return createAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
     }
 
@@ -2389,8 +2302,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> createAlertConfigWithResponse(
-        AnomalyAlertConfiguration alertConfiguration) {
+    public Mono<Response<AnomalyAlertConfiguration>>
+        createAlertConfigWithResponse(AnomalyAlertConfiguration alertConfiguration) {
         try {
             return withContext(context -> createAlertConfigWithResponse(alertConfiguration, context));
         } catch (RuntimeException ex) {
@@ -2398,8 +2311,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> createAlertConfigWithResponse(
-        AnomalyAlertConfiguration alertConfiguration, Context context) {
+    Mono<Response<AnomalyAlertConfiguration>>
+        createAlertConfigWithResponse(AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required.");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
             throw logger.logExceptionAsError(
@@ -2415,8 +2328,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             = AlertConfigurationTransforms.toInnerForCreate(alertConfiguration);
 
         return service.createAnomalyAlertingConfigurationWithResponseAsync(innerAlertConfiguration, context)
-            .doOnSubscribe(ignoredValue -> logger.info("Creating AnomalyAlertConfiguration - {}",
-                innerAlertConfiguration))
+            .doOnSubscribe(
+                ignoredValue -> logger.info("Creating AnomalyAlertConfiguration - {}", innerAlertConfiguration))
             .doOnSuccess(response -> logger.info("Created AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to create AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration, error))
@@ -2424,10 +2337,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 final String configurationId = parseOperationId(response.getDeserializedHeaders().getLocation());
                 return getAlertConfigWithResponse(configurationId, context)
                     .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        getResponse.getValue(),
-                        null));
+                        response.getStatusCode(), response.getHeaders(), getResponse.getValue(), null));
             });
     }
 
@@ -2460,8 +2370,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> getAlertConfig(
-        String alertConfigurationId) {
+    public Mono<AnomalyAlertConfiguration> getAlertConfig(String alertConfigurationId) {
         return getAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
     }
 
@@ -2498,8 +2407,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
-        String alertConfigurationId) {
+    public Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(String alertConfigurationId) {
         try {
             return withContext(context -> getAlertConfigWithResponse(alertConfigurationId, context));
         } catch (RuntimeException ex) {
@@ -2507,20 +2415,18 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
-        String alertConfigurationId, Context context) {
+    Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
 
-        return service.getAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfigurationId),
-            context)
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving AnomalyDetectionConfiguration - {}",
-                alertConfigurationId))
+        return service.getAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfigurationId), context)
+            .doOnSubscribe(
+                ignoredValue -> logger.info("Retrieving AnomalyDetectionConfiguration - {}", alertConfigurationId))
             .doOnSuccess(response -> logger.info("Retrieved AnomalyDetectionConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to retrieve AnomalyDetectionConfiguration - {}",
                 alertConfigurationId, error))
             .map(response -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
-                response.getStatusCode(),
-                response.getHeaders(), AlertConfigurationTransforms.fromInner(response.getValue()), null));
+                response.getStatusCode(), response.getHeaders(),
+                AlertConfigurationTransforms.fromInner(response.getValue()), null));
     }
 
     /**
@@ -2559,8 +2465,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> updateAlertConfig(
-        AnomalyAlertConfiguration alertConfiguration) {
+    public Mono<AnomalyAlertConfiguration> updateAlertConfig(AnomalyAlertConfiguration alertConfiguration) {
         return updateAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
     }
 
@@ -2604,8 +2509,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> updateAlertConfigWithResponse(
-        AnomalyAlertConfiguration alertConfiguration) {
+    public Mono<Response<AnomalyAlertConfiguration>>
+        updateAlertConfigWithResponse(AnomalyAlertConfiguration alertConfiguration) {
         try {
             return withContext(context -> updateAlertConfigWithResponse(alertConfiguration, context));
         } catch (RuntimeException ex) {
@@ -2613,8 +2518,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> updateAlertConfigWithResponse(
-        AnomalyAlertConfiguration alertConfiguration, Context context) {
+    Mono<Response<AnomalyAlertConfiguration>>
+        updateAlertConfigWithResponse(AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
             throw logger.logExceptionAsError(new NullPointerException(
@@ -2623,21 +2528,17 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         final AnomalyAlertingConfigurationPatch innerAlertConfiguration
             = AlertConfigurationTransforms.toInnerForUpdate(alertConfiguration);
 
-        return service.updateAnomalyAlertingConfigurationWithResponseAsync(
-            UUID.fromString(alertConfiguration.getId()),
-            innerAlertConfiguration,
-            context)
-            .doOnSubscribe(ignoredValue -> logger.info("Updating AnomalyAlertConfiguration - {}",
-                innerAlertConfiguration))
+        return service
+            .updateAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfiguration.getId()),
+                innerAlertConfiguration, context)
+            .doOnSubscribe(
+                ignoredValue -> logger.info("Updating AnomalyAlertConfiguration - {}", innerAlertConfiguration))
             .doOnSuccess(response -> logger.info("Updated AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to update AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration, error))
             .flatMap(response -> getAlertConfigWithResponse(alertConfiguration.getId(), context)
                 .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    getResponse.getValue(),
-                    null)));
+                    response.getStatusCode(), response.getHeaders(), getResponse.getValue(), null)));
     }
 
     /**
@@ -2698,12 +2599,12 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<Void>> deleteAlertConfigWithResponse(String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
 
-        return service.deleteAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfigurationId),
-            context)
+        return service
+            .deleteAnomalyAlertingConfigurationWithResponseAsync(UUID.fromString(alertConfigurationId), context)
             .doOnSubscribe(ignoredValue -> logger.info("Deleting AnomalyAlertConfiguration - {}", alertConfigurationId))
             .doOnSuccess(response -> logger.info("Deleted AnomalyAlertConfiguration - {}", response))
-            .doOnError(error -> logger.warning("Failed to delete AnomalyAlertConfiguration - {}",
-                alertConfigurationId, error));
+            .doOnError(error -> logger.warning("Failed to delete AnomalyAlertConfiguration - {}", alertConfigurationId,
+                error));
     }
 
     /**
@@ -2736,17 +2637,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
-        String detectionConfigurationId, ListAnomalyAlertConfigsOptions listAnomalyAlertConfigsOptions) {
+    public PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(String detectionConfigurationId,
+        ListAnomalyAlertConfigsOptions listAnomalyAlertConfigsOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context ->
-                    listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
-                        listAnomalyAlertConfigsOptions,
-                        context)),
-                continuationToken ->
-                    withContext(context -> listAnomalyAlertConfigsNextPageAsync(continuationToken,
-                        context)));
+            return new PagedFlux<>(
+                () -> withContext(context -> listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
+                    listAnomalyAlertConfigsOptions, context)),
+                continuationToken -> withContext(
+                    context -> listAnomalyAlertConfigsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
@@ -2758,26 +2656,27 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         if (options == null) {
             options = new ListAnomalyAlertConfigsOptions();
         }
-        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
-            UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(), context)
+        return service
+            .getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
+                UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing AnomalyAlertConfigs"))
             .doOnSuccess(response -> logger.info("Listed AnomalyAlertConfigs {}", response))
             .doOnError(error -> logger.warning("Failed to list the AnomalyAlertConfigs", error))
             .map(AlertConfigurationTransforms::fromInnerPagedResponse);
     }
 
-    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(
-        String nextPageLink, Context context) {
+    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(String nextPageLink,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, context)
+        return service
+            .getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
-                nextPageLink,
-                response))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnSuccess(
+                response -> logger.info("Retrieved the next listing page - Page {} {}", nextPageLink, response))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .map(AlertConfigurationTransforms::fromInnerPagedResponse);
     }
 
@@ -2824,10 +2723,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataSourceCredentialEntity> createDataSourceCredential(
-        DataSourceCredentialEntity dataSourceCredential) {
-        return createDataSourceCredentialWithResponse(dataSourceCredential)
-            .map(Response::getValue);
+    public Mono<DataSourceCredentialEntity>
+        createDataSourceCredential(DataSourceCredentialEntity dataSourceCredential) {
+        return createDataSourceCredentialWithResponse(dataSourceCredential).map(Response::getValue);
     }
 
     /**
@@ -2875,37 +2773,31 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataSourceCredentialEntity>> createDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity dataSourceCredential) {
+    public Mono<Response<DataSourceCredentialEntity>>
+        createDataSourceCredentialWithResponse(DataSourceCredentialEntity dataSourceCredential) {
         try {
-            return withContext(context -> createDataSourceCredentialWithResponse(dataSourceCredential,
-                context));
+            return withContext(context -> createDataSourceCredentialWithResponse(dataSourceCredential, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<DataSourceCredentialEntity>> createDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity dataSourceCredential,
-        Context context) {
+    Mono<Response<DataSourceCredentialEntity>>
+        createDataSourceCredentialWithResponse(DataSourceCredentialEntity dataSourceCredential, Context context) {
         Objects.requireNonNull(dataSourceCredential, "dataSourceCredential is required");
 
-        final DataSourceCredential
-            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForCreate(dataSourceCredential);
+        final DataSourceCredential innerDataSourceCredential
+            = DataSourceCredentialEntityTransforms.toInnerForCreate(dataSourceCredential);
         return service.createCredentialWithResponseAsync(innerDataSourceCredential, context)
             .doOnSubscribe(ignoredValue -> logger.info("Creating DataSourceCredentialEntity"))
             .doOnSuccess(response -> logger.info("Created DataSourceCredentialEntity"))
             .doOnError(error -> logger.warning("Failed to create DataSourceCredentialEntity", error))
             .flatMap(response -> {
-                final String credentialId
-                    = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
+                final String credentialId = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
                 return this.getDataSourceCredentialWithResponse(credentialId, context)
                     .map(configurationResponse -> new ResponseBase<Void, DataSourceCredentialEntity>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        configurationResponse.getValue(),
-                        null));
+                        response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        configurationResponse.getValue(), null));
             });
     }
 
@@ -2943,10 +2835,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataSourceCredentialEntity> updateDataSourceCredential(
-        DataSourceCredentialEntity dataSourceCredential) {
-        return updateDataSourceCredentialWithResponse(dataSourceCredential)
-            .map(Response::getValue);
+    public Mono<DataSourceCredentialEntity>
+        updateDataSourceCredential(DataSourceCredentialEntity dataSourceCredential) {
+        return updateDataSourceCredentialWithResponse(dataSourceCredential).map(Response::getValue);
     }
 
     /**
@@ -2985,37 +2876,32 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataSourceCredentialEntity>> updateDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity dataSourceCredential) {
+    public Mono<Response<DataSourceCredentialEntity>>
+        updateDataSourceCredentialWithResponse(DataSourceCredentialEntity dataSourceCredential) {
         try {
-            return withContext(context -> updateDataSourceCredentialWithResponse(dataSourceCredential,
-                context));
+            return withContext(context -> updateDataSourceCredentialWithResponse(dataSourceCredential, context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<DataSourceCredentialEntity>> updateDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity dataSourceCredential,
-        Context context) {
+    Mono<Response<DataSourceCredentialEntity>>
+        updateDataSourceCredentialWithResponse(DataSourceCredentialEntity dataSourceCredential, Context context) {
         Objects.requireNonNull(dataSourceCredential, "dataSourceCredential is required");
 
-        final DataSourceCredentialPatch
-            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForUpdate(dataSourceCredential);
-        return service.updateCredentialWithResponseAsync(UUID.fromString(dataSourceCredential.getId()),
-            innerDataSourceCredential,
-            context)
+        final DataSourceCredentialPatch innerDataSourceCredential
+            = DataSourceCredentialEntityTransforms.toInnerForUpdate(dataSourceCredential);
+        return service
+            .updateCredentialWithResponseAsync(UUID.fromString(dataSourceCredential.getId()), innerDataSourceCredential,
+                context)
             .doOnSubscribe(ignoredValue -> logger.info("Updating DataSourceCredentialEntity"))
             .doOnSuccess(response -> logger.info("Updated DataSourceCredentialEntity"))
             .doOnError(error -> logger.warning("Failed to update DataSourceCredentialEntity", error))
             .flatMap(response -> {
                 return this.getDataSourceCredentialWithResponse(dataSourceCredential.getId(), context)
                     .map(configurationResponse -> new ResponseBase<Void, DataSourceCredentialEntity>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        configurationResponse.getValue(),
-                        null));
+                        response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        configurationResponse.getValue(), null));
             });
     }
 
@@ -3093,8 +2979,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(
-        String credentialId) {
+    public Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(String credentialId) {
         try {
             return withContext(context -> getDataSourceCredentialWithResponse(credentialId, context));
         } catch (RuntimeException ex) {
@@ -3103,7 +2988,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(String credentialId,
-                                                                                   Context context) {
+        Context context) {
         Objects.requireNonNull(credentialId, "'credentialId' cannot be null.");
 
         return service.getCredentialWithResponseAsync(UUID.fromString(credentialId), context)
@@ -3166,13 +3051,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     Mono<Response<Void>> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
         Objects.requireNonNull(credentialId, "'credentialId' is required.");
 
-        return service.deleteCredentialWithResponseAsync(UUID.fromString(credentialId),
-            context)
-            .doOnSubscribe(ignoredValue -> logger.info("Deleting deleteDataSourceCredentialEntity - {}",
-                credentialId))
+        return service.deleteCredentialWithResponseAsync(UUID.fromString(credentialId), context)
+            .doOnSubscribe(ignoredValue -> logger.info("Deleting deleteDataSourceCredentialEntity - {}", credentialId))
             .doOnSuccess(response -> logger.info("Deleted deleteDataSourceCredentialEntity - {}", response))
-            .doOnError(error -> logger.warning("Failed to delete deleteDataSourceCredentialEntity - {}",
-                credentialId, error));
+            .doOnError(
+                error -> logger.warning("Failed to delete deleteDataSourceCredentialEntity - {}", credentialId, error));
     }
 
     /**
@@ -3242,51 +3125,49 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions listCredentialEntityOptions) {
+    public PagedFlux<DataSourceCredentialEntity>
+        listDataSourceCredentials(ListCredentialEntityOptions listCredentialEntityOptions) {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context ->
-                    listCredentialEntitiesSinglePageAsync(listCredentialEntityOptions, context)),
-                continuationToken ->
-                    withContext(context -> listCredentialEntitiesSNextPageAsync(continuationToken, context)));
+            return new PagedFlux<>(
+                () -> withContext(
+                    context -> listCredentialEntitiesSinglePageAsync(listCredentialEntityOptions, context)),
+                continuationToken -> withContext(
+                    context -> listCredentialEntitiesSNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
-    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
-        ListCredentialEntityOptions options, Context context) {
+
+    private Mono<PagedResponse<DataSourceCredentialEntity>>
+        listCredentialEntitiesSinglePageAsync(ListCredentialEntityOptions options, Context context) {
         options = options != null ? options : new ListCredentialEntityOptions();
         return service.listCredentialsSinglePageAsync(options.getSkip(), options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data source credentials"))
             .doOnSuccess(response -> logger.info("Listed data source credentials {}", response))
             .doOnError(error -> logger.warning("Failed to list all data source credential information - {}", error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().stream()
-                    .map(DataSourceCredentialEntityTransforms::fromInner).collect(Collectors.toList()),
-                res.getContinuationToken(),
-                null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue()
+                    .stream()
+                    .map(DataSourceCredentialEntityTransforms::fromInner)
+                    .collect(Collectors.toList()),
+                res.getContinuationToken(), null));
     }
 
-    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSNextPageAsync(
-        String nextPageLink, Context context) {
+    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSNextPageAsync(String nextPageLink,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
         return service.listCredentialsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().stream()
-                    .map(DataSourceCredentialEntityTransforms::fromInner).collect(Collectors.toList()),
-                res.getContinuationToken(),
-                null));
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue()
+                    .stream()
+                    .map(DataSourceCredentialEntityTransforms::fromInner)
+                    .collect(Collectors.toList()),
+                res.getContinuationToken(), null));
     }
 }

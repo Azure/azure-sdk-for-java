@@ -7,11 +7,13 @@ package com.azure.resourcemanager.elastic.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ElasticVersions. */
+/**
+ * Resource collection API of ElasticVersions.
+ */
 public interface ElasticVersions {
     /**
      * Get a list of available versions for a region.
-     *
+     * 
      * @param region Region where elastic deployment will take place.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,7 +24,7 @@ public interface ElasticVersions {
 
     /**
      * Get a list of available versions for a region.
-     *
+     * 
      * @param region Region where elastic deployment will take place.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

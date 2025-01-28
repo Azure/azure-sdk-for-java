@@ -13,12 +13,12 @@ import java.util.Collection;
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /**
-     * Static value Enabled for PublicNetworkAccess.
+     * If set, mongo cluster can be accessed through private and public methods.
      */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for PublicNetworkAccess.
+     * If set, the private endpoints are the exclusive access method.
      */
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 

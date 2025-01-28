@@ -22,7 +22,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Gets The communication resource, for example https://my-resource.communication.azure.com.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -36,7 +36,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -50,7 +50,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -64,7 +64,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -78,7 +78,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Gets the EmailsImpl object to access its operations.
-     * 
+     *
      * @return the EmailsImpl object.
      */
     public EmailsImpl getEmails() {
@@ -87,7 +87,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Initializes an instance of AzureCommunicationEmailService client.
-     * 
+     *
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
@@ -98,7 +98,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Initializes an instance of AzureCommunicationEmailService client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
@@ -109,7 +109,7 @@ public final class AzureCommunicationEmailServiceImpl {
 
     /**
      * Initializes an instance of AzureCommunicationEmailService client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.

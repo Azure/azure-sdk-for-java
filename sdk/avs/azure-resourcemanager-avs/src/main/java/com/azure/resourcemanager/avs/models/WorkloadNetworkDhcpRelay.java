@@ -27,14 +27,14 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
     private List<String> serverAddresses;
 
     /*
-     * NSX Segments consuming DHCP.
-     */
-    private List<String> segments;
-
-    /*
      * The provisioning state
      */
     private WorkloadNetworkDhcpProvisioningState provisioningState;
+
+    /*
+     * NSX Segments consuming DHCP.
+     */
+    private List<String> segments;
 
     /**
      * Creates an instance of WorkloadNetworkDhcpRelay class.
@@ -73,16 +73,6 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
     }
 
     /**
-     * Get the segments property: NSX Segments consuming DHCP.
-     * 
-     * @return the segments value.
-     */
-    @Override
-    public List<String> segments() {
-        return this.segments;
-    }
-
-    /**
      * Get the provisioningState property: The provisioning state.
      * 
      * @return the provisioningState value.
@@ -90,6 +80,16 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
     @Override
     public WorkloadNetworkDhcpProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the segments property: NSX Segments consuming DHCP.
+     * 
+     * @return the segments value.
+     */
+    @Override
+    public List<String> segments() {
+        return this.segments;
     }
 
     /**
@@ -117,7 +117,6 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

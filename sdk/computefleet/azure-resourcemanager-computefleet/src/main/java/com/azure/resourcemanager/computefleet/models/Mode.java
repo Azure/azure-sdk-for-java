@@ -15,12 +15,12 @@ import java.util.Collection;
  */
 public final class Mode extends ExpandableStringEnum<Mode> {
     /**
-     * Static value Audit for Mode.
+     * Audit Mode.
      */
     public static final Mode AUDIT = fromString("Audit");
 
     /**
-     * Static value Enforce for Mode.
+     * Enforce Mode.
      */
     public static final Mode ENFORCE = fromString("Enforce");
 

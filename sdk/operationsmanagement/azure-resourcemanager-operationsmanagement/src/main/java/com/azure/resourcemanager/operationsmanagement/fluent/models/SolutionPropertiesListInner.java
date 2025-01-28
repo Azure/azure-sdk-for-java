@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** the list of solution response. */
+/**
+ * the list of solution response.
+ */
 @Fluent
-public final class SolutionPropertiesListInner {
+public final class SolutionPropertiesListInner implements JsonSerializable<SolutionPropertiesListInner> {
     /*
      * List of solution properties within the subscription.
      */
-    @JsonProperty(value = "value")
     private List<SolutionInner> value;
 
-    /** Creates an instance of SolutionPropertiesListInner class. */
+    /**
+     * Creates an instance of SolutionPropertiesListInner class.
+     */
     public SolutionPropertiesListInner() {
     }
 
     /**
      * Get the value property: List of solution properties within the subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<SolutionInner> value() {
@@ -32,7 +39,7 @@ public final class SolutionPropertiesListInner {
 
     /**
      * Set the value property: List of solution properties within the subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the SolutionPropertiesListInner object itself.
      */
@@ -43,12 +50,49 @@ public final class SolutionPropertiesListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionPropertiesListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionPropertiesListInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SolutionPropertiesListInner.
+     */
+    public static SolutionPropertiesListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionPropertiesListInner deserializedSolutionPropertiesListInner = new SolutionPropertiesListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SolutionInner> value = reader.readArray(reader1 -> SolutionInner.fromJson(reader1));
+                    deserializedSolutionPropertiesListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionPropertiesListInner;
+        });
     }
 }

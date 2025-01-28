@@ -6,7 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,42 +21,32 @@ import java.util.List;
  * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
  */
 @Fluent
-public final class CertificateReference {
+public final class CertificateReference implements JsonSerializable<CertificateReference> {
     /*
      * The fully qualified ID of the certificate to install on the pool. This must be inside the same batch account as
      * the pool.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * The location of the certificate store on the compute node into which to install the certificate.
-     * 
-     * The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that
-     * is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image
-     * reference). For Linux compute nodes, the certificates are stored in a directory inside the task working
-     * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
-     * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home
-     * directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+     * The default value is currentUser. This property is applicable only for pools configured with Windows compute
+     * nodes. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and
+     * an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For
+     * certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
+     * /home/{user-name}/certs) and certificates are placed in that directory.
      */
-    @JsonProperty(value = "storeLocation")
     private CertificateStoreLocation storeLocation;
 
     /*
-     * The name of the certificate store on the compute node into which to install the certificate.
-     * 
-     * This property is applicable only for pools configured with Windows nodes (that is, created with
-     * cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image reference). Common store
-     * names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any
-     * custom store name can also be used. The default value is My.
+     * This property is applicable only for pools configured with Windows compute nodes. Common store names include: My,
+     * Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name
+     * can also be used. The default value is My.
      */
-    @JsonProperty(value = "storeName")
     private String storeName;
 
     /*
      * Which user accounts on the compute node should have access to the private data of the certificate.
      */
-    @JsonProperty(value = "visibility")
     private List<CertificateVisibility> visibility;
 
     /**
@@ -84,15 +78,11 @@ public final class CertificateReference {
     }
 
     /**
-     * Get the storeLocation property: The location of the certificate store on the compute node into which to install
-     * the certificate.
-     * 
-     * The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that
-     * is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image
-     * reference). For Linux compute nodes, the certificates are stored in a directory inside the task working
-     * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
-     * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home
-     * directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+     * Get the storeLocation property: The default value is currentUser. This property is applicable only for pools
+     * configured with Windows compute nodes. For Linux compute nodes, the certificates are stored in a directory inside
+     * the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query
+     * for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's
+     * home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
      * 
      * @return the storeLocation value.
      */
@@ -101,15 +91,11 @@ public final class CertificateReference {
     }
 
     /**
-     * Set the storeLocation property: The location of the certificate store on the compute node into which to install
-     * the certificate.
-     * 
-     * The default value is currentUser. This property is applicable only for pools configured with Windows nodes (that
-     * is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image
-     * reference). For Linux compute nodes, the certificates are stored in a directory inside the task working
-     * directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
-     * location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home
-     * directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+     * Set the storeLocation property: The default value is currentUser. This property is applicable only for pools
+     * configured with Windows compute nodes. For Linux compute nodes, the certificates are stored in a directory inside
+     * the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query
+     * for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's
+     * home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
      * 
      * @param storeLocation the storeLocation value to set.
      * @return the CertificateReference object itself.
@@ -120,13 +106,9 @@ public final class CertificateReference {
     }
 
     /**
-     * Get the storeName property: The name of the certificate store on the compute node into which to install the
-     * certificate.
-     * 
-     * This property is applicable only for pools configured with Windows nodes (that is, created with
-     * cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image reference). Common store
-     * names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any
-     * custom store name can also be used. The default value is My.
+     * Get the storeName property: This property is applicable only for pools configured with Windows compute nodes.
+     * Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot,
+     * AddressBook, but any custom store name can also be used. The default value is My.
      * 
      * @return the storeName value.
      */
@@ -135,13 +117,9 @@ public final class CertificateReference {
     }
 
     /**
-     * Set the storeName property: The name of the certificate store on the compute node into which to install the
-     * certificate.
-     * 
-     * This property is applicable only for pools configured with Windows nodes (that is, created with
-     * cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image reference). Common store
-     * names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any
-     * custom store name can also be used. The default value is My.
+     * Set the storeName property: This property is applicable only for pools configured with Windows compute nodes.
+     * Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot,
+     * AddressBook, but any custom store name can also be used. The default value is My.
      * 
      * @param storeName the storeName value to set.
      * @return the CertificateReference object itself.
@@ -180,10 +158,60 @@ public final class CertificateReference {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model CertificateReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model CertificateReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("storeLocation", this.storeLocation == null ? null : this.storeLocation.toString());
+        jsonWriter.writeStringField("storeName", this.storeName);
+        jsonWriter.writeArrayField("visibility", this.visibility,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateReference.
+     */
+    public static CertificateReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateReference deserializedCertificateReference = new CertificateReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateReference.id = reader.getString();
+                } else if ("storeLocation".equals(fieldName)) {
+                    deserializedCertificateReference.storeLocation
+                        = CertificateStoreLocation.fromString(reader.getString());
+                } else if ("storeName".equals(fieldName)) {
+                    deserializedCertificateReference.storeName = reader.getString();
+                } else if ("visibility".equals(fieldName)) {
+                    List<CertificateVisibility> visibility
+                        = reader.readArray(reader1 -> CertificateVisibility.fromString(reader1.getString()));
+                    deserializedCertificateReference.visibility = visibility;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateReference;
+        });
+    }
 }

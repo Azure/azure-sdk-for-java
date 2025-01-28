@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataDisksGroupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataDisksGroups model =
-            BinaryData
-                .fromString("{\"disksPerNode\":1173289641,\"storageAccountType\":\"qyud\",\"diskSizeGB\":2120884016}")
-                .toObject(DataDisksGroups.class);
+        DataDisksGroups model = BinaryData
+            .fromString("{\"disksPerNode\":1173289641,\"storageAccountType\":\"qyud\",\"diskSizeGB\":2120884016}")
+            .toObject(DataDisksGroups.class);
         Assertions.assertEquals(1173289641, model.disksPerNode());
     }
 

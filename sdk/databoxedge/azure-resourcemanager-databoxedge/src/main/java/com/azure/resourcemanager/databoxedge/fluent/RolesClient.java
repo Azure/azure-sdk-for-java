@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
 
-/** An instance of this class provides access to all the operations defined in RolesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RolesClient.
+ */
 public interface RolesClient {
     /**
      * Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface RolesClient {
 
     /**
      * Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface RolesClient {
 
     /**
      * Gets a specific role by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -59,7 +61,7 @@ public interface RolesClient {
 
     /**
      * Gets a specific role by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -73,7 +75,7 @@ public interface RolesClient {
 
     /**
      * Create or update a role.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -84,12 +86,12 @@ public interface RolesClient {
      * @return the {@link SyncPoller} for polling of compute role.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, RoleInner role);
+    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, RoleInner role);
 
     /**
      * Create or update a role.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -101,12 +103,12 @@ public interface RolesClient {
      * @return the {@link SyncPoller} for polling of compute role.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, RoleInner role, Context context);
+    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, RoleInner role, Context context);
 
     /**
      * Create or update a role.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -121,7 +123,7 @@ public interface RolesClient {
 
     /**
      * Create or update a role.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -137,7 +139,7 @@ public interface RolesClient {
 
     /**
      * Deletes the role on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -151,7 +153,7 @@ public interface RolesClient {
 
     /**
      * Deletes the role on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -162,12 +164,12 @@ public interface RolesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes the role on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -180,7 +182,7 @@ public interface RolesClient {
 
     /**
      * Deletes the role on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.

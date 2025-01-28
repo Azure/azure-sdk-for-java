@@ -14,17 +14,22 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Function App deployment slot. */
 @Fluent
-public interface FunctionDeploymentSlot
-    extends IndependentChildResource<AppServiceManager, SiteInner>,
-        FunctionDeploymentSlotBasic,
-        DeploymentSlotBase<FunctionDeploymentSlot>,
-        Updatable<DeploymentSlotBase.Update<FunctionDeploymentSlot>>,
-        HasParent<FunctionApp> {
+public interface FunctionDeploymentSlot extends IndependentChildResource<AppServiceManager, SiteInner>,
+    FunctionDeploymentSlotBasic, DeploymentSlotBase<FunctionDeploymentSlot>,
+    Updatable<DeploymentSlotBase.Update<FunctionDeploymentSlot>>, HasParent<FunctionApp>, SupportsOneDeploy {
 
-    /** @return the master key for the function app */
+    /**
+     * Gets the master key for the function app.
+     *
+     * @return the master key for the function app
+     */
     String getMasterKey();
 
-    /** @return the master key for the function app */
+    /**
+     * Gets the master key for the function app.
+     *
+     * @return the master key for the function app
+     */
     Mono<String> getMasterKeyAsync();
 
     /**************************************************************

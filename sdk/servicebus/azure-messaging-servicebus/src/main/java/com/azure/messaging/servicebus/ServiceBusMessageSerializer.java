@@ -87,9 +87,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         int payloadSize = getPayloadSize(amqpMessage);
 
         final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+        final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();
         final ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
 
         int annotationsSize = 0;
+        int deliveryAnnotationsSize = 0;
         int applicationPropertiesSize = 0;
 
         if (messageAnnotations != null) {
@@ -98,6 +100,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             for (Map.Entry<Symbol, Object> entry : map.entrySet()) {
                 final int size = sizeof(entry.getKey()) + sizeof(entry.getValue());
                 annotationsSize += size;
+            }
+        }
+
+        if (deliveryAnnotations != null) {
+            final Map<Symbol, Object> map = deliveryAnnotations.getValue();
+
+            for (Map.Entry<Symbol, Object> entry : map.entrySet()) {
+                final int size = sizeof(entry.getKey()) + sizeof(entry.getValue());
+                deliveryAnnotationsSize += size;
             }
         }
 
@@ -110,7 +121,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
         }
 
-        return annotationsSize + applicationPropertiesSize + payloadSize;
+        return annotationsSize + deliveryAnnotationsSize + applicationPropertiesSize + payloadSize;
     }
 
     /**
@@ -179,8 +190,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
 
         if (brokeredProperties.getAbsoluteExpiryTime() != null) {
-            amqpMessage.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime()
-                .toInstant()));
+            amqpMessage.getProperties()
+                .setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime().toInstant()));
         }
         if (brokeredProperties.getCreationTime() != null) {
             amqpMessage.getProperties().setCreationTime(Date.from(brokeredProperties.getCreationTime().toInstant()));
@@ -224,8 +235,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Set Delivery Annotations.
         final Map<Symbol, Object> deliveryAnnotationsMap = new HashMap<>();
 
-        final Map<String, Object> deliveryAnnotations = brokeredMessage.getRawAmqpMessage()
-            .getDeliveryAnnotations();
+        final Map<String, Object> deliveryAnnotations = brokeredMessage.getRawAmqpMessage().getDeliveryAnnotations();
         for (Map.Entry<String, Object> deliveryEntry : deliveryAnnotations.entrySet()) {
             deliveryAnnotationsMap.put(Symbol.valueOf(deliveryEntry.getKey()), deliveryEntry.getValue());
         }
@@ -278,8 +288,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (clazz == ServiceBusReceivedMessage.class) {
             return (T) deserializeMessage(message);
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
         }
     }
 
@@ -295,8 +305,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         } else if (clazz == Long.class) {
             return (List<T>) deserializeListOfLong(message);
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
         }
     }
 
@@ -309,9 +319,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 Object expirationListObj = responseBody.get(ManagementConstants.SEQUENCE_NUMBERS);
 
                 if (expirationListObj instanceof long[]) {
-                    return Arrays.stream((long[]) expirationListObj)
-                        .boxed()
-                        .collect(Collectors.toList());
+                    return Arrays.stream((long[]) expirationListObj).boxed().collect(Collectors.toList());
                 }
             }
         }
@@ -321,7 +329,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private List<OffsetDateTime> deserializeListOfOffsetDateTime(Message amqpMessage) {
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
-            if (amqpValue.getValue() instanceof  Map) {
+            if (amqpValue.getValue() instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
                 Object expirationListObj = responseBody.get(ManagementConstants.EXPIRATIONS);
@@ -363,7 +371,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         final Object messages = ((Map) responseBodyMap).get(ManagementConstants.MESSAGES);
         if (messages == null) {
-            LOGGER.atWarning().addKeyValue("expectedKey", ManagementConstants.MESSAGES)
+            LOGGER.atWarning()
+                .addKeyValue("expectedKey", ManagementConstants.MESSAGES)
                 .log("AMQP response body did not contain key.");
             return Collections.emptyList();
         } else if (!(messages instanceof Iterable)) {
@@ -452,7 +461,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Footer
         final Footer footer = amqpMessage.getFooter();
         if (footer != null && footer.getValue() != null) {
-            @SuppressWarnings("unchecked") final Map<Symbol, Object> footerValue = footer.getValue();
+            @SuppressWarnings("unchecked")
+            final Map<Symbol, Object> footerValue = footer.getValue();
             setValues(footerValue, brokeredAmqpAnnotatedMessage.getFooter());
 
         }
@@ -483,12 +493,12 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
 
             if (amqpProperties.getAbsoluteExpiryTime() != null) {
-                brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
+                brokeredProperties
+                    .setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant().atOffset(ZoneOffset.UTC));
             }
             if (amqpProperties.getCreationTime() != null) {
-                brokeredProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
+                brokeredProperties
+                    .setCreationTime(amqpProperties.getCreationTime().toInstant().atOffset(ZoneOffset.UTC));
             }
         }
 
@@ -667,7 +677,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return size;
         }
 
-        throw new IllegalArgumentException(String.format(Locale.US,
-            "Encoding Type: %s is not supported", obj.getClass()));
+        throw new IllegalArgumentException(
+            String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));
     }
 }

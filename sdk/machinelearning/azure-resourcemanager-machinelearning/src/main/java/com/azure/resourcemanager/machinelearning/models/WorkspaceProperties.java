@@ -7,25 +7,27 @@ package com.azure.resourcemanager.machinelearning.models;
 import com.azure.resourcemanager.machinelearning.fluent.models.WorkspacePropertiesInner;
 import java.util.List;
 
-/** An immutable client-side representation of WorkspaceProperties. */
+/**
+ * An immutable client-side representation of WorkspaceProperties.
+ */
 public interface WorkspaceProperties {
     /**
      * Gets the workspaceId property: The immutable id associated with this workspace.
-     *
+     * 
      * @return the workspaceId value.
      */
     String workspaceId();
 
     /**
      * Gets the description property: The description of this workspace.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the friendlyName property: The friendly name for this workspace. This name in mutable.
-     *
+     * 
      * @return the friendlyName value.
      */
     String friendlyName();
@@ -33,21 +35,21 @@ public interface WorkspaceProperties {
     /**
      * Gets the keyVault property: ARM id of the key vault associated with this workspace. This cannot be changed once
      * the workspace has been created.
-     *
+     * 
      * @return the keyVault value.
      */
     String keyVault();
 
     /**
      * Gets the applicationInsights property: ARM id of the application insights associated with this workspace.
-     *
+     * 
      * @return the applicationInsights value.
      */
     String applicationInsights();
 
     /**
      * Gets the containerRegistry property: ARM id of the container registry associated with this workspace.
-     *
+     * 
      * @return the containerRegistry value.
      */
     String containerRegistry();
@@ -55,7 +57,7 @@ public interface WorkspaceProperties {
     /**
      * Gets the storageAccount property: ARM id of the storage account associated with this workspace. This cannot be
      * changed once the workspace has been created.
-     *
+     * 
      * @return the storageAccount value.
      */
     String storageAccount();
@@ -63,7 +65,7 @@ public interface WorkspaceProperties {
     /**
      * Gets the discoveryUrl property: Url for the discovery service to identify regional endpoints for machine learning
      * experimentation services.
-     *
+     * 
      * @return the discoveryUrl value.
      */
     String discoveryUrl();
@@ -71,14 +73,14 @@ public interface WorkspaceProperties {
     /**
      * Gets the provisioningState property: The current deployment state of workspace resource. The provisioningState is
      * to indicate states for resource provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the encryption property: The encryption settings of Azure ML workspace.
-     *
+     * 
      * @return the encryption value.
      */
     EncryptionProperty encryption();
@@ -86,7 +88,7 @@ public interface WorkspaceProperties {
     /**
      * Gets the hbiWorkspace property: The flag to signal HBI data in the workspace and reduce diagnostic data collected
      * by the service.
-     *
+     * 
      * @return the hbiWorkspace value.
      */
     Boolean hbiWorkspace();
@@ -94,21 +96,21 @@ public interface WorkspaceProperties {
     /**
      * Gets the serviceProvisionedResourceGroup property: The name of the managed resource group created by workspace RP
      * in customer subscription if the workspace is CMK workspace.
-     *
+     * 
      * @return the serviceProvisionedResourceGroup value.
      */
     String serviceProvisionedResourceGroup();
 
     /**
      * Gets the privateLinkCount property: Count of private connections in the workspace.
-     *
+     * 
      * @return the privateLinkCount value.
      */
     Integer privateLinkCount();
 
     /**
      * Gets the imageBuildCompute property: The compute name for image build.
-     *
+     * 
      * @return the imageBuildCompute value.
      */
     String imageBuildCompute();
@@ -116,42 +118,49 @@ public interface WorkspaceProperties {
     /**
      * Gets the allowPublicAccessWhenBehindVnet property: The flag to indicate whether to allow public access when
      * behind VNet.
-     *
+     * 
      * @return the allowPublicAccessWhenBehindVnet value.
      */
     Boolean allowPublicAccessWhenBehindVnet();
 
     /**
      * Gets the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccess publicNetworkAccess();
 
     /**
      * Gets the privateEndpointConnections property: The list of private endpoint connections in the workspace.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
+     * Gets the serverlessComputeSettings property: Settings for serverless compute created in the workspace.
+     * 
+     * @return the serverlessComputeSettings value.
+     */
+    ServerlessComputeSettings serverlessComputeSettings();
+
+    /**
      * Gets the sharedPrivateLinkResources property: The list of shared private link resources in this workspace.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     List<SharedPrivateLinkResource> sharedPrivateLinkResources();
 
     /**
      * Gets the notebookInfo property: The notebook info of Azure ML workspace.
-     *
+     * 
      * @return the notebookInfo value.
      */
     NotebookResourceInfo notebookInfo();
 
     /**
      * Gets the serviceManagedResourcesSettings property: The service managed resource settings.
-     *
+     * 
      * @return the serviceManagedResourcesSettings value.
      */
     ServiceManagedResourcesSettings serviceManagedResourcesSettings();
@@ -159,14 +168,14 @@ public interface WorkspaceProperties {
     /**
      * Gets the primaryUserAssignedIdentity property: The user assigned identity resource id that represents the
      * workspace identity.
-     *
+     * 
      * @return the primaryUserAssignedIdentity value.
      */
     String primaryUserAssignedIdentity();
 
     /**
      * Gets the tenantId property: The tenant id associated with this workspace.
-     *
+     * 
      * @return the tenantId value.
      */
     String tenantId();
@@ -174,7 +183,7 @@ public interface WorkspaceProperties {
     /**
      * Gets the storageHnsEnabled property: If the storage associated with the workspace has hierarchical namespace(HNS)
      * enabled.
-     *
+     * 
      * @return the storageHnsEnabled value.
      */
     Boolean storageHnsEnabled();
@@ -182,7 +191,7 @@ public interface WorkspaceProperties {
     /**
      * Gets the mlFlowTrackingUri property: The URI associated with this workspace that machine learning flow must point
      * at to set up tracking.
-     *
+     * 
      * @return the mlFlowTrackingUri value.
      */
     String mlFlowTrackingUri();
@@ -190,14 +199,56 @@ public interface WorkspaceProperties {
     /**
      * Gets the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
      * API.
-     *
+     * 
      * @return the v1LegacyMode value.
      */
     Boolean v1LegacyMode();
 
     /**
+     * Gets the managedNetwork property: Managed Network settings for a machine learning workspace.
+     * 
+     * @return the managedNetwork value.
+     */
+    ManagedNetworkSettings managedNetwork();
+
+    /**
+     * Gets the featureStoreSettings property: Settings for feature store type workspace.
+     * 
+     * @return the featureStoreSettings value.
+     */
+    FeatureStoreSettings featureStoreSettings();
+
+    /**
+     * Gets the associatedWorkspaces property: The associatedWorkspaces property.
+     * 
+     * @return the associatedWorkspaces value.
+     */
+    List<String> associatedWorkspaces();
+
+    /**
+     * Gets the enableDataIsolation property: The enableDataIsolation property.
+     * 
+     * @return the enableDataIsolation value.
+     */
+    Boolean enableDataIsolation();
+
+    /**
+     * Gets the hubResourceId property: The hubResourceId property.
+     * 
+     * @return the hubResourceId value.
+     */
+    String hubResourceId();
+
+    /**
+     * Gets the workspaceHubConfig property: WorkspaceHub's configuration object.
+     * 
+     * @return the workspaceHubConfig value.
+     */
+    WorkspaceHubConfig workspaceHubConfig();
+
+    /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.WorkspacePropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkspacePropertiesInner innerModel();

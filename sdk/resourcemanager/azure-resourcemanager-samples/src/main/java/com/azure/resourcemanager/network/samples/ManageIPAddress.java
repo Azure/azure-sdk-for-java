@@ -54,11 +54,12 @@ public final class ManageIPAddress {
 
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(publicIPAddressName1)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withLeafDomainLabel(publicIPAddressLeafDNS1)
-                    .create();
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
+                .define(publicIPAddressName1)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withLeafDomainLabel(publicIPAddressLeafDNS1)
+                .create();
 
             System.out.println("Created a public IP address");
 
@@ -71,24 +72,23 @@ public final class ManageIPAddress {
 
             Date t1 = new Date();
 
-            VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withExistingPrimaryPublicIPAddress(publicIPAddress)
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername(userName)
-                    .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .create();
+            VirtualMachine vm = azureResourceManager.virtualMachines()
+                .define(vmName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withExistingPrimaryPublicIPAddress(publicIPAddress)
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                .withAdminUsername(userName)
+                .withAdminPassword(password)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .create();
 
             Date t2 = new Date();
-            System.out.println("Created VM: (took "
-                    + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + vm.id());
+            System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + vm.id());
             // Print virtual machine details
             Utils.print(vm);
-
 
             //============================================================
             // Gets the public IP address associated with the VM's primary NIC
@@ -97,27 +97,24 @@ public final class ManageIPAddress {
             // Print the public IP address details
             Utils.print(vm.getPrimaryPublicIPAddress());
 
-
             //============================================================
             // Assign a new public IP address for the VM
 
             // Define a new public IP address
 
-            PublicIpAddress publicIpAddress2 = azureResourceManager.publicIpAddresses().define(publicIPAddressName2)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withLeafDomainLabel(publicIPAddressLeafDNS2)
-                    .create();
+            PublicIpAddress publicIpAddress2 = azureResourceManager.publicIpAddresses()
+                .define(publicIPAddressName2)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withLeafDomainLabel(publicIPAddressLeafDNS2)
+                .create();
 
             // Update VM's primary NIC to use the new public IP address
 
             System.out.println("Updating the VM's primary NIC with new public IP address");
 
             NetworkInterface primaryNetworkInterface = vm.getPrimaryNetworkInterface();
-            primaryNetworkInterface.update()
-                    .withExistingPrimaryPublicIPAddress(publicIpAddress2)
-                    .apply();
-
+            primaryNetworkInterface.update().withExistingPrimaryPublicIPAddress(publicIpAddress2).apply();
 
             //============================================================
             // Gets the updated public IP address associated with the VM
@@ -127,7 +124,6 @@ public final class ManageIPAddress {
             vm.refresh();
             Utils.print(vm.getPrimaryPublicIPAddress());
 
-
             //============================================================
             // Remove public IP associated with the VM
 
@@ -135,12 +131,9 @@ public final class ManageIPAddress {
             vm.refresh();
             primaryNetworkInterface = vm.getPrimaryNetworkInterface();
             publicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIpAddress();
-            primaryNetworkInterface.update()
-                    .withoutPrimaryPublicIPAddress()
-                    .apply();
+            primaryNetworkInterface.update().withoutPrimaryPublicIPAddress().apply();
 
             System.out.println("Removed public IP address associated with the VM");
-
 
             //============================================================
             // Delete the public ip
@@ -168,7 +161,6 @@ public final class ManageIPAddress {
      */
     public static void main(String[] args) {
 
-
         try {
 
             //=============================================================
@@ -179,8 +171,7 @@ public final class ManageIPAddress {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

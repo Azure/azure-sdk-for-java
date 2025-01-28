@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourcePools. */
+/**
+ * Resource collection API of ResourcePools.
+ */
 public interface ResourcePools {
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface ResourcePools {
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface ResourcePools {
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -57,9 +59,9 @@ public interface ResourcePools {
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).

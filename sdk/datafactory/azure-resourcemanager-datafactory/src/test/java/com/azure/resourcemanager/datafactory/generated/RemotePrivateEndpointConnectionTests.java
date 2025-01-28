@@ -14,23 +14,23 @@ public final class RemotePrivateEndpointConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemotePrivateEndpointConnection model = BinaryData.fromString(
-            "{\"provisioningState\":\"wka\",\"privateEndpoint\":{\"id\":\"jyfdvlv\"},\"privateLinkServiceConnectionState\":{\"status\":\"rnfxtgddp\",\"description\":\"hehnmnaoya\",\"actionsRequired\":\"coeqswankltytm\"}}")
+            "{\"provisioningState\":\"nepzwakls\",\"privateEndpoint\":{\"id\":\"qqqagwwrxaomzi\"},\"privateLinkServiceConnectionState\":{\"status\":\"rrczezkhhltnj\",\"description\":\"hqo\",\"actionsRequired\":\"jqoyueayfbpcm\"}}")
             .toObject(RemotePrivateEndpointConnection.class);
-        Assertions.assertEquals("rnfxtgddp", model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hehnmnaoya", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("coeqswankltytm", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("rrczezkhhltnj", model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("hqo", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jqoyueayfbpcm", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemotePrivateEndpointConnection model
             = new RemotePrivateEndpointConnection().withPrivateEndpoint(new ArmIdWrapper())
-                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("rnfxtgddp")
-                    .withDescription("hehnmnaoya")
-                    .withActionsRequired("coeqswankltytm"));
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("rrczezkhhltnj")
+                    .withDescription("hqo")
+                    .withActionsRequired("jqoyueayfbpcm"));
         model = BinaryData.fromObject(model).toObject(RemotePrivateEndpointConnection.class);
-        Assertions.assertEquals("rnfxtgddp", model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("hehnmnaoya", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("coeqswankltytm", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("rrczezkhhltnj", model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("hqo", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jqoyueayfbpcm", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

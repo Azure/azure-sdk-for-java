@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MsixPackagePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MsixPackagePatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isActive\":false,\"isRegularRegistration\":true,\"displayName\":\"kqfqjbvl\"},\"id\":\"orfmluiqt\",\"name\":\"zf\",\"type\":\"vyvnqqyb\"}")
-                .toObject(MsixPackagePatch.class);
-        Assertions.assertEquals(false, model.isActive());
-        Assertions.assertEquals(true, model.isRegularRegistration());
-        Assertions.assertEquals("kqfqjbvl", model.displayName());
+        MsixPackagePatch model = BinaryData.fromString(
+            "{\"properties\":{\"isActive\":true,\"isRegularRegistration\":false,\"displayName\":\"yhpluodpvruudlgz\"},\"id\":\"thost\",\"name\":\"ktst\",\"type\":\"dxeclzedqbcvh\"}")
+            .toObject(MsixPackagePatch.class);
+        Assertions.assertEquals(true, model.isActive());
+        Assertions.assertEquals(false, model.isRegularRegistration());
+        Assertions.assertEquals("yhpluodpvruudlgz", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MsixPackagePatch model =
-            new MsixPackagePatch().withIsActive(false).withIsRegularRegistration(true).withDisplayName("kqfqjbvl");
+        MsixPackagePatch model = new MsixPackagePatch().withIsActive(true)
+            .withIsRegularRegistration(false)
+            .withDisplayName("yhpluodpvruudlgz");
         model = BinaryData.fromObject(model).toObject(MsixPackagePatch.class);
-        Assertions.assertEquals(false, model.isActive());
-        Assertions.assertEquals(true, model.isRegularRegistration());
-        Assertions.assertEquals("kqfqjbvl", model.displayName());
+        Assertions.assertEquals(true, model.isActive());
+        Assertions.assertEquals(false, model.isRegularRegistration());
+        Assertions.assertEquals("yhpluodpvruudlgz", model.displayName());
     }
 }

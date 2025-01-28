@@ -14,8 +14,7 @@ public final class CallParticipantConverter {
     /**
      * Converts to {@link CallParticipant}.
      */
-    public static CallParticipant convert(
-        AcsCallParticipantInternal acsCallParticipantDto) {
+    public static CallParticipant convert(AcsCallParticipantInternal acsCallParticipantDto) {
 
         if (acsCallParticipantDto == null) {
             return null;

@@ -10,37 +10,36 @@ import com.azure.resourcemanager.delegatednetwork.models.OrchestratorKind;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceProperties;
 import com.azure.resourcemanager.delegatednetwork.models.ResourceIdentityType;
 
-/** Samples for OrchestratorInstanceService Create. */
+/**
+ * Samples for OrchestratorInstanceService Create.
+ */
 public final class OrchestratorInstanceServiceCreateSamples {
     /*
-     * x-ms-original-file: specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putOrchestrator.json
+     * x-ms-original-file:
+     * specification/dnc/resource-manager/Microsoft.DelegatedNetwork/stable/2021-03-15/examples/putOrchestrator.json
      */
     /**
      * Sample code: Create orchestrator instance.
-     *
+     * 
      * @param manager Entry point to DelegatedNetworkManager.
      */
-    public static void createOrchestratorInstance(
-        com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
-        manager
-            .orchestratorInstanceServices()
+    public static void
+        createOrchestratorInstance(com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager manager) {
+        manager.orchestratorInstanceServices()
             .define("testk8s1")
             .withRegion("West US")
             .withExistingResourceGroup("TestRG")
             .withKind(OrchestratorKind.KUBERNETES)
             .withIdentity(new OrchestratorIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(
-                new OrchestratorResourceProperties()
-                    .withOrchestratorAppId("546192d7-503f-477a-9cfe-4efc3ee2b6e1")
-                    .withOrchestratorTenantId("da6192d7-503f-477a-9cfe-4efc3ee2b6c3")
-                    .withClusterRootCA("ddsadsad344mfdsfdl")
-                    .withApiServerEndpoint("https://testk8s.cloudapp.net")
-                    .withPrivateLinkResourceId(
-                        "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.Network/privateLinkServices/plresource1")
-                    .withControllerDetails(
-                        new ControllerDetails()
-                            .withId(
-                                "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.DelegatedNetwork/controller/testcontroller")))
+            .withProperties(new OrchestratorResourceProperties()
+                .withOrchestratorAppId("546192d7-503f-477a-9cfe-4efc3ee2b6e1")
+                .withOrchestratorTenantId("da6192d7-503f-477a-9cfe-4efc3ee2b6c3")
+                .withClusterRootCA("ddsadsad344mfdsfdl")
+                .withApiServerEndpoint("https://testk8s.cloudapp.net")
+                .withPrivateLinkResourceId(
+                    "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.Network/privateLinkServices/plresource1")
+                .withControllerDetails(new ControllerDetails().withId(
+                    "/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/TestRG/providers/Microsoft.DelegatedNetwork/controller/testcontroller")))
             .create();
     }
 }

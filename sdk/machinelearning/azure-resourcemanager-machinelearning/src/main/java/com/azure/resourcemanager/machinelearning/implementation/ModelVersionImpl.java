@@ -7,6 +7,7 @@ package com.azure.resourcemanager.machinelearning.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionInner;
+import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
 import com.azure.resourcemanager.machinelearning.models.ModelVersion;
 import com.azure.resourcemanager.machinelearning.models.ModelVersionProperties;
 
@@ -63,23 +64,19 @@ public final class ModelVersionImpl implements ModelVersion, ModelVersion.Defini
     }
 
     public ModelVersion create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getModelVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ModelVersion create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getModelVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -94,55 +91,54 @@ public final class ModelVersionImpl implements ModelVersion, ModelVersion.Defini
     }
 
     public ModelVersion apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelVersions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getModelVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ModelVersion apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelVersions()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getModelVersions()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ModelVersionImpl(
-        ModelVersionInner innerObject,
+    ModelVersionImpl(ModelVersionInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "models");
-        this.version = Utils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "models");
+        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
     }
 
     public ModelVersion refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getModelVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ModelVersion refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getModelVersions()
-                .getWithResponse(resourceGroupName, workspaceName, name, version, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getModelVersions()
+            .getWithResponse(resourceGroupName, workspaceName, name, version, context)
+            .getValue();
         return this;
+    }
+
+    public void publish(DestinationAsset body) {
+        serviceManager.modelVersions().publish(resourceGroupName, workspaceName, name, version, body);
+    }
+
+    public void publish(DestinationAsset body, Context context) {
+        serviceManager.modelVersions().publish(resourceGroupName, workspaceName, name, version, body, context);
     }
 
     public ModelVersionImpl withProperties(ModelVersionProperties properties) {

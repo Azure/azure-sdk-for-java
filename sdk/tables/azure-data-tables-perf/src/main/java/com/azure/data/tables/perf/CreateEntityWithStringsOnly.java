@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-public class CreateEntityWithStringsOnly extends TableTestBase<PerfStressOptions>  {
+public class CreateEntityWithStringsOnly extends TableTestBase<PerfStressOptions> {
     private final TableEntity tableEntity;
 
     public CreateEntityWithStringsOnly(PerfStressOptions options) {
@@ -19,8 +19,7 @@ public class CreateEntityWithStringsOnly extends TableTestBase<PerfStressOptions
     }
 
     public Mono<Void> globalSetupAsync() {
-        return tableAsyncClient.createTable()
-            .then(super.globalSetupAsync());
+        return tableAsyncClient.createTable().then(super.globalSetupAsync());
     }
 
     @Override
@@ -30,7 +29,6 @@ public class CreateEntityWithStringsOnly extends TableTestBase<PerfStressOptions
 
     @Override
     public Mono<Void> runAsync() {
-        return tableAsyncClient.upsertEntity(tableEntity)
-            .then();
+        return tableAsyncClient.upsertEntity(tableEntity).then();
     }
 }

@@ -7,28 +7,30 @@ package com.azure.resourcemanager.billing.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Address. */
+/**
+ * Resource collection API of Address.
+ */
 public interface Address {
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the address validation along with {@link Response}.
      */
-    Response<ValidateAddressResponse> validateWithResponse(AddressDetails address, Context context);
+    Response<AddressValidationResponse> validateWithResponse(AddressDetails parameters, Context context);
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the address validation.
      */
-    ValidateAddressResponse validate(AddressDetails address);
+    AddressValidationResponse validate(AddressDetails parameters);
 }

@@ -236,6 +236,8 @@ public final class BlobListDetails {
     }
 
     /**
+     * Gets the list of flags set to true.
+     *
      * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {

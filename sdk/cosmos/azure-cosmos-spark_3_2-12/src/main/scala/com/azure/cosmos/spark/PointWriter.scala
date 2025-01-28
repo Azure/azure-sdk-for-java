@@ -679,11 +679,13 @@ private class PointWriter(container: CosmosAsyncContainer,
    * Don't wait for any remaining work but signal to the writer the ungraceful close
    * Should not throw any exceptions
    */
-  override def abort(): Unit = {
-    // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
-    // been registered
-    captureIfFirstFailure(
-      new IllegalStateException(s"The Spark task was aborted, Context: ${taskDiagnosticsContext.toString}"))
+  override def abort(shouldThrow: Boolean): Unit = {
+    if (shouldThrow) {
+      // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
+      // been registered
+      captureIfFirstFailure(
+        new IllegalStateException(s"The Spark task was aborted, Context: ${taskDiagnosticsContext.toString}"))
+    }
 
     closed.set(true)
 

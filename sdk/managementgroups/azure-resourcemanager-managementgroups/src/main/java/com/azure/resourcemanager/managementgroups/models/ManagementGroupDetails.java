@@ -5,62 +5,65 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The details of a management group. */
+/**
+ * The details of a management group.
+ */
 @Fluent
-public final class ManagementGroupDetails {
+public final class ManagementGroupDetails implements JsonSerializable<ManagementGroupDetails> {
     /*
      * The version number of the object.
      */
-    @JsonProperty(value = "version")
     private Integer version;
 
     /*
      * The date and time when this object was last updated.
      */
-    @JsonProperty(value = "updatedTime")
     private OffsetDateTime updatedTime;
 
     /*
      * The identity of the principal or process that updated the object.
      */
-    @JsonProperty(value = "updatedBy")
     private String updatedBy;
 
     /*
      * (Optional) The ID of the parent management group.
      */
-    @JsonProperty(value = "parent")
     private ParentGroupInfo parent;
 
     /*
      * The path from the root to the current group.
      */
-    @JsonProperty(value = "path")
     private List<ManagementGroupPathElement> path;
 
     /*
      * The ancestors of the management group.
      */
-    @JsonProperty(value = "managementGroupAncestors")
     private List<String> managementGroupAncestors;
 
     /*
      * The ancestors of the management group displayed in reversed order, from immediate parent to the root.
      */
-    @JsonProperty(value = "managementGroupAncestorsChain")
     private List<ManagementGroupPathElement> managementGroupAncestorsChain;
 
-    /** Creates an instance of ManagementGroupDetails class. */
+    /**
+     * Creates an instance of ManagementGroupDetails class.
+     */
     public ManagementGroupDetails() {
     }
 
     /**
      * Get the version property: The version number of the object.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -69,7 +72,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Set the version property: The version number of the object.
-     *
+     * 
      * @param version the version value to set.
      * @return the ManagementGroupDetails object itself.
      */
@@ -80,7 +83,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Get the updatedTime property: The date and time when this object was last updated.
-     *
+     * 
      * @return the updatedTime value.
      */
     public OffsetDateTime updatedTime() {
@@ -89,7 +92,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Set the updatedTime property: The date and time when this object was last updated.
-     *
+     * 
      * @param updatedTime the updatedTime value to set.
      * @return the ManagementGroupDetails object itself.
      */
@@ -100,7 +103,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Get the updatedBy property: The identity of the principal or process that updated the object.
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -109,7 +112,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Set the updatedBy property: The identity of the principal or process that updated the object.
-     *
+     * 
      * @param updatedBy the updatedBy value to set.
      * @return the ManagementGroupDetails object itself.
      */
@@ -120,7 +123,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Get the parent property: (Optional) The ID of the parent management group.
-     *
+     * 
      * @return the parent value.
      */
     public ParentGroupInfo parent() {
@@ -129,7 +132,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Set the parent property: (Optional) The ID of the parent management group.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the ManagementGroupDetails object itself.
      */
@@ -140,7 +143,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Get the path property: The path from the root to the current group.
-     *
+     * 
      * @return the path value.
      */
     public List<ManagementGroupPathElement> path() {
@@ -149,7 +152,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Set the path property: The path from the root to the current group.
-     *
+     * 
      * @param path the path value to set.
      * @return the ManagementGroupDetails object itself.
      */
@@ -160,7 +163,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Get the managementGroupAncestors property: The ancestors of the management group.
-     *
+     * 
      * @return the managementGroupAncestors value.
      */
     public List<String> managementGroupAncestors() {
@@ -169,7 +172,7 @@ public final class ManagementGroupDetails {
 
     /**
      * Set the managementGroupAncestors property: The ancestors of the management group.
-     *
+     * 
      * @param managementGroupAncestors the managementGroupAncestors value to set.
      * @return the ManagementGroupDetails object itself.
      */
@@ -181,7 +184,7 @@ public final class ManagementGroupDetails {
     /**
      * Get the managementGroupAncestorsChain property: The ancestors of the management group displayed in reversed
      * order, from immediate parent to the root.
-     *
+     * 
      * @return the managementGroupAncestorsChain value.
      */
     public List<ManagementGroupPathElement> managementGroupAncestorsChain() {
@@ -191,19 +194,19 @@ public final class ManagementGroupDetails {
     /**
      * Set the managementGroupAncestorsChain property: The ancestors of the management group displayed in reversed
      * order, from immediate parent to the root.
-     *
+     * 
      * @param managementGroupAncestorsChain the managementGroupAncestorsChain value to set.
      * @return the ManagementGroupDetails object itself.
      */
-    public ManagementGroupDetails withManagementGroupAncestorsChain(
-        List<ManagementGroupPathElement> managementGroupAncestorsChain) {
+    public ManagementGroupDetails
+        withManagementGroupAncestorsChain(List<ManagementGroupPathElement> managementGroupAncestorsChain) {
         this.managementGroupAncestorsChain = managementGroupAncestorsChain;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -216,5 +219,68 @@ public final class ManagementGroupDetails {
         if (managementGroupAncestorsChain() != null) {
             managementGroupAncestorsChain().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeStringField("updatedTime",
+            this.updatedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedTime));
+        jsonWriter.writeStringField("updatedBy", this.updatedBy);
+        jsonWriter.writeJsonField("parent", this.parent);
+        jsonWriter.writeArrayField("path", this.path, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("managementGroupAncestors", this.managementGroupAncestors,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("managementGroupAncestorsChain", this.managementGroupAncestorsChain,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementGroupDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementGroupDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementGroupDetails.
+     */
+    public static ManagementGroupDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementGroupDetails deserializedManagementGroupDetails = new ManagementGroupDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedManagementGroupDetails.version = reader.getNullable(JsonReader::getInt);
+                } else if ("updatedTime".equals(fieldName)) {
+                    deserializedManagementGroupDetails.updatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedManagementGroupDetails.updatedBy = reader.getString();
+                } else if ("parent".equals(fieldName)) {
+                    deserializedManagementGroupDetails.parent = ParentGroupInfo.fromJson(reader);
+                } else if ("path".equals(fieldName)) {
+                    List<ManagementGroupPathElement> path
+                        = reader.readArray(reader1 -> ManagementGroupPathElement.fromJson(reader1));
+                    deserializedManagementGroupDetails.path = path;
+                } else if ("managementGroupAncestors".equals(fieldName)) {
+                    List<String> managementGroupAncestors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagementGroupDetails.managementGroupAncestors = managementGroupAncestors;
+                } else if ("managementGroupAncestorsChain".equals(fieldName)) {
+                    List<ManagementGroupPathElement> managementGroupAncestorsChain
+                        = reader.readArray(reader1 -> ManagementGroupPathElement.fromJson(reader1));
+                    deserializedManagementGroupDetails.managementGroupAncestorsChain = managementGroupAncestorsChain;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementGroupDetails;
+        });
     }
 }

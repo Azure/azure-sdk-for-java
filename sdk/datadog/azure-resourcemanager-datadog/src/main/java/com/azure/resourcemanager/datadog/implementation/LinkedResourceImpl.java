@@ -12,8 +12,8 @@ public final class LinkedResourceImpl implements LinkedResource {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    LinkedResourceImpl(
-        LinkedResourceInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    LinkedResourceImpl(LinkedResourceInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -22,30 +22,30 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
-import java.util.Enumeration;
-import java.util.Iterator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Models. */
+/**
+ * An instance of this class provides access to all the operations defined in Models.
+ */
 public final class ModelsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ModelsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of ModelsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ModelsImpl(PersonalizerClientV1Preview3Impl client) {
@@ -61,178 +61,146 @@ public final class ModelsImpl {
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface ModelsService {
         @Get("/model")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<StreamResponse> get(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @QueryParam("signed") Boolean signed,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("signed") Boolean signed,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/model")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> importMethod(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> importMethod(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/model")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> importMethod(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/octet-stream") BinaryData body,
-                @HeaderParam("Content-Length") long contentLength,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> importMethod(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/model")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> reset(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> reset(@HostParam("Endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/model/properties")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PersonalizerModelProperties>> getProperties(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerModelProperties>> getProperties(@HostParam("Endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Model.
-     *
-     * <p>Get the model file generated by Personalizer service.
-     *
+     * 
+     * Get the model file generated by Personalizer service.
+     * 
      * @param signed True if requesting signed model zip archive, false otherwise.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the model file generated by Personalizer service on successful completion of {@link Mono}.
+     * @return the model file generated by Personalizer service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getWithResponseAsync(Boolean signed) {
-        final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(this.client.getEndpoint(), this.client.getApiVersion(), signed, accept, context));
+    public Mono<Response<BinaryData>> getWithResponseAsync(Boolean signed) {
+        return FluxUtil.withContext(context -> getWithResponseAsync(signed, context));
     }
 
     /**
      * Get Model.
-     *
-     * <p>Get the model file generated by Personalizer service.
-     *
+     * 
+     * Get the model file generated by Personalizer service.
+     * 
      * @param signed True if requesting signed model zip archive, false otherwise.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the model file generated by Personalizer service on successful completion of {@link Mono}.
+     * @return the model file generated by Personalizer service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getWithResponseAsync(Boolean signed, Context context) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(Boolean signed, Context context) {
         final String accept = "application/octet-stream, application/json";
         return service.get(this.client.getEndpoint(), this.client.getApiVersion(), signed, accept, context);
     }
 
     /**
      * Get Model.
-     *
-     * <p>Get the model file generated by Personalizer service.
-     *
+     * 
+     * Get the model file generated by Personalizer service.
+     * 
      * @param signed True if requesting signed model zip archive, false otherwise.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the model file generated by Personalizer service.
+     * @return the model file generated by Personalizer service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> getAsync(Boolean signed) {
-        return getWithResponseAsync(signed).flatMapMany(StreamResponse::getValue);
+    public Mono<BinaryData> getAsync(Boolean signed) {
+        return getWithResponseAsync(signed).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Model.
-     *
-     * <p>Get the model file generated by Personalizer service.
-     *
+     * 
+     * Get the model file generated by Personalizer service.
+     * 
      * @param signed True if requesting signed model zip archive, false otherwise.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the model file generated by Personalizer service.
+     * @return the model file generated by Personalizer service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> getAsync(Boolean signed, Context context) {
-        return getWithResponseAsync(signed, context).flatMapMany(StreamResponse::getValue);
+    public Mono<BinaryData> getAsync(Boolean signed, Context context) {
+        return getWithResponseAsync(signed, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Model.
-     *
-     * <p>Get the model file generated by Personalizer service.
-     *
-     * @param signed True if requesting signed model zip archive, false otherwise.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the model file generated by Personalizer service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream get(Boolean signed) {
-        Iterator<ByteBufferBackedInputStream> iterator =
-                getAsync(signed).map(ByteBufferBackedInputStream::new).toStream().iterator();
-        Enumeration<InputStream> enumeration =
-                new Enumeration<InputStream>() {
-                    @Override
-                    public boolean hasMoreElements() {
-                        return iterator.hasNext();
-                    }
-
-                    @Override
-                    public InputStream nextElement() {
-                        return iterator.next();
-                    }
-                };
-        return new SequenceInputStream(enumeration);
-    }
-
-    /**
-     * Get Model.
-     *
-     * <p>Get the model file generated by Personalizer service.
-     *
+     * 
+     * Get the model file generated by Personalizer service.
+     * 
      * @param signed True if requesting signed model zip archive, false otherwise.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the model file generated by Personalizer service.
+     * @return the model file generated by Personalizer service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamResponse getWithResponse(Boolean signed, Context context) {
+    public Response<BinaryData> getWithResponse(Boolean signed, Context context) {
         return getWithResponseAsync(signed, context).block();
     }
 
     /**
+     * Get Model.
+     * 
+     * Get the model file generated by Personalizer service.
+     * 
+     * @param signed True if requesting signed model zip archive, false otherwise.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the model file generated by Personalizer service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData get(Boolean signed) {
+        return getWithResponse(signed, Context.NONE).getValue();
+    }
+
+    /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,23 +210,14 @@ public final class ModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importMethodWithResponseAsync(Flux<ByteBuffer> body, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.importMethod(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                body,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> importMethodWithResponseAsync(body, contentLength, context));
     }
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -268,18 +227,18 @@ public final class ModelsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> importMethodWithResponseAsync(
-            Flux<ByteBuffer> body, long contentLength, Context context) {
+    public Mono<Response<Void>> importMethodWithResponseAsync(Flux<ByteBuffer> body, long contentLength,
+        Context context) {
         final String accept = "application/json";
-        return service.importMethod(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
+        return service.importMethod(this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept,
+            context);
     }
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,9 +253,9 @@ public final class ModelsImpl {
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -312,25 +271,9 @@ public final class ModelsImpl {
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
-     * @param body The digitally signed model file obtained from getting the model.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importMethod(Flux<ByteBuffer> body, long contentLength) {
-        importMethodAsync(body, contentLength).block();
-    }
-
-    /**
-     * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -346,9 +289,25 @@ public final class ModelsImpl {
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
+     * @param body The digitally signed model file obtained from getting the model.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void importMethod(Flux<ByteBuffer> body, long contentLength) {
+        importMethodWithResponse(body, contentLength, Context.NONE);
+    }
+
+    /**
+     * Put the digitally signed model file.
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,23 +317,14 @@ public final class ModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importMethodWithResponseAsync(BinaryData body, long contentLength) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.importMethod(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                body,
-                                contentLength,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> importMethodWithResponseAsync(body, contentLength, context));
     }
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -386,15 +336,15 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importMethodWithResponseAsync(BinaryData body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.importMethod(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
+        return service.importMethod(this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept,
+            context);
     }
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,9 +359,9 @@ public final class ModelsImpl {
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -427,25 +377,9 @@ public final class ModelsImpl {
 
     /**
      * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
-     * @param body The digitally signed model file obtained from getting the model.
-     * @param contentLength The Content-Length header for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importMethod(BinaryData body, long contentLength) {
-        importMethodAsync(body, contentLength).block();
-    }
-
-    /**
-     * Put the digitally signed model file.
-     *
-     * <p>Replace the existing model file for the Personalizer service.
-     *
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
      * @param body The digitally signed model file obtained from getting the model.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -460,26 +394,40 @@ public final class ModelsImpl {
     }
 
     /**
+     * Put the digitally signed model file.
+     * 
+     * Replace the existing model file for the Personalizer service.
+     * 
+     * @param body The digitally signed model file obtained from getting the model.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void importMethod(BinaryData body, long contentLength) {
+        importMethodWithResponse(body, contentLength, Context.NONE);
+    }
+
+    /**
      * Reset Model.
-     *
-     * <p>Resets the model file generated by Personalizer service.
-     *
+     * 
+     * Resets the model file generated by Personalizer service.
+     * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> resetWithResponseAsync(context));
     }
 
     /**
      * Reset Model.
-     *
-     * <p>Resets the model file generated by Personalizer service.
-     *
+     * 
+     * Resets the model file generated by Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -494,9 +442,9 @@ public final class ModelsImpl {
 
     /**
      * Reset Model.
-     *
-     * <p>Resets the model file generated by Personalizer service.
-     *
+     * 
+     * Resets the model file generated by Personalizer service.
+     * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
@@ -508,9 +456,9 @@ public final class ModelsImpl {
 
     /**
      * Reset Model.
-     *
-     * <p>Resets the model file generated by Personalizer service.
-     *
+     * 
+     * Resets the model file generated by Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -524,22 +472,9 @@ public final class ModelsImpl {
 
     /**
      * Reset Model.
-     *
-     * <p>Resets the model file generated by Personalizer service.
-     *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reset() {
-        resetAsync().block();
-    }
-
-    /**
-     * Reset Model.
-     *
-     * <p>Resets the model file generated by Personalizer service.
-     *
+     * 
+     * Resets the model file generated by Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -552,34 +487,44 @@ public final class ModelsImpl {
     }
 
     /**
-     * Get Model Properties.
-     *
-     * <p>Get properties of the model file generated by Personalizer service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * Reset Model.
+     * 
+     * Resets the model file generated by Personalizer service.
+     * 
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the model file generated by Personalizer service along with {@link Response} on successful
-     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerModelProperties>> getPropertiesWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getProperties(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+    public void reset() {
+        resetWithResponse(Context.NONE);
     }
 
     /**
      * Get Model Properties.
-     *
-     * <p>Get properties of the model file generated by Personalizer service.
-     *
+     * 
+     * Get properties of the model file generated by Personalizer service.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the model file generated by Personalizer service along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PersonalizerModelProperties>> getPropertiesWithResponseAsync() {
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(context));
+    }
+
+    /**
+     * Get Model Properties.
+     * 
+     * Get properties of the model file generated by Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the model file generated by Personalizer service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerModelProperties>> getPropertiesWithResponseAsync(Context context) {
@@ -589,9 +534,9 @@ public final class ModelsImpl {
 
     /**
      * Get Model Properties.
-     *
-     * <p>Get properties of the model file generated by Personalizer service.
-     *
+     * 
+     * Get properties of the model file generated by Personalizer service.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the model file generated by Personalizer service on successful completion of {@link Mono}.
@@ -603,9 +548,9 @@ public final class ModelsImpl {
 
     /**
      * Get Model Properties.
-     *
-     * <p>Get properties of the model file generated by Personalizer service.
-     *
+     * 
+     * Get properties of the model file generated by Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -619,23 +564,9 @@ public final class ModelsImpl {
 
     /**
      * Get Model Properties.
-     *
-     * <p>Get properties of the model file generated by Personalizer service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the model file generated by Personalizer service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerModelProperties getProperties() {
-        return getPropertiesAsync().block();
-    }
-
-    /**
-     * Get Model Properties.
-     *
-     * <p>Get properties of the model file generated by Personalizer service.
-     *
+     * 
+     * Get properties of the model file generated by Personalizer service.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -645,5 +576,19 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerModelProperties> getPropertiesWithResponse(Context context) {
         return getPropertiesWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get Model Properties.
+     * 
+     * Get properties of the model file generated by Personalizer service.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the model file generated by Personalizer service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerModelProperties getProperties() {
+        return getPropertiesWithResponse(Context.NONE).getValue();
     }
 }

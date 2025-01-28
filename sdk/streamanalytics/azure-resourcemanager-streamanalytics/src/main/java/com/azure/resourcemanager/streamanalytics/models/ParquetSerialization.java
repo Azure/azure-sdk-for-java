@@ -5,29 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Describes how data from an input is serialized or how data is serialized when written to an output in Parquet
- * format.
+ * Describes how data from an input is serialized or how data is serialized when written to an output in Parquet format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Parquet")
 @Fluent
 public final class ParquetSerialization extends Serialization {
+    /*
+     * Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+     */
+    private EventSerializationType type = EventSerializationType.PARQUET;
+
     /*
      * The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace)
      * requests.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /**
      * Creates an instance of ParquetSerialization class.
      */
     public ParquetSerialization() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of serialization that the input or output uses. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public EventSerializationType type() {
+        return this.type;
     }
 
     /**
@@ -59,6 +72,44 @@ public final class ParquetSerialization extends Serialization {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParquetSerialization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParquetSerialization if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParquetSerialization.
+     */
+    public static ParquetSerialization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParquetSerialization deserializedParquetSerialization = new ParquetSerialization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedParquetSerialization.type = EventSerializationType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedParquetSerialization.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParquetSerialization;
+        });
     }
 }

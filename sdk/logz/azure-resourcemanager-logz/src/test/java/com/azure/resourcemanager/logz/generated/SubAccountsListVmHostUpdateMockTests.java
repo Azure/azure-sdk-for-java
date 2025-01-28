@@ -6,80 +6,46 @@ package com.azure.resourcemanager.logz.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logz.LogzManager;
 import com.azure.resourcemanager.logz.fluent.models.VMResourcesInner;
 import com.azure.resourcemanager.logz.models.VMHostUpdateRequest;
 import com.azure.resourcemanager.logz.models.VMHostUpdateStates;
 import com.azure.resourcemanager.logz.models.VMResources;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SubAccountsListVmHostUpdateMockTests {
     @Test
     public void testListVmHostUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"value\":[{\"id\":\"xleptramx\",\"agentVersion\":\"zwl\"}]}";
 
-        String responseStr = "{\"value\":[{\"id\":\"itsmypyyn\",\"agentVersion\":\"dpumnzgmw\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogzManager manager = LogzManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<VMResources> response = manager.subAccounts()
+            .listVmHostUpdate("mzqa", "krmnjijpxacqqud", "nbyxbaaabjyv",
+                new VMHostUpdateRequest()
+                    .withVmResourceIds(
+                        Arrays.asList(new VMResourcesInner().withId("imrzrtuzqog").withAgentVersion("xnevfdnwn"),
+                            new VMResourcesInner().withId("ewzsyyceuzsoib").withAgentVersion("dpfrxtrthzvaytdw"),
+                            new VMResourcesInner().withId("brqubp").withAgentVersion("h"),
+                            new VMResourcesInner().withId("iilivpdtiirqtd").withAgentVersion("axoruzfgsquy")))
+                    .withState(VMHostUpdateStates.INSTALL),
+                com.azure.core.util.Context.NONE);
 
-        LogzManager manager =
-            LogzManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<VMResources> response =
-            manager
-                .subAccounts()
-                .listVmHostUpdate(
-                    "ph",
-                    "op",
-                    "odlqiyntor",
-                    new VMHostUpdateRequest()
-                        .withVmResourceIds(
-                            Arrays
-                                .asList(
-                                    new VMResourcesInner().withId("eosjswsr").withAgentVersion("lyzrpzbchckqqzqi"),
-                                    new VMResourcesInner().withId("iysui").withAgentVersion("ynkedyatrwyhqmib")))
-                        .withState(VMHostUpdateStates.INSTALL),
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("itsmypyyn", response.iterator().next().id());
-        Assertions.assertEquals("dpumnzgmw", response.iterator().next().agentVersion());
+        Assertions.assertEquals("xleptramx", response.iterator().next().id());
+        Assertions.assertEquals("zwl", response.iterator().next().agentVersion());
     }
 }

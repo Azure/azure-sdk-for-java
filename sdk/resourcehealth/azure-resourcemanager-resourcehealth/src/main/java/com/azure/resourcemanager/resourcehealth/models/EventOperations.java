@@ -7,28 +7,30 @@ package com.azure.resourcemanager.resourcehealth.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of EventOperations. */
+/**
+ * Resource collection API of EventOperations.
+ */
 public interface EventOperations {
     /**
      * Service health event in the subscription by event tracking id.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health event along with {@link Response}.
      */
-    Response<Event> getBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context);
+    Response<Event> getBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context);
 
     /**
      * Service health event in the subscription by event tracking id.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface EventOperations {
     /**
      * Service health event details in the subscription by event tracking id. This can be used to fetch sensitive
      * properties for Security Advisory events.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface EventOperations {
     /**
      * Service health event details in the subscription by event tracking id. This can be used to fetch sensitive
      * properties for Security Advisory events.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,24 +66,24 @@ public interface EventOperations {
 
     /**
      * Service health event in the tenant by event tracking id.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health event along with {@link Response}.
      */
-    Response<Event> getByTenantIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context);
+    Response<Event> getByTenantIdAndTrackingIdWithResponse(String eventTrackingId, String filter, String queryStartTime,
+        Context context);
 
     /**
      * Service health event in the tenant by event tracking id.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,7 +95,7 @@ public interface EventOperations {
     /**
      * Service health event details in the tenant by event tracking id. This can be used to fetch sensitive properties
      * for Security Advisory events.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +108,7 @@ public interface EventOperations {
     /**
      * Service health event details in the tenant by event tracking id. This can be used to fetch sensitive properties
      * for Security Advisory events.
-     *
+     * 
      * @param eventTrackingId Event Id which uniquely identifies ServiceHealth event.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -19,34 +19,37 @@ public final class HBaseObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HBaseObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"HBaseObject\",\"typeProperties\":{\"tableName\":\"datazcxxvzjoyxjgahx\"},\"description\":\"rr\",\"structure\":\"datakt\",\"schema\":\"datatkbcer\",\"linkedServiceName\":{\"referenceName\":\"cvcp\",\"parameters\":{\"kmpwyvlhnh\":\"dataj\"}},\"parameters\":{\"lrcygotohzwto\":{\"type\":\"Int\",\"defaultValue\":\"datalebgjgylsacagi\"},\"jzelsriemvupmea\":{\"type\":\"Float\",\"defaultValue\":\"databxitrapwzhlutj\"},\"vldeehcbsaip\":{\"type\":\"Float\",\"defaultValue\":\"dataysy\"}},\"annotations\":[\"dataofkegbvbbdledffl\",\"datavsluazzxfjv\"],\"folder\":{\"name\":\"pxzee\"},\"\":{\"qdczmrjgobekx\":\"datapbscboxr\",\"rzzbs\":\"dataheowsecaf\",\"rjsbdbm\":\"datai\",\"vmrfaptndrmmn\":\"dataeesacuicnvqiqsu\"}}")
+            "{\"type\":\"HBaseObject\",\"typeProperties\":{\"tableName\":\"datacbicfecthotb\"},\"description\":\"whz\",\"structure\":\"dataxjvtwkyjdpayxo\",\"schema\":\"dataiwuzrgqztjfkgbtq\",\"linkedServiceName\":{\"referenceName\":\"jobsynn\",\"parameters\":{\"wfudmpf\":\"dataonjqhdheosx\"}},\"parameters\":{\"bb\":{\"type\":\"Array\",\"defaultValue\":\"datahtjtntcwgp\"},\"spkvrmp\":{\"type\":\"Array\",\"defaultValue\":\"dataecctokfspvjr\"},\"djmvphwfnu\":{\"type\":\"String\",\"defaultValue\":\"datayptwjwiyyeohgmc\"},\"ueprpmofxnwc\":{\"type\":\"SecureString\",\"defaultValue\":\"datavfzzioxbgom\"}},\"annotations\":[\"dataoxi\",\"datatxxxajse\",\"datab\",\"datannrnkyj\"],\"folder\":{\"name\":\"pcbs\"},\"\":{\"pkjealkdbewhotv\":\"dataehczbnivcohsxv\",\"dktrjtoqszh\":\"datamyzuqfd\"}}")
             .toObject(HBaseObjectDataset.class);
-        Assertions.assertEquals("rr", model.description());
-        Assertions.assertEquals("cvcp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("lrcygotohzwto").type());
-        Assertions.assertEquals("pxzee", model.folder().name());
+        Assertions.assertEquals("whz", model.description());
+        Assertions.assertEquals("jobsynn", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("bb").type());
+        Assertions.assertEquals("pcbs", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HBaseObjectDataset model = new HBaseObjectDataset().withDescription("rr")
-            .withStructure("datakt")
-            .withSchema("datatkbcer")
-            .withLinkedServiceName(
-                new LinkedServiceReference().withReferenceName("cvcp").withParameters(mapOf("kmpwyvlhnh", "dataj")))
-            .withParameters(mapOf("lrcygotohzwto",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datalebgjgylsacagi"),
-                "jzelsriemvupmea",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("databxitrapwzhlutj"),
-                "vldeehcbsaip", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataysy")))
-            .withAnnotations(Arrays.asList("dataofkegbvbbdledffl", "datavsluazzxfjv"))
-            .withFolder(new DatasetFolder().withName("pxzee"))
-            .withTableName("datazcxxvzjoyxjgahx");
+        HBaseObjectDataset model = new HBaseObjectDataset().withDescription("whz")
+            .withStructure("dataxjvtwkyjdpayxo")
+            .withSchema("dataiwuzrgqztjfkgbtq")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("jobsynn")
+                .withParameters(mapOf("wfudmpf", "dataonjqhdheosx")))
+            .withParameters(mapOf("bb",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datahtjtntcwgp"),
+                "spkvrmp",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataecctokfspvjr"),
+                "djmvphwfnu",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datayptwjwiyyeohgmc"),
+                "ueprpmofxnwc",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datavfzzioxbgom")))
+            .withAnnotations(Arrays.asList("dataoxi", "datatxxxajse", "datab", "datannrnkyj"))
+            .withFolder(new DatasetFolder().withName("pcbs"))
+            .withTableName("datacbicfecthotb");
         model = BinaryData.fromObject(model).toObject(HBaseObjectDataset.class);
-        Assertions.assertEquals("rr", model.description());
-        Assertions.assertEquals("cvcp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("lrcygotohzwto").type());
-        Assertions.assertEquals("pxzee", model.folder().name());
+        Assertions.assertEquals("whz", model.description());
+        Assertions.assertEquals("jobsynn", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("bb").type());
+        Assertions.assertEquals("pcbs", model.folder().name());
     }
 
     // Use "Map.of" if available

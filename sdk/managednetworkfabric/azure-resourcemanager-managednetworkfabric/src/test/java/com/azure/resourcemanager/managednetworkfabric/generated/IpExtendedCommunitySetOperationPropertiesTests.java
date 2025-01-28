@@ -13,21 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunitySetOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunitySetOperationProperties model =
-            BinaryData
-                .fromString("{\"set\":{\"ipExtendedCommunityIds\":[\"sazm\",\"sisfqqhcmec\",\"gsbfeiirpnjy\"]}}")
-                .toObject(IpExtendedCommunitySetOperationProperties.class);
-        Assertions.assertEquals("sazm", model.set().ipExtendedCommunityIds().get(0));
+        IpExtendedCommunitySetOperationProperties model = BinaryData.fromString(
+            "{\"set\":{\"ipExtendedCommunityIds\":[\"jzhdtrsyfezf\",\"my\",\"jdzyyrwnmwtq\",\"ljknnkynkstdtfwh\"]}}")
+            .toObject(IpExtendedCommunitySetOperationProperties.class);
+        Assertions.assertEquals("jzhdtrsyfezf", model.set().ipExtendedCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunitySetOperationProperties model =
-            new IpExtendedCommunitySetOperationProperties()
-                .withSet(
-                    new IpExtendedCommunityIdList()
-                        .withIpExtendedCommunityIds(Arrays.asList("sazm", "sisfqqhcmec", "gsbfeiirpnjy")));
+        IpExtendedCommunitySetOperationProperties model
+            = new IpExtendedCommunitySetOperationProperties().withSet(new IpExtendedCommunityIdList()
+                .withIpExtendedCommunityIds(Arrays.asList("jzhdtrsyfezf", "my", "jdzyyrwnmwtq", "ljknnkynkstdtfwh")));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunitySetOperationProperties.class);
-        Assertions.assertEquals("sazm", model.set().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("jzhdtrsyfezf", model.set().ipExtendedCommunityIds().get(0));
     }
 }

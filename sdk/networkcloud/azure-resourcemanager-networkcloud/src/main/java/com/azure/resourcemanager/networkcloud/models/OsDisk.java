@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OsDisk represents configuration of the boot disk. */
+/**
+ * OsDisk represents configuration of the boot disk.
+ */
 @Fluent
-public final class OsDisk {
+public final class OsDisk implements JsonSerializable<OsDisk> {
     /*
      * The strategy for creating the OS disk.
      */
-    @JsonProperty(value = "createOption")
     private OsDiskCreateOption createOption;
 
     /*
      * The strategy for deleting the OS disk.
      */
-    @JsonProperty(value = "deleteOption")
     private OsDiskDeleteOption deleteOption;
 
     /*
-     * The size of the disk in gigabytes. Required if the createOption is Ephemeral.
+     * The size of the disk. Required if the createOption is Ephemeral. Allocations are measured in gibibytes.
      */
-    @JsonProperty(value = "diskSizeGB", required = true)
     private long diskSizeGB;
 
-    /** Creates an instance of OsDisk class. */
+    /**
+     * Creates an instance of OsDisk class.
+     */
     public OsDisk() {
     }
 
     /**
      * Get the createOption property: The strategy for creating the OS disk.
-     *
+     * 
      * @return the createOption value.
      */
     public OsDiskCreateOption createOption() {
@@ -43,7 +48,7 @@ public final class OsDisk {
 
     /**
      * Set the createOption property: The strategy for creating the OS disk.
-     *
+     * 
      * @param createOption the createOption value to set.
      * @return the OsDisk object itself.
      */
@@ -54,7 +59,7 @@ public final class OsDisk {
 
     /**
      * Get the deleteOption property: The strategy for deleting the OS disk.
-     *
+     * 
      * @return the deleteOption value.
      */
     public OsDiskDeleteOption deleteOption() {
@@ -63,7 +68,7 @@ public final class OsDisk {
 
     /**
      * Set the deleteOption property: The strategy for deleting the OS disk.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the OsDisk object itself.
      */
@@ -73,8 +78,9 @@ public final class OsDisk {
     }
 
     /**
-     * Get the diskSizeGB property: The size of the disk in gigabytes. Required if the createOption is Ephemeral.
-     *
+     * Get the diskSizeGB property: The size of the disk. Required if the createOption is Ephemeral. Allocations are
+     * measured in gibibytes.
+     * 
      * @return the diskSizeGB value.
      */
     public long diskSizeGB() {
@@ -82,8 +88,9 @@ public final class OsDisk {
     }
 
     /**
-     * Set the diskSizeGB property: The size of the disk in gigabytes. Required if the createOption is Ephemeral.
-     *
+     * Set the diskSizeGB property: The size of the disk. Required if the createOption is Ephemeral. Allocations are
+     * measured in gibibytes.
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the OsDisk object itself.
      */
@@ -94,9 +101,52 @@ public final class OsDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("createOption", this.createOption == null ? null : this.createOption.toString());
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OsDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OsDisk if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OsDisk.
+     */
+    public static OsDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OsDisk deserializedOsDisk = new OsDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskSizeGB".equals(fieldName)) {
+                    deserializedOsDisk.diskSizeGB = reader.getLong();
+                } else if ("createOption".equals(fieldName)) {
+                    deserializedOsDisk.createOption = OsDiskCreateOption.fromString(reader.getString());
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedOsDisk.deleteOption = OsDiskDeleteOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOsDisk;
+        });
     }
 }

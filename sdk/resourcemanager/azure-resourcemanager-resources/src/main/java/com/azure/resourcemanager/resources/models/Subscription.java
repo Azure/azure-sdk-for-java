@@ -14,26 +14,32 @@ import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
  * An immutable client-side representation of an Azure subscription.
  */
 @Fluent
-public interface Subscription extends
-        Indexable,
-        HasInnerModel<SubscriptionInner> {
+public interface Subscription extends Indexable, HasInnerModel<SubscriptionInner> {
 
     /**
+     * Gets the UUID of the subscription.
+     *
      * @return the UUID of the subscription
      */
     String subscriptionId();
 
     /**
+     * Gets the name of the subscription for humans to read.
+     *
      * @return the name of the subscription for humans to read
      */
     String displayName();
 
     /**
+     * Gets the state of the subscription.
+     *
      * @return the state of the subscription.
      */
     SubscriptionState state();
 
     /**
+     * Gets the policies defined in the subscription.
+     *
      * @return the policies defined in the subscription
      */
     SubscriptionPolicies subscriptionPolicies();

@@ -20,7 +20,7 @@ public final class ApiCollectionsOnboardAzureApiManagementApiMockTests {
     @Test
     public void testOnboardAzureApiManagementApi() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"b\",\"discoveredVia\":\"lvihylrxsi\",\"baseUrl\":\"syiumtitlqy\",\"numberOfApiEndpoints\":3802505442869982842,\"numberOfInactiveApiEndpoints\":7604560473468678458,\"numberOfUnauthenticatedApiEndpoints\":7793941807383065152,\"numberOfExternalApiEndpoints\":6189914189286526269,\"numberOfApiEndpointsWithSensitiveDataExposed\":69968579625128216,\"sensitivityLabel\":\"igdrqgzetboyz\"},\"id\":\"gnmuxp\",\"name\":\"wpcfmgr\",\"type\":\"tgwhzbbdwrjenc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"uldbkke\",\"discoveredVia\":\"kj\",\"baseUrl\":\"awgazmxjqifh\",\"numberOfApiEndpoints\":6906092876243176307,\"numberOfInactiveApiEndpoints\":9052006923940914228,\"numberOfUnauthenticatedApiEndpoints\":8727602887514141394,\"numberOfExternalApiEndpoints\":3672810622543635051,\"numberOfApiEndpointsWithSensitiveDataExposed\":1704442643651417394,\"sensitivityLabel\":\"oolkolirhhm\"},\"id\":\"jusuzgfjzc\",\"name\":\"aaxoialahfxwcc\",\"type\":\"kdxkuk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ApiCollectionsOnboardAzureApiManagementApiMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ApiCollection response = manager.apiCollections()
-            .onboardAzureApiManagementApi("zihirqvvketyd", "aqoktssgvqxer", "rmh", com.azure.core.util.Context.NONE);
+            .onboardAzureApiManagementApi("pctf", "ikff", "fgkuh", com.azure.core.util.Context.NONE);
 
     }
 }

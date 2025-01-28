@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInviteFollowerResultInner;
 import com.azure.resourcemanager.kusto.models.DatabaseInviteFollowerRequest;
 
-/** An instance of this class provides access to all the operations defined in DatabaseOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseOperationsClient.
+ */
 public interface DatabaseOperationsClient {
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -27,16 +29,12 @@ public interface DatabaseOperationsClient {
      * @return the result returned from a follower invitation generation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInviteFollowerResultInner> inviteFollowerWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context);
+    Response<DatabaseInviteFollowerResultInner> inviteFollowerWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters, Context context);
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -47,6 +45,6 @@ public interface DatabaseOperationsClient {
      * @return the result returned from a follower invitation generation request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInviteFollowerResultInner inviteFollower(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters);
+    DatabaseInviteFollowerResultInner inviteFollower(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInviteFollowerRequest parameters);
 }

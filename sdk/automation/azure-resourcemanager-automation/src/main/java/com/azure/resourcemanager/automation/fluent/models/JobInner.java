@@ -6,26 +6,51 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.JobProvisioningState;
 import com.azure.resourcemanager.automation.models.JobStatus;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Definition of the job. */
+/**
+ * Definition of the job.
+ */
 @Fluent
 public final class JobInner extends ProxyResource {
     /*
      * The properties of the job.
      */
-    @JsonProperty(value = "properties")
     private JobProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JobInner class.
+     */
+    public JobInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the job.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobProperties innerProperties() {
@@ -33,8 +58,38 @@ public final class JobInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -43,7 +98,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the JobInner object itself.
      */
@@ -57,7 +112,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the startedBy property: Gets or sets the job started by.
-     *
+     * 
      * @return the startedBy value.
      */
     public String startedBy() {
@@ -66,7 +121,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the startedBy property: Gets or sets the job started by.
-     *
+     * 
      * @param startedBy the startedBy value to set.
      * @return the JobInner object itself.
      */
@@ -80,7 +135,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -89,7 +144,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobInner object itself.
      */
@@ -103,7 +158,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the jobId property: Gets or sets the id of the job.
-     *
+     * 
      * @return the jobId value.
      */
     public UUID jobId() {
@@ -112,7 +167,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the jobId property: Gets or sets the id of the job.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the JobInner object itself.
      */
@@ -126,7 +181,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets or sets the creation time of the job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -135,7 +190,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the creationTime property: Gets or sets the creation time of the job.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the JobInner object itself.
      */
@@ -149,7 +204,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the status property: Gets or sets the status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -158,7 +213,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the status property: Gets or sets the status of the job.
-     *
+     * 
      * @param status the status value to set.
      * @return the JobInner object itself.
      */
@@ -172,7 +227,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -181,7 +236,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the statusDetails property: Gets or sets the status details of the job.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the JobInner object itself.
      */
@@ -195,7 +250,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the startTime property: Gets or sets the start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -204,7 +259,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the startTime property: Gets or sets the start time of the job.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JobInner object itself.
      */
@@ -218,7 +273,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the endTime property: Gets or sets the end time of the job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -227,7 +282,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the endTime property: Gets or sets the end time of the job.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the JobInner object itself.
      */
@@ -241,7 +296,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the exception property: Gets or sets the exception of the job.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -250,7 +305,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the exception property: Gets or sets the exception of the job.
-     *
+     * 
      * @param exception the exception value to set.
      * @return the JobInner object itself.
      */
@@ -264,7 +319,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time of the job.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -273,7 +328,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time of the job.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the JobInner object itself.
      */
@@ -287,7 +342,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the lastStatusModifiedTime property: Gets or sets the last status modified time of the job.
-     *
+     * 
      * @return the lastStatusModifiedTime value.
      */
     public OffsetDateTime lastStatusModifiedTime() {
@@ -296,7 +351,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the lastStatusModifiedTime property: Gets or sets the last status modified time of the job.
-     *
+     * 
      * @param lastStatusModifiedTime the lastStatusModifiedTime value to set.
      * @return the JobInner object itself.
      */
@@ -310,7 +365,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -319,7 +374,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the JobInner object itself.
      */
@@ -333,7 +388,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -342,7 +397,7 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: The current provisioning state of the job.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the JobInner object itself.
      */
@@ -356,12 +411,55 @@ public final class JobInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobInner.
+     */
+    public static JobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobInner deserializedJobInner = new JobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobInner.innerProperties = JobProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobInner;
+        });
     }
 }

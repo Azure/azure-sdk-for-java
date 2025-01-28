@@ -33,8 +33,8 @@ public class GeolocationClientTestBase extends TestProxyTestBase {
 
     GeolocationClientBuilder getGeoLocationAsyncClientBuilder(HttpClient httpClient,
         GeolocationServiceVersion serviceVersion) {
-        GeolocationClientBuilder builder = modifyBuilder(httpClient, new GeolocationClientBuilder()).serviceVersion(
-            serviceVersion);
+        GeolocationClientBuilder builder
+            = modifyBuilder(httpClient, new GeolocationClientBuilder()).serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
@@ -54,8 +54,8 @@ public class GeolocationClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
+            customMatchers
+                .add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
@@ -67,15 +67,14 @@ public class GeolocationClientTestBase extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .clientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential())
-                .clientId("testGeoClient");
+            builder.credential(new MockTokenCredential()).clientId("testGeoClient");
         } else {
             builder.credential(new AzurePowerShellCredentialBuilder().build())
                 .clientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
-        return builder.httpClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return builder
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     static void validateGetLocation(IpAddressToLocationResult expected, IpAddressToLocationResult actual) {

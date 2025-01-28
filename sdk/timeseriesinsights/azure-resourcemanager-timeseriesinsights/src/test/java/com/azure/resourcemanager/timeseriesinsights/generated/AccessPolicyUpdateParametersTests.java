@@ -13,22 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyUpdateParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"description\":\"xbezyiuokktwh\",\"roles\":[\"Reader\"]}}")
+        AccessPolicyUpdateParameters model
+            = BinaryData.fromString("{\"properties\":{\"description\":\"tsdbpgn\",\"roles\":[\"Reader\"]}}")
                 .toObject(AccessPolicyUpdateParameters.class);
-        Assertions.assertEquals("xbezyiuokktwh", model.description());
+        Assertions.assertEquals("tsdbpgn", model.description());
         Assertions.assertEquals(AccessPolicyRole.READER, model.roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyUpdateParameters model =
-            new AccessPolicyUpdateParameters()
-                .withDescription("xbezyiuokktwh")
-                .withRoles(Arrays.asList(AccessPolicyRole.READER));
+        AccessPolicyUpdateParameters model = new AccessPolicyUpdateParameters().withDescription("tsdbpgn")
+            .withRoles(Arrays.asList(AccessPolicyRole.READER));
         model = BinaryData.fromObject(model).toObject(AccessPolicyUpdateParameters.class);
-        Assertions.assertEquals("xbezyiuokktwh", model.description());
+        Assertions.assertEquals("tsdbpgn", model.description());
         Assertions.assertEquals(AccessPolicyRole.READER, model.roles().get(0));
     }
 }

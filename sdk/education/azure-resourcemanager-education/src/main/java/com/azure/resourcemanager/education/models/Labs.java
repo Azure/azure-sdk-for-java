@@ -9,26 +9,28 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.fluent.models.LabDetailsInner;
 
-/** Resource collection API of Labs. */
+/**
+ * Resource collection API of Labs.
+ */
 public interface Labs {
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<LabDetails> listAll(String billingAccountName, String billingProfileName);
 
     /**
      * Get a list of labs associated with the provided billing account name and billing profile name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param includeBudget May be used to include budget information.
      * @param includeDeleted May be used to show deleted items.
      * @param context The context to associate with this operation.
@@ -36,112 +38,100 @@ public interface Labs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labs associated with the provided billing account name and billing profile name as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<LabDetails> listAll(
-        String billingAccountName,
-        String billingProfileName,
-        Boolean includeBudget,
-        Boolean includeDeleted,
-        Context context);
+    PagedIterable<LabDetails> listAll(String billingAccountName, String billingProfileName, Boolean includeBudget,
+        Boolean includeDeleted, Context context);
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedIterable}.
+     * and invoice section name as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabDetails> list(String billingAccountName, String billingProfileName, String invoiceSectionName);
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name as paginated response with {@link PagedIterable}.
+     * and invoice section name as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LabDetails> list(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context);
+    PagedIterable<LabDetails> list(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        Boolean includeBudget, Context context);
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param includeBudget May be used to include budget information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name along with {@link Response}.
+     * and invoice section name along with {@link Response}.
      */
-    Response<LabDetails> getWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        Boolean includeBudget,
-        Context context);
+    Response<LabDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeBudget, Context context);
 
     /**
      * Get the details for a specific lab associated with the provided billing account name, billing profile name, and
      * invoice section name.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for a specific lab associated with the provided billing account name, billing profile name,
-     *     and invoice section name.
+     * and invoice section name.
      */
     LabDetails get(String billingAccountName, String billingProfileName, String invoiceSectionName);
 
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
+    Response<Void> deleteWithResponse(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        Context context);
 
     /**
      * Delete a specific lab associated with the provided billing account name, billing profile name, and invoice
      * section name. Note all students must be removed from the lab in order to delete the lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -150,10 +140,10 @@ public interface Labs {
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,66 +151,55 @@ public interface Labs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lab details along with {@link Response}.
      */
-    Response<LabDetails> createOrUpdateWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        LabDetailsInner parameters,
-        Context context);
+    Response<LabDetails> createOrUpdateWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LabDetailsInner parameters, Context context);
 
     /**
      * Create a new lab or update a previously created lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to create lab resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lab details.
      */
-    LabDetails createOrUpdate(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, LabDetailsInner parameters);
+    LabDetails createOrUpdate(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        LabDetailsInner parameters);
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @param onlyUpdateStudentCountParameter set this flag to true if you want to update student count without
-     *     generating a new invite code.
+     * generating a new invite code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lab details along with {@link Response}.
      */
-    Response<LabDetails> generateInviteCodeWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InviteCodeGenerateRequest parameters,
-        Boolean onlyUpdateStudentCountParameter,
+    Response<LabDetails> generateInviteCodeWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InviteCodeGenerateRequest parameters, Boolean onlyUpdateStudentCountParameter,
         Context context);
 
     /**
      * Generate invite code for a lab.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param parameters Request parameters that are provided to generate invite code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return lab details.
      */
-    LabDetails generateInviteCode(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
+    LabDetails generateInviteCode(String billingAccountName, String billingProfileName, String invoiceSectionName,
         InviteCodeGenerateRequest parameters);
 }

@@ -74,11 +74,10 @@ public final class ManageWebAppWithTrafficManager {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_WEST)
-                .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
-            domain = azureResourceManager.appServiceDomains().define(domainName)
+            domain = azureResourceManager.appServiceDomains()
+                .define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                 .withFirstName("Jon")
@@ -102,7 +101,8 @@ public final class ManageWebAppWithTrafficManager {
             // Create a self-singed SSL certificate
 
             pfxPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
-            String cerPath = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
+            String cerPath
+                = ManageWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
@@ -171,7 +171,8 @@ public final class ManageWebAppWithTrafficManager {
 
             System.out.println("Creating a traffic manager " + tmName + " for the web apps...");
 
-            TrafficManagerProfile trafficManager = azureResourceManager.trafficManagerProfiles().define(tmName)
+            TrafficManagerProfile trafficManager = azureResourceManager.trafficManagerProfiles()
+                .define(tmName)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(tmName)
                 .withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY)
@@ -197,27 +198,21 @@ public final class ManageWebAppWithTrafficManager {
 
             System.out.println("Scaling up app service plan " + plan1Name + "...");
 
-            plan1.update()
-                .withCapacity(plan1.capacity() * 2)
-                .apply();
+            plan1.update().withCapacity(plan1.capacity() * 2).apply();
 
             System.out.println("Scaled up app service plan " + plan1Name);
             Utils.print(plan1);
 
             System.out.println("Scaling up app service plan " + plan2Name + "...");
 
-            plan2.update()
-                .withCapacity(plan2.capacity() * 2)
-                .apply();
+            plan2.update().withCapacity(plan2.capacity() * 2).apply();
 
             System.out.println("Scaled up app service plan " + plan2Name);
             Utils.print(plan2);
 
             System.out.println("Scaling up app service plan " + plan3Name + "...");
 
-            plan3.update()
-                .withCapacity(plan3.capacity() * 2)
-                .apply();
+            plan3.update().withCapacity(plan3.capacity() * 2).apply();
 
             System.out.println("Scaled up app service plan " + plan3Name);
             Utils.print(plan3);
@@ -237,29 +232,31 @@ public final class ManageWebAppWithTrafficManager {
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azureResourceManager.appServicePlans().define(name)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withPricingTier(PricingTier.STANDARD_S1)
-                .withOperatingSystem(OperatingSystem.WINDOWS)
-                .create();
+        return azureResourceManager.appServicePlans()
+            .define(name)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withPricingTier(PricingTier.STANDARD_S1)
+            .withOperatingSystem(OperatingSystem.WINDOWS)
+            .create();
     }
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
-        return azureResourceManager.webApps().define(name)
-                .withExistingWindowsPlan(plan)
-                .withExistingResourceGroup(rgName)
-                .withManagedHostnameBindings(domain, name)
-                .defineSslBinding()
-                    .forHostname(name + "." + domain.name())
-                    .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
-                    .withSniBasedSsl()
-                    .attach()
-                .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                    .withBranch("master")
-                    .attach()
-                .create();
+        return azureResourceManager.webApps()
+            .define(name)
+            .withExistingWindowsPlan(plan)
+            .withExistingResourceGroup(rgName)
+            .withManagedHostnameBindings(domain, name)
+            .defineSslBinding()
+            .forHostname(name + "." + domain.name())
+            .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
+            .withSniBasedSsl()
+            .attach()
+            .defineSourceControl()
+            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+            .withBranch("master")
+            .attach()
+            .create();
     }
 
     /**
@@ -276,8 +273,7 @@ public final class ManageWebAppWithTrafficManager {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -21,44 +21,41 @@ public final class SqlPoolReplicationLinksImpl implements SqlPoolReplicationLink
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolReplicationLinksImpl(
-        SqlPoolReplicationLinksClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolReplicationLinksImpl(SqlPoolReplicationLinksClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ReplicationLink> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<ReplicationLinkInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
+        PagedIterable<ReplicationLinkInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReplicationLink> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        PagedIterable<ReplicationLinkInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
+    public PagedIterable<ReplicationLink> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        PagedIterable<ReplicationLinkInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
     }
 
-    public Response<ReplicationLink> getByNameWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, Context context) {
-        Response<ReplicationLinkInner> inner =
-            this.serviceClient().getByNameWithResponse(resourceGroupName, workspaceName, sqlPoolName, linkId, context);
+    public Response<ReplicationLink> getByNameWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String linkId, Context context) {
+        Response<ReplicationLinkInner> inner = this.serviceClient()
+            .getByNameWithResponse(resourceGroupName, workspaceName, sqlPoolName, linkId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationLinkImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ReplicationLink getByName(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
-        ReplicationLinkInner inner =
-            this.serviceClient().getByName(resourceGroupName, workspaceName, sqlPoolName, linkId);
+    public ReplicationLink getByName(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String linkId) {
+        ReplicationLinkInner inner
+            = this.serviceClient().getByName(resourceGroupName, workspaceName, sqlPoolName, linkId);
         if (inner != null) {
             return new ReplicationLinkImpl(inner, this.manager());
         } else {

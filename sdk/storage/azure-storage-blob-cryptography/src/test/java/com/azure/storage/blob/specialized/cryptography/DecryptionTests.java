@@ -57,9 +57,10 @@ public class DecryptionTests extends BlobCryptographyTestBase {
             encryptionData = EncryptionData.fromJson(jsonReader);
         }
 
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobDecryptionPolicy.decryptBlob(flow,
-                new EncryptedBlobRange(blobRange, encryptionData), true, encryptionData,
-                new URL("http://www.foo.com/path"))))
+        StepVerifier
+            .create(FluxUtil.collectBytesInByteBufferStream(
+                blobDecryptionPolicy.decryptBlob(flow, new EncryptedBlobRange(blobRange, encryptionData), true,
+                    encryptionData, new URL("http://www.foo.com/path"))))
             .assertNext(bytes -> assertByteBuffersEqual(desiredOutput, ByteBuffer.wrap(bytes)))
             .verifyComplete();
     }

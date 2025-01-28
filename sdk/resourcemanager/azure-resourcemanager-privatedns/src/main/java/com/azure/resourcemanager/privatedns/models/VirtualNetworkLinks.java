@@ -13,11 +13,8 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to virtual network link management API in Azure. */
 @Fluent
-public interface VirtualNetworkLinks
-    extends SupportsGettingById<VirtualNetworkLink>,
-        SupportsGettingByName<VirtualNetworkLink>,
-        SupportsListing<VirtualNetworkLink>,
-        HasParent<PrivateDnsZone> {
+public interface VirtualNetworkLinks extends SupportsGettingById<VirtualNetworkLink>,
+    SupportsGettingByName<VirtualNetworkLink>, SupportsListing<VirtualNetworkLink>, HasParent<PrivateDnsZone> {
     /**
      * Lists all the virtual network links, with number of entries in each page limited to given size.
      *
