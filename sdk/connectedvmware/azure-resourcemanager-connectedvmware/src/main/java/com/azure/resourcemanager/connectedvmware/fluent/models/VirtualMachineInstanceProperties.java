@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.models.HardwareProfile;
 import com.azure.resourcemanager.connectedvmware.models.InfrastructureProfile;
 import com.azure.resourcemanager.connectedvmware.models.NetworkProfile;
@@ -14,85 +18,78 @@ import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.SecurityProfile;
 import com.azure.resourcemanager.connectedvmware.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine Instance. */
+/**
+ * Describes the properties of a Virtual Machine Instance.
+ */
 @Fluent
-public final class VirtualMachineInstanceProperties {
+public final class VirtualMachineInstanceProperties implements JsonSerializable<VirtualMachineInstanceProperties> {
     /*
      * Placement properties.
      */
-    @JsonProperty(value = "placementProfile")
     private PlacementProfile placementProfile;
 
     /*
      * OS properties.
      */
-    @JsonProperty(value = "osProfile")
     private OsProfileForVMInstance osProfile;
 
     /*
      * Hardware properties.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Network properties.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Storage properties.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * Gets the security profile.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * Gets the infrastructure profile.
      */
-    @JsonProperty(value = "infrastructureProfile")
     private InfrastructureProfile infrastructureProfile;
 
     /*
      * Gets the power state of the virtual machine.
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
     private String powerState;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets a unique identifier for the vm resource.
      */
-    @JsonProperty(value = "resourceUid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceUid;
 
-    /** Creates an instance of VirtualMachineInstanceProperties class. */
+    /**
+     * Creates an instance of VirtualMachineInstanceProperties class.
+     */
     public VirtualMachineInstanceProperties() {
     }
 
     /**
      * Get the placementProfile property: Placement properties.
-     *
+     * 
      * @return the placementProfile value.
      */
     public PlacementProfile placementProfile() {
@@ -101,7 +98,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the placementProfile property: Placement properties.
-     *
+     * 
      * @param placementProfile the placementProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -112,7 +109,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the osProfile property: OS properties.
-     *
+     * 
      * @return the osProfile value.
      */
     public OsProfileForVMInstance osProfile() {
@@ -121,7 +118,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the osProfile property: OS properties.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -132,7 +129,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the hardwareProfile property: Hardware properties.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -141,7 +138,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the hardwareProfile property: Hardware properties.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -152,7 +149,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the networkProfile property: Network properties.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -161,7 +158,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the networkProfile property: Network properties.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -172,7 +169,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the storageProfile property: Storage properties.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -181,7 +178,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the storageProfile property: Storage properties.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -192,7 +189,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the securityProfile property: Gets the security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -201,7 +198,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the securityProfile property: Gets the security profile.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -212,7 +209,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the infrastructureProfile property: Gets the infrastructure profile.
-     *
+     * 
      * @return the infrastructureProfile value.
      */
     public InfrastructureProfile infrastructureProfile() {
@@ -221,7 +218,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Set the infrastructureProfile property: Gets the infrastructure profile.
-     *
+     * 
      * @param infrastructureProfile the infrastructureProfile value to set.
      * @return the VirtualMachineInstanceProperties object itself.
      */
@@ -232,7 +229,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the powerState property: Gets the power state of the virtual machine.
-     *
+     * 
      * @return the powerState value.
      */
     public String powerState() {
@@ -241,7 +238,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -250,7 +247,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -259,7 +256,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Get the resourceUid property: Gets or sets a unique identifier for the vm resource.
-     *
+     * 
      * @return the resourceUid value.
      */
     public String resourceUid() {
@@ -268,7 +265,7 @@ public final class VirtualMachineInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -296,5 +293,71 @@ public final class VirtualMachineInstanceProperties {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("placementProfile", this.placementProfile);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("infrastructureProfile", this.infrastructureProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInstanceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineInstanceProperties.
+     */
+    public static VirtualMachineInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInstanceProperties deserializedVirtualMachineInstanceProperties
+                = new VirtualMachineInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.placementProfile = PlacementProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.osProfile = OsProfileForVMInstance.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("infrastructureProfile".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.infrastructureProfile
+                        = InfrastructureProfile.fromJson(reader);
+                } else if ("powerState".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.powerState = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedVirtualMachineInstanceProperties.statuses = statuses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceUid".equals(fieldName)) {
+                    deserializedVirtualMachineInstanceProperties.resourceUid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInstanceProperties;
+        });
     }
 }

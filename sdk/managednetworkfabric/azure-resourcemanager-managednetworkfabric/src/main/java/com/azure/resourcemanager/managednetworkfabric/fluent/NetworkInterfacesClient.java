@@ -16,13 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkInter
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterfacePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in NetworkInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkInterfacesClient.
+ */
 public interface NetworkInterfacesClient {
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -38,9 +40,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -57,9 +59,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -75,9 +77,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Create NetworkInterface.
-     *
-     * <p>Create a Network Interface resource.
-     *
+     * 
+     * Create a Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -94,9 +96,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -112,9 +114,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Gets a NetworkInterface.
-     *
-     * <p>Get the Network Interface resource details.
-     *
+     * 
+     * Get the Network Interface resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -128,9 +130,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -146,9 +148,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -165,9 +167,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -183,9 +185,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates a NetworkInterface.
-     *
-     * <p>Update certain properties of the Network Interface resource.
-     *
+     * 
+     * Update certain properties of the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -202,9 +204,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -219,9 +221,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -237,9 +239,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -252,9 +254,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Deletes a NetworkInterface.
-     *
-     * <p>Delete the Network Interface resource.
-     *
+     * 
+     * Delete the Network Interface resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -268,9 +270,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,9 +285,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * List all Network Interfaces that are available using an Network Device.
-     *
-     * <p>List all the Network Interface resources in a given resource group.
-     *
+     * 
+     * List all the Network Interface resources in a given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param context The context to associate with this operation.
@@ -300,9 +302,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -319,9 +321,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -339,9 +341,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.
@@ -357,9 +359,9 @@ public interface NetworkInterfacesClient {
 
     /**
      * Updates the admin state of the network interface.
-     *
-     * <p>Update the admin state of the Network Interface.
-     *
+     * 
+     * Update the admin state of the Network Interface.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkDeviceName Name of the Network Device.
      * @param networkInterfaceName Name of the Network Interface.

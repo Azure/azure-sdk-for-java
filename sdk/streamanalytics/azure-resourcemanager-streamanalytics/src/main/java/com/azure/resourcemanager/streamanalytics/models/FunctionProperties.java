@@ -79,7 +79,7 @@ public class FunctionProperties implements JsonSerializable<FunctionProperties> 
      * 
      * @return the innerProperties value.
      */
-    private FunctionConfiguration innerProperties() {
+    FunctionConfiguration innerProperties() {
         return this.innerProperties;
     }
 
@@ -111,7 +111,7 @@ public class FunctionProperties implements JsonSerializable<FunctionProperties> 
      */
     public FunctionProperties withInputs(List<FunctionInput> inputs) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withInputs(inputs);
         return this;
@@ -134,7 +134,7 @@ public class FunctionProperties implements JsonSerializable<FunctionProperties> 
      */
     public FunctionProperties withOutput(FunctionOutput output) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withOutput(output);
         return this;
@@ -159,7 +159,7 @@ public class FunctionProperties implements JsonSerializable<FunctionProperties> 
      */
     public FunctionProperties withBinding(FunctionBinding binding) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withBinding(binding);
         return this;

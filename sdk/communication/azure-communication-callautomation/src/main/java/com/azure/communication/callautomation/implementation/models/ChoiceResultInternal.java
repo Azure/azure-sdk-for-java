@@ -23,7 +23,8 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
 
     /*
      * Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to null
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
+     * to null
      */
     private String recognizedPhrase;
 
@@ -55,8 +56,8 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
 
     /**
      * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
-     * null.
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
+     * to null.
      * 
      * @return the recognizedPhrase value.
      */
@@ -66,8 +67,8 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
 
     /**
      * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
-     * null.
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
+     * to null.
      * 
      * @param recognizedPhrase the recognizedPhrase value to set.
      * @return the ChoiceResultInternal object itself.
@@ -77,9 +78,6 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -23,7 +23,8 @@ public final class CallInvite {
     private final CustomCallingContext customCallingContext;
 
     /**
-     *  Create a CallInvite object with PhoneNumberIdentifierr
+     *  Create a CallInvite object with PhoneNumberIdentifier
+     *  When the source of the call is a Teams App source, callerIdNumber is not supported and should be null.
      * @param targetIdentity Target's PhoneNumberIdentifier
      * @param callerIdNumber Caller's phone number identifier
      */

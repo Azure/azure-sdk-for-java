@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,21 +17,19 @@ import java.util.List;
  * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging.
  */
 @Fluent
-public final class RoutingProperties {
+public final class RoutingProperties implements JsonSerializable<RoutingProperties> {
     /*
      * The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules.
      * A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs and only 1 custom endpoint
      * is allowed across all endpoint types for free hubs.
      */
-    @JsonProperty(value = "endpoints")
     private RoutingEndpoints endpoints;
 
     /*
-     * The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom
-     * endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5 routing rules are allowed
-     * for free hubs.
+     * The list of user-provided routing rules that the IoT hub uses to route messages to built-in and custom endpoints.
+     * A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5 routing rules are allowed for free
+     * hubs.
      */
-    @JsonProperty(value = "routes")
     private List<RouteProperties> routes;
 
     /*
@@ -35,17 +37,17 @@ public final class RoutingProperties {
      * 'routes' section are met. This is an optional parameter. When this property is not present in the template, the
      * fallback route is disabled by default.
      */
-    @JsonProperty(value = "fallbackRoute")
     private FallbackRouteProperties fallbackRoute;
 
     /*
-     * The list of user-provided enrichments that the IoT hub applies to messages to be delivered to built-in and
-     * custom endpoints. See: https://aka.ms/telemetryoneventgrid
+     * The list of user-provided enrichments that the IoT hub applies to messages to be delivered to built-in and custom
+     * endpoints. See: https://aka.ms/telemetryoneventgrid
      */
-    @JsonProperty(value = "enrichments")
     private List<EnrichmentProperties> enrichments;
 
-    /** Creates an instance of RoutingProperties class. */
+    /**
+     * Creates an instance of RoutingProperties class.
+     */
     public RoutingProperties() {
     }
 
@@ -53,7 +55,7 @@ public final class RoutingProperties {
      * Get the endpoints property: The properties related to the custom endpoints to which your IoT hub routes messages
      * based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
      * and only 1 custom endpoint is allowed across all endpoint types for free hubs.
-     *
+     * 
      * @return the endpoints value.
      */
     public RoutingEndpoints endpoints() {
@@ -64,7 +66,7 @@ public final class RoutingProperties {
      * Set the endpoints property: The properties related to the custom endpoints to which your IoT hub routes messages
      * based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
      * and only 1 custom endpoint is allowed across all endpoint types for free hubs.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the RoutingProperties object itself.
      */
@@ -77,7 +79,7 @@ public final class RoutingProperties {
      * Get the routes property: The list of user-provided routing rules that the IoT hub uses to route messages to
      * built-in and custom endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5
      * routing rules are allowed for free hubs.
-     *
+     * 
      * @return the routes value.
      */
     public List<RouteProperties> routes() {
@@ -88,7 +90,7 @@ public final class RoutingProperties {
      * Set the routes property: The list of user-provided routing rules that the IoT hub uses to route messages to
      * built-in and custom endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5
      * routing rules are allowed for free hubs.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the RoutingProperties object itself.
      */
@@ -101,7 +103,7 @@ public final class RoutingProperties {
      * Get the fallbackRoute property: The properties of the route that is used as a fall-back route when none of the
      * conditions specified in the 'routes' section are met. This is an optional parameter. When this property is not
      * present in the template, the fallback route is disabled by default.
-     *
+     * 
      * @return the fallbackRoute value.
      */
     public FallbackRouteProperties fallbackRoute() {
@@ -112,7 +114,7 @@ public final class RoutingProperties {
      * Set the fallbackRoute property: The properties of the route that is used as a fall-back route when none of the
      * conditions specified in the 'routes' section are met. This is an optional parameter. When this property is not
      * present in the template, the fallback route is disabled by default.
-     *
+     * 
      * @param fallbackRoute the fallbackRoute value to set.
      * @return the RoutingProperties object itself.
      */
@@ -124,7 +126,7 @@ public final class RoutingProperties {
     /**
      * Get the enrichments property: The list of user-provided enrichments that the IoT hub applies to messages to be
      * delivered to built-in and custom endpoints. See: https://aka.ms/telemetryoneventgrid.
-     *
+     * 
      * @return the enrichments value.
      */
     public List<EnrichmentProperties> enrichments() {
@@ -134,7 +136,7 @@ public final class RoutingProperties {
     /**
      * Set the enrichments property: The list of user-provided enrichments that the IoT hub applies to messages to be
      * delivered to built-in and custom endpoints. See: https://aka.ms/telemetryoneventgrid.
-     *
+     * 
      * @param enrichments the enrichments value to set.
      * @return the RoutingProperties object itself.
      */
@@ -145,7 +147,7 @@ public final class RoutingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +163,53 @@ public final class RoutingProperties {
         if (enrichments() != null) {
             enrichments().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("endpoints", this.endpoints);
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("fallbackRoute", this.fallbackRoute);
+        jsonWriter.writeArrayField("enrichments", this.enrichments, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingProperties.
+     */
+    public static RoutingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingProperties deserializedRoutingProperties = new RoutingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoints".equals(fieldName)) {
+                    deserializedRoutingProperties.endpoints = RoutingEndpoints.fromJson(reader);
+                } else if ("routes".equals(fieldName)) {
+                    List<RouteProperties> routes = reader.readArray(reader1 -> RouteProperties.fromJson(reader1));
+                    deserializedRoutingProperties.routes = routes;
+                } else if ("fallbackRoute".equals(fieldName)) {
+                    deserializedRoutingProperties.fallbackRoute = FallbackRouteProperties.fromJson(reader);
+                } else if ("enrichments".equals(fieldName)) {
+                    List<EnrichmentProperties> enrichments
+                        = reader.readArray(reader1 -> EnrichmentProperties.fromJson(reader1));
+                    deserializedRoutingProperties.enrichments = enrichments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingProperties;
+        });
     }
 }

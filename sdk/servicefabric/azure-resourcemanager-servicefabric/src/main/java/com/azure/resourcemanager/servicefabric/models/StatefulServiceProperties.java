@@ -58,11 +58,6 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
      */
     private OffsetDateTime standByReplicaKeepDuration;
 
-    /*
-     * The current deployment or provisioning state, which only appears in the response
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of StatefulServiceProperties class.
      */
@@ -205,17 +200,6 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     public StatefulServiceProperties withStandByReplicaKeepDuration(OffsetDateTime standByReplicaKeepDuration) {
         this.standByReplicaKeepDuration = standByReplicaKeepDuration;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -392,7 +376,7 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
                 } else if ("defaultMoveCost".equals(fieldName)) {
                     deserializedStatefulServiceProperties.withDefaultMoveCost(MoveCost.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatefulServiceProperties.provisioningState = reader.getString();
+                    deserializedStatefulServiceProperties.withProvisioningState(reader.getString());
                 } else if ("serviceTypeName".equals(fieldName)) {
                     deserializedStatefulServiceProperties.withServiceTypeName(reader.getString());
                 } else if ("partitionDescription".equals(fieldName)) {

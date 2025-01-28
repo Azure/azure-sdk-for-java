@@ -6,39 +6,41 @@ package com.azure.resourcemanager.datadog.models;
 
 import com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner;
 
-/** An immutable client-side representation of DatadogApiKey. */
+/**
+ * An immutable client-side representation of DatadogApiKey.
+ */
 public interface DatadogApiKey {
     /**
      * Gets the createdBy property: The user that created the API key.
-     *
+     * 
      * @return the createdBy value.
      */
     String createdBy();
 
     /**
      * Gets the name property: The name of the API key.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the key property: The value of the API key.
-     *
+     * 
      * @return the key value.
      */
     String key();
 
     /**
      * Gets the created property: The time of creation of the API key.
-     *
+     * 
      * @return the created value.
      */
     String created();
 
     /**
      * Gets the inner com.azure.resourcemanager.datadog.fluent.models.DatadogApiKeyInner object.
-     *
+     * 
      * @return the inner object.
      */
     DatadogApiKeyInner innerModel();

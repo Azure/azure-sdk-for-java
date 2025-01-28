@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TemplateDeploymentCapabilities. */
+/**
+ * Defines values for TemplateDeploymentCapabilities.
+ */
 public final class TemplateDeploymentCapabilities extends ExpandableStringEnum<TemplateDeploymentCapabilities> {
-    /** Static value Default for TemplateDeploymentCapabilities. */
+    /**
+     * Static value Default for TemplateDeploymentCapabilities.
+     */
     public static final TemplateDeploymentCapabilities DEFAULT = fromString("Default");
 
-    /** Static value Preflight for TemplateDeploymentCapabilities. */
+    /**
+     * Static value Preflight for TemplateDeploymentCapabilities.
+     */
     public static final TemplateDeploymentCapabilities PREFLIGHT = fromString("Preflight");
 
     /**
      * Creates a new instance of TemplateDeploymentCapabilities value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class TemplateDeploymentCapabilities extends ExpandableStringEnum<T
 
     /**
      * Creates or finds a TemplateDeploymentCapabilities from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TemplateDeploymentCapabilities.
      */
-    @JsonCreator
     public static TemplateDeploymentCapabilities fromString(String name) {
         return fromString(name, TemplateDeploymentCapabilities.class);
     }
 
     /**
      * Gets known TemplateDeploymentCapabilities values.
-     *
+     * 
      * @return known TemplateDeploymentCapabilities values.
      */
     public static Collection<TemplateDeploymentCapabilities> values() {

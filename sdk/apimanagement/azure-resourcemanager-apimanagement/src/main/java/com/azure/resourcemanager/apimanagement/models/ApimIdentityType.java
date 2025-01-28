@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,21 +12,29 @@ import java.util.Collection;
  * created identity and a set of user assigned identities. The type 'None' will remove any identities from the service.
  */
 public final class ApimIdentityType extends ExpandableStringEnum<ApimIdentityType> {
-    /** Static value SystemAssigned for ApimIdentityType. */
+    /**
+     * Static value SystemAssigned for ApimIdentityType.
+     */
     public static final ApimIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for ApimIdentityType. */
+    /**
+     * Static value UserAssigned for ApimIdentityType.
+     */
     public static final ApimIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Static value SystemAssigned, UserAssigned for ApimIdentityType. */
+    /**
+     * Static value SystemAssigned, UserAssigned for ApimIdentityType.
+     */
     public static final ApimIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned, UserAssigned");
 
-    /** Static value None for ApimIdentityType. */
+    /**
+     * Static value None for ApimIdentityType.
+     */
     public static final ApimIdentityType NONE = fromString("None");
 
     /**
      * Creates a new instance of ApimIdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +43,17 @@ public final class ApimIdentityType extends ExpandableStringEnum<ApimIdentityTyp
 
     /**
      * Creates or finds a ApimIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApimIdentityType.
      */
-    @JsonCreator
     public static ApimIdentityType fromString(String name) {
         return fromString(name, ApimIdentityType.class);
     }
 
     /**
      * Gets known ApimIdentityType values.
-     *
+     * 
      * @return known ApimIdentityType values.
      */
     public static Collection<ApimIdentityType> values() {

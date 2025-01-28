@@ -1,10 +1,34 @@
 # Release History
 
-## 11.8.0-beta.4 (2024-11-21)
+## 11.8.0-beta.5 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+
+## 11.7.4 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.2` to version `1.5.4`.
+
+
+## 11.8.0-beta.4 (2024-11-22)
 
 ### Bugs Fixed
 
  - Fixed bug in the serialization of `SearchDocumentsResult` `debuginfo` property.
+ - Fixed missing properties bug in `SemanticSearchResults`.
+   - Added missing properties `debugInfo` and `semanticQueryRewritesResultType`.
 
 ## 11.8.0-beta.3 (2024-11-20)
 

@@ -12,13 +12,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.ServiceConfigurationResourceInner;
 import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurationResourcePatch;
 
-/** An instance of this class provides access to all the operations defined in ServiceConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceConfigurationsClient.
+ */
 public interface ServiceConfigurationsClient {
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,9 +33,9 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Lists of all the services associated with endpoint resource.
-     *
-     * <p>API to enumerate registered services in service configurations under a Endpoint Resource.
-     *
+     * 
+     * API to enumerate registered services in service configurations under a Endpoint Resource.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param context The context to associate with this operation.
@@ -48,7 +50,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -64,7 +66,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Gets the details about the service to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -78,7 +80,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -96,7 +98,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Create or update a service in serviceConfiguration for the endpoint resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -112,7 +114,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -130,7 +132,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Update the service details in the service configurations of the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -146,7 +148,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.
@@ -162,7 +164,7 @@ public interface ServiceConfigurationsClient {
 
     /**
      * Deletes the service details to the target resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param endpointName The endpoint name.
      * @param serviceConfigurationName The service name.

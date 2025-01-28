@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * QoS Flow.
  */
 @Fluent
-public final class UeQosFlow {
+public final class UeQosFlow implements JsonSerializable<UeQosFlow> {
     /*
      * Qos Flow Identifier
      */
-    @JsonProperty(value = "qfi", required = true)
     private int qfi;
 
     /*
      * 5G QoS Identifier.
      */
-    @JsonProperty(value = "fiveqi", required = true)
     private int fiveqi;
 
     /*
      * Maximum Bit Rate
      */
-    @JsonProperty(value = "mbr")
     private Ambr mbr;
 
     /*
      * Guaranteed Bit Rate
      */
-    @JsonProperty(value = "gbr")
     private Ambr gbr;
 
     /**
@@ -134,5 +134,51 @@ public final class UeQosFlow {
         if (gbr() != null) {
             gbr().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("qfi", this.qfi);
+        jsonWriter.writeIntField("fiveqi", this.fiveqi);
+        jsonWriter.writeJsonField("mbr", this.mbr);
+        jsonWriter.writeJsonField("gbr", this.gbr);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeQosFlow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeQosFlow if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeQosFlow.
+     */
+    public static UeQosFlow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeQosFlow deserializedUeQosFlow = new UeQosFlow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("qfi".equals(fieldName)) {
+                    deserializedUeQosFlow.qfi = reader.getInt();
+                } else if ("fiveqi".equals(fieldName)) {
+                    deserializedUeQosFlow.fiveqi = reader.getInt();
+                } else if ("mbr".equals(fieldName)) {
+                    deserializedUeQosFlow.mbr = Ambr.fromJson(reader);
+                } else if ("gbr".equals(fieldName)) {
+                    deserializedUeQosFlow.gbr = Ambr.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeQosFlow;
+        });
     }
 }

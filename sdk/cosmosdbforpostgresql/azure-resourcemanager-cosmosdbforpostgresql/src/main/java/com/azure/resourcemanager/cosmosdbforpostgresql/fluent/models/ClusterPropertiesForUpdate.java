@@ -5,80 +5,73 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties used to update a cluster.
  */
 @Fluent
-public final class ClusterPropertiesForUpdate {
+public final class ClusterPropertiesForUpdate implements JsonSerializable<ClusterPropertiesForUpdate> {
     /*
      * The password of the administrator login. Each cluster is created with pre-defined administrative role called
      * ‘citus’. 
      */
-    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
      * The major PostgreSQL version on all cluster servers.
      */
-    @JsonProperty(value = "postgresqlVersion")
     private String postgresqlVersion;
 
     /*
      * The Citus extension version on all cluster servers.
      */
-    @JsonProperty(value = "citusVersion")
     private String citusVersion;
 
     /*
-     * If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters.
-     * Requires shard rebalancing after value is changed.
+     * If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters. Requires
+     * shard rebalancing after value is changed.
      */
-    @JsonProperty(value = "enableShardsOnCoordinator")
     private Boolean enableShardsOnCoordinator;
 
     /*
      * If high availability (HA) is enabled or not for the cluster.
      */
-    @JsonProperty(value = "enableHa")
     private Boolean enableHa;
 
     /*
      * Preferred primary availability zone (AZ) for all cluster servers.
      */
-    @JsonProperty(value = "preferredPrimaryZone")
     private String preferredPrimaryZone;
 
     /*
      * The edition of the coordinator (default: GeneralPurpose).
      */
-    @JsonProperty(value = "coordinatorServerEdition")
     private String coordinatorServerEdition;
 
     /*
      * The storage of the coordinator in MB.
      */
-    @JsonProperty(value = "coordinatorStorageQuotaInMb")
     private Integer coordinatorStorageQuotaInMb;
 
     /*
      * The vCores count of the coordinator (max: 96).
      */
-    @JsonProperty(value = "coordinatorVCores")
     private Integer coordinatorVCores;
 
     /*
      * If public access is enabled on coordinator.
      */
-    @JsonProperty(value = "coordinatorEnablePublicIpAccess")
     private Boolean coordinatorEnablePublicIpAccess;
 
     /*
      * The edition of a node (default: MemoryOptimized).
      */
-    @JsonProperty(value = "nodeServerEdition")
     private String nodeServerEdition;
 
     /*
@@ -86,31 +79,26 @@ public final class ClusterPropertiesForUpdate {
      * ability to create distributed tables on that node. 2 or more worker nodes represent multi-node configuration.
      * Node count value cannot be 1.
      */
-    @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
      * The storage in MB on each worker node.
      */
-    @JsonProperty(value = "nodeStorageQuotaInMb")
     private Integer nodeStorageQuotaInMb;
 
     /*
      * The compute in vCores on each worker node (max: 104).
      */
-    @JsonProperty(value = "nodeVCores")
     private Integer nodeVCores;
 
     /*
      * If public access is enabled on worker nodes.
      */
-    @JsonProperty(value = "nodeEnablePublicIpAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nodeEnablePublicIpAccess;
 
     /*
      * Maintenance window of a cluster.
      */
-    @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
 
     /**
@@ -182,8 +170,8 @@ public final class ClusterPropertiesForUpdate {
     }
 
     /**
-     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
-     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      * 
      * @return the enableShardsOnCoordinator value.
      */
@@ -192,8 +180,8 @@ public final class ClusterPropertiesForUpdate {
     }
 
     /**
-     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
-     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterPropertiesForUpdate object itself.
@@ -445,5 +433,90 @@ public final class ClusterPropertiesForUpdate {
         if (maintenanceWindow() != null) {
             maintenanceWindow().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("postgresqlVersion", this.postgresqlVersion);
+        jsonWriter.writeStringField("citusVersion", this.citusVersion);
+        jsonWriter.writeBooleanField("enableShardsOnCoordinator", this.enableShardsOnCoordinator);
+        jsonWriter.writeBooleanField("enableHa", this.enableHa);
+        jsonWriter.writeStringField("preferredPrimaryZone", this.preferredPrimaryZone);
+        jsonWriter.writeStringField("coordinatorServerEdition", this.coordinatorServerEdition);
+        jsonWriter.writeNumberField("coordinatorStorageQuotaInMb", this.coordinatorStorageQuotaInMb);
+        jsonWriter.writeNumberField("coordinatorVCores", this.coordinatorVCores);
+        jsonWriter.writeBooleanField("coordinatorEnablePublicIpAccess", this.coordinatorEnablePublicIpAccess);
+        jsonWriter.writeStringField("nodeServerEdition", this.nodeServerEdition);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeNumberField("nodeStorageQuotaInMb", this.nodeStorageQuotaInMb);
+        jsonWriter.writeNumberField("nodeVCores", this.nodeVCores);
+        jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPropertiesForUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPropertiesForUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPropertiesForUpdate.
+     */
+    public static ClusterPropertiesForUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPropertiesForUpdate deserializedClusterPropertiesForUpdate = new ClusterPropertiesForUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.administratorLoginPassword = reader.getString();
+                } else if ("postgresqlVersion".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.postgresqlVersion = reader.getString();
+                } else if ("citusVersion".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.citusVersion = reader.getString();
+                } else if ("enableShardsOnCoordinator".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.enableShardsOnCoordinator
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableHa".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.enableHa = reader.getNullable(JsonReader::getBoolean);
+                } else if ("preferredPrimaryZone".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.preferredPrimaryZone = reader.getString();
+                } else if ("coordinatorServerEdition".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.coordinatorServerEdition = reader.getString();
+                } else if ("coordinatorStorageQuotaInMb".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.coordinatorStorageQuotaInMb
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("coordinatorVCores".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.coordinatorVCores = reader.getNullable(JsonReader::getInt);
+                } else if ("coordinatorEnablePublicIpAccess".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.coordinatorEnablePublicIpAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nodeServerEdition".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.nodeServerEdition = reader.getString();
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeStorageQuotaInMb".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.nodeStorageQuotaInMb
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeVCores".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.nodeVCores = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeEnablePublicIpAccess".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.nodeEnablePublicIpAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedClusterPropertiesForUpdate.maintenanceWindow = MaintenanceWindow.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPropertiesForUpdate;
+        });
     }
 }

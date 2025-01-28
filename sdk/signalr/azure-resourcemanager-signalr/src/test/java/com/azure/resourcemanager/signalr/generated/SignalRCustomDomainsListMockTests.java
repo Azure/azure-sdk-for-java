@@ -22,7 +22,7 @@ public final class SignalRCustomDomainsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"totiowlxteqdptjg\",\"customCertificate\":{\"id\":\"tgukranblwphql\"}},\"id\":\"c\",\"name\":\"zgygqwahoiulwgni\",\"type\":\"prglvawuwzduf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"mwrokcdxfzzzwyja\",\"customCertificate\":{\"id\":\"tlhguynuchl\"}},\"id\":\"mltx\",\"name\":\"whmozusgzvlnsnnj\",\"type\":\"fpafolpymwamxq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class SignalRCustomDomainsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CustomDomain> response
-            = manager.signalRCustomDomains().list("v", "qcgxuug", com.azure.core.util.Context.NONE);
+            = manager.signalRCustomDomains().list("rhtgvgzpcrrkol", "w", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("totiowlxteqdptjg", response.iterator().next().domainName());
-        Assertions.assertEquals("tgukranblwphql", response.iterator().next().customCertificate().id());
+        Assertions.assertEquals("mwrokcdxfzzzwyja", response.iterator().next().domainName());
+        Assertions.assertEquals("tlhguynuchl", response.iterator().next().customCertificate().id());
     }
 }

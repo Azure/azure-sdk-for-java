@@ -13,15 +13,15 @@ public final class SecurityAlertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityAlert model = BinaryData.fromString(
-            "{\"kind\":\"SecurityAlert\",\"properties\":{\"alertDisplayName\":\"ikvcpwp\",\"alertType\":\"lrcivtsoxfrke\",\"compromisedEntity\":\"pmyyefrpmpdnqq\",\"confidenceLevel\":\"High\",\"confidenceReasons\":[{\"reason\":\"qvmmbn\",\"reasonType\":\"fr\"}],\"confidenceScore\":85.29999080200021,\"confidenceScoreStatus\":\"InProcess\",\"description\":\"gnitgvkxlzyq\",\"endTimeUtc\":\"2021-09-29T03:03:45Z\",\"intent\":\"Unknown\",\"providerAlertId\":\"ealzxwhcansymoyq\",\"processingEndTime\":\"2021-07-23T06:54:11Z\",\"productComponentName\":\"gdivbkbxg\",\"productName\":\"fajuwas\",\"productVersion\":\"daeyygux\",\"remediationSteps\":[\"sqzhzbezkg\",\"msidxasicddyvv\",\"skgfmocwahpq\"],\"severity\":\"Low\",\"startTimeUtc\":\"2021-07-27T04:50:29Z\",\"status\":\"InProgress\",\"systemAlertId\":\"hvjhhnakzyb\",\"tactics\":[\"Exfiltration\"],\"timeGenerated\":\"2021-01-03T16:18:49Z\",\"vendorName\":\"syxkyxvxevblb\",\"alertLink\":\"dnlj\",\"resourceIdentifiers\":[\"dataeuaulxu\",\"datasmjbnkppxyn\"],\"additionalData\":{\"ffeycx\":\"datasvxeizzgwklnsr\",\"ymerteeammxq\":\"dataktp\"},\"friendlyName\":\"kk\"},\"id\":\"ddrtkgdojb\",\"name\":\"xv\",\"type\":\"vrefdeesv\"}")
+            "{\"kind\":\"SecurityAlert\",\"properties\":{\"alertDisplayName\":\"kfrlhrxsbky\",\"alertType\":\"ycanuzbpzkafku\",\"compromisedEntity\":\"crnwbmeh\",\"confidenceLevel\":\"High\",\"confidenceReasons\":[{\"reason\":\"us\",\"reasonType\":\"slhs\"}],\"confidenceScore\":36.31152947614292,\"confidenceScoreStatus\":\"NotFinal\",\"description\":\"ofmxagkvtmelmqkr\",\"endTimeUtc\":\"2021-09-27T01:04:36Z\",\"intent\":\"Execution\",\"providerAlertId\":\"uahaquhcdhmd\",\"processingEndTime\":\"2021-08-16T04:58:12Z\",\"productComponentName\":\"exq\",\"productName\":\"fadmws\",\"productVersion\":\"r\",\"remediationSteps\":[\"pv\",\"omzlfmi\"],\"severity\":\"High\",\"startTimeUtc\":\"2021-01-11T23:53:59Z\",\"status\":\"New\",\"systemAlertId\":\"ldawkzbaliourqha\",\"tactics\":[\"PreAttack\",\"Execution\",\"PreAttack\"],\"timeGenerated\":\"2021-10-31T19:11:47Z\",\"vendorName\":\"wxosowzxcug\",\"alertLink\":\"jooxdjebw\",\"resourceIdentifiers\":[\"datawwfvov\",\"datavmeueci\",\"datayhz\"],\"additionalData\":{\"ytdxwit\":\"dataojgjrwjueiotwmc\",\"hniskxfbkpyc\":\"datanrjawgqwg\"},\"friendlyName\":\"lwn\"},\"id\":\"hjdauwhvylwz\",\"name\":\"tdhxujznbmpowuwp\",\"type\":\"zqlveualupjmkhf\"}")
             .toObject(SecurityAlert.class);
-        Assertions.assertEquals(AlertSeverity.LOW, model.severity());
+        Assertions.assertEquals(AlertSeverity.HIGH, model.severity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityAlert model = new SecurityAlert().withSeverity(AlertSeverity.LOW);
+        SecurityAlert model = new SecurityAlert().withSeverity(AlertSeverity.HIGH);
         model = BinaryData.fromObject(model).toObject(SecurityAlert.class);
-        Assertions.assertEquals(AlertSeverity.LOW, model.severity());
+        Assertions.assertEquals(AlertSeverity.HIGH, model.severity());
     }
 }

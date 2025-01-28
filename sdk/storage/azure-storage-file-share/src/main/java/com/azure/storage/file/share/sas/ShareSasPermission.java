@@ -16,13 +16,9 @@ import java.util.Locale;
  */
 public final class ShareSasPermission {
     private boolean readPermission;
-
     private boolean createPermission;
-
     private boolean writePermission;
-
     private boolean deletePermission;
-
     private boolean listPermission;
 
     /**
@@ -74,6 +70,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the read permission status.
+     *
      * @return the read permission status
      */
     public boolean hasReadPermission() {
@@ -92,6 +90,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the create permission status.
+     *
      * @return the create permission status
      */
     public boolean hasCreatePermission() {
@@ -110,6 +110,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the write permission status.
+     *
      * @return the write permission status
      */
     public boolean hasWritePermission() {
@@ -128,6 +130,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the delete permission status.
+     *
      * @return the delete permission status
      */
     public boolean hasDeletePermission() {
@@ -146,6 +150,8 @@ public final class ShareSasPermission {
     }
 
     /**
+     * Gets the list permission status.
+     *
      * @return the list permission status
      */
     public boolean hasListPermission() {

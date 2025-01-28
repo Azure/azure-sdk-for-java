@@ -5,56 +5,60 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties of a cost target. */
+/**
+ * Properties of a cost target.
+ */
 @Fluent
-public final class TargetCostProperties {
+public final class TargetCostProperties implements JsonSerializable<TargetCostProperties> {
     /*
      * Target cost status
      */
-    @JsonProperty(value = "status")
     private TargetCostStatus status;
 
     /*
      * Lab target cost
      */
-    @JsonProperty(value = "target")
     private Integer target;
 
     /*
      * Cost thresholds.
      */
-    @JsonProperty(value = "costThresholds")
     private List<CostThresholdProperties> costThresholds;
 
     /*
      * Reporting cycle start date.
      */
-    @JsonProperty(value = "cycleStartDateTime")
     private OffsetDateTime cycleStartDateTime;
 
     /*
      * Reporting cycle end date.
      */
-    @JsonProperty(value = "cycleEndDateTime")
     private OffsetDateTime cycleEndDateTime;
 
     /*
      * Reporting cycle type.
      */
-    @JsonProperty(value = "cycleType")
     private ReportingCycleType cycleType;
 
-    /** Creates an instance of TargetCostProperties class. */
+    /**
+     * Creates an instance of TargetCostProperties class.
+     */
     public TargetCostProperties() {
     }
 
     /**
      * Get the status property: Target cost status.
-     *
+     * 
      * @return the status value.
      */
     public TargetCostStatus status() {
@@ -63,7 +67,7 @@ public final class TargetCostProperties {
 
     /**
      * Set the status property: Target cost status.
-     *
+     * 
      * @param status the status value to set.
      * @return the TargetCostProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class TargetCostProperties {
 
     /**
      * Get the target property: Lab target cost.
-     *
+     * 
      * @return the target value.
      */
     public Integer target() {
@@ -83,7 +87,7 @@ public final class TargetCostProperties {
 
     /**
      * Set the target property: Lab target cost.
-     *
+     * 
      * @param target the target value to set.
      * @return the TargetCostProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class TargetCostProperties {
 
     /**
      * Get the costThresholds property: Cost thresholds.
-     *
+     * 
      * @return the costThresholds value.
      */
     public List<CostThresholdProperties> costThresholds() {
@@ -103,7 +107,7 @@ public final class TargetCostProperties {
 
     /**
      * Set the costThresholds property: Cost thresholds.
-     *
+     * 
      * @param costThresholds the costThresholds value to set.
      * @return the TargetCostProperties object itself.
      */
@@ -114,7 +118,7 @@ public final class TargetCostProperties {
 
     /**
      * Get the cycleStartDateTime property: Reporting cycle start date.
-     *
+     * 
      * @return the cycleStartDateTime value.
      */
     public OffsetDateTime cycleStartDateTime() {
@@ -123,7 +127,7 @@ public final class TargetCostProperties {
 
     /**
      * Set the cycleStartDateTime property: Reporting cycle start date.
-     *
+     * 
      * @param cycleStartDateTime the cycleStartDateTime value to set.
      * @return the TargetCostProperties object itself.
      */
@@ -134,7 +138,7 @@ public final class TargetCostProperties {
 
     /**
      * Get the cycleEndDateTime property: Reporting cycle end date.
-     *
+     * 
      * @return the cycleEndDateTime value.
      */
     public OffsetDateTime cycleEndDateTime() {
@@ -143,7 +147,7 @@ public final class TargetCostProperties {
 
     /**
      * Set the cycleEndDateTime property: Reporting cycle end date.
-     *
+     * 
      * @param cycleEndDateTime the cycleEndDateTime value to set.
      * @return the TargetCostProperties object itself.
      */
@@ -154,7 +158,7 @@ public final class TargetCostProperties {
 
     /**
      * Get the cycleType property: Reporting cycle type.
-     *
+     * 
      * @return the cycleType value.
      */
     public ReportingCycleType cycleType() {
@@ -163,7 +167,7 @@ public final class TargetCostProperties {
 
     /**
      * Set the cycleType property: Reporting cycle type.
-     *
+     * 
      * @param cycleType the cycleType value to set.
      * @return the TargetCostProperties object itself.
      */
@@ -174,12 +178,74 @@ public final class TargetCostProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (costThresholds() != null) {
             costThresholds().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeNumberField("target", this.target);
+        jsonWriter.writeArrayField("costThresholds", this.costThresholds,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("cycleStartDateTime",
+            this.cycleStartDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cycleStartDateTime));
+        jsonWriter.writeStringField("cycleEndDateTime",
+            this.cycleEndDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cycleEndDateTime));
+        jsonWriter.writeStringField("cycleType", this.cycleType == null ? null : this.cycleType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetCostProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetCostProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetCostProperties.
+     */
+    public static TargetCostProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetCostProperties deserializedTargetCostProperties = new TargetCostProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedTargetCostProperties.status = TargetCostStatus.fromString(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedTargetCostProperties.target = reader.getNullable(JsonReader::getInt);
+                } else if ("costThresholds".equals(fieldName)) {
+                    List<CostThresholdProperties> costThresholds
+                        = reader.readArray(reader1 -> CostThresholdProperties.fromJson(reader1));
+                    deserializedTargetCostProperties.costThresholds = costThresholds;
+                } else if ("cycleStartDateTime".equals(fieldName)) {
+                    deserializedTargetCostProperties.cycleStartDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("cycleEndDateTime".equals(fieldName)) {
+                    deserializedTargetCostProperties.cycleEndDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("cycleType".equals(fieldName)) {
+                    deserializedTargetCostProperties.cycleType = ReportingCycleType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetCostProperties;
+        });
     }
 }

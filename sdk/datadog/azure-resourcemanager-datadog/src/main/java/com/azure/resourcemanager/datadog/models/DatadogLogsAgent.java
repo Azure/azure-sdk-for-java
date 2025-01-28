@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DatadogLogsAgent model. */
+/**
+ * The DatadogLogsAgent model.
+ */
 @Fluent
-public final class DatadogLogsAgent {
+public final class DatadogLogsAgent implements JsonSerializable<DatadogLogsAgent> {
     /*
      * The transport.
      */
-    @JsonProperty(value = "transport")
     private String transport;
 
-    /** Creates an instance of DatadogLogsAgent class. */
+    /**
+     * Creates an instance of DatadogLogsAgent class.
+     */
     public DatadogLogsAgent() {
     }
 
     /**
      * Get the transport property: The transport.
-     *
+     * 
      * @return the transport value.
      */
     public String transport() {
@@ -31,7 +38,7 @@ public final class DatadogLogsAgent {
 
     /**
      * Set the transport property: The transport.
-     *
+     * 
      * @param transport the transport value to set.
      * @return the DatadogLogsAgent object itself.
      */
@@ -42,9 +49,45 @@ public final class DatadogLogsAgent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transport", this.transport);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogLogsAgent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogLogsAgent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogLogsAgent.
+     */
+    public static DatadogLogsAgent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogLogsAgent deserializedDatadogLogsAgent = new DatadogLogsAgent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transport".equals(fieldName)) {
+                    deserializedDatadogLogsAgent.transport = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogLogsAgent;
+        });
     }
 }

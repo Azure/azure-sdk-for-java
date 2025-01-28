@@ -9,7 +9,9 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class EnvironmentTypesListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/EnvironmentTypes_List.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/EnvironmentTypes_List.
+     * json
      */
     /**
      * Sample code: EnvironmentTypes_ListByDevCenter.

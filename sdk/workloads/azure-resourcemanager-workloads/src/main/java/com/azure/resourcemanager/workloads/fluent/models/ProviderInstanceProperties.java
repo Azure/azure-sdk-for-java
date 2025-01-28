@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.ProviderInstancePropertiesErrors;
 import com.azure.resourcemanager.workloads.models.ProviderSpecificProperties;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of a provider instance. */
+/**
+ * Describes the properties of a provider instance.
+ */
 @Fluent
-public final class ProviderInstanceProperties {
+public final class ProviderInstanceProperties implements JsonSerializable<ProviderInstanceProperties> {
     /*
      * State of provisioning of the provider instance
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadMonitorProvisioningState provisioningState;
 
     /*
      * Defines the provider instance errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private ProviderInstancePropertiesErrors errors;
 
     /*
      * Defines the provider specific properties.
      */
-    @JsonProperty(value = "providerSettings")
     private ProviderSpecificProperties providerSettings;
 
-    /** Creates an instance of ProviderInstanceProperties class. */
+    /**
+     * Creates an instance of ProviderInstanceProperties class.
+     */
     public ProviderInstanceProperties() {
     }
 
     /**
      * Get the provisioningState property: State of provisioning of the provider instance.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -46,7 +51,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Get the errors property: Defines the provider instance errors.
-     *
+     * 
      * @return the errors value.
      */
     public ProviderInstancePropertiesErrors errors() {
@@ -55,7 +60,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Get the providerSettings property: Defines the provider specific properties.
-     *
+     * 
      * @return the providerSettings value.
      */
     public ProviderSpecificProperties providerSettings() {
@@ -64,7 +69,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Set the providerSettings property: Defines the provider specific properties.
-     *
+     * 
      * @param providerSettings the providerSettings value to set.
      * @return the ProviderInstanceProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class ProviderInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -85,5 +90,47 @@ public final class ProviderInstanceProperties {
         if (providerSettings() != null) {
             providerSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSettings", this.providerSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderInstanceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderInstanceProperties.
+     */
+    public static ProviderInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderInstanceProperties deserializedProviderInstanceProperties = new ProviderInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedProviderInstanceProperties.provisioningState
+                        = WorkloadMonitorProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedProviderInstanceProperties.errors = ProviderInstancePropertiesErrors.fromJson(reader);
+                } else if ("providerSettings".equals(fieldName)) {
+                    deserializedProviderInstanceProperties.providerSettings
+                        = ProviderSpecificProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderInstanceProperties;
+        });
     }
 }

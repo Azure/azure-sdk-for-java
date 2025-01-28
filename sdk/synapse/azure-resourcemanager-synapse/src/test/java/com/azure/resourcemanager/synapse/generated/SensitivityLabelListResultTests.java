@@ -11,7 +11,7 @@ public final class SensitivityLabelListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SensitivityLabelListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"schemaName\":\"b\",\"tableName\":\"oefki\",\"columnName\":\"vtpuqujmqlgk\",\"labelName\":\"tndoaongbjc\",\"labelId\":\"ujitcjedftww\",\"informationType\":\"zkoj\",\"informationTypeId\":\"c\",\"isDisabled\":true,\"rank\":\"Low\"},\"managedBy\":\"uicybxarzgszuf\",\"id\":\"x\",\"name\":\"iqopidoamciod\",\"type\":\"khazxkhnzbonlwn\"},{\"properties\":{\"schemaName\":\"gokdwbwhks\",\"tableName\":\"cmrvexzt\",\"columnName\":\"t\",\"labelName\":\"sfraoyzko\",\"labelId\":\"tlmngu\",\"informationType\":\"wqaldsyu\",\"informationTypeId\":\"imerqfobwyznk\",\"isDisabled\":false,\"rank\":\"High\"},\"managedBy\":\"pfhpagmhrskdsnfd\",\"id\":\"doakgtdlmkkzevdl\",\"name\":\"ewpusdsttwvogvb\",\"type\":\"ejdcngqqmoakuf\"}],\"nextLink\":\"jzrwrdgrtw\"}")
+            "{\"value\":[{\"properties\":{\"schemaName\":\"rgaehvvibrxjj\",\"tableName\":\"oqbeitpkxzt\",\"columnName\":\"ob\",\"labelName\":\"ft\",\"labelId\":\"gfcwqmpimaqxzhem\",\"informationType\":\"h\",\"informationTypeId\":\"uj\",\"isDisabled\":false,\"rank\":\"Low\"},\"managedBy\":\"zzwc\",\"id\":\"lkb\",\"name\":\"wpfaj\",\"type\":\"jwltlwtjjgu\"}],\"nextLink\":\"alhsnvkc\"}")
             .toObject(SensitivityLabelListResult.class);
     }
 

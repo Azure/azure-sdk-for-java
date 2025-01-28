@@ -23,17 +23,23 @@ import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.models.OperationsResultsLocationsGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsResultsLocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsResultsLocationsClient.
+ */
 public final class OperationsResultsLocationsClientImpl implements OperationsResultsLocationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsResultsLocationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsResultsLocationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsResultsLocationsClientImpl(KustoManagementClientImpl client) {
@@ -61,7 +67,7 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +99,7 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -126,7 +132,7 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +147,7 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -157,7 +163,7 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

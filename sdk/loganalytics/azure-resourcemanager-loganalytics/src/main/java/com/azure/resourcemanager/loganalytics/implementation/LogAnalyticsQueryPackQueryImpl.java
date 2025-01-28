@@ -152,9 +152,9 @@ public final class LogAnalyticsQueryPackQueryImpl
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.queryPackName = Utils.getValueFromIdByName(innerObject.id(), "queryPacks");
-        this.id = Utils.getValueFromIdByName(innerObject.id(), "queries");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.queryPackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "queryPacks");
+        this.id = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "queries");
     }
 
     public LogAnalyticsQueryPackQuery refresh() {

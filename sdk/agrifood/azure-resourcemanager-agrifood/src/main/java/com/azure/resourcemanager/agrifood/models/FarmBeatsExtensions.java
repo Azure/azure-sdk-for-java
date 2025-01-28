@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of FarmBeatsExtensions. */
+/**
+ * Resource collection API of FarmBeatsExtensions.
+ */
 public interface FarmBeatsExtensions {
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedIterable}.
@@ -22,12 +24,13 @@ public interface FarmBeatsExtensions {
 
     /**
      * Get list of farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionIds FarmBeatsExtension ids.
      * @param farmBeatsExtensionNames FarmBeats extension names.
      * @param extensionCategories Extension categories.
      * @param publisherIds Publisher ids.
-     * @param maxPageSize Maximum number of items needed (inclusive). Minimum = 10, Maximum = 1000, Default value = 50.
+     * @param maxPageSize Maximum number of items needed (inclusive).
+     * Minimum = 10, Maximum = 1000, Default value = 50.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,18 +42,7 @@ public interface FarmBeatsExtensions {
 
     /**
      * Get farmBeats extension.
-     *
-     * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return farmBeats extension.
-     */
-    FarmBeatsExtension get(String farmBeatsExtensionId);
-
-    /**
-     * Get farmBeats extension.
-     *
+     * 
      * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,4 +51,15 @@ public interface FarmBeatsExtensions {
      * @return farmBeats extension along with {@link Response}.
      */
     Response<FarmBeatsExtension> getWithResponse(String farmBeatsExtensionId, Context context);
+
+    /**
+     * Get farmBeats extension.
+     * 
+     * @param farmBeatsExtensionId farmBeatsExtensionId to be queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return farmBeats extension.
+     */
+    FarmBeatsExtension get(String farmBeatsExtensionId);
 }

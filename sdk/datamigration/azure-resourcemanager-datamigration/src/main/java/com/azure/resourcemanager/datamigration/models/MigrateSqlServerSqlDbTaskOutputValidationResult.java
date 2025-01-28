@@ -37,11 +37,6 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
      */
     private ValidationStatus status;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbTaskOutputValidationResult class.
      */
@@ -99,16 +94,6 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -152,7 +137,7 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResult extends Migra
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbTaskOutputValidationResult.id = reader.getString();
+                    deserializedMigrateSqlServerSqlDbTaskOutputValidationResult.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskOutputValidationResult.resultType = reader.getString();
                 } else if ("migrationId".equals(fieldName)) {

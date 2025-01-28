@@ -9,39 +9,41 @@ import com.azure.resourcemanager.apimanagement.fluent.models.OperationResultCont
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of OperationResultContract. */
+/**
+ * An immutable client-side representation of OperationResultContract.
+ */
 public interface OperationResultContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the idPropertiesId property: Operation result identifier.
-     *
+     * 
      * @return the idPropertiesId value.
      */
     String idPropertiesId();
 
     /**
      * Gets the status property: Status of an async operation.
-     *
+     * 
      * @return the status value.
      */
     AsyncOperationStatus status();
@@ -49,7 +51,7 @@ public interface OperationResultContract {
     /**
      * Gets the started property: Start time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the started value.
      */
     OffsetDateTime started();
@@ -57,21 +59,21 @@ public interface OperationResultContract {
     /**
      * Gets the updated property: Last update time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the updated value.
      */
     OffsetDateTime updated();
 
     /**
      * Gets the resultInfo property: Optional result info.
-     *
+     * 
      * @return the resultInfo value.
      */
     String resultInfo();
 
     /**
      * Gets the error property: Error Body Contract.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
@@ -80,14 +82,14 @@ public interface OperationResultContract {
      * Gets the actionLog property: This property if only provided as part of the TenantConfiguration_Validate
      * operation. It contains the log the entities which will be updated/created/deleted as part of the
      * TenantConfiguration_Deploy operation.
-     *
+     * 
      * @return the actionLog value.
      */
     List<OperationResultLogItemContract> actionLog();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.OperationResultContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationResultContractInner innerModel();

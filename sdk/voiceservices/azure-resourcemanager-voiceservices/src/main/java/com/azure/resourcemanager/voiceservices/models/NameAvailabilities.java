@@ -7,11 +7,13 @@ package com.azure.resourcemanager.voiceservices.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NameAvailabilities. */
+/**
+ * Resource collection API of NameAvailabilities.
+ */
 public interface NameAvailabilities {
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface NameAvailabilities {
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

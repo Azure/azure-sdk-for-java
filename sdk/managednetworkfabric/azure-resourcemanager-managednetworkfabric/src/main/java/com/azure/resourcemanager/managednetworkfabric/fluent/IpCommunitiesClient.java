@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpCommunityInner;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityPatch;
 
-/** An instance of this class provides access to all the operations defined in IpCommunitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpCommunitiesClient.
+ */
 public interface IpCommunitiesClient {
     /**
      * Create an IP Community.
-     *
-     * <p>Implements an IP Community PUT method.
-     *
+     * 
+     * Implements an IP Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body Request payload.
@@ -35,9 +37,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Create an IP Community.
-     *
-     * <p>Implements an IP Community PUT method.
-     *
+     * 
+     * Implements an IP Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body Request payload.
@@ -53,9 +55,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Create an IP Community.
-     *
-     * <p>Implements an IP Community PUT method.
-     *
+     * 
+     * Implements an IP Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body Request payload.
@@ -69,9 +71,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Create an IP Community.
-     *
-     * <p>Implements an IP Community PUT method.
-     *
+     * 
+     * Implements an IP Community PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body Request payload.
@@ -86,9 +88,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Gets an IP Community.
-     *
-     * <p>Implements an IP Community GET method.
-     *
+     * 
+     * Implements an IP Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param context The context to associate with this operation.
@@ -103,9 +105,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Gets an IP Community.
-     *
-     * <p>Implements an IP Community GET method.
-     *
+     * 
+     * Implements an IP Community GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,9 +120,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Updates an IP Community.
-     *
-     * <p>API to update certain properties of the IP Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body IP Community properties to update.
@@ -135,9 +137,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Updates an IP Community.
-     *
-     * <p>API to update certain properties of the IP Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body IP Community properties to update.
@@ -153,9 +155,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Updates an IP Community.
-     *
-     * <p>API to update certain properties of the IP Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body IP Community properties to update.
@@ -169,9 +171,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Updates an IP Community.
-     *
-     * <p>API to update certain properties of the IP Community resource.
-     *
+     * 
+     * API to update certain properties of the IP Community resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param body IP Community properties to update.
@@ -186,9 +188,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,9 +203,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param context The context to associate with this operation.
@@ -217,9 +219,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,9 +233,9 @@ public interface IpCommunitiesClient {
 
     /**
      * Deletes an IP Community.
-     *
-     * <p>Implements IP Community DELETE method.
-     *
+     * 
+     * Implements IP Community DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipCommunityName Name of the IP Community.
      * @param context The context to associate with this operation.
@@ -246,9 +248,9 @@ public interface IpCommunitiesClient {
 
     /**
      * List IP Communities by resource group.
-     *
-     * <p>Implements IP Communities list by resource group GET method.
-     *
+     * 
+     * Implements IP Communities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -260,9 +262,9 @@ public interface IpCommunitiesClient {
 
     /**
      * List IP Communities by resource group.
-     *
-     * <p>Implements IP Communities list by resource group GET method.
-     *
+     * 
+     * Implements IP Communities list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,9 +277,9 @@ public interface IpCommunitiesClient {
 
     /**
      * List IP Communities by subscription.
-     *
-     * <p>Implements IP Communities list by subscription GET method.
-     *
+     * 
+     * Implements IP Communities list by subscription GET method.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Communities as paginated response with {@link PagedIterable}.
@@ -287,9 +289,9 @@ public interface IpCommunitiesClient {
 
     /**
      * List IP Communities by subscription.
-     *
-     * <p>Implements IP Communities list by subscription GET method.
-     *
+     * 
+     * Implements IP Communities list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

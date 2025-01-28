@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -210,7 +210,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ApiManagementManager. ApiManagement Client. */
+/**
+ * Entry point to ApiManagementManager.
+ * ApiManagement Client.
+ */
 public final class ApiManagementManager {
     private Apis apis;
 
@@ -404,7 +407,7 @@ public final class ApiManagementManager {
 
     /**
      * Creates an instance of ApiManagement service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the ApiManagement service API instance.
@@ -417,7 +420,7 @@ public final class ApiManagementManager {
 
     /**
      * Creates an instance of ApiManagement service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the ApiManagement service API instance.
@@ -430,14 +433,16 @@ public final class ApiManagementManager {
 
     /**
      * Gets a Configurable instance that can be used to create ApiManagementManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ApiManagementManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -509,8 +514,8 @@ public final class ApiManagementManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -552,7 +557,7 @@ public final class ApiManagementManager {
                 .append("-")
                 .append("com.azure.resourcemanager.apimanagement")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -585,7 +590,7 @@ public final class ApiManagementManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -600,7 +605,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Apis. It manages ApiContract.
-     *
+     * 
      * @return Resource collection API of Apis.
      */
     public Apis apis() {
@@ -612,7 +617,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiRevisions.
-     *
+     * 
      * @return Resource collection API of ApiRevisions.
      */
     public ApiRevisions apiRevisions() {
@@ -624,7 +629,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiReleases. It manages ApiReleaseContract.
-     *
+     * 
      * @return Resource collection API of ApiReleases.
      */
     public ApiReleases apiReleases() {
@@ -636,7 +641,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiOperations. It manages OperationContract.
-     *
+     * 
      * @return Resource collection API of ApiOperations.
      */
     public ApiOperations apiOperations() {
@@ -648,7 +653,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiOperationPolicies. It manages PolicyContract.
-     *
+     * 
      * @return Resource collection API of ApiOperationPolicies.
      */
     public ApiOperationPolicies apiOperationPolicies() {
@@ -660,7 +665,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Tags. It manages TagContract.
-     *
+     * 
      * @return Resource collection API of Tags.
      */
     public Tags tags() {
@@ -672,7 +677,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of GraphQLApiResolvers. It manages ResolverContract.
-     *
+     * 
      * @return Resource collection API of GraphQLApiResolvers.
      */
     public GraphQLApiResolvers graphQLApiResolvers() {
@@ -684,7 +689,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of GraphQLApiResolverPolicies.
-     *
+     * 
      * @return Resource collection API of GraphQLApiResolverPolicies.
      */
     public GraphQLApiResolverPolicies graphQLApiResolverPolicies() {
@@ -697,7 +702,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiProducts.
-     *
+     * 
      * @return Resource collection API of ApiProducts.
      */
     public ApiProducts apiProducts() {
@@ -709,7 +714,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiPolicies.
-     *
+     * 
      * @return Resource collection API of ApiPolicies.
      */
     public ApiPolicies apiPolicies() {
@@ -721,7 +726,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiSchemas. It manages SchemaContract.
-     *
+     * 
      * @return Resource collection API of ApiSchemas.
      */
     public ApiSchemas apiSchemas() {
@@ -733,7 +738,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiDiagnostics. It manages DiagnosticContract.
-     *
+     * 
      * @return Resource collection API of ApiDiagnostics.
      */
     public ApiDiagnostics apiDiagnostics() {
@@ -745,7 +750,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiIssues. It manages IssueContract.
-     *
+     * 
      * @return Resource collection API of ApiIssues.
      */
     public ApiIssues apiIssues() {
@@ -757,7 +762,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiIssueComments. It manages IssueCommentContract.
-     *
+     * 
      * @return Resource collection API of ApiIssueComments.
      */
     public ApiIssueComments apiIssueComments() {
@@ -769,7 +774,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiIssueAttachments. It manages IssueAttachmentContract.
-     *
+     * 
      * @return Resource collection API of ApiIssueAttachments.
      */
     public ApiIssueAttachments apiIssueAttachments() {
@@ -781,7 +786,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiTagDescriptions. It manages TagDescriptionContract.
-     *
+     * 
      * @return Resource collection API of ApiTagDescriptions.
      */
     public ApiTagDescriptions apiTagDescriptions() {
@@ -793,7 +798,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -805,7 +810,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiWikis.
-     *
+     * 
      * @return Resource collection API of ApiWikis.
      */
     public ApiWikis apiWikis() {
@@ -817,7 +822,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiWikisOperations.
-     *
+     * 
      * @return Resource collection API of ApiWikisOperations.
      */
     public ApiWikisOperations apiWikisOperations() {
@@ -829,7 +834,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiExports.
-     *
+     * 
      * @return Resource collection API of ApiExports.
      */
     public ApiExports apiExports() {
@@ -841,7 +846,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiVersionSets. It manages ApiVersionSetContract.
-     *
+     * 
      * @return Resource collection API of ApiVersionSets.
      */
     public ApiVersionSets apiVersionSets() {
@@ -853,7 +858,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of AuthorizationServers. It manages AuthorizationServerContract.
-     *
+     * 
      * @return Resource collection API of AuthorizationServers.
      */
     public AuthorizationServers authorizationServers() {
@@ -865,7 +870,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of AuthorizationProviders. It manages AuthorizationProviderContract.
-     *
+     * 
      * @return Resource collection API of AuthorizationProviders.
      */
     public AuthorizationProviders authorizationProviders() {
@@ -878,7 +883,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Authorizations. It manages AuthorizationContract.
-     *
+     * 
      * @return Resource collection API of Authorizations.
      */
     public Authorizations authorizations() {
@@ -890,7 +895,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of AuthorizationLoginLinks.
-     *
+     * 
      * @return Resource collection API of AuthorizationLoginLinks.
      */
     public AuthorizationLoginLinks authorizationLoginLinks() {
@@ -903,7 +908,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of AuthorizationAccessPolicies. It manages AuthorizationAccessPolicyContract.
-     *
+     * 
      * @return Resource collection API of AuthorizationAccessPolicies.
      */
     public AuthorizationAccessPolicies authorizationAccessPolicies() {
@@ -916,7 +921,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Backends. It manages BackendContract.
-     *
+     * 
      * @return Resource collection API of Backends.
      */
     public Backends backends() {
@@ -928,7 +933,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Caches. It manages CacheContract.
-     *
+     * 
      * @return Resource collection API of Caches.
      */
     public Caches caches() {
@@ -940,7 +945,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Certificates. It manages CertificateContract.
-     *
+     * 
      * @return Resource collection API of Certificates.
      */
     public Certificates certificates() {
@@ -952,7 +957,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -964,7 +969,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ContentTypes. It manages ContentTypeContract.
-     *
+     * 
      * @return Resource collection API of ContentTypes.
      */
     public ContentTypes contentTypes() {
@@ -976,7 +981,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ContentItems. It manages ContentItemContract.
-     *
+     * 
      * @return Resource collection API of ContentItems.
      */
     public ContentItems contentItems() {
@@ -988,7 +993,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of DeletedServices.
-     *
+     * 
      * @return Resource collection API of DeletedServices.
      */
     public DeletedServices deletedServices() {
@@ -1000,7 +1005,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiManagementOperations.
-     *
+     * 
      * @return Resource collection API of ApiManagementOperations.
      */
     public ApiManagementOperations apiManagementOperations() {
@@ -1013,7 +1018,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiManagementServiceSkus.
-     *
+     * 
      * @return Resource collection API of ApiManagementServiceSkus.
      */
     public ApiManagementServiceSkus apiManagementServiceSkus() {
@@ -1026,7 +1031,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiManagementServices. It manages ApiManagementServiceResource.
-     *
+     * 
      * @return Resource collection API of ApiManagementServices.
      */
     public ApiManagementServices apiManagementServices() {
@@ -1038,7 +1043,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Diagnostics.
-     *
+     * 
      * @return Resource collection API of Diagnostics.
      */
     public Diagnostics diagnostics() {
@@ -1050,7 +1055,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of EmailTemplates. It manages EmailTemplateContract.
-     *
+     * 
      * @return Resource collection API of EmailTemplates.
      */
     public EmailTemplates emailTemplates() {
@@ -1062,7 +1067,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Gateways. It manages GatewayContract.
-     *
+     * 
      * @return Resource collection API of Gateways.
      */
     public Gateways gateways() {
@@ -1075,7 +1080,7 @@ public final class ApiManagementManager {
     /**
      * Gets the resource collection API of GatewayHostnameConfigurations. It manages
      * GatewayHostnameConfigurationContract.
-     *
+     * 
      * @return Resource collection API of GatewayHostnameConfigurations.
      */
     public GatewayHostnameConfigurations gatewayHostnameConfigurations() {
@@ -1088,7 +1093,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of GatewayApis.
-     *
+     * 
      * @return Resource collection API of GatewayApis.
      */
     public GatewayApis gatewayApis() {
@@ -1101,7 +1106,7 @@ public final class ApiManagementManager {
     /**
      * Gets the resource collection API of GatewayCertificateAuthorities. It manages
      * GatewayCertificateAuthorityContract.
-     *
+     * 
      * @return Resource collection API of GatewayCertificateAuthorities.
      */
     public GatewayCertificateAuthorities gatewayCertificateAuthorities() {
@@ -1114,7 +1119,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Groups. It manages GroupContract.
-     *
+     * 
      * @return Resource collection API of Groups.
      */
     public Groups groups() {
@@ -1126,7 +1131,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of GroupUsers.
-     *
+     * 
      * @return Resource collection API of GroupUsers.
      */
     public GroupUsers groupUsers() {
@@ -1138,7 +1143,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of IdentityProviders. It manages IdentityProviderContract.
-     *
+     * 
      * @return Resource collection API of IdentityProviders.
      */
     public IdentityProviders identityProviders() {
@@ -1150,7 +1155,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Issues.
-     *
+     * 
      * @return Resource collection API of Issues.
      */
     public Issues issues() {
@@ -1162,7 +1167,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Loggers. It manages LoggerContract.
-     *
+     * 
      * @return Resource collection API of Loggers.
      */
     public Loggers loggers() {
@@ -1174,7 +1179,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of NamedValues. It manages NamedValueContract.
-     *
+     * 
      * @return Resource collection API of NamedValues.
      */
     public NamedValues namedValues() {
@@ -1186,7 +1191,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of NetworkStatus.
-     *
+     * 
      * @return Resource collection API of NetworkStatus.
      */
     public NetworkStatus networkStatus() {
@@ -1198,7 +1203,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Notifications.
-     *
+     * 
      * @return Resource collection API of Notifications.
      */
     public Notifications notifications() {
@@ -1210,7 +1215,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of NotificationRecipientUsers.
-     *
+     * 
      * @return Resource collection API of NotificationRecipientUsers.
      */
     public NotificationRecipientUsers notificationRecipientUsers() {
@@ -1223,7 +1228,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of NotificationRecipientEmails.
-     *
+     * 
      * @return Resource collection API of NotificationRecipientEmails.
      */
     public NotificationRecipientEmails notificationRecipientEmails() {
@@ -1236,7 +1241,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of OpenIdConnectProviders. It manages OpenidConnectProviderContract.
-     *
+     * 
      * @return Resource collection API of OpenIdConnectProviders.
      */
     public OpenIdConnectProviders openIdConnectProviders() {
@@ -1249,7 +1254,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of OutboundNetworkDependenciesEndpoints.
-     *
+     * 
      * @return Resource collection API of OutboundNetworkDependenciesEndpoints.
      */
     public OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints() {
@@ -1262,7 +1267,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Policies.
-     *
+     * 
      * @return Resource collection API of Policies.
      */
     public Policies policies() {
@@ -1274,7 +1279,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of PolicyDescriptions.
-     *
+     * 
      * @return Resource collection API of PolicyDescriptions.
      */
     public PolicyDescriptions policyDescriptions() {
@@ -1286,7 +1291,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of PolicyFragments. It manages PolicyFragmentContract.
-     *
+     * 
      * @return Resource collection API of PolicyFragments.
      */
     public PolicyFragments policyFragments() {
@@ -1298,7 +1303,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of PortalConfigs. It manages PortalConfigContract.
-     *
+     * 
      * @return Resource collection API of PortalConfigs.
      */
     public PortalConfigs portalConfigs() {
@@ -1310,7 +1315,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of PortalRevisions. It manages PortalRevisionContract.
-     *
+     * 
      * @return Resource collection API of PortalRevisions.
      */
     public PortalRevisions portalRevisions() {
@@ -1322,7 +1327,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of PortalSettings.
-     *
+     * 
      * @return Resource collection API of PortalSettings.
      */
     public PortalSettings portalSettings() {
@@ -1334,7 +1339,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of SignInSettings.
-     *
+     * 
      * @return Resource collection API of SignInSettings.
      */
     public SignInSettings signInSettings() {
@@ -1346,7 +1351,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of SignUpSettings.
-     *
+     * 
      * @return Resource collection API of SignUpSettings.
      */
     public SignUpSettings signUpSettings() {
@@ -1358,7 +1363,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of DelegationSettings.
-     *
+     * 
      * @return Resource collection API of DelegationSettings.
      */
     public DelegationSettings delegationSettings() {
@@ -1370,7 +1375,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -1383,7 +1388,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Products. It manages ProductContract.
-     *
+     * 
      * @return Resource collection API of Products.
      */
     public Products products() {
@@ -1395,7 +1400,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ProductApis.
-     *
+     * 
      * @return Resource collection API of ProductApis.
      */
     public ProductApis productApis() {
@@ -1407,7 +1412,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ProductGroups.
-     *
+     * 
      * @return Resource collection API of ProductGroups.
      */
     public ProductGroups productGroups() {
@@ -1419,7 +1424,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ProductSubscriptions.
-     *
+     * 
      * @return Resource collection API of ProductSubscriptions.
      */
     public ProductSubscriptions productSubscriptions() {
@@ -1431,7 +1436,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ProductPolicies.
-     *
+     * 
      * @return Resource collection API of ProductPolicies.
      */
     public ProductPolicies productPolicies() {
@@ -1443,7 +1448,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ProductWikis.
-     *
+     * 
      * @return Resource collection API of ProductWikis.
      */
     public ProductWikis productWikis() {
@@ -1455,7 +1460,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ProductWikisOperations.
-     *
+     * 
      * @return Resource collection API of ProductWikisOperations.
      */
     public ProductWikisOperations productWikisOperations() {
@@ -1468,7 +1473,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of QuotaByCounterKeys.
-     *
+     * 
      * @return Resource collection API of QuotaByCounterKeys.
      */
     public QuotaByCounterKeys quotaByCounterKeys() {
@@ -1480,7 +1485,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of QuotaByPeriodKeys.
-     *
+     * 
      * @return Resource collection API of QuotaByPeriodKeys.
      */
     public QuotaByPeriodKeys quotaByPeriodKeys() {
@@ -1492,7 +1497,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Regions.
-     *
+     * 
      * @return Resource collection API of Regions.
      */
     public Regions regions() {
@@ -1504,7 +1509,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Reports.
-     *
+     * 
      * @return Resource collection API of Reports.
      */
     public Reports reports() {
@@ -1516,7 +1521,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of GlobalSchemas. It manages GlobalSchemaContract.
-     *
+     * 
      * @return Resource collection API of GlobalSchemas.
      */
     public GlobalSchemas globalSchemas() {
@@ -1528,7 +1533,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of TenantSettings.
-     *
+     * 
      * @return Resource collection API of TenantSettings.
      */
     public TenantSettings tenantSettings() {
@@ -1540,7 +1545,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of ApiManagementSkus.
-     *
+     * 
      * @return Resource collection API of ApiManagementSkus.
      */
     public ApiManagementSkus apiManagementSkus() {
@@ -1552,7 +1557,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Subscriptions.
-     *
+     * 
      * @return Resource collection API of Subscriptions.
      */
     public Subscriptions subscriptions() {
@@ -1564,7 +1569,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of TagResources.
-     *
+     * 
      * @return Resource collection API of TagResources.
      */
     public TagResources tagResources() {
@@ -1576,7 +1581,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of TenantAccess. It manages AccessInformationContract.
-     *
+     * 
      * @return Resource collection API of TenantAccess.
      */
     public TenantAccess tenantAccess() {
@@ -1588,7 +1593,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of TenantAccessGits.
-     *
+     * 
      * @return Resource collection API of TenantAccessGits.
      */
     public TenantAccessGits tenantAccessGits() {
@@ -1600,7 +1605,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of TenantConfigurations.
-     *
+     * 
      * @return Resource collection API of TenantConfigurations.
      */
     public TenantConfigurations tenantConfigurations() {
@@ -1612,7 +1617,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Users. It manages UserContract.
-     *
+     * 
      * @return Resource collection API of Users.
      */
     public Users users() {
@@ -1624,7 +1629,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of UserGroups.
-     *
+     * 
      * @return Resource collection API of UserGroups.
      */
     public UserGroups userGroups() {
@@ -1636,7 +1641,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of UserSubscriptions.
-     *
+     * 
      * @return Resource collection API of UserSubscriptions.
      */
     public UserSubscriptions userSubscriptions() {
@@ -1648,7 +1653,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of UserIdentities.
-     *
+     * 
      * @return Resource collection API of UserIdentities.
      */
     public UserIdentities userIdentities() {
@@ -1660,7 +1665,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of UserConfirmationPasswords.
-     *
+     * 
      * @return Resource collection API of UserConfirmationPasswords.
      */
     public UserConfirmationPasswords userConfirmationPasswords() {
@@ -1673,7 +1678,7 @@ public final class ApiManagementManager {
 
     /**
      * Gets the resource collection API of Documentations. It manages DocumentationContract.
-     *
+     * 
      * @return Resource collection API of Documentations.
      */
     public Documentations documentations() {
@@ -1686,7 +1691,7 @@ public final class ApiManagementManager {
     /**
      * Gets wrapped service client ApiManagementClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client ApiManagementClient.
      */
     public ApiManagementClient serviceClient() {

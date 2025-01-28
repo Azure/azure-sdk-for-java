@@ -4,8 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
@@ -239,7 +237,7 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
                 } else if ("updated".equals(elementName.getLocalPart())
                     && WWW_W3_ORG_TWO_ZERO_ZERO_FIVE_ATOM.equals(elementName.getNamespaceURI())) {
                     deserializedNamespacePropertiesEntry.updated
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("author".equals(elementName.getLocalPart())
                     && WWW_W3_ORG_TWO_ZERO_ZERO_FIVE_ATOM.equals(elementName.getNamespaceURI())) {
                     deserializedNamespacePropertiesEntry.author = ResponseAuthorImpl.fromXml(reader, "author");

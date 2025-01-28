@@ -13,6 +13,8 @@ public final class BlobSeekableByteChannelReadResult {
     private final BlobProperties properties;
 
     /**
+     * Creates a new instance of {@link BlobSeekableByteChannelReadResult}.
+     *
      * @param channel Channel to read the target blob.
      * @param properties Blob properties of the target blob.
      */
@@ -22,6 +24,8 @@ public final class BlobSeekableByteChannelReadResult {
     }
 
     /**
+     * Gets the channel to read the target blob.
+     *
      * @return Channel to read the target blob.
      */
     public SeekableByteChannel getChannel() {
@@ -29,6 +33,8 @@ public final class BlobSeekableByteChannelReadResult {
     }
 
     /**
+     * Gets the blob properties of the target blob.
+     *
      * @return Blob properties of the target blob.
      */
     public BlobProperties getProperties() {

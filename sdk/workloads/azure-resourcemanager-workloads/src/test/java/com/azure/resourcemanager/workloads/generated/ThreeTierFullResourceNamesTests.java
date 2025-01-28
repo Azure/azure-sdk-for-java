@@ -9,6 +9,7 @@ import com.azure.resourcemanager.workloads.models.ApplicationServerFullResourceN
 import com.azure.resourcemanager.workloads.models.CentralServerFullResourceNames;
 import com.azure.resourcemanager.workloads.models.DatabaseServerFullResourceNames;
 import com.azure.resourcemanager.workloads.models.LoadBalancerResourceNames;
+import com.azure.resourcemanager.workloads.models.NetworkInterfaceResourceNames;
 import com.azure.resourcemanager.workloads.models.SharedStorageResourceNames;
 import com.azure.resourcemanager.workloads.models.ThreeTierFullResourceNames;
 import com.azure.resourcemanager.workloads.models.VirtualMachineResourceNames;
@@ -21,120 +22,190 @@ public final class ThreeTierFullResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreeTierFullResourceNames model = BinaryData.fromString(
-            "{\"namingPatternType\":\"FullResourceName\",\"centralServer\":{\"virtualMachines\":[{\"vmName\":\"bykutw\",\"hostName\":\"hpagm\",\"networkInterfaces\":[],\"osDiskName\":\"kdsnfdsdoakgtdl\",\"dataDiskNames\":{}},{\"vmName\":\"zev\",\"hostName\":\"hewpusdsttwv\",\"networkInterfaces\":[],\"osDiskName\":\"bbejdcngqqm\",\"dataDiskNames\":{}},{\"vmName\":\"ufgmjzrwrdg\",\"hostName\":\"wae\",\"networkInterfaces\":[],\"osDiskName\":\"zkopb\",\"dataDiskNames\":{}}],\"availabilitySetName\":\"rfdwoyu\",\"loadBalancer\":{\"loadBalancerName\":\"iuiefozbhdmsm\",\"frontendIpConfigurationNames\":[\"qhoftrmaequiah\",\"icslfaoq\"],\"backendPoolNames\":[\"yylhalnswhccsp\",\"kaivwit\",\"scywuggwoluhc\",\"bwemhairs\"],\"healthProbeNames\":[\"z\"]}},\"applicationServer\":{\"virtualMachines\":[{\"vmName\":\"eypqwdxggicccn\",\"hostName\":\"huexmk\",\"networkInterfaces\":[],\"osDiskName\":\"stvlzywemhzrnc\",\"dataDiskNames\":{}}],\"availabilitySetName\":\"clusiy\"},\"databaseServer\":{\"virtualMachines\":[{\"vmName\":\"ytguslf\",\"hostName\":\"dcygqukyhejhz\",\"networkInterfaces\":[],\"osDiskName\":\"gfpelolppvksrpqv\",\"dataDiskNames\":{}},{\"vmName\":\"raehtwdwrft\",\"hostName\":\"iby\",\"networkInterfaces\":[],\"osDiskName\":\"l\",\"dataDiskNames\":{}},{\"vmName\":\"hfwpracstwit\",\"hostName\":\"hevxcced\",\"networkInterfaces\":[],\"osDiskName\":\"md\",\"dataDiskNames\":{}},{\"vmName\":\"nwzxltjcv\",\"hostName\":\"ltiugcxnavv\",\"networkInterfaces\":[],\"osDiskName\":\"ibyqunyowxwlmdj\",\"dataDiskNames\":{}}],\"availabilitySetName\":\"fgbvfvpdbo\",\"loadBalancer\":{\"loadBalancerName\":\"izsjqlhkrr\",\"frontendIpConfigurationNames\":[\"eibq\",\"p\"],\"backendPoolNames\":[\"hvxndzwmkrefajpj\",\"rwkq\",\"yhgbijtjivfx\",\"sjabibs\"],\"healthProbeNames\":[\"awfsdjpvkvpbjxbk\",\"bzkdvn\",\"jabudurgkakmo\"]}},\"sharedStorage\":{\"sharedStorageAccountName\":\"jjklff\",\"sharedStorageAccountPrivateEndPointName\":\"ouw\"}}")
+            "{\"namingPatternType\":\"FullResourceName\",\"centralServer\":{\"virtualMachines\":[{\"vmName\":\"xywsuws\",\"hostName\":\"s\",\"networkInterfaces\":[{\"networkInterfaceName\":\"tgadgvraeaen\"},{\"networkInterfaceName\":\"nzar\"},{\"networkInterfaceName\":\"lquuijfqkacewii\"}],\"osDiskName\":\"pubjibw\",\"dataDiskNames\":{\"iyntorzihle\":[\"ohqkvpuvksgpls\",\"kn\",\"n\",\"synljphuopxodl\"]}},{\"vmName\":\"jswsrmslyz\",\"hostName\":\"zbchckqqzqioxiy\",\"networkInterfaces\":[{\"networkInterfaceName\":\"zynkedya\"},{\"networkInterfaceName\":\"wyhqmibzyhwits\"},{\"networkInterfaceName\":\"pyy\"},{\"networkInterfaceName\":\"cdpu\"}],\"osDiskName\":\"zgmwznmabikns\",\"dataDiskNames\":{\"dmtnc\":[\"hxbld\",\"lwwrl\"]}}],\"availabilitySetName\":\"kotl\",\"loadBalancer\":{\"loadBalancerName\":\"yhgsy\",\"frontendIpConfigurationNames\":[\"gjltdtbnnhado\",\"crkvcikhnv\",\"amqgxqquezikyw\",\"gxk\"],\"backendPoolNames\":[\"atmelwui\"],\"healthProbeNames\":[\"cjzkzivgvvcna\",\"rhyrnxxmueed\",\"drd\"]}},\"applicationServer\":{\"virtualMachines\":[{\"vmName\":\"qqtch\",\"hostName\":\"lmfmtdaay\",\"networkInterfaces\":[{\"networkInterfaceName\":\"vgpiohgwxrt\"}],\"osDiskName\":\"dxepxgyq\",\"dataDiskNames\":{\"kzikfjawneaivxwc\":[\"vmnpkukghimdblx\",\"wi\",\"fnjhfjxwmszkkfo\",\"rey\"],\"sphyoulpjrvxa\":[\"lpcirelsf\",\"aenwabf\",\"tkl\",\"dxbjhwuaanozj\"],\"cktqumiekkezzi\":[\"rvimjwosytxitcsk\"],\"moadsuvarmy\":[\"ly\",\"jhdgqggebdunyga\",\"qidbqfatpxllrxcy\"]}},{\"vmName\":\"mjsjqb\",\"hostName\":\"hyxxrwlycoduhpk\",\"networkInterfaces\":[{\"networkInterfaceName\":\"mareqnajxqugj\"},{\"networkInterfaceName\":\"ycubeddgs\"}],\"osDiskName\":\"fwqmzqalkrmn\",\"dataDiskNames\":{\"zrtuzq\":[\"xacqqudfnbyx\",\"aaabjyvayff\",\"m\"],\"euzsoi\":[\"sexnevfdnw\",\"wmewzsyy\"]}},{\"vmName\":\"ud\",\"hostName\":\"rx\",\"networkInterfaces\":[{\"networkInterfaceName\":\"zvaytdwkqbr\"},{\"networkInterfaceName\":\"bpaxhexiilivpdt\"},{\"networkInterfaceName\":\"r\"},{\"networkInterfaceName\":\"d\"}],\"osDiskName\":\"axoruzfgsquy\",\"dataDiskNames\":{\"ezw\":[\"xleptramx\"],\"nuj\":[\"nwxuqlcvydyp\",\"tdooaoj\",\"niodkooeb\"]}}],\"availabilitySetName\":\"mmsbvdkcrodtjin\"},\"databaseServer\":{\"virtualMachines\":[{\"vmName\":\"lt\",\"hostName\":\"cjvefkdlfo\",\"networkInterfaces\":[{\"networkInterfaceName\":\"kfpagao\"},{\"networkInterfaceName\":\"ulpqblylsyxkqjn\"},{\"networkInterfaceName\":\"ervtiagxs\"},{\"networkInterfaceName\":\"zuempsbzkf\"}],\"osDiskName\":\"eyvpnqicvinvkj\",\"dataDiskNames\":{\"ckw\":[\"rbuukzclewyhmlwp\",\"ztzp\",\"fn\"],\"tpp\":[\"zqwhxxbuyqaxzfeq\"],\"wcsdbnwdcfhucq\":[\"o\",\"xorjaltolmncwsob\"]}},{\"vmName\":\"fuvglsbjjca\",\"hostName\":\"xbvtvudu\",\"networkInterfaces\":[{\"networkInterfaceName\":\"rmrlxqtvcof\"},{\"networkInterfaceName\":\"f\"}],\"osDiskName\":\"kgjubgdknnqvsazn\",\"dataDiskNames\":{\"mkycgra\":[\"rudsg\",\"a\"]}}],\"availabilitySetName\":\"juetaebur\",\"loadBalancer\":{\"loadBalancerName\":\"movsmzlxwabmqoe\",\"frontendIpConfigurationNames\":[\"frvtpuqu\",\"mqlgk\"],\"backendPoolNames\":[\"ndo\",\"ongbjcnt\",\"jitcjedftwwaez\"],\"healthProbeNames\":[\"v\",\"c\",\"zfoqouicybxar\",\"gszufoxciqopid\"]}},\"sharedStorage\":{\"sharedStorageAccountName\":\"ciodhkhaz\",\"sharedStorageAccountPrivateEndPointName\":\"hnzbonl\"}}")
             .toObject(ThreeTierFullResourceNames.class);
-        Assertions.assertEquals("bykutw", model.centralServer().virtualMachines().get(0).vmName());
-        Assertions.assertEquals("hpagm", model.centralServer().virtualMachines().get(0).hostname());
-        Assertions.assertEquals("kdsnfdsdoakgtdl", model.centralServer().virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("rfdwoyu", model.centralServer().availabilitySetName());
-        Assertions.assertEquals("iuiefozbhdmsm", model.centralServer().loadBalancer().loadBalancerName());
-        Assertions.assertEquals("qhoftrmaequiah",
+        Assertions.assertEquals("xywsuws", model.centralServer().virtualMachines().get(0).vmName());
+        Assertions.assertEquals("s", model.centralServer().virtualMachines().get(0).hostname());
+        Assertions.assertEquals("tgadgvraeaen",
+            model.centralServer().virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("pubjibw", model.centralServer().virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("ohqkvpuvksgpls",
+            model.centralServer().virtualMachines().get(0).dataDiskNames().get("iyntorzihle").get(0));
+        Assertions.assertEquals("kotl", model.centralServer().availabilitySetName());
+        Assertions.assertEquals("yhgsy", model.centralServer().loadBalancer().loadBalancerName());
+        Assertions.assertEquals("gjltdtbnnhado",
             model.centralServer().loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("yylhalnswhccsp", model.centralServer().loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("z", model.centralServer().loadBalancer().healthProbeNames().get(0));
-        Assertions.assertEquals("eypqwdxggicccn", model.applicationServer().virtualMachines().get(0).vmName());
-        Assertions.assertEquals("huexmk", model.applicationServer().virtualMachines().get(0).hostname());
-        Assertions.assertEquals("stvlzywemhzrnc", model.applicationServer().virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("clusiy", model.applicationServer().availabilitySetName());
-        Assertions.assertEquals("ytguslf", model.databaseServer().virtualMachines().get(0).vmName());
-        Assertions.assertEquals("dcygqukyhejhz", model.databaseServer().virtualMachines().get(0).hostname());
-        Assertions.assertEquals("gfpelolppvksrpqv", model.databaseServer().virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("fgbvfvpdbo", model.databaseServer().availabilitySetName());
-        Assertions.assertEquals("izsjqlhkrr", model.databaseServer().loadBalancer().loadBalancerName());
-        Assertions.assertEquals("eibq", model.databaseServer().loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("hvxndzwmkrefajpj", model.databaseServer().loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("awfsdjpvkvpbjxbk", model.databaseServer().loadBalancer().healthProbeNames().get(0));
-        Assertions.assertEquals("jjklff", model.sharedStorage().sharedStorageAccountName());
-        Assertions.assertEquals("ouw", model.sharedStorage().sharedStorageAccountPrivateEndPointName());
+        Assertions.assertEquals("atmelwui", model.centralServer().loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("cjzkzivgvvcna", model.centralServer().loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("qqtch", model.applicationServer().virtualMachines().get(0).vmName());
+        Assertions.assertEquals("lmfmtdaay", model.applicationServer().virtualMachines().get(0).hostname());
+        Assertions.assertEquals("vgpiohgwxrt",
+            model.applicationServer().virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("dxepxgyq", model.applicationServer().virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("vmnpkukghimdblx",
+            model.applicationServer().virtualMachines().get(0).dataDiskNames().get("kzikfjawneaivxwc").get(0));
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.applicationServer().availabilitySetName());
+        Assertions.assertEquals("lt", model.databaseServer().virtualMachines().get(0).vmName());
+        Assertions.assertEquals("cjvefkdlfo", model.databaseServer().virtualMachines().get(0).hostname());
+        Assertions.assertEquals("kfpagao",
+            model.databaseServer().virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("eyvpnqicvinvkj", model.databaseServer().virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("rbuukzclewyhmlwp",
+            model.databaseServer().virtualMachines().get(0).dataDiskNames().get("ckw").get(0));
+        Assertions.assertEquals("juetaebur", model.databaseServer().availabilitySetName());
+        Assertions.assertEquals("movsmzlxwabmqoe", model.databaseServer().loadBalancer().loadBalancerName());
+        Assertions.assertEquals("frvtpuqu",
+            model.databaseServer().loadBalancer().frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("ndo", model.databaseServer().loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("v", model.databaseServer().loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("ciodhkhaz", model.sharedStorage().sharedStorageAccountName());
+        Assertions.assertEquals("hnzbonl", model.sharedStorage().sharedStorageAccountPrivateEndPointName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreeTierFullResourceNames model = new ThreeTierFullResourceNames()
-            .withCentralServer(new CentralServerFullResourceNames()
-                .withVirtualMachines(Arrays.asList(
-                    new VirtualMachineResourceNames().withVmName("bykutw")
-                        .withHostname("hpagm")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("kdsnfdsdoakgtdl")
-                        .withDataDiskNames(mapOf()),
-                    new VirtualMachineResourceNames().withVmName("zev")
-                        .withHostname("hewpusdsttwv")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("bbejdcngqqm")
-                        .withDataDiskNames(mapOf()),
-                    new VirtualMachineResourceNames().withVmName("ufgmjzrwrdg")
-                        .withHostname("wae")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("zkopb")
-                        .withDataDiskNames(mapOf())))
-                .withAvailabilitySetName("rfdwoyu")
-                .withLoadBalancer(new LoadBalancerResourceNames().withLoadBalancerName("iuiefozbhdmsm")
-                    .withFrontendIpConfigurationNames(Arrays.asList("qhoftrmaequiah", "icslfaoq"))
-                    .withBackendPoolNames(Arrays.asList("yylhalnswhccsp", "kaivwit", "scywuggwoluhc", "bwemhairs"))
-                    .withHealthProbeNames(Arrays.asList("z"))))
-            .withApplicationServer(new ApplicationServerFullResourceNames()
-                .withVirtualMachines(Arrays.asList(new VirtualMachineResourceNames().withVmName("eypqwdxggicccn")
-                    .withHostname("huexmk")
-                    .withNetworkInterfaces(Arrays.asList())
-                    .withOsDiskName("stvlzywemhzrnc")
-                    .withDataDiskNames(mapOf())))
-                .withAvailabilitySetName("clusiy"))
-            .withDatabaseServer(new DatabaseServerFullResourceNames()
-                .withVirtualMachines(Arrays.asList(
-                    new VirtualMachineResourceNames().withVmName("ytguslf")
-                        .withHostname("dcygqukyhejhz")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("gfpelolppvksrpqv")
-                        .withDataDiskNames(mapOf()),
-                    new VirtualMachineResourceNames().withVmName("raehtwdwrft")
-                        .withHostname("iby")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("l")
-                        .withDataDiskNames(mapOf()),
-                    new VirtualMachineResourceNames().withVmName("hfwpracstwit")
-                        .withHostname("hevxcced")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("md")
-                        .withDataDiskNames(mapOf()),
-                    new VirtualMachineResourceNames().withVmName("nwzxltjcv")
-                        .withHostname("ltiugcxnavv")
-                        .withNetworkInterfaces(Arrays.asList())
-                        .withOsDiskName("ibyqunyowxwlmdj")
-                        .withDataDiskNames(mapOf())))
-                .withAvailabilitySetName("fgbvfvpdbo")
-                .withLoadBalancer(new LoadBalancerResourceNames().withLoadBalancerName("izsjqlhkrr")
-                    .withFrontendIpConfigurationNames(Arrays.asList("eibq", "p"))
-                    .withBackendPoolNames(Arrays.asList("hvxndzwmkrefajpj", "rwkq", "yhgbijtjivfx", "sjabibs"))
-                    .withHealthProbeNames(Arrays.asList("awfsdjpvkvpbjxbk", "bzkdvn", "jabudurgkakmo"))))
-            .withSharedStorage(new SharedStorageResourceNames().withSharedStorageAccountName("jjklff")
-                .withSharedStorageAccountPrivateEndPointName("ouw"));
+        ThreeTierFullResourceNames model
+            = new ThreeTierFullResourceNames()
+                .withCentralServer(
+                    new CentralServerFullResourceNames()
+                        .withVirtualMachines(
+                            Arrays.asList(
+                                new VirtualMachineResourceNames().withVmName("xywsuws")
+                                    .withHostname("s")
+                                    .withNetworkInterfaces(Arrays.asList(
+                                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("tgadgvraeaen"),
+                                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("nzar"),
+                                        new NetworkInterfaceResourceNames()
+                                            .withNetworkInterfaceName("lquuijfqkacewii")))
+                                    .withOsDiskName("pubjibw")
+                                    .withDataDiskNames(mapOf("iyntorzihle",
+                                        Arrays.asList("ohqkvpuvksgpls", "kn", "n", "synljphuopxodl"))),
+                                new VirtualMachineResourceNames().withVmName("jswsrmslyz")
+                                    .withHostname("zbchckqqzqioxiy")
+                                    .withNetworkInterfaces(Arrays.asList(
+                                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("zynkedya"),
+                                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("wyhqmibzyhwits"),
+                                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("pyy"),
+                                        new NetworkInterfaceResourceNames().withNetworkInterfaceName("cdpu")))
+                                    .withOsDiskName("zgmwznmabikns")
+                                    .withDataDiskNames(mapOf("dmtnc", Arrays.asList("hxbld", "lwwrl")))))
+                        .withAvailabilitySetName("kotl")
+                        .withLoadBalancer(
+                            new LoadBalancerResourceNames().withLoadBalancerName("yhgsy")
+                                .withFrontendIpConfigurationNames(
+                                    Arrays.asList("gjltdtbnnhado", "crkvcikhnv", "amqgxqquezikyw", "gxk"))
+                                .withBackendPoolNames(Arrays.asList("atmelwui"))
+                                .withHealthProbeNames(Arrays.asList("cjzkzivgvvcna", "rhyrnxxmueed", "drd"))))
+                .withApplicationServer(
+                    new ApplicationServerFullResourceNames()
+                        .withVirtualMachines(
+                            Arrays
+                                .asList(
+                                    new VirtualMachineResourceNames().withVmName("qqtch")
+                                        .withHostname("lmfmtdaay")
+                                        .withNetworkInterfaces(Arrays.asList(new NetworkInterfaceResourceNames()
+                                            .withNetworkInterfaceName("vgpiohgwxrt")))
+                                        .withOsDiskName("dxepxgyq")
+                                        .withDataDiskNames(mapOf("kzikfjawneaivxwc",
+                                            Arrays.asList("vmnpkukghimdblx", "wi", "fnjhfjxwmszkkfo", "rey"),
+                                            "sphyoulpjrvxa",
+                                            Arrays.asList("lpcirelsf", "aenwabf", "tkl", "dxbjhwuaanozj"),
+                                            "cktqumiekkezzi", Arrays
+                                                .asList("rvimjwosytxitcsk"),
+                                            "moadsuvarmy", Arrays.asList("ly", "jhdgqggebdunyga", "qidbqfatpxllrxcy"))),
+                                    new VirtualMachineResourceNames().withVmName("mjsjqb")
+                                        .withHostname("hyxxrwlycoduhpk")
+                                        .withNetworkInterfaces(Arrays.asList(
+                                            new NetworkInterfaceResourceNames()
+                                                .withNetworkInterfaceName("mareqnajxqugj"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("ycubeddgs")))
+                                        .withOsDiskName("fwqmzqalkrmn")
+                                        .withDataDiskNames(mapOf("zrtuzq",
+                                            Arrays.asList("xacqqudfnbyx", "aaabjyvayff", "m"), "euzsoi",
+                                            Arrays.asList("sexnevfdnw", "wmewzsyy"))),
+                                    new VirtualMachineResourceNames().withVmName("ud")
+                                        .withHostname("rx")
+                                        .withNetworkInterfaces(Arrays.asList(
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("zvaytdwkqbr"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName(
+                                                "bpaxhexiilivpdt"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("r"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("d")))
+                                        .withOsDiskName("axoruzfgsquy")
+                                        .withDataDiskNames(mapOf("ezw", Arrays.asList("xleptramx"), "nuj",
+                                            Arrays.asList("nwxuqlcvydyp", "tdooaoj", "niodkooeb")))))
+                        .withAvailabilitySetName("mmsbvdkcrodtjin"))
+                .withDatabaseServer(
+                    new DatabaseServerFullResourceNames()
+                        .withVirtualMachines(
+                            Arrays
+                                .asList(
+                                    new VirtualMachineResourceNames().withVmName("lt")
+                                        .withHostname("cjvefkdlfo")
+                                        .withNetworkInterfaces(Arrays.asList(
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("kfpagao"),
+                                            new NetworkInterfaceResourceNames()
+                                                .withNetworkInterfaceName("ulpqblylsyxkqjn"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("ervtiagxs"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("zuempsbzkf")))
+                                        .withOsDiskName("eyvpnqicvinvkj")
+                                        .withDataDiskNames(mapOf("ckw", Arrays.asList("rbuukzclewyhmlwp", "ztzp", "fn"),
+                                            "tpp", Arrays.asList("zqwhxxbuyqaxzfeq"), "wcsdbnwdcfhucq",
+                                            Arrays.asList("o", "xorjaltolmncwsob"))),
+                                    new VirtualMachineResourceNames().withVmName("fuvglsbjjca")
+                                        .withHostname("xbvtvudu")
+                                        .withNetworkInterfaces(Arrays.asList(
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("rmrlxqtvcof"),
+                                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("f")))
+                                        .withOsDiskName("kgjubgdknnqvsazn")
+                                        .withDataDiskNames(mapOf("mkycgra", Arrays.asList("rudsg", "a")))))
+                        .withAvailabilitySetName("juetaebur")
+                        .withLoadBalancer(new LoadBalancerResourceNames().withLoadBalancerName("movsmzlxwabmqoe")
+                            .withFrontendIpConfigurationNames(Arrays.asList("frvtpuqu", "mqlgk"))
+                            .withBackendPoolNames(Arrays.asList("ndo", "ongbjcnt", "jitcjedftwwaez"))
+                            .withHealthProbeNames(Arrays.asList("v", "c", "zfoqouicybxar", "gszufoxciqopid"))))
+                .withSharedStorage(new SharedStorageResourceNames().withSharedStorageAccountName("ciodhkhaz")
+                    .withSharedStorageAccountPrivateEndPointName("hnzbonl"));
         model = BinaryData.fromObject(model).toObject(ThreeTierFullResourceNames.class);
-        Assertions.assertEquals("bykutw", model.centralServer().virtualMachines().get(0).vmName());
-        Assertions.assertEquals("hpagm", model.centralServer().virtualMachines().get(0).hostname());
-        Assertions.assertEquals("kdsnfdsdoakgtdl", model.centralServer().virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("rfdwoyu", model.centralServer().availabilitySetName());
-        Assertions.assertEquals("iuiefozbhdmsm", model.centralServer().loadBalancer().loadBalancerName());
-        Assertions.assertEquals("qhoftrmaequiah",
+        Assertions.assertEquals("xywsuws", model.centralServer().virtualMachines().get(0).vmName());
+        Assertions.assertEquals("s", model.centralServer().virtualMachines().get(0).hostname());
+        Assertions.assertEquals("tgadgvraeaen",
+            model.centralServer().virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("pubjibw", model.centralServer().virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("ohqkvpuvksgpls",
+            model.centralServer().virtualMachines().get(0).dataDiskNames().get("iyntorzihle").get(0));
+        Assertions.assertEquals("kotl", model.centralServer().availabilitySetName());
+        Assertions.assertEquals("yhgsy", model.centralServer().loadBalancer().loadBalancerName());
+        Assertions.assertEquals("gjltdtbnnhado",
             model.centralServer().loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("yylhalnswhccsp", model.centralServer().loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("z", model.centralServer().loadBalancer().healthProbeNames().get(0));
-        Assertions.assertEquals("eypqwdxggicccn", model.applicationServer().virtualMachines().get(0).vmName());
-        Assertions.assertEquals("huexmk", model.applicationServer().virtualMachines().get(0).hostname());
-        Assertions.assertEquals("stvlzywemhzrnc", model.applicationServer().virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("clusiy", model.applicationServer().availabilitySetName());
-        Assertions.assertEquals("ytguslf", model.databaseServer().virtualMachines().get(0).vmName());
-        Assertions.assertEquals("dcygqukyhejhz", model.databaseServer().virtualMachines().get(0).hostname());
-        Assertions.assertEquals("gfpelolppvksrpqv", model.databaseServer().virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("fgbvfvpdbo", model.databaseServer().availabilitySetName());
-        Assertions.assertEquals("izsjqlhkrr", model.databaseServer().loadBalancer().loadBalancerName());
-        Assertions.assertEquals("eibq", model.databaseServer().loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("hvxndzwmkrefajpj", model.databaseServer().loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("awfsdjpvkvpbjxbk", model.databaseServer().loadBalancer().healthProbeNames().get(0));
-        Assertions.assertEquals("jjklff", model.sharedStorage().sharedStorageAccountName());
-        Assertions.assertEquals("ouw", model.sharedStorage().sharedStorageAccountPrivateEndPointName());
+        Assertions.assertEquals("atmelwui", model.centralServer().loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("cjzkzivgvvcna", model.centralServer().loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("qqtch", model.applicationServer().virtualMachines().get(0).vmName());
+        Assertions.assertEquals("lmfmtdaay", model.applicationServer().virtualMachines().get(0).hostname());
+        Assertions.assertEquals("vgpiohgwxrt",
+            model.applicationServer().virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("dxepxgyq", model.applicationServer().virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("vmnpkukghimdblx",
+            model.applicationServer().virtualMachines().get(0).dataDiskNames().get("kzikfjawneaivxwc").get(0));
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.applicationServer().availabilitySetName());
+        Assertions.assertEquals("lt", model.databaseServer().virtualMachines().get(0).vmName());
+        Assertions.assertEquals("cjvefkdlfo", model.databaseServer().virtualMachines().get(0).hostname());
+        Assertions.assertEquals("kfpagao",
+            model.databaseServer().virtualMachines().get(0).networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("eyvpnqicvinvkj", model.databaseServer().virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("rbuukzclewyhmlwp",
+            model.databaseServer().virtualMachines().get(0).dataDiskNames().get("ckw").get(0));
+        Assertions.assertEquals("juetaebur", model.databaseServer().availabilitySetName());
+        Assertions.assertEquals("movsmzlxwabmqoe", model.databaseServer().loadBalancer().loadBalancerName());
+        Assertions.assertEquals("frvtpuqu",
+            model.databaseServer().loadBalancer().frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("ndo", model.databaseServer().loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("v", model.databaseServer().loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("ciodhkhaz", model.sharedStorage().sharedStorageAccountName());
+        Assertions.assertEquals("hnzbonl", model.sharedStorage().sharedStorageAccountPrivateEndPointName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

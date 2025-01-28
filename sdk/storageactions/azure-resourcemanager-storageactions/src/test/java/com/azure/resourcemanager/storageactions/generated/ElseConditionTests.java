@@ -19,10 +19,10 @@ public final class ElseConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElseCondition model = BinaryData.fromString(
-            "{\"operations\":[{\"name\":\"SetBlobTier\",\"parameters\":{\"glu\":\"xscpaierhhbc\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}")
+            "{\"operations\":[{\"name\":\"UndeleteBlob\",\"parameters\":{\"orcjxvsnby\":\"jxsqwpgrjbz\",\"cyshurzafbljjgp\":\"qabnmoc\",\"bqidtqaj\":\"toqcjmklja\",\"khbzhfepgzg\":\"yulpkudjkr\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}")
             .toObject(ElseCondition.class);
-        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER, model.operations().get(0).name());
-        Assertions.assertEquals("xscpaierhhbc", model.operations().get(0).parameters().get("glu"));
+        Assertions.assertEquals(StorageTaskOperationName.UNDELETE_BLOB, model.operations().get(0).name());
+        Assertions.assertEquals("jxsqwpgrjbz", model.operations().get(0).parameters().get("orcjxvsnby"));
         Assertions.assertEquals(OnSuccess.CONTINUE, model.operations().get(0).onSuccess());
         Assertions.assertEquals(OnFailure.BREAK, model.operations().get(0).onFailure());
     }
@@ -30,13 +30,14 @@ public final class ElseConditionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElseCondition model = new ElseCondition()
-            .withOperations(Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
-                .withParameters(mapOf("glu", "xscpaierhhbc"))
+            .withOperations(Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
+                .withParameters(mapOf("orcjxvsnby", "jxsqwpgrjbz", "cyshurzafbljjgp", "qabnmoc", "bqidtqaj",
+                    "toqcjmklja", "khbzhfepgzg", "yulpkudjkr"))
                 .withOnSuccess(OnSuccess.CONTINUE)
                 .withOnFailure(OnFailure.BREAK)));
         model = BinaryData.fromObject(model).toObject(ElseCondition.class);
-        Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER, model.operations().get(0).name());
-        Assertions.assertEquals("xscpaierhhbc", model.operations().get(0).parameters().get("glu"));
+        Assertions.assertEquals(StorageTaskOperationName.UNDELETE_BLOB, model.operations().get(0).name());
+        Assertions.assertEquals("jxsqwpgrjbz", model.operations().get(0).parameters().get("orcjxvsnby"));
         Assertions.assertEquals(OnSuccess.CONTINUE, model.operations().get(0).onSuccess());
         Assertions.assertEquals(OnFailure.BREAK, model.operations().get(0).onFailure());
     }

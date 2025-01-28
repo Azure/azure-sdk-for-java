@@ -21,16 +21,6 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
      */
     private Boolean enabled;
 
-    /*
-     * The minimum number of executors alloted
-     */
-    private Integer minExecutors;
-
-    /*
-     * The maximum number of executors alloted
-     */
-    private Integer maxExecutors;
-
     /**
      * Creates an instance of DynamicExecutorAllocation class.
      */
@@ -58,46 +48,6 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
     }
 
     /**
-     * Get the minExecutors property: The minimum number of executors alloted.
-     * 
-     * @return the minExecutors value.
-     */
-    public Integer minExecutors() {
-        return this.minExecutors;
-    }
-
-    /**
-     * Set the minExecutors property: The minimum number of executors alloted.
-     * 
-     * @param minExecutors the minExecutors value to set.
-     * @return the DynamicExecutorAllocation object itself.
-     */
-    public DynamicExecutorAllocation withMinExecutors(Integer minExecutors) {
-        this.minExecutors = minExecutors;
-        return this;
-    }
-
-    /**
-     * Get the maxExecutors property: The maximum number of executors alloted.
-     * 
-     * @return the maxExecutors value.
-     */
-    public Integer maxExecutors() {
-        return this.maxExecutors;
-    }
-
-    /**
-     * Set the maxExecutors property: The maximum number of executors alloted.
-     * 
-     * @param maxExecutors the maxExecutors value to set.
-     * @return the DynamicExecutorAllocation object itself.
-     */
-    public DynamicExecutorAllocation withMaxExecutors(Integer maxExecutors) {
-        this.maxExecutors = maxExecutors;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,8 +62,6 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
-        jsonWriter.writeNumberField("minExecutors", this.minExecutors);
-        jsonWriter.writeNumberField("maxExecutors", this.maxExecutors);
         return jsonWriter.writeEndObject();
     }
 
@@ -134,10 +82,6 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
 
                 if ("enabled".equals(fieldName)) {
                     deserializedDynamicExecutorAllocation.enabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("minExecutors".equals(fieldName)) {
-                    deserializedDynamicExecutorAllocation.minExecutors = reader.getNullable(JsonReader::getInt);
-                } else if ("maxExecutors".equals(fieldName)) {
-                    deserializedDynamicExecutorAllocation.maxExecutors = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

@@ -6,41 +6,40 @@ package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * User details for an organization.
  */
 @Fluent
-public final class LiftrBaseUserDetails {
+public final class LiftrBaseUserDetails implements JsonSerializable<LiftrBaseUserDetails> {
     /*
      * First name of the user
      */
-    @JsonProperty(value = "firstName", required = true)
     private String firstName;
 
     /*
      * Last name of the user
      */
-    @JsonProperty(value = "lastName", required = true)
     private String lastName;
 
     /*
      * Email address of the user
      */
-    @JsonProperty(value = "emailAddress", required = true)
     private String emailAddress;
 
     /*
      * User's principal name
      */
-    @JsonProperty(value = "upn")
     private String upn;
 
     /*
      * User's phone number
      */
-    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
 
     /**
@@ -156,18 +155,68 @@ public final class LiftrBaseUserDetails {
      */
     public void validate() {
         if (firstName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property firstName in model LiftrBaseUserDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property firstName in model LiftrBaseUserDetails"));
         }
         if (lastName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property lastName in model LiftrBaseUserDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lastName in model LiftrBaseUserDetails"));
         }
         if (emailAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property emailAddress in model LiftrBaseUserDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property emailAddress in model LiftrBaseUserDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LiftrBaseUserDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("emailAddress", this.emailAddress);
+        jsonWriter.writeStringField("upn", this.upn);
+        jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiftrBaseUserDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiftrBaseUserDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LiftrBaseUserDetails.
+     */
+    public static LiftrBaseUserDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiftrBaseUserDetails deserializedLiftrBaseUserDetails = new LiftrBaseUserDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firstName".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetails.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetails.lastName = reader.getString();
+                } else if ("emailAddress".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetails.emailAddress = reader.getString();
+                } else if ("upn".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetails.upn = reader.getString();
+                } else if ("phoneNumber".equals(fieldName)) {
+                    deserializedLiftrBaseUserDetails.phoneNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiftrBaseUserDetails;
+        });
+    }
 }

@@ -15,21 +15,24 @@ public final class CustomDomainListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDomainList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"jw\",\"customCertificate\":{\"id\":\"wqiok\"}},\"id\":\"sx\",\"name\":\"ojmsvpkjprvkwc\",\"type\":\"zqljyxgtczh\"}],\"nextLink\":\"dbsdshm\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"domainName\":\"ublwpcesutrg\",\"customCertificate\":{\"id\":\"pauutpw\"}},\"id\":\"qhih\",\"name\":\"jqgwzp\",\"type\":\"fqntcyp\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"domainName\":\"foimwkslircizjxv\",\"customCertificate\":{\"id\":\"fceacvlhvygd\"}},\"id\":\"ftumrtwnawjslbiw\",\"name\":\"ojgcyzt\",\"type\":\"fmznba\"}],\"nextLink\":\"ph\"}")
             .toObject(CustomDomainList.class);
-        Assertions.assertEquals("jw", model.value().get(0).domainName());
-        Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
-        Assertions.assertEquals("dbsdshm", model.nextLink());
+        Assertions.assertEquals("ublwpcesutrg", model.value().get(0).domainName());
+        Assertions.assertEquals("pauutpw", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("ph", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomDomainList model
-            = new CustomDomainList().withValue(Arrays.asList(new CustomDomainInner().withDomainName("jw")
-                .withCustomCertificate(new ResourceReference().withId("wqiok")))).withNextLink("dbsdshm");
+        CustomDomainList model = new CustomDomainList().withValue(Arrays.asList(
+            new CustomDomainInner().withDomainName("ublwpcesutrg")
+                .withCustomCertificate(new ResourceReference().withId("pauutpw")),
+            new CustomDomainInner().withDomainName("foimwkslircizjxv")
+                .withCustomCertificate(new ResourceReference().withId("fceacvlhvygd"))))
+            .withNextLink("ph");
         model = BinaryData.fromObject(model).toObject(CustomDomainList.class);
-        Assertions.assertEquals("jw", model.value().get(0).domainName());
-        Assertions.assertEquals("wqiok", model.value().get(0).customCertificate().id());
-        Assertions.assertEquals("dbsdshm", model.nextLink());
+        Assertions.assertEquals("ublwpcesutrg", model.value().get(0).domainName());
+        Assertions.assertEquals("pauutpw", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("ph", model.nextLink());
     }
 }

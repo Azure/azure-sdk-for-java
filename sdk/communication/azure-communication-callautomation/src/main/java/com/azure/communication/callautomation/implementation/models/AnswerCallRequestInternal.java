@@ -198,9 +198,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

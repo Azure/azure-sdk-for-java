@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -20,13 +23,11 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The number of environments of this type.
      */
-    @JsonProperty(value = "environmentCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer environmentCount;
 
     /**
@@ -107,6 +108,75 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
      */
     @Override
     public void validate() {
-        super.validate();
+        if (creatorRoleAssignment() != null) {
+            creatorRoleAssignment().validate();
+        }
+        if (userRoleAssignments() != null) {
+            userRoleAssignments().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentTargetId", deploymentTargetId());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeJsonField("creatorRoleAssignment", creatorRoleAssignment());
+        jsonWriter.writeMapField("userRoleAssignments", userRoleAssignments(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectEnvironmentTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectEnvironmentTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectEnvironmentTypeProperties.
+     */
+    public static ProjectEnvironmentTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectEnvironmentTypeProperties deserializedProjectEnvironmentTypeProperties
+                = new ProjectEnvironmentTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentTargetId".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeProperties.withDeploymentTargetId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeProperties.withDisplayName(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeProperties
+                        .withStatus(EnvironmentTypeEnableStatus.fromString(reader.getString()));
+                } else if ("creatorRoleAssignment".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeProperties.withCreatorRoleAssignment(
+                        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.fromJson(reader));
+                } else if ("userRoleAssignments".equals(fieldName)) {
+                    Map<String, UserRoleAssignmentValue> userRoleAssignments
+                        = reader.readMap(reader1 -> UserRoleAssignmentValue.fromJson(reader1));
+                    deserializedProjectEnvironmentTypeProperties.withUserRoleAssignments(userRoleAssignments);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("environmentCount".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeProperties.environmentCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectEnvironmentTypeProperties;
+        });
     }
 }

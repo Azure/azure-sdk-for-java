@@ -21,7 +21,7 @@ public final class PrivateLinkHubsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"elyicghf\",\"privateEndpointConnections\":[{\"id\":\"ssjyghsfx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"mmgmqf\"}},{\"id\":\"fgvqcpdw\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"weyslandkdcdjh\"}},{\"id\":\"hghcgawnrrnqu\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"ireimseobf\"}}]},\"location\":\"xstcyilbvzm\",\"tags\":{\"xokjxebj\":\"jzlquz\",\"inzabwmvoglj\":\"b\",\"pgidnw\":\"v\",\"qoqpepiaeap\":\"ehaqidoyzltgio\"},\"id\":\"sergdtpe\",\"name\":\"nacyheqwb\",\"type\":\"qq\"}";
+            = "{\"properties\":{\"provisioningState\":\"rebluimmbwxsf\",\"privateEndpointConnections\":[{\"id\":\"b\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"aokqk\"}},{\"id\":\"dbtwaokbavly\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"nwfrkebsmhpd\"}},{\"id\":\"dig\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"ksc\"}}]},\"location\":\"ctnanqimwbzxp\",\"tags\":{\"imouxwksqmudmfco\":\"dpkawnsnl\",\"kbqsjhbtqqvyfscy\":\"bicziuswswj\",\"fuy\":\"fwbivqvo\"},\"id\":\"wvbhlimbyq\",\"name\":\"crood\",\"type\":\"ikcdrdaasax\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class PrivateLinkHubsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkHub response = manager.privateLinkHubs()
-            .getByResourceGroupWithResponse("ihzbdnpxpk", "dpr", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("vqar", "z", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xstcyilbvzm", response.location());
-        Assertions.assertEquals("jzlquz", response.tags().get("xokjxebj"));
-        Assertions.assertEquals("elyicghf", response.provisioningState());
+        Assertions.assertEquals("ctnanqimwbzxp", response.location());
+        Assertions.assertEquals("dpkawnsnl", response.tags().get("imouxwksqmudmfco"));
+        Assertions.assertEquals("rebluimmbwxsf", response.provisioningState());
     }
 }

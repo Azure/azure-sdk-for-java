@@ -201,9 +201,6 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

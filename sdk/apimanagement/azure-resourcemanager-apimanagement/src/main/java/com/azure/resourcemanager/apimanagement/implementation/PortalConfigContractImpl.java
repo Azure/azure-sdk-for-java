@@ -135,9 +135,9 @@ public final class PortalConfigContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.portalConfigId = Utils.getValueFromIdByName(innerObject.id(), "portalconfigs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.portalConfigId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "portalconfigs");
     }
 
     public PortalConfigContract refresh() {

@@ -21,7 +21,7 @@ public final class WorkspaceManagedSqlServerUsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"cslhwuusi\",\"resourceName\":\"ktybh\",\"displayName\":\"xidhhxomil\",\"currentValue\":11.711486368286806,\"limit\":4.9343898549681136,\"unit\":\"xwjwilm\",\"nextResetTime\":\"2021-10-22T05:19:33Z\"}]}";
+            = "{\"value\":[{\"name\":\"ptqmawzjdrpiz\",\"resourceName\":\"l\",\"displayName\":\"ctsdbtqgkujds\",\"currentValue\":25.132538389264848,\"limit\":1.5697357978460724,\"unit\":\"urbti\",\"nextResetTime\":\"2021-02-28T12:35:14Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class WorkspaceManagedSqlServerUsagesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ServerUsage> response = manager.workspaceManagedSqlServerUsages()
-            .list("iwjbctvb", "zujqjtotdxp", com.azure.core.util.Context.NONE);
+        PagedIterable<ServerUsage> response
+            = manager.workspaceManagedSqlServerUsages().list("otnn", "xolousdv", com.azure.core.util.Context.NONE);
 
     }
 }

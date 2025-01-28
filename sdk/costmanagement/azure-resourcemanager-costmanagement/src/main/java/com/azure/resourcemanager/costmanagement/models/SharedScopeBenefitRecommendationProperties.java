@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 
 /**
  * The properties of the benefit recommendation when scope is 'Shared'.
@@ -22,42 +21,6 @@ public final class SharedScopeBenefitRecommendationProperties extends BenefitRec
      * Benefit scope. For example, Single or Shared.
      */
     private Scope scope = Scope.SHARED;
-
-    /*
-     * The list of all benefit recommendations with the recommendation details.
-     */
-    private AllSavingsList allRecommendationDetails;
-
-    /*
-     * The current cost without benefit, corresponds to 'totalHours' in the look-back period.
-     */
-    private BigDecimal costWithoutBenefit;
-
-    /*
-     * An ISO 4217 currency code identifier for the costs and savings amounts.
-     */
-    private String currencyCode;
-
-    /*
-     * ARM SKU name. 'Compute_Savings_Plan' for SavingsPlan.
-     */
-    private String armSkuName;
-
-    /*
-     * The total hours for which the cost is covered. Its equal to number of records in a property
-     * 'properties/usage/charges'.
-     */
-    private Integer totalHours;
-
-    /*
-     * The last usage date used for looking back for computing the recommendations.
-     */
-    private OffsetDateTime lastConsumptionDate;
-
-    /*
-     * The first usage date used for looking back for computing the recommendations.
-     */
-    private OffsetDateTime firstConsumptionDate;
 
     /**
      * Creates an instance of SharedScopeBenefitRecommendationProperties class.
@@ -73,81 +36,6 @@ public final class SharedScopeBenefitRecommendationProperties extends BenefitRec
     @Override
     public Scope scope() {
         return this.scope;
-    }
-
-    /**
-     * Get the allRecommendationDetails property: The list of all benefit recommendations with the recommendation
-     * details.
-     * 
-     * @return the allRecommendationDetails value.
-     */
-    @Override
-    public AllSavingsList allRecommendationDetails() {
-        return this.allRecommendationDetails;
-    }
-
-    /**
-     * Get the costWithoutBenefit property: The current cost without benefit, corresponds to 'totalHours' in the
-     * look-back period.
-     * 
-     * @return the costWithoutBenefit value.
-     */
-    @Override
-    public BigDecimal costWithoutBenefit() {
-        return this.costWithoutBenefit;
-    }
-
-    /**
-     * Get the currencyCode property: An ISO 4217 currency code identifier for the costs and savings amounts.
-     * 
-     * @return the currencyCode value.
-     */
-    @Override
-    public String currencyCode() {
-        return this.currencyCode;
-    }
-
-    /**
-     * Get the armSkuName property: ARM SKU name. 'Compute_Savings_Plan' for SavingsPlan.
-     * 
-     * @return the armSkuName value.
-     */
-    @Override
-    public String armSkuName() {
-        return this.armSkuName;
-    }
-
-    /**
-     * Get the totalHours property: The total hours for which the cost is covered. Its equal to number of records in a
-     * property 'properties/usage/charges'.
-     * 
-     * @return the totalHours value.
-     */
-    @Override
-    public Integer totalHours() {
-        return this.totalHours;
-    }
-
-    /**
-     * Get the lastConsumptionDate property: The last usage date used for looking back for computing the
-     * recommendations.
-     * 
-     * @return the lastConsumptionDate value.
-     */
-    @Override
-    public OffsetDateTime lastConsumptionDate() {
-        return this.lastConsumptionDate;
-    }
-
-    /**
-     * Get the firstConsumptionDate property: The first usage date used for looking back for computing the
-     * recommendations.
-     * 
-     * @return the firstConsumptionDate value.
-     */
-    @Override
-    public OffsetDateTime firstConsumptionDate() {
-        return this.firstConsumptionDate;
     }
 
     /**
@@ -247,22 +135,22 @@ public final class SharedScopeBenefitRecommendationProperties extends BenefitRec
                 reader.nextToken();
 
                 if ("firstConsumptionDate".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.firstConsumptionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedSharedScopeBenefitRecommendationProperties.withFirstConsumptionDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("lastConsumptionDate".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.lastConsumptionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedSharedScopeBenefitRecommendationProperties.withLastConsumptionDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("lookBackPeriod".equals(fieldName)) {
                     deserializedSharedScopeBenefitRecommendationProperties
                         .withLookBackPeriod(LookBackPeriod.fromString(reader.getString()));
                 } else if ("totalHours".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.totalHours
-                        = reader.getNullable(JsonReader::getInt);
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withTotalHours(reader.getNullable(JsonReader::getInt));
                 } else if ("usage".equals(fieldName)) {
                     deserializedSharedScopeBenefitRecommendationProperties
                         .withUsage(RecommendationUsageDetails.fromJson(reader));
                 } else if ("armSkuName".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.armSkuName = reader.getString();
+                    deserializedSharedScopeBenefitRecommendationProperties.withArmSkuName(reader.getString());
                 } else if ("term".equals(fieldName)) {
                     deserializedSharedScopeBenefitRecommendationProperties
                         .withTerm(Term.fromString(reader.getString()));
@@ -270,16 +158,16 @@ public final class SharedScopeBenefitRecommendationProperties extends BenefitRec
                     deserializedSharedScopeBenefitRecommendationProperties
                         .withCommitmentGranularity(Grain.fromString(reader.getString()));
                 } else if ("currencyCode".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.currencyCode = reader.getString();
+                    deserializedSharedScopeBenefitRecommendationProperties.withCurrencyCode(reader.getString());
                 } else if ("costWithoutBenefit".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.costWithoutBenefit
-                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                    deserializedSharedScopeBenefitRecommendationProperties.withCostWithoutBenefit(
+                        reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString())));
                 } else if ("recommendationDetails".equals(fieldName)) {
                     deserializedSharedScopeBenefitRecommendationProperties
                         .withRecommendationDetails(AllSavingsBenefitDetails.fromJson(reader));
                 } else if ("allRecommendationDetails".equals(fieldName)) {
-                    deserializedSharedScopeBenefitRecommendationProperties.allRecommendationDetails
-                        = AllSavingsList.fromJson(reader);
+                    deserializedSharedScopeBenefitRecommendationProperties
+                        .withAllRecommendationDetails(AllSavingsList.fromJson(reader));
                 } else if ("scope".equals(fieldName)) {
                     deserializedSharedScopeBenefitRecommendationProperties.scope = Scope.fromString(reader.getString());
                 } else {

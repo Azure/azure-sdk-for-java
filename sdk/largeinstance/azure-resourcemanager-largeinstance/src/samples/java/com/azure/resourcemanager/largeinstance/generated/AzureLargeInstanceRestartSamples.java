@@ -19,7 +19,7 @@ public final class AzureLargeInstanceRestartSamples {
      * @param manager Entry point to LargeInstanceManager.
      */
     public static void azureLargeInstanceRestart(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().restart("myResourceGroup", "myALInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .restart("myResourceGroup", "myALInstance", null, com.azure.core.util.Context.NONE);
     }
 }

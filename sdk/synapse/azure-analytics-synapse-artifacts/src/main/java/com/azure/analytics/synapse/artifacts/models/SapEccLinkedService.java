@@ -24,7 +24,8 @@ public class SapEccLinkedService extends LinkedService {
     private String type = "SapEcc";
 
     /*
-     * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
+     * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
+     * (or Expression with resultType string).
      */
     private String url;
 
@@ -39,7 +40,9 @@ public class SapEccLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression
+     * with resultType string).
      */
     private String encryptedCredential;
 

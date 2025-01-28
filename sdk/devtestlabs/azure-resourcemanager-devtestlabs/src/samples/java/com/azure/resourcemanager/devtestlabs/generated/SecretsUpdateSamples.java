@@ -8,28 +8,24 @@ import com.azure.resourcemanager.devtestlabs.models.Secret;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Secrets Update. */
+/**
+ * Samples for Secrets Update.
+ */
 public final class SecretsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Update.json
+     * x-ms-original-file:
+     * specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Secrets_Update.json
      */
     /**
      * Sample code: Secrets_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void secretsUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        Secret resource =
-            manager
-                .secrets()
-                .getWithResponse(
-                    "resourceGroupName",
-                    "{labName}",
-                    "{userName}",
-                    "{secretName}",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Secret resource = manager.secrets()
+            .getWithResponse("resourceGroupName", "{labName}", "{userName}", "{secretName}", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagName1", "tagValue1")).apply();
     }
 

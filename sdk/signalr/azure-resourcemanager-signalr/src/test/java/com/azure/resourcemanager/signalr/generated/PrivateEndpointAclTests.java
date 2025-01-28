@@ -14,22 +14,23 @@ public final class PrivateEndpointAclTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointAcl model = BinaryData
-            .fromString("{\"name\":\"uzvx\",\"allow\":[\"ServerConnection\"],\"deny\":[\"ClientConnection\"]}")
+            .fromString(
+                "{\"name\":\"zxscyhwzdgirujb\",\"allow\":[\"RESTAPI\",\"ServerConnection\"],\"deny\":[\"Trace\"]}")
             .toObject(PrivateEndpointAcl.class);
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
-        Assertions.assertEquals("uzvx", model.name());
+        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.TRACE, model.deny().get(0));
+        Assertions.assertEquals("zxscyhwzdgirujb", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointAcl model
-            = new PrivateEndpointAcl().withAllow(Arrays.asList(SignalRRequestType.SERVER_CONNECTION))
-                .withDeny(Arrays.asList(SignalRRequestType.CLIENT_CONNECTION))
-                .withName("uzvx");
+        PrivateEndpointAcl model = new PrivateEndpointAcl()
+            .withAllow(Arrays.asList(SignalRRequestType.RESTAPI, SignalRRequestType.SERVER_CONNECTION))
+            .withDeny(Arrays.asList(SignalRRequestType.TRACE))
+            .withName("zxscyhwzdgirujb");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointAcl.class);
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
-        Assertions.assertEquals("uzvx", model.name());
+        Assertions.assertEquals(SignalRRequestType.RESTAPI, model.allow().get(0));
+        Assertions.assertEquals(SignalRRequestType.TRACE, model.deny().get(0));
+        Assertions.assertEquals("zxscyhwzdgirujb", model.name());
     }
 }

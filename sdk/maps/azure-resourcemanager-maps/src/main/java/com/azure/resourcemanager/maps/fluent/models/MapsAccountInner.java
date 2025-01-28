@@ -8,52 +8,69 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maps.models.Kind;
 import com.azure.resourcemanager.maps.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.maps.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** An Azure resource which represents access to a suite of Maps REST APIs. */
+/**
+ * An Azure resource which represents access to a suite of Maps REST APIs.
+ */
 @Fluent
 public final class MapsAccountInner extends Resource {
     /*
      * The SKU of this account.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Get or Set Kind property.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Managed service identity (system assigned and/or user assigned identities)
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * The map account properties.
      */
-    @JsonProperty(value = "properties")
     private MapsAccountProperties properties;
 
-    /** Creates an instance of MapsAccountInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MapsAccountInner class.
+     */
     public MapsAccountInner() {
     }
 
     /**
      * Get the sku property: The SKU of this account.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -62,7 +79,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Set the sku property: The SKU of this account.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the MapsAccountInner object itself.
      */
@@ -73,7 +90,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Get the kind property: Get or Set Kind property.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -82,7 +99,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Set the kind property: Get or Set Kind property.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MapsAccountInner object itself.
      */
@@ -93,7 +110,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -102,7 +119,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -111,7 +128,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MapsAccountInner object itself.
      */
@@ -122,7 +139,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Get the properties property: The map account properties.
-     *
+     * 
      * @return the properties value.
      */
     public MapsAccountProperties properties() {
@@ -131,7 +148,7 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Set the properties property: The map account properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MapsAccountInner object itself.
      */
@@ -140,14 +157,48 @@ public final class MapsAccountInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MapsAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MapsAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -156,13 +207,13 @@ public final class MapsAccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
         } else {
             sku().validate();
         }
@@ -175,4 +226,65 @@ public final class MapsAccountInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MapsAccountInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MapsAccountInner.
+     */
+    public static MapsAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsAccountInner deserializedMapsAccountInner = new MapsAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMapsAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMapsAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMapsAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMapsAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMapsAccountInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedMapsAccountInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMapsAccountInner.kind = Kind.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMapsAccountInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMapsAccountInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMapsAccountInner.properties = MapsAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsAccountInner;
+        });
+    }
 }

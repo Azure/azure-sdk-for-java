@@ -10,7 +10,7 @@ import com.azure.resourcemanager.workloads.models.GatewayServerProperties;
 public final class GatewayServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayServerProperties model = BinaryData.fromString("{\"port\":5563523584093599698,\"health\":\"Healthy\"}")
+        GatewayServerProperties model = BinaryData.fromString("{\"port\":2577911475007340743,\"health\":\"Unhealthy\"}")
             .toObject(GatewayServerProperties.class);
     }
 

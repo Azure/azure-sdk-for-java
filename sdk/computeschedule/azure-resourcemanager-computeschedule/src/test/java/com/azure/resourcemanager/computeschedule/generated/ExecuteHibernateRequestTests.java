@@ -17,27 +17,30 @@ public final class ExecuteHibernateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteHibernateRequest model = BinaryData.fromString(
-            "{\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":1862600222,\"retryWindowInMinutes\":2027059656}},\"resources\":{\"ids\":[\"sabkyqduujitcjcz\",\"zevndhkrwpdappds\",\"dkvwrwjfe\"]},\"correlationid\":\"snhu\"}")
+            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1356626713,\"retryWindowInMinutes\":1437691312}},\"resources\":{\"ids\":[\"p\",\"wnzlljfmppeeb\",\"mgxsab\"]},\"correlationid\":\"yqduujit\"}")
             .toObject(ExecuteHibernateRequest.class);
-        Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1862600222, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(2027059656, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("sabkyqduujitcjcz", model.resources().ids().get(0));
-        Assertions.assertEquals("snhu", model.correlationid());
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
+            model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(1356626713, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1437691312, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals("p", model.resources().ids().get(0));
+        Assertions.assertEquals("yqduujit", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteHibernateRequest model = new ExecuteHibernateRequest()
-            .withExecutionParameters(new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                .withRetryPolicy(new RetryPolicy().withRetryCount(1862600222).withRetryWindowInMinutes(2027059656)))
-            .withResources(new Resources().withIds(Arrays.asList("sabkyqduujitcjcz", "zevndhkrwpdappds", "dkvwrwjfe")))
-            .withCorrelationid("snhu");
+            .withExecutionParameters(
+                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(1356626713).withRetryWindowInMinutes(1437691312)))
+            .withResources(new Resources().withIds(Arrays.asList("p", "wnzlljfmppeeb", "mgxsab")))
+            .withCorrelationid("yqduujit");
         model = BinaryData.fromObject(model).toObject(ExecuteHibernateRequest.class);
-        Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1862600222, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(2027059656, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("sabkyqduujitcjcz", model.resources().ids().get(0));
-        Assertions.assertEquals("snhu", model.correlationid());
+        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
+            model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(1356626713, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1437691312, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals("p", model.resources().ids().get(0));
+        Assertions.assertEquals("yqduujit", model.correlationid());
     }
 }

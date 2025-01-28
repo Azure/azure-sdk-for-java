@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.PolicyInner;
 import com.azure.resourcemanager.devtestlabs.models.PolicyFragment;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public interface PoliciesClient {
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -30,7 +32,7 @@ public interface PoliciesClient {
 
     /**
      * List policies in a given policy set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -50,7 +52,7 @@ public interface PoliciesClient {
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -68,7 +70,7 @@ public interface PoliciesClient {
 
     /**
      * Get policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -83,7 +85,7 @@ public interface PoliciesClient {
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -101,7 +103,7 @@ public interface PoliciesClient {
 
     /**
      * Create or replace an existing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -118,7 +120,7 @@ public interface PoliciesClient {
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -135,7 +137,7 @@ public interface PoliciesClient {
 
     /**
      * Delete policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -149,7 +151,7 @@ public interface PoliciesClient {
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.
@@ -167,7 +169,7 @@ public interface PoliciesClient {
 
     /**
      * Allows modifying tags of policies. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param policySetName The name of the policy set.

@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** API Operation Entity Base Contract details. */
+/**
+ * API Operation Entity Base Contract details.
+ */
 @Fluent
-public class OperationEntityBaseContract {
+public class OperationEntityBaseContract implements JsonSerializable<OperationEntityBaseContract> {
     /*
      * Collection of URL template parameters.
      */
-    @JsonProperty(value = "templateParameters")
     private List<ParameterContract> templateParameters;
 
     /*
      * Description of the operation. May include HTML formatting tags.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * An entity containing request details.
      */
-    @JsonProperty(value = "request")
     private RequestContract request;
 
     /*
      * Array of Operation responses.
      */
-    @JsonProperty(value = "responses")
     private List<ResponseContract> responses;
 
     /*
      * Operation Policies
      */
-    @JsonProperty(value = "policies")
     private String policies;
 
-    /** Creates an instance of OperationEntityBaseContract class. */
+    /**
+     * Creates an instance of OperationEntityBaseContract class.
+     */
     public OperationEntityBaseContract() {
     }
 
     /**
      * Get the templateParameters property: Collection of URL template parameters.
-     *
+     * 
      * @return the templateParameters value.
      */
     public List<ParameterContract> templateParameters() {
@@ -56,7 +59,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Set the templateParameters property: Collection of URL template parameters.
-     *
+     * 
      * @param templateParameters the templateParameters value to set.
      * @return the OperationEntityBaseContract object itself.
      */
@@ -67,7 +70,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Get the description property: Description of the operation. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -76,7 +79,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Set the description property: Description of the operation. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationEntityBaseContract object itself.
      */
@@ -87,7 +90,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Get the request property: An entity containing request details.
-     *
+     * 
      * @return the request value.
      */
     public RequestContract request() {
@@ -96,7 +99,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Set the request property: An entity containing request details.
-     *
+     * 
      * @param request the request value to set.
      * @return the OperationEntityBaseContract object itself.
      */
@@ -107,7 +110,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Get the responses property: Array of Operation responses.
-     *
+     * 
      * @return the responses value.
      */
     public List<ResponseContract> responses() {
@@ -116,7 +119,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Set the responses property: Array of Operation responses.
-     *
+     * 
      * @param responses the responses value to set.
      * @return the OperationEntityBaseContract object itself.
      */
@@ -127,7 +130,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Get the policies property: Operation Policies.
-     *
+     * 
      * @return the policies value.
      */
     public String policies() {
@@ -136,7 +139,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Set the policies property: Operation Policies.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the OperationEntityBaseContract object itself.
      */
@@ -147,7 +150,7 @@ public class OperationEntityBaseContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -160,5 +163,57 @@ public class OperationEntityBaseContract {
         if (responses() != null) {
             responses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("templateParameters", this.templateParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeArrayField("responses", this.responses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("policies", this.policies);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationEntityBaseContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationEntityBaseContract if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationEntityBaseContract.
+     */
+    public static OperationEntityBaseContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationEntityBaseContract deserializedOperationEntityBaseContract = new OperationEntityBaseContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("templateParameters".equals(fieldName)) {
+                    List<ParameterContract> templateParameters
+                        = reader.readArray(reader1 -> ParameterContract.fromJson(reader1));
+                    deserializedOperationEntityBaseContract.templateParameters = templateParameters;
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationEntityBaseContract.description = reader.getString();
+                } else if ("request".equals(fieldName)) {
+                    deserializedOperationEntityBaseContract.request = RequestContract.fromJson(reader);
+                } else if ("responses".equals(fieldName)) {
+                    List<ResponseContract> responses = reader.readArray(reader1 -> ResponseContract.fromJson(reader1));
+                    deserializedOperationEntityBaseContract.responses = responses;
+                } else if ("policies".equals(fieldName)) {
+                    deserializedOperationEntityBaseContract.policies = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationEntityBaseContract;
+        });
     }
 }

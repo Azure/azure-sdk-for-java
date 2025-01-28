@@ -37,17 +37,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnConfigurationsClient.
+ */
 public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SingleSignOnConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftDatadogClientImpl client;
 
     /**
      * Initializes an instance of SingleSignOnConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SingleSignOnConfigurationsClientImpl(MicrosoftDatadogClientImpl client) {
@@ -104,7 +110,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +147,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -179,7 +185,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +201,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -213,7 +219,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +234,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -245,7 +251,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -289,7 +295,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -333,7 +339,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -356,7 +362,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -378,7 +384,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -403,7 +409,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -421,7 +427,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -442,7 +448,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -461,7 +467,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -480,7 +486,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -500,7 +506,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -518,7 +524,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -537,7 +543,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -545,7 +551,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
@@ -578,7 +584,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -587,7 +593,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatadogSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
@@ -619,7 +625,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -637,7 +643,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -655,7 +661,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -672,9 +678,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -698,9 +703,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

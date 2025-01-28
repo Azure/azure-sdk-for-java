@@ -14,22 +14,46 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 @Fluent
 public interface HostnameBinding
     extends HasInnerModel<HostnameBindingInner>, ExternalChildResource<HostnameBinding, WebAppBase>, Resource {
-    /** @return the web app name */
+    /**
+     * Gets the web app name.
+     *
+     * @return the web app name
+     */
     String webAppName();
 
-    /** @return the fully qualified ARM domain resource URI */
+    /**
+     * Gets the fully qualified ARM domain resource URI.
+     *
+     * @return the fully qualified ARM domain resource URI
+     */
     String domainId();
 
-    /** @return Azure resource name to bind to */
+    /**
+     * Gets Azure resource name to bind to.
+     *
+     * @return Azure resource name to bind to
+     */
     String azureResourceName();
 
-    /** @return Azure resource type */
+    /**
+     * Gets Azure resource type.
+     *
+     * @return Azure resource type
+     */
     AzureResourceType azureResourceType();
 
-    /** @return custom DNS record type */
+    /**
+     * Gets custom DNS record type.
+     *
+     * @return custom DNS record type
+     */
     CustomHostnameDnsRecordType dnsRecordType();
 
-    /** @return the host name type */
+    /**
+     * Gets the host name type.
+     *
+     * @return the host name type
+     */
     HostnameType hostnameType();
 
     /**

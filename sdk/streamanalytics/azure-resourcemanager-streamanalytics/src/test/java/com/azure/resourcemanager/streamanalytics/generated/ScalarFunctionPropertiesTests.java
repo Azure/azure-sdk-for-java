@@ -16,24 +16,25 @@ public final class ScalarFunctionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScalarFunctionProperties model = BinaryData.fromString(
-            "{\"type\":\"Scalar\",\"etag\":\"dmoizpostmg\",\"properties\":{\"inputs\":[{\"dataType\":\"nrmfqjhhk\",\"isConfigurationParameter\":true},{\"dataType\":\"jy\",\"isConfigurationParameter\":false},{\"dataType\":\"xjyngudivk\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"xqzvszjfa\"},\"binding\":{\"type\":\"FunctionBinding\"}}}")
+            "{\"type\":\"Scalar\",\"etag\":\"ywsuwsy\",\"properties\":{\"inputs\":[{\"dataType\":\"ytgadgvraeaene\",\"isConfigurationParameter\":false},{\"dataType\":\"rrwlquuijfqkace\",\"isConfigurationParameter\":false},{\"dataType\":\"fpubjibwwi\",\"isConfigurationParameter\":true}],\"output\":{\"dataType\":\"kvpuvksgplsaknyn\"},\"binding\":{\"type\":\"FunctionBinding\"}}}")
             .toObject(ScalarFunctionProperties.class);
-        Assertions.assertEquals("nrmfqjhhk", model.inputs().get(0).dataType());
-        Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("xqzvszjfa", model.output().dataType());
+        Assertions.assertEquals("ytgadgvraeaene", model.inputs().get(0).dataType());
+        Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("kvpuvksgplsaknyn", model.output().dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScalarFunctionProperties model = new ScalarFunctionProperties()
-            .withInputs(Arrays.asList(new FunctionInput().withDataType("nrmfqjhhk").withIsConfigurationParameter(true),
-                new FunctionInput().withDataType("jy").withIsConfigurationParameter(false),
-                new FunctionInput().withDataType("xjyngudivk").withIsConfigurationParameter(false)))
-            .withOutput(new FunctionOutput().withDataType("xqzvszjfa"))
+            .withInputs(
+                Arrays.asList(new FunctionInput().withDataType("ytgadgvraeaene").withIsConfigurationParameter(false),
+                    new FunctionInput().withDataType("rrwlquuijfqkace").withIsConfigurationParameter(false),
+                    new FunctionInput().withDataType("fpubjibwwi").withIsConfigurationParameter(true)))
+            .withOutput(new FunctionOutput().withDataType("kvpuvksgplsaknyn"))
             .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(ScalarFunctionProperties.class);
-        Assertions.assertEquals("nrmfqjhhk", model.inputs().get(0).dataType());
-        Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("xqzvszjfa", model.output().dataType());
+        Assertions.assertEquals("ytgadgvraeaene", model.inputs().get(0).dataType());
+        Assertions.assertEquals(false, model.inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("kvpuvksgplsaknyn", model.output().dataType());
     }
 }

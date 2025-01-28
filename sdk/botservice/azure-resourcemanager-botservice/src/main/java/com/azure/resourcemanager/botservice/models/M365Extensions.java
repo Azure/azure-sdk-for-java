@@ -20,11 +20,6 @@ public final class M365Extensions extends Channel {
      */
     private String channelName = "M365Extensions";
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of M365Extensions class.
      */
@@ -39,16 +34,6 @@ public final class M365Extensions extends Channel {
     @Override
     public String channelName() {
         return this.channelName;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -108,7 +93,7 @@ public final class M365Extensions extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedM365Extensions.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedM365Extensions.provisioningState = reader.getString();
+                    deserializedM365Extensions.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedM365Extensions.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

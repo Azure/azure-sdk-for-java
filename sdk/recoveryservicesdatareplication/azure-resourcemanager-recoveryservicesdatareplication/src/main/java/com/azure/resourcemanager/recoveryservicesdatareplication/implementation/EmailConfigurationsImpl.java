@@ -51,27 +51,27 @@ public final class EmailConfigurationsImpl implements EmailConfigurations {
 
     public PagedIterable<EmailConfigurationModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<EmailConfigurationModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailConfigurationModel> list(String resourceGroupName, String vaultName, Context context) {
         PagedIterable<EmailConfigurationModelInner> inner
             = this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailConfigurationModelImpl(inner1, this.manager()));
     }
 
     public EmailConfigurationModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String emailConfigurationName = Utils.getValueFromIdByName(id, "alertSettings");
+        String emailConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "alertSettings");
         if (emailConfigurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'alertSettings'.", id)));
@@ -80,17 +80,17 @@ public final class EmailConfigurationsImpl implements EmailConfigurations {
     }
 
     public Response<EmailConfigurationModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String emailConfigurationName = Utils.getValueFromIdByName(id, "alertSettings");
+        String emailConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "alertSettings");
         if (emailConfigurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'alertSettings'.", id)));

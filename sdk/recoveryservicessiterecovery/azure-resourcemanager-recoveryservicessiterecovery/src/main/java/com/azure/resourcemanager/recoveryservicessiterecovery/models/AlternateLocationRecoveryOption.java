@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AlternateLocationRecoveryOption extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding AlternateLocationRecoveryOption.
      */
-    @JsonCreator
     public static AlternateLocationRecoveryOption fromString(String name) {
         return fromString(name, AlternateLocationRecoveryOption.class);
     }

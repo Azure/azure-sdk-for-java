@@ -6,47 +6,47 @@ package com.azure.resourcemanager.chaos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * The status of operation.
  */
 @Fluent
-public final class OperationStatusInner {
+public final class OperationStatusInner implements JsonSerializable<OperationStatusInner> {
     /*
      * The operation Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime")
-    private String startTime;
+    private OffsetDateTime startTime;
 
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
-    private String endTime;
+    private OffsetDateTime endTime;
 
     /*
      * The status of the operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The error object.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /**
@@ -100,19 +100,8 @@ public final class OperationStatusInner {
      * 
      * @return the startTime value.
      */
-    public String startTime() {
+    public OffsetDateTime startTime() {
         return this.startTime;
-    }
-
-    /**
-     * Set the startTime property: The start time of the operation.
-     * 
-     * @param startTime the startTime value to set.
-     * @return the OperationStatusInner object itself.
-     */
-    public OperationStatusInner withStartTime(String startTime) {
-        this.startTime = startTime;
-        return this;
     }
 
     /**
@@ -120,19 +109,8 @@ public final class OperationStatusInner {
      * 
      * @return the endTime value.
      */
-    public String endTime() {
+    public OffsetDateTime endTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: The end time of the operation.
-     * 
-     * @param endTime the endTime value to set.
-     * @return the OperationStatusInner object itself.
-     */
-    public OperationStatusInner withEndTime(String endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -181,5 +159,56 @@ public final class OperationStatusInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusInner.
+     */
+    public static OperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusInner deserializedOperationStatusInner = new OperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationStatusInner.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationStatusInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationStatusInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusInner;
+        });
     }
 }

@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * described the storage properties of the azure large storage instance.
  */
 @Fluent
-public final class StorageProperties {
+public final class StorageProperties implements JsonSerializable<StorageProperties> {
     /*
      * State of provisioning of the AzureLargeStorageInstance
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * the offering type for which the resource is getting provisioned
      */
-    @JsonProperty(value = "offeringType")
     private String offeringType;
 
     /*
      * the storage protocol for which the resource is getting provisioned
      */
-    @JsonProperty(value = "storageType")
     private String storageType;
 
     /*
      * the kind of storage instance
      */
-    @JsonProperty(value = "generation")
     private String generation;
 
     /*
      * the hardware type of the storage instance
      */
-    @JsonProperty(value = "hardwareType")
     private AzureLargeInstanceHardwareTypeNamesEnum hardwareType;
 
     /*
      * the workload for which the resource is getting provisioned
      */
-    @JsonProperty(value = "workloadType")
     private String workloadType;
 
     /*
      * the billing related information for the resource
      */
-    @JsonProperty(value = "storageBillingProperties")
     private StorageBillingProperties storageBillingProperties;
 
     /**
@@ -198,5 +195,59 @@ public final class StorageProperties {
         if (storageBillingProperties() != null) {
             storageBillingProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType);
+        jsonWriter.writeStringField("storageType", this.storageType);
+        jsonWriter.writeStringField("generation", this.generation);
+        jsonWriter.writeStringField("hardwareType", this.hardwareType == null ? null : this.hardwareType.toString());
+        jsonWriter.writeStringField("workloadType", this.workloadType);
+        jsonWriter.writeJsonField("storageBillingProperties", this.storageBillingProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageProperties.
+     */
+    public static StorageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProperties deserializedStorageProperties = new StorageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedStorageProperties.offeringType = reader.getString();
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedStorageProperties.storageType = reader.getString();
+                } else if ("generation".equals(fieldName)) {
+                    deserializedStorageProperties.generation = reader.getString();
+                } else if ("hardwareType".equals(fieldName)) {
+                    deserializedStorageProperties.hardwareType
+                        = AzureLargeInstanceHardwareTypeNamesEnum.fromString(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedStorageProperties.workloadType = reader.getString();
+                } else if ("storageBillingProperties".equals(fieldName)) {
+                    deserializedStorageProperties.storageBillingProperties = StorageBillingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProperties;
+        });
     }
 }

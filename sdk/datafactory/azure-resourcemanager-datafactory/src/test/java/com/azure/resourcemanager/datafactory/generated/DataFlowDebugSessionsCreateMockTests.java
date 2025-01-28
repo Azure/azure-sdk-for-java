@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 public final class DataFlowDebugSessionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        String responseStr = "{\"status\":\"dqoqpqyjebg\",\"sessionId\":\"uazwkzedifwdrrgz\"}";
+        String responseStr = "{\"status\":\"mpuqnvn\",\"sessionId\":\"awicou\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class DataFlowDebugSessionsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CreateDataFlowDebugSessionResponse response = manager.dataFlowDebugSessions()
-            .create("zhdrvkzzvh", "ogjoocnseo",
-                new CreateDataFlowDebugSessionRequest().withComputeType("ktqrvzaabeiqo")
-                    .withCoreCount(1236480850)
-                    .withTimeToLive(195534639)
-                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("fgswpqunvxtvmb")
-                        .withProperties(new IntegrationRuntime().withDescription("xvqdlwuzkzkhb")
+            .create("ixfosrwzhm", "klocyjpmbtnv",
+                new CreateDataFlowDebugSessionRequest().withComputeType("mhkfkvdmjjiqjv")
+                    .withCoreCount(944548630)
+                    .withTimeToLive(1599364288)
+                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("feyhny")
+                        .withProperties(new IntegrationRuntime().withDescription("i")
                             .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dqoqpqyjebg", response.status());
-        Assertions.assertEquals("uazwkzedifwdrrgz", response.sessionId());
+        Assertions.assertEquals("mpuqnvn", response.status());
+        Assertions.assertEquals("awicou", response.sessionId());
     }
 
     // Use "Map.of" if available

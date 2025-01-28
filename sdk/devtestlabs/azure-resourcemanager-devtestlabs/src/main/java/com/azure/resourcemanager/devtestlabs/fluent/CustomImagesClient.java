@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.CustomImageInner;
 import com.azure.resourcemanager.devtestlabs.models.CustomImageFragment;
 
-/** An instance of this class provides access to all the operations defined in CustomImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomImagesClient.
+ */
 public interface CustomImagesClient {
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -50,7 +52,7 @@ public interface CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -67,7 +69,7 @@ public interface CustomImagesClient {
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -81,7 +83,7 @@ public interface CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -97,7 +99,7 @@ public interface CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -114,7 +116,7 @@ public interface CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -130,7 +132,7 @@ public interface CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -147,7 +149,7 @@ public interface CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -161,7 +163,7 @@ public interface CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -177,7 +179,7 @@ public interface CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -190,7 +192,7 @@ public interface CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -204,7 +206,7 @@ public interface CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -221,7 +223,7 @@ public interface CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.

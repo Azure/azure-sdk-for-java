@@ -20,14 +20,18 @@ public final class DeploymentListResultTests {
             "{\"value\":[{\"properties\":{\"deploymentId\":\"jmkljavbqidtqajz\",\"deployedImages\":[{\"properties\":{},\"id\":\"u\",\"name\":\"jkrlkhbzhfepg\",\"type\":\"gqexzlocxs\"}],\"deploymentDateUtc\":\"2021-11-18T07:05:01Z\",\"provisioningState\":\"Canceled\"},\"id\":\"hhbcsglummajtjao\",\"name\":\"xobnbdxkqpxok\",\"type\":\"jionpimexgstxgc\"}],\"nextLink\":\"dg\"}")
             .toObject(DeploymentListResult.class);
         Assertions.assertEquals("jmkljavbqidtqajz", model.value().get(0).properties().deploymentId());
+        Assertions.assertEquals("dg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentListResult model = new DeploymentListResult().withValue(Arrays
-            .asList(new DeploymentInner().withProperties(new DeploymentProperties().withDeploymentId("jmkljavbqidtqajz")
-                .withDeployedImages(Arrays.asList(new ImageInner().withProperties(new ImageProperties()))))));
+        DeploymentListResult model = new DeploymentListResult()
+            .withValue(Arrays.asList(
+                new DeploymentInner().withProperties(new DeploymentProperties().withDeploymentId("jmkljavbqidtqajz")
+                    .withDeployedImages(Arrays.asList(new ImageInner().withProperties(new ImageProperties()))))))
+            .withNextLink("dg");
         model = BinaryData.fromObject(model).toObject(DeploymentListResult.class);
         Assertions.assertEquals("jmkljavbqidtqajz", model.value().get(0).properties().deploymentId());
+        Assertions.assertEquals("dg", model.nextLink());
     }
 }

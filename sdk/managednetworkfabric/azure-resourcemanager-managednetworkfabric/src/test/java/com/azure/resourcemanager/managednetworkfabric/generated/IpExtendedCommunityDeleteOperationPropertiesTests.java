@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityDeleteOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityDeleteOperationProperties model = BinaryData
-            .fromString("{\"delete\":{\"ipExtendedCommunityIds\":[\"rvewojoqfx\",\"etx\",\"dqiuspguzljvgji\",\"zq\"]}}")
-            .toObject(IpExtendedCommunityDeleteOperationProperties.class);
-        Assertions.assertEquals("rvewojoqfx", model.delete().ipExtendedCommunityIds().get(0));
+        IpExtendedCommunityDeleteOperationProperties model
+            = BinaryData.fromString("{\"delete\":{\"ipExtendedCommunityIds\":[\"fdvdoeary\"]}}")
+                .toObject(IpExtendedCommunityDeleteOperationProperties.class);
+        Assertions.assertEquals("fdvdoeary", model.delete().ipExtendedCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityDeleteOperationProperties model
-            = new IpExtendedCommunityDeleteOperationProperties().withDelete(new IpExtendedCommunityIdList()
-                .withIpExtendedCommunityIds(Arrays.asList("rvewojoqfx", "etx", "dqiuspguzljvgji", "zq")));
+        IpExtendedCommunityDeleteOperationProperties model = new IpExtendedCommunityDeleteOperationProperties()
+            .withDelete(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(Arrays.asList("fdvdoeary")));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityDeleteOperationProperties.class);
-        Assertions.assertEquals("rvewojoqfx", model.delete().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("fdvdoeary", model.delete().ipExtendedCommunityIds().get(0));
     }
 }

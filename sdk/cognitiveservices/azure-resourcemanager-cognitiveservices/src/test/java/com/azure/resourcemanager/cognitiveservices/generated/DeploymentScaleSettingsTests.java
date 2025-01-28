@@ -13,18 +13,18 @@ public final class DeploymentScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentScaleSettings model
-            = BinaryData.fromString("{\"scaleType\":\"Manual\",\"capacity\":2102238742,\"activeCapacity\":488745932}")
+            = BinaryData.fromString("{\"scaleType\":\"Manual\",\"capacity\":840450646,\"activeCapacity\":1308163389}")
                 .toObject(DeploymentScaleSettings.class);
         Assertions.assertEquals(DeploymentScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(2102238742, model.capacity());
+        Assertions.assertEquals(840450646, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentScaleSettings model
-            = new DeploymentScaleSettings().withScaleType(DeploymentScaleType.MANUAL).withCapacity(2102238742);
+            = new DeploymentScaleSettings().withScaleType(DeploymentScaleType.MANUAL).withCapacity(840450646);
         model = BinaryData.fromObject(model).toObject(DeploymentScaleSettings.class);
         Assertions.assertEquals(DeploymentScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(2102238742, model.capacity());
+        Assertions.assertEquals(840450646, model.capacity());
     }
 }

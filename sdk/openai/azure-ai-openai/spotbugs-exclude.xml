@@ -41,6 +41,7 @@
       <Class name="com.azure.ai.openai.models.Completions" />
       <Class name="com.azure.ai.openai.models.CompletionsLogProbabilityModel" />
       <Class name="com.azure.ai.openai.models.CompletionsOptions" />
+      <Class name="com.azure.ai.openai.models.ContentFilterCompletionTextSpanResult" />
       <Class name="com.azure.ai.openai.models.ContentFilterDetailedResults" />
       <Class name="com.azure.ai.openai.models.DataFileDetails" />
       <Class name="com.azure.ai.openai.models.ElasticsearchChatExtensionParameters" />
@@ -88,6 +89,13 @@
       <Class name="com.azure.ai.openai.models.MongoDBChatExtensionParametersFieldsMapping" />
       <Class name="com.azure.ai.openai.models.PineconeChatExtensionParameters" />
       <Class name="com.azure.ai.openai.models.PineconeFieldMappingOptions" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Or>
+      <Class name="com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper" />
+      <Class name="com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper" />
     </Or>
   </Match>
   <Match>

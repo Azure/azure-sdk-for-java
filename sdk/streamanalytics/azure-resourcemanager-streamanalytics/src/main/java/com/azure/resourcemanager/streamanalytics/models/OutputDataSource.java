@@ -79,9 +79,7 @@ public class OutputDataSource implements JsonSerializable<OutputDataSource> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Raw".equals(discriminatorValue)) {
-                    return RawOutputDatasource.fromJson(readerToUse.reset());
-                } else if ("Microsoft.Storage/Blob".equals(discriminatorValue)) {
+                if ("Microsoft.Storage/Blob".equals(discriminatorValue)) {
                     return BlobOutputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Storage/Table".equals(discriminatorValue)) {
                     return AzureTableOutputDataSource.fromJson(readerToUse.reset());
@@ -93,8 +91,6 @@ public class OutputDataSource implements JsonSerializable<OutputDataSource> {
                     return AzureSqlDatabaseOutputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Sql/Server/DataWarehouse".equals(discriminatorValue)) {
                     return AzureSynapseOutputDataSource.fromJson(readerToUse.reset());
-                } else if ("Microsoft.DBForPostgreSQL/servers/databases".equals(discriminatorValue)) {
-                    return PostgreSqlOutputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.Storage/DocumentDB".equals(discriminatorValue)) {
                     return DocumentDbOutputDataSource.fromJson(readerToUse.reset());
                 } else if ("Microsoft.AzureFunction".equals(discriminatorValue)) {
@@ -109,8 +105,6 @@ public class OutputDataSource implements JsonSerializable<OutputDataSource> {
                     return AzureDataLakeStoreOutputDataSource.fromJson(readerToUse.reset());
                 } else if ("GatewayMessageBus".equals(discriminatorValue)) {
                     return GatewayMessageBusOutputDataSource.fromJson(readerToUse.reset());
-                } else if ("Microsoft.Kusto/clusters/databases".equals(discriminatorValue)) {
-                    return AzureDataExplorerOutputDataSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

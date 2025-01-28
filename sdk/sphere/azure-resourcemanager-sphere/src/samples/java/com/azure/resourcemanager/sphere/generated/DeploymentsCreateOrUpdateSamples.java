@@ -18,7 +18,9 @@ public final class DeploymentsCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deployments().define("MyDeployment1")
-            .withExistingDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1").create();
+        manager.deployments()
+            .define("MyDeployment1")
+            .withExistingDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1")
+            .create();
     }
 }

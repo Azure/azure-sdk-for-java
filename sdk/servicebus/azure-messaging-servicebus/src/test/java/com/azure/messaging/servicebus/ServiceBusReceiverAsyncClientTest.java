@@ -68,9 +68,7 @@ import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -133,8 +131,8 @@ class ServiceBusReceiverAsyncClientTest {
     private static final ServiceBusTracer NOOP_TRACER = new ServiceBusTracer(null, NAMESPACE, ENTITY_PATH);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
-    private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
-    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates
+        = Sinks.many().replay().latestOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final Sinks.Many<Message> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
 
     private ServiceBusConnectionProcessor connectionProcessor;
@@ -177,11 +175,11 @@ class ServiceBusReceiverAsyncClientTest {
         // 5/23/2023: The above note is invalid as the ServiceBusReactorReceiver (i.e., type of amqpReceiveLink
         // variable) always publishes messages using boundedElastic (irrespective of v1 or v2).
         when(amqpReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.single()));
-        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointStates.asFlux());
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(sessionReceiveLink.receive()).thenReturn(messagesSink.asFlux().publishOn(Schedulers.single()));
-        when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
+        when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointStates.asFlux());
         when(sessionReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
@@ -189,8 +187,8 @@ class ServiceBusReceiverAsyncClientTest {
             AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
             CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
+        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
 

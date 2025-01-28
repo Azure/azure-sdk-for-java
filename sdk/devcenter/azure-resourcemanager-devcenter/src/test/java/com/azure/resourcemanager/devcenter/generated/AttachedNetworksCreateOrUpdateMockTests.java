@@ -21,7 +21,7 @@ public final class AttachedNetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkConnectionId\":\"ibcysihsgqc\",\"networkConnectionLocation\":\"hohsd\",\"healthCheckStatus\":\"Unknown\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"ufcohdxbz\",\"name\":\"mcmuapc\",\"type\":\"hdbevwqqxeyskon\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkConnectionId\":\"wmqtibx\",\"networkConnectionLocation\":\"jddtvqct\",\"healthCheckStatus\":\"Warning\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"eukmr\",\"name\":\"ieekpndzaa\",\"type\":\"mudqmeq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class AttachedNetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AttachedNetworkConnection response = manager.attachedNetworks()
-            .define("ugcmjkavlgorb")
-            .withExistingDevcenter("wy", "undmbx")
-            .withNetworkConnectionId("mdtzfjltfvnzc")
+            .define("eislstvasylwx")
+            .withExistingDevcenter("oylhjlmuoyxprimr", "opteecj")
+            .withNetworkConnectionId("mweoohgu")
             .create();
 
-        Assertions.assertEquals("ibcysihsgqc", response.networkConnectionId());
+        Assertions.assertEquals("wmqtibx", response.networkConnectionId());
     }
 }

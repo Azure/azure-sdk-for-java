@@ -41,11 +41,6 @@ public class AzureSynapseDataSourceProperties implements JsonSerializable<AzureS
      */
     private String password;
 
-    /*
-     * Authentication Mode.
-     */
-    private AuthenticationMode authenticationMode;
-
     /**
      * Creates an instance of AzureSynapseDataSourceProperties class.
      */
@@ -161,26 +156,6 @@ public class AzureSynapseDataSourceProperties implements JsonSerializable<AzureS
     }
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     * 
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     * 
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the AzureSynapseDataSourceProperties object itself.
-     */
-    public AzureSynapseDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -199,8 +174,6 @@ public class AzureSynapseDataSourceProperties implements JsonSerializable<AzureS
         jsonWriter.writeStringField("table", this.table);
         jsonWriter.writeStringField("user", this.user);
         jsonWriter.writeStringField("password", this.password);
-        jsonWriter.writeStringField("authenticationMode",
-            this.authenticationMode == null ? null : this.authenticationMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -230,9 +203,6 @@ public class AzureSynapseDataSourceProperties implements JsonSerializable<AzureS
                     deserializedAzureSynapseDataSourceProperties.user = reader.getString();
                 } else if ("password".equals(fieldName)) {
                     deserializedAzureSynapseDataSourceProperties.password = reader.getString();
-                } else if ("authenticationMode".equals(fieldName)) {
-                    deserializedAzureSynapseDataSourceProperties.authenticationMode
-                        = AuthenticationMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

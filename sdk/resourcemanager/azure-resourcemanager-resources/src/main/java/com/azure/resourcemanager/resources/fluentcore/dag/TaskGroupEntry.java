@@ -51,6 +51,8 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
     }
 
     /**
+     * Gets the proxy entry.
+     *
      * @return the proxy entry if it is set, null if not set.
      */
     public TaskGroupEntry<TaskT> proxy() {
@@ -58,6 +60,8 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
     }
 
     /**
+     * Gets the result produced by the task.
+     *
      * @return the result produced by the task.
      */
     public Indexable taskResult() {
@@ -65,6 +69,8 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
     }
 
     /**
+     * Check whether one or more decedent dependency tasks are in faulted state.
+     *
      * @return true if one or more decedent dependency tasks are in faulted
      * state, false otherwise.
      */

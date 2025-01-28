@@ -11,7 +11,7 @@ public final class ComputePolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputePolicyProperties model = BinaryData.fromString(
-            "{\"objectId\":\"168fb718-d72e-447d-bfbb-38614a1c918a\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":19075135,\"minPriorityPerJob\":523315995}")
+            "{\"objectId\":\"8d9e154b-0e32-4c8d-a8f9-c4ccf6a04262\",\"objectType\":\"User\",\"maxDegreeOfParallelismPerJob\":19075135,\"minPriorityPerJob\":523315995}")
             .toObject(ComputePolicyProperties.class);
     }
 

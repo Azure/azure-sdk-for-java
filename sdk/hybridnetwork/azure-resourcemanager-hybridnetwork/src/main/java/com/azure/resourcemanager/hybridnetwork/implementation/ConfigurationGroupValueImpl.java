@@ -130,8 +130,9 @@ public final class ConfigurationGroupValueImpl
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configurationGroupValueName = Utils.getValueFromIdByName(innerObject.id(), "configurationGroupValues");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.configurationGroupValueName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationGroupValues");
     }
 
     public ConfigurationGroupValue refresh() {

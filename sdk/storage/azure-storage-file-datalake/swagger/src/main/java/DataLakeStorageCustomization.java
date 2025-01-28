@@ -31,61 +31,6 @@ public class DataLakeStorageCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models  = customization.getPackage("com.azure.storage.file.datalake.implementation.models");
 
-        //customizing BlobHierarchyListSegment
-        ClassCustomization blobHierarchy = models.getClass("BlobHierarchyListSegment");
-        blobHierarchy.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(blobHierarchy.getClassName()).get();
-
-            replaceMethodToXml(clazz,
-                "{\n" +
-                "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
-                    "        xmlWriter.writeStartElement(rootElementName);\n" +
-                    "        if (this.blobPrefixes != null) {\n" +
-                    "            for (BlobPrefix element : this.blobPrefixes) {\n" +
-                    "                xmlWriter.writeXml(element, \"BlobPrefix\");\n" +
-                    "            }\n" +
-                    "        }\n" +
-                    "        if (this.blobItems != null) {\n" +
-                    "            for (BlobItemInternal element : this.blobItems) {\n" +
-                    "                xmlWriter.writeXml(element, \"Blob\");\n" +
-                    "            }\n" +
-                    "        }\n" +
-                    "        return xmlWriter.writeEndElement();\n" +
-                "}"
-            );
-
-            replaceMethodFromXml(clazz,
-                "{\n" +
-                "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
-                    "        return xmlReader.readObject(finalRootElementName, reader -> {\n" +
-                    "            BlobHierarchyListSegment deserializedBlobHierarchyListSegment = new BlobHierarchyListSegment();\n" +
-                    "            while (reader.nextElement() != XmlToken.END_ELEMENT) {\n" +
-                    "                QName elementName = reader.getElementName();\n" +
-                    "\n" +
-                    "                if (\"BlobPrefix\".equals(elementName.getLocalPart())) {\n" +
-                    "                    if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {\n" +
-                    "                        deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();\n" +
-                    "                    }\n" +
-                    "                    deserializedBlobHierarchyListSegment.blobPrefixes\n" +
-                    "                        .add(BlobPrefix.fromXml(reader, \"BlobPrefix\"));\n" +
-                    "                } else if (\"Blob\".equals(elementName.getLocalPart())) {\n" +
-                    "                    if (deserializedBlobHierarchyListSegment.blobItems == null) {\n" +
-                    "                        deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();\n" +
-                    "                    }\n" +
-                    "                    deserializedBlobHierarchyListSegment.blobItems\n" +
-                    "                        .add(BlobItemInternal.fromXml(reader, \"Blob\"));\n" +
-                    "                } else {\n" +
-                    "                    reader.skipElement();\n" +
-                    "                }\n" +
-                    "            }\n" +
-                    "\n" +
-                    "            return deserializedBlobHierarchyListSegment;\n" +
-                    "        });\n" +
-                    "}"
-
-            );
-        });
-
         //customizing Path
         ClassCustomization path = models.getClass("Path");
         path.customizeAst(ast -> {

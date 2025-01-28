@@ -17,15 +17,14 @@ public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"ayhuy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"odepoogin\",\"actionsRequired\":\"amiheognarxz\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"tusivyevcciqihn\"]},\"location\":\"gbwjzrnf\",\"etag\":\"xgispemvtzfkufu\",\"id\":\"ljofxqeofjaeqjh\",\"name\":\"jbasvmsmjqulngs\",\"type\":\"tnb\"}")
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"iheogna\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"theotusiv\",\"actionsRequired\":\"v\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"hn\",\"un\"]},\"location\":\"jzrnf\",\"etag\":\"xgispemvtzfkufu\",\"id\":\"ljofxqeofjaeqjh\",\"name\":\"jbasvmsmjqulngs\",\"type\":\"tnb\"}")
             .toObject(PrivateEndpointConnectionInner.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("odepoogin", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("amiheognarxz",
-            model.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("tusivyevcciqihn", model.properties().groupIds().get(0));
-        Assertions.assertEquals("gbwjzrnf", model.location());
+        Assertions.assertEquals("theotusiv", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("v", model.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("hn", model.properties().groupIds().get(0));
+        Assertions.assertEquals("jzrnf", model.location());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,18 +33,17 @@ public final class PrivateEndpointConnectionInnerTests {
             = new PrivateEndpointConnectionInner()
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withDescription("odepoogin")
-                        .withActionsRequired("amiheognarxz"))
-                    .withGroupIds(Arrays.asList("tusivyevcciqihn")))
-                .withLocation("gbwjzrnf");
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                        .withDescription("theotusiv")
+                        .withActionsRequired("v"))
+                    .withGroupIds(Arrays.asList("hn", "un")))
+                .withLocation("jzrnf");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("odepoogin", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("amiheognarxz",
-            model.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("tusivyevcciqihn", model.properties().groupIds().get(0));
-        Assertions.assertEquals("gbwjzrnf", model.location());
+        Assertions.assertEquals("theotusiv", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("v", model.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("hn", model.properties().groupIds().get(0));
+        Assertions.assertEquals("jzrnf", model.location());
     }
 }

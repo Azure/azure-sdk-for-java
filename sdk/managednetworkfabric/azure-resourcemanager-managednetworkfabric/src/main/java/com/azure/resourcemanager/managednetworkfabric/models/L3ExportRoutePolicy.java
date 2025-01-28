@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Array of ARM Resource ID of the RoutePolicies. */
+/**
+ * Array of ARM Resource ID of the RoutePolicies.
+ */
 @Fluent
-public final class L3ExportRoutePolicy {
+public final class L3ExportRoutePolicy implements JsonSerializable<L3ExportRoutePolicy> {
     /*
      * ARM Resource ID of the RoutePolicy.
      */
-    @JsonProperty(value = "exportIpv4RoutePolicyId")
     private String exportIpv4RoutePolicyId;
 
     /*
      * ARM Resource ID of the RoutePolicy.
      */
-    @JsonProperty(value = "exportIpv6RoutePolicyId")
     private String exportIpv6RoutePolicyId;
 
-    /** Creates an instance of L3ExportRoutePolicy class. */
+    /**
+     * Creates an instance of L3ExportRoutePolicy class.
+     */
     public L3ExportRoutePolicy() {
     }
 
     /**
      * Get the exportIpv4RoutePolicyId property: ARM Resource ID of the RoutePolicy.
-     *
+     * 
      * @return the exportIpv4RoutePolicyId value.
      */
     public String exportIpv4RoutePolicyId() {
@@ -37,7 +43,7 @@ public final class L3ExportRoutePolicy {
 
     /**
      * Set the exportIpv4RoutePolicyId property: ARM Resource ID of the RoutePolicy.
-     *
+     * 
      * @param exportIpv4RoutePolicyId the exportIpv4RoutePolicyId value to set.
      * @return the L3ExportRoutePolicy object itself.
      */
@@ -48,7 +54,7 @@ public final class L3ExportRoutePolicy {
 
     /**
      * Get the exportIpv6RoutePolicyId property: ARM Resource ID of the RoutePolicy.
-     *
+     * 
      * @return the exportIpv6RoutePolicyId value.
      */
     public String exportIpv6RoutePolicyId() {
@@ -57,7 +63,7 @@ public final class L3ExportRoutePolicy {
 
     /**
      * Set the exportIpv6RoutePolicyId property: ARM Resource ID of the RoutePolicy.
-     *
+     * 
      * @param exportIpv6RoutePolicyId the exportIpv6RoutePolicyId value to set.
      * @return the L3ExportRoutePolicy object itself.
      */
@@ -68,9 +74,48 @@ public final class L3ExportRoutePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exportIpv4RoutePolicyId", this.exportIpv4RoutePolicyId);
+        jsonWriter.writeStringField("exportIpv6RoutePolicyId", this.exportIpv6RoutePolicyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L3ExportRoutePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L3ExportRoutePolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the L3ExportRoutePolicy.
+     */
+    public static L3ExportRoutePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L3ExportRoutePolicy deserializedL3ExportRoutePolicy = new L3ExportRoutePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exportIpv4RoutePolicyId".equals(fieldName)) {
+                    deserializedL3ExportRoutePolicy.exportIpv4RoutePolicyId = reader.getString();
+                } else if ("exportIpv6RoutePolicyId".equals(fieldName)) {
+                    deserializedL3ExportRoutePolicy.exportIpv6RoutePolicyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL3ExportRoutePolicy;
+        });
     }
 }

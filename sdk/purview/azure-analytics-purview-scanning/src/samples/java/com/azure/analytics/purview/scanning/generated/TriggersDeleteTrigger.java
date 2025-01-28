@@ -13,15 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TriggersDeleteTrigger {
     public static void main(String[] args) {
-        TriggersClient triggersClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildTriggersClient();
+        TriggersClient triggersClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildTriggersClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.triggersdeletetrigger.triggersdeletetrigger
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                triggersClient.deleteTriggerWithResponse("DataSource1", "Scan1", requestOptions);
+        Response<BinaryData> response
+            = triggersClient.deleteTriggerWithResponse("DataSource1", "Scan1", requestOptions);
         // END:com.azure.analytics.purview.scanning.generated.triggersdeletetrigger.triggersdeletetrigger
     }
 }

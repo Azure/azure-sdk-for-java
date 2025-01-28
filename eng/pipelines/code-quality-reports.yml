@@ -5,6 +5,9 @@ parameters:
       - name: azure-core
         groupId: com.azure
         safeName: azurecore
+      - name: core
+        groupId: io.clientcore
+        safeName: core
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -114,12 +117,6 @@ extends:
                   ArtifactName: linting-report
                   ArtifactPath: '$(Build.ArtifactStagingDirectory)/troubleshooting/linting-report.zip'
                   CustomCondition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
-
-              - pwsh: |
-                  Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
-                  exit 1
-                displayName: 'Fail Pipeline if Linting Reports Exist'
-                condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
 
               - task: PowerShell@2
                 displayName: Clean up maven local cache

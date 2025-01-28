@@ -10,19 +10,21 @@ import com.azure.resourcemanager.devtestlabs.models.PolicyStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Policies CreateOrUpdate. */
+/**
+ * Samples for Policies CreateOrUpdate.
+ */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/Policies_CreateOrUpdate.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * Policies_CreateOrUpdate.json
      */
     /**
      * Sample code: Policies_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void policiesCreateOrUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .define("{policyName}")
             .withRegion("{location}")
             .withExistingPolicyset("resourceGroupName", "{labName}", "{policySetName}")

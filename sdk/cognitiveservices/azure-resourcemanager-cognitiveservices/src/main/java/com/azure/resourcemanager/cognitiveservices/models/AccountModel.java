@@ -14,6 +14,13 @@ import java.util.Map;
  */
 public interface AccountModel {
     /**
+     * Gets the publisher property: Deployment model publisher.
+     * 
+     * @return the publisher value.
+     */
+    String publisher();
+
+    /**
      * Gets the format property: Deployment model format.
      * 
      * @return the format value.
@@ -44,6 +51,14 @@ public interface AccountModel {
     String source();
 
     /**
+     * Gets the sourceAccount property: Optional. Source of the model, another Microsoft.CognitiveServices accounts ARM
+     * resource ID.
+     * 
+     * @return the sourceAccount value.
+     */
+    String sourceAccount();
+
+    /**
      * Gets the callRateLimit property: The call rate limit Cognitive Services account.
      * 
      * @return the callRateLimit value.
@@ -51,7 +66,7 @@ public interface AccountModel {
     CallRateLimit callRateLimit();
 
     /**
-     * Gets the baseModel property: Base Model Identifier.
+     * Gets the baseModel property: Properties of Cognitive Services account deployment model.
      * 
      * @return the baseModel value.
      */

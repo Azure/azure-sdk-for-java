@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VMware/Physical specific Disk Details.
  */
 @Fluent
-public final class InMageDiskDetails {
+public final class InMageDiskDetails implements JsonSerializable<InMageDiskDetails> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName")
     private String diskName;
 
     /*
      * The disk size in MB.
      */
-    @JsonProperty(value = "diskSizeInMB")
     private String diskSizeInMB;
 
     /*
      * Whether disk is system disk or data disk.
      */
-    @JsonProperty(value = "diskType")
     private String diskType;
 
     /*
      * Whether disk is dynamic disk or basic disk.
      */
-    @JsonProperty(value = "diskConfiguration")
     private String diskConfiguration;
 
     /*
      * Volumes of the disk.
      */
-    @JsonProperty(value = "volumeList")
     private List<DiskVolumeDetails> volumeList;
 
     /**
@@ -184,5 +182,58 @@ public final class InMageDiskDetails {
         if (volumeList() != null) {
             volumeList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("diskName", this.diskName);
+        jsonWriter.writeStringField("diskSizeInMB", this.diskSizeInMB);
+        jsonWriter.writeStringField("diskType", this.diskType);
+        jsonWriter.writeStringField("diskConfiguration", this.diskConfiguration);
+        jsonWriter.writeArrayField("volumeList", this.volumeList, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageDiskDetails.
+     */
+    public static InMageDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageDiskDetails deserializedInMageDiskDetails = new InMageDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskName = reader.getString();
+                } else if ("diskSizeInMB".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskSizeInMB = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskType = reader.getString();
+                } else if ("diskConfiguration".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskConfiguration = reader.getString();
+                } else if ("volumeList".equals(fieldName)) {
+                    List<DiskVolumeDetails> volumeList
+                        = reader.readArray(reader1 -> DiskVolumeDetails.fromJson(reader1));
+                    deserializedInMageDiskDetails.volumeList = volumeList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageDiskDetails;
+        });
     }
 }

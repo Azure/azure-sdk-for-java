@@ -5,11 +5,17 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operations discovery class. */
+/**
+ * Operations discovery class.
+ */
 @Fluent
-public final class OperationsDiscovery {
+public final class OperationsDiscovery implements JsonSerializable<OperationsDiscovery> {
     /*
      * Gets or sets Name of the API.
      * The name of the operation being performed on this particular object. It should
@@ -34,13 +40,11 @@ public final class OperationsDiscovery {
      * operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Indicates whether the operation is a data action
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
@@ -50,7 +54,6 @@ public final class OperationsDiscovery {
      * (2) complex query filters for the event service; and
      * (3) audit history / records for management operations.
      */
-    @JsonProperty(value = "display")
     private Display display;
 
     /*
@@ -59,33 +62,43 @@ public final class OperationsDiscovery {
      * RBAC UX and the audit logs UX.
      * Default value is "user,system".
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * ClientDiscovery properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
-    /** Creates an instance of OperationsDiscovery class. */
+    /**
+     * Creates an instance of OperationsDiscovery class.
+     */
     public OperationsDiscovery() {
     }
 
     /**
-     * Get the name property: Gets or sets Name of the API. The name of the operation being performed on this particular
-     * object. It should match the action name that appears in RBAC / the event service. Examples of operations include:
-     * * Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action *
-     * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read *
-     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2)
-     * Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read, Write,
-     * Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should
-     * be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a POST, Action
-     * should be used. As a note: all resource providers would need to include the "{Resource Provider
-     * Namespace}/register/action" operation in their response. This API is used to register for their service, and
-     * should include details about the operation (e.g. a localized name for the resource provider + any special
+     * Get the name property: Gets or sets Name of the API.
+     * The name of the operation being performed on this particular object. It should
+     * match the action name that appears in RBAC / the event service.
+     * Examples of operations include:
+     * * Microsoft.Compute/virtualMachine/capture/action
+     * * Microsoft.Compute/virtualMachine/restart/action
+     * * Microsoft.Compute/virtualMachine/write
+     * * Microsoft.Compute/virtualMachine/read
+     * * Microsoft.Compute/virtualMachine/delete
+     * Each action should include, in order:
+     * (1) Resource Provider Namespace
+     * (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL
+     * Azure database)
+     * (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH
+     * on a collection or named value, Write should be used.
+     * If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it
+     * is a POST, Action should be used.
+     * As a note: all resource providers would need to include the "{Resource Provider
+     * Namespace}/register/action" operation in their response.
+     * This API is used to register for their service, and should include details about the
+     * operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -93,19 +106,29 @@ public final class OperationsDiscovery {
     }
 
     /**
-     * Set the name property: Gets or sets Name of the API. The name of the operation being performed on this particular
-     * object. It should match the action name that appears in RBAC / the event service. Examples of operations include:
-     * * Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action *
-     * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read *
-     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2)
-     * Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read, Write,
-     * Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should
-     * be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a POST, Action
-     * should be used. As a note: all resource providers would need to include the "{Resource Provider
-     * Namespace}/register/action" operation in their response. This API is used to register for their service, and
-     * should include details about the operation (e.g. a localized name for the resource provider + any special
+     * Set the name property: Gets or sets Name of the API.
+     * The name of the operation being performed on this particular object. It should
+     * match the action name that appears in RBAC / the event service.
+     * Examples of operations include:
+     * * Microsoft.Compute/virtualMachine/capture/action
+     * * Microsoft.Compute/virtualMachine/restart/action
+     * * Microsoft.Compute/virtualMachine/write
+     * * Microsoft.Compute/virtualMachine/read
+     * * Microsoft.Compute/virtualMachine/delete
+     * Each action should include, in order:
+     * (1) Resource Provider Namespace
+     * (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL
+     * Azure database)
+     * (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH
+     * on a collection or named value, Write should be used.
+     * If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it
+     * is a POST, Action should be used.
+     * As a note: all resource providers would need to include the "{Resource Provider
+     * Namespace}/register/action" operation in their response.
+     * This API is used to register for their service, and should include details about the
+     * operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationsDiscovery object itself.
      */
@@ -116,7 +139,7 @@ public final class OperationsDiscovery {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -125,7 +148,7 @@ public final class OperationsDiscovery {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationsDiscovery object itself.
      */
@@ -136,9 +159,12 @@ public final class OperationsDiscovery {
 
     /**
      * Get the display property: Contains the localized display information for this particular operation / action.
-     * These value will be used by several clients for (1) custom role definitions for RBAC; (2) complex query filters
-     * for the event service; and (3) audit history / records for management operations.
-     *
+     * These
+     * value will be used by several clients for
+     * (1) custom role definitions for RBAC;
+     * (2) complex query filters for the event service; and
+     * (3) audit history / records for management operations.
+     * 
      * @return the display value.
      */
     public Display display() {
@@ -147,9 +173,12 @@ public final class OperationsDiscovery {
 
     /**
      * Set the display property: Contains the localized display information for this particular operation / action.
-     * These value will be used by several clients for (1) custom role definitions for RBAC; (2) complex query filters
-     * for the event service; and (3) audit history / records for management operations.
-     *
+     * These
+     * value will be used by several clients for
+     * (1) custom role definitions for RBAC;
+     * (2) complex query filters for the event service; and
+     * (3) audit history / records for management operations.
+     * 
      * @param display the display value to set.
      * @return the OperationsDiscovery object itself.
      */
@@ -159,9 +188,11 @@ public final class OperationsDiscovery {
     }
 
     /**
-     * Get the origin property: Gets or sets Origin. The intended executor of the operation; governs the display of the
-     * operation in the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * Get the origin property: Gets or sets Origin.
+     * The intended executor of the operation; governs the display of the operation in the
+     * RBAC UX and the audit logs UX.
+     * Default value is "user,system".
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -169,9 +200,11 @@ public final class OperationsDiscovery {
     }
 
     /**
-     * Set the origin property: Gets or sets Origin. The intended executor of the operation; governs the display of the
-     * operation in the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * Set the origin property: Gets or sets Origin.
+     * The intended executor of the operation; governs the display of the operation in the
+     * RBAC UX and the audit logs UX.
+     * Default value is "user,system".
+     * 
      * @param origin the origin value to set.
      * @return the OperationsDiscovery object itself.
      */
@@ -182,7 +215,7 @@ public final class OperationsDiscovery {
 
     /**
      * Get the properties property: ClientDiscovery properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -191,7 +224,7 @@ public final class OperationsDiscovery {
 
     /**
      * Set the properties property: ClientDiscovery properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationsDiscovery object itself.
      */
@@ -202,12 +235,60 @@ public final class OperationsDiscovery {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsDiscovery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsDiscovery if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationsDiscovery.
+     */
+    public static OperationsDiscovery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsDiscovery deserializedOperationsDiscovery = new OperationsDiscovery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationsDiscovery.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationsDiscovery.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationsDiscovery.display = Display.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationsDiscovery.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationsDiscovery.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsDiscovery;
+        });
     }
 }

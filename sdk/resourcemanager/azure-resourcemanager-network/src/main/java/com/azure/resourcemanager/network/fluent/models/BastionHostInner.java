@@ -468,6 +468,29 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @return the enablePrivateOnlyBastion value.
+     */
+    public Boolean enablePrivateOnlyBastion() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateOnlyBastion();
+    }
+
+    /**
+     * Set the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @param enablePrivateOnlyBastion the enablePrivateOnlyBastion value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnablePrivateOnlyBastion(Boolean enablePrivateOnlyBastion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnablePrivateOnlyBastion(enablePrivateOnlyBastion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

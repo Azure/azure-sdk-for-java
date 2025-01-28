@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for VaultOperationStatus Get. */
+/**
+ * Samples for VaultOperationStatus Get.
+ */
 public final class VaultOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/VaultOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/VaultOperationStatus_Get.json
      */
     /**
      * Sample code: VaultOperationStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultOperationStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .vaultOperationStatus()
+        manager.vaultOperationStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "vsdvwe", com.azure.core.util.Context.NONE);
     }
 }

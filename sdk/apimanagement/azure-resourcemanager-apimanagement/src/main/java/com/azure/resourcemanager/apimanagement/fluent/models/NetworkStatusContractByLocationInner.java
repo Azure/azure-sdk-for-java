@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network Status in the Location. */
+/**
+ * Network Status in the Location.
+ */
 @Fluent
-public final class NetworkStatusContractByLocationInner {
+public final class NetworkStatusContractByLocationInner
+    implements JsonSerializable<NetworkStatusContractByLocationInner> {
     /*
      * Location of service
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Network status in Location
      */
-    @JsonProperty(value = "networkStatus")
     private NetworkStatusContractInner networkStatus;
 
-    /** Creates an instance of NetworkStatusContractByLocationInner class. */
+    /**
+     * Creates an instance of NetworkStatusContractByLocationInner class.
+     */
     public NetworkStatusContractByLocationInner() {
     }
 
     /**
      * Get the location property: Location of service.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -37,7 +44,7 @@ public final class NetworkStatusContractByLocationInner {
 
     /**
      * Set the location property: Location of service.
-     *
+     * 
      * @param location the location value to set.
      * @return the NetworkStatusContractByLocationInner object itself.
      */
@@ -48,7 +55,7 @@ public final class NetworkStatusContractByLocationInner {
 
     /**
      * Get the networkStatus property: Network status in Location.
-     *
+     * 
      * @return the networkStatus value.
      */
     public NetworkStatusContractInner networkStatus() {
@@ -57,7 +64,7 @@ public final class NetworkStatusContractByLocationInner {
 
     /**
      * Set the networkStatus property: Network status in Location.
-     *
+     * 
      * @param networkStatus the networkStatus value to set.
      * @return the NetworkStatusContractByLocationInner object itself.
      */
@@ -68,12 +75,53 @@ public final class NetworkStatusContractByLocationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkStatus() != null) {
             networkStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("networkStatus", this.networkStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkStatusContractByLocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkStatusContractByLocationInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkStatusContractByLocationInner.
+     */
+    public static NetworkStatusContractByLocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkStatusContractByLocationInner deserializedNetworkStatusContractByLocationInner
+                = new NetworkStatusContractByLocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedNetworkStatusContractByLocationInner.location = reader.getString();
+                } else if ("networkStatus".equals(fieldName)) {
+                    deserializedNetworkStatusContractByLocationInner.networkStatus
+                        = NetworkStatusContractInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkStatusContractByLocationInner;
+        });
     }
 }

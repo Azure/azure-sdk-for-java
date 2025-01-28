@@ -11,7 +11,7 @@ public final class RecoverableSqlPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoverableSqlPoolInner model = BinaryData.fromString(
-            "{\"properties\":{\"edition\":\"cqusr\",\"serviceLevelObjective\":\"etnwsdtutnw\",\"elasticPoolName\":\"uycvuzhyrmewip\",\"lastAvailableBackupDate\":\"2021-09-17T08:14:05Z\"},\"id\":\"k\",\"name\":\"xukuqgsj\",\"type\":\"xundxgk\"}")
+            "{\"properties\":{\"edition\":\"ncnwfepbnwgf\",\"serviceLevelObjective\":\"jgcgbjbgdlfgtdys\",\"elasticPoolName\":\"quflqbctq\",\"lastAvailableBackupDate\":\"2021-06-27T00:38Z\"},\"id\":\"zjrwdkqze\",\"name\":\"yjleziunjx\",\"type\":\"fza\"}")
             .toObject(RecoverableSqlPoolInner.class);
     }
 

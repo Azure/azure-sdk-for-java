@@ -24,7 +24,8 @@ public final class PublishersUpdateSamples {
      */
     public static void updateAPublisherTags(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
         Publisher resource = manager.publishers()
-            .getByResourceGroupWithResponse("rg", "TestPublisher", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg", "TestPublisher", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

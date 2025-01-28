@@ -5,45 +5,47 @@
 package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The set of keys which can be used to access the Maps REST APIs. Two keys are provided for key rotation without
  * interruption.
  */
 @Immutable
-public final class MapsAccountKeysInner {
+public final class MapsAccountKeysInner implements JsonSerializable<MapsAccountKeysInner> {
     /*
      * The last updated date and time of the primary key.
      */
-    @JsonProperty(value = "primaryKeyLastUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKeyLastUpdated;
 
     /*
      * The primary key for accessing the Maps REST APIs.
      */
-    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
      * The secondary key for accessing the Maps REST APIs.
      */
-    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /*
      * The last updated date and time of the secondary key.
      */
-    @JsonProperty(value = "secondaryKeyLastUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKeyLastUpdated;
 
-    /** Creates an instance of MapsAccountKeysInner class. */
+    /**
+     * Creates an instance of MapsAccountKeysInner class.
+     */
     public MapsAccountKeysInner() {
     }
 
     /**
      * Get the primaryKeyLastUpdated property: The last updated date and time of the primary key.
-     *
+     * 
      * @return the primaryKeyLastUpdated value.
      */
     public String primaryKeyLastUpdated() {
@@ -52,7 +54,7 @@ public final class MapsAccountKeysInner {
 
     /**
      * Get the primaryKey property: The primary key for accessing the Maps REST APIs.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -61,7 +63,7 @@ public final class MapsAccountKeysInner {
 
     /**
      * Get the secondaryKey property: The secondary key for accessing the Maps REST APIs.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -70,7 +72,7 @@ public final class MapsAccountKeysInner {
 
     /**
      * Get the secondaryKeyLastUpdated property: The last updated date and time of the secondary key.
-     *
+     * 
      * @return the secondaryKeyLastUpdated value.
      */
     public String secondaryKeyLastUpdated() {
@@ -79,9 +81,50 @@ public final class MapsAccountKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsAccountKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsAccountKeysInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapsAccountKeysInner.
+     */
+    public static MapsAccountKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsAccountKeysInner deserializedMapsAccountKeysInner = new MapsAccountKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKeyLastUpdated".equals(fieldName)) {
+                    deserializedMapsAccountKeysInner.primaryKeyLastUpdated = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedMapsAccountKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedMapsAccountKeysInner.secondaryKey = reader.getString();
+                } else if ("secondaryKeyLastUpdated".equals(fieldName)) {
+                    deserializedMapsAccountKeysInner.secondaryKeyLastUpdated = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsAccountKeysInner;
+        });
     }
 }

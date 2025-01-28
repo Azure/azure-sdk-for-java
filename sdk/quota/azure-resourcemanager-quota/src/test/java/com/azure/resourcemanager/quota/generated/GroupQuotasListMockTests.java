@@ -11,8 +11,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,7 +22,7 @@ public final class GroupQuotasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"isxyawjoyaqcslyj\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"zyexzn\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rzt\",\"name\":\"o\",\"type\":\"hb\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"wwfvov\",\"provisioningState\":\"Created\"},\"id\":\"uecivyhz\",\"name\":\"euojgjrwju\",\"type\":\"iotwmcdytdxwit\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +31,9 @@ public final class GroupQuotasListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GroupQuotasEntity> response = manager.groupQuotas().list("aln", com.azure.core.util.Context.NONE);
+        PagedIterable<GroupQuotasEntity> response
+            = manager.groupQuotas().list("jooxdjebw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("isxyawjoyaqcslyj", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            response.iterator().next().properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("zyexzn",
-            response.iterator().next().properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION,
-            response.iterator().next().properties().additionalAttributes().environment());
+        Assertions.assertEquals("wwfvov", response.iterator().next().properties().displayName());
     }
 }

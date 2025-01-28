@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class DomainManagement extends ExpandableStringEnum<DomainManagemen
      * @param name a name to look for.
      * @return the corresponding DomainManagement.
      */
-    @JsonCreator
     public static DomainManagement fromString(String name) {
         return fromString(name, DomainManagement.class);
     }

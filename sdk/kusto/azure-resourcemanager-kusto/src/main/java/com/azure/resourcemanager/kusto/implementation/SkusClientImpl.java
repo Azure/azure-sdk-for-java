@@ -30,17 +30,23 @@ import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
 import com.azure.resourcemanager.kusto.models.SkuDescriptionList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SkusClient.
+ */
 public final class SkusClientImpl implements SkusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SkusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of SkusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SkusClientImpl(KustoManagementClientImpl client) {
@@ -66,13 +72,13 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Lists eligible region SKUs for Kusto resource provider by Azure region.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the EngagementFabric SKU descriptions along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSinglePageAsync(String location) {
@@ -98,14 +104,14 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Lists eligible region SKUs for Kusto resource provider by Azure region.
-     *
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the EngagementFabric SKU descriptions along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSinglePageAsync(String location, Context context) {
@@ -131,7 +137,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Lists eligible region SKUs for Kusto resource provider by Azure region.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -145,7 +151,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Lists eligible region SKUs for Kusto resource provider by Azure region.
-     *
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +166,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Lists eligible region SKUs for Kusto resource provider by Azure region.
-     *
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -174,7 +180,7 @@ public final class SkusClientImpl implements SkusClient {
 
     /**
      * Lists eligible region SKUs for Kusto resource provider by Azure region.
-     *
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

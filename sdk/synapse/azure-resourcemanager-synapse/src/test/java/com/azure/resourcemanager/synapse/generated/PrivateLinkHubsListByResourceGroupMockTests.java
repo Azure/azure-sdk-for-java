@@ -22,7 +22,7 @@ public final class PrivateLinkHubsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"boohxbms\",\"privateEndpointConnections\":[{\"id\":\"sx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"wuyqaeo\"}},{\"id\":\"jh\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"vhhdaurgho\"}},{\"id\":\"aexbkhxjxjo\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"rkdknko\"}}]},\"location\":\"ektm\",\"tags\":{\"gwcd\":\"omtzamicb\"},\"id\":\"zseznuxkeuairaa\",\"name\":\"m\",\"type\":\"lqjbedpfixlhupmo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"jhpcn\",\"privateEndpointConnections\":[{\"id\":\"fsnggytexvzilm\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"wwwncknr\"}},{\"id\":\"ajlskzptj\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"ucyrt\"}},{\"id\":\"qlehmcgcjeinu\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"mvfejvqnttmbqd\"}},{\"id\":\"zfivfokpysthhzag\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"rlhgenuze\"}}]},\"location\":\"gvkvebaqszll\",\"tags\":{\"gmihzpimcqr\":\"smmd\",\"svtzarhzv\":\"nxtminklog\",\"bjwzzos\":\"nsqktc\"},\"id\":\"pkybtgl\",\"name\":\"kzpgaj\",\"type\":\"qjcemqbmf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class PrivateLinkHubsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkHub> response
-            = manager.privateLinkHubs().listByResourceGroup("rjeizik", com.azure.core.util.Context.NONE);
+            = manager.privateLinkHubs().listByResourceGroup("zdpv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ektm", response.iterator().next().location());
-        Assertions.assertEquals("omtzamicb", response.iterator().next().tags().get("gwcd"));
-        Assertions.assertEquals("boohxbms", response.iterator().next().provisioningState());
+        Assertions.assertEquals("gvkvebaqszll", response.iterator().next().location());
+        Assertions.assertEquals("smmd", response.iterator().next().tags().get("gmihzpimcqr"));
+        Assertions.assertEquals("jhpcn", response.iterator().next().provisioningState());
     }
 }

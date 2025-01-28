@@ -9,7 +9,9 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class NamespacesValidateCustomDomainOwnershipSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Namespaces_ValidateCustomDomainOwnership.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * Namespaces_ValidateCustomDomainOwnership.json
      */
     /**
      * Sample code: Namespaces_ValidateCustomDomainOwnership.

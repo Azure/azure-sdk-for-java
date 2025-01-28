@@ -51,14 +51,14 @@ public final class ComponentsImpl implements Components {
     public PagedIterable<Component> listByNetworkFunction(String resourceGroupName, String networkFunctionName) {
         PagedIterable<ComponentInner> inner
             = this.serviceClient().listByNetworkFunction(resourceGroupName, networkFunctionName);
-        return Utils.mapPage(inner, inner1 -> new ComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComponentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Component> listByNetworkFunction(String resourceGroupName, String networkFunctionName,
         Context context) {
         PagedIterable<ComponentInner> inner
             = this.serviceClient().listByNetworkFunction(resourceGroupName, networkFunctionName, context);
-        return Utils.mapPage(inner, inner1 -> new ComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComponentImpl(inner1, this.manager()));
     }
 
     private ComponentsClient serviceClient() {

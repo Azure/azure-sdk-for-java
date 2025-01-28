@@ -7,25 +7,27 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 
-/** An immutable client-side representation of ValidateConfigurationResponse. */
+/**
+ * An immutable client-side representation of ValidateConfigurationResponse.
+ */
 public interface ValidateConfigurationResponse {
     /**
      * Gets the configurationState property: Gets the configuration state.
-     *
+     * 
      * @return the configurationState value.
      */
     ConfigurationState configurationState();
 
     /**
      * Gets the url property: URL for the details of the response.
-     *
+     * 
      * @return the url value.
      */
     String url();
 
     /**
      * Gets the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
@@ -33,7 +35,7 @@ public interface ValidateConfigurationResponse {
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ValidateConfigurationResponseInner innerModel();

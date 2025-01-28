@@ -33,7 +33,7 @@ public final class DscCompilationJobStreamsListByJobWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JobStreamListResult response = manager.dscCompilationJobStreams()
-            .listByJobWithResponse("rmmttjxop", "gerhsmvg", UUID.fromString("3f5e5033-bf97-42e3-bdf9-168f80443b95"),
+            .listByJobWithResponse("rmmttjxop", "gerhsmvg", UUID.fromString("acae4649-88a3-4418-b426-7a94548e7dc6"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

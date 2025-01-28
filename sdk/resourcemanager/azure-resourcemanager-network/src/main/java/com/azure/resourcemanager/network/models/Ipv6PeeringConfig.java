@@ -25,9 +25,13 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify primary address
          * prefix.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPrimaryPeerAddressPrefix<ParentT> {
             /**
+             * Specifies primary peer address prefix.
+             *
              * @param addressPrefix primary peer address prefix
              * @return the next stage of the definition
              */
@@ -37,16 +41,24 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address
          * prefix.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSecondaryPeerAddressPrefix<ParentT> {
             /**
+             * Specifies secondary peer address prefix.
+             *
              * @param addressPrefix secondary peer address prefix
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withSecondaryPeerAddressPrefix(String addressPrefix);
         }
 
-        /** The stage of Cross Connection Peering IPv6 configuration definition allowing to specify customer ASN. */
+        /**
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify customer ASN.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithCustomerASN<ParentT> {
             /**
              * Specifies customer ASN.
@@ -60,6 +72,8 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify routing registry
          * name.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRoutingRegistryName<ParentT> {
             /**
@@ -74,6 +88,8 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address
          * prefix.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAdvertisedPublicPrefixes<ParentT> {
             /**
@@ -97,7 +113,11 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
             WithCustomerASN<ParentT> withAdvertisedPublicPrefix(String publicPrefix);
         }
 
-        /** The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter. */
+        /**
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithRouteFilter<ParentT> {
             /**
              * Sets route filter id.
@@ -168,6 +188,8 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
          */
         interface WithPrimaryPeerAddressPrefix {
             /**
+             * Specifies primary peer address prefix.
+             *
              * @param addressPrefix primary peer address prefix
              * @return the next stage of the update
              */
@@ -179,6 +201,8 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
          */
         interface WithSecondaryPeerAddressPrefix {
             /**
+             * Specifies secondary peer address prefix.
+             *
              * @param addressPrefix secondary peer address prefix
              * @return the next stage of the update
              */
@@ -278,9 +302,13 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify primary address
          * prefix.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPrimaryPeerAddressPrefix<ParentT> {
             /**
+             * Specifies primary peer address prefix.
+             *
              * @param addressPrefix primary peer address prefix
              * @return the next stage of the definition
              */
@@ -290,9 +318,13 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address
          * prefix.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithSecondaryPeerAddressPrefix<ParentT> {
             /**
+             * Specifies secondary peer address prefix.
+             *
              * @param addressPrefix secondary peer address prefix
              * @return the next stage of the definition
              */
@@ -302,6 +334,8 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary customer
          * ASN.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCustomerASN<ParentT> {
             /**
@@ -316,6 +350,8 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
         /**
          * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify routing registry
          * name.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRoutingRegistryName<ParentT> {
             /**
@@ -327,7 +363,11 @@ public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuit
             WithPrimaryPeerAddressPrefix<ParentT> withRoutingRegistryName(String routingRegistryName);
         }
 
-        /** The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter. */
+        /**
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithRouteFilter<ParentT> {
             /**
              * Sets route filter id.

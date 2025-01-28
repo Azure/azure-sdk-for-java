@@ -22,7 +22,7 @@ public final class DataMaskingPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataMaskingState\":\"Enabled\",\"exemptPrincipals\":\"bvn\",\"applicationPrincipals\":\"ge\",\"maskingLevel\":\"yqxadyfhbmw\"},\"location\":\"ojqttbsp\",\"kind\":\"hg\",\"managedBy\":\"qjsgyzst\",\"id\":\"jrz\",\"name\":\"rknsfdrlduyeh\",\"type\":\"iitt\"}";
+            = "{\"properties\":{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"uwhldxwhieproqks\",\"applicationPrincipals\":\"xmcvprstvkitbfjt\",\"maskingLevel\":\"otnplfacqocc\"},\"location\":\"qxwetjtd\",\"kind\":\"u\",\"managedBy\":\"doad\",\"id\":\"xopgehpadkmd\",\"name\":\"gssz\",\"type\":\"vctkbbx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class DataMaskingPoliciesCreateOrUpdateWithResponseMockTests {
 
         DataMaskingPolicy response = manager.dataMaskingPolicies()
             .define()
-            .withExistingSqlPool("bkvnrpbjrmvg", "qplehmumkzdllczd", "rwnhkgqggoxsst")
-            .withDataMaskingState(DataMaskingState.DISABLED)
-            .withExemptPrincipals("akfrry")
+            .withExistingSqlPool("gxkfnaoaqymhccto", "uowyrnskbyhqu", "czygxv")
+            .withDataMaskingState(DataMaskingState.ENABLED)
+            .withExemptPrincipals("xecxqnwh")
             .create();
 
-        Assertions.assertEquals(DataMaskingState.ENABLED, response.dataMaskingState());
-        Assertions.assertEquals("bvn", response.exemptPrincipals());
+        Assertions.assertEquals(DataMaskingState.DISABLED, response.dataMaskingState());
+        Assertions.assertEquals("uwhldxwhieproqks", response.exemptPrincipals());
     }
 }

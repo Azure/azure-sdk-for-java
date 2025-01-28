@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2025-01-03)
+
+- Azure Resource Manager DataLakeStore client library for Java. This package contains Microsoft Azure SDK for DataLakeStore Management SDK. Creates an Azure Data Lake Store account management client. Package tag package-2016-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.CheckNameAvailabilityParameters` was modified
+
+* `withType(java.lang.String)` was removed
+
+#### `models.EncryptionIdentity` was modified
+
+* `withType(java.lang.String)` was removed
 
 ## 1.0.0-beta.3 (2024-10-17)
 

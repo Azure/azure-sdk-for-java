@@ -104,10 +104,8 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRunsQueryResponse>>
         queryPipelineRunsByWorkspaceWithResponseAsync(RunFilterParameters filterParameters) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.queryPipelineRunsByWorkspace(this.client.getEndpoint(),
-            apiVersion, filterParameters, accept, context));
+        return FluxUtil
+            .withContext(context -> queryPipelineRunsByWorkspaceWithResponseAsync(filterParameters, context));
     }
 
     /**
@@ -202,10 +200,7 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRun>> getPipelineRunWithResponseAsync(String runId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getPipelineRun(this.client.getEndpoint(), runId, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> getPipelineRunWithResponseAsync(runId, context));
     }
 
     /**
@@ -297,10 +292,8 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityRunsQueryResponse>> queryActivityRunsWithResponseAsync(String pipelineName,
         String runId, RunFilterParameters filterParameters) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.queryActivityRuns(this.client.getEndpoint(), pipelineName, runId,
-            apiVersion, filterParameters, accept, context));
+        return FluxUtil
+            .withContext(context -> queryActivityRunsWithResponseAsync(pipelineName, runId, filterParameters, context));
     }
 
     /**
@@ -408,10 +401,7 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelPipelineRunWithResponseAsync(String runId, Boolean isRecursive) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelPipelineRun(this.client.getEndpoint(), runId, isRecursive,
-            apiVersion, accept, context));
+        return FluxUtil.withContext(context -> cancelPipelineRunWithResponseAsync(runId, isRecursive, context));
     }
 
     /**

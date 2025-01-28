@@ -235,6 +235,15 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole QUOTA_REQUEST_OPERATOR = BuiltInRole.fromString("Quota Request Operator");
 
     /**
+     * Creates a new instance of BuiltInRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuiltInRole() {
+    }
+
+    /**
      * Finds or creates a role instance based on the specified name.
      *
      * @param name a name
@@ -244,7 +253,10 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
         return fromString(name, BuiltInRole.class);
     }
 
-    /** @return known roles */
+    /**
+     * Gets known roles.
+     *
+     * @return known roles */
     public static Collection<BuiltInRole> values() {
         return values(BuiltInRole.class);
     }
