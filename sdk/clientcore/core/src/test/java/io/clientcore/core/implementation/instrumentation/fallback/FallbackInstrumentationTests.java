@@ -56,17 +56,18 @@ public class FallbackInstrumentationTests {
     private static final Instrumentation DEFAULT_INSTRUMENTATION = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
-    private static final TraceContextGetter<Map<String, String>> GETTER = new TraceContextGetter<>() {
-        @Override
-        public Iterable<String> keys(Map<String, String> carrier) {
-            return carrier.keySet();
-        }
+    private static final TraceContextGetter<Map<String, String>> GETTER
+        = new TraceContextGetter<Map<String, String>>() {
+            @Override
+            public Iterable<String> keys(Map<String, String> carrier) {
+                return carrier.keySet();
+            }
 
-        @Override
-        public String get(Map<String, String> carrier, String key) {
-            return carrier.get(key);
-        }
-    };
+            @Override
+            public String get(Map<String, String> carrier, String key) {
+                return carrier.get(key);
+            }
+        };
 
     public FallbackInstrumentationTests() {
         logCaptureStream = new AccessibleByteArrayOutputStream();
@@ -324,7 +325,7 @@ public class FallbackInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void basicTracingDisabledTests() {
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setTracingEnabled(false);
+        InstrumentationOptions options = new InstrumentationOptions().setTracingEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
 
         Tracer tracer = instrumentation.getTracer();
@@ -354,7 +355,8 @@ public class FallbackInstrumentationTests {
     @Test
     public void createTracerUnknownProvider() {
         // should not throw
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider("this is not a valid provider");
+        InstrumentationOptions options
+            = new InstrumentationOptions().setTelemetryProvider("this is not a valid provider");
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
         assertTrue(tracer.isEnabled());
     }
@@ -362,14 +364,14 @@ public class FallbackInstrumentationTests {
     @Test
     public void createInstrumentationBadOptions() {
         assertThrows(NullPointerException.class,
-            () -> Instrumentation.create(new InstrumentationOptions<>(), null).getTracer());
+            () -> Instrumentation.create(new InstrumentationOptions(), null).getTracer());
     }
 
     @ParameterizedTest
     @MethodSource("logLevels")
     public void basicTracingLogsLevel(ClientLogger.LogLevel logLevel, boolean expectLogs) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.getTracer();
 
@@ -394,7 +396,7 @@ public class FallbackInstrumentationTests {
     @Test
     public void basicTracingLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.getTracer();
 
@@ -422,7 +424,7 @@ public class FallbackInstrumentationTests {
     @Test
     public void tracingWithAttributesLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
         Span span = tracer.spanBuilder("test-span", PRODUCER, null)
@@ -460,7 +462,7 @@ public class FallbackInstrumentationTests {
     @Test
     public void tracingWithExceptionLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
         Span span = tracer.spanBuilder("test-span", SERVER, null).startSpan();
@@ -478,7 +480,7 @@ public class FallbackInstrumentationTests {
     @Test
     public void tracingLogsEnabledParent() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        InstrumentationOptions<?> options = new InstrumentationOptions<>().setProvider(logger);
+        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
 
         Span parent = tracer.spanBuilder("parent", CONSUMER, null).startSpan();

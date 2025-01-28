@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: TestPipeline
     type: boolean
     default: false
@@ -99,6 +102,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
+            ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -418,7 +422,11 @@ jobs:
       OsVmImage: $(LINUXVMIMAGE)
       Pool: $(LINUXPOOL)
       Os: linux
-      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixConfigs:
+        - ${{ each config in parameters.MatrixConfigs }}:
+          - ${{ config }}
+        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+          - ${{ config }}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:

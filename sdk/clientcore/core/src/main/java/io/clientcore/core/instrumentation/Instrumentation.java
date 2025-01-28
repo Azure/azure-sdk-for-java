@@ -30,7 +30,7 @@ public interface Instrumentation {
      *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
-     * InstrumentationOptions&lt;?&gt; instrumentationOptions = new InstrumentationOptions&lt;&gt;&#40;&#41;;
+     * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      *
      * Tracer tracer = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;.getTracer&#40;&#41;;
      *
@@ -61,7 +61,7 @@ public interface Instrumentation {
      * @param libraryOptions Library-specific telemetry collection options.
      * @return The instance of telemetry provider implementation.
      */
-    static Instrumentation create(InstrumentationOptions<?> applicationOptions,
+    static Instrumentation create(InstrumentationOptions applicationOptions,
         LibraryInstrumentationOptions libraryOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
         if (OTelInitializer.isInitialized()) {
