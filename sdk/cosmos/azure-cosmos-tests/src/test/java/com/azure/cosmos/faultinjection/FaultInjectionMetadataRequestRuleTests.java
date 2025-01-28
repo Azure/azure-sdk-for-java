@@ -209,9 +209,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                     // when preferred regions is 2
                     // Due to issue https://github.com/Azure/azure-sdk-for-java/issues/35779, the request mark the region unavailable will retry
                     // in the unavailable region again, hence the addressRefresh fault injection will be happened 4 times
-                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4);
+                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4, false);
                 } else {
-                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3);
+                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3, false);
                 }
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
@@ -333,7 +333,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                     .isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
             }
 
-            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3);
+            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3, operationType == OperationType.Query);
         } finally {
             addressRefreshResponseDelayRule.disable();
             dataOperationGoneRule.disable();
@@ -522,7 +522,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
             assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
             assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase()))).isTrue();
-            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshTooManyRequest, 1);
+            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshTooManyRequest, 1, false);
         } finally {
             addressRefreshTooManyRequestRule.disable();
             dataOperationGoneRule.disable();
@@ -744,10 +744,24 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
     private void validateFaultInjectionRuleAppliedForAddressResolution(
         CosmosDiagnostics cosmosDiagnostics,
         String ruleId,
-        int failureInjectedExpectedCount) throws JsonProcessingException {
+        int failureInjectedExpectedCount,
+        boolean isQueryOperation) throws JsonProcessingException {
 
         ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
-        JsonNode addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
+        JsonNode addressResolutionStatistics;
+
+        if (isQueryOperation) {
+
+            ArrayNode arrayNode = (ArrayNode) diagnosticsNode.get("clientSideRequestStatistics");
+
+            assertThat(arrayNode).isNotNull();
+            assertThat(arrayNode.get(0)).isNotNull();
+
+            addressResolutionStatistics = arrayNode.get(0).get("addressResolutionStatistics");
+        } else {
+            addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
+        }
+
         Iterator<Map.Entry<String, JsonNode>> addressResolutionIterator = addressResolutionStatistics.fields();
         int failureInjectedCount = 0;
         while (addressResolutionIterator.hasNext()) {
