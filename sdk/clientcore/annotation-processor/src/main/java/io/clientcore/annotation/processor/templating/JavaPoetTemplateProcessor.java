@@ -10,6 +10,8 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -21,8 +23,6 @@ import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.annotation.processor.models.HttpRequestContext;
-import io.clientcore.annotation.processor.models.TemplateInput;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
@@ -207,6 +207,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(method.getMethodName())
             .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Override.class)
             .returns(inferTypeNameFromReturnType(method.getMethodReturnType()));
 
         // add method parameters, with Context at the end
@@ -235,29 +236,25 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
     private void generateInternalMethod(HttpRequestContext method) {
         TypeName returnTypeName = inferTypeNameFromReturnType(method.getMethodReturnType());
-        MethodSpec.Builder methodBuilder = createMethodBuilder(method, returnTypeName);
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(method.getMethodName())
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Override.class)
+            .returns(returnTypeName);
 
-        addMethodParameters(methodBuilder, method);
+        for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
+            methodBuilder.addParameter(TypeName.get(parameter.getTypeMirror()), parameter.getName());
+        }
+        methodBuilder.addStatement("HttpPipeline pipeline = this.getPipeline()");
+
         initializeHttpRequest(methodBuilder, method);
         addHeadersToRequest(methodBuilder, method);
         addRequestBody(methodBuilder, method);
-
         finalizeHttpRequest(methodBuilder, returnTypeName, method);
 
         classBuilder.addMethod(methodBuilder.build());
     }
 
     // Helper methods
-    private MethodSpec.Builder createMethodBuilder(HttpRequestContext method, TypeName returnTypeName) {
-        return MethodSpec.methodBuilder(method.getMethodName()).addModifiers(Modifier.PUBLIC).returns(returnTypeName);
-    }
-
-    private void addMethodParameters(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
-        for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
-            methodBuilder.addParameter(TypeName.get(parameter.getTypeMirror()), parameter.getName());
-        }
-        methodBuilder.addStatement("HttpPipeline pipeline = this.getPipeline()");
-    }
 
     private void initializeHttpRequest(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
         methodBuilder.addStatement("String host = $L", method.getHost())

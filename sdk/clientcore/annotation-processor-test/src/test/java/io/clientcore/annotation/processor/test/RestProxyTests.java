@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,6 +37,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
+
+    @Test
+    public void testGetNewInstance() {
+        HttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        assertNotNull(testInterface);
+    }
 
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() throws IOException {
