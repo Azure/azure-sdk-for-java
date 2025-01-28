@@ -67,6 +67,10 @@
 # PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                          @dargilco @jhakulin @glharper
 
+# ServiceLabel: %AgriFood
+# PRLabel: %AgriFood
+/sdk/agrifood/                                       @bhargav-kansagara
+
 # ServiceLabel: %AKS
 # ServiceOwners:                                     @Azure/aks-pm
 
@@ -193,10 +197,10 @@
 # ServiceOwners:                                     @vkurpad
 
 # PRLabel: %Cognitive - Anomaly Detector
-/sdk/anomalydetector/                                @conhua @mengaims @juaduan @moreOver0
+/sdk/anomalydetector/                                @conhua @mengaims @juaduan
 
 # ServiceLabel: %Cognitive - Anomaly Detector
-# ServiceOwners:                                     @yingqunpku @bowgong
+# ServiceOwners:                                     @bowgong
 
 # ServiceLabel: %Cognitive - Custom Vision
 # ServiceOwners:                                     @joyhui
@@ -665,10 +669,10 @@
 
 # ServiceLabel: %Purview
 # PRLabel: %Purview
-/sdk/purview/                                        @yifan-zhou922
+/sdk/purview/                                        @saxenarahulMs
 
 # PRLabel: %Azure Quantum
-/sdk/quantum/                                        @vxfield @msoeken @xinyi-joffre
+/sdk/quantum/                                        @vxfield @xinyi-joffre
 
 # ServiceLabel: %Recovery Services Backup
 # ServiceOwners:                                     @Daya-Patil
