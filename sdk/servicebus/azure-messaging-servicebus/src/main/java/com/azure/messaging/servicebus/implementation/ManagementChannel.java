@@ -43,6 +43,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -57,6 +58,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_PEEK;
@@ -669,5 +671,63 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }
 
         return ruleProperties;
+    }
+
+    @Override
+    public Mono<SessionIdPage> getSessionIds(int skip, int top) {
+        // See https://learn.microsoft.com/azure/service-bus-messaging/service-bus-amqp-request-response#enumerate-sessions
+        //
+        return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_GET_MESSAGE_SESSIONS, null);
+            final Map<String, Object> body = new HashMap<>(3);
+            body.put(ManagementConstants.SKIP, skip);
+            body.put(ManagementConstants.TOP, top);
+            body.put(ManagementConstants.LAST_UPDATED_TIME, ManagementConstants.DATE_MAX_VALUE);
+            message.setBody(new AmqpValue(body));
+            return sendWithVerify(channel, message, null);
+        })).flatMap(response -> {
+            AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+            if (statusCode == AmqpResponseCode.OK) {
+                if (!(response.getBody() instanceof AmqpValue)) {
+                    return monoError(logger,
+                        new AmqpException(false,
+                            String.format("Expected response body of type AmqpValue not found %s", response.getBody()),
+                            getErrorContext()));
+                }
+
+                final Object value = ((AmqpValue) response.getBody()).getValue();
+
+                if (!(value instanceof Map)) {
+                    return monoError(logger,
+                        new AmqpException(false,
+                            String.format("Body is expected to Map when enumerating sessions, but was: %s", value),
+                            getErrorContext()));
+                }
+
+                @SuppressWarnings("unchecked")
+                final Map<String, Object> map = (Map<String, Object>) value;
+                final Object s = map.get(ManagementConstants.SKIP);
+                if (!(s instanceof Integer)) {
+                    return monoError(logger,
+                        new AmqpException(false,
+                            String.format(
+                                "Skip is expected and should be an Integer when enumerating sessions, but was: %s", s),
+                            getErrorContext()));
+                }
+
+                final Object sessionsIds = map.get(ManagementConstants.SESSION_IDS);
+                if (sessionsIds == null || !sessionsIds.getClass().isArray()) {
+                    return monoError(logger,
+                        new AmqpException(false, String.format(
+                            "Sessions-ids is expected and should be an array when enumerating sessions, but was: %s",
+                            sessionsIds), getErrorContext()));
+                }
+
+                return Mono.just(new SessionIdPage(Arrays.asList((String[]) sessionsIds), (int) s));
+            } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                return Mono.empty();
+            }
+            return monoError(logger, new IllegalStateException("Unexpected state when enumerating sessions."));
+        });
     }
 }

@@ -148,6 +148,15 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Flux<RuleProperties> listRules();
 
+    /**
+     * Gets a page with session ids and the skip value to retrieve next page.
+     *
+     * @param skip the number of session to skip.
+     * @param top the maximum number of session to return.
+     * @return a page with session ids and the skip value to retrieve next page.
+     */
+    Mono<SessionIdPage> getSessionIds(int skip, int top);
+
     @Override
     void close();
 }

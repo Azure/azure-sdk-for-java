@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
@@ -199,6 +200,19 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
             }))
             .onErrorMap(TimeoutException.class, e -> new IllegalStateException(e.getMessage(), e))
             .block();
+    }
+
+    /**
+     * Enumerates sessions on the messaging entity.
+     *
+     * @param pageSize the maximum number of sessions to be fetched in a single call.
+     * @return A {@link ServiceBusSessionIdIterable} to enumerate sessions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceBusSessionIdIterable listSessions(Integer pageSize) {
+        final PageRetrieverSync<String, ServiceBusSessionIdPage> pageRetriever
+            = sessionAsyncClient.sessionIdPageRetriever.sync(pageSize);
+        return new ServiceBusSessionIdIterable(() -> pageRetriever, pageSize);
     }
 
     @Override
