@@ -14,9 +14,11 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class StartRecordingOptions {
     /**
-     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
+     * is a {@link GroupCallLocator} or {@link ServerCallLocator} or {@null} for locating the call.
      */
-    private CallLocator callLocator;
+    private final CallLocator callLocator;
+
+    private final String callConnectionId;
 
     private String recordingStateCallbackUrl;
 
@@ -34,19 +36,10 @@ public final class StartRecordingOptions {
 
     private RecordingStorage recordingStorage;
 
-    private String callConnectionId;
-
     /**
      * Constructor
      *
-     */
-    public StartRecordingOptions() {
-    }
-
-    /**
-     * Constructor
-     *
-     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
+     * @param callLocator is a {@link GroupCallLocator} or {@link ServerCallLocator} or {@null} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
         this.callLocator = callLocator;
@@ -68,6 +61,14 @@ public final class StartRecordingOptions {
     */
     public StartRecordingOptions(String callConnectionId) {
         this.callConnectionId = callConnectionId;
+    }
+
+    /**
+    * Get callConnectionId for the call
+    * @return callConnectionId for the call
+    */
+    public String getCallConnectionId() {
+        return callConnectionId;
     }
 
     /**
@@ -241,13 +242,5 @@ public final class StartRecordingOptions {
     public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
         this.channelAffinity = channelAffinity;
         return this;
-    }
-
-    /**
-    * Get callConnectionId for the call
-    * @return callConnectionId for the call
-    */
-    public String getCallConnectionId() {
-        return callConnectionId;
     }
 }
