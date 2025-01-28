@@ -38,6 +38,8 @@ public class VectorSessionToken implements ISessionToken {
     private final UnmodifiableMap<Integer, Long> localLsnByRegion;
     private final String sessionToken;
 
+    private final boolean isSessionTokenFalseProgressMergeDisabled = Configs.isSessionTokenFalseProgressMergeDisabled();
+
     private VectorSessionToken(long version, long globalLsn, UnmodifiableMap<Integer, Long> localLsnByRegion) {
         this(version, globalLsn, localLsnByRegion, null);
     }
@@ -126,7 +128,11 @@ public class VectorSessionToken implements ISessionToken {
             throw new IllegalArgumentException("otherSessionToken");
         }
 
-        if (other.version < this.version || other.globalLsn < this.globalLsn) {
+        if (this.isSessionTokenFalseProgressMergeDisabled) {
+            if (other.version < this.version || other.globalLsn < this.globalLsn) {
+                return false;
+            }
+        } else if (other.version < this.version || other.version == this.version && other.globalLsn < this.globalLsn) {
             return false;
         }
 
@@ -225,9 +231,9 @@ public class VectorSessionToken implements ISessionToken {
         }
 
         return new VectorSessionToken(
-                Math.max(this.version, other.version),
-                Math.max(this.globalLsn, other.globalLsn),
-                (UnmodifiableMap<Integer, Long>) UnmodifiableMap.unmodifiableMap(highestLocalLsnByRegion));
+            Math.max(this.version, other.version),
+            (isSessionTokenFalseProgressMergeDisabled || this.version == other.version) ? Math.max(this.globalLsn, other.globalLsn) : sessionTokenWithHigherVersion.globalLsn,
+            (UnmodifiableMap<Integer, Long>) UnmodifiableMap.unmodifiableMap(highestLocalLsnByRegion));
     }
 
     public String convertToString() {

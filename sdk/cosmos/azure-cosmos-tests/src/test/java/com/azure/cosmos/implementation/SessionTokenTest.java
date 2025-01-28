@@ -181,4 +181,58 @@ public class SessionTokenTest {
             }
         }
     }
+
+    @Test(groups = "unit")
+    public void validateSessionTokenMergeDuringFalseProgress() {
+
+        try {
+
+            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED", "false");
+
+            // first seen session token at T1
+            ValueHolder<ISessionToken> sessionToken1 = new ValueHolder<>(null);
+
+            // first seen session token at T2
+            // assume T2 > T1 (T1 and T2 are wall clock time)
+            ValueHolder<ISessionToken> sessionToken2 = new ValueHolder<>(null);
+            ValueHolder<ISessionToken> sessionTokenMerged = new ValueHolder<>(null);
+
+            // same vector clock version with GLSN increasing monotonicity violation
+            VectorSessionToken.tryCreate("1#100#1=20#2=5", sessionToken1);
+            VectorSessionToken.tryCreate("1#97#1=20#2=5", sessionToken2);
+
+            // if isValid is false, no need to test merge as merge flow won't be hit
+            // isValid flow triggered in ConsistencyReader / StoreReader and can trigger 404:1002 replica loop through
+            // before it reaches merge (outer layer)
+            assertThat(sessionToken1.v.isValid(sessionToken2.v)).isFalse();
+
+            // different vector clock version with GLSN compaction (causes GLSN after failover to have lower value) post failover
+            // failover causes vector clock version to increment
+            VectorSessionToken.tryCreate("1#100#1=20#2=5", sessionToken1);
+            VectorSessionToken.tryCreate("2#97#1=20#2=5", sessionToken2);
+
+            assertThat(sessionToken1.v.isValid(sessionToken2.v)).isTrue();
+
+            // with false progress compatible merge - merge will choose higher vector clock version's GLSN post failover always
+            assertThat(sessionToken1.v.merge(sessionToken2.v).convertToString()).isEqualTo("2#97#1=20#2=5");
+
+            // same vector clock version with GLSN increase (no failover)
+            VectorSessionToken.tryCreate("1#100#1=20#2=5", sessionToken1);
+            VectorSessionToken.tryCreate("1#197#1=20#2=5", sessionToken2);
+
+            assertThat(sessionToken1.v.isValid(sessionToken2.v)).isTrue();
+
+            // with false progress compatible merge - merge will choose higher GLSN if no failover happened
+            assertThat(sessionToken1.v.merge(sessionToken2.v).convertToString()).isEqualTo("1#197#1=20#2=5");
+
+            // same vector clock version with GLSN increase and LLSN increase
+            VectorSessionToken.tryCreate("1#100#1=20#2=5", sessionToken1);
+            VectorSessionToken.tryCreate("1#197#1=23#2=15", sessionToken2);
+
+            assertThat(sessionToken1.v.isValid(sessionToken2.v)).isTrue();
+            assertThat(sessionToken1.v.merge(sessionToken2.v).convertToString()).isEqualTo("1#197#1=23#2=15");
+        }  finally {
+            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED");
+        }
+    }
 }
