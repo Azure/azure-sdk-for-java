@@ -1401,7 +1401,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.hold(receiver).block();
             sleepIfRunningAgainstService(3000);
-            HoldAudioStarted holdAudioStarted = waitForEvent(HoldAudioStarted.class, callerConnectionId, Duration.ofSeconds(20));
+            HoldAudioStarted holdAudioStarted
+                = waitForEvent(HoldAudioStarted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(holdAudioStarted);
 
             CallConnectionAsync callConnectionAsync = callerAsyncClient.getCallConnectionAsync(callerConnectionId);
@@ -1417,7 +1418,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             playOptions.setInterruptHoldAudio(true);
             // Play multiple files sources
             callMediaAsync.playWithResponse(playOptions).block();
-            HoldAudioPaused holdAudioPaused = waitForEvent(HoldAudioPaused.class, callerConnectionId, Duration.ofSeconds(20));
+            HoldAudioPaused holdAudioPaused
+                = waitForEvent(HoldAudioPaused.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(holdAudioPaused);
 
             PlayStarted playStarted = waitForEvent(PlayStarted.class, callerConnectionId, Duration.ofSeconds(20));
@@ -1426,12 +1428,14 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             PlayCompleted playCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playCompleted);
 
-            HoldAudioResumed holdAudioResumed = waitForEvent(HoldAudioResumed.class, callerConnectionId, Duration.ofSeconds(20));
+            HoldAudioResumed holdAudioResumed
+                = waitForEvent(HoldAudioResumed.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(holdAudioResumed);
 
             // unhold the participant
             callMediaAsync.unhold(receiver).block();
-            HoldAudioCompleted holdAudioCompleted = waitForEvent(HoldAudioCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            HoldAudioCompleted holdAudioCompleted
+                = waitForEvent(HoldAudioCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(holdAudioCompleted);
 
             sleepIfRunningAgainstService(3000);

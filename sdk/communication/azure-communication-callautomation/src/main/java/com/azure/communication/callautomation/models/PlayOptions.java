@@ -149,7 +149,7 @@ public final class PlayOptions {
      *
      * @return the interruptHoldAudio value.
      */
-    public boolean isInterruptHoldAudio() {
+    public Boolean isInterruptHoldAudio() {
         return this.interruptHoldAudio;
     }
 
@@ -159,7 +159,7 @@ public final class PlayOptions {
      * @param interruptHoldAudio the interruptHoldAudio value to set.
      * @return the PlayOptions object itself.
      */
-    public PlayOptions setInterruptHoldAudio(boolean interruptHoldAudio) {
+    public PlayOptions setInterruptHoldAudio(Boolean interruptHoldAudio) {
         this.interruptHoldAudio = interruptHoldAudio;
         return this;
     }
