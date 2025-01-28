@@ -2573,7 +2573,7 @@ public class StorageCrc64Calculator {
      */
     public static long concat(long uInitialCrcAB, long uInitialCrcA, long uFinalCrcA, long uSizeA, long uInitialCrcB,
         long uFinalCrcB, long uSizeB) {
-        long uFinalCrcAB = uFinalCrcA ^ ~0L; // Invert bits for unsigned logic
+        long uFinalCrcAB = ~uFinalCrcA;
 
         // Ensure unsigned behavior when comparing uInitialCrcA and uInitialCrcAB
         if ((uInitialCrcA) != (uInitialCrcAB)) {
@@ -2581,7 +2581,8 @@ public class StorageCrc64Calculator {
             uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB), uSizeA);
         }
 
-        uFinalCrcAB ^= (uInitialCrcB ^ ~0L); // Ensure unsigned XOR logic
+        //uFinalCrcAB ^= (uInitialCrcB ^ ~0L); // Ensure unsigned XOR logic
+        uFinalCrcAB ^= ~uInitialCrcB; // Ensure unsigned XOR logic
         uFinalCrcAB = multiplyCrcByPowerOfX(uFinalCrcAB, uSizeB);
         uFinalCrcAB ^= uFinalCrcB;
 

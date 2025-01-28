@@ -31,11 +31,11 @@ public class StorageCrc64CalculatorTests {
     }
 
     private static Stream<Arguments> testComputeSupplier() {
-        return Stream.of(Arguments.of("", 0, 0), Arguments.of("Hello World!", 0, "208604604655264165"),
-            Arguments.of("123456789!@#$%^&*()", 0, "2153758901452455624"),
+        return Stream.of(Arguments.of("", 0, 0), Arguments.of("Hello World!", 0, 208604604655264165L),
+            Arguments.of("123456789!@#$%^&*()", 0, 2153758901452455624L),
             Arguments.of(
                 "This is a test where the data is longer than 64 characters so that we can test that code path.", 0,
-                "2736107658526394369"));
+                2736107658526394369L));
     }
 
     @ParameterizedTest
@@ -48,7 +48,7 @@ public class StorageCrc64CalculatorTests {
     }
 
     private static Stream<Arguments> testComputeWithBinaryDataSupplier() {
-        return Stream.of(Arguments.of(0L, "C8E11B40D793D1526018", "3386042136331673945"), // '\\xC8\\xE1\\x1B\\x40\\xD7\\x93\\xD1\\x52\\x60\\x18'
+        return Stream.of(Arguments.of(0L, "C8E11B40D793D1526018", "3386042136331673945"),
             Arguments.of(208604604655264165L, "C8E11B40D793D1526018", "4570059697646401418"),
             Arguments.of(2153758901452455624L, "C8E11B40D793D1526018", "13366433516720813220"),
             Arguments.of(12345L, "C8E11B40D793D1526018", "5139183895903464380"),
@@ -108,11 +108,11 @@ public class StorageCrc64CalculatorTests {
         return Stream.of(Arguments.of(2, Constants.KB, Constants.KB), Arguments.of(3, Constants.KB, Constants.KB),
             Arguments.of(10, Constants.KB, Constants.KB), Arguments.of(2, Constants.KB, 4 * Constants.KB),
             Arguments.of(3, Constants.KB, 4 * Constants.KB), Arguments.of(10, Constants.KB, 4 * Constants.KB),
-            Arguments.of(2, Constants.KB, Constants.MB), // 1 MB
-            Arguments.of(3, Constants.KB, Constants.MB), // 1 MB
-            Arguments.of(2, Constants.KB, 512 * Constants.MB), // 512 MB
-            Arguments.of(3, Constants.KB, 512 * Constants.MB), // 512 MB
-            Arguments.of(2, Constants.KB, Constants.GB) // 1 GB
+            Arguments.of(2, Constants.KB, Constants.MB),
+            Arguments.of(3, Constants.KB, Constants.MB),
+            Arguments.of(2, Constants.KB, 512 * Constants.MB),
+            Arguments.of(3, Constants.KB, 512 * Constants.MB),
+            Arguments.of(2, Constants.KB, Constants.GB)
         );
     }
 
@@ -144,30 +144,37 @@ public class StorageCrc64CalculatorTests {
         return new BigInteger(value).longValue();
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "0, 0, 0, 0, 0, 0, 0, 0",
-        "556425425686929588, 346224202686926702, 16342296696377857982, 332915, 1153230192133190692, 12153371329672466699, 715661, 1441822370130745021",
-        "6707243468313456313, 572263087298867634, 16994544883182326144, 75745, 9131338361339398429, 10182915179976307502, 972831, 14966971284513070994",
-        "5753644013440131291, 5049702011265556767, 17549647897932809624, 255140, 7204171574261853450, 1993084328138883374, 793436, 6041621697050742380",
-        "6856094926385348025, 5380840211500611709, 9696539459657763690, 537777, 4787042077805010903, 13660128687379374948, 510799, 17784586126519415898",
-        "7768574238870932405, 97145001356670685, 607054043350981298, 706788, 667444555190985522, 10677778047180339455, 341788, 5763961866513573791",
-        "3302120679354661969, 7763531798276712053, 8827557196489825944, 490442, 8582969104890206846, 6702182603435500761, 558134, 4787302867829109706",
-        "7553023568245626261, 9093436341919279996, 10815569438302788871, 785480, 8305342016037017917, 6633140726058569127, 263096, 14625483825524673467",
-        "8894905328920043035, 9101951045389247372, 10098427678135105249, 782758, 8101576936188464286, 8318237935995533450, 265818, 5983082645903611588",
-        "1084935736425738155, 5378644106529179816, 13762475631325587388, 1014816, 8473418370223760471, 10401355811619715622, 33760, 3692020299859515126",
-        "889000539881195835, 2971048229276949174, 5346315327374690144, 307387, 1407121768110541356, 10535852615249992663, 741189, 3634018251978804152" })
-    void testConcatWithInitials(String initialStr, String initial1Str, String crc1Str, long size1, String initial2Str,
-        String crc2Str, long size2, String expectedStr) {
-        // Convert large unsigned values to signed long
-        long initial = unsignedLongFromString(initialStr);
-        long initial1 = unsignedLongFromString(initial1Str);
-        long crc1 = unsignedLongFromString(crc1Str);
-        long initial2 = unsignedLongFromString(initial2Str);
-        long crc2 = unsignedLongFromString(crc2Str);
-        long expected = unsignedLongFromString(expectedStr);
+@ParameterizedTest
+@MethodSource("testConcatWithInitialsSupplier")
+void testConcatWithInitials(String initialStr, String initial1Str, String crc1Str, String size1Str, String initial2Str,
+                            String crc2Str, String size2Str, String expectedStr) {
+    // Convert large unsigned values to signed long
+    long initial = unsignedLongFromString(initialStr);
+    long initial1 = unsignedLongFromString(initial1Str);
+    long crc1 = unsignedLongFromString(crc1Str);
+    long size1 = Long.parseLong(size1Str);
+    long initial2 = unsignedLongFromString(initial2Str);
+    long crc2 = unsignedLongFromString(crc2Str);
+    long size2 = Long.parseLong(size2Str);
+    long expected = unsignedLongFromString(expectedStr);
 
-        long actual = StorageCrc64Calculator.concat(initial, initial1, crc1, size1, initial2, crc2, size2);
-        assertEquals(expected, actual);
+    long actual = StorageCrc64Calculator.concat(initial, initial1, crc1, size1, initial2, crc2, size2);
+    assertEquals(expected, actual);
+}
+
+    private static Stream<Arguments> testConcatWithInitialsSupplier() {
+        return Stream.of(
+            Arguments.of("0", "0", "0", "0", "0", "0", "0", "0"),
+            Arguments.of("556425425686929588", "346224202686926702", "16342296696377857982", "332915", "1153230192133190692", "12153371329672466699", "715661", "1441822370130745021"),
+            Arguments.of("6707243468313456313", "572263087298867634", "16994544883182326144", "75745", "9131338361339398429", "10182915179976307502", "972831", "14966971284513070994"),
+            Arguments.of("5753644013440131291", "5049702011265556767", "17549647897932809624", "255140", "7204171574261853450", "1993084328138883374", "793436", "6041621697050742380"),
+            Arguments.of("6856094926385348025", "5380840211500611709", "9696539459657763690", "537777", "4787042077805010903", "13660128687379374948", "510799", "17784586126519415898"),
+            Arguments.of("7768574238870932405", "97145001356670685", "607054043350981298", "706788", "667444555190985522", "10677778047180339455", "341788", "5763961866513573791"),
+            Arguments.of("3302120679354661969", "7763531798276712053", "8827557196489825944", "490442", "8582969104890206846", "6702182603435500761", "558134", "4787302867829109706"),
+            Arguments.of("7553023568245626261", "9093436341919279996", "10815569438302788871", "785480", "8305342016037017917", "6633140726058569127", "263096", "14625483825524673467"),
+            Arguments.of("8894905328920043035", "9101951045389247372", "10098427678135105249", "782758", "8101576936188464286", "8318237935995533450", "265818", "5983082645903611588"),
+            Arguments.of("1084935736425738155", "5378644106529179816", "13762475631325587388", "1014816", "8473418370223760471", "10401355811619715622", "33760", "3692020299859515126"),
+            Arguments.of("889000539881195835", "2971048229276949174", "5346315327374690144", "307387", "1407121768110541356", "10535852615249992663", "741189", "3634018251978804152")
+        );
     }
 }
