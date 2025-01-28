@@ -53,20 +53,21 @@
   </properties>
 
   <dependencies>
-
-    <!-- compile dependencies -->
+    <!-- provided scope -->
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
       <version>0.8.1</version>
+      <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
     </dependency>
 
-    <!-- provided scope -->
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
