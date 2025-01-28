@@ -50,7 +50,7 @@ public class SimpleBlobClientUsage {
 
         try (ByteArrayInputStream dataStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8))) {
             blobClient.upload(dataStream, content.length(), true);
-            logger.log("Blob uploaded successfully.");
+            logger.info("Blob uploaded successfully.");
         } catch (IOException e) {
             logger.error("Failed to upload blob.", e);
         }
@@ -62,16 +62,16 @@ public class SimpleBlobClientUsage {
             .listBlobs(options, Context.none())
             .forEach(blobItem -> blobNames.add(blobItem.getName()));
 
-        AzureStorageBlobExample.logger.log("Blobs in container:");
+        logger.info("Blobs in container:");
         blobNames.forEach(logger::info);
 
         // Download the blob
         try {
             byte[] downloadedContent = new byte[(int) blobClient.getProperties().getBlobSize()];
             blobClient.download(downloadedContent, Context.none());
-            logger.log("Downloaded blob content: " + new String(downloadedContent, StandardCharsets.UTF_8));
+            logger.info("Downloaded blob content: " + new String(downloadedContent, StandardCharsets.UTF_8));
         } catch (BlobStorageException e) {
-            logger.logThrowableAsError("Failed to download blob.", e);
+            logger.error("Failed to download blob.", e);
         }
     }
 }
