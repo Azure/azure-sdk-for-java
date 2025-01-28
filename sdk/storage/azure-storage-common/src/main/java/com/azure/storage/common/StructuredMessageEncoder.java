@@ -192,39 +192,75 @@ public class StructuredMessageEncoder {
         StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
         this.innerBuffer = innerBuffer;
 
-        int count = 0;
-        int size;
-
-        if (innerBuffer.capacity() == contentLength) {
-            size = messageLength;
-        } else {
-            size = currentRegionLength;
-        }
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        while (count < size && tell() < messageLength) {
-            int remaining = size - count;
-            //If we are in a metadata region, encode the metadata
-            if (currentRegion == SMRegion.MESSAGE_HEADER
-                || currentRegion == SMRegion.SEGMENT_HEADER
-                || currentRegion == SMRegion.SEGMENT_FOOTER
-                || currentRegion == SMRegion.MESSAGE_FOOTER) {
-                count += encodeMetadataRegion(currentRegion, remaining, byteArrayOutputStream);
-                //If we are in the content region, encode the content
-            } else if (currentRegion == SMRegion.SEGMENT_CONTENT) {
-                count += encodeContent(remaining, byteArrayOutputStream);
-            } else {
-                throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
-            }
+        outerLoop: while (tell() < messageLength) {
+            switch (currentRegion) {
+                case MESSAGE_HEADER:
+                case SEGMENT_HEADER:
+                case SEGMENT_FOOTER:
+                case MESSAGE_FOOTER:
+                    encodeMetadataRegion(currentRegion, byteArrayOutputStream);
+                    break;
 
-            if (innerBuffer.capacity() == contentLength) {
-                size = messageLength;
-            } else {
-                size += currentRegionLength;
+                case SEGMENT_CONTENT:
+                    encodeContent(byteArrayOutputStream);
+                    if (currentRegion != SMRegion.SEGMENT_FOOTER && !innerBuffer.hasRemaining()) {
+                        break outerLoop;
+                    }
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
             }
         }
         return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
+    }
+
+    private void encodeMetadataRegion(SMRegion region, ByteArrayOutputStream output) {
+        byte[] metadata = getMetadataRegion(region);
+
+        int readSize = this.currentRegionLength;
+
+        output.write(metadata, 0, readSize);
+
+        this.currentRegionOffset += readSize;
+        // If we have read all the metadata for this region, advance to the next region
+        if (this.currentRegion != SMRegion.MESSAGE_FOOTER) {
+            advanceRegion(region);
+        }
+    }
+
+    private void encodeContent(ByteArrayOutputStream output) throws IOException {
+        int tempChecksumOffset = checksumOffset - contentOffset;
+
+        int readSize = Math.min(innerBuffer.remaining(), this.currentRegionLength - this.currentRegionOffset);
+
+        if (tempChecksumOffset != 0) {
+            readSize = Math.min(readSize, tempChecksumOffset);
+        }
+
+        byte[] content = new byte[readSize];
+        this.innerBuffer.get(content, 0, readSize);
+        output.write(content);
+
+        if (flags == Flags.STORAGE_CRC64) {
+            if (tempChecksumOffset == 0) {
+                this.segmentCRC64s.put(this.currentSegmentNumber,
+                    StorageCrc64Calculator.compute(content, this.segmentCRC64s.get(this.currentSegmentNumber)));
+                this.messageCRC64 = StorageCrc64Calculator.compute(content, this.messageCRC64);
+            }
+        }
+
+        this.contentOffset += readSize;
+        if (contentOffset > checksumOffset) {
+            checksumOffset += readSize;
+        }
+
+        this.currentRegionOffset += readSize;
+        if (this.currentRegionOffset == this.currentRegionLength) {
+            advanceRegion(SMRegion.SEGMENT_CONTENT);
+        }
     }
 
     private int calculateMessageLength() {
@@ -307,55 +343,6 @@ public class StructuredMessageEncoder {
         }
 
         updateCurrentRegionLength();
-    }
-
-    private int encodeMetadataRegion(SMRegion region, int size, ByteArrayOutputStream output) {
-        byte[] metadata = getMetadataRegion(region);
-
-        int readSize = Math.min(size, this.currentRegionLength - this.currentRegionOffset);
-
-        output.write(metadata, this.currentRegionOffset, readSize);
-
-        this.currentRegionOffset += readSize;
-        // If we have read all the metadata for this region, advance to the next region
-        if (this.currentRegionOffset == this.currentRegionLength && this.currentRegion != SMRegion.MESSAGE_FOOTER) {
-            advanceRegion(region);
-        }
-        return readSize;
-    }
-
-    private int encodeContent(int size, ByteArrayOutputStream output) throws IOException {
-        int tempChecksumOffset = checksumOffset - contentOffset;
-
-        int readSize = Math.min(size, this.currentRegionLength - this.currentRegionOffset);
-
-        if (tempChecksumOffset != 0) {
-            readSize = Math.min(readSize, tempChecksumOffset);
-        }
-
-        byte[] content = new byte[readSize];
-        this.innerBuffer.get(content, 0, readSize);
-        output.write(content);
-
-        if (flags == Flags.STORAGE_CRC64) {
-            if (tempChecksumOffset == 0) {
-                this.segmentCRC64s.put(this.currentSegmentNumber,
-                    StorageCrc64Calculator.compute(content, this.segmentCRC64s.get(this.currentSegmentNumber)));
-                this.messageCRC64 = StorageCrc64Calculator.compute(content, this.messageCRC64);
-            }
-        }
-
-        this.contentOffset += readSize;
-        if (contentOffset > checksumOffset) {
-            checksumOffset += readSize;
-        }
-
-        this.currentRegionOffset += readSize;
-        if (this.currentRegionOffset == this.currentRegionLength) {
-            advanceRegion(SMRegion.SEGMENT_CONTENT);
-        }
-
-        return readSize;
     }
 
     private void incrementCurrentSegment() {
