@@ -54,6 +54,12 @@ import java.util.stream.Collectors;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
+    /**
+     * Creates a new instance of the AnnotationProcessor.
+     */
+    public AnnotationProcessor() {
+    }
+
     @Override
     public SourceVersion getSupportedSourceVersion() {
         // Reflective fallback if SourceVersion.RELEASE_8 isn't available at compile time

@@ -15,7 +15,7 @@ import java.io.UncheckedIOException;
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
  */
-public class ResponseBodyModeGeneration {
+public final class ResponseBodyModeGeneration {
 
     /**
      * Generates response body mode assignment based on request options and return type.
@@ -148,5 +148,8 @@ public class ResponseBodyModeGeneration {
             methodBuilder.addStatement("$T responseBody = response.getBody()", BinaryData.class)
                 .addStatement("return decodeByteArray(responseBody.toBytes(), response, serializer, methodParser)");
         }
+    }
+
+    private ResponseBodyModeGeneration() {
     }
 }

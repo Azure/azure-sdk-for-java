@@ -16,6 +16,13 @@ import java.util.TreeMap;
  * Represents the input required for generating a template.
  */
 public class TemplateInput {
+
+    /**
+     * Initializes a new instance of the {@link TemplateInput} class.
+     */
+    public TemplateInput() {
+    }
+
     // A map of fully-qualified class names to their short names
     private final Map<String, String> imports = new TreeMap<>();
 

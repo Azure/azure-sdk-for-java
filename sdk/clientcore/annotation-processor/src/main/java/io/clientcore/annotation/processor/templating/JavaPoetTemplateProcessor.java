@@ -36,6 +36,13 @@ import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneratio
  * This class generates the implementation of the service interface.
  */
 public class JavaPoetTemplateProcessor implements TemplateProcessor {
+
+    /**
+     * Initializes a new instance of the {@link JavaPoetTemplateProcessor} class.
+     */
+    public JavaPoetTemplateProcessor() {
+    }
+
     private static final ClassName HTTP_HEADER_NAME = ClassName.bestGuess(HttpHeaderName.class.getName());
     private static final ClassName HTTP_HEADERS = ClassName.bestGuess(HttpHeaders.class.getName());
     private static final ClassName CONTENT_TYPE = ClassName.bestGuess(ContentType.class.getName());

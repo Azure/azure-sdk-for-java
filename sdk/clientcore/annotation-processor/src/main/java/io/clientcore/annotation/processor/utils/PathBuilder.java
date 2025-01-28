@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * This class is responsible for building the path of the request URL by replacing the placeholders with the actual
  */
-public class PathBuilder {
+public final class PathBuilder {
     // this class takes a 'raw host' string that contains {} delimited parameters, and needs to convert it into a
     // Java string concatenation that can be used in the generated code. For example, the raw host string:
     // https://{endpoint}/keys/{path1}
@@ -109,5 +109,8 @@ public class PathBuilder {
         }
 
         return result;
+    }
+
+    private PathBuilder() {
     }
 }
