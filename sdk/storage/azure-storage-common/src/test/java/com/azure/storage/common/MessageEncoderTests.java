@@ -130,7 +130,6 @@ public class MessageEncoderTests {
             Arguments.of(1234 * 1234 * 8, 1234 * 1234, Flags.STORAGE_CRC64));
     }
 
-    @Disabled
     @ParameterizedTest
     @MethodSource("readAllSupplier")
     public void readAll(int size, int segmentSize, Flags flags) throws IOException {
@@ -152,7 +151,6 @@ public class MessageEncoderTests {
             Arguments.of(11, Flags.STORAGE_CRC64));
     }
 
-    @Disabled
     @ParameterizedTest
     @MethodSource("readMultipleSupplier")
     public void readMultiple(int segmentSize, Flags flags) throws IOException {

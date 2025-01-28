@@ -34,14 +34,14 @@ public class StructuredMessageEncoder {
      */
     public static final int CRC64_LENGTH = 8;
 
-    private int messageVersion;
-    private int contentLength;
-    private int messageLength;
-    private Flags flags;
-    private ByteBuffer innerBuffer;
-    private int segmentSize;
-    private int numSegments;
+    private final int messageVersion;
+    private final int contentLength;
+    private final int messageLength;
+    private final Flags flags;
+    private final int segmentSize;
+    private final int numSegments;
 
+    private ByteBuffer innerBuffer;
     private int contentOffset;
     private int currentSegmentNumber;
     private SMRegion currentRegion;
@@ -49,7 +49,7 @@ public class StructuredMessageEncoder {
     private int currentRegionOffset;
     private int checksumOffset;
     private long messageCRC64;
-    private Map<Integer, Long> segmentCRC64s;
+    private final Map<Integer, Long> segmentCRC64s;
 
     private enum SMRegion {
         MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER, SEGMENT_CONTENT,
@@ -59,7 +59,7 @@ public class StructuredMessageEncoder {
      * temp comment to allow building
      */
     public StructuredMessageEncoder(int contentLength, int segmentSize, Flags flags) {
-        if (segmentSize < 1) { //python says at least 1, .net says at least 2?
+        if (segmentSize < 1) {
             throw new IllegalArgumentException("Segment size must be at least 1.");
         }
 
@@ -194,39 +194,30 @@ public class StructuredMessageEncoder {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        outerLoop: while (tell() < messageLength) {
-            switch (currentRegion) {
-                case MESSAGE_HEADER:
-                case SEGMENT_HEADER:
-                case SEGMENT_FOOTER:
-                case MESSAGE_FOOTER:
-                    encodeMetadataRegion(currentRegion, byteArrayOutputStream);
+        while (tell() < messageLength) {
+            if (currentRegion == SMRegion.SEGMENT_CONTENT) {
+                encodeContent(byteArrayOutputStream);
+                if (currentRegion != SMRegion.SEGMENT_FOOTER && !innerBuffer.hasRemaining()) {
                     break;
-
-                case SEGMENT_CONTENT:
-                    encodeContent(byteArrayOutputStream);
-                    if (currentRegion != SMRegion.SEGMENT_FOOTER && !innerBuffer.hasRemaining()) {
-                        break outerLoop;
-                    }
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
+                }
+            } else { // MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER
+                encodeMetadataRegion(currentRegion, byteArrayOutputStream);
             }
         }
+
         return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
     }
 
     private void encodeMetadataRegion(SMRegion region, ByteArrayOutputStream output) {
         byte[] metadata = getMetadataRegion(region);
 
-        int readSize = this.currentRegionLength;
+        int readSize = currentRegionLength;
 
         output.write(metadata, 0, readSize);
 
-        this.currentRegionOffset += readSize;
+        currentRegionOffset += readSize;
         // If we have read all the metadata for this region, advance to the next region
-        if (this.currentRegion != SMRegion.MESSAGE_FOOTER) {
+        if (currentRegion != SMRegion.MESSAGE_FOOTER) {
             advanceRegion(region);
         }
     }
@@ -234,31 +225,31 @@ public class StructuredMessageEncoder {
     private void encodeContent(ByteArrayOutputStream output) throws IOException {
         int tempChecksumOffset = checksumOffset - contentOffset;
 
-        int readSize = Math.min(innerBuffer.remaining(), this.currentRegionLength - this.currentRegionOffset);
+        int readSize = Math.min(innerBuffer.remaining(), currentRegionLength - currentRegionOffset);
 
         if (tempChecksumOffset != 0) {
             readSize = Math.min(readSize, tempChecksumOffset);
         }
 
         byte[] content = new byte[readSize];
-        this.innerBuffer.get(content, 0, readSize);
+        innerBuffer.get(content, 0, readSize);
         output.write(content);
 
         if (flags == Flags.STORAGE_CRC64) {
             if (tempChecksumOffset == 0) {
-                this.segmentCRC64s.put(this.currentSegmentNumber,
-                    StorageCrc64Calculator.compute(content, this.segmentCRC64s.get(this.currentSegmentNumber)));
-                this.messageCRC64 = StorageCrc64Calculator.compute(content, this.messageCRC64);
+                segmentCRC64s.put(currentSegmentNumber,
+                    StorageCrc64Calculator.compute(content, segmentCRC64s.get(currentSegmentNumber)));
+                messageCRC64 = StorageCrc64Calculator.compute(content, messageCRC64);
             }
         }
 
-        this.contentOffset += readSize;
+        contentOffset += readSize;
         if (contentOffset > checksumOffset) {
             checksumOffset += readSize;
         }
 
-        this.currentRegionOffset += readSize;
-        if (this.currentRegionOffset == this.currentRegionLength) {
+        currentRegionOffset += readSize;
+        if (currentRegionOffset == currentRegionLength) {
             advanceRegion(SMRegion.SEGMENT_CONTENT);
         }
     }
@@ -280,15 +271,15 @@ public class StructuredMessageEncoder {
                 break;
 
             case SEGMENT_HEADER:
-                int segmentSize = Math.min(this.segmentSize, contentLength - contentOffset);
-                metadata = generateSegmentHeader(currentSegmentNumber, segmentSize);
+                int segmentHeaderSize = Math.min(segmentSize, contentLength - contentOffset);
+                metadata = generateSegmentHeader(currentSegmentNumber, segmentHeaderSize);
                 break;
 
             case SEGMENT_FOOTER:
                 if (flags == Flags.STORAGE_CRC64) {
                     metadata = ByteBuffer.allocate(CRC64_LENGTH)
                         .order(ByteOrder.LITTLE_ENDIAN)
-                        .putLong(this.segmentCRC64s.get(this.currentSegmentNumber))
+                        .putLong(segmentCRC64s.get(currentSegmentNumber))
                         .array();
                 } else {
                     metadata = new byte[0];
@@ -299,7 +290,7 @@ public class StructuredMessageEncoder {
                 if (flags == Flags.STORAGE_CRC64) {
                     metadata = ByteBuffer.allocate(CRC64_LENGTH)
                         .order(ByteOrder.LITTLE_ENDIAN)
-                        .putLong(this.messageCRC64)
+                        .putLong(messageCRC64)
                         .array();
                 } else {
                     metadata = new byte[0];
