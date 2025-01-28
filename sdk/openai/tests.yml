@@ -4,7 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: openai
-    TestTimeoutInMinutes: 200
     CloudConfig:
       Public:
         ServiceConnection: azure-sdk-tests-openai
