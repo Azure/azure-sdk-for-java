@@ -6,6 +6,7 @@ package com.azure.storage.common;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,14 +42,14 @@ public class MessageEncoderTests {
         }
     }
 
-    private static ByteBuffer buildStructuredMessage(byte[] data, int segmentSize, Flags flags,
+    private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize, Flags flags,
         int invalidateCrcSegment) throws IOException {
-        int segmentCount = Math.max(1, (int) Math.ceil((double) data.length / segmentSize));
+        int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
         int segmentFooterLength = flags == Flags.STORAGE_CRC64 ? StructuredMessageEncoder.CRC64_LENGTH : 0;
 
         int messageLength = StructuredMessageEncoder.V1_HEADER_LENGTH
-            + ((StructuredMessageEncoder.V1_SEGMENT_HEADER_LENGTH + segmentFooterLength) * segmentCount) + data.length
-            + (flags == Flags.STORAGE_CRC64 ? StructuredMessageEncoder.CRC64_LENGTH : 0);
+            + ((StructuredMessageEncoder.V1_SEGMENT_HEADER_LENGTH + segmentFooterLength) * segmentCount)
+            + data.capacity() + (flags == Flags.STORAGE_CRC64 ? StructuredMessageEncoder.CRC64_LENGTH : 0);
 
         long messageCRC = 0;
 
@@ -62,9 +63,9 @@ public class MessageEncoderTests {
         ByteArrayOutputStream message = new ByteArrayOutputStream();
         message.write(buffer.array());
 
-        if (data.length == 0) {
+        if (data.capacity() == 0) {
             int crc = flags == Flags.STORAGE_CRC64 ? 0 : -1;
-            writeSegment(1, data, crc, message);
+            writeSegment(1, data.array(), crc, message);
         } else {
             // Segments
             int[] segmentSizes = new int[segmentCount];
@@ -104,9 +105,9 @@ public class MessageEncoderTests {
         return ByteBuffer.wrap(message.toByteArray());
     }
 
-    public static byte[] customCopyOfRange(byte[] original, int from, int size) {
-        int end = Math.min(from + size, original.length);
-        return Arrays.copyOfRange(original, from, end);
+    public static byte[] customCopyOfRange(ByteBuffer original, int from, int size) {
+        int end = Math.min(from + size, original.capacity());
+        return Arrays.copyOfRange(original.array(), from, end);
     }
 
     private static Stream<Arguments> readAllSupplier() {
@@ -129,7 +130,7 @@ public class MessageEncoderTests {
             Arguments.of(1234 * 1234 * 8, 1234 * 1234, Flags.STORAGE_CRC64));
     }
 
-    @Disabled
+    //@Disabled
     @ParameterizedTest
     @MethodSource("readAllSupplier")
     public void readAll(int size, int segmentSize, Flags flags) throws IOException {
@@ -137,11 +138,63 @@ public class MessageEncoderTests {
 
         ByteBuffer innerBuffer = ByteBuffer.wrap(data);
 
-        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(segmentSize, flags);
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
 
         byte[] actual = structuredMessageEncoder.encode(innerBuffer).array();
-        byte[] expected = buildStructuredMessage(data, segmentSize, flags, 0).array();
-        
+        byte[] expected = buildStructuredMessage(innerBuffer, segmentSize, flags, 0).array();
+
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void readTemp() throws IOException {
+        byte[] data = getRandomData(30);
+
+        ByteBuffer innerBuffer = ByteBuffer.wrap(data);
+
+        //
+        //        StructuredMessageEncoder structuredMessageEncoderOld
+        //            = new StructuredMessageEncoder(innerBuffer, 30, 30, Flags.NONE);
+        //        int count = 0;
+        //        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        //
+        //        while (count < structuredMessageEncoderOld.getMessageLength()) {
+        //            byte[] chunk = structuredMessageEncoderOld.encodeOld(10).array();
+        //
+        //            content.write(chunk);
+        //            count += 10;
+        //        }
+        //        byte[] oldArray = content.toByteArray();
+
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(30, 30, Flags.NONE);
+        byte[] newArray = structuredMessageEncoder.encode(innerBuffer).array();
+
+    }
+
+    @Test
+    public void readMultiple() throws IOException {
+        byte[] data1 = getRandomData(10);
+        byte[] data2 = getRandomData(10);
+        byte[] data3 = getRandomData(10);
+
+        ByteBuffer wrappedData1 = ByteBuffer.wrap(data1);
+        ByteBuffer wrappedData2 = ByteBuffer.wrap(data2);
+        ByteBuffer wrappedData3 = ByteBuffer.wrap(data3);
+
+        ByteBuffer allWrappedData = ByteBuffer.allocate(30);
+        allWrappedData.put(data1);
+        allWrappedData.put(data2);
+        allWrappedData.put(data3);
+
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(30, 30, Flags.NONE);
+
+        byte[] expected = buildStructuredMessage(allWrappedData, 30, Flags.NONE, 0).array();
+
+        ByteArrayOutputStream allActualData = new ByteArrayOutputStream();
+        allActualData.write(structuredMessageEncoder.encode(wrappedData1).array());
+        allActualData.write(structuredMessageEncoder.encode(wrappedData2).array());
+        allActualData.write(structuredMessageEncoder.encode(wrappedData3).array());
+
+        Assertions.assertArrayEquals(expected, allActualData.toByteArray());
     }
 }

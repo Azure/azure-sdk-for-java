@@ -58,14 +58,17 @@ public class StructuredMessageEncoder {
     /**
      * temp comment to allow building
      */
-    public StructuredMessageEncoder(int segmentSize, Flags flags) {
+    public StructuredMessageEncoder(int contentLength, int segmentSize, Flags flags) {
         if (segmentSize < 1) { //python says at least 1, .net says at least 2?
             throw new IllegalArgumentException("Segment size must be at least 1.");
         }
 
         this.messageVersion = DEFAULT_MESSAGE_VERSION;
+        this.contentLength = contentLength;
         this.flags = flags;
         this.segmentSize = segmentSize;
+        this.numSegments = Math.max(1, (int) Math.ceil((double) this.contentLength / this.segmentSize));
+        this.messageLength = calculateMessageLength();
         this.contentOffset = 0;
         this.currentSegmentNumber = 0;
         this.currentRegion = SMRegion.MESSAGE_HEADER;
@@ -188,16 +191,20 @@ public class StructuredMessageEncoder {
     public ByteBuffer encode(ByteBuffer innerBuffer) throws IOException {
         StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
         this.innerBuffer = innerBuffer;
-        this.contentLength = innerBuffer.capacity();
-        this.numSegments = Math.max(1, (int) Math.ceil((double) this.contentLength / this.segmentSize));
-        this.messageLength = calculateMessageLength();
 
         int count = 0;
+        int size;
+
+        if (innerBuffer.capacity() == contentLength) {
+            size = messageLength;
+        } else {
+            size = currentRegionLength;
+        }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        while (tell() < messageLength) {
-            int remaining = messageLength - count;
+        while (count < size && tell() < messageLength) {
+            int remaining = size - count;
             //If we are in a metadata region, encode the metadata
             if (currentRegion == SMRegion.MESSAGE_HEADER
                 || currentRegion == SMRegion.SEGMENT_HEADER
@@ -209,6 +216,12 @@ public class StructuredMessageEncoder {
                 count += encodeContent(remaining, byteArrayOutputStream);
             } else {
                 throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
+            }
+
+            if (innerBuffer.capacity() == contentLength) {
+                size = messageLength;
+            } else {
+                size += currentRegionLength;
             }
         }
         return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
@@ -358,82 +371,4 @@ public class StructuredMessageEncoder {
     public int getMessageLength() {
         return messageLength;
     }
-
-    // Untested
-    //
-    //    private int seek(int offset, SeekOrigin whence) {
-    //        System.out.println("Entering seek method");
-    //        System.out.println("Offset: " + offset);
-    //        System.out.println("Whence: " + whence);
-    //
-    //        int position;
-    //        switch (whence) {
-    //            case BEGIN:
-    //                position = offset;
-    //                break;
-    //
-    //            case CURRENT:
-    //                position = tell() + offset;
-    //                break;
-    //
-    //            case END:
-    //                position = messageLength + offset;
-    //                break;
-    //
-    //            default:
-    //                throw new IllegalArgumentException("Invalid value for whence: " + whence);
-    //        }
-    //
-    //        if (position > tell()) {
-    //            throw new UnsupportedOperationException("This stream only supports seeking backwards.");
-    //        }
-    //
-    //        if (position < getMessageHeaderLength()) { //message header
-    //            currentRegion = SMRegion.MESSAGE_HEADER;
-    //            currentRegionOffset = position;
-    //            contentOffset = 0;
-    //            currentSegmentNumber = 0;
-    //        } else if (position >= messageLength - getMessageFooterLength()) { //message footer
-    //            currentRegion = SMRegion.MESSAGE_FOOTER;
-    //            currentRegionOffset = position - (messageLength - getMessageFooterLength());
-    //            contentOffset = contentLength;
-    //            currentSegmentNumber = numSegments;
-    //        } else {
-    //            // The size of a "full" segment. Fine to use for calculating new segment number and pos
-    //            int fullSegmentSize = getSegmentHeaderLength() + segmentSize + getSegmentFooterLength();
-    //            int newSegmentNum = 1 + (position - getMessageHeaderLength()) / fullSegmentSize;
-    //            int segmentPos = (position - getMessageHeaderLength()) % fullSegmentSize;
-    //            int previousSegmentsTotalContentSize = (newSegmentNum - 1) * segmentSize;
-    //
-    //            // We need the size of the segment we are seeking to for some of the calculations below
-    //            int newSegmentSize = segmentSize;
-    //            if (newSegmentNum == numSegments) {
-    //                // The last segment size is the remaining content length
-    //                newSegmentSize = contentLength - previousSegmentsTotalContentSize;
-    //            }
-    //
-    //            if (segmentPos < getSegmentHeaderLength()) { // segment header
-    //                currentRegion = SMRegion.SEGMENT_HEADER;
-    //                currentRegionOffset = segmentPos;
-    //                contentOffset = previousSegmentsTotalContentSize;
-    //            } else if (segmentPos < getSegmentHeaderLength() + newSegmentSize) { //segment content
-    //                currentRegion = SMRegion.SEGMENT_CONTENT;
-    //                currentRegionOffset = segmentPos - getSegmentHeaderLength();
-    //                contentOffset = previousSegmentsTotalContentSize + currentRegionOffset;
-    //            } else { //segment footer
-    //                currentRegion = SMRegion.SEGMENT_FOOTER;
-    //                currentRegionOffset = segmentPos - getSegmentHeaderLength() - newSegmentSize;
-    //                contentOffset = previousSegmentsTotalContentSize + newSegmentSize;
-    //            }
-    //
-    //            currentSegmentNumber = newSegmentNum;
-    //        }
-    //
-    //        update_current_region_length();
-    //        innerBuffer.position(contentOffset);
-    //
-    //        System.out.println("New position: " + position);
-    //        System.out.println("Exiting seek method");
-    //        return position;
-    //    }
 }
