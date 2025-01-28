@@ -1588,7 +1588,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.createFile(fileName, 1024);
         String leaseId = createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        Response<Void> response = primaryDirectoryClient.deleteFileWithResponse(fileName, requestConditions, null, null);
+        Response<Void> response
+            = primaryDirectoryClient.deleteFileWithResponse(fileName, requestConditions, null, null);
         assertEquals(202, response.getStatusCode());
     }
 
@@ -1599,7 +1600,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.createFile(fileName, 1024);
         createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
 
-        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
+        ShareRequestConditions requestConditions
+            = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
         ShareStorageException exception = assertThrows(ShareStorageException.class, () -> {
             primaryDirectoryClient.deleteFileWithResponse(fileName, requestConditions, null, null);
         });
@@ -1641,7 +1643,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.createFile(fileName, 1024);
         String leaseId = createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        Response<Boolean> response = primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, requestConditions, null, null);
+        Response<Boolean> response
+            = primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, requestConditions, null, null);
         assertEquals(202, response.getStatusCode());
         assertTrue(response.getValue());
     }
@@ -1653,7 +1656,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.createFile(fileName, 1024);
         createLeaseClient(primaryDirectoryClient.getFileClient(fileName)).acquireLease();
 
-        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
+        ShareRequestConditions requestConditions
+            = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
         ShareStorageException exception = assertThrows(ShareStorageException.class, () -> {
             primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, requestConditions, null, null);
         });

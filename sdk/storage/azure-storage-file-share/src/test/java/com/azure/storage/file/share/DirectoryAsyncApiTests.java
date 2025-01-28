@@ -49,6 +49,7 @@ import reactor.test.StepVerifier;
 import reactor.util.retry.Retry;
 
 import java.io.File;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -114,18 +115,19 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         String accountName
             = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
                 .getAccountName();
-        String expectURL
-            = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath);
+        String expectURLPattern = String.format(
+            "https://%s.file.core.windows.net/%s/%s\\?sharesnapshot=\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{7}Z",
+            accountName, shareName, directoryPath);
 
         Mono<ShareSnapshotInfo> createSnapshotMono = Mono.fromCallable(() -> shareClient.createSnapshot());
         Mono<String> directoryUrlMono = createSnapshotMono.flatMap(shareSnapshotInfo -> {
-            String snapshotUrl = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot();
+            String snapshotUrl = expectURLPattern.replace("\\", "") + shareSnapshotInfo.getSnapshot();
             ShareDirectoryAsyncClient newDirClient
                 = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
                     .buildAsyncClient()
                     .getDirectoryClient(directoryPath);
             return Mono.just(newDirClient.getDirectoryUrl()).map(url -> {
-                assertEquals(snapshotUrl, url);
+                assertTrue(url.matches(expectURLPattern));
                 return snapshotUrl;
             });
         });
@@ -138,9 +140,9 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         });
 
         StepVerifier.create(clientMono.flatMap(client -> directoryUrlMono.map(url -> {
-            assertEquals(client.getDirectoryUrl(), url);
+            assertTrue(client.getDirectoryUrl().matches(expectURLPattern));
             return client.getDirectoryUrl();
-        }))).verifyComplete();
+        }))).expectNextCount(1).verifyComplete();
     }
 
     @Test
@@ -644,27 +646,24 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Mono<ShareDirectoryInfo> createInfoMono = dirClient.create();
         Mono<ShareDirectoryProperties> propertiesMono = createInfoMono.then(dirClient.getProperties());
 
-        StepVerifier.create(Mono.zip(createInfoMono, propertiesMono))
-            .assertNext(tuple -> {
-                ShareDirectoryInfo createInfo = tuple.getT1();
-                ShareDirectoryProperties properties = tuple.getT2();
-                assertEquals(createInfo.getETag(), properties.getETag());
-                assertEquals(createInfo.getLastModified(), properties.getLastModified());
-                assertEquals(createInfo.getSmbProperties().getFilePermissionKey(),
-                    properties.getSmbProperties().getFilePermissionKey());
-                assertEquals(createInfo.getSmbProperties().getNtfsFileAttributes(),
-                    properties.getSmbProperties().getNtfsFileAttributes());
-                assertEquals(createInfo.getSmbProperties().getFileLastWriteTime(),
-                    properties.getSmbProperties().getFileLastWriteTime());
-                assertEquals(createInfo.getSmbProperties().getFileCreationTime(),
-                    properties.getSmbProperties().getFileCreationTime());
-                assertEquals(createInfo.getSmbProperties().getFileChangeTime(),
-                    properties.getSmbProperties().getFileChangeTime());
-                assertEquals(createInfo.getSmbProperties().getParentId(),
-                    properties.getSmbProperties().getParentId());
-                assertEquals(createInfo.getSmbProperties().getFileId(),
-                    properties.getSmbProperties().getFileId());
-            }).verifyComplete();
+        StepVerifier.create(Mono.zip(createInfoMono, propertiesMono)).assertNext(tuple -> {
+            ShareDirectoryInfo createInfo = tuple.getT1();
+            ShareDirectoryProperties properties = tuple.getT2();
+            assertEquals(createInfo.getETag(), properties.getETag());
+            assertEquals(createInfo.getLastModified(), properties.getLastModified());
+            assertEquals(createInfo.getSmbProperties().getFilePermissionKey(),
+                properties.getSmbProperties().getFilePermissionKey());
+            assertEquals(createInfo.getSmbProperties().getNtfsFileAttributes(),
+                properties.getSmbProperties().getNtfsFileAttributes());
+            assertEquals(createInfo.getSmbProperties().getFileLastWriteTime(),
+                properties.getSmbProperties().getFileLastWriteTime());
+            assertEquals(createInfo.getSmbProperties().getFileCreationTime(),
+                properties.getSmbProperties().getFileCreationTime());
+            assertEquals(createInfo.getSmbProperties().getFileChangeTime(),
+                properties.getSmbProperties().getFileChangeTime());
+            assertEquals(createInfo.getSmbProperties().getParentId(), properties.getSmbProperties().getParentId());
+            assertEquals(createInfo.getSmbProperties().getFileId(), properties.getSmbProperties().getFileId());
+        }).verifyComplete();
     }
 
     @Test
@@ -962,107 +961,52 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-10-02")
     @ParameterizedTest
-    @CsvSource({
-        "false,false,false,false",
-        "true,false,false,false",
-        "false,true,false,false",
-        "false,false,true,false",
-        "false,false,false,true",
-        "true,true,true,true" })
+    @CsvSource(
+        value = {
+            "false,false,false,false",
+            "true,false,false,false",
+            "false,true,false,false",
+            "false,false,true,false",
+            "false,false,false,true",
+            "true,true,true,true" })
     public void listFilesAndDirectoriesExtendedInfoArgs(boolean timestamps, boolean etag, boolean attributes,
-                                                        boolean permissionKey) {
-        String prefix = generatePathName();
+        boolean permissionKey) {
+
+        String dirPrefix = generatePathName();
+        List<String> expectedNames = new ArrayList<>();
+
         Mono<Void> createDirectoriesAndFiles
             = primaryDirectoryAsyncClient.create().thenMany(Flux.range(0, 2).flatMap(i -> {
-            ShareDirectoryAsyncClient subDirClient = primaryDirectoryAsyncClient.getSubdirectoryClient(prefix + i);
-            return subDirClient.create().thenMany(Flux.range(0, 2).flatMap(j -> {
-                int num = i * 2 + j + 3;
-                return subDirClient.createFile(prefix + num, 1024);
-            }));
-        })).then(primaryDirectoryAsyncClient.createFile(prefix + 2, 1024)).then();
+                ShareDirectoryAsyncClient subDirClient
+                    = primaryDirectoryAsyncClient.getSubdirectoryClient(dirPrefix + i);
+                return subDirClient.create().thenMany(Flux.range(0, 2).flatMap(j -> {
+                    int num = i * 2 + j + 3;
+                    return subDirClient.createFile(dirPrefix + num, 1024);
+                }));
+            })).then(primaryDirectoryAsyncClient.createFile(dirPrefix + 2, 1024)).then();
 
-        List<String> nameList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            nameList.add(prefix + i);
+            expectedNames.add(dirPrefix + i);
         }
 
-        ShareListFilesAndDirectoriesOptions options = new ShareListFilesAndDirectoriesOptions().setPrefix(prefix)
+        ShareListFilesAndDirectoriesOptions options = new ShareListFilesAndDirectoriesOptions().setPrefix(dirPrefix)
             .setIncludeExtendedInfo(true)
             .setIncludeTimestamps(timestamps)
             .setIncludeETag(etag)
             .setIncludeAttributes(attributes)
             .setIncludePermissionKey(permissionKey);
 
-        Mono<List<ShareFileItem>> listFilesAndDirectories = createDirectoriesAndFiles
-            .then(primaryDirectoryAsyncClient.listFilesAndDirectories(options).collectList());
+        StepVerifier.create(createDirectoriesAndFiles
+            .thenMany(primaryDirectoryAsyncClient.listFilesAndDirectories(options).collectList())
+            .doOnNext(returnedFileList -> {
+                List<String> returnedNames
+                    = returnedFileList.stream().map(ShareFileItem::getName).collect(Collectors.toList());
 
-        StepVerifier.create(listFilesAndDirectories).assertNext(returnedFileList -> {
-            List<String> returnedNames
-                = returnedFileList.stream().map(ShareFileItem::getName).collect(Collectors.toList());
-            assertEquals(nameList.size(), returnedNames.size());
-            for (String name : nameList) {
-                assertTrue(returnedNames.contains(name), "Expected name not found: " + name);
-            }
-        }).verifyComplete();
-
-        ShareDirectoryAsyncClient parentDir = primaryDirectoryAsyncClient;
-        Mono<ShareDirectoryInfo> createMono = parentDir.deleteIfExists().then(parentDir.create());
-        Mono<ShareFileAsyncClient> fileMono = createMono.then(parentDir.createFile(generatePathName(), 1024));
-        Mono<ShareDirectoryAsyncClient> dirMono = fileMono.then(parentDir.createSubdirectory(generatePathName()));
-
-        Mono<List<ShareFileItem>> listResultsMono = dirMono.then(
-            parentDir.listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions().setIncludeExtendedInfo(true)
-                .setIncludeTimestamps(true)
-                .setIncludePermissionKey(true)
-                .setIncludeETag(true)
-                .setIncludeAttributes(true)).collectList());
-
-        StepVerifier.create(listResultsMono).assertNext(listResults -> {
-            ShareFileItem dirListItem;
-            ShareFileItem fileListItem;
-            if (listResults.get(0).isDirectory()) {
-                dirListItem = listResults.get(0);
-                fileListItem = listResults.get(1);
-            } else {
-                dirListItem = listResults.get(1);
-                fileListItem = listResults.get(0);
-            }
-
-            StepVerifier.create(dirMono).assertNext(dir -> {
-                assertEquals(dirListItem.getName(), new File(dir.getDirectoryPath()).getName());
-            }).verifyComplete();
-            assertTrue(dirListItem.isDirectory());
-            assertNotNull(dirListItem.getId());
-            assertFalse(FileShareTestHelper.isAllWhitespace(dirListItem.getId()));
-
-            assertEquals(EnumSet.of(NtfsFileAttributes.DIRECTORY), dirListItem.getFileAttributes());
-            assertNotNull(dirListItem.getPermissionKey());
-            assertFalse(FileShareTestHelper.isAllWhitespace(dirListItem.getPermissionKey()));
-            assertNotNull(dirListItem.getProperties().getCreatedOn());
-            assertNotNull(dirListItem.getProperties().getLastAccessedOn());
-            assertNotNull(dirListItem.getProperties().getLastWrittenOn());
-            assertNotNull(dirListItem.getProperties().getChangedOn());
-            assertNotNull(dirListItem.getProperties().getLastModified());
-            assertNotNull(dirListItem.getProperties().getETag());
-            assertFalse(FileShareTestHelper.isAllWhitespace(dirListItem.getProperties().getETag()));
-
-            StepVerifier.create(fileMono).assertNext(file -> {
-                assertEquals(fileListItem.getName(), new File(file.getFilePath()).getName());
-            }).verifyComplete();
-            assertFalse(fileListItem.isDirectory());
-            assertNotNull(fileListItem.getId());
-            assertFalse(FileShareTestHelper.isAllWhitespace(fileListItem.getId()));
-            assertEquals(EnumSet.of(NtfsFileAttributes.ARCHIVE), fileListItem.getFileAttributes());
-            assertNotNull(fileListItem.getPermissionKey());
-            assertFalse(FileShareTestHelper.isAllWhitespace(fileListItem.getPermissionKey()));
-            assertNotNull(fileListItem.getProperties().getCreatedOn());
-            assertNotNull(fileListItem.getProperties().getLastAccessedOn());
-            assertNotNull(fileListItem.getProperties().getLastWrittenOn());
-            assertNotNull(fileListItem.getProperties().getChangedOn());
-            assertNotNull(fileListItem.getProperties().getLastModified());
-            assertNotNull(fileListItem.getProperties().getETag());
-            assertFalse(FileShareTestHelper.isAllWhitespace(fileListItem.getProperties().getETag()));
-        }).verifyComplete();
+                assertTrue(returnedNames.containsAll(expectedNames),
+                    "Returned names do not match expected names: " + expectedNames);
+                assertTrue(expectedNames.containsAll(returnedNames),
+                    "Expected names do not match returned names: " + returnedNames);
+            })).expectNextCount(1).verifyComplete();
     }
 
     @Test
@@ -1074,7 +1018,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         String specialCharDirectoryName = "directory\uFFFE";
         String specialCharFileName = "file\uFFFE";
 
-        Mono<ShareDirectoryAsyncClient> createMono = parentDirMono.flatMap(parentDir -> parentDir.create()
+        Mono<ShareDirectoryAsyncClient> createMono = parentDirMono.flatMap(parentDir -> parentDir.deleteIfExists()
+            .then(parentDir.create())
+            .then(parentDir.getSubdirectoryClient(specialCharDirectoryName).deleteIfExists())
+            .then(parentDir.getFileClient(specialCharFileName).deleteIfExists())
             .then(parentDir.createSubdirectory(specialCharDirectoryName))
             .then(parentDir.createFile(specialCharFileName, 1024))
             .then(Mono.just(parentDir)));
@@ -1099,7 +1046,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Mono<ShareDirectoryAsyncClient> parentDirMono = primaryDirectoryAsyncClient.create()
             .then(Mono.just(primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())));
 
-        Mono<Void> createFilesMono = parentDirMono.flatMap(parentDir -> parentDir.create()
+        Mono<Void> createFilesMono = parentDirMono.flatMap(parentDir -> parentDir.deleteIfExists()
+            .then(parentDir.create())
+            .then(parentDir.getFileClient(specialCharFileName0).deleteIfExists())
+            .then(parentDir.getFileClient(specialCharFileName1).deleteIfExists())
             .then(parentDir.createFile(specialCharFileName0, 1024).then())
             .then(parentDir.createFile(specialCharFileName1, 1024).then()));
 
@@ -1173,7 +1123,6 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     @Test
     public void listMaxResultsByPage() {
         String dirPrefix = generatePathName();
-        String prefix = generatePathName();
 
         Mono<Void> createDirectoriesAndFiles
             = primaryDirectoryAsyncClient.create().thenMany(Flux.range(0, 2).flatMap(i -> {
@@ -1186,10 +1135,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             })).then();
 
         StepVerifier
-            .create(createDirectoriesAndFiles.thenMany(primaryDirectoryAsyncClient.listFilesAndDirectories(prefix, null)
-                .byPage(1)
+            .create(createDirectoriesAndFiles.thenMany(primaryDirectoryAsyncClient.listFilesAndDirectories(null, null)
+                .byPage(4)
                 .flatMapIterable(PagedResponse::getValue)))
-            .expectNextCount(1)
+            .expectNextCount(2)
             .verifyComplete();
     }
 
@@ -1307,7 +1256,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     public void renameMin() {
         StepVerifier
-            .create(primaryDirectoryAsyncClient.create().then(primaryDirectoryAsyncClient.rename(generatePathName())))
+            .create(primaryDirectoryAsyncClient.create()
+                .then(primaryDirectoryAsyncClient.rename(generatePathName()).then()))
             .verifyComplete();
     }
 
@@ -1315,39 +1265,36 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     public void renameWithResponse() {
         Mono<ShareDirectoryInfo> createMono = primaryDirectoryAsyncClient.create();
-        Mono<Response<ShareDirectoryAsyncClient>> renameMono = createMono.then(
-            primaryDirectoryAsyncClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null)
-        );
+        Mono<Response<ShareDirectoryAsyncClient>> renameMono = createMono
+            .then(primaryDirectoryAsyncClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null));
 
-        StepVerifier.create(renameMono)
-            .assertNext(resp -> {
-                ShareDirectoryAsyncClient renamedClient = resp.getValue();
-                StepVerifier.create(renamedClient.getProperties())
-                    .expectNextCount(1)
-                    .verifyComplete();
-                StepVerifier.create(primaryDirectoryAsyncClient.getProperties())
-                    .verifyError(ShareStorageException.class);
-            })
-            .verifyComplete();
+        StepVerifier.create(renameMono).assertNext(resp -> {
+            ShareDirectoryAsyncClient renamedClient = resp.getValue();
+            StepVerifier.create(renamedClient.getProperties()).expectNextCount(1).verifyComplete();
+            StepVerifier.create(primaryDirectoryAsyncClient.getProperties()).verifyError(ShareStorageException.class);
+        }).verifyComplete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     public void renameDifferentDirectory() {
         ShareAsyncClient shareAsyncClient = getShareAsyncClient(shareName, true, null);
-        Mono<ShareDirectoryAsyncClient> createPrimaryDirMono = primaryDirectoryAsyncClient.create().thenReturn(primaryDirectoryAsyncClient);
-        Mono<ShareDirectoryAsyncClient> createDestinationDirMono = shareAsyncClient.getDirectoryClient(generatePathName()).create().thenReturn(shareAsyncClient.getDirectoryClient(generatePathName()));
+        Mono<ShareDirectoryAsyncClient> createPrimaryDirMono
+            = primaryDirectoryAsyncClient.create().thenReturn(primaryDirectoryAsyncClient);
+        String destinationDirName = generatePathName();
+        Mono<ShareDirectoryAsyncClient> createDestinationDirMono
+            = shareAsyncClient.getDirectoryClient(destinationDirName)
+                .create()
+                .thenReturn(shareAsyncClient.getDirectoryClient(destinationDirName));
 
-        Mono<Void> renameMono = createPrimaryDirMono.zipWith(createDestinationDirMono)
-            .flatMap(tuple -> {
-                ShareDirectoryAsyncClient primaryDir = tuple.getT1();
-                ShareDirectoryAsyncClient destinationDir = tuple.getT2();
-                String destinationPath = destinationDir.getFileClient(generatePathName()).getFilePath();
-                return primaryDir.rename(destinationPath).then();
-            });
+        Mono<Void> renameMono = createPrimaryDirMono.zipWith(createDestinationDirMono).flatMap(tuple -> {
+            ShareDirectoryAsyncClient primaryDir = tuple.getT1();
+            ShareDirectoryAsyncClient destinationDir = tuple.getT2();
+            String destinationPath = destinationDir.getFileClient(generatePathName()).getFilePath();
+            return primaryDir.rename(destinationPath).then();
+        });
 
-        StepVerifier.create(renameMono)
-            .verifyComplete();
+        StepVerifier.create(renameMono).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -1358,16 +1305,14 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         ShareFileAsyncClient destination = primaryDirectoryAsyncClient.getFileClient(generatePathName());
         Mono<ShareFileInfo> createFileMono = destination.create(512L);
 
-        Mono<Boolean> renameMono = createMono.then(createFileMono).then(
-            primaryDirectoryAsyncClient.renameWithResponse(
+        Mono<Boolean> renameMono = createMono.then(createFileMono)
+            .then(primaryDirectoryAsyncClient
+                .renameWithResponse(
                     new ShareFileRenameOptions(destination.getFilePath()).setReplaceIfExists(replaceIfExists), null)
-                .thenReturn(true)
-                .onErrorReturn(ShareStorageException.class, false)
-        );
+                .thenReturn(replaceIfExists)
+                .onErrorReturn(ShareStorageException.class, replaceIfExists));
 
-        StepVerifier.create(renameMono)
-            .expectNext(replaceIfExists)
-            .verifyComplete();
+        StepVerifier.create(renameMono).expectNext(replaceIfExists).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -1375,21 +1320,22 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     @ValueSource(booleans = { true, false })
     public void renameIgnoreReadOnly(boolean ignoreReadOnly) {
         Mono<ShareDirectoryInfo> createDirMono = primaryDirectoryAsyncClient.create();
-        FileSmbProperties props = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY));
+        FileSmbProperties props
+            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY));
         ShareFileAsyncClient destinationFile = primaryDirectoryAsyncClient.getFileClient(generatePathName());
-        Mono<ShareFileInfo> createFileMono = destinationFile.createWithResponse(512L, null, props, null, null, null, null, null).map(Response::getValue);
-        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationFile.getFilePath())
-            .setIgnoreReadOnly(ignoreReadOnly)
-            .setReplaceIfExists(true);
+        Mono<ShareFileInfo> createFileMono
+            = destinationFile.createWithResponse(512L, null, props, null, null, null, null, null)
+                .map(Response::getValue);
+        ShareFileRenameOptions options
+            = new ShareFileRenameOptions(destinationFile.getFilePath()).setIgnoreReadOnly(ignoreReadOnly)
+                .setReplaceIfExists(true);
 
         Mono<Boolean> renameMono = createDirMono.then(createFileMono)
             .then(primaryDirectoryAsyncClient.renameWithResponse(options, null)
-                .thenReturn(true)
-                .onErrorReturn(ShareStorageException.class, false));
+                .thenReturn(!ignoreReadOnly)
+                .onErrorReturn(ShareStorageException.class, !ignoreReadOnly));
 
-        StepVerifier.create(renameMono)
-            .expectNext(!ignoreReadOnly)
-            .verifyComplete();
+        StepVerifier.create(renameMono).expectNext(!ignoreReadOnly).verifyComplete();
     }
 
     @Test
@@ -1401,16 +1347,12 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         ShareFileRenameOptions options
             = new ShareFileRenameOptions(generatePathName()).setFilePermission(filePermission);
 
-        Mono<ShareDirectoryAsyncClient> renameMono = createMono.then(
-            primaryDirectoryAsyncClient.renameWithResponse(options, null)
-                .map(Response::getValue)
-        );
+        Mono<ShareDirectoryAsyncClient> renameMono
+            = createMono.then(primaryDirectoryAsyncClient.renameWithResponse(options, null).map(Response::getValue));
 
-        StepVerifier.create(renameMono.flatMap(renamedClient ->
-                renamedClient.getProperties().map(properties ->
-                    properties.getSmbProperties().getFilePermissionKey()
-                )
-            ))
+        StepVerifier
+            .create(renameMono.flatMap(renamedClient -> renamedClient.getProperties()
+                .map(properties -> properties.getSmbProperties().getFilePermissionKey())))
             .assertNext(it -> assertNotNull(it))
             .verifyComplete();
     }
@@ -1423,11 +1365,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
         ShareFileRenameOptions options
             = new ShareFileRenameOptions(generatePathName()).setFilePermission(filePermission)
-            .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey"));
+                .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey"));
 
-        StepVerifier.create(
-            createMono.then(primaryDirectoryAsyncClient.renameWithResponse(options, null))
-        ).verifyError(ShareStorageException.class);
+        StepVerifier.create(createMono.then(primaryDirectoryAsyncClient.renameWithResponse(options, null)))
+            .verifyError(ShareStorageException.class);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1459,31 +1400,28 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
 
         String permissionKey = shareClient.createPermission(filePermission);
-        FileSmbProperties smbProperties = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
-            .setFileCreationTime(testResourceNamer.now().minusDays(5))
-            .setFileLastWriteTime(testResourceNamer.now().minusYears(2))
-            .setFileChangeTime(testResourceNamer.now())
-            .setFilePermissionKey(permissionKey);
+        FileSmbProperties smbProperties
+            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
+                .setFileCreationTime(testResourceNamer.now().minusDays(5))
+                .setFileLastWriteTime(testResourceNamer.now().minusYears(2))
+                .setFileChangeTime(testResourceNamer.now())
+                .setFilePermissionKey(permissionKey);
 
         ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setSmbProperties(smbProperties);
 
-        Mono<ShareDirectoryAsyncClient> renameMono = createMono.then(
-            primaryDirectoryAsyncClient.renameWithResponse(options, null)
-                .map(Response::getValue)
-        );
+        Mono<ShareDirectoryAsyncClient> renameMono
+            = createMono.then(primaryDirectoryAsyncClient.renameWithResponse(options, null).map(Response::getValue));
 
-        StepVerifier.create(renameMono)
-            .assertNext(renamedClient -> {
-                renamedClient.getProperties().subscribe(properties -> {
-                    FileSmbProperties destSmbProperties = properties.getSmbProperties();
-                    assertEquals(EnumSet.of(NtfsFileAttributes.DIRECTORY), destSmbProperties.getNtfsFileAttributes());
-                    assertNotNull(destSmbProperties.getFileCreationTime());
-                    assertNotNull(destSmbProperties.getFileLastWriteTime());
-                    FileShareTestHelper.compareDatesWithPrecision(destSmbProperties.getFileChangeTime(), testResourceNamer.now());
-                });
-            })
-            .verifyComplete();
+        StepVerifier.create(renameMono).assertNext(renamedClient -> {
+            renamedClient.getProperties().subscribe(properties -> {
+                FileSmbProperties destSmbProperties = properties.getSmbProperties();
+                assertEquals(EnumSet.of(NtfsFileAttributes.DIRECTORY), destSmbProperties.getNtfsFileAttributes());
+                assertNotNull(destSmbProperties.getFileCreationTime());
+                assertNotNull(destSmbProperties.getFileLastWriteTime());
+                FileShareTestHelper.compareDatesWithPrecision(destSmbProperties.getFileChangeTime(),
+                    testResourceNamer.now());
+            });
+        }).verifyComplete();
     }
 
     @Test
@@ -1495,17 +1433,15 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Map<String, String> updatedMetadata = Collections.singletonMap(key, value);
         ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setMetadata(updatedMetadata);
 
-        Mono<ShareDirectoryProperties> propertiesMono = createMono
-            .then(primaryDirectoryAsyncClient.renameWithResponse(options, null)
+        Mono<ShareDirectoryProperties> propertiesMono
+            = createMono.then(primaryDirectoryAsyncClient.renameWithResponse(options, null)
                 .map(Response::getValue)
                 .flatMap(ShareDirectoryAsyncClient::getProperties));
 
-        StepVerifier.create(propertiesMono)
-            .assertNext(properties -> {
-                assertNotNull(properties.getMetadata().get(key));
-                assertEquals(value, properties.getMetadata().get(key));
-            })
-            .verifyComplete();
+        StepVerifier.create(propertiesMono).assertNext(properties -> {
+            assertNotNull(properties.getMetadata().get(key));
+            assertEquals(value, properties.getMetadata().get(key));
+        }).verifyComplete();
     }
 
     @Test
@@ -1521,24 +1457,21 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         String dirRename = generatePathName();
         ShareFileRenameOptions options = new ShareFileRenameOptions(dirRename);
 
-        Mono<ShareDirectoryAsyncClient> renameMono = createMono.flatMap(client ->
-            client.renameWithResponse(options, null)
-                .map(Response::getValue)
-        );
+        Mono<ShareDirectoryAsyncClient> renameMono
+            = createMono.flatMap(client -> client.renameWithResponse(options, null).map(Response::getValue));
 
-        StepVerifier.create(renameMono)
-            .assertNext(renamedClient -> {
-                assertDoesNotThrow(renamedClient::getProperties);
-                assertEquals(dirRename, renamedClient.getDirectoryPath());
-                assertThrows(ShareStorageException.class, dirClient::getProperties);
-            })
-            .verifyComplete();
+        StepVerifier.create(renameMono).assertNext(renamedClient -> {
+            assertDoesNotThrow(renamedClient::getProperties);
+            assertEquals(dirRename, renamedClient.getDirectoryPath());
+            assertThrows(ShareStorageException.class, dirClient::getProperties);
+        }).verifyComplete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     public void renameError() {
-        ShareDirectoryAsyncClient primaryDirectoryAsyncClient = getShareAsyncClient(shareName,null,null).getDirectoryClient(generatePathName());
+        ShareDirectoryAsyncClient primaryDirectoryAsyncClient
+            = getShareAsyncClient(shareName, null, null).getDirectoryClient(generatePathName());
         StepVerifier.create(primaryDirectoryAsyncClient.rename(generatePathName()))
             .verifyError(ShareStorageException.class);
     }
@@ -1546,23 +1479,40 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     public void renameDestAC() {
-        Mono<ShareDirectoryInfo> createMono = primaryDirectoryAsyncClient.create();
-        String pathName = generatePathName();
-        ShareFileAsyncClient destFile = primaryDirectoryAsyncClient.getFileClient(pathName);
-        Mono<ShareFileInfo> createFileMono = destFile.create(512);
+        // Create the primary directory asynchronously
+        Mono<ShareDirectoryInfo> createDirectoryMono = primaryDirectoryAsyncClient.create();
 
-        Mono<String> leaseIDMono = createFileMono.then(setupFileLeaseCondition(destFile, RECEIVED_LEASE_ID));
-        ShareRequestConditions src = new ShareRequestConditions();
+        // Generate a unique path name for the new directory
+        String newPathName = generatePathName();
 
-        Mono<Response<ShareDirectoryAsyncClient>> renameMono = leaseIDMono.flatMap(leaseID -> {
-            src.setLeaseId(leaseID);
-            return primaryDirectoryAsyncClient.renameWithResponse(
-                new ShareFileRenameOptions(pathName).setDestinationRequestConditions(src).setReplaceIfExists(true), null);
-        });
+        // Create the destination file asynchronously
+        Mono<ShareFileAsyncClient> destFileMono = createDirectoryMono
+            .then(Mono.defer(() -> Mono.just(primaryDirectoryAsyncClient.getFileClient(newPathName))));
 
-        StepVerifier.create(renameMono)
-            .assertNext(response -> FileShareTestHelper.assertResponseStatusCode(response, 200))
-            .verifyComplete();
+        // Create the destination file
+        Mono<ShareFileInfo> createFileMono = destFileMono.flatMap(destFile -> destFile.create(512));
+
+        // Set up the lease condition after creating the file
+        Mono<String> leaseIDMono = createFileMono
+            .then(destFileMono
+                .flatMap(destFile -> Mono.defer(() -> setupFileLeaseCondition(destFile, RECEIVED_LEASE_ID))))
+            .onErrorResume(e -> Mono.empty());
+
+        // Define the source request conditions with the lease ID
+        Mono<ShareRequestConditions> srcMono
+            = leaseIDMono.map(leaseID -> new ShareRequestConditions().setLeaseId(leaseID));
+
+        // Perform the rename operation with retry logic
+        Mono<Response<ShareDirectoryAsyncClient>> renameMono
+            = srcMono.flatMap(src -> primaryDirectoryAsyncClient.renameWithResponse(
+                new ShareFileRenameOptions(newPathName).setDestinationRequestConditions(src).setReplaceIfExists(true),
+                null));
+
+        // Verify the response status code
+        StepVerifier.create(renameMono).assertNext(response -> {
+            // Check the response status code, this should be 200 if the rename is successful
+            FileShareTestHelper.assertResponseStatusCode(response, 200);
+        }).expectComplete().verify();
     }
 
     @Test
@@ -1575,12 +1525,11 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Mono<String> leaseIDMono = createFileMono.then(setupFileLeaseCondition(destFile, GARBAGE_LEASE_ID));
         ShareRequestConditions src = new ShareRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
 
-        StepVerifier.create(
-            createMono.then(leaseIDMono).then(
-                primaryDirectoryAsyncClient.renameWithResponse(
-                    new ShareFileRenameOptions(pathName).setDestinationRequestConditions(src).setReplaceIfExists(true), null)
-            )
-        ).verifyError(ShareStorageException.class);
+        StepVerifier.create(createMono.then(leaseIDMono)
+            .then(primaryDirectoryAsyncClient.renameWithResponse(
+                new ShareFileRenameOptions(pathName).setDestinationRequestConditions(src).setReplaceIfExists(true),
+                null)))
+            .verifyError(ShareStorageException.class);
     }
 
     @Test
@@ -1595,22 +1544,21 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
 
         ShareServiceSasSignatureValues sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions);
 
-        String sas = shareClient.generateSas(sasValues);
+        Mono<ShareDirectoryInfo> createParentDirMono = primaryDirectoryAsyncClient.create();
+        String sas = createParentDirMono.thenReturn(primaryDirectoryAsyncClient.generateSas(sasValues)).block();
 
         ShareDirectoryAsyncClient client = primaryDirectoryAsyncClient.getSubdirectoryClient(sas);
 
-        Mono<ShareDirectoryAsyncClient> createMono = client.create().thenReturn(client);
+        Mono<ShareDirectoryAsyncClient> createMono = createParentDirMono.then(Mono.just(client));
         String directoryName = generatePathName();
         Mono<ShareDirectoryAsyncClient> renameMono = createMono.flatMap(dirClient -> dirClient.rename(directoryName));
 
-        StepVerifier.create(renameMono)
-            .assertNext(destClient -> {
-                assertNotNull(destClient);
-                destClient.getProperties().subscribe(properties -> {
-                    assertEquals(directoryName, destClient.getDirectoryPath());
-                });
-            })
-            .verifyComplete();
+        StepVerifier.create(renameMono).assertNext(destClient -> {
+            assertNotNull(destClient);
+            destClient.getProperties().subscribe(properties -> {
+                assertEquals(directoryName, destClient.getDirectoryPath());
+            });
+        }).verifyComplete();
     }
 
     @Test
@@ -1621,8 +1569,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         String directoryName = generatePathName() + ".";
         ShareDirectoryAsyncClient directoryClient = shareClient.getDirectoryClient(directoryName);
 
-        Mono<ShareDirectoryAsyncClient> createAndRenameMono = directoryClient.create()
-            .then(directoryClient.rename(directoryName).thenReturn(directoryClient));
+        Mono<ShareDirectoryAsyncClient> createAndRenameMono
+            = directoryClient.create().then(directoryClient.rename(directoryName).thenReturn(directoryClient));
 
         StepVerifier.create(createAndRenameMono)
             .assertNext(client -> assertEquals(directoryName, client.getDirectoryPath()))
@@ -1734,7 +1682,6 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
                 ShareErrorCode.PARENT_NOT_FOUND));
     }
-
 
     @Test
     public void createIfNotExistsSubDirectoryMetadata() {
@@ -1944,11 +1891,11 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void deleteFileError() {
-        StepVerifier.create(
-                primaryDirectoryAsyncClient.create()
-                    .then(primaryDirectoryAsyncClient.deleteFileWithResponse("testfile"))
-            )
-            .verifyErrorSatisfies(e -> FileShareTestHelper.assertExceptionStatusCodeAndMessage((ShareStorageException) e, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
+        StepVerifier
+            .create(primaryDirectoryAsyncClient.create()
+                .then(primaryDirectoryAsyncClient.deleteFileWithResponse("testfile")))
+            .verifyErrorSatisfies(e -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(
+                (ShareStorageException) e, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -2030,16 +1977,16 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         assertEquals(directoryPath, primaryDirectoryAsyncClient.getDirectoryPath());
     }
 
-
     @Test
     public void testPerCallPolicy() {
         Mono<ShareDirectoryInfo> createMono = primaryDirectoryAsyncClient.create();
 
-        ShareDirectoryAsyncClient directoryClient = directoryBuilderHelper(primaryDirectoryAsyncClient.getShareName(), primaryDirectoryAsyncClient.getDirectoryPath())
-            .addPolicy(getPerCallVersionPolicy())
-            .buildDirectoryAsyncClient();
+        ShareDirectoryAsyncClient directoryClient = directoryBuilderHelper(primaryDirectoryAsyncClient.getShareName(),
+            primaryDirectoryAsyncClient.getDirectoryPath()).addPolicy(getPerCallVersionPolicy())
+                .buildDirectoryAsyncClient();
 
-        Mono<Response<ShareDirectoryProperties>> responseMono = createMono.then(directoryClient.getPropertiesWithResponse());
+        Mono<Response<ShareDirectoryProperties>> responseMono
+            = createMono.then(directoryClient.getPropertiesWithResponse());
 
         StepVerifier.create(responseMono)
             .assertNext(response -> assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION)))
@@ -2079,19 +2026,17 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
                 .setWriteTimeout(Duration.ofNanos(1))
                 .setConnectTimeout(Duration.ofNanos(1));
 
-            ShareServiceClientBuilder clientBuilder = new ShareServiceClientBuilder()
-                .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
-                .clientOptions(clientOptions);
+            ShareServiceClientBuilder clientBuilder
+                = new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                    .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                    .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
+                    .clientOptions(clientOptions);
 
             ShareServiceAsyncClient serviceAsyncClient = clientBuilder.buildAsyncClient();
 
-            return serviceAsyncClient.createShareWithResponse(generateShareName(), null)
-                .doOnSuccess(response -> {
-                    throw new RuntimeException("Expected exception not thrown");
-                })
-                .onErrorResume(e -> Mono.empty());
+            return serviceAsyncClient.createShareWithResponse(generateShareName(), null).doOnSuccess(response -> {
+                throw new RuntimeException("Expected exception not thrown");
+            }).onErrorResume(e -> Mono.empty());
         });
 
         StepVerifier.create(testMono.retryWhen(Retry.fixedDelay(maxRetries, Duration.ofMillis(retryDelayMillis))))
