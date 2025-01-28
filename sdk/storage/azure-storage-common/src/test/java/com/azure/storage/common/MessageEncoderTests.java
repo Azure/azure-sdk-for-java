@@ -6,7 +6,6 @@ package com.azure.storage.common;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -116,80 +115,33 @@ public class MessageEncoderTests {
             Arguments.of(1024, 1024, Flags.NONE), Arguments.of(1024, 1024, Flags.STORAGE_CRC64),
             Arguments.of(1024, 512, Flags.NONE), Arguments.of(1024, 512, Flags.STORAGE_CRC64),
             Arguments.of(1024, 200, Flags.NONE), Arguments.of(1024, 200, Flags.STORAGE_CRC64),
-            Arguments.of(123456, 1234, Flags.NONE), Arguments.of(123456, 1234, Flags.STORAGE_CRC64),
-            Arguments.of(10 * 1024, 1, Flags.NONE), Arguments.of(10 * 1024, 1, Flags.STORAGE_CRC64),
-            Arguments.of(50 * 1024, 512, Flags.NONE), Arguments.of(50 * 1024, 512, Flags.STORAGE_CRC64));
+            Arguments.of(1024 * 10, 2, Flags.NONE), Arguments.of(1024 * 10, 2, Flags.STORAGE_CRC64),
+            Arguments.of(1025 * 50, 512, Flags.NONE), Arguments.of(1024 * 50, 512, Flags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024, 512, Flags.NONE), Arguments.of(1024 * 1024, 512, Flags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024, 1024, Flags.NONE), Arguments.of(1024 * 1024, 1024, Flags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024 * 4, 1024 * 1024, Flags.NONE),
+            Arguments.of(1024 * 1024 * 4, 1024 * 1024, Flags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024 * 8, 1024 * 1024, Flags.NONE),
+            Arguments.of(1024 * 1024 * 8, 1024 * 1024, Flags.STORAGE_CRC64), Arguments.of(1234, 123, Flags.NONE),
+            Arguments.of(1234, 123, Flags.STORAGE_CRC64), Arguments.of(1234 * 10, 12, Flags.NONE),
+            Arguments.of(1234 * 10, 12, Flags.STORAGE_CRC64), Arguments.of(1234 * 1234, 567, Flags.NONE),
+            Arguments.of(1234 * 1234, 567, Flags.STORAGE_CRC64), Arguments.of(1234 * 1234 * 8, 1234 * 1234, Flags.NONE),
+            Arguments.of(1234 * 1234 * 8, 1234 * 1234, Flags.STORAGE_CRC64));
     }
 
     @Disabled
     @ParameterizedTest
     @MethodSource("readAllSupplier")
-    public void readAll(int size, int segment, Flags flags) throws IOException {
+    public void readAll(int size, int segmentSize, Flags flags) throws IOException {
         byte[] data = getRandomData(size);
 
         ByteBuffer innerBuffer = ByteBuffer.wrap(data);
-        StructuredMessageEncoder structuredMessageEncoder
-            = new StructuredMessageEncoder(innerBuffer, size, segment, flags);
 
-        byte[] actual = structuredMessageEncoder.encode(-1).array();
-        byte[] expected = buildStructuredMessage(data, segment, flags, 0).array();
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(segmentSize, flags);
 
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    private static Stream<Arguments> readChunksSupplier() {
-        return Stream.of(Arguments.of(10, 10, 1, Flags.NONE), Arguments.of(10, 10, 1, Flags.STORAGE_CRC64),
-            Arguments.of(1024, 512, 512, Flags.NONE), Arguments.of(1024, 512, 512, Flags.STORAGE_CRC64),
-            Arguments.of(1024, 512, 123, Flags.NONE), Arguments.of(1024, 512, 123, Flags.STORAGE_CRC64),
-            Arguments.of(1024, 200, 512, Flags.NONE), Arguments.of(1024, 200, 512, Flags.STORAGE_CRC64),
-            Arguments.of(123456, 678, 90, Flags.NONE), Arguments.of(123456, 678, 90, Flags.STORAGE_CRC64),
-            Arguments.of(10 * 1024 * 1024, 4 * 1024 * 1024, 1024 * 1024, Flags.NONE),
-            Arguments.of(10 * 1024 * 1024, 4 * 1024 * 1024, 1024 * 1024, Flags.STORAGE_CRC64));
-    }
-
-    @Disabled
-    @ParameterizedTest
-    @MethodSource("readChunksSupplier")
-    public void readChunks(int size, int segmentSize, int chunkSize, Flags flags) throws IOException {
-        byte[] data = getRandomData(size);
-
-        ByteBuffer innerBuffer = ByteBuffer.wrap(data);
-        StructuredMessageEncoder structuredMessageEncoder
-            = new StructuredMessageEncoder(innerBuffer, size, segmentSize, flags);
-
-        int count = 0;
-        ByteArrayOutputStream content = new ByteArrayOutputStream();
-
-        while (count < structuredMessageEncoder.getMessageLength()) {
-            byte[] chunk = structuredMessageEncoder.encode(chunkSize).array();
-            assert (chunk.length == Math.min(chunkSize, structuredMessageEncoder.getMessageLength() - count));
-
-            content.write(chunk);
-            count += chunkSize;
-        }
-
+        byte[] actual = structuredMessageEncoder.encode(innerBuffer).array();
         byte[] expected = buildStructuredMessage(data, segmentSize, flags, 0).array();
-
-        Assertions.assertArrayEquals(expected, content.toByteArray());
-    }
-
-    @Disabled
-    @Test
-    public void readPastEnd() throws IOException {
-        byte[] data = getRandomData(10);
-        ByteBuffer innerBuffer = ByteBuffer.wrap(data);
-
-        StructuredMessageEncoder structuredMessageEncoder
-            = new StructuredMessageEncoder(innerBuffer, data.length, 4 * 1024 * 1024, Flags.STORAGE_CRC64);
-
-        byte[] expected = buildStructuredMessage(data, 4 * 1024 * 1024, Flags.STORAGE_CRC64, 0).array();
-
-        byte[] actual = structuredMessageEncoder.encode(100).array();
+        
         Assertions.assertArrayEquals(expected, actual);
-
-        actual = structuredMessageEncoder.encode(100).array();
-        assert (actual.length == 0);
     }
-
-    //todo isbr: test_random_reads
 }

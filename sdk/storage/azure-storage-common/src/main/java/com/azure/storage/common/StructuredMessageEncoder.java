@@ -58,22 +58,14 @@ public class StructuredMessageEncoder {
     /**
      * temp comment to allow building
      */
-    public StructuredMessageEncoder(ByteBuffer innerBuffer, int contentLength, int segmentSize, Flags flags) {
-        StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
+    public StructuredMessageEncoder(int segmentSize, Flags flags) {
         if (segmentSize < 1) { //python says at least 1, .net says at least 2?
-            throw new IllegalArgumentException("Segment size must be at least 2.");
+            throw new IllegalArgumentException("Segment size must be at least 1.");
         }
 
         this.messageVersion = DEFAULT_MESSAGE_VERSION;
-        this.contentLength = contentLength;
         this.flags = flags;
-        this.innerBuffer = innerBuffer;
         this.segmentSize = segmentSize;
-        this.numSegments = (int) Math.ceil((double) this.contentLength / this.segmentSize);
-        if (this.numSegments == 0) {
-            this.numSegments = 1;
-        }
-        this.messageLength = calculateMessageLength();
         this.contentOffset = 0;
         this.currentSegmentNumber = 0;
         this.currentRegion = SMRegion.MESSAGE_HEADER;
@@ -193,20 +185,19 @@ public class StructuredMessageEncoder {
     /**
      * temp comment to allow building
      */
-    public ByteBuffer encode(int size) throws IOException {
-        if (size == 0) {
-            return ByteBuffer.allocate(0);
-        }
-        if (size < 0) {
-            size = Integer.MAX_VALUE;
-        }
+    public ByteBuffer encode(ByteBuffer innerBuffer) throws IOException {
+        StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
+        this.innerBuffer = innerBuffer;
+        this.contentLength = innerBuffer.capacity();
+        this.numSegments = Math.max(1, (int) Math.ceil((double) this.contentLength / this.segmentSize));
+        this.messageLength = calculateMessageLength();
 
         int count = 0;
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        while (count < size && tell() < messageLength) {
-            int remaining = size - count;
+        while (tell() < messageLength) {
+            int remaining = messageLength - count;
             //If we are in a metadata region, encode the metadata
             if (currentRegion == SMRegion.MESSAGE_HEADER
                 || currentRegion == SMRegion.SEGMENT_HEADER
