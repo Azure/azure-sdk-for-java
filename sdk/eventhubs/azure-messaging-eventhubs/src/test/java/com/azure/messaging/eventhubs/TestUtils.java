@@ -93,7 +93,6 @@ public final class TestUtils {
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
-    static final Integer REPLICATION_SEGMENT = 33;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
