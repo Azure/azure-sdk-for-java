@@ -50,6 +50,14 @@ public class OpenAIOkHttpClientTestBase {
     static final AzureOpenAIServiceVersion AZURE_OPENAI_SERVICE_VERSION_PREVIEW = AzureOpenAIServiceVersion.getV2024_08_01_PREVIEW();
     static final String USER_CONTENT = "Who won the world series in 2020?";
 
+    String getEndpoint() {
+        String azureOpenaiEndpoint = System.getenv("AZURE_OPENAI_ENDPOINT");
+        if (azureOpenaiEndpoint.endsWith("/")) {
+            azureOpenaiEndpoint = azureOpenaiEndpoint.substring(0, azureOpenaiEndpoint.length() - 1);
+        }
+        return azureOpenaiEndpoint;
+    }
+
     // This method will be removed when Azure Identity library supports Azure TokenCredential as a Supplier of String
     static Supplier<String> getBearerTokenCredentialProvider(TokenCredential azureTokenCredential) {
         return AuthenticationUtil.getBearerTokenSupplier(

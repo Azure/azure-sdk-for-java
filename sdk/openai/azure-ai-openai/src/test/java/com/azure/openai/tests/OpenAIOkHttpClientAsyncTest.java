@@ -60,7 +60,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         if (AZURE_OPEN_AI.equals(apiType)) {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
                     .credential(AzureApiKeyCredential.create(System.getenv("AZURE_OPENAI_KEY")))
-                    .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"));
+                    .baseUrl(getEndpoint());
         } else if (OPEN_AI.equals(apiType)) {
             clientBuilder.credential(BearerTokenCredential.create(System.getenv("NON_AZURE_OPENAI_KEY")));
         } else {
@@ -96,7 +96,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         OpenAIOkHttpClientAsync.Builder clientBuilder = OpenAIOkHttpClientAsync.builder();
         if (AZURE_OPEN_AI.equals(apiType)) {
             setAzureServiceApiVersion(clientBuilder, apiVersion)
-                .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
+                .baseUrl(getEndpoint())
                 // This requires `azure-identity` dependency.
                 .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
         } else {
