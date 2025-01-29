@@ -3,12 +3,15 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
@@ -291,10 +294,12 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     @Override
     public Mono<ShouldRetryResult> handleFeedRangeGone(final RxDocumentClientImpl client,
-                                                       final GoneException goneException) {
+                                                       final GoneException goneException,
+                                                       final RxDocumentServiceRequest request) {
 
         checkNotNull(client, "Argument 'client' must not be null");
-        checkNotNull(goneException, "Argument 'goeException' must not be null");
+        checkNotNull(goneException, "Argument 'goneException' must not be null");
+        checkNotNull(request, "Argument 'request' must not be null");
 
         Integer nSubStatus = goneException.getSubStatusCode();
 
@@ -314,14 +319,24 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.tryGetOverlappingRanges(partitionKeyRangeCache, effectiveTokenRange, true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
-            if (resolvedRanges.v != null) {
-                if (resolvedRanges.v.size() == 1) {
-                    // Merge happen, will continue draining from the current range
-                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to merge for range [{}]", effectiveTokenRange);
-                } else {
-                    this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
-                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to split for range [{}]", effectiveTokenRange);
+            if (resolvedRanges.v == null || resolvedRanges.v.isEmpty()) {
+                // Cannot find any matching child ranges, it is possible that the container has been re-created
+                // throw BadRequestException here to allow FeedRangeContinuationFeedRangeGoneRetryPolicy to refresh the cache and retry
+                BadRequestException badRequestException = new BadRequestException(
+                    "Failed to find at least one child range for range [" + effectiveTokenRange + "]",
+                    HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS);
+                if (request.requestContext != null) {
+                    BridgeInternal.setCosmosDiagnostics(badRequestException, request.requestContext.cosmosDiagnostics);
                 }
+                return Mono.error(badRequestException);
+            }
+
+            if (resolvedRanges.v.size() == 1) {
+                // Merge happen, will continue draining from the current range
+                LOGGER.debug("ChangeFeedFetcher detected feed range gone due to merge for range [{}]", effectiveTokenRange);
+            } else {
+                this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
+                LOGGER.debug("ChangeFeedFetcher detected feed range gone due to split for range [{}]", effectiveTokenRange);
             }
             return Mono.just(ShouldRetryResult.RETRY_NOW);
         });

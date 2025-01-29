@@ -4,9 +4,14 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -30,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -204,6 +210,9 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private MetadataDiagnosticsContext diagnosticsContext;
         private final RetryContext retryContext;
         private final Supplier<String> operationContextTextProvider;
+        private RxCollectionCache rxCollectionCache;
+        private int staleContainerRetryCount;
+        private RxDocumentServiceRequest request;
 
         public FeedRangeContinuationFeedRangeGoneRetryPolicy(
             RxDocumentClientImpl client,
@@ -211,7 +220,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             DocumentClientRetryPolicy nextRetryPolicy,
             Map<String, Object> requestOptionProperties,
             RetryContext retryContext,
-            Supplier<String> operationContextTextProvider) {
+            Supplier<String> operationContextTextProvider,
+            RxCollectionCache collectionCache) {
 
             checkNotNull(
                 operationContextTextProvider,
@@ -223,10 +233,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             this.diagnosticsContext = null;
             this.retryContext = retryContext;
             this.operationContextTextProvider = operationContextTextProvider;
+            this.rxCollectionCache = collectionCache;
+            this.staleContainerRetryCount = 0;
         }
 
         @Override
         public void onBeforeSendRequest(RxDocumentServiceRequest request) {
+            this.request = request;
             this.diagnosticsContext =
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
             this.nextRetryPolicy.onBeforeSendRequest(request);
@@ -261,13 +274,20 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                     this.state.getContainerRid(),
                                     this.state.getFeedRange(),
                                     effectiveRange)))
-                            .flatMap(state -> state.getContinuation().handleFeedRangeGone(client, (GoneException)e));
+                            .flatMap(state -> state.getContinuation().handleFeedRangeGone(client, (GoneException)e, this.request))
+                            .onErrorResume(throwable -> {
+                                if (isStaleContainerException(throwable)) {
+                                    return this.handleStaleContainerException(throwable);
+                                }
+
+                                return Mono.error(throwable);
+                            });
                     }
 
                     return this
                         .state
                         .getContinuation()
-                        .handleFeedRangeGone(client, (GoneException)e)
+                        .handleFeedRangeGone(client, (GoneException)e, this.request)
                         .flatMap(feedRangeGoneShouldRetryResult -> {
                             if (!feedRangeGoneShouldRetryResult.shouldRetry) {
                                 LOGGER.warn(
@@ -282,6 +302,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                             }
 
                             return Mono.just(feedRangeGoneShouldRetryResult);
+                        })
+                        .onErrorResume(throwable -> {
+                            if (isStaleContainerException(throwable)) {
+                                return handleStaleContainerException(throwable);
+                            }
+
+                            return Mono.error(throwable);
                         });
                 }
 
@@ -293,6 +320,36 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         @Override
         public RetryContext getRetryContext() {
             return this.retryContext;
+        }
+
+        private Mono<ShouldRetryResult> handleStaleContainerException(Throwable throwable) {
+            return this.shouldRetryOnStaleContainer()
+                .flatMap(shouldRetryOnStaleContainer -> {
+                    if (shouldRetryOnStaleContainer.shouldRetry) {
+                        return Mono.just(shouldRetryOnStaleContainer);
+                    }
+
+                    return Mono.error(throwable);
+                });
+        }
+
+        private boolean isStaleContainerException(Throwable throwable) {
+            CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+            return cosmosException != null &&
+                Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.BADREQUEST) &&
+                Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS);
+        }
+
+        private Mono<ShouldRetryResult> shouldRetryOnStaleContainer() {
+            this.staleContainerRetryCount++;
+            if (this.rxCollectionCache == null || this.staleContainerRetryCount > 1) {
+                return Mono.just(ShouldRetryResult.noRetry());
+            }
+
+            return this.rxCollectionCache
+                .refreshAsync(null, this.request)
+                .then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
         }
     }
 
@@ -337,7 +394,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 retryPolicyInstance,
                 requestOptionProperties,
                 retryPolicyInstance.getRetryContext(),
-                this::getOperationContextText);
+                this::getOperationContextText,
+                client.getCollectionCache());
         }
 
         return feedRangeContinuationRetryPolicy;

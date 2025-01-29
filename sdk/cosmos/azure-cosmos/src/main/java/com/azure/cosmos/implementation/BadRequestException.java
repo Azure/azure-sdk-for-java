@@ -88,4 +88,9 @@ public class BadRequestException extends CosmosException {
             HttpConstants.StatusCodes.BADREQUEST,
             requestUrlString);
     }
+
+    public BadRequestException(String message, int subStatusCode) {
+        this(message);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
+    }
 }

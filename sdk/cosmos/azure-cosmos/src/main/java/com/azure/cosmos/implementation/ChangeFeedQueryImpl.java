@@ -41,6 +41,7 @@ class ChangeFeedQueryImpl<T> {
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final String documentsLink;
     private final String collectionLink;
+    private final String collectionRid;
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final Class<T> klass;
     private final CosmosChangeFeedRequestOptions options;
@@ -79,6 +80,7 @@ class ChangeFeedQueryImpl<T> {
         this.resourceType = resourceType;
         this.klass = klass;
         this.collectionLink = collectionLink;
+        this.collectionRid = collectionRid;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
         this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
@@ -141,6 +143,10 @@ class ChangeFeedQueryImpl<T> {
         if (this.client.getConsistencyLevel() != null) {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
+
+        // always populate the collectionRid header
+        // in case of container has been recreated, this will allow correct error being returned to SDK
+        headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, this.collectionRid);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
