@@ -16,6 +16,7 @@ public class ThinClientTest {
         try {
             //String thinclientEndpoint = "https://cdb-ms-stage-eastus2-fe2.eastus2.cloudapp.azure.com:10650";
             String thinclientEndpoint = "https://chukangzhongstagesignoff.documents-staging.windows-ppe.net:443/";
+            // TODO: figure out how to set up auth, using TestConfigurations key for now
             System.setProperty(Configs.THINCLIENT_ENABLED, "true");
             System.setProperty(Configs.THINCLIENT_ENDPOINT, thinclientEndpoint);
             System.setProperty(Configs.HTTP2_ENABLED, "true");
@@ -28,12 +29,11 @@ public class ThinClientTest {
 
             //CosmosPagedFlux<CosmosDatabaseProperties> feedObservable = client.readAllDatabases();
 
-/*        CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("ChangeFeedTestContainer");
-        TestItem testItem = TestItem.createNewItem();
-        System.out.println(testItem.getId());
-        container.createItem(testItem).block();
-        container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class)
-            .block();*/
+            CosmosAsyncContainer container = client.getDatabase("TestDatabase").getContainer("ChangeFeedTestContainer");
+            TestItem testItem = TestItem.createNewItem();
+            System.out.println(testItem.getId());
+            container.createItem(testItem).block();
+            container.readItem(testItem.getId(), new PartitionKey(testItem.getId()), JsonNode.class).block();
         } finally {
             System.clearProperty(Configs.THINCLIENT_ENABLED);
             System.clearProperty(Configs.THINCLIENT_ENDPOINT);

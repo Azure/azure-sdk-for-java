@@ -194,11 +194,11 @@ public class LocationCache {
      * @param request Request for which getEndpoint is to be resolved
      * @return Resolved getEndpoint
      */
-    public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
+    public LocationEndpoints resolveServiceEndpoint(RxDocumentServiceRequest request) {
         Objects.requireNonNull(request.requestContext,
             "RxDocumentServiceRequest.requestContext is required and cannot be null.");
         if(request.requestContext.locationEndpointToRoute != null) {
-            return request.requestContext.locationEndpointToRoute;
+            return new LocationEndpoints(request.requestContext.locationEndpointToRoute);
         }
 
         int locationIndex = Utils.getValueOrDefault(request.requestContext.locationIndexToRoute, 0);
@@ -215,14 +215,15 @@ public class LocationCache {
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
                 URI thinclientEndpoint = currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation).thinClientEndpoint;
                 URI gatewayEndpoint = currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation).gatewayEndpoint;
-                return thinclientEndpoint != null ? thinclientEndpoint : gatewayEndpoint;
+                // Bubble up both endpoints so we can try both before we have to do a cross-region retry
+                return new LocationEndpoints(gatewayEndpoint, thinclientEndpoint);
             } else {
-                return this.defaultEndpoint;
+                return new LocationEndpoints(this.defaultEndpoint);
             }
         } else {
             UnmodifiableList<URI> endpoints =
                 request.getOperationType().isWriteOperation()? this.getApplicableWriteEndpoints(request) : this.getApplicableReadEndpoints(request);
-            return endpoints.get(locationIndex % endpoints.size());
+            return new LocationEndpoints(endpoints.get(locationIndex % endpoints.size()));
         }
     }
 
@@ -233,6 +234,7 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
 
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
+        UnmodifiableList<URI> thinclientWriteEndpoints = this.get();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -732,14 +734,14 @@ public class LocationCache {
             if (!Strings.isNullOrEmpty(dbAccountLocation.getName())) {
                 try {
                     String location = dbAccountLocation.getName().toLowerCase(Locale.ROOT);
-                    if (!endpointsByLocation.containsKey(location)) {
-                        endpointsByLocation.put(location, new LocationEndpoints());
-                    }
                     URI endpoint = new URI(dbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
                     if (isThinclient) {
+                        // there should be a LocationEndpoints object with gateway endpoint at this point
                         endpointsByLocation.get(location).thinClientEndpoint = endpoint;
                     } else {
-                        endpointsByLocation.get(location).gatewayEndpoint = endpoint;
+                        if (!endpointsByLocation.containsKey(location)) {
+                            endpointsByLocation.put(location, new LocationEndpoints(endpoint));
+                        }
                     }
                     regionByEndpoint.put(endpoint, dbAccountLocation.getName().toLowerCase(Locale.ROOT));
                     parsedLocations.add(dbAccountLocation.getName());
@@ -760,6 +762,7 @@ public class LocationCache {
         Map<URI, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();
 
+        // order is important here, always check for gateway first to ensure we have a gateway endpoint
         if (gatewayLocations != null) {
             addEndpoints(gatewayLocations, endpointsByLocation, regionByEndpoint, parsedLocations, false);
         }
@@ -846,28 +849,17 @@ public class LocationCache {
         return excludedRegionsSupplier != null && excludedRegionsSupplier.get() != null;
     }
 
-    private static class LocationEndpoints {
-        private URI gatewayEndpoint;
-        private URI thinClientEndpoint;
+    public static class LocationEndpoints {
+        public URI gatewayEndpoint;
+        public URI thinClientEndpoint;
 
-        private LocationEndpoints() {
-            this.gatewayEndpoint = null;
+        public LocationEndpoints(URI gatewayEndpoint) {
+            this.gatewayEndpoint = gatewayEndpoint;
             this.thinClientEndpoint = null;
         }
 
-        private URI getGatewayEndpoint() {
-            return this.gatewayEndpoint;
-        }
-
-        private void setGatewayEndpoint(URI gatewayEndpoint) {
+        public LocationEndpoints(URI gatewayEndpoint, URI thinClientEndpoint) {
             this.gatewayEndpoint = gatewayEndpoint;
-        }
-
-        private URI getThinClientEndpoint() {
-            return this.thinClientEndpoint;
-        }
-
-        private void setThinClientEndpoint(URI thinClientEndpoint) {
             this.thinClientEndpoint = thinClientEndpoint;
         }
     }
