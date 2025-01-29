@@ -2425,14 +2425,16 @@ public class StorageCrc64Calculator {
             uSize -= uStop;
             uCrc0 = uCrc;
 
+            ByteBuffer buffer = ByteBuffer.wrap(src).order(ByteOrder.LITTLE_ENDIAN);
+
             for (; pData < pLast; pData += 32) {
                 long b0, b1, b2, b3;
 
                 // Load and XOR data with CRC
-                b0 = ByteBuffer.wrap(src, pData, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc0;
-                b1 = ByteBuffer.wrap(src, pData + 8, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc1;
-                b2 = ByteBuffer.wrap(src, pData + 16, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc2;
-                b3 = ByteBuffer.wrap(src, pData + 24, 8).order(ByteOrder.LITTLE_ENDIAN).getLong() ^ uCrc3;
+                b0 = buffer.getLong(pData) ^ uCrc0;
+                b1 = buffer.getLong(pData + 8) ^ uCrc1;
+                b2 = buffer.getLong(pData + 16) ^ uCrc2;
+                b3 = buffer.getLong(pData + 24) ^ uCrc3;
 
                 // Unsigned updates using tables and masking
                 uCrc0 = M_U32[7 * 256 + ((int) (b0 & 0xFF))];
