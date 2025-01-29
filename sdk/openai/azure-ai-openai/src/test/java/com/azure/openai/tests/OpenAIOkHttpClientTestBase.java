@@ -122,7 +122,7 @@ public class OpenAIOkHttpClientTestBase {
 
     ChatCompletionCreateParams createChatCompletionParamsWithTool(String testModel, String userMessage) {
         ChatCompletionTool chatCompletionTool = ChatCompletionTool.builder()
-            .type(JsonValue.from("function"))
+            .type(ChatCompletionTool.Type.FUNCTION)
             .function(FunctionDefinition.builder()
                 .name("get_current_weather")
                 .description("Get the current weather in a given location")
