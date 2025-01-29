@@ -473,9 +473,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(String chatThreadId,
         SendReadReceiptRequest sendReadReceiptRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.sendChatReadReceipt(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), sendReadReceiptRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest, context));
     }
 
     /**
@@ -588,9 +587,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(String chatThreadId,
         SendChatMessageOptions sendChatMessageRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.sendChatMessage(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), sendChatMessageRequest, accept, context));
+        return FluxUtil
+            .withContext(context -> sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context));
     }
 
     /**
@@ -919,9 +917,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatMessage>> getChatMessageWithResponseAsync(String chatThreadId, String chatMessageId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getChatMessage(this.client.getEndpoint(), chatThreadId,
-            chatMessageId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context));
     }
 
     /**
@@ -1034,9 +1030,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatMessageWithResponseAsync(String chatThreadId, String chatMessageId,
         UpdateChatMessageOptions updateChatMessageRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateChatMessage(this.client.getEndpoint(), chatThreadId,
-            chatMessageId, this.client.getApiVersion(), updateChatMessageRequest, accept, context));
+        return FluxUtil.withContext(context -> updateChatMessageWithResponseAsync(chatThreadId, chatMessageId,
+            updateChatMessageRequest, context));
     }
 
     /**
@@ -1155,9 +1150,8 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteChatMessageWithResponseAsync(String chatThreadId, String chatMessageId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteChatMessage(this.client.getEndpoint(), chatThreadId,
-            chatMessageId, this.client.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId, context));
     }
 
     /**
@@ -1470,9 +1464,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeChatParticipantWithResponseAsync(String chatThreadId,
         CommunicationIdentifierModel participantCommunicationIdentifier) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.removeChatParticipant(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), participantCommunicationIdentifier, accept, context));
+        return FluxUtil.withContext(context -> removeChatParticipantWithResponseAsync(chatThreadId,
+            participantCommunicationIdentifier, context));
     }
 
     /**
@@ -1588,9 +1581,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(String chatThreadId,
         AddChatParticipantsOptions addChatParticipantsRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.addChatParticipants(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), addChatParticipantsRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context));
     }
 
     /**
@@ -1706,9 +1698,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(String chatThreadId,
         UpdateChatThreadOptions updateChatThreadRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateChatThreadProperties(this.client.getEndpoint(),
-            chatThreadId, this.client.getApiVersion(), updateChatThreadRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest, context));
     }
 
     /**
@@ -1819,9 +1810,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(String chatThreadId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getChatThreadProperties(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getChatThreadPropertiesWithResponseAsync(chatThreadId, context));
     }
 
     /**
@@ -1926,9 +1915,8 @@ public final class ChatThreadsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId,
         TypingNotificationOptions sendTypingNotificationRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.sendTypingNotification(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), sendTypingNotificationRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context));
     }
 
     /**

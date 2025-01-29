@@ -9,34 +9,24 @@ To build the SDK for Chat Client, simply Install AutoRest and in this folder, ru
 ### Setup
 
 ```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
 npm install
 npm install -g autorest
 ```
 
 ### Generation
 
-There is one swagger for Chat management APIs.
+There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/modelerfour@4.15.442
+autorest README.md
 ```
-
-## Update generated files for chat service
-
-To update generated files for chat service, run the following command
-
-> autorest README.md --java --v4 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 
 ```yaml
 tag: package-chat-2024-03-07
-use: '@autorest/java@4.1.33'
+use: '@autorest/java@4.1.42'
 require:
     - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/72d4c8cae964a12dc27ad4684b0bddf493225338/specification/communication/data-plane/Chat/readme.md
 java: true
@@ -48,16 +38,8 @@ generate-client-as-impl: true
 custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
-generate-client-interfaces: false
-service-interface-as-public: true
-generate-sync-async-clients: false
 sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
-enable-xml: false
 required-parameter-client-methods: true
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
 ```
 
 ### Rename AddChatParticipantsRequest to AddChatParticipantsOptions

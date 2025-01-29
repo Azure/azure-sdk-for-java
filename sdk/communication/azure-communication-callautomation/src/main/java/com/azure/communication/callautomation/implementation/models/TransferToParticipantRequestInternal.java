@@ -44,7 +44,8 @@ public final class TransferToParticipantRequestInternal
     private CustomCallingContext customCallingContext;
 
     /*
-     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to a Pstn target.
+     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to
+     * a Pstn target.
      */
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 

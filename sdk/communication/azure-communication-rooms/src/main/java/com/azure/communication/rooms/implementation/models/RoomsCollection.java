@@ -73,6 +73,9 @@ public final class RoomsCollection implements JsonSerializable<RoomsCollection> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

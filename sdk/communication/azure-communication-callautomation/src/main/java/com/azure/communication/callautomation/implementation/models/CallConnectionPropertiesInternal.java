@@ -89,7 +89,8 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private TranscriptionSubscriptionInternal transcriptionSubscription;
 
     /*
-     * Identity of the original Pstn target of an incoming Call. Only populated when the original target is a Pstn number.
+     * Identity of the original Pstn target of an incoming Call. Only populated when the original target is a Pstn
+     * number.
      */
     private PhoneNumberIdentifierModel answeredFor;
 

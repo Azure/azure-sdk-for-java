@@ -17,12 +17,14 @@ import java.io.IOException;
 @Immutable
 public final class PhoneNumberAdministrativeDivision implements JsonSerializable<PhoneNumberAdministrativeDivision> {
     /*
-     * Represents the localized name of the administrative division of the locality. e.g. state or province localized name.
+     * Represents the localized name of the administrative division of the locality. e.g. state or province localized
+     * name.
      */
     private String localizedName;
 
     /*
-     * Represents the abbreviated name of the administrative division of the locality. e.g. state or province abbreviation such as WA (Washington).
+     * Represents the abbreviated name of the administrative division of the locality. e.g. state or province
+     * abbreviation such as WA (Washington).
      */
     private String abbreviatedName;
 

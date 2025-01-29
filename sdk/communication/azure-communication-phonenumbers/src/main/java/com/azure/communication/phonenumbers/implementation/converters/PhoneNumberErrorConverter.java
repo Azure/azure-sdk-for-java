@@ -17,7 +17,7 @@ public final class PhoneNumberErrorConverter {
     /**
      * Maps from {com.azure.communication.phonenumbers.implementation.models.CommunicationError} to {@link PhoneNumberError}.
      * @param communicationError The error to convert
-     * 
+     *
      * @return the converted PhoneNumberError.
      */
     public static PhoneNumberError convert(CommunicationError communicationError) {
@@ -25,17 +25,17 @@ public final class PhoneNumberErrorConverter {
             return null;
         }
 
-        List<PhoneNumberError> details = new ArrayList<PhoneNumberError>();
+        List<PhoneNumberError> details = new ArrayList<>();
 
         if (communicationError.getDetails() != null) {
-            details
-                = communicationError.getDetails().stream().map(detail -> convert(detail)).collect(Collectors.toList());
+            details = communicationError.getDetails()
+                .stream()
+                .map(PhoneNumberErrorConverter::convert)
+                .collect(Collectors.toList());
         }
 
-        PhoneNumberError phoneNumberError = new PhoneNumberError(communicationError.getMessage(),
-            communicationError.getCode(), communicationError.getTarget(), details);
-
-        return phoneNumberError;
+        return new PhoneNumberError(communicationError.getMessage(), communicationError.getCode(),
+            communicationError.getTarget(), details);
     }
 
     private PhoneNumberErrorConverter() {

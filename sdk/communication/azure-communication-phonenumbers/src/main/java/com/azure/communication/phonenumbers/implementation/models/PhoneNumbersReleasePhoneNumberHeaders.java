@@ -32,8 +32,6 @@ public final class PhoneNumbersReleasePhoneNumberHeaders {
 
     private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("operation-id");
 
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PhoneNumbersReleasePhoneNumberHeaders class.
@@ -43,7 +41,7 @@ public final class PhoneNumbersReleasePhoneNumberHeaders {
     public PhoneNumbersReleasePhoneNumberHeaders(HttpHeaders rawHeaders) {
         this.releaseId = rawHeaders.getValue(RELEASE_ID);
         this.operationId = rawHeaders.getValue(OPERATION_ID);
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
     }
 
     /**

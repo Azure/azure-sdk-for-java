@@ -26,7 +26,8 @@ public final class PhoneNumberSearchRequest implements JsonSerializable<PhoneNum
     private PhoneNumberType phoneNumberType;
 
     /*
-     * The assignment type of the phone numbers to search for. A phone number can be assigned to a person, or to an application.
+     * The assignment type of the phone numbers to search for. A phone number can be assigned to a person, or to an
+     * application.
      */
     private PhoneNumberAssignmentType assignmentType;
 

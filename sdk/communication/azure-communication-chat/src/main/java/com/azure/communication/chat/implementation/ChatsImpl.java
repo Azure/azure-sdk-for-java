@@ -124,9 +124,7 @@ public final class ChatsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>>
         createChatThreadWithResponseAsync(CreateChatThreadOptions createChatThreadRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createChatThread(this.client.getEndpoint(),
-            this.client.getApiVersion(), createChatThreadRequest, accept, CoreUtils.randomUuid().toString(), context));
+        return FluxUtil.withContext(context -> createChatThreadWithResponseAsync(createChatThreadRequest, context));
     }
 
     /**
@@ -433,9 +431,7 @@ public final class ChatsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteChatThreadWithResponseAsync(String chatThreadId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteChatThread(this.client.getEndpoint(), chatThreadId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteChatThreadWithResponseAsync(chatThreadId, context));
     }
 
     /**

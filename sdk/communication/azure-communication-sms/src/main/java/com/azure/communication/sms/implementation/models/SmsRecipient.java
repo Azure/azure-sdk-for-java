@@ -22,12 +22,17 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
     private String to;
 
     /*
-     * If specified, the client directs that the request is repeatable; that is, the client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate response without the server executing the request multiple times. The value of the Repeatability-Request-ID is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a UUID (GUID), identifier for the request.
+     * If specified, the client directs that the request is repeatable; that is, the client can make the request
+     * multiple times with the same Repeatability-Request-ID and get back an appropriate response without the server
+     * executing the request multiple times. The value of the Repeatability-Request-ID is an opaque string representing
+     * a client-generated, 36-character hexadecimal case-insensitive encoding of a UUID (GUID), identifier for the
+     * request.
      */
     private String repeatabilityRequestId;
 
     /*
-     * MUST be sent by clients to specify that a request is repeatable. Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue, 26 Mar 2019 16:06:51 GMT
+     * MUST be sent by clients to specify that a request is repeatable. Repeatability-First-Sent is used to specify the
+     * date and time at which the request was first created.eg- Tue, 26 Mar 2019 16:06:51 GMT
      */
     private String repeatabilityFirstSent;
 

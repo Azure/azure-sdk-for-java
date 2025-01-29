@@ -23,7 +23,8 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
 
     /*
      * Source language locale to be played
-     * Refer to available locales here: <seealso href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
+     * Refer to available locales here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
      */
     private String sourceLocale;
 
@@ -34,7 +35,8 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
 
     /*
      * Voice name to be played
-     * Refer to available Text-to-speech voices here: <seealso href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
+     * Refer to available Text-to-speech voices here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
      */
     private String voiceName;
 

@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -175,8 +176,8 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
                     deserializedPurchasedPhoneNumber.assignmentType
                         = PhoneNumberAssignmentType.fromString(reader.getString());
                 } else if ("purchaseDate".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.purchaseDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPurchasedPhoneNumber.purchaseDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("cost".equals(fieldName)) {
                     deserializedPurchasedPhoneNumber.cost = PhoneNumberCost.fromJson(reader);
                 } else {

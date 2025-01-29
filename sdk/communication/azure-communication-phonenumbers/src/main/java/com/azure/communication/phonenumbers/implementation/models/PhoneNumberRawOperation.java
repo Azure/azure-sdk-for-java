@@ -7,6 +7,7 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -229,8 +230,8 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
                     deserializedPhoneNumberRawOperation.status
                         = PhoneNumberOperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    deserializedPhoneNumberRawOperation.createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPhoneNumberRawOperation.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("id".equals(fieldName)) {
                     deserializedPhoneNumberRawOperation.id = reader.getString();
                 } else if ("resourceLocation".equals(fieldName)) {
@@ -238,8 +239,8 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
                 } else if ("error".equals(fieldName)) {
                     deserializedPhoneNumberRawOperation.error = CommunicationError.fromJson(reader);
                 } else if ("lastActionDateTime".equals(fieldName)) {
-                    deserializedPhoneNumberRawOperation.lastActionDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPhoneNumberRawOperation.lastActionDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

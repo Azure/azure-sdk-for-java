@@ -5,6 +5,7 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,8 +21,8 @@ import java.util.Map;
 @Fluent
 public final class CreateRoomRequest implements JsonSerializable<CreateRoomRequest> {
     /*
-     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
-     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The default value is the current date time.
      */
     private OffsetDateTime validFrom;
 
@@ -93,8 +94,8 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
     }
 
     /**
-     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      * 
      * @return the pstnDialOutEnabled value.
      */
@@ -103,8 +104,8 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
     }
 
     /**
-     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      * 
      * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
      * @return the CreateRoomRequest object itself.
@@ -134,6 +135,9 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,11 +166,11 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
                 reader.nextToken();
 
                 if ("validFrom".equals(fieldName)) {
-                    deserializedCreateRoomRequest.validFrom
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCreateRoomRequest.validFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("validUntil".equals(fieldName)) {
-                    deserializedCreateRoomRequest.validUntil
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCreateRoomRequest.validUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("pstnDialOutEnabled".equals(fieldName)) {
                     deserializedCreateRoomRequest.pstnDialOutEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("participants".equals(fieldName)) {

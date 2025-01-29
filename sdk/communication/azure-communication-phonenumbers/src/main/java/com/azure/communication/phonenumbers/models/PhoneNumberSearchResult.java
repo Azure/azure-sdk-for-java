@@ -5,6 +5,7 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -49,7 +50,8 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     private PhoneNumberCost cost;
 
     /*
-     * The date that this search result expires and phone numbers are no longer on hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
+     * The date that this search result expires and phone numbers are no longer on hold. A search result expires in less
+     * than 15min, e.g. 2020-11-19T16:31:49.048Z.
      */
     private OffsetDateTime searchExpiresBy;
 
@@ -193,8 +195,8 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
                 } else if ("cost".equals(fieldName)) {
                     deserializedPhoneNumberSearchResult.cost = PhoneNumberCost.fromJson(reader);
                 } else if ("searchExpiresBy".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.searchExpiresBy
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPhoneNumberSearchResult.searchExpiresBy = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("errorCode".equals(fieldName)) {
                     deserializedPhoneNumberSearchResult.errorCode = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {

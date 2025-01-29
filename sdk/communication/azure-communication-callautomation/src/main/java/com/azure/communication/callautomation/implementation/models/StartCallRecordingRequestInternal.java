@@ -51,13 +51,14 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * The sequential order in which audio channels are assigned to participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      */
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
      * The channel affinity of call recording
-     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned.
+     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be
+     * automatically assigned.
      * Channel-Participant mapping details can be found in the metadata of the recording.
      * ///
      */

@@ -2,50 +2,35 @@
 
 > see https://aka.ms/autorest
 ## Getting Started
-
-To build the SDK for Sms Client, simply Install AutoRest and in this folder, run:
-
-### Setup
-```ps
-Fork and clone https://github.com/Azure/autorest.java
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
-npm install -g autorest
-```
+To build the SDK for SMS Client, simply Install AutoRest and in this folder, run the below:
 
 ### Generation
-
-There is one swagger for Sms management APIs.
+There is one swagger for SMS management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.1
+autorest README.md
 ```
 
-## Update generated files for Sms service
-To update generated files for Sms service, run the following command
+## Update generated files for sms service
+To update generated files for sms service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.1
+> autorest README.md
 
 ### Code generation settings
 ``` yaml
 tag: package-sms-2021-03-07
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.42'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/896d05e37dbb00712726620b8d679cc3c3be09fb/specification/communication/data-plane/Sms/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL	
 namespace: com.azure.communication.sms	
-generate-client-as-impl: true
-service-interface-as-public: true
+generate-client-as-impl: true7
 custom-types: SmsSendOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
-sync-methods: all
-add-context-parameter: true
-context-client-method-parameter: true
+sync-methods: all7
 title: Azure Communication SMS Service
 ```
 ### Directive renaming "id" property to "identifier"
