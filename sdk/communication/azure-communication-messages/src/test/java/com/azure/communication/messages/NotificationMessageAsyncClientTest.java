@@ -4,10 +4,7 @@
 package com.azure.communication.messages;
 
 import com.azure.communication.messages.models.*;
-import com.azure.communication.messages.models.channels.WhatsAppMessageButtonSubType;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsButton;
-import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
+import com.azure.communication.messages.models.channels.*;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -98,6 +95,186 @@ public class NotificationMessageAsyncClientTest extends CommunicationMessagesTes
                 assertEquals(1, resp.getReceipts().size());
                 assertNotNull(resp.getReceipts().get(0).getMessageId());
             }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendStickerMessage(HttpClient httpClient) {
+        String mediaUrl = "https://www.gstatic.com/webp/gallery/1.sm.webp";
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient.send(new StickerNotificationContent(CHANNEL_REGISTRATION_ID, recipients, mediaUrl)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendReactionMessage(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient.send(new ReactionNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+                "\uD83D\uDE00", "3b5c2a30-936b-4f26-bd5c-491b22e74853")))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonAction(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonActionWithImageHeader(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new ImageMessageContent("https://wallpapercave.com/wp/wp2163723.jpg"));
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonActionWithDocumentHeader(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("Do you want to proceed?"), new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(
+            new DocumentMessageContent("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithButtonActionWithVideoHeader(HttpClient httpClient) {
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        List<ButtonContent> buttonActions = new ArrayList<>();
+        buttonActions.add(new ButtonContent("no", "No"));
+        buttonActions.add(new ButtonContent("yes", "Yes"));
+        ButtonSetContent buttonSet = new ButtonSetContent(buttonActions);
+        InteractiveMessage interactiveMessage = new InteractiveMessage(new TextMessageContent("Do you like it?"),
+            new WhatsAppButtonActionBindings(buttonSet));
+        interactiveMessage.setHeader(new VideoMessageContent("https://sample-videos.com/audio/mp3/wave.mp3"));
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithListAction(HttpClient httpClient) {
+        List<ActionGroupItem> group1 = new ArrayList<>();
+        group1.add(new ActionGroupItem("priority_express", "Priority Mail Express", "Delivered on same day!"));
+        group1.add(new ActionGroupItem("priority_mail", "Priority Mail", "Delivered in 1-2 days"));
+
+        List<ActionGroupItem> group2 = new ArrayList<>();
+        group2.add(new ActionGroupItem("usps_ground_advantage", "USPS Ground Advantage", "Delivered in 2-5 days"));
+        group2.add(new ActionGroupItem("media_mail", "Media Mail", "Delivered in 5-8 days"));
+
+        List<ActionGroup> options = new ArrayList<>();
+        options.add(new ActionGroup("Express Delivery", group1));
+        options.add(new ActionGroup("Normal Delivery", group2));
+
+        ActionGroupContent actionGroupContent = new ActionGroupContent("Shipping Options", options);
+        InteractiveMessage interactiveMessage
+            = new InteractiveMessage(new TextMessageContent("Which shipping option do you want?"),
+                new WhatsAppListActionBindings(actionGroupContent));
+        interactiveMessage.setFooter(new TextMessageContent("Eagle Logistic"));
+        interactiveMessage.setHeader(new TextMessageContent("Shipping Options"));
+
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendInteractiveMessageWithUrlAction(HttpClient httpClient) {
+        LinkContent urlAction = new LinkContent("Rocket is the best!", "https://wallpapercave.com/wp/wp2163723.jpg");
+        InteractiveMessage interactiveMessage = new InteractiveMessage(
+            new TextMessageContent("The best Guardian of Galaxy"), new WhatsAppUrlActionBindings(urlAction));
+        interactiveMessage.setFooter(new TextMessageContent("Intergalactic New Ltd"));
+
+        messagesClient = buildNotificationMessagesAsyncClient(httpClient);
+        List<String> recipients = new ArrayList<>();
+        recipients.add(RECIPIENT_IDENTIFIER);
+        StepVerifier
+            .create(messagesClient
+                .send(new InteractiveNotificationContent(CHANNEL_REGISTRATION_ID, recipients, interactiveMessage)))
+            .assertNext(resp -> {
+                assertEquals(1, resp.getReceipts().size());
+                assertNotNull(resp.getReceipts().get(0).getMessageId());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
