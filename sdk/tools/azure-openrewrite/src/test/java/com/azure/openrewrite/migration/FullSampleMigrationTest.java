@@ -22,8 +22,8 @@ import static org.openrewrite.java.Assertions.java;
 
 public class FullSampleMigrationTest implements RewriteTest {
 
-    static final String GOLDEN_IMAGE = "goldenImage";
-    static final String ORIGINAL_IMAGE = "original";
+    static final String GOLDEN_IMAGE = "v2";
+    static final String ORIGINAL_IMAGE = "v1";
 
     static Stream<Path> sampleDirectories() throws IOException {
         List<Path> packageDirectories = packageDirectories().collect(Collectors.toList());
