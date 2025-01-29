@@ -43,6 +43,7 @@ public final class StartRecordingOptions {
      */
     public StartRecordingOptions(CallLocator callLocator) {
         this.callLocator = callLocator;
+        this.callConnectionId = null; // Initialize callConnectionId to null
     }
 
     /**
@@ -57,14 +58,16 @@ public final class StartRecordingOptions {
     /**
     * Constructor
     *
-    * @param callConnectionId
+    * @param callConnectionId the ID of the call connection.
     */
     public StartRecordingOptions(String callConnectionId) {
         this.callConnectionId = callConnectionId;
+        this.callLocator = null; // Initialize callLocator to null
     }
 
     /**
     * Get callConnectionId for the call
+    *
     * @return callConnectionId for the call
     */
     public String getCallConnectionId() {
