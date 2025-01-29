@@ -44,6 +44,9 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
+
+    static final String NAME = "redirect";
+
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HttpHeaderName locationHeader;
 
@@ -88,6 +91,11 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
         ClientLogger logger = getLogger(httpRequest);
         return attemptRedirect(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     /**
