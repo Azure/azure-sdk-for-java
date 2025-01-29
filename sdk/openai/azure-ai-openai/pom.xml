@@ -53,13 +53,14 @@
   </properties>
 
   <dependencies>
-    <!-- provided scope -->
+    <!-- compile scope -->
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
-      <version>0.8.1</version>
-      <scope>test</scope>
+      <version>0.8.1</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
+
+    <!-- provided scope -->
 
     <dependency>
       <groupId>com.azure</groupId>
