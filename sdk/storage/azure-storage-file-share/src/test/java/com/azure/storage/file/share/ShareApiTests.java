@@ -92,37 +92,12 @@ public class ShareApiTests extends FileShareTestBase {
     public void getShareURL() {
         String accountName
             = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
-                .getAccountName();
+            .getAccountName();
         String expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName);
 
         String shareURL = primaryShareClient.getShareUrl();
 
         assertEquals(expectURL, shareURL);
-    }
-
-    @Test
-    public void getShareSnapshotURL() {
-        String accountName
-            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
-                .getAccountName();
-        String expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName);
-        primaryShareClient.create();
-        ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot();
-        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot();
-        ShareClient newShareClient
-            = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot()).buildClient();
-        String shareURL = newShareClient.getShareUrl();
-
-        assertEquals(expectURL, shareURL);
-
-        String snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s?sharesnapshot=%s", accountName,
-            shareName, shareSnapshotInfo.getSnapshot());
-        ShareClient client = getShareClientBuilder(snapshotEndpoint)
-            .credential(
-                StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()))
-            .buildClient();
-
-        assertEquals(client.getShareUrl(), snapshotEndpoint);
     }
 
     @Test
@@ -134,25 +109,6 @@ public class ShareApiTests extends FileShareTestBase {
     public void getFileClientDoesNotCreateAFile() {
         ShareFileClient fileClient = primaryShareClient.getFileClient("testFile");
         assertInstanceOf(ShareFileClient.class, fileClient);
-    }
-
-    @Test
-    public void exists() {
-        primaryShareClient.create();
-        assertTrue(primaryShareClient.exists());
-    }
-
-    @Test
-    public void doesNotExist() {
-        assertFalse(primaryShareClient.exists());
-    }
-
-    @Test
-    public void existsError() {
-        primaryShareClient = shareBuilderHelper(shareName).sasToken("sig=dummyToken").buildClient();
-
-        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.exists());
-        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
     }
 
     @Test
@@ -189,7 +145,7 @@ public class ShareApiTests extends FileShareTestBase {
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota, ShareAccessTier accessTier) {
         FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(
-            new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null),
+                new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null),
             201);
     }
 
@@ -197,21 +153,6 @@ public class ShareApiTests extends FileShareTestBase {
         return Stream.of(Arguments.of(null, null, null), Arguments.of(null, 1, null),
             Arguments.of(testMetadata, null, null), Arguments.of(null, null, ShareAccessTier.HOT),
             Arguments.of(testMetadata, 1, ShareAccessTier.HOT), Arguments.of(testMetadata, 6000, null));
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void createShareAccessTierPremium() {
-        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
-        ShareCreateOptions options = new ShareCreateOptions().setAccessTier(ShareAccessTier.PREMIUM);
-
-        client.createWithResponse(options, null, null);
-
-        ShareProperties response = client.getProperties();
-        assertEquals(ShareAccessTier.PREMIUM.toString(), response.getAccessTier());
-
-        //cleanup
-        client.delete();
     }
 
     @ParameterizedTest
@@ -227,116 +168,19 @@ public class ShareApiTests extends FileShareTestBase {
             Arguments.of(Collections.singletonMap("metadata!", "value"), 1, ShareErrorCode.INVALID_METADATA));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void createDirectoryAndFileTrailingDot(boolean allowTrailingDot) {
-        ShareServiceClient serviceClient = fileServiceBuilderHelper().allowTrailingDot(allowTrailingDot).buildClient();
-        ShareClient shareClient = serviceClient.getShareClient(shareName);
-        shareClient.create();
-        ShareDirectoryClient rootDirectory = shareClient.getRootDirectoryClient();
-        String dirName = generatePathName();
-        String dirNameWithDot = dirName + ".";
-        ShareDirectoryClient dirClient = shareClient.getDirectoryClient(dirNameWithDot);
-        dirClient.create();
-
-        String fileName = generatePathName();
-        String fileNameWithDot = fileName + ".";
-        ShareFileClient fileClient = rootDirectory.getFileClient(fileNameWithDot);
-        fileClient.create(1024);
-
-        List<String> foundDirectories = new ArrayList<>();
-        List<String> foundFiles = new ArrayList<>();
-        for (ShareFileItem fileRef : rootDirectory.listFilesAndDirectories()) {
-            if (fileRef.isDirectory()) {
-                foundDirectories.add(fileRef.getName());
-            } else {
-                foundFiles.add(fileRef.getName());
-            }
-        }
-
-        assertEquals(1, foundDirectories.size());
-        assertEquals(1, foundFiles.size());
-        if (allowTrailingDot) {
-            assertEquals(foundDirectories.get(0), dirNameWithDot);
-            assertEquals(foundFiles.get(0), fileNameWithDot);
-        } else {
-            assertEquals(foundDirectories.get(0), dirName);
-            assertEquals(foundFiles.get(0), fileName);
-        }
-
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @Test
-    public void createFileAndDirectoryOAuth() {
-        primaryShareClient.create();
-        ShareClient oAuthShareClient = getOAuthShareClient(
-            new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP));
-        String dirName = generatePathName();
-        ShareDirectoryClient dirClient = oAuthShareClient.getDirectoryClient(dirName);
-
-        Response<ShareDirectoryInfo> result = dirClient.createWithResponse(null, null, null, null, null);
-
-        assertEquals(dirClient.getShareName(), shareName);
-        assertEquals(dirClient.getDirectoryPath(), dirName);
-        assertEquals(result.getValue().getETag(), result.getHeaders().getValue(HttpHeaderName.ETAG));
-
-        String fileName = generatePathName();
-        ShareFileClient fileClient = dirClient.getFileClient(fileName);
-        Response<ShareFileInfo> response
-            = fileClient.createWithResponse(Constants.KB, null, null, null, null, null, null);
-
-        assertEquals(fileClient.getShareName(), shareName);
-        String[] filePath = fileClient.getFilePath().split("/");
-        assertEquals(fileName, filePath[1]); // compareWithfilename
-        assertEquals(response.getValue().getETag(), response.getHeaders().getValue(HttpHeaderName.ETAG));
-    }
-
-    @Test
-    public void createIfNotExistsShare() {
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(null, null, null),
-            201);
-    }
-
-    @Test
-    public void createIfNotExistsShareThatAlreadyExists() {
+    public void createShareAccessTierPremium() {
         ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
-        Response<ShareInfo> initialResponse
-            = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
-        Response<ShareInfo> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
-        assertEquals(201, initialResponse.getStatusCode());
-        assertEquals(409, secondResponse.getStatusCode());
+        ShareCreateOptions options = new ShareCreateOptions().setAccessTier(ShareAccessTier.PREMIUM);
+
+        client.createWithResponse(options, null, null);
+
+        ShareProperties response = client.getProperties();
+        assertEquals(ShareAccessTier.PREMIUM.toString(), response.getAccessTier());
 
         //cleanup
         client.delete();
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
-    @ParameterizedTest
-    @MethodSource("createIfNotExistsShareWithArgsSupplier")
-    public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier) {
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(
-            new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null),
-            201);
-    }
-
-    private static Stream<Arguments> createIfNotExistsShareWithArgsSupplier() {
-        return Stream.of(Arguments.of(null, null, null), Arguments.of(null, 1, null),
-            Arguments.of(testMetadata, null, null), Arguments.of(null, null, ShareAccessTier.HOT),
-            Arguments.of(testMetadata, 1, ShareAccessTier.HOT));
-    }
-
-    @ParameterizedTest
-    @MethodSource("createShareWithInvalidArgsSupplier")
-    public void createIfNotExistsShareWithinvalidArgs(Map<String, String> metadata, Integer quota,
-        ShareErrorCode errMessage) {
-        ShareStorageException e
-            = assertThrows(ShareStorageException.class, () -> primaryShareClient.createIfNotExistsWithResponse(
-                new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota), null, null));
-
-        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMessage);
     }
 
     @Test
@@ -382,6 +226,53 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
     }
 
+
+    @Test
+    public void createIfNotExistsShare() {
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(null, null, null),
+            201);
+    }
+
+    @Test
+    public void createIfNotExistsShareThatAlreadyExists() {
+        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
+        Response<ShareInfo> initialResponse
+            = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
+        Response<ShareInfo> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
+        assertEquals(201, initialResponse.getStatusCode());
+        assertEquals(409, secondResponse.getStatusCode());
+
+        //cleanup
+        client.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @ParameterizedTest
+    @MethodSource("createIfNotExistsShareWithArgsSupplier")
+    public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota,
+                                               ShareAccessTier accessTier) {
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(
+                new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null),
+            201);
+    }
+
+    private static Stream<Arguments> createIfNotExistsShareWithArgsSupplier() {
+        return Stream.of(Arguments.of(null, null, null), Arguments.of(null, 1, null),
+            Arguments.of(testMetadata, null, null), Arguments.of(null, null, ShareAccessTier.HOT),
+            Arguments.of(testMetadata, 1, ShareAccessTier.HOT));
+    }
+
+    @ParameterizedTest
+    @MethodSource("createShareWithInvalidArgsSupplier")
+    public void createIfNotExistsShareWithinvalidArgs(Map<String, String> metadata, Integer quota,
+                                                      ShareErrorCode errMessage) {
+        ShareStorageException e
+            = assertThrows(ShareStorageException.class, () -> primaryShareClient.createIfNotExistsWithResponse(
+            new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota), null, null));
+
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMessage);
+    }
+
     @Test
     public void deleteShare() {
         primaryShareClient.create();
@@ -399,50 +290,6 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(shareClient.deleteWithResponse(null, null), 202);
     }
 
-    @Test
-    public void deleteShareDeleteSnapshotOptions() {
-        primaryShareClient.create();
-        String snap1 = primaryShareClient.createSnapshot().getSnapshot();
-        String snap2 = primaryShareClient.createSnapshot().getSnapshot();
-
-        primaryShareClient.deleteWithResponse(
-            new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
-
-        assertFalse(primaryShareClient.getSnapshotClient(snap1).exists());
-        assertFalse(primaryShareClient.getSnapshotClient(snap2).exists());
-    }
-
-    @Test
-    public void deleteShareDeleteSnapshotOptionsError() {
-        primaryShareClient.create();
-        primaryShareClient.createSnapshot().getSnapshot();
-        primaryShareClient.createSnapshot().getSnapshot();
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.deleteWithResponse(new ShareDeleteOptions(), null, null));
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void deleteShareLease() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
-            null), 202);
-    }
-
-    @Test
-    public void deleteShareLeaseError() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.deleteWithResponse(
-                new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
-                null));
-
-    }
-
     public void deleteShareError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.delete());
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
@@ -453,55 +300,6 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.create();
         FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(null, null, null),
             202);
-    }
-
-    @Test
-    public void deleteIfExistsShareMin() {
-        primaryShareClient.create();
-        assertTrue(primaryShareClient.deleteIfExists());
-    }
-
-    @Test
-    public void deleteIfExistsShareDeleteSnapshotOptions() {
-        primaryShareClient.create();
-        String snap1 = primaryShareClient.createSnapshot().getSnapshot();
-        String snap2 = primaryShareClient.createSnapshot().getSnapshot();
-
-        primaryShareClient.deleteIfExistsWithResponse(
-            new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
-
-        assertFalse(primaryShareClient.getSnapshotClient(snap1).exists());
-        assertFalse(primaryShareClient.getSnapshotClient(snap2).exists());
-    }
-
-    @Test
-    public void deleteIfExistsShareDeleteSnapshotOptionsError() {
-        primaryShareClient.create();
-        primaryShareClient.createSnapshot().getSnapshot();
-        primaryShareClient.createSnapshot().getSnapshot();
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.deleteIfExistsWithResponse(new ShareDeleteOptions(), null, null));
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void deleteIfExistsShareLease() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
-            null), 202);
-    }
-
-    @Test
-    public void deleteIfExistsShareLeaseError() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.deleteIfExistsWithResponse(
-                new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
-                null));
     }
 
     @Test
@@ -536,27 +334,6 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, getPropertiesResponse.getValue().getMetadata());
         assertEquals(1, getPropertiesResponse.getValue().getQuota());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void getPropertiesLease() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(
-            new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-            null, null), 200);
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void getPropertiesLeaseError() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.getPropertiesWithResponse(
-                new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-                null, null));
     }
 
     @Test
@@ -608,203 +385,6 @@ public class ShareApiTests extends FileShareTestBase {
 
     }
 
-    @Test
-    public void setAccessPolicy() {
-        primaryShareClient.create();
-        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
-            .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(
-                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
-                .setPermissions("r"));
-
-        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
-        primaryShareClient.setAccessPolicy(ids);
-        assertEquals("0000", primaryShareClient.getAccessPolicy().iterator().next().getId());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @Test
-    public void setAccessPolicyOAuth() {
-        primaryShareClient.create();
-        ShareServiceClient oAuthServiceClient
-            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-
-        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
-            .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(
-                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
-                .setPermissions("r"));
-
-        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
-        shareClient.setAccessPolicy(ids);
-        assertEquals("0000", shareClient.getAccessPolicy().iterator().next().getId());
-    }
-
-    @Test
-    public void setAccessPolicyIds() {
-        primaryShareClient.create();
-        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
-            .setAccessPolicy(new ShareAccessPolicy().setStartsOn(testResourceNamer.now())
-                .setExpiresOn(testResourceNamer.now().plusDays(1))
-                .setPermissions("r"));
-        ShareSignedIdentifier identifier2 = new ShareSignedIdentifier().setId("0001")
-            .setAccessPolicy(new ShareAccessPolicy().setStartsOn(testResourceNamer.now())
-                .setExpiresOn(testResourceNamer.now().plusDays(2))
-                .setPermissions("w"));
-        List<ShareSignedIdentifier> ids = Arrays.asList(identifier, identifier2);
-
-        Response<ShareInfo> response = primaryShareClient.setAccessPolicyWithResponse(ids, null, null);
-        Iterator<ShareSignedIdentifier> receivedIdentifiers = primaryShareClient.getAccessPolicy().iterator();
-
-        FileShareTestHelper.assertResponseStatusCode(response, 200);
-        validateBasicHeaders(response.getHeaders());
-        ShareSignedIdentifier id0 = receivedIdentifiers.next();
-        assertEquals(id0.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
-        assertEquals(id0.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
-        assertEquals(id0.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
-        ShareSignedIdentifier id1 = receivedIdentifiers.next();
-        assertEquals(id1.getAccessPolicy().getExpiresOn(), identifier2.getAccessPolicy().getExpiresOn());
-        assertEquals(id1.getAccessPolicy().getStartsOn(), identifier2.getAccessPolicy().getStartsOn());
-        assertEquals(id1.getAccessPolicy().getPermissions(), identifier2.getAccessPolicy().getPermissions());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void setAccessPolicyLease() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.setAccessPolicyWithResponse(
-            new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-            null, null), 200);
-    }
-
-    @Test
-    public void setAccessPolicyLeaseError() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-
-        assertThrows(ShareStorageException.class, () -> primaryShareClient.setAccessPolicyWithResponse(
-            new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-            null, null));
-    }
-
-    @Test
-    public void setAccessPolicyError() {
-        assertThrows(ShareStorageException.class, () -> primaryShareClient.setAccessPolicy(null));
-    }
-
-    @Test
-    public void getAccessPolicy() {
-        primaryShareClient.create();
-        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
-            .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(
-                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
-                .setPermissions("r"));
-
-        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
-        primaryShareClient.setAccessPolicy(ids);
-
-        ShareSignedIdentifier id = primaryShareClient.getAccessPolicy().iterator().next();
-
-        assertEquals(id.getId(), identifier.getId());
-        assertEquals(id.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
-        assertEquals(id.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
-        assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
-    @Test
-    public void getAccessPolicyOAuth() {
-        primaryShareClient.create();
-        ShareServiceClient oAuthServiceClient
-            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-
-        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
-            .setAccessPolicy(new ShareAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(
-                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
-                .setPermissions("r"));
-
-        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
-        shareClient.setAccessPolicy(ids);
-
-        ShareSignedIdentifier id = shareClient.getAccessPolicy().iterator().next();
-
-        assertEquals(id.getId(), identifier.getId());
-        assertEquals(id.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
-        assertEquals(id.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
-        assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void getAccessPolicyLease() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-        PagedIterable<ShareSignedIdentifier> response = primaryShareClient.getAccessPolicy(
-            new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)));
-        assertFalse(response.iterator().hasNext());
-    }
-
-    @Test
-    public void getAccessPolicyLeaseError() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-        assertThrows(ShareStorageException.class, () -> primaryShareClient.getAccessPolicy(
-            new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)))
-            .iterator()
-            .hasNext());
-    }
-
-    @Test
-    public void getAccessPolicyError() {
-        ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.getAccessPolicy().iterator().hasNext());
-        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
-    }
-
-    @Test
-    public void setPropertiesQuota() {
-        primaryShareClient.createWithResponse(null, 1, null, null);
-
-        ShareProperties getQuotaBeforeResponse = primaryShareClient.getProperties();
-        Response<ShareInfo> setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null, null);
-        ShareProperties getQuotaAfterResponse = primaryShareClient.getProperties();
-
-        assertEquals(1, getQuotaBeforeResponse.getQuota());
-        FileShareTestHelper.assertResponseStatusCode(setQuotaResponse, 200);
-        assertEquals(2, getQuotaAfterResponse.getQuota());
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void setPropertiesAccessTier() {
-        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
-        OffsetDateTime time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS);
-
-        ShareProperties getAccessTierBeforeResponse = primaryShareClient.getProperties();
-        Response<ShareInfo> setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
-            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null);
-        ShareProperties getAccessTierAfterResponse = primaryShareClient.getProperties();
-
-        assertEquals(getAccessTierBeforeResponse.getAccessTier(), ShareAccessTier.HOT.toString());
-        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
-        assertEquals(getAccessTierAfterResponse.getAccessTier(), ShareAccessTier.TRANSACTION_OPTIMIZED.toString());
-        assertNotNull(getAccessTierAfterResponse.getAccessTierChangeTime());
-        assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time)
-            || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1)));
-        assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
-        assertEquals("pending-from-hot", getAccessTierAfterResponse.getAccessTierTransitionState());
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @Test
     public void setPropertiesAccessTierPremium() {
@@ -819,38 +399,6 @@ public class ShareApiTests extends FileShareTestBase {
 
         //cleanup
         client.delete();
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void setPropertiesLease() {
-        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-
-        Response<ShareInfo> setAccessTierResponse = primaryShareClient
-            .setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL)
-                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void setPropertiesLeaseError() {
-        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient
-                .setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL)
-                    .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null));
-    }
-
-    @Test
-    public void setPropertiesError() {
-        ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.setProperties(new ShareSetPropertiesOptions()));
-        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -901,30 +449,6 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(metadataAfterSet, getMetadataAfterResponse.getMetadata());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void setMetadataLease() {
-        primaryShareClient.createWithResponse(null, 1, null, null);
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-
-        Response<ShareInfo> resp = primaryShareClient.setMetadataWithResponse(
-            new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
-            null);
-
-        FileShareTestHelper.assertResponseStatusCode(resp, 200);
-    }
-
-    @Test
-    public void setMetadataLeaseError() {
-        primaryShareClient.createWithResponse(null, 1, null, null);
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.setMetadataWithResponse(
-                new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-                null, null));
-    }
-
     @Test
     public void setMetadataError() {
         ShareStorageException e
@@ -941,28 +465,6 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
         assertEquals(resp.getValue().getShareUsageInBytes(), size);
         assertEquals(resp.getValue().getShareUsageInGB(), gigabytes);
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void getStatisticsLease() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-        Response<ShareStatistics> resp = primaryShareClient.getStatisticsWithResponse(
-            new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-            null, null);
-        FileShareTestHelper.assertResponseStatusCode(resp, 200);
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
-    @Test
-    public void getStatisticsLeaseError() {
-        primaryShareClient.create();
-        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
-        assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.getStatisticsWithResponse(
-                new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
-                null, null));
     }
 
     @Test
@@ -1029,6 +531,37 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void createIfNotExistsDirectoryThatAlreadyExists() {
+        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
+        client.create();
+        Response<ShareDirectoryClient> initialResponse = client.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
+        Response<ShareDirectoryClient> secondResponse = client.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
+
+        FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
+        FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
+
+        //cleanup
+        client.delete();
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryInvalidName() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.createDirectoryIfNotExists("test/directory"));
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryMetadata() {
+        primaryShareClient.create();
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
+    }
+
+    @Test
     public void createIfNotExistsDirectoryFilePermission() {
         primaryShareClient.create();
         FileShareTestHelper
@@ -1048,43 +581,12 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void createIfNotExistsDirectoryInvalidName() {
-        primaryShareClient.create();
-        ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryShareClient.createDirectoryIfNotExists("test/directory"));
-        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
-    }
-
-    @Test
-    public void createIfNotExistsDirectoryMetadata() {
-        primaryShareClient.create();
-        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse(
-            "testCreateDirectory", new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
-    }
-
-    @Test
     public void createIfNotExistsDirectoryMetadataError() {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryShareClient.createDirectoryIfNotExistsWithResponse("testdirectory",
                 new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
-    }
-
-    @Test
-    public void createIfNotExistsDirectoryThatAlreadyExists() {
-        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
-        client.create();
-        Response<ShareDirectoryClient> initialResponse = client.createDirectoryIfNotExistsWithResponse(
-            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
-        Response<ShareDirectoryClient> secondResponse = client.createDirectoryIfNotExistsWithResponse(
-            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
-        FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
-
-        //cleanup
-        client.delete();
     }
 
     @Test
@@ -1133,19 +635,11 @@ public class ShareApiTests extends FileShareTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileMaxOverloadInvalidArgsSupplier")
     public void createFileMaxOverloadInvalidArgs(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
-        Map<String, String> metadata, ShareErrorCode errMsg) {
+                                                 Map<String, String> metadata, ShareErrorCode errMsg) {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient
             .createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata, null, null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg);
-    }
-
-    @Test
-    public void createFileInRootDirectory() {
-        primaryShareClient.create();
-        ShareDirectoryClient directoryClient = primaryShareClient.getRootDirectoryClient();
-        FileShareTestHelper.assertResponseStatusCode(
-            directoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
     }
 
     @Test
@@ -1173,14 +667,6 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.createDirectory(directoryName);
         FileShareTestHelper.assertResponseStatusCode(
             primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null), 202);
-    }
-
-    @Test
-    public void deleteIfExistsDirectoryMin() {
-        String directoryName = "testCreateDirectory";
-        primaryShareClient.create();
-        primaryShareClient.createDirectory(directoryName);
-        assertTrue(primaryShareClient.deleteDirectoryIfExists(directoryName));
     }
 
     @Test
@@ -1221,14 +707,6 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void deleteIfExistsFileMin() {
-        String fileName = "testCreateFile";
-        primaryShareClient.create();
-        primaryShareClient.createFile(fileName, 1024);
-        assertTrue(primaryShareClient.deleteFileIfExists(fileName));
-    }
-
-    @Test
     public void deleteIfExistsFileThatDoesNotExist() {
         primaryShareClient.create();
         Response<Boolean> response
@@ -1250,18 +728,6 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.create();
         String permissionKey = primaryShareClient.createPermission(FILE_PERMISSION);
         String permission = primaryShareClient.getPermission(permissionKey);
-        assertEquals(FILE_PERMISSION, permission);
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void createAndGetPermissionOAuth() {
-        primaryShareClient.create();
-        ShareServiceClient oAuthServiceClient
-            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-        String permissionKey = shareClient.createPermission(FILE_PERMISSION);
-        String permission = shareClient.getPermission(permissionKey);
         assertEquals(FILE_PERMISSION, permission);
     }
 
@@ -1324,24 +790,13 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(shareName, primaryShareClient.getShareName());
     }
 
-    @Test
-    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
-    // and auth would fail because we changed a signed header.
-    public void perCallPolicy() {
-        primaryShareClient.create();
-        ShareClient shareClient
-            = shareBuilderHelper(primaryShareClient.getShareName()).addPolicy(getPerCallVersionPolicy()).buildClient();
-
-        Response<ShareProperties> response = shareClient.getPropertiesWithResponse(null, null);
-        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
-    }
 
     @Test
     public void defaultAudience() {
         primaryShareClient.create();
         ShareClient aadShareClient = getOAuthShareClientBuilder(
             new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP)).audience(null) // should default to "https://storage.azure.com/"
-                .buildClient();
+            .buildClient();
 
         String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
             + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
@@ -1545,4 +1000,553 @@ public class ShareApiTests extends FileShareTestBase {
         assertNotNull(response.getNextAllowedProvisionedIopsDowngradeTime());
         assertNotNull(response.getNextAllowedProvisionedBandwidthDowngradeTime());
     }
+
+    //Unique Tests
+    @Test
+    public void getShareSnapshotURL() {
+        String accountName
+            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+            .getAccountName();
+        String expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName);
+        primaryShareClient.create();
+        ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot();
+        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot();
+        ShareClient newShareClient
+            = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot()).buildClient();
+        String shareURL = newShareClient.getShareUrl();
+
+        assertEquals(expectURL, shareURL);
+
+        String snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s?sharesnapshot=%s", accountName,
+            shareName, shareSnapshotInfo.getSnapshot());
+        ShareClient client = getShareClientBuilder(snapshotEndpoint)
+            .credential(
+                StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()))
+            .buildClient();
+
+        assertEquals(client.getShareUrl(), snapshotEndpoint);
+    }
+
+    @Test
+    public void exists() {
+        primaryShareClient.create();
+        assertTrue(primaryShareClient.exists());
+    }
+
+    @Test
+    public void doesNotExist() {
+        assertFalse(primaryShareClient.exists());
+    }
+
+    @Test
+    public void existsError() {
+        primaryShareClient = shareBuilderHelper(shareName).sasToken("sig=dummyToken").buildClient();
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.exists());
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void createDirectoryAndFileTrailingDot(boolean allowTrailingDot) {
+        ShareServiceClient serviceClient = fileServiceBuilderHelper().allowTrailingDot(allowTrailingDot).buildClient();
+        ShareClient shareClient = serviceClient.getShareClient(shareName);
+        shareClient.create();
+        ShareDirectoryClient rootDirectory = shareClient.getRootDirectoryClient();
+        String dirName = generatePathName();
+        String dirNameWithDot = dirName + ".";
+        ShareDirectoryClient dirClient = shareClient.getDirectoryClient(dirNameWithDot);
+        dirClient.create();
+
+        String fileName = generatePathName();
+        String fileNameWithDot = fileName + ".";
+        ShareFileClient fileClient = rootDirectory.getFileClient(fileNameWithDot);
+        fileClient.create(1024);
+
+        List<String> foundDirectories = new ArrayList<>();
+        List<String> foundFiles = new ArrayList<>();
+        for (ShareFileItem fileRef : rootDirectory.listFilesAndDirectories()) {
+            if (fileRef.isDirectory()) {
+                foundDirectories.add(fileRef.getName());
+            } else {
+                foundFiles.add(fileRef.getName());
+            }
+        }
+
+        assertEquals(1, foundDirectories.size());
+        assertEquals(1, foundFiles.size());
+        if (allowTrailingDot) {
+            assertEquals(foundDirectories.get(0), dirNameWithDot);
+            assertEquals(foundFiles.get(0), fileNameWithDot);
+        } else {
+            assertEquals(foundDirectories.get(0), dirName);
+            assertEquals(foundFiles.get(0), fileName);
+        }
+
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
+    @Test
+    public void createFileAndDirectoryOAuth() {
+        primaryShareClient.create();
+        ShareClient oAuthShareClient = getOAuthShareClient(
+            new ShareClientBuilder().shareName(shareName).shareTokenIntent(ShareTokenIntent.BACKUP));
+        String dirName = generatePathName();
+        ShareDirectoryClient dirClient = oAuthShareClient.getDirectoryClient(dirName);
+
+        Response<ShareDirectoryInfo> result = dirClient.createWithResponse(null, null, null, null, null);
+
+        assertEquals(dirClient.getShareName(), shareName);
+        assertEquals(dirClient.getDirectoryPath(), dirName);
+        assertEquals(result.getValue().getETag(), result.getHeaders().getValue(HttpHeaderName.ETAG));
+
+        String fileName = generatePathName();
+        ShareFileClient fileClient = dirClient.getFileClient(fileName);
+        Response<ShareFileInfo> response
+            = fileClient.createWithResponse(Constants.KB, null, null, null, null, null, null);
+
+        assertEquals(fileClient.getShareName(), shareName);
+        String[] filePath = fileClient.getFilePath().split("/");
+        assertEquals(fileName, filePath[1]); // compareWithfilename
+        assertEquals(response.getValue().getETag(), response.getHeaders().getValue(HttpHeaderName.ETAG));
+    }
+
+    @Test
+    public void deleteShareDeleteSnapshotOptions() {
+        primaryShareClient.create();
+        String snap1 = primaryShareClient.createSnapshot().getSnapshot();
+        String snap2 = primaryShareClient.createSnapshot().getSnapshot();
+
+        primaryShareClient.deleteWithResponse(
+            new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
+
+        assertFalse(primaryShareClient.getSnapshotClient(snap1).exists());
+        assertFalse(primaryShareClient.getSnapshotClient(snap2).exists());
+    }
+
+    @Test
+    public void deleteShareDeleteSnapshotOptionsError() {
+        primaryShareClient.create();
+        primaryShareClient.createSnapshot().getSnapshot();
+        primaryShareClient.createSnapshot().getSnapshot();
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.deleteWithResponse(new ShareDeleteOptions(), null, null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void deleteShareLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(
+            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+            null), 202);
+    }
+
+    @Test
+    public void deleteShareLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.deleteWithResponse(
+                new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+                null));
+
+    }
+
+    @Test
+    public void deleteIfExistsShareMin() {
+        primaryShareClient.create();
+        assertTrue(primaryShareClient.deleteIfExists());
+    }
+
+    @Test
+    public void deleteIfExistsShareDeleteSnapshotOptions() {
+        primaryShareClient.create();
+        String snap1 = primaryShareClient.createSnapshot().getSnapshot();
+        String snap2 = primaryShareClient.createSnapshot().getSnapshot();
+
+        primaryShareClient.deleteIfExistsWithResponse(
+            new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
+
+        assertFalse(primaryShareClient.getSnapshotClient(snap1).exists());
+        assertFalse(primaryShareClient.getSnapshotClient(snap2).exists());
+    }
+
+    @Test
+    public void deleteIfExistsShareDeleteSnapshotOptionsError() {
+        primaryShareClient.create();
+        primaryShareClient.createSnapshot().getSnapshot();
+        primaryShareClient.createSnapshot().getSnapshot();
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.deleteIfExistsWithResponse(new ShareDeleteOptions(), null, null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void deleteIfExistsShareLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(
+            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+            null), 202);
+    }
+
+    @Test
+    public void deleteIfExistsShareLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.deleteIfExistsWithResponse(
+                new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+                null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void getPropertiesLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(
+            new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+            null, null), 200);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void getPropertiesLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.getPropertiesWithResponse(
+                new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+                null, null));
+    }
+
+    @Test
+    public void setAccessPolicy() {
+        primaryShareClient.create();
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(
+                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
+                .setPermissions("r"));
+
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
+        primaryShareClient.setAccessPolicy(ids);
+        assertEquals("0000", primaryShareClient.getAccessPolicy().iterator().next().getId());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setAccessPolicyOAuth() {
+        primaryShareClient.create();
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(
+                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
+                .setPermissions("r"));
+
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
+        shareClient.setAccessPolicy(ids);
+        assertEquals("0000", shareClient.getAccessPolicy().iterator().next().getId());
+    }
+
+    @Test
+    public void setAccessPolicyIds() {
+        primaryShareClient.create();
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy().setStartsOn(testResourceNamer.now())
+                .setExpiresOn(testResourceNamer.now().plusDays(1))
+                .setPermissions("r"));
+        ShareSignedIdentifier identifier2 = new ShareSignedIdentifier().setId("0001")
+            .setAccessPolicy(new ShareAccessPolicy().setStartsOn(testResourceNamer.now())
+                .setExpiresOn(testResourceNamer.now().plusDays(2))
+                .setPermissions("w"));
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier, identifier2);
+
+        Response<ShareInfo> response = primaryShareClient.setAccessPolicyWithResponse(ids, null, null);
+        Iterator<ShareSignedIdentifier> receivedIdentifiers = primaryShareClient.getAccessPolicy().iterator();
+
+        FileShareTestHelper.assertResponseStatusCode(response, 200);
+        validateBasicHeaders(response.getHeaders());
+        ShareSignedIdentifier id0 = receivedIdentifiers.next();
+        assertEquals(id0.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
+        assertEquals(id0.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
+        assertEquals(id0.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
+        ShareSignedIdentifier id1 = receivedIdentifiers.next();
+        assertEquals(id1.getAccessPolicy().getExpiresOn(), identifier2.getAccessPolicy().getExpiresOn());
+        assertEquals(id1.getAccessPolicy().getStartsOn(), identifier2.getAccessPolicy().getStartsOn());
+        assertEquals(id1.getAccessPolicy().getPermissions(), identifier2.getAccessPolicy().getPermissions());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void setAccessPolicyLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.setAccessPolicyWithResponse(
+            new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+            null, null), 200);
+    }
+
+    @Test
+    public void setAccessPolicyLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+
+        assertThrows(ShareStorageException.class, () -> primaryShareClient.setAccessPolicyWithResponse(
+            new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+            null, null));
+    }
+
+    @Test
+    public void setAccessPolicyError() {
+        assertThrows(ShareStorageException.class, () -> primaryShareClient.setAccessPolicy(null));
+    }
+
+    @Test
+    public void getAccessPolicy() {
+        primaryShareClient.create();
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(
+                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
+                .setPermissions("r"));
+
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
+        primaryShareClient.setAccessPolicy(ids);
+
+        ShareSignedIdentifier id = primaryShareClient.getAccessPolicy().iterator().next();
+
+        assertEquals(id.getId(), identifier.getId());
+        assertEquals(id.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
+        assertEquals(id.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
+        assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void getAccessPolicyOAuth() {
+        primaryShareClient.create();
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
+            .setAccessPolicy(new ShareAccessPolicy()
+                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .setExpiresOn(
+                    testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime().plusDays(1))
+                .setPermissions("r"));
+
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
+        shareClient.setAccessPolicy(ids);
+
+        ShareSignedIdentifier id = shareClient.getAccessPolicy().iterator().next();
+
+        assertEquals(id.getId(), identifier.getId());
+        assertEquals(id.getAccessPolicy().getStartsOn(), identifier.getAccessPolicy().getStartsOn());
+        assertEquals(id.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
+        assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void getAccessPolicyLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+        PagedIterable<ShareSignedIdentifier> response = primaryShareClient.getAccessPolicy(
+            new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)));
+        assertFalse(response.iterator().hasNext());
+    }
+
+    @Test
+    public void getAccessPolicyLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class, () -> primaryShareClient.getAccessPolicy(
+                new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)))
+            .iterator()
+            .hasNext());
+    }
+
+    @Test
+    public void getAccessPolicyError() {
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.getAccessPolicy().iterator().hasNext());
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+    }
+
+    @Test
+    public void setPropertiesQuota() {
+        primaryShareClient.createWithResponse(null, 1, null, null);
+
+        ShareProperties getQuotaBeforeResponse = primaryShareClient.getProperties();
+        Response<ShareInfo> setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null, null);
+        ShareProperties getQuotaAfterResponse = primaryShareClient.getProperties();
+
+        assertEquals(1, getQuotaBeforeResponse.getQuota());
+        FileShareTestHelper.assertResponseStatusCode(setQuotaResponse, 200);
+        assertEquals(2, getQuotaAfterResponse.getQuota());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void setPropertiesAccessTier() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        OffsetDateTime time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS);
+
+        ShareProperties getAccessTierBeforeResponse = primaryShareClient.getProperties();
+        Response<ShareInfo> setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null);
+        ShareProperties getAccessTierAfterResponse = primaryShareClient.getProperties();
+
+        assertEquals(getAccessTierBeforeResponse.getAccessTier(), ShareAccessTier.HOT.toString());
+        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
+        assertEquals(getAccessTierAfterResponse.getAccessTier(), ShareAccessTier.TRANSACTION_OPTIMIZED.toString());
+        assertNotNull(getAccessTierAfterResponse.getAccessTierChangeTime());
+        assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time)
+            || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1)));
+        assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
+        assertEquals("pending-from-hot", getAccessTierAfterResponse.getAccessTierTransitionState());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void setPropertiesLease() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        Response<ShareInfo> setAccessTierResponse = primaryShareClient
+            .setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL)
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
+
+        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void setPropertiesLeaseError() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient
+                .setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL)
+                    .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null));
+    }
+
+    @Test
+    public void setPropertiesError() {
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.setProperties(new ShareSetPropertiesOptions()));
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void setMetadataLease() {
+        primaryShareClient.createWithResponse(null, 1, null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        Response<ShareInfo> resp = primaryShareClient.setMetadataWithResponse(
+            new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+            null);
+
+        FileShareTestHelper.assertResponseStatusCode(resp, 200);
+    }
+
+    @Test
+    public void setMetadataLeaseError() {
+        primaryShareClient.createWithResponse(null, 1, null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.setMetadataWithResponse(
+                new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+                null, null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void getStatisticsLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+        Response<ShareStatistics> resp = primaryShareClient.getStatisticsWithResponse(
+            new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+            null, null);
+        FileShareTestHelper.assertResponseStatusCode(resp, 200);
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void getStatisticsLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.getStatisticsWithResponse(
+                new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+                null, null));
+    }
+
+    @Test
+    public void createFileInRootDirectory() {
+        primaryShareClient.create();
+        ShareDirectoryClient directoryClient = primaryShareClient.getRootDirectoryClient();
+        FileShareTestHelper.assertResponseStatusCode(
+            directoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
+    }
+
+    @Test
+    public void deleteIfExistsDirectoryMin() {
+        String directoryName = "testCreateDirectory";
+        primaryShareClient.create();
+        primaryShareClient.createDirectory(directoryName);
+        assertTrue(primaryShareClient.deleteDirectoryIfExists(directoryName));
+    }
+
+    @Test
+    public void deleteIfExistsFileMin() {
+        String fileName = "testCreateFile";
+        primaryShareClient.create();
+        primaryShareClient.createFile(fileName, 1024);
+        assertTrue(primaryShareClient.deleteFileIfExists(fileName));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
+    @Test
+    public void createAndGetPermissionOAuth() {
+        primaryShareClient.create();
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
+        String permissionKey = shareClient.createPermission(FILE_PERMISSION);
+        String permission = shareClient.getPermission(permissionKey);
+        assertEquals(FILE_PERMISSION, permission);
+    }
+
+    @Test
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    public void perCallPolicy() {
+        primaryShareClient.create();
+        ShareClient shareClient
+            = shareBuilderHelper(primaryShareClient.getShareName()).addPolicy(getPerCallVersionPolicy()).buildClient();
+
+        Response<ShareProperties> response = shareClient.getPropertiesWithResponse(null, null);
+        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
+    }
+
 }

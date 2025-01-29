@@ -77,7 +77,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     public void getFileServiceURL() {
         String accountName
             = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
-                .getAccountName();
+            .getAccountName();
         String expectURL = String.format("https://%s.file.core.windows.net", accountName);
         String fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl();
         assertEquals(expectURL, fileServiceURL);
@@ -97,22 +97,9 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("createShareWithMetadataSupplier")
-    public void createShareWithMetadata(Map<String, String> metadata, Integer quota) {
-        StepVerifier.create(primaryFileServiceAsyncClient.createShareWithResponse(shareName, metadata, quota))
-            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
-            .verifyComplete();
-    }
-
-    private static Stream<Arguments> createShareWithMetadataSupplier() {
-        return Stream.of(Arguments.of(null, null), Arguments.of(TEST_METADATA, null), Arguments.of(null, 1),
-            Arguments.of(TEST_METADATA, 1));
-    }
-
-    @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileServiceShareWithInvalidArgsSupplier")
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, int statusCode,
-        ShareErrorCode errMsg) {
+                                           ShareErrorCode errMsg) {
         StepVerifier.create(primaryFileServiceAsyncClient.createShareWithResponse(shareName, metadata, quota))
             .verifyErrorSatisfies(
                 it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg));
@@ -137,7 +124,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     @ParameterizedTest
     @MethodSource("listSharesWithFilterSupplier")
     public void listSharesWithFilter(ListSharesOptions options, int limits, boolean includeMetadata,
-        boolean includeSnapshot) {
+                                     boolean includeSnapshot) {
         LinkedList<ShareItem> testShares = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
             ShareItem share
@@ -174,7 +161,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     @ParameterizedTest
     @MethodSource("listSharesWithArgsSupplier")
     public void listSharesWithArgs(ListSharesOptions options, int limits, boolean includeMetadata,
-        boolean includeSnapshot) {
+                                   boolean includeSnapshot) {
         LinkedList<ShareItem> testShares = new LinkedList<>();
         Flux<ShareItem> createSharesFlux = Flux.range(0, 3).flatMap(i -> {
             ShareItem share = new ShareItem().setName(shareName + i)
@@ -183,17 +170,17 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             ShareAsyncClient shareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(share.getName());
             Mono<ShareItem> createShareMono
                 = shareAsyncClient.createWithResponse(share.getMetadata(), share.getProperties().getQuota())
-                    .then(Mono.just(share));
+                .then(Mono.just(share));
             if (i == 2) {
                 createShareMono
                     = createShareMono.then(shareAsyncClient.createSnapshotWithResponse(null).map(snapshotResponse -> {
-                        ShareItem snapshotShare = new ShareItem().setName(share.getName())
-                            .setMetadata(share.getMetadata())
-                            .setProperties(share.getProperties())
-                            .setSnapshot(snapshotResponse.getValue().getSnapshot());
-                        FileShareTestHelper.assertResponseStatusCode(snapshotResponse, 201);
-                        return snapshotShare;
-                    }));
+                    ShareItem snapshotShare = new ShareItem().setName(share.getName())
+                        .setMetadata(share.getMetadata())
+                        .setProperties(share.getProperties())
+                        .setSnapshot(snapshotResponse.getValue().getSnapshot());
+                    FileShareTestHelper.assertResponseStatusCode(snapshotResponse, 201);
+                    return snapshotShare;
+                }));
             }
             return createShareMono.doOnNext(testShares::add);
         });
@@ -295,7 +282,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     @ParameterizedTest
     @MethodSource("setAndGetPropertiesWithInvalidArgsSupplier")
     public void setAndGetPropertiesWithInvalidArgs(List<ShareCorsRule> coreList, int statusCode,
-        ShareErrorCode errMsg) {
+                                                   ShareErrorCode errMsg) {
         ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
         ShareMetrics metrics = new ShareMetrics().setEnabled(true)
             .setIncludeApis(false)
@@ -476,5 +463,19 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         assertTrue(share.getProperties().isPaidBurstingEnabled());
         assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
         assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
+    }
+
+    //Unique Tests
+    @ParameterizedTest
+    @MethodSource("createShareWithMetadataSupplier")
+    public void createShareWithMetadata(Map<String, String> metadata, Integer quota) {
+        StepVerifier.create(primaryFileServiceAsyncClient.createShareWithResponse(shareName, metadata, quota))
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> createShareWithMetadataSupplier() {
+        return Stream.of(Arguments.of(null, null), Arguments.of(TEST_METADATA, null), Arguments.of(null, 1),
+            Arguments.of(TEST_METADATA, 1));
     }
 }

@@ -109,15 +109,6 @@ public class FileServiceApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(createShareResponse, 201);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void createShareMaxOverloads() {
-        Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName,
-            new ShareCreateOptions().setQuotaInGb(1).setMetadata(TEST_METADATA).setAccessTier(ShareAccessTier.HOT),
-            null, null);
-        FileShareTestHelper.assertResponseStatusCode(createShareResponse, 201);
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileServiceShareWithInvalidArgsSupplier")
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, int statusCode,
@@ -229,48 +220,6 @@ public class FileServiceApiTests extends FileShareTestBase {
                 true, true, true));
     }
 
-    @Test
-    public void listSharesMaxResultsByPage() {
-        LinkedList<ShareItem> testShares = new LinkedList<>();
-        ListSharesOptions options = new ListSharesOptions().setPrefix(shareName);
-        for (int i = 0; i < 4; i++) {
-            ShareItem share = new ShareItem().setName(shareName + i);
-            ShareClient shareClient = primaryFileServiceClient.getShareClient(share.getName());
-            shareClient.create();
-            testShares.add(share);
-        }
-
-        for (PagedResponse<ShareItem> page : primaryFileServiceClient.listShares(options, null, null)
-            .iterableByPage(2)) {
-            assertTrue(page.getValue().size() <= 2);
-        }
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
-    @Test
-    public void listSharesGetAccessTier() {
-        String shareName = generateShareName();
-        ShareClient share = primaryFileServiceClient
-            .createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-            .getValue();
-
-        OffsetDateTime time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS);
-        time = time.minusSeconds(1); // account for time skew on the other side.
-        share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED));
-
-        Iterator<ShareItem> shares
-            = primaryFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix), null, null).iterator();
-
-        ShareItem item = shares.next();
-        assertEquals(shareName, item.getName());
-        assertEquals(ShareAccessTier.TRANSACTION_OPTIMIZED.toString(), item.getProperties().getAccessTier());
-        assertNotNull(item.getProperties().getAccessTierChangeTime());
-        assertTrue(item.getProperties().getAccessTierChangeTime().isEqual(time)
-            || item.getProperties().getAccessTierChangeTime().isAfter(time));
-        assertTrue(item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
-        assertEquals("pending-from-hot", item.getProperties().getAccessTierTransitionState());
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-02-12")
     @Test
     public void listSharesWithPremiumShare() {
@@ -334,39 +283,6 @@ public class FileServiceApiTests extends FileShareTestBase {
             = primaryFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
         Response<ShareServiceProperties> getPropertiesAfterResponse
             = primaryFileServiceClient.getPropertiesWithResponse(null, null);
-
-        FileShareTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200);
-        FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties,
-            getPropertiesBeforeResponse.getValue());
-        FileShareTestHelper.assertResponseStatusCode(setPropertiesResponse, 202);
-        FileShareTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200);
-        FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties,
-            getPropertiesAfterResponse.getValue());
-    }
-
-    @PlaybackOnly
-    @ResourceLock("ServiceProperties")
-    @Test
-    public void setAndGetPropertiesPremium() {
-        ShareServiceProperties originalProperties = premiumFileServiceClient.getProperties();
-        ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
-        ShareMetrics metrics = new ShareMetrics().setEnabled(true)
-            .setIncludeApis(false)
-            .setRetentionPolicy(retentionPolicy)
-            .setVersion("1.0");
-        ShareProtocolSettings protocolSettings = new ShareProtocolSettings()
-            .setSmb(new ShareSmbSettings().setMultichannel(new SmbMultichannel().setEnabled(true)));
-        ShareServiceProperties updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
-            .setMinuteMetrics(metrics)
-            .setCors(new ArrayList<>())
-            .setProtocol(protocolSettings);
-
-        Response<ShareServiceProperties> getPropertiesBeforeResponse
-            = premiumFileServiceClient.getPropertiesWithResponse(null, null);
-        Response<Void> setPropertiesResponse
-            = premiumFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
-        Response<ShareServiceProperties> getPropertiesAfterResponse
-            = premiumFileServiceClient.getPropertiesWithResponse(null, null);
 
         FileShareTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200);
         FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties,
@@ -512,17 +428,6 @@ public class FileServiceApiTests extends FileShareTestBase {
             () -> primaryFileServiceClient.undeleteShare(generateShareName(), "01D60F8BB59A4652"));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#isServiceVersionSpecified")
-    @Test
-    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
-    // and auth would fail because we changed a signed header.
-    public void perCallPolicy() {
-        ShareServiceClient serviceClient = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy()).buildClient();
-        Response<ShareServiceProperties> response = serviceClient.getPropertiesWithResponse(null, null);
-        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
-    }
-
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void listSharesEnableSnapshotVirtualDirectoryAccess() {
@@ -564,4 +469,101 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
         assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
     }
+
+    //Unique Tests
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void createShareMaxOverloads() {
+        Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName,
+            new ShareCreateOptions().setQuotaInGb(1).setMetadata(TEST_METADATA).setAccessTier(ShareAccessTier.HOT),
+            null, null);
+        FileShareTestHelper.assertResponseStatusCode(createShareResponse, 201);
+    }
+
+    @Test
+    public void listSharesMaxResultsByPage() {
+        LinkedList<ShareItem> testShares = new LinkedList<>();
+        ListSharesOptions options = new ListSharesOptions().setPrefix(shareName);
+        for (int i = 0; i < 4; i++) {
+            ShareItem share = new ShareItem().setName(shareName + i);
+            ShareClient shareClient = primaryFileServiceClient.getShareClient(share.getName());
+            shareClient.create();
+            testShares.add(share);
+        }
+
+        for (PagedResponse<ShareItem> page : primaryFileServiceClient.listShares(options, null, null)
+            .iterableByPage(2)) {
+            assertTrue(page.getValue().size() <= 2);
+        }
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void listSharesGetAccessTier() {
+        String shareName = generateShareName();
+        ShareClient share = primaryFileServiceClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
+            .getValue();
+
+        OffsetDateTime time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS);
+        time = time.minusSeconds(1); // account for time skew on the other side.
+        share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED));
+
+        Iterator<ShareItem> shares
+            = primaryFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix), null, null).iterator();
+
+        ShareItem item = shares.next();
+        assertEquals(shareName, item.getName());
+        assertEquals(ShareAccessTier.TRANSACTION_OPTIMIZED.toString(), item.getProperties().getAccessTier());
+        assertNotNull(item.getProperties().getAccessTierChangeTime());
+        assertTrue(item.getProperties().getAccessTierChangeTime().isEqual(time)
+            || item.getProperties().getAccessTierChangeTime().isAfter(time));
+        assertTrue(item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
+        assertEquals("pending-from-hot", item.getProperties().getAccessTierTransitionState());
+    }
+
+    @PlaybackOnly
+    @ResourceLock("ServiceProperties")
+    @Test
+    public void setAndGetPropertiesPremium() {
+        ShareServiceProperties originalProperties = premiumFileServiceClient.getProperties();
+        ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
+        ShareMetrics metrics = new ShareMetrics().setEnabled(true)
+            .setIncludeApis(false)
+            .setRetentionPolicy(retentionPolicy)
+            .setVersion("1.0");
+        ShareProtocolSettings protocolSettings = new ShareProtocolSettings()
+            .setSmb(new ShareSmbSettings().setMultichannel(new SmbMultichannel().setEnabled(true)));
+        ShareServiceProperties updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
+            .setMinuteMetrics(metrics)
+            .setCors(new ArrayList<>())
+            .setProtocol(protocolSettings);
+
+        Response<ShareServiceProperties> getPropertiesBeforeResponse
+            = premiumFileServiceClient.getPropertiesWithResponse(null, null);
+        Response<Void> setPropertiesResponse
+            = premiumFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
+        Response<ShareServiceProperties> getPropertiesAfterResponse
+            = premiumFileServiceClient.getPropertiesWithResponse(null, null);
+
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200);
+        FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties,
+            getPropertiesBeforeResponse.getValue());
+        FileShareTestHelper.assertResponseStatusCode(setPropertiesResponse, 202);
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200);
+        FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties,
+            getPropertiesAfterResponse.getValue());
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#isServiceVersionSpecified")
+    @Test
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    public void perCallPolicy() {
+        ShareServiceClient serviceClient = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy()).buildClient();
+        Response<ShareServiceProperties> response = serviceClient.getPropertiesWithResponse(null, null);
+        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
+    }
+
 }
