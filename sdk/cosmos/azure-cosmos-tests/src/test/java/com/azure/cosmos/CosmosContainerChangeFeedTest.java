@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
@@ -18,6 +19,7 @@ import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -144,6 +146,15 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, true },
             { FaultInjectionServerErrorType.PARTITION_IS_GONE, false, true },
             { FaultInjectionServerErrorType.PARTITION_IS_GONE, true, false }
+        };
+    }
+
+    @DataProvider(name = "changeFeedWithStaleContainerRidDataProvider")
+    public static Object[][] changeFeedWithStaleContainerRidDataProvider() {
+        return new Object[][]{
+            // re-created container RU, multi-partition container
+            { 400, false },
+            { 10100, true }
         };
     }
 
@@ -1026,6 +1037,161 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             assertThat(totalQueryCount.get()).isEqualTo(5);
         } finally {
             safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
+    }
+
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedWithStaleContainerRidDataProvider", timeOut = 4 * TIMEOUT)
+    public void changeFeedQueryWithStaleCollectionRidInContinuationToken(
+        int throughput,
+        boolean isMultiPartitionContainer
+    ) throws InterruptedException {
+        // this test is to validate when using stale container rid in the continuationToken, query change feed will return BadRequestException and does not hang
+        String testContainerId = UUID.randomUUID().toString();
+
+        try {
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            CosmosAsyncContainer testContainer =
+                createCollection(
+                    this.createdAsyncDatabase,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    400);
+
+            String testContainerRid = testContainer.read().block().getProperties().getResourceId();
+
+            // create items
+            for (int i = 0; i < 10; i++) {
+                testContainer.createItem(TestItem.createNewItem()).block();
+            }
+
+            // using query changeFeed
+            logger.info("Doing initial changeFeed query on the container " + testContainerId);
+            AtomicReference<String> continuationToken = new AtomicReference<>();
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            testContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                .byPage()
+                .doOnNext(response -> {
+                    continuationToken.set(response.getContinuationToken());
+                })
+                .blockLast();
+
+            logger.info("Delete the container");
+            testContainer.delete().block();
+
+            Thread.sleep(Duration.ofSeconds(5).toMillis());
+            logger.info("Re-create the container");
+            testContainer =
+                createCollection(
+                    this.createdAsyncDatabase,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    throughput);
+            Thread.sleep(Duration.ofSeconds(5).toMillis());
+            List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
+            if (isMultiPartitionContainer) {
+                assertThat(feedRanges.size()).isGreaterThan(1);
+            } else {
+                assertThat(feedRanges.size()).isEqualTo(1);
+            }
+
+            String reCreatedContainerRid = testContainer.read().block().getProperties().getResourceId();
+            assertThat(testContainerRid).isNotEqualTo(reCreatedContainerRid);
+
+            logger.info("Using continuation token with incorrect containerRid");
+            changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken.get());
+            try {
+                testContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                    .byPage()
+                    .blockLast();
+                fail("ChangeFeed query request should fail when using incorrect collectionRid in the continuation token");
+            } catch (CosmosException e) {
+                assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+                assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS);
+            }
+        } finally {
+            safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
+    }
+
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedWithStaleContainerRidDataProvider", timeOut = 4 * TIMEOUT)
+    public void changeFeedQueryWithCorrectContainerRidWithStaledClient(
+        int throughput,
+        boolean isMultiPartitionContainer
+    ) throws InterruptedException {
+        // this test is to validate when container re-created, using correct continuation token on client with stale cache, the request will succeed
+        String testContainerId = UUID.randomUUID().toString();
+        CosmosAsyncClient newClient = null;
+
+        try {
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            CosmosAsyncContainer testContainer =
+                createCollection(
+                    this.createdAsyncDatabase,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    400);
+
+            String testContainerRid = testContainer.read().block().getProperties().getResourceId();
+
+            // create items
+            for (int i = 0; i < 10; i++) {
+                testContainer.createItem(TestItem.createNewItem()).block();
+            }
+
+            // using query changeFeed
+            logger.info("Doing initial changeFeed query on the container " + testContainerId);
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            testContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                .byPage()
+                .blockLast();
+
+            logger.info("Delete the container");
+            testContainer.delete().block();
+
+            Thread.sleep(Duration.ofSeconds(5).toMillis());
+            logger.info("Re-create the container through a different client");
+            newClient = this.getClientBuilder().buildAsyncClient();
+            CosmosAsyncDatabase databaseWithNewClient = newClient.getDatabase(this.createdAsyncDatabase.getId());
+            CosmosAsyncContainer testContainerWithNewClient =
+                createCollection(
+                    databaseWithNewClient,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    throughput);
+            Thread.sleep(Duration.ofSeconds(5).toMillis());
+            List<FeedRange> feedRanges = testContainerWithNewClient.getFeedRanges().block();
+            if (isMultiPartitionContainer) {
+                assertThat(feedRanges.size()).isGreaterThan(1);
+            } else {
+                assertThat(feedRanges.size()).isEqualTo(1);
+            }
+
+            String reCreatedContainerRid = testContainerWithNewClient.read().block().getProperties().getResourceId();
+            assertThat(testContainerRid).isNotEqualTo(reCreatedContainerRid);
+
+            logger.info("Creating items in the re-created container");
+            for (int i = 0; i < 10; i++) {
+                testContainerWithNewClient.createItem(TestItem.createNewItem()).block();
+            }
+            logger.info("query changeFeed from re-created container");
+            AtomicReference<String> continuationToken = new AtomicReference<>();
+            testContainerWithNewClient
+                .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                .byPage()
+                .doOnNext(response -> continuationToken.set(response.getContinuationToken()))
+                .blockLast();
+
+            logger.info("Using the continuation token from the re-created container on previous stale client");
+            changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken.get());
+            testContainer
+                .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                .byPage()
+                .blockLast();
+        } finally {
+            safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+            safeClose(newClient);
         }
     }
 

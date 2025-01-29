@@ -470,7 +470,7 @@ public class CosmosAsyncContainer {
                     clientWrapper
                         .getCollectionCache()
                         .resolveByNameAsync(
-                            null, this.getLinkWithoutTrailingSlash(), null)
+                            null, getLinkWithoutTrailingSlash(this.link), null)
                         .flatMap(collection -> {
                             if (collection == null) {
                                 throw new IllegalStateException("Collection cannot be null");
@@ -1118,12 +1118,12 @@ public class CosmosAsyncContainer {
             queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType));
     }
 
-    String getLinkWithoutTrailingSlash() {
-        if (this.link.startsWith("/")) {
-            return this.link.substring(1);
+    static String getLinkWithoutTrailingSlash(String link) {
+        if (link.startsWith("/")) {
+            return link.substring(1);
         }
 
-        return this.link;
+        return link;
     }
 
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
@@ -1162,7 +1162,7 @@ public class CosmosAsyncContainer {
                 .getCollectionCache()
                 .resolveByNameAsync(
                     null,
-                    this.getLinkWithoutTrailingSlash(),
+                    getLinkWithoutTrailingSlash(this.link),
                     null)
                 .flatMapMany(
                     collection -> {
@@ -2650,7 +2650,7 @@ public class CosmosAsyncContainer {
             .flatMap(normalizedRange -> {
                 return clientWrapper
                     .getCollectionCache()
-                    .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+                    .resolveByNameAsync(null, getLinkWithoutTrailingSlash(this.link), null)
                     .flatMap(collection -> {
                         return clientWrapper
                             .getPartitionKeyRangeCache()
@@ -2689,7 +2689,7 @@ public class CosmosAsyncContainer {
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
         Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
             .getCollectionCache()
-            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+            .resolveByNameAsync(null, getLinkWithoutTrailingSlash(this.link), null)
             .map(collection -> Utils.ValueHolder.initialize(collection));
 
         return FeedRangeInternal
@@ -2708,7 +2708,7 @@ public class CosmosAsyncContainer {
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
         Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
             .getCollectionCache()
-            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+            .resolveByNameAsync(null, getLinkWithoutTrailingSlash(this.link), null)
             .map(collection -> Utils.ValueHolder.initialize(collection));
 
         return FeedRangeInternal
@@ -2737,7 +2737,7 @@ public class CosmosAsyncContainer {
                 return collectionCache
                     .resolveByNameAsync(
                         null,
-                        this.getLinkWithoutTrailingSlash(),
+                        getLinkWithoutTrailingSlash(this.link),
                         null,
                         null)
                     .map(documentCollection -> documentCollection.getPartitionKey());
@@ -2849,6 +2849,14 @@ public class CosmosAsyncContainer {
         }
     }
 
+    Mono<String> extractCollectionRid() {
+        final AsyncDocumentClient clientWrapper = this.getDatabase().getDocClientWrapper();
+        return clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(null, getLinkWithoutTrailingSlash(this.link), null)
+                .flatMap(collection -> Mono.just(collection.getResourceId()));
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -2934,6 +2942,11 @@ public class CosmosAsyncContainer {
                 }
 
                 @Override
+                public Mono<String> extractCollectionRid(CosmosAsyncContainer cosmosAsyncContainer) {
+                    return cosmosAsyncContainer.extractCollectionRid();
+                }
+
+                @Override
                 public Mono<Boolean> checkFeedRangeOverlapping(
                     CosmosAsyncContainer cosmosAsyncContainer,
                     FeedRange feedRange1,
@@ -2956,7 +2969,12 @@ public class CosmosAsyncContainer {
 
                 @Override
                 public String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer) {
-                    return cosmosAsyncContainer.getLinkWithoutTrailingSlash();
+                    return CosmosAsyncContainer.getLinkWithoutTrailingSlash(cosmosAsyncContainer.link);
+                }
+
+                @Override
+                public String getLinkWithoutTrailingSlash(String link) {
+                    return CosmosAsyncContainer.getLinkWithoutTrailingSlash(link);
                 }
             });
     }

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
@@ -26,8 +27,6 @@ import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -79,6 +78,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
     private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
+    private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
 
     private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
 
@@ -210,54 +211,55 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             .flatMap(value -> this.getLeaseStoreManager())
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
-                    .flatMap(lease -> {
-                        final CosmosChangeFeedRequestOptions options =
-                            ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
-                        options.setMaxItemCount(1);
+                    .flatMap(lease -> containerAccessor.extractCollectionRid(this.feedContextClient.getContainerClient()).flux()
+                        .flatMap(collectionRid -> {
+                            final CosmosChangeFeedRequestOptions options =
+                                ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                                    lease.getContinuationState(collectionRid, ChangeFeedMode.INCREMENTAL));
+                            options.setMaxItemCount(1);
 
-                        return this.feedContextClient.createDocumentChangeFeedQuery(
-                                this.feedContextClient.getContainerClient(),
-                                options, JsonNode.class)
-                            .take(1)
-                            .map(feedResponse -> {
-                                String ownerValue = lease.getOwner();
-                                String sessionTokenLsn = feedResponse.getSessionToken();
-                                String parsedSessionToken = sessionTokenLsn.substring(
-                                    sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
-                                String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
-                                String latestLsn = segments[0];
+                            return this.feedContextClient.createDocumentChangeFeedQuery(
+                                    this.feedContextClient.getContainerClient(),
+                                    options, JsonNode.class)
+                                .take(1)
+                                .map(feedResponse -> {
+                                    String ownerValue = lease.getOwner();
+                                    String sessionTokenLsn = feedResponse.getSessionToken();
+                                    String parsedSessionToken = sessionTokenLsn.substring(
+                                        sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                                    String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+                                    String latestLsn = segments[0];
 
-                                if (segments.length >= 2) {
-                                    // default to Global LSN
-                                    latestLsn = segments[1];
-                                }
+                                    if (segments.length >= 2) {
+                                        // default to Global LSN
+                                        latestLsn = segments[1];
+                                    }
 
-                                if (ownerValue == null) {
-                                    ownerValue = "";
-                                }
+                                    if (ownerValue == null) {
+                                        ownerValue = "";
+                                    }
 
-                                // An empty list of documents returned means that we are current (zero lag)
-                                if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
-                                    return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0l);
-                                }
+                                    // An empty list of documents returned means that we are current (zero lag)
+                                    if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
+                                        return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0l);
+                                    }
 
-                                long currentLsn = 0;
-                                long estimatedLag;
-                                try {
-                                    currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
-                                    estimatedLag = Long.parseLong(latestLsn);
-                                    estimatedLag = estimatedLag - currentLsn + 1;
-                                } catch (NumberFormatException ex) {
-                                    logger.warn("Unexpected Cosmos LSN found", ex);
-                                    estimatedLag = -1l;
-                                }
+                                    long currentLsn = 0;
+                                    long estimatedLag;
+                                    try {
+                                        currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                                        estimatedLag = Long.parseLong(latestLsn);
+                                        estimatedLag = estimatedLag - currentLsn + 1;
+                                    } catch (NumberFormatException ex) {
+                                        logger.warn("Unexpected Cosmos LSN found", ex);
+                                        estimatedLag = -1l;
+                                    }
 
-                                return Pair.of(
-                                    ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn,
-                                    estimatedLag);
-                            });
-                    })
+                                    return Pair.of(
+                                        ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn,
+                                        estimatedLag);
+                                });
+                        }))
                     .collectList()
                     .map(valueList -> {
                         Map<String, Integer> result = new ConcurrentHashMap<>();
@@ -288,62 +290,62 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             .flatMap(value -> this.getLeaseStoreManager())
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
-                    .flatMap(lease -> {
-                        final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
-                        final CosmosChangeFeedRequestOptions options =
-                            ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(this.collectionId, ChangeFeedMode.INCREMENTAL));
-                        options.setMaxItemCount(1);
+                    .flatMap(lease -> containerAccessor.extractCollectionRid(this.feedContextClient.getContainerClient()).flux()
+                        .flatMap(collectionRid -> {
+                            final CosmosChangeFeedRequestOptions options =
+                                ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                                    lease.getContinuationState(collectionRid, ChangeFeedMode.INCREMENTAL));
+                            options.setMaxItemCount(1);
 
-                        return this.feedContextClient.createDocumentChangeFeedQuery(
-                            this.feedContextClient.getContainerClient(),
-                            options, JsonNode.class)
-                            .take(1)
-                            .map(feedResponse -> {
-                                String sessionTokenLsn = feedResponse.getSessionToken();
-                                String parsedSessionToken = sessionTokenLsn.substring(
-                                    sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
-                                String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
-                                String latestLsn = segments[0];
+                            return this.feedContextClient.createDocumentChangeFeedQuery(
+                                    this.feedContextClient.getContainerClient(),
+                                    options, JsonNode.class)
+                                .take(1)
+                                .map(feedResponse -> {
+                                    String sessionTokenLsn = feedResponse.getSessionToken();
+                                    String parsedSessionToken = sessionTokenLsn.substring(
+                                        sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                                    String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+                                    String latestLsn = segments[0];
 
-                                if (segments.length >= 2) {
-                                    // default to Global LSN
-                                    latestLsn = segments[1];
-                                }
+                                    if (segments.length >= 2) {
+                                        // default to Global LSN
+                                        latestLsn = segments[1];
+                                    }
 
-                                // lease.getId() - the ID of the lease item representing the persistent state of a
-                                // change feed processor worker.
-                                // latestLsn - a marker representing the latest item that will be processed.
-                                ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
-                                    .setHostName(lease.getOwner())
-                                    .setLeaseToken(lease.getLeaseToken());
+                                    // lease.getId() - the ID of the lease item representing the persistent state of a
+                                    // change feed processor worker.
+                                    // latestLsn - a marker representing the latest item that will be processed.
+                                    ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
+                                        .setHostName(lease.getOwner())
+                                        .setLeaseToken(lease.getLeaseToken());
 
-                                // An empty list of documents returned means that we are current (zero lag)
-                                if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
-                                    changeFeedProcessorState.setEstimatedLag(0)
-                                        .setContinuationToken(latestLsn);
+                                    // An empty list of documents returned means that we are current (zero lag)
+                                    if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
+                                        changeFeedProcessorState.setEstimatedLag(0)
+                                            .setContinuationToken(latestLsn);
+
+                                        return changeFeedProcessorState;
+                                    }
+
+                                    changeFeedProcessorState.setContinuationToken(
+                                        feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
+
+                                    long currentLsn;
+                                    long estimatedLag;
+                                    try {
+                                        currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                                        estimatedLag = Long.parseLong(latestLsn);
+                                        estimatedLag = estimatedLag - currentLsn + 1;
+                                        changeFeedProcessorState.setEstimatedLag((int) Math.min(estimatedLag, Integer.MAX_VALUE));
+                                    } catch (NumberFormatException ex) {
+                                        logger.warn("Unexpected Cosmos LSN found", ex);
+                                        changeFeedProcessorState.setEstimatedLag(-1);
+                                    }
 
                                     return changeFeedProcessorState;
-                                }
-
-                                changeFeedProcessorState.setContinuationToken(
-                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
-
-                                long currentLsn;
-                                long estimatedLag;
-                                try {
-                                    currentLsn = Long.parseLong(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
-                                    estimatedLag = Long.parseLong(latestLsn);
-                                    estimatedLag = estimatedLag - currentLsn + 1;
-                                    changeFeedProcessorState.setEstimatedLag((int)Math.min(estimatedLag, Integer.MAX_VALUE));
-                                } catch (NumberFormatException ex) {
-                                    logger.warn("Unexpected Cosmos LSN found", ex);
-                                    changeFeedProcessorState.setEstimatedLag(-1);
-                                }
-
-                                return changeFeedProcessorState;
-                            });
-                    })
+                                });
+                        }))
                     .collectList()
                     .map(Collections::unmodifiableList)
             );
@@ -423,8 +425,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             leaseStoreManager,
             leaseStoreManager,
             DEFAULT_DEGREE_OF_PARALLELISM,
-            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
-            this.collectionId
+            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -20,9 +21,11 @@ import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneExcept
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
@@ -30,6 +33,8 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PartitionProcessorImplTests {
+    private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
 
     @Test
     public void partitionSplitHappenOnFirstRequest() {
@@ -42,6 +47,11 @@ public class PartitionProcessorImplTests {
 
         ChangeFeedState changeFeedState = this.getChangeFeedStateWithContinuationToken();
         CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+        Mockito
+            .when(containerAccessor.extractCollectionRid(containerMock))
+            .thenReturn(Mono.just(changeFeedState.getContainerRid()));
+        ChangeFeedProcessorOptions requestOptions = new ChangeFeedProcessorOptions()
+            .setStartContinuation(changeFeedState.toString()).setMaxItemCount(10);
         ProcessorSettings processorSettings = new ProcessorSettings(changeFeedState, containerMock);
         processorSettings.withMaxItemCount(10);
 
@@ -49,14 +59,18 @@ public class PartitionProcessorImplTests {
         Mockito
             .when(leaseMock.getContinuationToken())
             .thenReturn(changeFeedState.getContinuation().getCurrentContinuationToken().getToken());
-
+        Mockito
+            .when(leaseMock.getContinuationState(changeFeedState.getContainerRid(), changeFeedState.getMode()))
+            .thenReturn(changeFeedState);
         LeaseCheckpointer leaseCheckpointerMock = Mockito.mock(LeaseCheckpointer.class);
         PartitionCheckpointer partitionCheckpointer = new PartitionCheckpointerImpl(leaseCheckpointerMock, leaseMock);
 
         PartitionProcessorImpl<ChangeFeedProcessorItem> partitionProcessor = new PartitionProcessorImpl<>(
             observerMock,
             changeFeedContextClientMock,
-            processorSettings,
+            containerMock,
+            requestOptions,
+            changeFeedState.getContainerRid(),
             partitionCheckpointer,
             leaseMock,
             ChangeFeedProcessorItem.class,

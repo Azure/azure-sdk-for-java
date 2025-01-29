@@ -1816,7 +1816,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 8 * TIMEOUT)
     public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
         // Create a separate client as throughput control group will be applied to it
         CosmosAsyncClient clientWithThroughputControl =

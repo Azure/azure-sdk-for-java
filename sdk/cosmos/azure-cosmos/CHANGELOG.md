@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where queryChangeFeed will return incorrect results or hang when using continuationToken with stale container resourceId. - [PR 43114](https://github.com/Azure/azure-sdk-for-java/pull/43114)
 
 #### Other Changes
 * Added temporary internal-only option to enable thin client mode with system property COSMOS.THINCLIENT_ENABLED, setting the thin client endpoint with system property COSMOS.THINCLIENT_ENDPOINT, and default thin client endpoint with system property COSMOS.DEFAULT_THINCLIENT_ENDPOINT while the thin-client transport is still under development. This transport mode is not yet supported or ready to be used by external customers. Please don't use these configs in any production scenario yet. - [PR 43188](https://github.com/Azure/azure-sdk-for-java/pull/43188)
