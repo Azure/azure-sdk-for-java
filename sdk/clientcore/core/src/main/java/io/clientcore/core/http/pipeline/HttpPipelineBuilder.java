@@ -80,7 +80,6 @@ public class HttpPipelineBuilder {
      * Sets the HttpClient that the pipeline will use to send requests.
      *
      * @param httpClient The HttpClient the pipeline will use when sending requests.
-     *
      * @return The updated HttpPipelineBuilder object.
      */
     public HttpPipelineBuilder httpClient(HttpClient httpClient) {
@@ -94,15 +93,40 @@ public class HttpPipelineBuilder {
      * requests.
      *
      * @param policies Policies to add to the policy set.
-     *
      * @return The updated HttpPipelineBuilder object.
      */
     public HttpPipelineBuilder policies(HttpPipelinePolicy... policies) {
+        if (policies == null) {
+            return this;
+        }
+
         if (pipelinePolicies == null) {
             pipelinePolicies = new ArrayList<>();
         }
 
+        // TODO (alzimmer): Should a NullPointerException be thrown if any of the policies are null?
         this.pipelinePolicies.addAll(Arrays.asList(policies));
+
+        return this;
+    }
+
+    /**
+     * Adds a list of {@link HttpPipelinePolicy policies} to the set of policies that the pipeline will use when sending
+     * requests.
+     *
+     * @param policies Policies to add to the policy set.
+     * @return The updated HttpPipelineBuilder object.
+     */
+    public HttpPipelineBuilder policies(List<HttpPipelinePolicy> policies) {
+        if (policies == null) {
+            return this;
+        }
+
+        if (pipelinePolicies == null) {
+            pipelinePolicies = new ArrayList<>();
+        }
+
+        this.pipelinePolicies.addAll(policies);
 
         return this;
     }
