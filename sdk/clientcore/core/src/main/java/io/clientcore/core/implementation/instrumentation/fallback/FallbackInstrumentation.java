@@ -46,8 +46,15 @@ public class FallbackInstrumentation implements Instrumentation {
         return new FallbackTracer(instrumentationOptions, libraryOptions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Meter createMeter() {
+        // We don't provide fallback metrics support. This might change in the future.
+        // Some challenges:
+        // - metric aggregation is complicated
+        // - having metrics reported in logs is not very useful
         return NoopMeter.INSTANCE;
     }
 

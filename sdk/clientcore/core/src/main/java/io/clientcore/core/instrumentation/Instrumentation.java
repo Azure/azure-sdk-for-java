@@ -131,9 +131,6 @@ public interface Instrumentation {
     /**
      * Retrieves the instrumentation context from the given context. The type of the context is determined by the
      * instrumentation implementation.
-     * <p>
-     * When using OpenTelemetry, the context can be a {@code io.opentelemetry.api.trace.Span}, {@code io.opentelemetry.api.trace.SpanContext},
-     * {@code io.opentelemetry.context.Context} or any implementation of {@link InstrumentationContext}.
      * <!-- src_embed io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
      * <pre>
      *
@@ -147,7 +144,9 @@ public interface Instrumentation {
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
-     *
+     * <p>
+     * When using OpenTelemetry, the context can be a {@code io.opentelemetry.api.trace.Span}, {@code io.opentelemetry.api.trace.SpanContext},
+     * {@code io.opentelemetry.context.Context} or any implementation of {@link InstrumentationContext}.
      * <!-- src_embed io.clientcore.core.telemetry.correlationwithexplicitcontext -->
      * <pre>
      *

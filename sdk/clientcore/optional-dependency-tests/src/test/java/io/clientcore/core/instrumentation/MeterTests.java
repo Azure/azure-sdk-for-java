@@ -75,7 +75,7 @@ public class MeterTests {
     @Test
     public void basicHistogram() {
         assertTrue(meter.isEnabled());
-        DoubleHistogram histogram = meter.createDoubleHistogram("core.test-histogram", "important metric", null);
+        DoubleHistogram histogram = meter.createDoubleHistogram("core.test-histogram", "important metric", "s");
         assertTrue(histogram.isEnabled());
         histogram.record(1, emptyAttributes, null);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
@@ -157,7 +157,7 @@ public class MeterTests {
 
     @Test
     public void basicCounter() {
-        LongCounter longCounter = meter.createLongCounter("core.test-counter", "important metric", null);
+        LongCounter longCounter = meter.createLongCounter("core.test-counter", "important metric", "1");
         assertTrue(longCounter.isEnabled());
         longCounter.add(1, emptyAttributes, null);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
@@ -202,7 +202,7 @@ public class MeterTests {
 
     @Test
     public void basicUpDownCounter() {
-        LongCounter longCounter = meter.createLongUpDownCounter("core.test-updowncounter", "important metric", null);
+        LongCounter longCounter = meter.createLongUpDownCounter("core.test-updowncounter", "important metric", "1");
         assertTrue(longCounter.isEnabled());
         longCounter.add(1, emptyAttributes, null);
         longCounter.add(1, emptyAttributes, null);

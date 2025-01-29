@@ -50,6 +50,7 @@ public final class NoopMeter implements Meter {
     public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
+        Objects.requireNonNull(unit, "'unit' cannot be null.");
         return NOOP_LONG_HISTOGRAM;
     }
 
@@ -60,6 +61,7 @@ public final class NoopMeter implements Meter {
     public LongCounter createLongCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
+        Objects.requireNonNull(unit, "'unit' cannot be null.");
         return NOOP_LONG_COUNTER;
     }
 
@@ -70,6 +72,7 @@ public final class NoopMeter implements Meter {
     public LongCounter createLongUpDownCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
+        Objects.requireNonNull(unit, "'unit' cannot be null.");
         return NOOP_LONG_COUNTER;
     }
 

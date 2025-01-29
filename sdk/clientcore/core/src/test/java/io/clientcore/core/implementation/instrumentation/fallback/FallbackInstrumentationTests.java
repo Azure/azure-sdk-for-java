@@ -544,15 +544,15 @@ public class FallbackInstrumentationTests {
         assertFalse(meter.isEnabled());
 
         InstrumentationAttributes attributes = DEFAULT_INSTRUMENTATION.createAttributes(Collections.emptyMap());
-        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", null);
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1");
         histogram.record(42.0, attributes, null);
         assertFalse(histogram.isEnabled());
 
-        LongCounter counter = meter.createLongCounter("test", "description", null);
+        LongCounter counter = meter.createLongCounter("test", "description", "1");
         counter.add(42, attributes, null);
         assertFalse(counter.isEnabled());
 
-        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", null);
+        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", "1");
         upDownCounter.add(42, attributes, null);
         assertFalse(upDownCounter.isEnabled());
     }
@@ -561,20 +561,23 @@ public class FallbackInstrumentationTests {
     public void testInvalidParams() {
         Meter meter = DEFAULT_INSTRUMENTATION.createMeter();
 
-        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, null));
-        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", null, null));
-        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", null, null));
-        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", null));
-        assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", null));
-        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter(null, "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", "description", null));
 
-        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", null);
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1");
         assertThrows(NullPointerException.class, () -> histogram.record(42.0, null, null));
 
-        LongCounter counter = meter.createLongCounter("test", "description", null);
+        LongCounter counter = meter.createLongCounter("test", "description", "1");
         assertThrows(NullPointerException.class, () -> counter.add(42, null, null));
 
-        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", null);
+        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", "1");
         assertThrows(NullPointerException.class, () -> upDownCounter.add(42, null, null));
     }
 

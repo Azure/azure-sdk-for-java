@@ -84,7 +84,7 @@ public class OTelMeter implements Meter {
     public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
-
+        Objects.requireNonNull(unit, "'unit' cannot be null.");
         return OTelDoubleHistogram.create(otelMeter, name, description, unit);
     }
 
@@ -95,7 +95,7 @@ public class OTelMeter implements Meter {
     public LongCounter createLongCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
-
+        Objects.requireNonNull(unit, "'unit' cannot be null.");
         return OTelLongCounter.create(otelMeter, name, description, unit);
     }
 
@@ -106,7 +106,7 @@ public class OTelMeter implements Meter {
     public LongCounter createLongUpDownCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
-
+        Objects.requireNonNull(unit, "'unit' cannot be null.");
         return OTelLongUpDownCounter.create(otelMeter, name, description, unit);
     }
 

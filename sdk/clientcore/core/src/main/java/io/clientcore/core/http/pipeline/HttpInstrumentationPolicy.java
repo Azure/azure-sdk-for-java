@@ -164,6 +164,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
+    // HTTP request duration metric is formally defined in the OpenTelemetry Semantic Conventions:
+    // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-metrics.md#metric-httpclientrequestduration
+    private static final String REQUEST_DURATION_METRIC_NAME = "http.client.request.duration";
+    private static final String REQUEST_DURATION_METRIC_DESCRIPTION = "Duration of HTTP client requests";
+    private static final String REQUEST_DURATION_METRIC_UNIT = "s";
 
     // request log level is low (verbose) since almost all request details are also
     // captured on the response log.
@@ -172,6 +177,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private final Tracer tracer;
     private final Meter meter;
+    private final boolean isTracingEnabled;
+    private final boolean isMetricsEnabled;
     private final Instrumentation instrumentation;
     private final DoubleHistogram httpRequestDuration;
     private final TraceContextPropagator traceContextPropagator;
@@ -189,8 +196,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
         this.tracer = instrumentation.createTracer();
         this.meter = instrumentation.createMeter();
-        this.httpRequestDuration
-            = meter.createDoubleHistogram("http.client.request.duration", "Duration of HTTP client requests", "s");
+        this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,
+            REQUEST_DURATION_METRIC_DESCRIPTION, REQUEST_DURATION_METRIC_UNIT);
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
         HttpInstrumentationOptions optionsToUse
@@ -205,6 +212,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             .stream()
             .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
             .collect(Collectors.toSet());
+
+        this.isTracingEnabled = tracer.isEnabled();
+        this.isMetricsEnabled = meter.isEnabled();
     }
 
     /**
@@ -213,8 +223,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     @SuppressWarnings("try")
     @Override
     public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
-        final boolean isTracingEnabled = tracer.isEnabled();
-        final boolean isMetricsEnabled = meter.isEnabled();
         if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
             return next.process();
         }
@@ -275,7 +283,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
                 context);
         } finally {
-            if (httpRequestDuration.isEnabled()) {
+            if (isMetricsEnabled) {
                 httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
                     instrumentation.createAttributes(metricAttributes), context);
             }
@@ -284,12 +292,12 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private void setStartAttributes(HttpRequest request, String sanitizedUrl, SpanBuilder spanBuilder,
         Map<String, Object> metricAttributes) {
-        if (!tracer.isEnabled() && !httpRequestDuration.isEnabled()) {
+        if (!isTracingEnabled && !isMetricsEnabled) {
             return;
         }
 
         int port = getServerPort(request.getUri());
-        if (tracer.isEnabled()) {
+        if (isTracingEnabled) {
             spanBuilder.setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
                 .setAttribute(URL_FULL_KEY, sanitizedUrl)
                 .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
@@ -299,7 +307,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
         }
 
-        if (httpRequestDuration.isEnabled()) {
+        if (isMetricsEnabled) {
             metricAttributes.put(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString());
             metricAttributes.put(SERVER_ADDRESS_KEY, request.getUri().getHost());
             if (port > 0) {
@@ -334,7 +342,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private void addDetails(HttpRequest request, int statusCode, int tryCount, Span span,
         Map<String, Object> metricAttributes) {
-        if (!span.isRecording() && !httpRequestDuration.isEnabled()) {
+        if (!span.isRecording() && !isMetricsEnabled) {
             return;
         }
 
@@ -360,7 +368,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
         }
 
-        if (httpRequestDuration.isEnabled()) {
+        if (isMetricsEnabled) {
             if (statusCode > 0) {
                 metricAttributes.put(HTTP_RESPONSE_STATUS_CODE_KEY, statusCode);
             }

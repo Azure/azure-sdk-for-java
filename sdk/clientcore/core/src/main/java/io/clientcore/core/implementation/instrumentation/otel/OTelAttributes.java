@@ -75,10 +75,12 @@ public final class OTelAttributes implements InstrumentationAttributes {
         }
 
         for (Map.Entry<String, Object> kvp : attributes.entrySet()) {
-            Objects.requireNonNull(kvp.getKey(), "attribute key cannot be null.");
-            Objects.requireNonNull(kvp.getValue(), "attribute value cannot be null.");
-            Object otelKey = getKey(kvp.getKey(), kvp.getValue());
-            PUT_INVOKER.invoke(attributesBuilder, otelKey, castAttributeValue(kvp.getValue()));
+            String key = kvp.getKey();
+            Object value = kvp.getValue();
+            Objects.requireNonNull(key, "attribute key cannot be null.");
+            Objects.requireNonNull(value, "attribute value cannot be null.");
+            Object otelKey = getKey(key, value);
+            PUT_INVOKER.invoke(attributesBuilder, otelKey, castAttributeValue(value));
         }
 
         return new OTelAttributes(BUILD_INVOKER.invoke(attributesBuilder));

@@ -174,7 +174,6 @@ public class OTelInstrumentation implements Instrumentation {
         }
 
         return OTelSpanContext.getInvalid();
-
     }
 
     private Object getOtelInstance() {
