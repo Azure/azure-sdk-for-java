@@ -6,42 +6,41 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * UE Information properties for 5G.
  */
 @Fluent
-public final class UeInfo5GProperties {
+public final class UeInfo5GProperties implements JsonSerializable<UeInfo5GProperties> {
     /*
      * Subscription Permanent Identifier
      */
-    @JsonProperty(value = "supi", required = true)
     private String supi;
 
     /*
      * Permanent Equipment Identifier
      */
-    @JsonProperty(value = "pei")
     private String pei;
 
     /*
      * 5G GUTI
      */
-    @JsonProperty(value = "fivegGuti", required = true)
     private Guti5G fivegGuti;
 
     /*
      * UE Connection Info for 5G.
      */
-    @JsonProperty(value = "connectionInfo")
     private UeConnectionInfo5G connectionInfo;
 
     /*
      * The sessionInfo property.
      */
-    @JsonProperty(value = "sessionInfo")
     private List<UeSessionInfo5G> sessionInfo;
 
     /**
@@ -175,4 +174,54 @@ public final class UeInfo5GProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeInfo5GProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("supi", this.supi);
+        jsonWriter.writeJsonField("fivegGuti", this.fivegGuti);
+        jsonWriter.writeStringField("pei", this.pei);
+        jsonWriter.writeJsonField("connectionInfo", this.connectionInfo);
+        jsonWriter.writeArrayField("sessionInfo", this.sessionInfo, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeInfo5GProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeInfo5GProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeInfo5GProperties.
+     */
+    public static UeInfo5GProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeInfo5GProperties deserializedUeInfo5GProperties = new UeInfo5GProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supi".equals(fieldName)) {
+                    deserializedUeInfo5GProperties.supi = reader.getString();
+                } else if ("fivegGuti".equals(fieldName)) {
+                    deserializedUeInfo5GProperties.fivegGuti = Guti5G.fromJson(reader);
+                } else if ("pei".equals(fieldName)) {
+                    deserializedUeInfo5GProperties.pei = reader.getString();
+                } else if ("connectionInfo".equals(fieldName)) {
+                    deserializedUeInfo5GProperties.connectionInfo = UeConnectionInfo5G.fromJson(reader);
+                } else if ("sessionInfo".equals(fieldName)) {
+                    List<UeSessionInfo5G> sessionInfo = reader.readArray(reader1 -> UeSessionInfo5G.fromJson(reader1));
+                    deserializedUeInfo5GProperties.sessionInfo = sessionInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeInfo5GProperties;
+        });
+    }
 }

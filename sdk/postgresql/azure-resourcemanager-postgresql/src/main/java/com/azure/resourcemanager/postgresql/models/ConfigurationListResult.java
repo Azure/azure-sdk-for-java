@@ -7,18 +7,20 @@ package com.azure.resourcemanager.postgresql.models;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of ConfigurationListResult. */
+/**
+ * An immutable client-side representation of ConfigurationListResult.
+ */
 public interface ConfigurationListResult {
     /**
      * Gets the value property: The list of server configurations.
-     *
+     * 
      * @return the value value.
      */
     List<Configuration> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresql.fluent.models.ConfigurationListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ConfigurationListResultInner innerModel();

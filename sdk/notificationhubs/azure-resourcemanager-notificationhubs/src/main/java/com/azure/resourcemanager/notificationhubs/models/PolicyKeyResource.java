@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,37 +12,40 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Namespace / NotificationHub Regenerate Keys request.
+ * Namespace/NotificationHub Regenerate Keys.
  */
 @Fluent
-public final class PolicyKeyResource implements JsonSerializable<PolicyKeyResource> {
+public final class PolicykeyResource implements JsonSerializable<PolicykeyResource> {
     /*
-     * Type of Shared Access Policy Key (primary or secondary).
+     * Name of the key that has to be regenerated for the Namespace/Notification Hub Authorization Rule. The value can
+     * be Primary Key/Secondary Key.
      */
-    private PolicyKeyType policyKey;
+    private String policyKey;
 
     /**
-     * Creates an instance of PolicyKeyResource class.
+     * Creates an instance of PolicykeyResource class.
      */
-    public PolicyKeyResource() {
+    public PolicykeyResource() {
     }
 
     /**
-     * Get the policyKey property: Type of Shared Access Policy Key (primary or secondary).
+     * Get the policyKey property: Name of the key that has to be regenerated for the Namespace/Notification Hub
+     * Authorization Rule. The value can be Primary Key/Secondary Key.
      * 
      * @return the policyKey value.
      */
-    public PolicyKeyType policyKey() {
+    public String policyKey() {
         return this.policyKey;
     }
 
     /**
-     * Set the policyKey property: Type of Shared Access Policy Key (primary or secondary).
+     * Set the policyKey property: Name of the key that has to be regenerated for the Namespace/Notification Hub
+     * Authorization Rule. The value can be Primary Key/Secondary Key.
      * 
      * @param policyKey the policyKey value to set.
-     * @return the PolicyKeyResource object itself.
+     * @return the PolicykeyResource object itself.
      */
-    public PolicyKeyResource withPolicyKey(PolicyKeyType policyKey) {
+    public PolicykeyResource withPolicyKey(String policyKey) {
         this.policyKey = policyKey;
         return this;
     }
@@ -54,13 +56,7 @@ public final class PolicyKeyResource implements JsonSerializable<PolicyKeyResour
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (policyKey() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property policyKey in model PolicyKeyResource"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PolicyKeyResource.class);
 
     /**
      * {@inheritDoc}
@@ -68,34 +64,33 @@ public final class PolicyKeyResource implements JsonSerializable<PolicyKeyResour
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("policyKey", this.policyKey == null ? null : this.policyKey.toString());
+        jsonWriter.writeStringField("policyKey", this.policyKey);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of PolicyKeyResource from the JsonReader.
+     * Reads an instance of PolicykeyResource from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PolicyKeyResource if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of PolicykeyResource if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PolicyKeyResource.
+     * @throws IOException If an error occurs while reading the PolicykeyResource.
      */
-    public static PolicyKeyResource fromJson(JsonReader jsonReader) throws IOException {
+    public static PolicykeyResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PolicyKeyResource deserializedPolicyKeyResource = new PolicyKeyResource();
+            PolicykeyResource deserializedPolicykeyResource = new PolicykeyResource();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("policyKey".equals(fieldName)) {
-                    deserializedPolicyKeyResource.policyKey = PolicyKeyType.fromString(reader.getString());
+                    deserializedPolicykeyResource.policyKey = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPolicyKeyResource;
+            return deserializedPolicykeyResource;
         });
     }
 }

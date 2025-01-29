@@ -103,11 +103,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
             return Mono.error(
                 new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, integrationRuntimeName, accept, context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -147,11 +145,10 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
             return Mono.error(
                 new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, integrationRuntimeName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, integrationRuntimeName, accept, context);
     }
 
     /**

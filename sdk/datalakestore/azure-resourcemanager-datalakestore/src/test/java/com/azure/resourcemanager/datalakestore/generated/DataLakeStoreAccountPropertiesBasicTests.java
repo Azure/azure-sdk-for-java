@@ -11,7 +11,7 @@ public final class DataLakeStoreAccountPropertiesBasicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataLakeStoreAccountPropertiesBasic model = BinaryData.fromString(
-            "{\"accountId\":\"c82867aa-ddea-4f7e-9fcb-1ff344198468\",\"provisioningState\":\"Creating\",\"state\":\"Suspended\",\"creationTime\":\"2021-01-26T08:15:51Z\",\"lastModifiedTime\":\"2021-10-27T17:34:25Z\",\"endpoint\":\"wlokjyem\"}")
+            "{\"accountId\":\"bd6ff70e-2d47-40b9-8b06-6ecdd89f842c\",\"provisioningState\":\"Creating\",\"state\":\"Suspended\",\"creationTime\":\"2021-01-26T08:15:51Z\",\"lastModifiedTime\":\"2021-10-27T17:34:25Z\",\"endpoint\":\"wlokjyem\"}")
             .toObject(DataLakeStoreAccountPropertiesBasic.class);
     }
 

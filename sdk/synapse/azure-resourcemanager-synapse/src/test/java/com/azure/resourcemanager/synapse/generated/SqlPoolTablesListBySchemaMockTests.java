@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class SqlPoolTablesListBySchemaMockTests {
     @Test
     public void testListBySchema() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"rcmvouujx\",\"name\":\"iikmoxrezsvavlrx\",\"type\":\"kj\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"qgnnbz\",\"name\":\"tftedz\",\"type\":\"ubjtvgjsxmtyjjv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class SqlPoolTablesListBySchemaMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SqlPoolTable> response = manager.sqlPoolTables()
-            .listBySchema("uhqvums", "bfs", "eqbbewfcuqfpy", "xmzrmtmvwitu", "eyyjshcybwfuppox",
-                com.azure.core.util.Context.NONE);
+            .listBySchema("j", "d", "zfxnxmlbmuos", "kjmdihdcyy", "zlwhbwzjnufzrfgm", com.azure.core.util.Context.NONE);
 
     }
 }

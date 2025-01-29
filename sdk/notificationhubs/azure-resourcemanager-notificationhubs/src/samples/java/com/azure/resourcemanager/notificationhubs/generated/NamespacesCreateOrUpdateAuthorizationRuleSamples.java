@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
 import java.util.Arrays;
 
@@ -14,20 +14,21 @@ import java.util.Arrays;
 public final class NamespacesCreateOrUpdateAuthorizationRuleSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * Namespaces/AuthorizationRuleCreateOrUpdate.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceAuthorizationRuleCreate.json
      */
     /**
-     * Sample code: Namespaces_CreateOrUpdateAuthorizationRule.
+     * Sample code: NameSpaceAuthorizationRuleCreate.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void namespacesCreateOrUpdateAuthorizationRule(
-        com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+    public static void
+        nameSpaceAuthorizationRuleCreate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         manager.namespaces()
-            .createOrUpdateAuthorizationRuleWithResponse(
-                "5ktrial", "nh-sdk-ns", "sdk-AuthRules-1788", new SharedAccessAuthorizationRuleResourceInner()
-                    .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)),
-                com.azure.core.util.Context.NONE);
+            .defineAuthorizationRule("sdk-AuthRules-1788")
+            .withExistingNamespace("5ktrial", "nh-sdk-ns")
+            .withProperties(new SharedAccessAuthorizationRuleProperties()
+                .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)))
+            .create();
     }
 }

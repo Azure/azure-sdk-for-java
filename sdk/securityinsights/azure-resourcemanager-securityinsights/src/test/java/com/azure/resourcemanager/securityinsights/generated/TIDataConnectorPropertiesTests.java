@@ -16,22 +16,22 @@ public final class TIDataConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TIDataConnectorProperties model = BinaryData.fromString(
-            "{\"tipLookbackPeriod\":\"2020-12-26T17:04:35Z\",\"dataTypes\":{\"indicators\":{\"state\":\"Disabled\"}},\"tenantId\":\"wliso\"}")
+            "{\"tenantId\":\"ypundmbxhugc\",\"tipLookbackPeriod\":\"2021-02-05T12:35:53Z\",\"dataTypes\":{\"indicators\":{\"state\":\"Disabled\"}}}")
             .toObject(TIDataConnectorProperties.class);
-        Assertions.assertEquals("wliso", model.tenantId());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T17:04:35Z"), model.tipLookbackPeriod());
+        Assertions.assertEquals("ypundmbxhugc", model.tenantId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T12:35:53Z"), model.tipLookbackPeriod());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().indicators().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TIDataConnectorProperties model = new TIDataConnectorProperties().withTenantId("wliso")
-            .withTipLookbackPeriod(OffsetDateTime.parse("2020-12-26T17:04:35Z"))
+        TIDataConnectorProperties model = new TIDataConnectorProperties().withTenantId("ypundmbxhugc")
+            .withTipLookbackPeriod(OffsetDateTime.parse("2021-02-05T12:35:53Z"))
             .withDataTypes(new TIDataConnectorDataTypes()
                 .withIndicators(new TIDataConnectorDataTypesIndicators().withState(DataTypeState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(TIDataConnectorProperties.class);
-        Assertions.assertEquals("wliso", model.tenantId());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T17:04:35Z"), model.tipLookbackPeriod());
+        Assertions.assertEquals("ypundmbxhugc", model.tenantId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-05T12:35:53Z"), model.tipLookbackPeriod());
         Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().indicators().state());
     }
 }

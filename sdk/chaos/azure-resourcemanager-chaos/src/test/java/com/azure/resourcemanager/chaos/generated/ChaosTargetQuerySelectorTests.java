@@ -14,22 +14,22 @@ public final class ChaosTargetQuerySelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosTargetQuerySelector model = BinaryData.fromString(
-            "{\"type\":\"Query\",\"queryString\":\"lmnguxaw\",\"subscriptionIds\":[\"ldsyuuximerqfob\",\"yznkby\"],\"id\":\"utwpfhp\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"kdsnfdsdoakgtdl\":\"datar\",\"dlhewp\":\"datakkze\",\"bbejdcngqqm\":\"datasdsttwvog\"}}")
+            "{\"type\":\"Query\",\"queryString\":\"gsfraoyzkoow\",\"subscriptionIds\":[\"mnguxawqaldsyu\",\"ximerqfobwyznk\"],\"id\":\"ykutwpf\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"r\":\"datam\",\"kkze\":\"datakdsnfdsdoakgtdl\",\"sdsttwvog\":\"datadlhewp\",\"akufgmjz\":\"databbejdcngqqm\"}}")
             .toObject(ChaosTargetQuerySelector.class);
-        Assertions.assertEquals("utwpfhp", model.id());
-        Assertions.assertEquals("lmnguxaw", model.queryString());
-        Assertions.assertEquals("ldsyuuximerqfob", model.subscriptionIds().get(0));
+        Assertions.assertEquals("ykutwpf", model.id());
+        Assertions.assertEquals("gsfraoyzkoow", model.queryString());
+        Assertions.assertEquals("mnguxawqaldsyu", model.subscriptionIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetQuerySelector model = new ChaosTargetQuerySelector().withId("utwpfhp")
+        ChaosTargetQuerySelector model = new ChaosTargetQuerySelector().withId("ykutwpf")
             .withFilter(new ChaosTargetFilter())
-            .withQueryString("lmnguxaw")
-            .withSubscriptionIds(Arrays.asList("ldsyuuximerqfob", "yznkby"));
+            .withQueryString("gsfraoyzkoow")
+            .withSubscriptionIds(Arrays.asList("mnguxawqaldsyu", "ximerqfobwyznk"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetQuerySelector.class);
-        Assertions.assertEquals("utwpfhp", model.id());
-        Assertions.assertEquals("lmnguxaw", model.queryString());
-        Assertions.assertEquals("ldsyuuximerqfob", model.subscriptionIds().get(0));
+        Assertions.assertEquals("ykutwpf", model.id());
+        Assertions.assertEquals("gsfraoyzkoow", model.queryString());
+        Assertions.assertEquals("mnguxawqaldsyu", model.subscriptionIds().get(0));
     }
 }

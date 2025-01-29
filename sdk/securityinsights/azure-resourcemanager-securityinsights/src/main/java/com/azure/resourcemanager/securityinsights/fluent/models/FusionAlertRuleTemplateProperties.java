@@ -13,14 +13,13 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
-import com.azure.resourcemanager.securityinsights.models.FusionTemplateSourceSetting;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Fusion alert rule template properties.
+ * Represents Fusion alert rule template properties.
  */
 @Fluent
 public final class FusionAlertRuleTemplateProperties implements JsonSerializable<FusionAlertRuleTemplateProperties> {
@@ -70,14 +69,9 @@ public final class FusionAlertRuleTemplateProperties implements JsonSerializable
     private List<AttackTactic> tactics;
 
     /*
-     * The techniques of the alert rule
+     * The techniques of the alert rule template
      */
     private List<String> techniques;
-
-    /*
-     * All supported source signal configurations consumed in fusion detection.
-     */
-    private List<FusionTemplateSourceSetting> sourceSettings;
 
     /**
      * Creates an instance of FusionAlertRuleTemplateProperties class.
@@ -246,7 +240,7 @@ public final class FusionAlertRuleTemplateProperties implements JsonSerializable
     }
 
     /**
-     * Get the techniques property: The techniques of the alert rule.
+     * Get the techniques property: The techniques of the alert rule template.
      * 
      * @return the techniques value.
      */
@@ -255,33 +249,13 @@ public final class FusionAlertRuleTemplateProperties implements JsonSerializable
     }
 
     /**
-     * Set the techniques property: The techniques of the alert rule.
+     * Set the techniques property: The techniques of the alert rule template.
      * 
      * @param techniques the techniques value to set.
      * @return the FusionAlertRuleTemplateProperties object itself.
      */
     public FusionAlertRuleTemplateProperties withTechniques(List<String> techniques) {
         this.techniques = techniques;
-        return this;
-    }
-
-    /**
-     * Get the sourceSettings property: All supported source signal configurations consumed in fusion detection.
-     * 
-     * @return the sourceSettings value.
-     */
-    public List<FusionTemplateSourceSetting> sourceSettings() {
-        return this.sourceSettings;
-    }
-
-    /**
-     * Set the sourceSettings property: All supported source signal configurations consumed in fusion detection.
-     * 
-     * @param sourceSettings the sourceSettings value to set.
-     * @return the FusionAlertRuleTemplateProperties object itself.
-     */
-    public FusionAlertRuleTemplateProperties withSourceSettings(List<FusionTemplateSourceSetting> sourceSettings) {
-        this.sourceSettings = sourceSettings;
         return this;
     }
 
@@ -293,9 +267,6 @@ public final class FusionAlertRuleTemplateProperties implements JsonSerializable
     public void validate() {
         if (requiredDataConnectors() != null) {
             requiredDataConnectors().forEach(e -> e.validate());
-        }
-        if (sourceSettings() != null) {
-            sourceSettings().forEach(e -> e.validate());
         }
     }
 
@@ -315,8 +286,6 @@ public final class FusionAlertRuleTemplateProperties implements JsonSerializable
         jsonWriter.writeArrayField("tactics", this.tactics,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("techniques", this.techniques, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("sourceSettings", this.sourceSettings,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -366,10 +335,6 @@ public final class FusionAlertRuleTemplateProperties implements JsonSerializable
                 } else if ("techniques".equals(fieldName)) {
                     List<String> techniques = reader.readArray(reader1 -> reader1.getString());
                     deserializedFusionAlertRuleTemplateProperties.techniques = techniques;
-                } else if ("sourceSettings".equals(fieldName)) {
-                    List<FusionTemplateSourceSetting> sourceSettings
-                        = reader.readArray(reader1 -> FusionTemplateSourceSetting.fromJson(reader1));
-                    deserializedFusionAlertRuleTemplateProperties.sourceSettings = sourceSettings;
                 } else {
                     reader.skipChildren();
                 }

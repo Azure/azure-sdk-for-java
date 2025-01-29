@@ -139,8 +139,9 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisioningServiceName = Utils.getValueFromIdByName(innerObject.id(), "provisioningServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.provisioningServiceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "provisioningServices");
     }
 
     public ProvisioningServiceDescription refresh() {

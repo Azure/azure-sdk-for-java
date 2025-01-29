@@ -17,6 +17,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
@@ -72,7 +73,8 @@ public final class SecretsModelsUtils {
 
             SecretPropertiesHelper.setCreatedOn(secretProperties, secretAttributes.getCreated());
             SecretPropertiesHelper.setUpdatedOn(secretProperties, secretAttributes.getUpdated());
-            SecretPropertiesHelper.setRecoveryLevel(secretProperties, secretAttributes.getRecoveryLevel().toString());
+            SecretPropertiesHelper.setRecoveryLevel(secretProperties,
+                Objects.toString(secretAttributes.getRecoveryLevel(), null));
             SecretPropertiesHelper.setRecoverableDays(secretProperties, secretAttributes.getRecoverableDays());
         }
 
@@ -105,7 +107,8 @@ public final class SecretsModelsUtils {
 
             SecretPropertiesHelper.setCreatedOn(secretProperties, secretAttributes.getCreated());
             SecretPropertiesHelper.setUpdatedOn(secretProperties, secretAttributes.getUpdated());
-            SecretPropertiesHelper.setRecoveryLevel(secretProperties, secretAttributes.getRecoveryLevel().toString());
+            SecretPropertiesHelper.setRecoveryLevel(secretProperties,
+                Objects.toString(secretAttributes.getRecoveryLevel(), null));
             SecretPropertiesHelper.setRecoverableDays(secretProperties, secretAttributes.getRecoverableDays());
         }
 

@@ -28,57 +28,114 @@ import reactor.core.publisher.Mono;
 public interface AppServiceDomain extends GroupableResource<AppServiceManager, DomainInner>, HasName,
     Refreshable<AppServiceDomain>, Updatable<AppServiceDomain.Update> {
 
-    /** @return admin contact information */
+    /**
+     * Gets admin contact information.
+     *
+     * @return admin contact information
+     */
     Contact adminContact();
 
-    /** @return billing contact information */
+    /**
+     * Gets billing contact information.
+     *
+     * @return billing contact information
+     */
     Contact billingContact();
 
-    /** @return registrant contact information */
+    /**
+     * Gets registrant contact information
+     *
+     * @return registrant contact information
+     */
     Contact registrantContact();
 
-    /** @return technical contact information */
+    /**
+     * Gets technical contact information
+     *
+     * @return technical contact information
+     */
     Contact techContact();
 
-    /** @return domain registration status */
+    /**
+     * Gets domain registration status.
+     *
+     * @return domain registration status
+     */
     DomainStatus registrationStatus();
 
-    /** @return name servers */
+    /**
+     * Gets name servers.
+     *
+     * @return name servers
+     */
     List<String> nameServers();
 
-    /** @return true if domain privacy is enabled for this domain */
+    /**
+     * Check whether domain privacy is enabled for this domain.
+     *
+     * @return true if domain privacy is enabled for this domain
+     */
     boolean privacy();
 
-    /** @return domain creation timestamp. */
+    /**
+     * Gets domain creation timestamp.
+     *
+     * @return domain creation timestamp.
+     */
     OffsetDateTime createdTime();
 
-    /** @return domain expiration timestamp. */
+    /**
+     * Gets domain expiration timestamp.
+     *
+     * @return domain expiration timestamp.
+     */
     OffsetDateTime expirationTime();
 
-    /** @return timestamp when the domain was renewed last time */
+    /**
+     * Gets timestamp when the domain was renewed last time.
+     *
+     * @return timestamp when the domain was renewed last time
+     */
     OffsetDateTime lastRenewedTime();
 
-    /** @return true if domain will renewed automatically */
+    /**
+     * Check whether domain will renewed automatically.
+     *
+     * @return true if domain will renewed automatically */
     boolean autoRenew();
 
     /**
+     * Check whether Azure can assign this domain to Web Apps.
+     *
      * @return true if Azure can assign this domain to Web Apps. This value will be true if domain registration status
      *     is active and it is hosted on name servers Azure has programmatic access to.
      */
     boolean readyForDnsRecordManagement();
 
-    /** @return all hostnames derived from the domain and assigned to Azure resources */
+    /**
+     * Gets all hostnames derived from the domain and assigned to Azure resources.
+     *
+     * @return all hostnames derived from the domain and assigned to Azure resources
+     */
     Map<String, Hostname> managedHostNames();
 
-    /** @return legal agreement consent. */
+    /**
+     * Gets legal agreement consent.
+     *
+     * @return legal agreement consent.
+     */
     DomainPurchaseConsent consent();
 
     /**
+     * Gets the type of DNS.
+     *
      * @return the type of DNS
      */
     DnsType dnsType();
 
     /**
+     * Gets Azure DNS zone id.
+     *
      * @return Azure DNS zone id
      */
     String dnsZoneId();

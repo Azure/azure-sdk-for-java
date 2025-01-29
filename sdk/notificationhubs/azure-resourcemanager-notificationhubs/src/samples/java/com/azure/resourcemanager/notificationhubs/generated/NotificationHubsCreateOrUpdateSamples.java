@@ -10,16 +10,16 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NotificationHubsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/CreateOrUpdate.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubCreate.json
      */
     /**
-     * Sample code: NotificationHubs_CreateOrUpdate.
+     * Sample code: NotificationHubCreate.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void
-        notificationHubsCreateOrUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        notificationHubCreate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         manager.notificationHubs()
             .define("nh-sdk-hub")
             .withRegion("eastus")

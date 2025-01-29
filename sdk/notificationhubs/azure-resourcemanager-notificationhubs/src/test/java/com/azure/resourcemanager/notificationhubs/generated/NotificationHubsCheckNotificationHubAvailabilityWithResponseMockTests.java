@@ -26,7 +26,7 @@ public final class NotificationHubsCheckNotificationHubAvailabilityWithResponseM
     @Test
     public void testCheckNotificationHubAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isAvailiable\":false,\"location\":\"qqkdltfzxmhhvhgu\",\"tags\":{\"ibqdxbxwakbogqx\":\"dkwobdagx\",\"lbpodxunk\":\"dlkzgxhuri\"},\"sku\":{\"name\":\"Basic\",\"tier\":\"mubyynt\",\"size\":\"rbqtkoie\",\"family\":\"eotg\",\"capacity\":209864806},\"id\":\"tmuwlauwzi\",\"name\":\"xbmp\",\"type\":\"cjefuzmu\"}";
+            = "{\"isAvailiable\":false,\"sku\":{\"name\":\"Standard\",\"tier\":\"bexrmcq\",\"size\":\"ycnojvknmefqsg\",\"family\":\"ah\",\"capacity\":2048055130},\"location\":\"y\",\"tags\":{\"zlmwlxkvugfhz\":\"vgqzcjrvxd\",\"hnnpr\":\"vawjvzunlu\",\"ultskzbbtdz\":\"xipeilpjzuaejx\",\"ekg\":\"mv\"},\"id\":\"wozuhkf\",\"name\":\"bsjyofdx\",\"type\":\"uusdttouwa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,27 +36,27 @@ public final class NotificationHubsCheckNotificationHubAvailabilityWithResponseM
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResult response = manager.notificationHubs()
-            .checkNotificationHubAvailabilityWithResponse("mdnbbglzpswiy", "mcwyhzdxssadb",
-                new CheckAvailabilityParameters().withName("dvxzbncblylpst")
-                    .withLocation("rzdzucerscdnt")
-                    .withTags(mapOf("tmweriofzpyq", "fiwjmygtdssls", "hhszh", "emwabnet", "lvwiwubmwmbesl", "d"))
-                    .withIsAvailiable(false)
-                    .withSku(new Sku().withName(SkuName.FREE)
-                        .withTier("pp")
-                        .withSize("lcxog")
-                        .withFamily("konzmnsik")
-                        .withCapacity(1013346228)),
+            .checkNotificationHubAvailabilityWithResponse("btdhxujznbm", "ow",
+                new CheckAvailabilityParameters().withName("lupj")
+                    .withLocation("plrbpbewtghf")
+                    .withTags(mapOf("wxzvlvqhjkb", "c", "iebwwaloayqcgwrt", "gibtnm", "zg", "j"))
+                    .withSku(new Sku().withName(SkuName.BASIC)
+                        .withTier("htxongmtsavjc")
+                        .withSize("wxqpsrknftguvri")
+                        .withFamily("prwmdyvxqt")
+                        .withCapacity(1831574988))
+                    .withIsAvailiable(false),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("y", response.location());
+        Assertions.assertEquals("vgqzcjrvxd", response.tags().get("zlmwlxkvugfhz"));
         Assertions.assertEquals(false, response.isAvailiable());
-        Assertions.assertEquals("qqkdltfzxmhhvhgu", response.location());
-        Assertions.assertEquals("dkwobdagx", response.tags().get("ibqdxbxwakbogqx"));
-        Assertions.assertEquals(SkuName.BASIC, response.sku().name());
-        Assertions.assertEquals("mubyynt", response.sku().tier());
-        Assertions.assertEquals("rbqtkoie", response.sku().size());
-        Assertions.assertEquals("eotg", response.sku().family());
-        Assertions.assertEquals(209864806, response.sku().capacity());
+        Assertions.assertEquals(SkuName.STANDARD, response.sku().name());
+        Assertions.assertEquals("bexrmcq", response.sku().tier());
+        Assertions.assertEquals("ycnojvknmefqsg", response.sku().size());
+        Assertions.assertEquals("ah", response.sku().family());
+        Assertions.assertEquals(2048055130, response.sku().capacity());
     }
 
     // Use "Map.of" if available

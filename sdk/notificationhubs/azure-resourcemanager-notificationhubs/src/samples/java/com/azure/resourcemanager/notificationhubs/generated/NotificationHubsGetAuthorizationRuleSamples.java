@@ -10,15 +10,15 @@ package com.azure.resourcemanager.notificationhubs.generated;
 public final class NotificationHubsGetAuthorizationRuleSamples {
     /*
      * x-ms-original-file:
-     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
-     * NotificationHubs/AuthorizationRuleGet.json
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubAuthorizationRuleGet.json
      */
     /**
-     * Sample code: NotificationHubs_GetAuthorizationRule.
+     * Sample code: NotificationHubAuthorizationRuleGet.
      * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void notificationHubsGetAuthorizationRule(
+    public static void notificationHubAuthorizationRuleGet(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
         manager.notificationHubs()
             .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",

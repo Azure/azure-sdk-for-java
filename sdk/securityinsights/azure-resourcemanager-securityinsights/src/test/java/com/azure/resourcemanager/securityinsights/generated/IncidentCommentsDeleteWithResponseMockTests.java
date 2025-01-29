@@ -28,8 +28,7 @@ public final class IncidentCommentsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.incidentComments()
-            .deleteWithResponse("ehoui", "aklhjfddxqfuss", "bzsspmjvail", "auyvxpqwlkqdgwbz",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("iucijjcea", "lijjjrtvam", "a", "zknxkv", com.azure.core.util.Context.NONE);
 
     }
 }

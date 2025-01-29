@@ -10,8 +10,9 @@ import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleTemplat
 public final class AlertRuleTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertRuleTemplateInner model = BinaryData.fromString(
-            "{\"kind\":\"AlertRuleTemplate\",\"id\":\"tfell\",\"name\":\"wfzitonpeqfpjk\",\"type\":\"lxofpdvhpfxxypin\"}")
+        AlertRuleTemplateInner model = BinaryData
+            .fromString(
+                "{\"kind\":\"AlertRuleTemplate\",\"id\":\"hungbwjzrnf\",\"name\":\"gxg\",\"type\":\"spemvtzfk\"}")
             .toObject(AlertRuleTemplateInner.class);
     }
 

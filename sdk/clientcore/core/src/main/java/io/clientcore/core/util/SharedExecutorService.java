@@ -7,6 +7,7 @@ import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
 import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -192,11 +193,11 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      */
     public void setExecutorService(ScheduledExecutorService executorService) {
         // We allow for the global executor service to be set from an external source to allow for consumers of the SDK
-        // to use their own thread management to run Azure SDK tasks. This allows for the SDKs to perform deeper
+        // to use their own thread management to run Client Core tasks. This allows for the SDKs to perform deeper
         // integration into an environment, such as the consumer environment knowing details about capacity, allowing
         // the custom executor service to better manage resources than our more general 10x the number of processors.
         // Another scenario could be an executor service that creates threads with specific permissions, such as
-        // allowing Azure Core or Jackson to perform deep reflection on classes that are not normally allowed.
+        // allowing Client Core or Jackson to perform deep reflection on classes that are not normally allowed.
         Objects.requireNonNull(executorService, "'executorService' cannot be null.");
         if (executorService.isShutdown() || executorService.isTerminated()) {
             throw LOGGER.logThrowableAsError(

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -111,7 +110,6 @@ public final class RecommendationType extends ExpandableStringEnum<Recommendatio
      * @param name a name to look for.
      * @return the corresponding RecommendationType.
      */
-    @JsonCreator
     public static RecommendationType fromString(String name) {
         return fromString(name, RecommendationType.class);
     }

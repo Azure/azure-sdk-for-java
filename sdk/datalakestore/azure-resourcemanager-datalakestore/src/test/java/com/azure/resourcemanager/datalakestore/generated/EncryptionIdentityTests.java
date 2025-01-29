@@ -11,7 +11,7 @@ public final class EncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EncryptionIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"0ad55ba9-0b6e-4377-9f2e-29b8e384aea3\",\"tenantId\":\"e6b432eb-e9f3-448e-afb4-e167cb01050a\"}")
+            "{\"principalId\":\"aa75138b-68e3-493e-b2b0-04431cfea104\",\"tenantId\":\"b7554702-1dea-4e53-8d80-0e2aa0fa802f\"}")
             .toObject(EncryptionIdentity.class);
     }
 

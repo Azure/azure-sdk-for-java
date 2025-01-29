@@ -23,8 +23,7 @@ import java.util.Arrays;
  */
 public final class ChannelsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
      * PutDirectLineSpeechChannel.json
      */
     /**
@@ -45,8 +44,7 @@ public final class ChannelsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * PutEmailChannel.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutEmailChannel.json
      */
     /**
      * Sample code: Create Email Channel.
@@ -67,8 +65,7 @@ public final class ChannelsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/
-     * PutAlexaChannel.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutAlexaChannel.json
      */
     /**
      * Sample code: Create Alexa Channel.
@@ -86,8 +83,7 @@ public final class ChannelsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutChannel.
-     * json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutChannel.json
      */
     /**
      * Sample code: Create Channel.
@@ -107,8 +103,7 @@ public final class ChannelsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/PutLineChannel
-     * .json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/PutLineChannel.json
      */
     /**
      * Sample code: Create Line Channel.

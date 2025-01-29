@@ -32,7 +32,7 @@ public final class JobSchedulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JobSchedule response = manager.jobSchedules()
-            .getWithResponse("n", "qady", UUID.fromString("df7f9f64-a638-45c7-aece-3e85d053bd3b"),
+            .getWithResponse("n", "qady", UUID.fromString("8dd83211-b035-4a71-b884-de96863fbbe5"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

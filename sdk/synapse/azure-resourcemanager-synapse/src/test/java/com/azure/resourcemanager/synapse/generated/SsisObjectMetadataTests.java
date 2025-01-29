@@ -12,21 +12,20 @@ public final class SsisObjectMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisObjectMetadata model = BinaryData.fromString(
-            "{\"type\":\"SsisObjectMetadata\",\"id\":3254840130763842184,\"name\":\"xaxmq\",\"description\":\"alhhjnhgwydyynfs\"}")
+            "{\"type\":\"SsisObjectMetadata\",\"id\":6549860277400431394,\"name\":\"xieduugidyjrr\",\"description\":\"y\"}")
             .toObject(SsisObjectMetadata.class);
-        Assertions.assertEquals(3254840130763842184L, model.id());
-        Assertions.assertEquals("xaxmq", model.name());
-        Assertions.assertEquals("alhhjnhgwydyynfs", model.description());
+        Assertions.assertEquals(6549860277400431394L, model.id());
+        Assertions.assertEquals("xieduugidyjrr", model.name());
+        Assertions.assertEquals("y", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisObjectMetadata model = new SsisObjectMetadata().withId(3254840130763842184L)
-            .withName("xaxmq")
-            .withDescription("alhhjnhgwydyynfs");
+        SsisObjectMetadata model
+            = new SsisObjectMetadata().withId(6549860277400431394L).withName("xieduugidyjrr").withDescription("y");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadata.class);
-        Assertions.assertEquals(3254840130763842184L, model.id());
-        Assertions.assertEquals("xaxmq", model.name());
-        Assertions.assertEquals("alhhjnhgwydyynfs", model.description());
+        Assertions.assertEquals(6549860277400431394L, model.id());
+        Assertions.assertEquals("xieduugidyjrr", model.name());
+        Assertions.assertEquals("y", model.description());
     }
 }

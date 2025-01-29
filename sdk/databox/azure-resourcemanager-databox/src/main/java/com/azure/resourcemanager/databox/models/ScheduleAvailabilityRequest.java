@@ -20,7 +20,7 @@ public class ScheduleAvailabilityRequest implements JsonSerializable<ScheduleAva
     /*
      * Sku Name for which the order is to be scheduled.
      */
-    private SkuName skuName = SkuName.fromString("ScheduleAvailabilityRequest");
+    private SkuName skuName;
 
     /*
      * Location for data transfer. For locations check:

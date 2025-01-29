@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-quota</artifactId>
-  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-quota;current} -->
+  <version>1.1.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-quota;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for quota Management</name>
-  <description>This package contains Microsoft Azure SDK for quota Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft Azure Quota Resource Provider. This Swagger is for Azure Group Quota using GroupQuota Entity. Package tag package-2023-06-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for quota Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft Azure Quota Resource Provider. This Swagger is for Azure Group Quota using GroupQuota Entity. Package tag package-2024-12-18-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -68,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

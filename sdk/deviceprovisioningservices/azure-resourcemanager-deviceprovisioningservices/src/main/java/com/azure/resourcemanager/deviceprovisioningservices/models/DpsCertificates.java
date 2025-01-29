@@ -8,25 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.time.OffsetDateTime;
 
-/** Resource collection API of DpsCertificates. */
+/**
+ * Resource collection API of DpsCertificates.
+ */
 public interface DpsCertificates {
     /**
      * Get the certificate from the provisioning service.
-     *
-     * @param certificateName Name of the certificate to retrieve.
-     * @param resourceGroupName Resource group identifier.
-     * @param provisioningServiceName Name of the provisioning service the certificate is associated with.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate from the provisioning service.
-     */
-    CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName);
-
-    /**
-     * Get the certificate from the provisioning service.
-     *
+     * 
      * @param certificateName Name of the certificate to retrieve.
      * @param resourceGroupName Resource group identifier.
      * @param provisioningServiceName Name of the provisioning service the certificate is associated with.
@@ -34,7 +22,7 @@ public interface DpsCertificates {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the certificate from the provisioning service along with {@link Response}.
      */
@@ -42,28 +30,29 @@ public interface DpsCertificates {
         String provisioningServiceName, String ifMatch, Context context);
 
     /**
-     * Deletes the specified certificate associated with the Provisioning Service.
-     *
+     * Get the certificate from the provisioning service.
+     * 
+     * @param certificateName Name of the certificate to retrieve.
      * @param resourceGroupName Resource group identifier.
-     * @param ifMatch ETag of the certificate.
-     * @param provisioningServiceName The name of the provisioning service.
-     * @param certificateName This is a mandatory field, and is the logical name of the certificate that the
-     *     provisioning service will access by.
+     * @param provisioningServiceName Name of the provisioning service the certificate is associated with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the certificate from the provisioning service.
      */
-    void delete(String resourceGroupName, String ifMatch, String provisioningServiceName, String certificateName);
+    CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName);
 
     /**
+     * Delete the Provisioning Service Certificate.
+     * 
      * Deletes the specified certificate associated with the Provisioning Service.
-     *
+     * 
      * @param resourceGroupName Resource group identifier.
      * @param ifMatch ETag of the certificate.
      * @param provisioningServiceName The name of the provisioning service.
      * @param certificateName This is a mandatory field, and is the logical name of the certificate that the
-     *     provisioning service will access by.
+     * provisioning service will access by.
      * @param certificateName1 This is optional, and it is the Common Name of the certificate.
      * @param certificateRawBytes Raw data within the certificate.
      * @param certificateIsVerified Indicates if certificate has been verified by owner of the private key.
@@ -75,7 +64,7 @@ public interface DpsCertificates {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -85,27 +74,31 @@ public interface DpsCertificates {
         Boolean certificateHasPrivateKey, String certificateNonce, Context context);
 
     /**
-     * Get all the certificates tied to the provisioning service.
-     *
-     * @param resourceGroupName Name of resource group.
-     * @param provisioningServiceName Name of provisioning service to retrieve certificates for.
+     * Delete the Provisioning Service Certificate.
+     * 
+     * Deletes the specified certificate associated with the Provisioning Service.
+     * 
+     * @param resourceGroupName Resource group identifier.
+     * @param ifMatch ETag of the certificate.
+     * @param provisioningServiceName The name of the provisioning service.
+     * @param certificateName This is a mandatory field, and is the logical name of the certificate that the
+     * provisioning service will access by.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service.
      */
-    CertificateListDescription list(String resourceGroupName, String provisioningServiceName);
+    void delete(String resourceGroupName, String ifMatch, String provisioningServiceName, String certificateName);
 
     /**
      * Get all the certificates tied to the provisioning service.
-     *
+     * 
      * @param resourceGroupName Name of resource group.
      * @param provisioningServiceName Name of provisioning service to retrieve certificates for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the certificates tied to the provisioning service along with {@link Response}.
      */
@@ -113,30 +106,25 @@ public interface DpsCertificates {
         Context context);
 
     /**
-     * Generate verification code for Proof of Possession.
-     *
-     * @param certificateName The mandatory logical name of the certificate, that the provisioning service uses to
-     *     access.
-     * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored while
-     *     creating a brand new certificate.
-     * @param resourceGroupName name of resource group.
-     * @param provisioningServiceName Name of provisioning service.
+     * Get all the certificates tied to the provisioning service.
+     * 
+     * @param resourceGroupName Name of resource group.
+     * @param provisioningServiceName Name of provisioning service to retrieve certificates for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the response of the verification code.
+     * @return all the certificates tied to the provisioning service.
      */
-    VerificationCodeResponse generateVerificationCode(String certificateName, String ifMatch, String resourceGroupName,
-        String provisioningServiceName);
+    CertificateListDescription list(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Generate verification code for Proof of Possession.
-     *
+     * 
      * @param certificateName The mandatory logical name of the certificate, that the provisioning service uses to
-     *     access.
+     * access.
      * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored while
-     *     creating a brand new certificate.
+     * creating a brand new certificate.
      * @param resourceGroupName name of resource group.
      * @param provisioningServiceName Name of provisioning service.
      * @param certificateName1 Common Name for the certificate.
@@ -150,7 +138,7 @@ public interface DpsCertificates {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of the response of the verification code along with {@link Response}.
      */
@@ -161,30 +149,31 @@ public interface DpsCertificates {
         Context context);
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
-     * certificate.
-     *
+     * Generate verification code for Proof of Possession.
+     * 
      * @param certificateName The mandatory logical name of the certificate, that the provisioning service uses to
-     *     access.
-     * @param ifMatch ETag of the certificate.
-     * @param resourceGroupName Resource group name.
-     * @param provisioningServiceName Provisioning service name.
-     * @param request The name of the certificate.
+     * access.
+     * @param ifMatch ETag of the certificate. This is required to update an existing certificate, and ignored while
+     * creating a brand new certificate.
+     * @param resourceGroupName name of resource group.
+     * @param provisioningServiceName Name of provisioning service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return description of the response of the verification code.
      */
-    CertificateResponse verifyCertificate(String certificateName, String ifMatch, String resourceGroupName,
-        String provisioningServiceName, VerificationCodeRequest request);
+    VerificationCodeResponse generateVerificationCode(String certificateName, String ifMatch, String resourceGroupName,
+        String provisioningServiceName);
 
     /**
+     * Verify certificate's private key possession.
+     * 
      * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
      * certificate.
-     *
+     * 
      * @param certificateName The mandatory logical name of the certificate, that the provisioning service uses to
-     *     access.
+     * access.
      * @param ifMatch ETag of the certificate.
      * @param resourceGroupName Resource group name.
      * @param provisioningServiceName Provisioning service name.
@@ -200,7 +189,7 @@ public interface DpsCertificates {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate along with {@link Response}.
      */
@@ -211,12 +200,33 @@ public interface DpsCertificates {
         Boolean certificateHasPrivateKey, String certificateNonce, Context context);
 
     /**
+     * Verify certificate's private key possession.
+     * 
+     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
+     * certificate.
+     * 
+     * @param certificateName The mandatory logical name of the certificate, that the provisioning service uses to
+     * access.
+     * @param ifMatch ETag of the certificate.
+     * @param resourceGroupName Resource group name.
+     * @param provisioningServiceName Provisioning service name.
+     * @param request The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
+     * is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
+     */
+    CertificateResponse verifyCertificate(String certificateName, String ifMatch, String resourceGroupName,
+        String provisioningServiceName, VerificationCodeRequest request);
+
+    /**
      * Get the certificate from the provisioning service.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the certificate from the provisioning service along with {@link Response}.
      */
@@ -224,32 +234,36 @@ public interface DpsCertificates {
 
     /**
      * Get the certificate from the provisioning service.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the certificate from the provisioning service along with {@link Response}.
      */
     Response<CertificateResponse> getByIdWithResponse(String id, String ifMatch, Context context);
 
     /**
+     * Delete the Provisioning Service Certificate.
+     * 
      * Deletes the specified certificate associated with the Provisioning Service.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
+     * Delete the Provisioning Service Certificate.
+     * 
      * Deletes the specified certificate associated with the Provisioning Service.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the certificate.
      * @param certificateName1 This is optional, and it is the Common Name of the certificate.
@@ -263,7 +277,7 @@ public interface DpsCertificates {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -274,7 +288,7 @@ public interface DpsCertificates {
 
     /**
      * Begins definition for a new CertificateResponse resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new CertificateResponse definition.
      */

@@ -11,7 +11,7 @@ public final class RestorePointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorePointInner model = BinaryData.fromString(
-            "{\"location\":\"ka\",\"properties\":{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-08-31T11:12:28Z\",\"restorePointCreationDate\":\"2021-04-08T20:05:46Z\",\"restorePointLabel\":\"cffgdkzzewk\"},\"id\":\"vhqcrail\",\"name\":\"pnppfuf\",\"type\":\"rwdmhdlxyjrxsa\"}")
+            "{\"location\":\"gfbkjubdyh\",\"properties\":{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-06-14T22:14:58Z\",\"restorePointCreationDate\":\"2021-05-19T20:27:58Z\",\"restorePointLabel\":\"wzf\"},\"id\":\"tsttktlahbq\",\"name\":\"ctxtgzukxi\",\"type\":\"mmqtgqqqxhr\"}")
             .toObject(RestorePointInner.class);
     }
 

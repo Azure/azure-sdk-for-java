@@ -13,7 +13,6 @@ import com.azure.resourcemanager.streamanalytics.models.ClusterInfo;
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.ContentStoragePolicy;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.Input;
 import com.azure.resourcemanager.streamanalytics.models.JobStorageAccount;
@@ -149,10 +148,6 @@ public final class StreamingJobPropertiesImpl implements StreamingJobProperties 
 
     public ContentStoragePolicy contentStoragePolicy() {
         return this.innerModel().contentStoragePolicy();
-    }
-
-    public External externals() {
-        return this.innerModel().externals();
     }
 
     public ClusterInfo cluster() {

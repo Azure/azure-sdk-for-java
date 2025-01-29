@@ -58,6 +58,8 @@ public final class NamespaceSku {
     }
 
     /**
+     * Gets SKU name.
+     *
      * @return sku name
      */
     public SkuName name() {
@@ -65,6 +67,8 @@ public final class NamespaceSku {
     }
 
     /**
+     * Gets SKU tier.
+     *
      * @return sku tier
      */
     public SkuTier tier() {
@@ -72,6 +76,8 @@ public final class NamespaceSku {
     }
 
     /**
+     * Gets SKU capacity.
+     *
      * @return sku capacity
      */
     public int capacity() {

@@ -13,15 +13,14 @@ public final class ReplicationLinkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationLinkListResult model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"qdcvdrhvoo\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"obzdopcjwvnhdl\",\"partnerServer\":\"mgxcxrslpm\",\"partnerDatabase\":\"wuoegrpk\",\"partnerLocation\":\"wniyqsluicpd\",\"role\":\"Primary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-04-02T01:13:45Z\",\"percentComplete\":553521281,\"replicationState\":\"SUSPENDED\"},\"id\":\"axmodfvuef\",\"name\":\"wsbpfvm\",\"type\":\"yhrfouyftaakcpw\"},{\"location\":\"zvqtmnubexkp\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"ndjmquxvyp\",\"partnerServer\":\"gkopkwhojvpajqgx\",\"partnerDatabase\":\"mocmbqfqvmk\",\"partnerLocation\":\"oz\",\"role\":\"Primary\",\"partnerRole\":\"Secondary\",\"startTime\":\"2021-03-25T16:14:09Z\",\"percentComplete\":1009044014,\"replicationState\":\"PENDING\"},\"id\":\"yat\",\"name\":\"dckcbc\",\"type\":\"ejrjxgciqibrho\"},{\"location\":\"sdqrhzoymibmrq\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"wfluszdt\",\"partnerServer\":\"rkwofyyvoqa\",\"partnerDatabase\":\"iexpbtgiwbwo\",\"partnerLocation\":\"washr\",\"role\":\"Primary\",\"partnerRole\":\"Copy\",\"startTime\":\"2021-03-26T12:56:23Z\",\"percentComplete\":1989622567,\"replicationState\":\"PENDING\"},\"id\":\"okulpiujwa\",\"name\":\"sipqii\",\"type\":\"byuqerpqlp\"},{\"location\":\"cciuqgbdbutau\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"uwhhmhykojoxafn\",\"partnerServer\":\"lpichk\",\"partnerDatabase\":\"mkcdyhbpkkpwdre\",\"partnerLocation\":\"ovvqfovljxywsu\",\"role\":\"Copy\",\"partnerRole\":\"Secondary\",\"startTime\":\"2021-11-22T09:18:13Z\",\"percentComplete\":1457668224,\"replicationState\":\"PENDING\"},\"id\":\"adgvraeaene\",\"name\":\"nzar\",\"type\":\"wlquuijfqkace\"}],\"nextLink\":\"ipfpubji\"}")
+            "{\"value\":[{\"location\":\"vjlfrqtt\",\"properties\":{\"isTerminationAllowed\":true,\"replicationMode\":\"atnwxyiopi\",\"partnerServer\":\"qqfkuv\",\"partnerDatabase\":\"xkdmligo\",\"partnerLocation\":\"brxk\",\"role\":\"Secondary\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-03-02T16:29:31Z\",\"percentComplete\":181073134,\"replicationState\":\"SEEDING\"},\"id\":\"bgo\",\"name\":\"rb\",\"type\":\"eoybfhjxakvvjgs\"}],\"nextLink\":\"r\"}")
             .toObject(ReplicationLinkListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationLinkListResult model
-            = new ReplicationLinkListResult().withValue(Arrays.asList(new ReplicationLinkInner(),
-                new ReplicationLinkInner(), new ReplicationLinkInner(), new ReplicationLinkInner()));
+            = new ReplicationLinkListResult().withValue(Arrays.asList(new ReplicationLinkInner()));
         model = BinaryData.fromObject(model).toObject(ReplicationLinkListResult.class);
     }
 }

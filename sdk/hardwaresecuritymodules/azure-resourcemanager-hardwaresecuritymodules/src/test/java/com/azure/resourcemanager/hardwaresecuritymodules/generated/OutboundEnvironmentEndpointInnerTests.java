@@ -15,72 +15,56 @@ public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointInner model = BinaryData.fromString(
-            "{\"category\":\"mcwyhzdxssadb\",\"endpoints\":[{\"domainName\":\"dfznudaodv\",\"endpointDetails\":[{\"ipAddress\":\"cblylpstdbhhxsr\",\"port\":1239206782,\"protocol\":\"cers\",\"description\":\"ntnev\"},{\"ipAddress\":\"wjmy\",\"port\":1774412887,\"protocol\":\"slswtm\",\"description\":\"riofzpyqse\"},{\"ipAddress\":\"abnetshh\",\"port\":199039203,\"protocol\":\"d\",\"description\":\"vwiwubmwmbesld\"},{\"ipAddress\":\"wwtppj\",\"port\":799059143,\"protocol\":\"ogaok\",\"description\":\"z\"}]},{\"domainName\":\"sikvmkqzeqqkdlt\",\"endpointDetails\":[{\"ipAddress\":\"hhvh\",\"port\":67653444,\"protocol\":\"odkwobd\",\"description\":\"xtibqdxbxwakbog\"},{\"ipAddress\":\"ndlkzgxhurip\",\"port\":2112833635,\"protocol\":\"dxunkbebxmubyyn\",\"description\":\"lrb\"},{\"ipAddress\":\"koievseo\",\"port\":143823433,\"protocol\":\"l\",\"description\":\"muwlauwzizxbm\"}]},{\"domainName\":\"cjefuzmu\",\"endpointDetails\":[{\"ipAddress\":\"tdum\",\"port\":95905507,\"protocol\":\"xe\",\"description\":\"nzbtbhj\"},{\"ipAddress\":\"lkfg\",\"port\":1036395530,\"protocol\":\"euel\",\"description\":\"hsd\"},{\"ipAddress\":\"t\",\"port\":223656030,\"protocol\":\"kd\",\"description\":\"wq\"}]}]}")
+            "{\"category\":\"djwzrlov\",\"endpoints\":[{\"domainName\":\"hijco\",\"endpointDetails\":[{\"ipAddress\":\"bzaqsqsycbkbfk\",\"port\":1619207085,\"protocol\":\"kexxppof\",\"description\":\"axcfjpgddtocjjx\"},{\"ipAddress\":\"pmouexhdz\",\"port\":738311617,\"protocol\":\"eojnxqbzvddn\",\"description\":\"ndei\"}]},{\"domainName\":\"twnpzaoqvuhrhcf\",\"endpointDetails\":[{\"ipAddress\":\"dglmjthjqkwp\",\"port\":920917148,\"protocol\":\"xmqci\",\"description\":\"vhkhixu\"}]},{\"domainName\":\"dtopbob\",\"endpointDetails\":[{\"ipAddress\":\"m\",\"port\":115410873,\"protocol\":\"m\",\"description\":\"hrzayvvtpgvdf\"},{\"ipAddress\":\"otkftutqxlngx\",\"port\":1542158785,\"protocol\":\"ugnxkrxdqmi\",\"description\":\"thz\"}]},{\"domainName\":\"qdrabhjybigehoqf\",\"endpointDetails\":[{\"ipAddress\":\"kanyktzlcuiywg\",\"port\":1328534140,\"protocol\":\"ndrvynhzg\",\"description\":\"hrc\"}]}]}")
             .toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("mcwyhzdxssadb", model.category());
-        Assertions.assertEquals("dfznudaodv", model.endpoints().get(0).domainName());
-        Assertions.assertEquals("cblylpstdbhhxsr", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(1239206782, model.endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("cers", model.endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("ntnev", model.endpoints().get(0).endpointDetails().get(0).description());
+        Assertions.assertEquals("djwzrlov", model.category());
+        Assertions.assertEquals("hijco", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("bzaqsqsycbkbfk", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(1619207085, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("kexxppof", model.endpoints().get(0).endpointDetails().get(0).protocol());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.endpoints().get(0).endpointDetails().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundEnvironmentEndpointInner model = new OutboundEnvironmentEndpointInner().withCategory("mcwyhzdxssadb")
+        OutboundEnvironmentEndpointInner model = new OutboundEnvironmentEndpointInner().withCategory("djwzrlov")
             .withEndpoints(Arrays.asList(
-                new EndpointDependency().withDomainName("dfznudaodv")
+                new EndpointDependency().withDomainName("hijco")
                     .withEndpointDetails(Arrays.asList(
-                        new EndpointDetail().withIpAddress("cblylpstdbhhxsr")
-                            .withPort(1239206782)
-                            .withProtocol("cers")
-                            .withDescription("ntnev"),
-                        new EndpointDetail().withIpAddress("wjmy")
-                            .withPort(1774412887)
-                            .withProtocol("slswtm")
-                            .withDescription("riofzpyqse"),
-                        new EndpointDetail().withIpAddress("abnetshh")
-                            .withPort(199039203)
-                            .withProtocol("d")
-                            .withDescription("vwiwubmwmbesld"),
-                        new EndpointDetail().withIpAddress("wwtppj")
-                            .withPort(799059143)
-                            .withProtocol("ogaok")
-                            .withDescription("z"))),
-                new EndpointDependency().withDomainName("sikvmkqzeqqkdlt")
+                        new EndpointDetail().withIpAddress("bzaqsqsycbkbfk")
+                            .withPort(1619207085)
+                            .withProtocol("kexxppof")
+                            .withDescription("axcfjpgddtocjjx"),
+                        new EndpointDetail().withIpAddress("pmouexhdz")
+                            .withPort(738311617)
+                            .withProtocol("eojnxqbzvddn")
+                            .withDescription("ndei"))),
+                new EndpointDependency().withDomainName("twnpzaoqvuhrhcf")
+                    .withEndpointDetails(Arrays.asList(new EndpointDetail().withIpAddress("dglmjthjqkwp")
+                        .withPort(920917148)
+                        .withProtocol("xmqci")
+                        .withDescription("vhkhixu"))),
+                new EndpointDependency().withDomainName("dtopbob")
                     .withEndpointDetails(Arrays.asList(
-                        new EndpointDetail().withIpAddress("hhvh")
-                            .withPort(67653444)
-                            .withProtocol("odkwobd")
-                            .withDescription("xtibqdxbxwakbog"),
-                        new EndpointDetail().withIpAddress("ndlkzgxhurip")
-                            .withPort(2112833635)
-                            .withProtocol("dxunkbebxmubyyn")
-                            .withDescription("lrb"),
-                        new EndpointDetail().withIpAddress("koievseo")
-                            .withPort(143823433)
-                            .withProtocol("l")
-                            .withDescription("muwlauwzizxbm"))),
-                new EndpointDependency().withDomainName("cjefuzmu")
-                    .withEndpointDetails(Arrays.asList(
-                        new EndpointDetail().withIpAddress("tdum")
-                            .withPort(95905507)
-                            .withProtocol("xe")
-                            .withDescription("nzbtbhj"),
-                        new EndpointDetail().withIpAddress("lkfg")
-                            .withPort(1036395530)
-                            .withProtocol("euel")
-                            .withDescription("hsd"),
-                        new EndpointDetail().withIpAddress("t")
-                            .withPort(223656030)
-                            .withProtocol("kd")
-                            .withDescription("wq")))));
+                        new EndpointDetail().withIpAddress("m")
+                            .withPort(115410873)
+                            .withProtocol("m")
+                            .withDescription("hrzayvvtpgvdf"),
+                        new EndpointDetail().withIpAddress("otkftutqxlngx")
+                            .withPort(1542158785)
+                            .withProtocol("ugnxkrxdqmi")
+                            .withDescription("thz"))),
+                new EndpointDependency().withDomainName("qdrabhjybigehoqf")
+                    .withEndpointDetails(Arrays.asList(new EndpointDetail().withIpAddress("kanyktzlcuiywg")
+                        .withPort(1328534140)
+                        .withProtocol("ndrvynhzg")
+                        .withDescription("hrc")))));
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("mcwyhzdxssadb", model.category());
-        Assertions.assertEquals("dfznudaodv", model.endpoints().get(0).domainName());
-        Assertions.assertEquals("cblylpstdbhhxsr", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(1239206782, model.endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("cers", model.endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("ntnev", model.endpoints().get(0).endpointDetails().get(0).description());
+        Assertions.assertEquals("djwzrlov", model.category());
+        Assertions.assertEquals("hijco", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("bzaqsqsycbkbfk", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(1619207085, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("kexxppof", model.endpoints().get(0).endpointDetails().get(0).protocol());
+        Assertions.assertEquals("axcfjpgddtocjjx", model.endpoints().get(0).endpointDetails().get(0).description());
     }
 }

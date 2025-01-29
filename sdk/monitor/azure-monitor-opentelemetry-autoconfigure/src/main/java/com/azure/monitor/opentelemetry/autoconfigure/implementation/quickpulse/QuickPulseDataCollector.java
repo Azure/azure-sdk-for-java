@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
@@ -19,6 +18,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.f
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.RequestDataColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
@@ -28,10 +28,11 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
@@ -59,9 +60,6 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    private static final ClientLogger logger = new ClientLogger(QuickPulseDataCollector.class);
-
-    // TODO (harskaur): Track projection (runtime) related errors in future PR
     private final AtomicReference<FilteringConfiguration> configuration;
 
     QuickPulseDataCollector(AtomicReference<FilteringConfiguration> configuration) {
@@ -79,7 +77,8 @@ final class QuickPulseDataCollector {
 
     synchronized void enable(Supplier<String> instrumentationKeySupplier) {
         this.instrumentationKeySupplier = instrumentationKeySupplier;
-        counters.set(new Counters());
+        FilteringConfiguration config = configuration.get();
+        counters.set(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
     }
 
     synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
@@ -93,7 +92,9 @@ final class QuickPulseDataCollector {
 
     @Nullable
     synchronized FinalCounters getAndRestart() {
-        Counters currentCounters = counters.getAndSet(new Counters());
+        FilteringConfiguration config = configuration.get();
+        Counters currentCounters
+            = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
         if (currentCounters != null) {
             return new FinalCounters(currentCounters);
         }
@@ -178,17 +179,12 @@ final class QuickPulseDataCollector {
     }
 
     private void applyMetricFilters(TelemetryColumns columns, TelemetryType telemetryType,
-        FilteringConfiguration currentConfig) {
-        // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
-        // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
-        // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
+        FilteringConfiguration currentConfig, Counters currentCounters) {
         List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
-        try {
-            for (DerivedMetricInfo dmi : metricsConfig) {
-                logger.verbose(dmi.toJsonString());
+        for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
+            if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
+                currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
             }
-        } catch (IOException e) {
-            logger.error(e.getMessage());
         }
     }
 
@@ -205,7 +201,7 @@ final class QuickPulseDataCollector {
         }
 
         DependencyDataColumns columns = new DependencyDataColumns(telemetry);
-        applyMetricFilters(columns, TelemetryType.DEPENDENCY, currentConfig);
+        applyMetricFilters(columns, TelemetryType.DEPENDENCY, currentConfig, counters);
 
         List<String> documentStreamIds = new ArrayList<>();
         if (matchesDocumentFilters(columns, TelemetryType.DEPENDENCY, currentConfig, documentStreamIds)) {
@@ -235,7 +231,8 @@ final class QuickPulseDataCollector {
         counters.exceptions.addAndGet(itemCount);
 
         ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
-        applyMetricFilters(columns, TelemetryType.EXCEPTION, currentConfig);
+
+        applyMetricFilters(columns, TelemetryType.EXCEPTION, currentConfig, counters);
 
         List<String> documentStreamIds = new ArrayList<>();
         if (matchesDocumentFilters(columns, TelemetryType.EXCEPTION, currentConfig, documentStreamIds)) {
@@ -271,7 +268,8 @@ final class QuickPulseDataCollector {
         }
 
         RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
-        applyMetricFilters(columns, TelemetryType.REQUEST, currentConfig);
+
+        applyMetricFilters(columns, TelemetryType.REQUEST, currentConfig, counters);
 
         List<String> documentStreamIds = new ArrayList<>();
         if (matchesDocumentFilters(columns, TelemetryType.REQUEST, currentConfig, documentStreamIds)) {
@@ -294,7 +292,7 @@ final class QuickPulseDataCollector {
     private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         TraceDataColumns columns = new TraceDataColumns(traceTelemetry);
-        applyMetricFilters(columns, TelemetryType.TRACE, currentConfig);
+        applyMetricFilters(columns, TelemetryType.TRACE, currentConfig, counters);
         List<String> documentStreamIds = new ArrayList<>();
         if (matchesDocumentFilters(columns, TelemetryType.TRACE, currentConfig, documentStreamIds)) {
             Trace traceDoc = new Trace();
@@ -413,6 +411,10 @@ final class QuickPulseDataCollector {
         final double processNormalizedCpuUsage;
         final List<DocumentIngress> documentList = new ArrayList<>();
 
+        final Map<String, Double> projections;
+
+        final List<CollectionConfigurationError> configErrors;
+
         private FinalCounters(Counters currentCounters) {
 
             processPhysicalMemory = getPhysicalMemory(memory);
@@ -432,6 +434,9 @@ final class QuickPulseDataCollector {
             synchronized (currentCounters.documentList) {
                 this.documentList.addAll(currentCounters.documentList);
             }
+            this.projections = currentCounters.derivedMetrics.fetchFinalDerivedMetricValues();
+            this.configErrors = currentCounters.configErrors;
+
         }
 
         private long getPhysicalMemory(@Nullable MemoryMXBean memory) {
@@ -483,6 +488,15 @@ final class QuickPulseDataCollector {
         final AtomicLong rddsAndDuations = new AtomicLong(0);
         final AtomicInteger unsuccessfulRdds = new AtomicInteger(0);
         final List<DocumentIngress> documentList = new ArrayList<>();
+
+        final DerivedMetricProjections derivedMetrics;
+
+        final List<CollectionConfigurationError> configErrors;
+
+        Counters(Map<String, AggregationType> projectionInfo, List<CollectionConfigurationError> errors) {
+            derivedMetrics = new DerivedMetricProjections(projectionInfo);
+            configErrors = errors;
+        }
 
         static long encodeCountAndDuration(long count, long duration) {
             if (count > MAX_COUNT || duration > MAX_DURATION) {

@@ -25,11 +25,6 @@ public final class MsTeamsChannel extends Channel {
      */
     private MsTeamsChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of MsTeamsChannel class.
      */
@@ -64,16 +59,6 @@ public final class MsTeamsChannel extends Channel {
     public MsTeamsChannel withProperties(MsTeamsChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class MsTeamsChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedMsTeamsChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedMsTeamsChannel.provisioningState = reader.getString();
+                    deserializedMsTeamsChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedMsTeamsChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

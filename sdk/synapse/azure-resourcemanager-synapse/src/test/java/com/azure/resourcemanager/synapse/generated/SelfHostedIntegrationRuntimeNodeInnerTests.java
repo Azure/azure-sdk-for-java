@@ -15,24 +15,22 @@ public final class SelfHostedIntegrationRuntimeNodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfHostedIntegrationRuntimeNodeInner model = BinaryData.fromString(
-            "{\"nodeName\":\"hgbvqtan\",\"machineName\":\"fdlpukhpyr\",\"hostServiceUri\":\"izjcpeog\",\"status\":\"Online\",\"capabilities\":{\"hfhpfp\":\"brouxdd\",\"ntacn\":\"zjzoywjxhpdul\",\"rljyoogwxhnsdu\":\"qwtehtuevr\"},\"versionStatus\":\"wbsreur\",\"version\":\"kfuarenlv\",\"registerTime\":\"2021-07-13T00:13:17Z\",\"lastConnectTime\":\"2021-03-27T02:17:20Z\",\"expiryTime\":\"2021-05-09T13:31:11Z\",\"lastStartTime\":\"2021-02-05T00:41:51Z\",\"lastStopTime\":\"2021-09-08T16:13:33Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2020-12-28T15:08:46Z\",\"lastEndUpdateTime\":\"2021-03-29T16:51:14Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":451383418,\"maxConcurrentJobs\":705317709,\"\":{\"ymc\":\"dataqxypokkhminq\",\"ninvudbchaqdt\":\"datangnbdxxew\",\"tddmf\":\"dataqecrqctmxx\",\"pxbannovvoxc\":\"datahuytxzvtzn\"}}")
+            "{\"nodeName\":\"svexcsonpclhoco\",\"machineName\":\"lkevle\",\"hostServiceUri\":\"zfbuhf\",\"status\":\"Limited\",\"capabilities\":{\"feiithlvmez\":\"k\"},\"versionStatus\":\"shxmzsbbzoggigrx\",\"version\":\"ur\",\"registerTime\":\"2021-06-24T13:08:49Z\",\"lastConnectTime\":\"2021-05-26T16:39:11Z\",\"expiryTime\":\"2021-06-18T13:50:39Z\",\"lastStartTime\":\"2021-11-20T13:35:29Z\",\"lastStopTime\":\"2021-07-31T00:27:15Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-09-24T03:08Z\",\"lastEndUpdateTime\":\"2021-12-01T07:03:23Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":333094369,\"maxConcurrentJobs\":73605186,\"\":{\"azyxoegukg\":\"datatiukbldngkpoci\",\"mrbpizcdrqj\":\"datanpiucgygevqznty\",\"yhxdeoejzicwi\":\"datadpydn\"}}")
             .toObject(SelfHostedIntegrationRuntimeNodeInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfHostedIntegrationRuntimeNodeInner model = new SelfHostedIntegrationRuntimeNodeInner()
-            .withAdditionalProperties(mapOf("nodeName", "hgbvqtan", "lastStartUpdateTime", "2020-12-28T15:08:46Z",
-                "lastConnectTime", "2021-03-27T02:17:20Z", "capabilities",
+        SelfHostedIntegrationRuntimeNodeInner model
+            = new SelfHostedIntegrationRuntimeNodeInner().withAdditionalProperties(mapOf("nodeName", "svexcsonpclhoco",
+                "lastStartUpdateTime", "2021-09-24T03:08Z", "lastConnectTime", "2021-05-26T16:39:11Z", "capabilities",
                 JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize(
-                        "{\"hfhpfp\":\"brouxdd\",\"ntacn\":\"zjzoywjxhpdul\",\"rljyoogwxhnsdu\":\"qwtehtuevr\"}",
-                        Object.class, SerializerEncoding.JSON),
-                "hostServiceUri", "izjcpeog", "registerTime", "2021-07-13T00:13:17Z", "maxConcurrentJobs", 705317709,
-                "lastStopTime", "2021-09-08T16:13:33Z", "version", "kfuarenlv", "machineName", "fdlpukhpyr",
-                "versionStatus", "wbsreur", "concurrentJobsLimit", 451383418, "lastEndUpdateTime",
-                "2021-03-29T16:51:14Z", "expiryTime", "2021-05-09T13:31:11Z", "lastStartTime", "2021-02-05T00:41:51Z",
-                "lastUpdateResult", "None", "isActiveDispatcher", false, "status", "Online"));
+                    .deserialize("{\"feiithlvmez\":\"k\"}", Object.class, SerializerEncoding.JSON),
+                "hostServiceUri", "zfbuhf", "registerTime", "2021-06-24T13:08:49Z", "maxConcurrentJobs", 73605186,
+                "lastStopTime", "2021-07-31T00:27:15Z", "version", "ur", "machineName", "lkevle", "versionStatus",
+                "shxmzsbbzoggigrx", "concurrentJobsLimit", 333094369, "lastEndUpdateTime", "2021-12-01T07:03:23Z",
+                "expiryTime", "2021-06-18T13:50:39Z", "lastStartTime", "2021-11-20T13:35:29Z", "lastUpdateResult",
+                "None", "isActiveDispatcher", true, "status", "Limited"));
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntimeNodeInner.class);
     }
 

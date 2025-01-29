@@ -19,15 +19,23 @@ import java.util.List;
 public interface DdosProtectionPlan extends GroupableResource<NetworkManager, DdosProtectionPlanInner>,
     Refreshable<DdosProtectionPlan>, Updatable<DdosProtectionPlan.Update> {
     /**
+     * Gets the resource GUID property of the DDoS protection plan resource.
+     *
      * @return the resource GUID property of the DDoS protection plan resource. It uniquely identifies a resource, even
      *     if the user changes its name or migrate the resource across subscriptions or resource groups.
      */
     String resourceGuid();
 
-    /** @return the provisioning state of the DDoS protection plan resource */
+    /**
+     * Gets the provisioning state of the DDoS protection plan resource.
+     *
+     * @return the provisioning state of the DDoS protection plan resource
+     */
     String provisioningState();
 
     /**
+     * Gets the list of virtual networks associated with the DDoS protection plan resource.
+     *
      * @return the list of virtual networks associated with the DDoS protection plan resource. This list is read-only.
      */
     List<SubResource> virtualNetworks();
