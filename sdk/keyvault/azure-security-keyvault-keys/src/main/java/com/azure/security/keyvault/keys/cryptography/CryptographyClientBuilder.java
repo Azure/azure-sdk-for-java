@@ -124,7 +124,7 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
     private boolean isKeyCachingDisabled = false;
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
