@@ -2231,8 +2231,8 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> importBusinessMetadataWithResponse(BinaryData body, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'importBusinessMetadata' is 'multipart/form-data'
+        // Operation 'importBusinessMetadata' is of content-type 'multipart/form-data'. Protocol API is not usable and
+        // hence not generated.
         return this.serviceClient.importBusinessMetadataWithResponseAsync(body, requestOptions);
     }
 
