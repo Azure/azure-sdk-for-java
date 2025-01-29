@@ -1894,7 +1894,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocumentsByFullFidelityCfp = new ConcurrentHashMap<>();
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(10))
+                .options(new ChangeFeedProcessorOptions()
+                    .setStartFromBeginning(isStartFromBeginning)
+                    .setMaxItemCount(10)
+                    .setLeasePrefix("TEST"))
                 .hostName(hostName)
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection);
@@ -1947,7 +1950,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 }
 
                 ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))
+                    .options(new ChangeFeedProcessorOptions()
+                        .setMaxItemCount(1)
+                        .setLeasePrefix("TEST"))
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
                     .leaseContainer(createdLeaseCollection)
