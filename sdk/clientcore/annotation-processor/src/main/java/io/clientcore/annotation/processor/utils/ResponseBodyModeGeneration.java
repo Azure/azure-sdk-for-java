@@ -3,8 +3,8 @@
 
 package io.clientcore.annotation.processor.utils;
 
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
+import com.palantir.javapoet.MethodSpec;
+import com.palantir.javapoet.TypeName;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;

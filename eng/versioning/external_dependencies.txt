@@ -39,7 +39,7 @@ com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
 com.squareup.okhttp3:okhttp;4.12.0
-com.squareup:javapoet;1.13.0
+com.palantir.javapoet:javapoet;0.6.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0

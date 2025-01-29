@@ -3,7 +3,7 @@
 
 package io.clientcore.annotation.processor.templating;
 
-import com.squareup.javapoet.MethodSpec;
+import com.palantir.javapoet.MethodSpec;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

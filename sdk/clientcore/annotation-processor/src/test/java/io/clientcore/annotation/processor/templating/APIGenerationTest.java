@@ -3,10 +3,10 @@
 
 package io.clientcore.annotation.processor.templating;
 
+import com.palantir.javapoet.MethodSpec;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
-import com.squareup.javapoet.MethodSpec;
 import io.clientcore.core.http.models.HttpMethod;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,9 +50,9 @@ public class APIGenerationTest {
         templateInput.setHttpRequestContexts(Collections.singletonList(getUserMethodContext));
 
         MethodSpec getUserMethodGenerationSpec = processor.generatePublicMethod(getUserMethodContext);
-        assertEquals("getUser", getUserMethodGenerationSpec.name);
-        assertEquals("User", getUserMethodGenerationSpec.returnType.toString());
+        assertEquals("getUser", getUserMethodGenerationSpec.name());
+        assertEquals("User", getUserMethodGenerationSpec.returnType().toString());
         // assert code block contains the expected method body
-        assertEquals("return getUser();\n", getUserMethodGenerationSpec.code.toString());
+        assertEquals("return getUser();\n", getUserMethodGenerationSpec.code().toString());
     }
 }

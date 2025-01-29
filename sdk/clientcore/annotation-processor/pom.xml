@@ -103,9 +103,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.squareup</groupId>
+      <groupId>com.palantir.javapoet</groupId>
       <artifactId>javapoet</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.squareup:javapoet;external_dependency} -->
+      <version>0.6.0</version> <!-- {x-version-update;com.palantir.javapoet:javapoet;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -150,7 +150,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.squareup:javapoet:[1.13.0]</include> <!-- {x-include-update;com.squareup:javapoet:;external_dependency} -->
+                <include>com.palantir.javapoet:javapoet:[0.6.0]</include> <!-- {x-include-update;com.palantir.javapoet:javapoet;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

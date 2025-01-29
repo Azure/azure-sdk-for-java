@@ -3,9 +3,9 @@
 
 package io.clientcore.annotation.processor.templating;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
+import com.palantir.javapoet.ClassName;
+import com.palantir.javapoet.FieldSpec;
+import com.palantir.javapoet.MethodSpec;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -76,26 +76,26 @@ public class HttpPipelineBuilderMethodTest {
     @Test
     public void testGetEndpointMethod() {
         MethodSpec method = processor.getEndpointMethod();
-        assertEquals("getEndpoint", method.name);
-        assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
-        assertEquals(ClassName.get("java.lang", "String"), method.returnType);
+        assertEquals("getEndpoint", method.name());
+        assertEquals(Modifier.PUBLIC, method.modifiers().iterator().next());
+        assertEquals(ClassName.get("java.lang", "String"), method.returnType());
     }
 
     @Test
     public void testGetPipelineMethod() {
         MethodSpec method = processor.getPipelineMethod();
-        assertEquals("getPipeline", method.name);
-        assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
-        assertEquals(HTTP_PIPELINE, method.returnType);
+        assertEquals("getPipeline", method.name());
+        assertEquals(Modifier.PUBLIC, method.modifiers().iterator().next());
+        assertEquals(HTTP_PIPELINE, method.returnType());
     }
 
     @Test
     public void testGetServiceVersionMethod() {
         MethodSpec method = processor.getServiceVersionMethod();
-        assertEquals("getServiceVersion", method.name);
-        assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
+        assertEquals("getServiceVersion", method.name());
+        assertEquals(Modifier.PUBLIC, method.modifiers().iterator().next());
         when(templateInput.getServiceInterfaceShortName()).thenReturn("ExampleClientService");
-        assertTrue(method.code.toString().contains("return serviceVersion"));
+        assertTrue(method.code().toString().contains("return serviceVersion"));
     }
 
     @Test
@@ -108,10 +108,11 @@ public class HttpPipelineBuilderMethodTest {
     public void testLoggerFieldGeneration() {
         FieldSpec loggerField = processor.getLoggerField(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME);
         assertEquals(new HashSet<>(Arrays.asList(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)),
-            loggerField.modifiers);
-        assertEquals(CLIENT_LOGGER_NAME, loggerField.type);
-        assertEquals("LOGGER", loggerField.name);
-        assertTrue(loggerField.initializer.toString()
+            loggerField.modifiers());
+        assertEquals(CLIENT_LOGGER_NAME, loggerField.type());
+        assertEquals("LOGGER", loggerField.name());
+        assertTrue(loggerField.initializer()
+            .toString()
             .contains(
                 "new io.clientcore.core.instrumentation.logging.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
     }
