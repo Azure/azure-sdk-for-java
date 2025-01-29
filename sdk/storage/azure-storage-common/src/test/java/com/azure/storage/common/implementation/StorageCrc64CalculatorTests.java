@@ -144,23 +144,23 @@ public class StorageCrc64CalculatorTests {
         return new BigInteger(value).longValue();
     }
 
-@ParameterizedTest
-@MethodSource("testConcatWithInitialsSupplier")
-void testConcatWithInitials(String initialStr, String initial1Str, String crc1Str, String size1Str, String initial2Str,
-                            String crc2Str, String size2Str, String expectedStr) {
-    // Convert large unsigned values to signed long
-    long initial = unsignedLongFromString(initialStr);
-    long initial1 = unsignedLongFromString(initial1Str);
-    long crc1 = unsignedLongFromString(crc1Str);
-    long size1 = Long.parseLong(size1Str);
-    long initial2 = unsignedLongFromString(initial2Str);
-    long crc2 = unsignedLongFromString(crc2Str);
-    long size2 = Long.parseLong(size2Str);
-    long expected = unsignedLongFromString(expectedStr);
+    @ParameterizedTest
+    @MethodSource("testConcatWithInitialsSupplier")
+    void testConcatWithInitials(String initialStr, String initial1Str, String crc1Str, String size1Str, String initial2Str,
+                                String crc2Str, String size2Str, String expectedStr) {
+        // Convert large unsigned values to signed long
+        long initial = unsignedLongFromString(initialStr);
+        long initial1 = unsignedLongFromString(initial1Str);
+        long crc1 = unsignedLongFromString(crc1Str);
+        long size1 = Long.parseLong(size1Str);
+        long initial2 = unsignedLongFromString(initial2Str);
+        long crc2 = unsignedLongFromString(crc2Str);
+        long size2 = Long.parseLong(size2Str);
+        long expected = unsignedLongFromString(expectedStr);
 
-    long actual = StorageCrc64Calculator.concat(initial, initial1, crc1, size1, initial2, crc2, size2);
-    assertEquals(expected, actual);
-}
+        long actual = StorageCrc64Calculator.concat(initial, initial1, crc1, size1, initial2, crc2, size2);
+        assertEquals(expected, actual);
+    }
 
     private static Stream<Arguments> testConcatWithInitialsSupplier() {
         return Stream.of(
