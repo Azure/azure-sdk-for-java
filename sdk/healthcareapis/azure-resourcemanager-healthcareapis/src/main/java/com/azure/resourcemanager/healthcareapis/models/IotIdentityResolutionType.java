@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class IotIdentityResolutionType extends ExpandableStringEnum<IotIde
      * @param name a name to look for.
      * @return the corresponding IotIdentityResolutionType.
      */
-    @JsonCreator
     public static IotIdentityResolutionType fromString(String name) {
         return fromString(name, IotIdentityResolutionType.class);
     }

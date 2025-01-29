@@ -3,16 +3,15 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
-import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
+import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions;
+import com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.AzureBlobFileListContentSource;
-import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
-import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions;
+import com.azure.ai.documentintelligence.models.BuildDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ClassifierDocumentTypeDetails;
-import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
-import com.azure.ai.documentintelligence.models.CopyAuthorization;
+import com.azure.ai.documentintelligence.models.ComposeDocumentModelOptions;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
@@ -22,6 +21,7 @@ import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDet
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTypeDetails;
+import com.azure.ai.documentintelligence.models.ModelCopyAuthorization;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
@@ -46,7 +46,6 @@ import java.util.UUID;
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_TIMEOUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DocumentModelAdministrationAsyncClientTest extends DocumentAdministrationClientTestBase {
@@ -73,7 +72,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
     public void validGetResourceInfo(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getResourceInfo())
+        StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentAdministrationClientTestBase::validateResourceInfo)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -87,7 +86,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
     public void validgetResourceInfoWithResponse(HttpClient httpClient,
         DocumentIntelligenceServiceVersion serviceVersion) {
         client = getModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getResourceInfo())
+        StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentAdministrationClientTestBase::validateResourceInfo)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -102,7 +101,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 = client
                 .beginBuildDocumentModel(
-                    new BuildDocumentModelRequest("modelId" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
+                    new BuildDocumentModelOptions("modelId" + UUID.randomUUID(), DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -127,7 +126,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         try {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 = client
-                    .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -137,9 +136,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
             StepVerifier
                 .create(client.authorizeModelCopyWithResponse(
-                    BinaryData.fromObject(new AuthorizeCopyRequest("copy_model_id" + UUID.randomUUID())), null))
-                .assertNext(
-                    response -> validateCopyAuthorizationResult(response.getValue().toObject(CopyAuthorization.class)))
+                    BinaryData.fromObject(new AuthorizeModelCopyOptions("copy_model_id" + UUID.randomUUID())), null))
+                .assertNext(response -> validateCopyAuthorizationResult(
+                    response.getValue().toObject(ModelCopyAuthorization.class)))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
         } finally {
@@ -163,7 +162,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         try {
             buildModelRunner((trainingDataSasUrl) -> {
                 SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 = client
-                    .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId1, DocumentBuildMode.TEMPLATE)
+                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId1, DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -177,7 +176,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
                 assertNotNull(documentModelDetails1);
 
                 SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller2 = client
-                    .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId2, DocumentBuildMode.TEMPLATE)
+                    .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId2, DocumentBuildMode.TEMPLATE)
                         .setAzureBlobSource(new AzureBlobContentSource(trainingDataSasUrl)))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -206,7 +205,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
                 SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> syncPoller = client
                     .beginBuildClassifier(
-                        new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsClassifierMap))
+                        new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsClassifierMap))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
 
@@ -226,7 +225,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails> composePoller
                 = client
                     .beginComposeModel(
-                        new ComposeDocumentModelRequest(composedModelId, classifierId, documentTypeDetailsMap)
+                        new ComposeDocumentModelOptions(composedModelId, classifierId, documentTypeDetailsMap)
                             .setDescription("test desc"))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
@@ -239,7 +238,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             DocumentModelDetails composedModel = composePoller.getFinalResult();
             assertNotNull(composedModel.getModelId());
             assertEquals("test desc", composedModel.getDescription());
-            assertEquals(2, composedModel.getDocTypes().size());
+            assertEquals(2, composedModel.getDocumentTypes().size());
             validateDocumentModelData(composedModel);
         } finally {
             StepVerifier.create(client.deleteModel(modelId1)).expectComplete().verify(DEFAULT_TIMEOUT);
@@ -260,7 +259,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -282,16 +281,16 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         String modelId = interceptorManager.isPlaybackMode() ? "REDACTED" : "modelId" + UUID.randomUUID();
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> syncPoller1 = client
-                .beginBuildDocumentModel(new BuildDocumentModelRequest(modelId, DocumentBuildMode.TEMPLATE)
+                .beginBuildDocumentModel(new BuildDocumentModelOptions(modelId, DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
 
-            Mono<CopyAuthorization> targetMono
-                = client.authorizeModelCopy(new AuthorizeCopyRequest("copyModelId" + UUID.randomUUID()));
-            CopyAuthorization target = targetMono.block();
+            Mono<ModelCopyAuthorization> targetMono
+                = client.authorizeModelCopy(new AuthorizeModelCopyOptions("copyModelId" + UUID.randomUUID()));
+            ModelCopyAuthorization target = targetMono.block();
             if (actualModel == null) {
                 fail();
                 return;
@@ -317,7 +316,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
         StepVerifier.create(client.listModels().byPage().take(4)).thenConsumeWhile(documentModelInfoPagedResponse -> {
             documentModelInfoPagedResponse.getValue().forEach(documentModelInfo -> {
                 assertNotNull(documentModelInfo.getModelId());
-                assertNotNull(documentModelInfo.getCreatedDateTime());
+                assertNotNull(documentModelInfo.getCreatedOn());
             });
             return true;
         }).expectComplete().verify(DEFAULT_TIMEOUT);
@@ -336,13 +335,11 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             .thenConsumeWhile(modelOperationInfoPagedResponse -> {
                 modelOperationInfoPagedResponse.getValue().forEach(modelOperationInfo -> {
                     operationIdList.add(modelOperationInfo.getOperationId());
-                    assertTrue(modelOperationInfo.getOperationId() != null
-                        && modelOperationInfo.getKind() != null
-                        && modelOperationInfo.getStatus() != null
-                        && modelOperationInfo.getCreatedDateTime() != null
-                        && modelOperationInfo.getLastUpdatedDateTime() != null
-                        && modelOperationInfo.getResourceLocation() != null
-                        && modelOperationInfo.getPercentCompleted() != null);
+                    assertNotNull(modelOperationInfo.getOperationId());
+                    assertNotNull(modelOperationInfo.getKind());
+                    assertNotNull(modelOperationInfo.getStatus());
+                    assertNotNull(modelOperationInfo.getCreatedOn());
+                    assertNotNull(modelOperationInfo.getResourceLocation());
                 });
                 return true;
             })
@@ -353,7 +350,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             operationIdList.forEach(
                 operationId -> StepVerifier.create(client.getOperation(operationId)).assertNext(operationDetails -> {
                     assertNotNull(operationDetails.getOperationId());
-                    assertNotNull(operationDetails.getCreatedDateTime());
+                    assertNotNull(operationDetails.getCreatedOn());
                 }).expectComplete().verify(DEFAULT_TIMEOUT));
         }
     }
@@ -377,14 +374,14 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
                 .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
             SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
-                = client.beginBuildClassifier(new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsMap))
+                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsMap))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
 
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(buildModelPoller.getFinalResult());
-            assertNotNull(documentClassifierDetails.getDocTypes());
-            documentClassifierDetails.getDocTypes()
+            assertNotNull(documentClassifierDetails.getDocumentTypes());
+            documentClassifierDetails.getDocumentTypes()
                 .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
                     (classifierDocumentTypeDetails.getAzureBlobSource()).getContainerUrl()));
         });
@@ -413,12 +410,12 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails()
                 .setAzureBlobFileListSource(new AzureBlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
             SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> buildModelPoller
-                = client.beginBuildClassifier(new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsMap))
+                = client.beginBuildClassifier(new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsMap))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
-            assertNotNull(documentClassifierDetails.getDocTypes());
-            documentClassifierDetails.getDocTypes()
+            assertNotNull(documentClassifierDetails.getDocumentTypes());
+            documentClassifierDetails.getDocumentTypes()
                 .forEach((s, classifierDocumentTypeDetails) -> assertNotNull(
                     (classifierDocumentTypeDetails.getAzureBlobFileListSource()).getContainerUrl()));
 
@@ -452,7 +449,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
                 SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> syncPoller = client
                     .beginBuildClassifier(
-                        new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsClassifierMap))
+                        new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsClassifierMap))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
 
@@ -466,7 +463,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
             StepVerifier
                 .create(client.authorizeClassifierCopyWithResponse(
-                    BinaryData.fromObject(new AuthorizeClassifierCopyRequest("copy_classifier" + UUID.randomUUID())
+                    BinaryData.fromObject(new AuthorizeClassifierCopyOptions("copy_classifier" + UUID.randomUUID())
                         .setDescription("test description")),
                     null))
                 .assertNext(response -> validateClassifierCopyAuthorizationResult(
@@ -505,7 +502,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
                 SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> syncPoller = client
                     .beginBuildClassifier(
-                        new BuildDocumentClassifierRequest(classifierId, documentTypeDetailsClassifierMap))
+                        new BuildDocumentClassifierOptions(classifierId, documentTypeDetailsClassifierMap))
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
 
@@ -519,7 +516,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
 
             final ClassifierCopyAuthorization[] copyAuthorization = new ClassifierCopyAuthorization[1];
             Mono<ClassifierCopyAuthorization> targetMono = client
-                .authorizeClassifierCopy(new AuthorizeClassifierCopyRequest("copyClassifierId" + UUID.randomUUID()));
+                .authorizeClassifierCopy(new AuthorizeClassifierCopyOptions("copyClassifierId" + UUID.randomUUID()));
             StepVerifier.create(targetMono).assertNext(target -> {
                 assertNotNull(target);
                 copyAuthorization[0] = target;

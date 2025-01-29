@@ -12,30 +12,30 @@ public final class SkuAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuAvailability model = BinaryData.fromString(
-            "{\"kind\":\"tfhvpesapskrdqmh\",\"type\":\"dhtldwkyz\",\"skuName\":\"utknc\",\"skuAvailable\":true,\"reason\":\"svlxotogtwrup\",\"message\":\"xvnmicykvceov\"}")
+            "{\"kind\":\"dmwsrcrgvxpvgomz\",\"type\":\"misgwbnb\",\"skuName\":\"ldawkzbaliourqha\",\"skuAvailable\":true,\"reason\":\"ashsfwxos\",\"message\":\"z\"}")
             .toObject(SkuAvailability.class);
-        Assertions.assertEquals("tfhvpesapskrdqmh", model.kind());
-        Assertions.assertEquals("dhtldwkyz", model.type());
-        Assertions.assertEquals("utknc", model.skuName());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.kind());
+        Assertions.assertEquals("misgwbnb", model.type());
+        Assertions.assertEquals("ldawkzbaliourqha", model.skuName());
         Assertions.assertEquals(true, model.skuAvailable());
-        Assertions.assertEquals("svlxotogtwrup", model.reason());
-        Assertions.assertEquals("xvnmicykvceov", model.message());
+        Assertions.assertEquals("ashsfwxos", model.reason());
+        Assertions.assertEquals("z", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuAvailability model = new SkuAvailability().withKind("tfhvpesapskrdqmh")
-            .withType("dhtldwkyz")
-            .withSkuName("utknc")
+        SkuAvailability model = new SkuAvailability().withKind("dmwsrcrgvxpvgomz")
+            .withType("misgwbnb")
+            .withSkuName("ldawkzbaliourqha")
             .withSkuAvailable(true)
-            .withReason("svlxotogtwrup")
-            .withMessage("xvnmicykvceov");
+            .withReason("ashsfwxos")
+            .withMessage("z");
         model = BinaryData.fromObject(model).toObject(SkuAvailability.class);
-        Assertions.assertEquals("tfhvpesapskrdqmh", model.kind());
-        Assertions.assertEquals("dhtldwkyz", model.type());
-        Assertions.assertEquals("utknc", model.skuName());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.kind());
+        Assertions.assertEquals("misgwbnb", model.type());
+        Assertions.assertEquals("ldawkzbaliourqha", model.skuName());
         Assertions.assertEquals(true, model.skuAvailable());
-        Assertions.assertEquals("svlxotogtwrup", model.reason());
-        Assertions.assertEquals("xvnmicykvceov", model.message());
+        Assertions.assertEquals("ashsfwxos", model.reason());
+        Assertions.assertEquals("z", model.message());
     }
 }

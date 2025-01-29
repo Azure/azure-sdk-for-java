@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.models.ArtifactManifestState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The artifact manifest updating request payload. Only the 'Uploaded' state is allowed for updates. Other states are
  * used for internal state transitioning.
  */
 @Fluent
-public final class ArtifactManifestUpdateStateInner {
+public final class ArtifactManifestUpdateStateInner implements JsonSerializable<ArtifactManifestUpdateStateInner> {
     /*
      * The artifact manifest state.
      */
-    @JsonProperty(value = "artifactManifestState")
     private ArtifactManifestState artifactManifestState;
 
     /**
@@ -52,5 +55,44 @@ public final class ArtifactManifestUpdateStateInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("artifactManifestState",
+            this.artifactManifestState == null ? null : this.artifactManifestState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactManifestUpdateStateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactManifestUpdateStateInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactManifestUpdateStateInner.
+     */
+    public static ArtifactManifestUpdateStateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactManifestUpdateStateInner deserializedArtifactManifestUpdateStateInner
+                = new ArtifactManifestUpdateStateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactManifestState".equals(fieldName)) {
+                    deserializedArtifactManifestUpdateStateInner.artifactManifestState
+                        = ArtifactManifestState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactManifestUpdateStateInner;
+        });
     }
 }

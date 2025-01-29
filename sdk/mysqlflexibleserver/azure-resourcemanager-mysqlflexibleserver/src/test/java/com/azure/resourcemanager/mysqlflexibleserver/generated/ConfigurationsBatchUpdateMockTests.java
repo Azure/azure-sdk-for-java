@@ -14,7 +14,6 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationForBatc
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListResult;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public final class ConfigurationsBatchUpdateMockTests {
     @Test
     public void testBatchUpdate() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"vofqzhvfc\",\"currentValue\":\"yfm\",\"description\":\"uxrkjp\",\"documentationLink\":\"w\",\"defaultValue\":\"zwiivwzjbhyzs\",\"dataType\":\"rkambt\",\"allowedValues\":\"egv\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"spastjbkkdmf\",\"name\":\"vestmjl\",\"type\":\"rriloz\"},{\"properties\":{\"value\":\"ewchpxlktwku\",\"currentValue\":\"ycslevufuztcktyh\",\"description\":\"qedcgzulwm\",\"documentationLink\":\"qzz\",\"defaultValue\":\"jvpglydzgk\",\"dataType\":\"qeevt\",\"allowedValues\":\"pryu\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"vzvfvaawzqadfl\",\"name\":\"z\",\"type\":\"riglaec\"},{\"properties\":{\"value\":\"t\",\"currentValue\":\"okpvzm\",\"description\":\"t\",\"documentationLink\":\"dgxobfircl\",\"defaultValue\":\"kciayzri\",\"dataType\":\"hya\",\"allowedValues\":\"vjlboxqvk\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"hdwdi\",\"name\":\"umbnraauzzp\",\"type\":\"jazysdzhezwwvaiq\"},{\"properties\":{\"value\":\"vfonkphhqyikvyl\",\"currentValue\":\"yavluwmncstt\",\"description\":\"fybvpoek\",\"documentationLink\":\"gsgbdhuzq\",\"defaultValue\":\"j\",\"dataType\":\"kynscliqhzv\",\"allowedValues\":\"nk\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"nvdxzxhihfrbbc\",\"name\":\"vqagtltdhlf\",\"type\":\"qojpy\"}],\"nextLink\":\"gtrd\"}";
+            = "{\"value\":[{\"properties\":{\"value\":\"xyawj\",\"description\":\"aq\",\"defaultValue\":\"lyjpk\",\"dataType\":\"dzyexznelixh\",\"allowedValues\":\"ztfolhbnxk\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"dtpnapnyiropuhp\",\"name\":\"gvpgy\",\"type\":\"gqgitxmedjvcsl\"},{\"properties\":{\"value\":\"wwncwzzhxgk\",\"description\":\"mgucna\",\"defaultValue\":\"t\",\"dataType\":\"ellwptfdy\",\"allowedValues\":\"fqbuaceopzf\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"cq\",\"name\":\"qxolzdahzx\",\"type\":\"t\"},{\"properties\":{\"value\":\"bkdmo\",\"description\":\"postmgrcfbunrm\",\"defaultValue\":\"jhhkxbp\",\"dataType\":\"ymjhxxjyngudivkr\",\"allowedValues\":\"wbxqzvszjfau\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"vtcqaqtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"},{\"properties\":{\"value\":\"k\",\"description\":\"mpew\",\"defaultValue\":\"fbkrvrnsvs\",\"dataType\":\"johxcrsb\",\"allowedValues\":\"vasrruvwb\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"birx\",\"name\":\"pybsrfbjfdtw\",\"type\":\"sotftpvj\"}],\"nextLink\":\"exilzznfqqnvwpmq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,17 +35,15 @@ public final class ConfigurationsBatchUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfigurationListResult response = manager.configurations()
-            .batchUpdate("xkzb", "msgeivsiykzk",
+            .batchUpdate("wozuhkf", "bsjyofdx",
                 new ConfigurationListForBatchUpdate()
-                    .withValue(Arrays.asList(new ConfigurationForBatchUpdate().withName("dxonbzoggculap")
-                        .withValue("rpgogtqxep")
-                        .withSource("lbfu")))
-                    .withResetAllToDefault(ResetAllToDefault.TRUE),
+                    .withValue(Arrays.asList(new ConfigurationForBatchUpdate().withName("dttouwaboekqvkel")
+                        .withValue("vbxwyjsflhh")
+                        .withSource("aln"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vofqzhvfc", response.value().get(0).value());
-        Assertions.assertEquals("yfm", response.value().get(0).currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.value().get(0).source());
-        Assertions.assertEquals("gtrd", response.nextLink());
+        Assertions.assertEquals("xyawj", response.value().get(0).value());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.value().get(0).source());
+        Assertions.assertEquals("exilzznfqqnvwpmq", response.nextLink());
     }
 }

@@ -64,6 +64,15 @@ public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLink
     public static final PrivateLinkSubResourceName REDIS_CACHE = fromString("redisCache");
 
     /**
+     * Creates a new instance of PrivateLinkSubResourceName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLinkSubResourceName() {
+    }
+
+    /**
      * Creates or finds a PrivateLinkSubResourceName from its string representation.
      *
      * @param name a name to look for.
@@ -73,7 +82,11 @@ public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLink
         return fromString(name, PrivateLinkSubResourceName.class);
     }
 
-    /** @return known PrivateLinkSubResourceName values. */
+    /**
+     * Gets known PrivateLinkSubResourceName values.
+     *
+     * @return known PrivateLinkSubResourceName values.
+     */
     public static Collection<PrivateLinkSubResourceName> values() {
         return values(PrivateLinkSubResourceName.class);
     }

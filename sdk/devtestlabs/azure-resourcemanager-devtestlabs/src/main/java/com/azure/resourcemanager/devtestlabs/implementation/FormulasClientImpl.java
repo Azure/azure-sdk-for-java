@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FormulasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FormulasClient.
+ */
 public final class FormulasClientImpl implements FormulasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FormulasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of FormulasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FormulasClientImpl(DevTestLabsClientImpl client) {
@@ -127,7 +133,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -137,8 +143,8 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FormulaInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -169,7 +175,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -180,8 +186,8 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FormulaInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -212,7 +218,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -233,7 +239,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +259,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -276,7 +282,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +301,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -316,7 +322,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -356,7 +362,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -396,7 +402,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -414,7 +420,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -433,7 +439,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -450,7 +456,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -459,7 +465,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
@@ -496,7 +502,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -506,7 +512,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
@@ -542,7 +548,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -551,7 +557,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a formula for creating a VM, specifying an image base and other
-     *     parameters.
+     * parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -564,7 +570,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -574,7 +580,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a formula for creating a VM, specifying an image base and other
-     *     parameters.
+     * parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -588,7 +594,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -597,7 +603,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a formula for creating a VM, specifying an image base and other
-     *     parameters.
+     * parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(String resourceGroupName,
@@ -607,7 +613,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -617,7 +623,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a formula for creating a VM, specifying an image base and other
-     *     parameters.
+     * parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(String resourceGroupName,
@@ -627,7 +633,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -636,7 +642,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FormulaInner> createOrUpdateAsync(String resourceGroupName, String labName, String name,
@@ -647,7 +653,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -657,7 +663,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FormulaInner> createOrUpdateAsync(String resourceGroupName, String labName, String name,
@@ -668,7 +674,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -685,7 +691,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -704,7 +710,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -742,7 +748,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -781,7 +787,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -797,7 +803,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -814,7 +820,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -829,7 +835,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -838,7 +844,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FormulaInner>> updateWithResponseAsync(String resourceGroupName, String labName, String name,
@@ -875,7 +881,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -885,7 +891,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FormulaInner>> updateWithResponseAsync(String resourceGroupName, String labName, String name,
@@ -921,7 +927,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -930,7 +936,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FormulaInner> updateAsync(String resourceGroupName, String labName, String name,
@@ -941,7 +947,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -960,7 +966,7 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -977,14 +983,13 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FormulaInner>> listNextSinglePageAsync(String nextLink) {
@@ -1004,15 +1009,14 @@ public final class FormulasClientImpl implements FormulasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FormulaInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterValueContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Quota counter value details. */
+/**
+ * Quota counter value details.
+ */
 @Fluent
-public final class QuotaCounterValueUpdateContract {
+public final class QuotaCounterValueUpdateContract implements JsonSerializable<QuotaCounterValueUpdateContract> {
     /*
      * Quota counter value details.
      */
-    @JsonProperty(value = "properties")
     private QuotaCounterValueContractProperties innerProperties;
 
-    /** Creates an instance of QuotaCounterValueUpdateContract class. */
+    /**
+     * Creates an instance of QuotaCounterValueUpdateContract class.
+     */
     public QuotaCounterValueUpdateContract() {
     }
 
     /**
      * Get the innerProperties property: Quota counter value details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private QuotaCounterValueContractProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class QuotaCounterValueUpdateContract {
 
     /**
      * Get the callsCount property: Number of times Counter was called.
-     *
+     * 
      * @return the callsCount value.
      */
     public Integer callsCount() {
@@ -41,7 +48,7 @@ public final class QuotaCounterValueUpdateContract {
 
     /**
      * Set the callsCount property: Number of times Counter was called.
-     *
+     * 
      * @param callsCount the callsCount value to set.
      * @return the QuotaCounterValueUpdateContract object itself.
      */
@@ -55,7 +62,7 @@ public final class QuotaCounterValueUpdateContract {
 
     /**
      * Get the kbTransferred property: Data Transferred in KiloBytes.
-     *
+     * 
      * @return the kbTransferred value.
      */
     public Double kbTransferred() {
@@ -64,7 +71,7 @@ public final class QuotaCounterValueUpdateContract {
 
     /**
      * Set the kbTransferred property: Data Transferred in KiloBytes.
-     *
+     * 
      * @param kbTransferred the kbTransferred value to set.
      * @return the QuotaCounterValueUpdateContract object itself.
      */
@@ -78,12 +85,50 @@ public final class QuotaCounterValueUpdateContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaCounterValueUpdateContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaCounterValueUpdateContract if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaCounterValueUpdateContract.
+     */
+    public static QuotaCounterValueUpdateContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaCounterValueUpdateContract deserializedQuotaCounterValueUpdateContract
+                = new QuotaCounterValueUpdateContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedQuotaCounterValueUpdateContract.innerProperties
+                        = QuotaCounterValueContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaCounterValueUpdateContract;
+        });
     }
 }

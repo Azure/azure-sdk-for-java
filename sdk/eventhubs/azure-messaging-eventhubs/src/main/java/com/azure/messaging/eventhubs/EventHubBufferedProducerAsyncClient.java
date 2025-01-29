@@ -351,6 +351,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         if (options.getPartitionKey() != null) {
             return partitionIdsMono.flatMap(ids -> {
                 final String partitionId = partitionResolver.assignForPartitionKey(options.getPartitionKey(), ids);
+
                 final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
                 if (producer == null) {
                     return monoError(logger,
@@ -360,6 +361,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                             partitionId, options.getPartitionKey())));
                 }
 
+                eventData.setPartitionKeyAnnotation(options.getPartitionKey());
                 return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
             });
         } else {
@@ -368,6 +370,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                 final EventHubBufferedPartitionProducer producer
                     = partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
 
+                eventData.setPartitionKeyAnnotation(options.getPartitionKey());
                 return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
             });
         }

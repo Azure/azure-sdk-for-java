@@ -23,7 +23,7 @@ public final class SqlPoolTransparentDataEncryptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"oejtig\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"pytn\",\"name\":\"qbalahovuuwxhme\",\"type\":\"jnhj\"}]}";
+            = "{\"value\":[{\"location\":\"lduwzorxsb\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"klxymxkqvfqepdxc\",\"name\":\"tuubwyvpjb\",\"type\":\"wcpjqduqgi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class SqlPoolTransparentDataEncryptionsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TransparentDataEncryption> response = manager.sqlPoolTransparentDataEncryptions()
-            .list("laslgacizux", "r", "rwpewsa", com.azure.core.util.Context.NONE);
+            .list("nkkiiwvmtumxpy", "djf", "axroqvqpilrgunc", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(TransparentDataEncryptionStatus.ENABLED, response.iterator().next().status());
     }

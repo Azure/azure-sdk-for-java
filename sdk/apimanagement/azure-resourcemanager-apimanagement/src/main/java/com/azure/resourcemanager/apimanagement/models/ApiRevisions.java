@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApiRevisions. */
+/**
+ * Resource collection API of ApiRevisions.
+ */
 public interface ApiRevisions {
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -24,13 +26,13 @@ public interface ApiRevisions {
 
     /**
      * Lists all revisions of an API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| apiRevision | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.

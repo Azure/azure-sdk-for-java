@@ -14,7 +14,7 @@ public final class DataLakeAnalyticsAccountBasicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataLakeAnalyticsAccountBasicInner model = BinaryData.fromString(
-            "{\"properties\":{\"accountId\":\"6ce7db1e-b9c8-4126-8bab-83b99199c40e\",\"provisioningState\":\"Patching\",\"state\":\"Active\",\"creationTime\":\"2021-04-18T20:42:54Z\",\"lastModifiedTime\":\"2021-01-26T06:35:32Z\",\"endpoint\":\"xqhabi\"},\"location\":\"pikxwczbyscnpqxu\",\"tags\":{\"n\":\"y\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}")
+            "{\"properties\":{\"accountId\":\"466c7186-3429-4985-8e7d-c7604c5a7a79\",\"provisioningState\":\"Patching\",\"state\":\"Active\",\"creationTime\":\"2021-04-18T20:42:54Z\",\"lastModifiedTime\":\"2021-01-26T06:35:32Z\",\"endpoint\":\"xqhabi\"},\"location\":\"pikxwczbyscnpqxu\",\"tags\":{\"n\":\"y\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}")
             .toObject(DataLakeAnalyticsAccountBasicInner.class);
         Assertions.assertEquals("pikxwczbyscnpqxu", model.location());
         Assertions.assertEquals("y", model.tags().get("n"));

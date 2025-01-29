@@ -14,21 +14,22 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesEndpoint model = BinaryData
-            .fromString("{\"domainName\":\"pcrrk\",\"endpointDetails\":[{\"port\":1115246881},{\"port\":2045094401}]}")
+            .fromString(
+                "{\"domainName\":\"maofmxagkv\",\"endpointDetails\":[{\"port\":2048736715},{\"port\":543207996}]}")
             .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
-        Assertions.assertEquals("pcrrk", model.domainName());
-        Assertions.assertEquals(1115246881, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("maofmxagkv", model.domainName());
+        Assertions.assertEquals(2048736715, model.endpointDetails().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesEndpoint model
-            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("pcrrk")
+            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("maofmxagkv")
                 .withEndpointDetails(Arrays.asList(
-                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1115246881),
-                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(2045094401)));
+                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(2048736715),
+                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(543207996)));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
-        Assertions.assertEquals("pcrrk", model.domainName());
-        Assertions.assertEquals(1115246881, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("maofmxagkv", model.domainName());
+        Assertions.assertEquals(2048736715, model.endpointDetails().get(0).port());
     }
 }

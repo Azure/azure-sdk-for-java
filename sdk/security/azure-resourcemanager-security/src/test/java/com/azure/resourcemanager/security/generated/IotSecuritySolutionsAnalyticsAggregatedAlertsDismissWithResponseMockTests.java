@@ -28,7 +28,7 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsDismissWithRespo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.iotSecuritySolutionsAnalyticsAggregatedAlerts()
-            .dismissWithResponse("ebeqrfza", "qymcwt", "iuceplbrzgk", com.azure.core.util.Context.NONE);
+            .dismissWithResponse("wxh", "pejtl", "exaonwivkcq", com.azure.core.util.Context.NONE);
 
     }
 }

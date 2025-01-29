@@ -22,7 +22,7 @@ public final class AlertRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"AlertRule\",\"etag\":\"zekdzdzffzj\",\"id\":\"tsmpchgg\",\"name\":\"y\",\"type\":\"lgf\"}";
+            = "{\"kind\":\"AlertRule\",\"etag\":\"rctat\",\"id\":\"intqpbrlcyr\",\"name\":\"uczkgofxyfsruc\",\"type\":\"crrpcjttbstvje\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class AlertRulesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AlertRule response = manager.alertRules()
-            .createOrUpdateWithResponse("c", "xwbpwyykdig", "zlrz", new AlertRuleInner().withEtag("asd"),
+            .createOrUpdateWithResponse("xlghieegj", "gvvpasek", "gbuxantuygdh", new AlertRuleInner().withEtag("qipir"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zekdzdzffzj", response.etag());
+        Assertions.assertEquals("rctat", response.etag());
     }
 }

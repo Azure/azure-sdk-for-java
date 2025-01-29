@@ -50,14 +50,14 @@ public final class WorkflowsImpl implements Workflows {
 
     public PagedIterable<WorkflowModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<WorkflowModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WorkflowModel> list(String resourceGroupName, String vaultName, String filter,
         String continuationToken, Context context) {
         PagedIterable<WorkflowModelInner> inner
             = this.serviceClient().list(resourceGroupName, vaultName, filter, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowModelImpl(inner1, this.manager()));
     }
 
     private WorkflowsClient serviceClient() {

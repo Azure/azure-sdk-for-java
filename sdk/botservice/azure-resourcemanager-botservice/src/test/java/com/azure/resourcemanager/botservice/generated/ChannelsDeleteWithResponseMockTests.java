@@ -27,8 +27,7 @@ public final class ChannelsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.channels()
-            .deleteWithResponse("aznqntoru", "sgsahmkycgr", "uwjuetaeburuvdmo", com.azure.core.util.Context.NONE);
+        manager.channels().deleteWithResponse("sgsahmkycgr", "uwjuetaeburuvdmo", "s", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -6,7 +6,7 @@ package io.clientcore.core.implementation.http;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * Represents a class responsible for maintaining information related to request-specific context and pipeline data.

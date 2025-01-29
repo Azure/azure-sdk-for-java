@@ -15,25 +15,25 @@ public final class McasDataConnectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         McasDataConnector model = BinaryData.fromString(
-            "{\"kind\":\"MicrosoftCloudAppSecurity\",\"properties\":{\"dataTypes\":{\"discoveryLogs\":{\"state\":\"Enabled\"},\"alerts\":{\"state\":\"Disabled\"}},\"tenantId\":\"orbalkj\"},\"etag\":\"kbd\",\"id\":\"ltqstqkqsygxiyn\",\"name\":\"covagzkheuba\",\"type\":\"lxu\"}")
+            "{\"kind\":\"MicrosoftCloudAppSecurity\",\"properties\":{\"tenantId\":\"fczbgom\",\"dataTypes\":{\"discoveryLogs\":{\"state\":\"Enabled\"},\"alerts\":{\"state\":\"Enabled\"}}},\"etag\":\"eohibet\",\"id\":\"uankrrfxeeeb\",\"name\":\"ij\",\"type\":\"acvbmqz\"}")
             .toObject(McasDataConnector.class);
-        Assertions.assertEquals("kbd", model.etag());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals("eohibet", model.etag());
+        Assertions.assertEquals("fczbgom", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().discoveryLogs().state());
-        Assertions.assertEquals("orbalkj", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        McasDataConnector model = new McasDataConnector().withEtag("kbd")
+        McasDataConnector model = new McasDataConnector().withEtag("eohibet")
+            .withTenantId("fczbgom")
             .withDataTypes(new McasDataConnectorDataTypes()
-                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.DISABLED))
-                .withDiscoveryLogs(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)))
-            .withTenantId("orbalkj");
+                .withAlerts(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED))
+                .withDiscoveryLogs(new DataConnectorDataTypeCommon().withState(DataTypeState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(McasDataConnector.class);
-        Assertions.assertEquals("kbd", model.etag());
-        Assertions.assertEquals(DataTypeState.DISABLED, model.dataTypes().alerts().state());
+        Assertions.assertEquals("eohibet", model.etag());
+        Assertions.assertEquals("fczbgom", model.tenantId());
+        Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().alerts().state());
         Assertions.assertEquals(DataTypeState.ENABLED, model.dataTypes().discoveryLogs().state());
-        Assertions.assertEquals("orbalkj", model.tenantId());
     }
 }

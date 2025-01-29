@@ -19,34 +19,74 @@ import java.util.List;
 @Fluent
 public interface BlobServiceProperties extends HasInnerModel<BlobServicePropertiesInner>, Indexable,
     Refreshable<BlobServiceProperties>, Updatable<BlobServiceProperties.Update>, HasManager<StorageManager> {
-    /** @return the cors value. */
+    /**
+     * Gets cors rules.
+     *
+     * @return the cors value.
+     */
     CorsRules cors();
 
-    /** @return the defaultServiceVersion value. */
+    /**
+     * Gets the default service version.
+     *
+     * @return the defaultServiceVersion value.
+     */
     String defaultServiceVersion();
 
-    /** @return blob soft delete policy used to restore a blob, snapshot, or version that has been deleted. */
+    /**
+     * Gets blob soft delete policy.
+     *
+     * @return blob soft delete policy used to restore a blob, snapshot, or version that has been deleted.
+     */
     DeleteRetentionPolicy deleteRetentionPolicy();
 
-    /** @return container soft delete policy used to restore a container that has been deleted. */
+    /**
+     * Gets container soft delete policy.
+     *
+     * @return container soft delete policy used to restore a container that has been deleted.
+     */
     DeleteRetentionPolicy containerDeleteRetentionPolicy();
 
-    /** @return the id value. */
+    /**
+     * Gets the resource ID.
+     *
+     * @return the id value.
+     */
     String id();
 
-    /** @return the name value. */
+    /**
+     * Gets the name.
+     *
+     * @return the name value.
+     */
     String name();
 
-    /** @return the type value. */
+    /**
+     * Gets the type.
+     *
+     * @return the type value.
+     */
     String type();
 
-    /** @return whether blob versioning is enabled */
+    /**
+     * Checks whether blob versioning is enabled.
+     *
+     * @return whether blob versioning is enabled
+     */
     Boolean isBlobVersioningEnabled();
 
-    /** @return whether last access time tracking policy is enabled */
+    /**
+     * Checks whether last access time tracking policy is enabled.
+     *
+     * @return whether last access time tracking policy is enabled
+     */
     boolean isLastAccessTimeTrackingPolicyEnabled();
 
-    /** @return the last access time tracking policy */
+    /**
+     * Gets the last access time tracking policy.
+     *
+     * @return the last access time tracking policy
+     */
     LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy();
 
     /** The entirety of the BlobServiceProperties definition. */

@@ -29,6 +29,7 @@ public class BlobUploadFromFileOptions {
      * Constructs a {@link BlobUploadFromFileOptions}.
      *
      * @param filePath Path of the file to upload.
+     * @throws NullPointerException If {@code filePath} is null.
      */
     public BlobUploadFromFileOptions(String filePath) {
         StorageImplUtils.assertNotNull("filePath", filePath);
@@ -36,6 +37,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the path of the file to upload.
+     *
      * @return The path of the file to upload
      */
     public String getFilePath() {
@@ -43,6 +46,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the {@link ParallelTransferOptions}.
+     *
      * @return {@link ParallelTransferOptions}
      */
     public ParallelTransferOptions getParallelTransferOptions() {
@@ -50,6 +55,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Sets the {@link ParallelTransferOptions}.
+     *
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
@@ -59,6 +66,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the {@link BlobHttpHeaders}.
+     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders getHeaders() {
@@ -66,6 +75,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Sets the {@link BlobHttpHeaders}.
+     *
      * @param headers {@link BlobHttpHeaders}
      * @return The updated {@code AppendBlobCreateOptions}
      */
@@ -75,6 +86,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the metadata to associate with the blob.
+     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -82,6 +95,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Sets the metadata to associate with the blob.
+     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options
      */
@@ -91,6 +106,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the tags to associate with the blob.
+     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -98,6 +115,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Sets the tags to associate with the blob.
+     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -107,6 +126,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the {@link AccessTier}.
+     *
      * @return {@link AccessTier}
      */
     public AccessTier getTier() {
@@ -114,6 +135,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Sets the {@link AccessTier}.
+     *
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
@@ -123,6 +146,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -130,6 +155,8 @@ public class BlobUploadFromFileOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */

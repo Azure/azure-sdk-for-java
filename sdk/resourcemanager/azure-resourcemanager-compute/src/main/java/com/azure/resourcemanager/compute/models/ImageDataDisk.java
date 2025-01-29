@@ -120,7 +120,9 @@ public final class ImageDataDisk extends ImageDisk {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (diskEncryptionSet() != null) {
+            diskEncryptionSet().validate();
+        }
     }
 
     /**

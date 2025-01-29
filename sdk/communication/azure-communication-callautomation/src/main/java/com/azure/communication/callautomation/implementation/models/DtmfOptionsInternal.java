@@ -98,9 +98,6 @@ public final class DtmfOptionsInternal implements JsonSerializable<DtmfOptionsIn
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

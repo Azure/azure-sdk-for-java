@@ -47,9 +47,6 @@ public final class TransferCallResponseInternal implements JsonSerializable<Tran
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

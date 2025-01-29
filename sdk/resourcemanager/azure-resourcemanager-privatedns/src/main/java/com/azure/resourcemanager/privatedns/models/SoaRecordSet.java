@@ -7,6 +7,10 @@ import com.azure.core.annotation.Fluent;
 /** An immutable client-side representation of a SOA (start of authority) record set in Azure Private DNS Zone. */
 @Fluent
 public interface SoaRecordSet extends PrivateDnsRecordSet {
-    /** @return the SOA record in this record set */
+    /**
+     * Gets the SOA record in this record set.
+     *
+     * @return the SOA record in this record set
+     */
     SoaRecord record();
 }

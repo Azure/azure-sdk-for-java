@@ -6,18 +6,20 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.resourcemanager.applicationinsights.fluent.models.LiveTokenResponseInner;
 
-/** An immutable client-side representation of LiveTokenResponse. */
+/**
+ * An immutable client-side representation of LiveTokenResponse.
+ */
 public interface LiveTokenResponse {
     /**
      * Gets the liveToken property: JWT token for accessing live metrics stream data.
-     *
+     * 
      * @return the liveToken value.
      */
     String liveToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.applicationinsights.fluent.models.LiveTokenResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     LiveTokenResponseInner innerModel();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -185,17 +186,17 @@ public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
                 reader.nextToken();
 
                 if ("submittedAt".equals(fieldName)) {
-                    deserializedSparkScheduler.submittedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkScheduler.submittedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("scheduledAt".equals(fieldName)) {
-                    deserializedSparkScheduler.scheduledAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkScheduler.scheduledAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endedAt".equals(fieldName)) {
-                    deserializedSparkScheduler.endedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkScheduler.endedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("cancellationRequestedAt".equals(fieldName)) {
-                    deserializedSparkScheduler.cancellationRequestedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedSparkScheduler.cancellationRequestedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("currentState".equals(fieldName)) {
                     deserializedSparkScheduler.currentState = SchedulerCurrentState.fromString(reader.getString());
                 } else {

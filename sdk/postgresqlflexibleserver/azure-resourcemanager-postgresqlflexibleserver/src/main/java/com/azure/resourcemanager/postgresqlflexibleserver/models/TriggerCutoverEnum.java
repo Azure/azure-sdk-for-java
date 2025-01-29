@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class TriggerCutoverEnum extends ExpandableStringEnum<TriggerCutove
      * @param name a name to look for.
      * @return the corresponding TriggerCutoverEnum.
      */
-    @JsonCreator
     public static TriggerCutoverEnum fromString(String name) {
         return fromString(name, TriggerCutoverEnum.class);
     }

@@ -14,20 +14,17 @@ public final class DatabricksSparkJarActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkJarActivityTypeProperties model = BinaryData.fromString(
-            "{\"mainClassName\":\"dataegwvblrgrzlrnuy\",\"parameters\":[\"datatjzid\"],\"libraries\":[{\"ukjywgsyidqlghr\":\"dataauwhfhynholojcay\",\"nk\":\"datactvl\",\"ejhtbqzxqidguaw\":\"datadrfekxv\",\"uyricaik\":\"datawjbante\"},{\"tfpo\":\"dataj\",\"q\":\"dataalrrqjioltdlppyk\"},{\"ordnwtucvbviymv\":\"datarvghvfodrqmcgeqy\",\"fnvdorsgcvgknbmp\":\"datanq\"}]}")
+            "{\"mainClassName\":\"datay\",\"parameters\":[\"dataqneoezcrmngaq\",\"datainl\"],\"libraries\":[{\"xtkmdegmi\":\"dataxduxcto\"},{\"lpctlbuobi\":\"datau\"},{\"rkmktcs\":\"databt\"}]}")
             .toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabricksSparkJarActivityTypeProperties model
-            = new DatabricksSparkJarActivityTypeProperties().withMainClassName("dataegwvblrgrzlrnuy")
-                .withParameters(Arrays.asList("datatjzid"))
-                .withLibraries(Arrays.asList(
-                    mapOf("ukjywgsyidqlghr", "dataauwhfhynholojcay", "nk", "datactvl", "ejhtbqzxqidguaw", "datadrfekxv",
-                        "uyricaik", "datawjbante"),
-                    mapOf("tfpo", "dataj", "q", "dataalrrqjioltdlppyk"),
-                    mapOf("ordnwtucvbviymv", "datarvghvfodrqmcgeqy", "fnvdorsgcvgknbmp", "datanq")));
+            = new DatabricksSparkJarActivityTypeProperties().withMainClassName("datay")
+                .withParameters(Arrays.asList("dataqneoezcrmngaq", "datainl"))
+                .withLibraries(Arrays.asList(mapOf("xtkmdegmi", "dataxduxcto"), mapOf("lpctlbuobi", "datau"),
+                    mapOf("rkmktcs", "databt")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 

@@ -16,84 +16,71 @@ public final class ThreatIntelligenceMetricsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceMetricsListInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"lastUpdatedTimeUtc\":\"akpoldtvevbo\",\"threatTypeMetrics\":[{\"metricName\":\"zjknyuxg\",\"metricValue\":139100898},{\"metricName\":\"pnrupzaamrdi\",\"metricValue\":334873151},{\"metricName\":\"kidswys\",\"metricValue\":353945987}],\"patternTypeMetrics\":[{\"metricName\":\"gllukkutvlxhrpqh\",\"metricValue\":1892819345}],\"sourceMetrics\":[{\"metricName\":\"u\",\"metricValue\":746541960},{\"metricName\":\"hbcdsziry\",\"metricValue\":658833709}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"ypmbltoormkfq\",\"threatTypeMetrics\":[{\"metricName\":\"dykalsygaolnjpnn\",\"metricValue\":1864357793},{\"metricName\":\"sibjgs\",\"metricValue\":2136861734},{\"metricName\":\"ahmrnadzyqegxyi\",\"metricValue\":1088320198},{\"metricName\":\"bmh\",\"metricValue\":1256665778}],\"patternTypeMetrics\":[{\"metricName\":\"gqxnhmbkezn\",\"metricValue\":379901265},{\"metricName\":\"vaannggiycwkd\",\"metricValue\":1670599893},{\"metricName\":\"xw\",\"metricValue\":296624648}],\"sourceMetrics\":[{\"metricName\":\"rrqmbzmqk\",\"metricValue\":294632549},{\"metricName\":\"nxwbjsidbirkfp\",\"metricValue\":1826352980},{\"metricName\":\"dgo\",\"metricValue\":1548314621}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"ym\",\"threatTypeMetrics\":[{\"metricName\":\"u\",\"metricValue\":952853749},{\"metricName\":\"yewnfnzhhhqos\",\"metricValue\":1364413531}],\"patternTypeMetrics\":[{\"metricName\":\"tycy\",\"metricValue\":1877992594},{\"metricName\":\"oohguabzoghkt\",\"metricValue\":1410433835},{\"metricName\":\"z\",\"metricValue\":814334749},{\"metricName\":\"ocnhzqrottjzcfyj\",\"metricValue\":582571035}],\"sourceMetrics\":[{\"metricName\":\"ohapqinfsz\",\"metricValue\":1375742572}]}}]}")
+            "{\"value\":[{\"properties\":{\"lastUpdatedTimeUtc\":\"mouwqlgzrfzeey\",\"threatTypeMetrics\":[{\"metricName\":\"ikayuhqlbjbsybb\",\"metricValue\":140703725},{\"metricName\":\"t\",\"metricValue\":1918019278},{\"metricName\":\"fp\",\"metricValue\":1408041355}],\"patternTypeMetrics\":[{\"metricName\":\"as\",\"metricValue\":753407395},{\"metricName\":\"qfxssmwutw\",\"metricValue\":1224801299},{\"metricName\":\"ezpdrhneu\",\"metricValue\":979577305},{\"metricName\":\"kdw\",\"metricValue\":227245186}],\"sourceMetrics\":[{\"metricName\":\"ircgpikpz\",\"metricValue\":2049479560}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"anlfzxiavrmbz\",\"threatTypeMetrics\":[{\"metricName\":\"i\",\"metricValue\":485732763},{\"metricName\":\"cirgzp\",\"metricValue\":1656770527},{\"metricName\":\"zszrnwoiindfpw\",\"metricValue\":2003190846}],\"patternTypeMetrics\":[{\"metricName\":\"tlhflsjcdhszf\",\"metricValue\":1868624750},{\"metricName\":\"gofel\",\"metricValue\":940217853},{\"metricName\":\"qmqhldvriii\",\"metricValue\":1756672367}],\"sourceMetrics\":[{\"metricName\":\"hfkvtvsexsowuel\",\"metricValue\":1968234640}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"hhxvrhmzkwpj\",\"threatTypeMetrics\":[{\"metricName\":\"pughftqsxh\",\"metricValue\":59449335},{\"metricName\":\"xukndxdigr\",\"metricValue\":1599924393},{\"metricName\":\"fzdm\",\"metricValue\":1621102365},{\"metricName\":\"fi\",\"metricValue\":1852140441}],\"patternTypeMetrics\":[{\"metricName\":\"z\",\"metricValue\":867678631}],\"sourceMetrics\":[{\"metricName\":\"pph\",\"metricValue\":1764475997}]}}]}")
             .toObject(ThreatIntelligenceMetricsListInner.class);
-        Assertions.assertEquals("akpoldtvevbo", model.value().get(0).properties().lastUpdatedTimeUtc());
-        Assertions.assertEquals("zjknyuxg", model.value().get(0).properties().threatTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(139100898, model.value().get(0).properties().threatTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("gllukkutvlxhrpqh",
-            model.value().get(0).properties().patternTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(1892819345,
-            model.value().get(0).properties().patternTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("u", model.value().get(0).properties().sourceMetrics().get(0).metricName());
-        Assertions.assertEquals(746541960, model.value().get(0).properties().sourceMetrics().get(0).metricValue());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.value().get(0).properties().lastUpdatedTimeUtc());
+        Assertions.assertEquals("ikayuhqlbjbsybb",
+            model.value().get(0).properties().threatTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(140703725, model.value().get(0).properties().threatTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("as", model.value().get(0).properties().patternTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(753407395, model.value().get(0).properties().patternTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("ircgpikpz", model.value().get(0).properties().sourceMetrics().get(0).metricName());
+        Assertions.assertEquals(2049479560, model.value().get(0).properties().sourceMetrics().get(0).metricValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThreatIntelligenceMetricsListInner model
-            = new ThreatIntelligenceMetricsListInner()
-                .withValue(Arrays.asList(
-                    new ThreatIntelligenceMetrics().withProperties(new ThreatIntelligenceMetric()
-                        .withLastUpdatedTimeUtc("akpoldtvevbo")
+            = new ThreatIntelligenceMetricsListInner().withValue(Arrays.asList(
+                new ThreatIntelligenceMetrics().withProperties(new ThreatIntelligenceMetric()
+                    .withLastUpdatedTimeUtc("mouwqlgzrfzeey")
+                    .withThreatTypeMetrics(Arrays.asList(
+                        new ThreatIntelligenceMetricEntity().withMetricName("ikayuhqlbjbsybb")
+                            .withMetricValue(140703725),
+                        new ThreatIntelligenceMetricEntity().withMetricName("t").withMetricValue(1918019278),
+                        new ThreatIntelligenceMetricEntity().withMetricName("fp").withMetricValue(1408041355)))
+                    .withPatternTypeMetrics(Arrays.asList(
+                        new ThreatIntelligenceMetricEntity().withMetricName("as").withMetricValue(753407395),
+                        new ThreatIntelligenceMetricEntity().withMetricName("qfxssmwutw").withMetricValue(1224801299),
+                        new ThreatIntelligenceMetricEntity().withMetricName("ezpdrhneu").withMetricValue(979577305),
+                        new ThreatIntelligenceMetricEntity().withMetricName("kdw").withMetricValue(227245186)))
+                    .withSourceMetrics(Arrays.asList(
+                        new ThreatIntelligenceMetricEntity().withMetricName("ircgpikpz").withMetricValue(2049479560)))),
+                new ThreatIntelligenceMetrics()
+                    .withProperties(new ThreatIntelligenceMetric().withLastUpdatedTimeUtc("anlfzxiavrmbz")
                         .withThreatTypeMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("zjknyuxg").withMetricValue(139100898),
-                            new ThreatIntelligenceMetricEntity().withMetricName("pnrupzaamrdi")
-                                .withMetricValue(334873151),
-                            new ThreatIntelligenceMetricEntity().withMetricName("kidswys").withMetricValue(353945987)))
-                        .withPatternTypeMetrics(
-                            Arrays.asList(new ThreatIntelligenceMetricEntity().withMetricName("gllukkutvlxhrpqh")
-                                .withMetricValue(1892819345)))
-                        .withSourceMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("u").withMetricValue(746541960),
-                            new ThreatIntelligenceMetricEntity()
-                                .withMetricName("hbcdsziry")
-                                .withMetricValue(658833709)))),
-                    new ThreatIntelligenceMetrics().withProperties(new ThreatIntelligenceMetric()
-                        .withLastUpdatedTimeUtc("ypmbltoormkfq")
-                        .withThreatTypeMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("dykalsygaolnjpnn")
-                                .withMetricValue(1864357793),
-                            new ThreatIntelligenceMetricEntity().withMetricName("sibjgs").withMetricValue(2136861734),
-                            new ThreatIntelligenceMetricEntity().withMetricName("ahmrnadzyqegxyi")
-                                .withMetricValue(1088320198),
-                            new ThreatIntelligenceMetricEntity().withMetricName("bmh").withMetricValue(1256665778)))
+                            new ThreatIntelligenceMetricEntity().withMetricName("i").withMetricValue(485732763),
+                            new ThreatIntelligenceMetricEntity().withMetricName("cirgzp").withMetricValue(1656770527),
+                            new ThreatIntelligenceMetricEntity().withMetricName("zszrnwoiindfpw")
+                                .withMetricValue(2003190846)))
                         .withPatternTypeMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("gqxnhmbkezn")
-                                .withMetricValue(379901265),
-                            new ThreatIntelligenceMetricEntity().withMetricName("vaannggiycwkd")
-                                .withMetricValue(1670599893),
-                            new ThreatIntelligenceMetricEntity().withMetricName("xw").withMetricValue(296624648)))
-                        .withSourceMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("rrqmbzmqk").withMetricValue(294632549),
-                            new ThreatIntelligenceMetricEntity().withMetricName("nxwbjsidbirkfp")
-                                .withMetricValue(1826352980),
-                            new ThreatIntelligenceMetricEntity().withMetricName("dgo").withMetricValue(1548314621)))),
-                    new ThreatIntelligenceMetrics().withProperties(new ThreatIntelligenceMetric()
-                        .withLastUpdatedTimeUtc("ym")
-                        .withThreatTypeMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("u").withMetricValue(952853749),
-                            new ThreatIntelligenceMetricEntity().withMetricName("yewnfnzhhhqos")
-                                .withMetricValue(1364413531)))
-                        .withPatternTypeMetrics(Arrays.asList(
-                            new ThreatIntelligenceMetricEntity().withMetricName("tycy").withMetricValue(1877992594),
-                            new ThreatIntelligenceMetricEntity().withMetricName("oohguabzoghkt")
-                                .withMetricValue(1410433835),
-                            new ThreatIntelligenceMetricEntity().withMetricName("z").withMetricValue(814334749),
-                            new ThreatIntelligenceMetricEntity().withMetricName("ocnhzqrottjzcfyj")
-                                .withMetricValue(582571035)))
+                            new ThreatIntelligenceMetricEntity().withMetricName("tlhflsjcdhszf")
+                                .withMetricValue(1868624750),
+                            new ThreatIntelligenceMetricEntity().withMetricName("gofel").withMetricValue(940217853),
+                            new ThreatIntelligenceMetricEntity().withMetricName("qmqhldvriii")
+                                .withMetricValue(1756672367)))
                         .withSourceMetrics(
-                            Arrays.asList(new ThreatIntelligenceMetricEntity().withMetricName("ohapqinfsz")
-                                .withMetricValue(1375742572))))));
+                            Arrays.asList(new ThreatIntelligenceMetricEntity().withMetricName("hfkvtvsexsowuel")
+                                .withMetricValue(1968234640)))),
+                new ThreatIntelligenceMetrics().withProperties(new ThreatIntelligenceMetric()
+                    .withLastUpdatedTimeUtc("hhxvrhmzkwpj")
+                    .withThreatTypeMetrics(Arrays.asList(
+                        new ThreatIntelligenceMetricEntity().withMetricName("pughftqsxh").withMetricValue(59449335),
+                        new ThreatIntelligenceMetricEntity().withMetricName("xukndxdigr").withMetricValue(1599924393),
+                        new ThreatIntelligenceMetricEntity().withMetricName("fzdm").withMetricValue(1621102365),
+                        new ThreatIntelligenceMetricEntity().withMetricName("fi").withMetricValue(1852140441)))
+                    .withPatternTypeMetrics(Arrays
+                        .asList(new ThreatIntelligenceMetricEntity().withMetricName("z").withMetricValue(867678631)))
+                    .withSourceMetrics(Arrays.asList(
+                        new ThreatIntelligenceMetricEntity().withMetricName("pph").withMetricValue(1764475997))))));
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceMetricsListInner.class);
-        Assertions.assertEquals("akpoldtvevbo", model.value().get(0).properties().lastUpdatedTimeUtc());
-        Assertions.assertEquals("zjknyuxg", model.value().get(0).properties().threatTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(139100898, model.value().get(0).properties().threatTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("gllukkutvlxhrpqh",
-            model.value().get(0).properties().patternTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(1892819345,
-            model.value().get(0).properties().patternTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("u", model.value().get(0).properties().sourceMetrics().get(0).metricName());
-        Assertions.assertEquals(746541960, model.value().get(0).properties().sourceMetrics().get(0).metricValue());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.value().get(0).properties().lastUpdatedTimeUtc());
+        Assertions.assertEquals("ikayuhqlbjbsybb",
+            model.value().get(0).properties().threatTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(140703725, model.value().get(0).properties().threatTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("as", model.value().get(0).properties().patternTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(753407395, model.value().get(0).properties().patternTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("ircgpikpz", model.value().get(0).properties().sourceMetrics().get(0).metricName());
+        Assertions.assertEquals(2049479560, model.value().get(0).properties().sourceMetrics().get(0).metricValue());
     }
 }

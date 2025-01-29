@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DatadogSingleSignOnProperties model. */
+/**
+ * The DatadogSingleSignOnProperties model.
+ */
 @Fluent
-public final class DatadogSingleSignOnProperties {
+public final class DatadogSingleSignOnProperties implements JsonSerializable<DatadogSingleSignOnProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Various states of the SSO resource
      */
-    @JsonProperty(value = "singleSignOnState")
     private SingleSignOnStates singleSignOnState;
 
     /*
      * The Id of the Enterprise App used for Single sign-on.
      */
-    @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
 
     /*
      * The login URL specific to this Datadog Organization.
      */
-    @JsonProperty(value = "singleSignOnUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String singleSignOnUrl;
 
-    /** Creates an instance of DatadogSingleSignOnProperties class. */
+    /**
+     * Creates an instance of DatadogSingleSignOnProperties class.
+     */
     public DatadogSingleSignOnProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -49,7 +53,7 @@ public final class DatadogSingleSignOnProperties {
 
     /**
      * Get the singleSignOnState property: Various states of the SSO resource.
-     *
+     * 
      * @return the singleSignOnState value.
      */
     public SingleSignOnStates singleSignOnState() {
@@ -58,7 +62,7 @@ public final class DatadogSingleSignOnProperties {
 
     /**
      * Set the singleSignOnState property: Various states of the SSO resource.
-     *
+     * 
      * @param singleSignOnState the singleSignOnState value to set.
      * @return the DatadogSingleSignOnProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class DatadogSingleSignOnProperties {
 
     /**
      * Get the enterpriseAppId property: The Id of the Enterprise App used for Single sign-on.
-     *
+     * 
      * @return the enterpriseAppId value.
      */
     public String enterpriseAppId() {
@@ -78,7 +82,7 @@ public final class DatadogSingleSignOnProperties {
 
     /**
      * Set the enterpriseAppId property: The Id of the Enterprise App used for Single sign-on.
-     *
+     * 
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the DatadogSingleSignOnProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class DatadogSingleSignOnProperties {
 
     /**
      * Get the singleSignOnUrl property: The login URL specific to this Datadog Organization.
-     *
+     * 
      * @return the singleSignOnUrl value.
      */
     public String singleSignOnUrl() {
@@ -98,9 +102,56 @@ public final class DatadogSingleSignOnProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("singleSignOnState",
+            this.singleSignOnState == null ? null : this.singleSignOnState.toString());
+        jsonWriter.writeStringField("enterpriseAppId", this.enterpriseAppId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogSingleSignOnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogSingleSignOnProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogSingleSignOnProperties.
+     */
+    public static DatadogSingleSignOnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogSingleSignOnProperties deserializedDatadogSingleSignOnProperties
+                = new DatadogSingleSignOnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDatadogSingleSignOnProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("singleSignOnState".equals(fieldName)) {
+                    deserializedDatadogSingleSignOnProperties.singleSignOnState
+                        = SingleSignOnStates.fromString(reader.getString());
+                } else if ("enterpriseAppId".equals(fieldName)) {
+                    deserializedDatadogSingleSignOnProperties.enterpriseAppId = reader.getString();
+                } else if ("singleSignOnUrl".equals(fieldName)) {
+                    deserializedDatadogSingleSignOnProperties.singleSignOnUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogSingleSignOnProperties;
+        });
     }
 }

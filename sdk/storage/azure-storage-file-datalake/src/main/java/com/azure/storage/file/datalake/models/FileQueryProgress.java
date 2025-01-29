@@ -7,7 +7,6 @@ package com.azure.storage.file.datalake.models;
  * Defines a file query error that can be returned on parsing a file query request.
  */
 public class FileQueryProgress {
-
     private final long bytesScanned;
     private final long totalBytes;
 
@@ -22,6 +21,8 @@ public class FileQueryProgress {
     }
 
     /**
+     * Gets the number of bytes scanned so far.
+     *
      * @return The number of bytes scanned so far.
      */
     public long getBytesScanned() {
@@ -29,6 +30,8 @@ public class FileQueryProgress {
     }
 
     /**
+     * Gets the total number of bytes in the file.
+     *
      * @return The total number of bytes in the file.
      */
     public long getTotalBytes() {

@@ -137,10 +137,10 @@ public final class TagDescriptionContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.apiId = Utils.getValueFromIdByName(innerObject.id(), "apis");
-        this.tagDescriptionId = Utils.getValueFromIdByName(innerObject.id(), "tagDescriptions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.apiId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "apis");
+        this.tagDescriptionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tagDescriptions");
     }
 
     public TagDescriptionContract refresh() {

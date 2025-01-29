@@ -22,7 +22,7 @@ public final class SecurityMLAnalyticsSettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"aqlmihnmtrdlpxi\",\"id\":\"gecpvfpnr\",\"name\":\"i\",\"type\":\"voxloeohyfi\"}]}";
+            = "{\"value\":[{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"wbnfddepl\",\"id\":\"qjn\",\"name\":\"f\",\"type\":\"ygleexa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class SecurityMLAnalyticsSettingsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecurityMLAnalyticsSetting> response
-            = manager.securityMLAnalyticsSettings().list("kh", "jn", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityMLAnalyticsSetting> response = manager.securityMLAnalyticsSettings()
+            .list("ptyrilkfbnrqqxv", "tpbnfnqtxjtoma", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aqlmihnmtrdlpxi", response.iterator().next().etag());
+        Assertions.assertEquals("wbnfddepl", response.iterator().next().etag());
     }
 }

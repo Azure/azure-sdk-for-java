@@ -22,7 +22,7 @@ public final class SlicesListByMobileNetworkMockTests {
     @Test
     public void testListByMobileNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":1327006192,\"sd\":\"exh\"},\"description\":\"trceqnkbrupob\"},\"location\":\"dmljzacvumepjp\",\"tags\":{\"leqirccjclykcgxv\":\"nzpphepife\"},\"id\":\"pjlvczuoda\",\"name\":\"punettepdjxq\",\"type\":\"skoynuiylpc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"snssai\":{\"sst\":1754727527,\"sd\":\"jiye\"},\"description\":\"fj\"},\"location\":\"wqrxetfgcwv\",\"tags\":{\"ax\":\"dqntycnawthv\",\"jecehokwc\":\"nuyeamcmhud\",\"rg\":\"qtwloes\"},\"id\":\"vrbnyrukoil\",\"name\":\"ciduwjle\",\"type\":\"pjlh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class SlicesListByMobileNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Slice> response
-            = manager.slices().listByMobileNetwork("xricctkwmuqq", "ajxeiygle", com.azure.core.util.Context.NONE);
+            = manager.slices().listByMobileNetwork("mpwctoflds", "acdhztxkbr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dmljzacvumepjp", response.iterator().next().location());
-        Assertions.assertEquals("nzpphepife", response.iterator().next().tags().get("leqirccjclykcgxv"));
-        Assertions.assertEquals(1327006192, response.iterator().next().snssai().sst());
-        Assertions.assertEquals("exh", response.iterator().next().snssai().sd());
-        Assertions.assertEquals("trceqnkbrupob", response.iterator().next().description());
+        Assertions.assertEquals("wqrxetfgcwv", response.iterator().next().location());
+        Assertions.assertEquals("dqntycnawthv", response.iterator().next().tags().get("ax"));
+        Assertions.assertEquals(1754727527, response.iterator().next().snssai().sst());
+        Assertions.assertEquals("jiye", response.iterator().next().snssai().sd());
+        Assertions.assertEquals("fj", response.iterator().next().description());
     }
 }

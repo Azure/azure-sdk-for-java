@@ -8,12 +8,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class OperationsResultsLocationsGetResponse
     extends ResponseBase<OperationsResultsLocationsGetHeaders, Void> {
     /**
      * Creates an instance of OperationsResultsLocationsGetResponse.
-     *
+     * 
      * @param request the request which resulted in this OperationsResultsLocationsGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.

@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceProvidersCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"xdpnqbqq\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"uouq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class ResourceProvidersCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameAvailabilityResponse response = manager.resourceProviders()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailabilityRequest().withName("fionl").withType("x"),
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailabilityRequest().withName("gjvtbv").withType("sszdnru"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertEquals(true, response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("xdpnqbqq", response.message());
+        Assertions.assertEquals("uouq", response.message());
     }
 }

@@ -6,57 +6,65 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VMwareCbt container mapping input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
 @Fluent
 public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpecificContainerMappingInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * The target key vault ARM Id.
      */
-    @JsonProperty(value = "keyVaultId")
     private String keyVaultId;
 
     /*
      * The target key vault URL.
      */
-    @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
 
     /*
      * The storage account ARM Id.
      */
-    @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
 
     /*
      * The secret name of the storage account.
      */
-    @JsonProperty(value = "storageAccountSasSecretName")
     private String storageAccountSasSecretName;
 
     /*
      * The secret name of the service bus connection string.
      */
-    @JsonProperty(value = "serviceBusConnectionStringSecretName")
     private String serviceBusConnectionStringSecretName;
 
     /*
      * The target location.
      */
-    @JsonProperty(value = "targetLocation", required = true)
     private String targetLocation;
 
     /**
      * Creates an instance of VMwareCbtContainerMappingInput class.
      */
     public VMwareCbtContainerMappingInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -187,16 +195,74 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
      */
     @Override
     public void validate() {
-        super.validate();
         if (storageAccountId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountId in model VMwareCbtContainerMappingInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountId in model VMwareCbtContainerMappingInput"));
         }
         if (targetLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetLocation in model VMwareCbtContainerMappingInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetLocation in model VMwareCbtContainerMappingInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtContainerMappingInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("targetLocation", this.targetLocation);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("keyVaultId", this.keyVaultId);
+        jsonWriter.writeStringField("keyVaultUri", this.keyVaultUri);
+        jsonWriter.writeStringField("storageAccountSasSecretName", this.storageAccountSasSecretName);
+        jsonWriter.writeStringField("serviceBusConnectionStringSecretName", this.serviceBusConnectionStringSecretName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtContainerMappingInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtContainerMappingInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareCbtContainerMappingInput.
+     */
+    public static VMwareCbtContainerMappingInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtContainerMappingInput deserializedVMwareCbtContainerMappingInput
+                = new VMwareCbtContainerMappingInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountId".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.storageAccountId = reader.getString();
+                } else if ("targetLocation".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.targetLocation = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.instanceType = reader.getString();
+                } else if ("keyVaultId".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.keyVaultId = reader.getString();
+                } else if ("keyVaultUri".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.keyVaultUri = reader.getString();
+                } else if ("storageAccountSasSecretName".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.storageAccountSasSecretName = reader.getString();
+                } else if ("serviceBusConnectionStringSecretName".equals(fieldName)) {
+                    deserializedVMwareCbtContainerMappingInput.serviceBusConnectionStringSecretName
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtContainerMappingInput;
+        });
+    }
 }

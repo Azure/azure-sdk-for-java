@@ -37,9 +37,6 @@ public final class DtmfResult implements JsonSerializable<DtmfResult> {
         return this.tones;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

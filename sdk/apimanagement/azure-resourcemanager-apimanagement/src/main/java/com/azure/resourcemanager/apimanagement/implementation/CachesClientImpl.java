@@ -40,17 +40,23 @@ import com.azure.resourcemanager.apimanagement.models.CachesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.CachesUpdateResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CachesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CachesClient.
+ */
 public final class CachesClientImpl implements CachesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CachesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of CachesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CachesClientImpl(ApiManagementClientImpl client) {
@@ -136,7 +142,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -144,8 +150,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -176,7 +182,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -185,8 +191,8 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -217,7 +223,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -236,7 +242,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,7 +260,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -274,7 +280,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +297,7 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Lists a collection of all external Caches in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -310,16 +316,16 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Cache specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName, String serviceName,
@@ -351,17 +357,17 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Cache specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CachesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName, String serviceName,
@@ -392,16 +398,16 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Cache specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String cacheId) {
@@ -410,11 +416,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -429,11 +435,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -445,11 +451,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the details of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -484,11 +490,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the details of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -524,11 +530,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the details of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -542,11 +548,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the details of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,11 +567,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Gets the details of the Cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,11 +584,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param parameters Create or Update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,11 +632,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param parameters Create or Update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
@@ -673,11 +679,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param parameters Create or Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -694,11 +700,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param parameters Create or Update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
@@ -716,11 +722,11 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param parameters Create or Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -737,13 +743,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Updates the details of the cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -788,13 +794,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Updates the details of the cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -839,13 +845,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Updates the details of the cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -861,13 +867,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Updates the details of the cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -883,13 +889,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Updates the details of the cache specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -905,13 +911,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Deletes specific Cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -950,13 +956,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Deletes specific Cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -995,13 +1001,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Deletes specific Cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1015,13 +1021,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Deletes specific Cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1036,13 +1042,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Deletes specific Cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
+     * identifier).
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1054,14 +1060,13 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1082,15 +1087,14 @@ public final class CachesClientImpl implements CachesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Caches list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CacheContractInner>> listByServiceNextSinglePageAsync(String nextLink, Context context) {

@@ -15,11 +15,15 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 public interface QueueAuthorizationRule
     extends AuthorizationRule<QueueAuthorizationRule>, Updatable<QueueAuthorizationRule.Update> {
     /**
+     * Gets the name of the namespace that the parent queue belongs to.
+     *
      * @return the name of the namespace that the parent queue belongs to
      */
     String namespaceName();
 
     /**
+     * Gets the name of the parent queue name.
+     *
      * @return the name of the parent queue name
      */
     String queueName();

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class DataMaskingRulesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DataMaskingRuleGet.json
      */
     /**
      * Sample code: Get data masking rule.

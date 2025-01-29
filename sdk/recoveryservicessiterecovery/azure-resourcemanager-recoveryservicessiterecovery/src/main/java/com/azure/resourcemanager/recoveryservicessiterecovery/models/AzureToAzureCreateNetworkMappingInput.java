@@ -6,27 +6,40 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Create network mappings input properties/behavior specific to Azure to Azure Network mapping.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("AzureToAzure")
 @Fluent
 public final class AzureToAzureCreateNetworkMappingInput extends FabricSpecificCreateNetworkMappingInput {
     /*
+     * The instance type.
+     */
+    private String instanceType = "AzureToAzure";
+
+    /*
      * The primary azure vnet Id.
      */
-    @JsonProperty(value = "primaryNetworkId", required = true)
     private String primaryNetworkId;
 
     /**
      * Creates an instance of AzureToAzureCreateNetworkMappingInput class.
      */
     public AzureToAzureCreateNetworkMappingInput() {
+    }
+
+    /**
+     * Get the instanceType property: The instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -56,12 +69,53 @@ public final class AzureToAzureCreateNetworkMappingInput extends FabricSpecificC
      */
     @Override
     public void validate() {
-        super.validate();
         if (primaryNetworkId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property primaryNetworkId in model AzureToAzureCreateNetworkMappingInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryNetworkId in model AzureToAzureCreateNetworkMappingInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureToAzureCreateNetworkMappingInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryNetworkId", this.primaryNetworkId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureToAzureCreateNetworkMappingInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureToAzureCreateNetworkMappingInput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureToAzureCreateNetworkMappingInput.
+     */
+    public static AzureToAzureCreateNetworkMappingInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureToAzureCreateNetworkMappingInput deserializedAzureToAzureCreateNetworkMappingInput
+                = new AzureToAzureCreateNetworkMappingInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryNetworkId".equals(fieldName)) {
+                    deserializedAzureToAzureCreateNetworkMappingInput.primaryNetworkId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedAzureToAzureCreateNetworkMappingInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureToAzureCreateNetworkMappingInput;
+        });
+    }
 }

@@ -20,7 +20,8 @@ public final class ReplicationEventsGetSamples {
      */
     public static void getTheDetailsOfAnAzureSiteRecoveryEvent(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEvents().getWithResponse("vault1", "resourceGroupPS1",
-            "654b71d0-b2ce-4e6e-a861-98528d4bd375", com.azure.core.util.Context.NONE);
+        manager.replicationEvents()
+            .getWithResponse("vault1", "resourceGroupPS1", "654b71d0-b2ce-4e6e-a861-98528d4bd375",
+                com.azure.core.util.Context.NONE);
     }
 }

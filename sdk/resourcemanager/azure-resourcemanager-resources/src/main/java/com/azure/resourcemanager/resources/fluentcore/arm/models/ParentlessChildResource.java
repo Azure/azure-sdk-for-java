@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 public interface ParentlessChildResource<ParentT> extends Indexable, HasName {
 
     /**
+     * Gets the parent of this child object.
+     *
      * @return the parent of this child object
      */
     ParentT getParent();

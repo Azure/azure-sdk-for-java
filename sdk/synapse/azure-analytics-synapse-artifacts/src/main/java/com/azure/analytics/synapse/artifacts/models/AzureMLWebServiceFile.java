@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebServiceFile> {
     /*
-     * The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService. Type: string (or Expression with resultType string).
+     * The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService. Type:
+     * string (or Expression with resultType string).
      */
     private Object filePath;
 

@@ -15,7 +15,9 @@ import java.io.IOException;
  */
 public final class IotConnectorFhirDestinationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/iotconnector_fhirdestination_Create.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
+     * iotconnector_fhirdestination_Create.json
      */
     /**
      * Sample code: Create or update an Iot Connector FHIR destination.

@@ -40,7 +40,6 @@
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis.administration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <graalvm.disable>false</graalvm.disable>
 
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
@@ -74,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

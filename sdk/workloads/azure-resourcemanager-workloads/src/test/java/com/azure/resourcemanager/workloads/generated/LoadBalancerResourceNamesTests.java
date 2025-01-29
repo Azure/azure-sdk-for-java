@@ -13,24 +13,24 @@ public final class LoadBalancerResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoadBalancerResourceNames model = BinaryData.fromString(
-            "{\"loadBalancerName\":\"ho\",\"frontendIpConfigurationNames\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"],\"backendPoolNames\":[\"atkzwpcnpw\",\"cjaesgvvs\",\"cyajguqf\"],\"healthProbeNames\":[\"gzlvdnkfxu\"]}")
+            "{\"loadBalancerName\":\"wkqnyhg\",\"frontendIpConfigurationNames\":[\"tjivfxzsjabib\"],\"backendPoolNames\":[\"tawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"],\"healthProbeNames\":[\"jjklff\",\"mouwqlgzrfzeey\"]}")
             .toObject(LoadBalancerResourceNames.class);
-        Assertions.assertEquals("ho", model.loadBalancerName());
-        Assertions.assertEquals("zudphqamvdkfw", model.frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("atkzwpcnpw", model.backendPoolNames().get(0));
-        Assertions.assertEquals("gzlvdnkfxu", model.healthProbeNames().get(0));
+        Assertions.assertEquals("wkqnyhg", model.loadBalancerName());
+        Assertions.assertEquals("tjivfxzsjabib", model.frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("tawfsdjpvkvp", model.backendPoolNames().get(0));
+        Assertions.assertEquals("jjklff", model.healthProbeNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancerResourceNames model = new LoadBalancerResourceNames().withLoadBalancerName("ho")
-            .withFrontendIpConfigurationNames(Arrays.asList("zudphqamvdkfw", "nwcvtbvkayhmtnv"))
-            .withBackendPoolNames(Arrays.asList("atkzwpcnpw", "cjaesgvvs", "cyajguqf"))
-            .withHealthProbeNames(Arrays.asList("gzlvdnkfxu"));
+        LoadBalancerResourceNames model = new LoadBalancerResourceNames().withLoadBalancerName("wkqnyhg")
+            .withFrontendIpConfigurationNames(Arrays.asList("tjivfxzsjabib"))
+            .withBackendPoolNames(Arrays.asList("tawfsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo"))
+            .withHealthProbeNames(Arrays.asList("jjklff", "mouwqlgzrfzeey"));
         model = BinaryData.fromObject(model).toObject(LoadBalancerResourceNames.class);
-        Assertions.assertEquals("ho", model.loadBalancerName());
-        Assertions.assertEquals("zudphqamvdkfw", model.frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("atkzwpcnpw", model.backendPoolNames().get(0));
-        Assertions.assertEquals("gzlvdnkfxu", model.healthProbeNames().get(0));
+        Assertions.assertEquals("wkqnyhg", model.loadBalancerName());
+        Assertions.assertEquals("tjivfxzsjabib", model.frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("tawfsdjpvkvp", model.backendPoolNames().get(0));
+        Assertions.assertEquals("jjklff", model.healthProbeNames().get(0));
     }
 }

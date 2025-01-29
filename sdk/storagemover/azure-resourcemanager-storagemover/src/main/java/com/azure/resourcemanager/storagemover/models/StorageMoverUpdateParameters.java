@@ -5,27 +5,27 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.fluent.models.StorageMoverUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The Storage Mover resource.
  */
 @Fluent
-public final class StorageMoverUpdateParameters {
+public final class StorageMoverUpdateParameters implements JsonSerializable<StorageMoverUpdateParameters> {
     /*
      * The resource specific properties for the Storage Mover resource.
      */
-    @JsonProperty(value = "properties")
     private StorageMoverUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -95,5 +95,46 @@ public final class StorageMoverUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageMoverUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageMoverUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageMoverUpdateParameters.
+     */
+    public static StorageMoverUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageMoverUpdateParameters deserializedStorageMoverUpdateParameters = new StorageMoverUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedStorageMoverUpdateParameters.innerProperties
+                        = StorageMoverUpdateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageMoverUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageMoverUpdateParameters;
+        });
     }
 }

@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SourceControlConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SourceControlConfigurationsClient.
+ */
 public final class SourceControlConfigurationsClientImpl implements SourceControlConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SourceControlConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SourceControlConfigurationClientImpl client;
 
     /**
      * Initializes an instance of SourceControlConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SourceControlConfigurationsClientImpl(SourceControlConfigurationClientImpl client) {
@@ -120,19 +126,19 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Gets details of the Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Source Control Configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SourceControlConfigurationInner>> getWithResponseAsync(String resourceGroupName,
@@ -173,12 +179,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Gets details of the Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -186,7 +192,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Source Control Configuration along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SourceControlConfigurationInner>> getWithResponseAsync(String resourceGroupName,
@@ -227,12 +233,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Gets details of the Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,12 +255,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Gets details of the Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -272,12 +278,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Gets details of the Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,12 +300,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Create a new Kubernetes Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
@@ -307,7 +313,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SourceControl Configuration object returned in Get &amp; Put response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SourceControlConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -355,12 +361,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Create a new Kubernetes Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
@@ -369,7 +375,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SourceControl Configuration object returned in Get &amp; Put response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SourceControlConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -416,12 +422,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Create a new Kubernetes Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
@@ -429,7 +435,7 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SourceControl Configuration object returned in Get &amp; Put response on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SourceControlConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp,
@@ -442,12 +448,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Create a new Kubernetes Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
@@ -467,12 +473,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Create a new Kubernetes Source Control Configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
@@ -492,12 +498,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -545,12 +551,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -598,12 +604,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -623,12 +629,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -650,12 +656,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,12 +681,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -701,12 +707,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -724,12 +730,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -748,12 +754,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,12 +776,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from
      * the source repo.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
      * @param context The context to associate with this operation.
@@ -792,18 +798,18 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * List all Source Control Configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Source Control Configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SourceControlConfigurationInner>> listSinglePageAsync(String resourceGroupName,
@@ -842,19 +848,19 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * List all Source Control Configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Source Control Configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SourceControlConfigurationInner>> listSinglePageAsync(String resourceGroupName,
@@ -892,12 +898,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * List all Source Control Configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -914,12 +920,12 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * List all Source Control Configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -937,18 +943,18 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * List all Source Control Configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Source Control Configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list Source Control Configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlConfigurationInner> list(String resourceGroupName, String clusterRp,
@@ -958,19 +964,19 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * List all Source Control Configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     *     Microsoft.HybridContainerService.
+     * Microsoft.HybridContainerService.
      * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     *     provisionedClusters.
+     * provisionedClusters.
      * @param clusterName The name of the kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Source Control Configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list Source Control Configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlConfigurationInner> list(String resourceGroupName, String clusterRp,
@@ -980,14 +986,13 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Source Control Configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SourceControlConfigurationInner>> listNextSinglePageAsync(String nextLink) {
@@ -1007,15 +1012,14 @@ public final class SourceControlConfigurationsClientImpl implements SourceContro
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Source Control Configurations along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SourceControlConfigurationInner>> listNextSinglePageAsync(String nextLink,

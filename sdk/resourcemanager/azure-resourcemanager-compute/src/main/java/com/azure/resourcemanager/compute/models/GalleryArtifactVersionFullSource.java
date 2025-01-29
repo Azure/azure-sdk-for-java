@@ -93,7 +93,6 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

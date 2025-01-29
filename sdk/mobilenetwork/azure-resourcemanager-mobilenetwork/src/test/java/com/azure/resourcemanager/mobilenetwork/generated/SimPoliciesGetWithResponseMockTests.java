@@ -21,7 +21,7 @@ public final class SimPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"siteProvisioningState\":{\"odkadppyibngq\":\"Updating\",\"d\":\"Deleting\",\"rxwhydtlu\":\"Provisioned\"},\"ueAmbr\":{\"uplink\":\"vadswzs\",\"downlink\":\"uyem\"},\"defaultSlice\":{\"id\":\"owuowh\"},\"rfspIndex\":1035990638,\"registrationTimer\":1748294835,\"sliceConfigurations\":[{\"slice\":{\"id\":\"rmouvb\"},\"defaultDataNetwork\":{\"id\":\"gmokzkltrfowt\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"rfmvlihcvjdrqcrj\"},\"sessionAmbr\":{\"uplink\":\"dhftukvhdxlwy\",\"downlink\":\"jbfqzdk\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"njyixh\"},\"sessionAmbr\":{\"uplink\":\"fratqxmbjroumzz\",\"downlink\":\"valqjrhuzgfxo\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"jtpusllywpvtiotz\"},\"sessionAmbr\":{\"uplink\":\"pdbollg\",\"downlink\":\"yfqiuasig\"},\"allowedServices\":[]}]}]},\"location\":\"wsocnequygdjbo\",\"tags\":{\"iuawvc\":\"mtqjkqevadrmm\",\"oqiqazugamx\":\"jzkxiidisczskos\",\"cekuz\":\"krrcoiisbamnpp\"},\"id\":\"dsbezaxyfu\",\"name\":\"zxuizhyhnepkpe\",\"type\":\"iarxqiubxdukec\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleted\",\"siteProvisioningState\":{\"kgvfnmxaursqf\":\"Deleting\",\"btyi\":\"Adding\",\"yvp\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"rfqjpnqnoo\",\"downlink\":\"sbede\"},\"defaultSlice\":{\"id\":\"rexkxbhxvucn\"},\"rfspIndex\":2132710654,\"registrationTimer\":639452188,\"sliceConfigurations\":[{\"slice\":{\"id\":\"jevdyznf\"},\"defaultDataNetwork\":{\"id\":\"jsvkskmqozzkivy\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"rl\"},\"sessionAmbr\":{\"uplink\":\"izjixlq\",\"downlink\":\"hefkwabsolronqq\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"mgnlqxsjxtel\"},\"sessionAmbr\":{\"uplink\":\"xhvuqbozool\",\"downlink\":\"qocarkuzlbc\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"ndtsnxawqytll\"},\"defaultDataNetwork\":{\"id\":\"dyz\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"ckze\"},\"sessionAmbr\":{\"uplink\":\"nxakckyw\",\"downlink\":\"mxgaabjkdtfohfao\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"zvkiwrsiwdy\"},\"sessionAmbr\":{\"uplink\":\"quryk\",\"downlink\":\"rra\"},\"allowedServices\":[]}]}]},\"location\":\"ekcsueh\",\"tags\":{\"cbgydlqi\":\"dac\",\"qxvztpbnfnqtxjt\":\"ywmhmptyrilkfbnr\",\"lswbnf\":\"m\",\"qjn\":\"depld\"},\"id\":\"f\",\"name\":\"ygleexa\",\"type\":\"vmywhsbrcarycsjj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,23 +31,23 @@ public final class SimPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SimPolicy response = manager.simPolicies()
-            .getWithResponse("pkkwj", "jodqhykincn", "emehllizh", com.azure.core.util.Context.NONE)
+            .getWithResponse("wvpsoz", "iihjriybmrzo", "pnx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wsocnequygdjbo", response.location());
-        Assertions.assertEquals("mtqjkqevadrmm", response.tags().get("iuawvc"));
-        Assertions.assertEquals("vadswzs", response.ueAmbr().uplink());
-        Assertions.assertEquals("uyem", response.ueAmbr().downlink());
-        Assertions.assertEquals("owuowh", response.defaultSlice().id());
-        Assertions.assertEquals(1035990638, response.rfspIndex());
-        Assertions.assertEquals(1748294835, response.registrationTimer());
-        Assertions.assertEquals("rmouvb", response.sliceConfigurations().get(0).slice().id());
-        Assertions.assertEquals("gmokzkltrfowt", response.sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions.assertEquals("rfmvlihcvjdrqcrj",
+        Assertions.assertEquals("ekcsueh", response.location());
+        Assertions.assertEquals("dac", response.tags().get("cbgydlqi"));
+        Assertions.assertEquals("rfqjpnqnoo", response.ueAmbr().uplink());
+        Assertions.assertEquals("sbede", response.ueAmbr().downlink());
+        Assertions.assertEquals("rexkxbhxvucn", response.defaultSlice().id());
+        Assertions.assertEquals(2132710654, response.rfspIndex());
+        Assertions.assertEquals(639452188, response.registrationTimer());
+        Assertions.assertEquals("jevdyznf", response.sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("jsvkskmqozzkivy", response.sliceConfigurations().get(0).defaultDataNetwork().id());
+        Assertions.assertEquals("rl",
             response.sliceConfigurations().get(0).dataNetworkConfigurations().get(0).dataNetwork().id());
-        Assertions.assertEquals("dhftukvhdxlwy",
+        Assertions.assertEquals("izjixlq",
             response.sliceConfigurations().get(0).dataNetworkConfigurations().get(0).sessionAmbr().uplink());
-        Assertions.assertEquals("jbfqzdk",
+        Assertions.assertEquals("hefkwabsolronqq",
             response.sliceConfigurations().get(0).dataNetworkConfigurations().get(0).sessionAmbr().downlink());
     }
 }

@@ -5,95 +5,85 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VMwareCbt NIC details.
  */
 @Fluent
-public final class VMwareCbtNicDetails {
+public final class VMwareCbtNicDetails implements JsonSerializable<VMwareCbtNicDetails> {
     /*
      * The NIC Id.
      */
-    @JsonProperty(value = "nicId", access = JsonProperty.Access.WRITE_ONLY)
     private String nicId;
 
     /*
      * A value indicating whether this is the primary NIC.
      */
-    @JsonProperty(value = "isPrimaryNic")
     private String isPrimaryNic;
 
     /*
      * The source IP address.
      */
-    @JsonProperty(value = "sourceIPAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceIpAddress;
 
     /*
      * The source IP address type.
      */
-    @JsonProperty(value = "sourceIPAddressType", access = JsonProperty.Access.WRITE_ONLY)
     private EthernetAddressType sourceIpAddressType;
 
     /*
      * Source network Id.
      */
-    @JsonProperty(value = "sourceNetworkId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceNetworkId;
 
     /*
      * The target IP address.
      */
-    @JsonProperty(value = "targetIPAddress")
     private String targetIpAddress;
 
     /*
      * The target IP address type.
      */
-    @JsonProperty(value = "targetIPAddressType")
     private EthernetAddressType targetIpAddressType;
 
     /*
      * Target subnet name.
      */
-    @JsonProperty(value = "targetSubnetName")
     private String targetSubnetName;
 
     /*
      * Source network Id.
      */
-    @JsonProperty(value = "testNetworkId")
     private String testNetworkId;
 
     /*
      * Test subnet name.
      */
-    @JsonProperty(value = "testSubnetName")
     private String testSubnetName;
 
     /*
      * The test IP address.
      */
-    @JsonProperty(value = "testIPAddress")
     private String testIpAddress;
 
     /*
      * The test IP address type.
      */
-    @JsonProperty(value = "testIPAddressType")
     private EthernetAddressType testIpAddressType;
 
     /*
      * Target NIC name.
      */
-    @JsonProperty(value = "targetNicName")
     private String targetNicName;
 
     /*
      * A value indicating whether this NIC is selected for migration.
      */
-    @JsonProperty(value = "isSelectedForMigration")
     private String isSelectedForMigration;
 
     /**
@@ -344,5 +334,81 @@ public final class VMwareCbtNicDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("isPrimaryNic", this.isPrimaryNic);
+        jsonWriter.writeStringField("targetIPAddress", this.targetIpAddress);
+        jsonWriter.writeStringField("targetIPAddressType",
+            this.targetIpAddressType == null ? null : this.targetIpAddressType.toString());
+        jsonWriter.writeStringField("targetSubnetName", this.targetSubnetName);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeStringField("testSubnetName", this.testSubnetName);
+        jsonWriter.writeStringField("testIPAddress", this.testIpAddress);
+        jsonWriter.writeStringField("testIPAddressType",
+            this.testIpAddressType == null ? null : this.testIpAddressType.toString());
+        jsonWriter.writeStringField("targetNicName", this.targetNicName);
+        jsonWriter.writeStringField("isSelectedForMigration", this.isSelectedForMigration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtNicDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtNicDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareCbtNicDetails.
+     */
+    public static VMwareCbtNicDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtNicDetails deserializedVMwareCbtNicDetails = new VMwareCbtNicDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.nicId = reader.getString();
+                } else if ("isPrimaryNic".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.isPrimaryNic = reader.getString();
+                } else if ("sourceIPAddress".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.sourceIpAddress = reader.getString();
+                } else if ("sourceIPAddressType".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.sourceIpAddressType
+                        = EthernetAddressType.fromString(reader.getString());
+                } else if ("sourceNetworkId".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.sourceNetworkId = reader.getString();
+                } else if ("targetIPAddress".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.targetIpAddress = reader.getString();
+                } else if ("targetIPAddressType".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.targetIpAddressType
+                        = EthernetAddressType.fromString(reader.getString());
+                } else if ("targetSubnetName".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.targetSubnetName = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.testNetworkId = reader.getString();
+                } else if ("testSubnetName".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.testSubnetName = reader.getString();
+                } else if ("testIPAddress".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.testIpAddress = reader.getString();
+                } else if ("testIPAddressType".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.testIpAddressType
+                        = EthernetAddressType.fromString(reader.getString());
+                } else if ("targetNicName".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.targetNicName = reader.getString();
+                } else if ("isSelectedForMigration".equals(fieldName)) {
+                    deserializedVMwareCbtNicDetails.isSelectedForMigration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtNicDetails;
+        });
     }
 }

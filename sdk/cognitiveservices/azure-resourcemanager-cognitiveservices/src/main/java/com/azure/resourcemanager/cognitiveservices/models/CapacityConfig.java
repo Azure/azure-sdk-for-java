@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The capacity configuration.
@@ -35,6 +36,11 @@ public final class CapacityConfig implements JsonSerializable<CapacityConfig> {
      * The default capacity.
      */
     private Integer defaultProperty;
+
+    /*
+     * The array of allowed values for capacity.
+     */
+    private List<Integer> allowedValues;
 
     /**
      * Creates an instance of CapacityConfig class.
@@ -123,6 +129,26 @@ public final class CapacityConfig implements JsonSerializable<CapacityConfig> {
     }
 
     /**
+     * Get the allowedValues property: The array of allowed values for capacity.
+     * 
+     * @return the allowedValues value.
+     */
+    public List<Integer> allowedValues() {
+        return this.allowedValues;
+    }
+
+    /**
+     * Set the allowedValues property: The array of allowed values for capacity.
+     * 
+     * @param allowedValues the allowedValues value to set.
+     * @return the CapacityConfig object itself.
+     */
+    public CapacityConfig withAllowedValues(List<Integer> allowedValues) {
+        this.allowedValues = allowedValues;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,6 +166,7 @@ public final class CapacityConfig implements JsonSerializable<CapacityConfig> {
         jsonWriter.writeNumberField("maximum", this.maximum);
         jsonWriter.writeNumberField("step", this.step);
         jsonWriter.writeNumberField("default", this.defaultProperty);
+        jsonWriter.writeArrayField("allowedValues", this.allowedValues, (writer, element) -> writer.writeInt(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -166,6 +193,9 @@ public final class CapacityConfig implements JsonSerializable<CapacityConfig> {
                     deserializedCapacityConfig.step = reader.getNullable(JsonReader::getInt);
                 } else if ("default".equals(fieldName)) {
                     deserializedCapacityConfig.defaultProperty = reader.getNullable(JsonReader::getInt);
+                } else if ("allowedValues".equals(fieldName)) {
+                    List<Integer> allowedValues = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedCapacityConfig.allowedValues = allowedValues;
                 } else {
                     reader.skipChildren();
                 }

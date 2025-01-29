@@ -110,10 +110,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .<PagedResponse<LibraryResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -151,12 +150,11 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                workspaceName, accept, context)
+            .listByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

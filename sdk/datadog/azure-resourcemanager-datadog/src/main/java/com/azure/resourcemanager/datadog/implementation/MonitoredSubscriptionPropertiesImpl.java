@@ -98,9 +98,9 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.configurationName = Utils.getValueFromIdByName(innerObject.id(), "monitoredSubscriptions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.configurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitoredSubscriptions");
     }
 
     public MonitoredSubscriptionProperties refresh() {

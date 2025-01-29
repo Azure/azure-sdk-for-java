@@ -17,7 +17,7 @@ public final class ServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"0673ac01-ce57-4d04-8ae5-fa0811b1c484\",\"tenantId\":\"1ad444b4-1453-4801-9cb9-233b62fcc6c9\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ygxgispemvtz\":{\"principalId\":\"99645cd9-e4e9-49d8-96a4-c0da20d1e577\",\"clientId\":\"4e75dad7-4ffd-4bd2-b56a-aee5cca95938\"},\"fublj\":{\"principalId\":\"7813a81a-8d5b-472f-b2d1-392b181d70b1\",\"clientId\":\"41fa3722-244c-40e4-9235-b7a11cc355dd\"},\"qeof\":{\"principalId\":\"72a5928b-89f5-4674-9ef7-ad610504180e\",\"clientId\":\"8b5f4ce9-51a2-4bb0-835a-97a6017ea31d\"}}},\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
+            "{\"identity\":{\"principalId\":\"f6e41e0c-a573-4c4c-b4f0-71d513833bf5\",\"tenantId\":\"8c940a9e-a8b7-40ce-b71f-e5e8ebd44bda\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ygxgispemvtz\":{\"principalId\":\"91582c6e-7d9f-4302-8199-02ed34ed9bb0\",\"clientId\":\"ec3d6ac1-2dd2-45c3-a247-e61d644428d1\"},\"fublj\":{\"principalId\":\"e8b32a6b-e067-4831-b3cd-433afb85429b\",\"clientId\":\"69ca93f4-b52c-453b-bcd4-8f9f61b57bad\"},\"qeof\":{\"principalId\":\"0fd18af9-a4b6-41cf-8dfb-578fe0e7d155\",\"clientId\":\"ea031080-de0a-4694-9636-64418fa57fc4\"}}},\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
             .toObject(ServiceUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));

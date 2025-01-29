@@ -20,12 +20,14 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { SignalRManagementClientImpl.class })
 public final class SignalRManagementClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
+     * Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
+     * the URI for every service call.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be an UUID.
+     * Sets Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the SignalRManagementClientBuilder.

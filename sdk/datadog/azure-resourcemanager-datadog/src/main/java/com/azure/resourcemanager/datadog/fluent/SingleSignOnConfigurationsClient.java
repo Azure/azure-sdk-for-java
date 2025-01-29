@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnConfigurationsClient.
+ */
 public interface SingleSignOnConfigurationsClient {
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -59,7 +61,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -77,7 +79,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -92,7 +94,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Configures single-sign-on for this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -109,7 +111,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.
@@ -125,7 +127,7 @@ public interface SingleSignOnConfigurationsClient {
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Configuration name.

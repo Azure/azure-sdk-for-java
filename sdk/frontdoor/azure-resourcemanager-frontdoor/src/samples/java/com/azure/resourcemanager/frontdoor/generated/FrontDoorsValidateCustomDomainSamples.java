@@ -11,7 +11,8 @@ import com.azure.resourcemanager.frontdoor.models.ValidateCustomDomainInput;
  */
 public final class FrontDoorsValidateCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorValidateCustomDomain.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
+     * FrontdoorValidateCustomDomain.json
      */
     /**
      * Sample code: FrontDoor_ValidateCustomDomain.

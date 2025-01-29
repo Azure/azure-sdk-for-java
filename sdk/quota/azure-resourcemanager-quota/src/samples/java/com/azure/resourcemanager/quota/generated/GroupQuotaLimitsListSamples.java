@@ -9,16 +9,18 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class GroupQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotaLimits/ListGroupQuotaLimits-Compute.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/GroupQuotaLimits/
+     * ListGroupQuotaLimits-Compute.json
      */
     /**
-     * Sample code: GroupQuotaLimits_List_Request_ForCompute.
+     * Sample code: GroupQuotaLimits_Get_Request_ForCompute.
      * 
      * @param manager Entry point to QuotaManager.
      */
-    public static void groupQuotaLimitsListRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
+    public static void groupQuotaLimitsGetRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
         manager.groupQuotaLimits()
-            .list("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "location eq westus",
+            .listWithResponse("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus",
                 com.azure.core.util.Context.NONE);
     }
 }

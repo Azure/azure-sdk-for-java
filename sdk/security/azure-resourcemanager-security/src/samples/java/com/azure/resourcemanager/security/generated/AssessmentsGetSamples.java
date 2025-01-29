@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.ExpandEnum;
  */
 public final class AssessmentsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/GetAssessmentWithExpand_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * GetAssessmentWithExpand_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location with expand parameter.
@@ -27,7 +29,9 @@ public final class AssessmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/GetAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * GetAssessment_example.json
      */
     /**
      * Sample code: Get security recommendation task from security data location.

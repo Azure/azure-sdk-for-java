@@ -115,9 +115,9 @@ public final class GlobalSchemaContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.schemaId = Utils.getValueFromIdByName(innerObject.id(), "schemas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.schemaId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schemas");
     }
 
     public GlobalSchemaContract refresh() {

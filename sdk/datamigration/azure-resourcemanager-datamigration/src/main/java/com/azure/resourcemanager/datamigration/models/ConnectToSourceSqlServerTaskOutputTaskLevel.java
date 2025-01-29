@@ -51,11 +51,6 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
      */
     private List<ReportableException> validationErrors;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of ConnectToSourceSqlServerTaskOutputTaskLevel class.
      */
@@ -127,16 +122,6 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,7 +160,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.id = reader.getString();
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputTaskLevel.resultType = reader.getString();
                 } else if ("databases".equals(fieldName)) {

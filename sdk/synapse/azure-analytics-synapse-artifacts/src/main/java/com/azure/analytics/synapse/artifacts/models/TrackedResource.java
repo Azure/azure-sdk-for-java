@@ -29,6 +29,23 @@ public class TrackedResource extends Resource {
      */
     private String location;
 
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of TrackedResource class.
      */
@@ -76,6 +93,38 @@ public class TrackedResource extends Resource {
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -103,11 +152,11 @@ public class TrackedResource extends Resource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedTrackedResource.setId(reader.getString());
+                    deserializedTrackedResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedTrackedResource.setName(reader.getString());
+                    deserializedTrackedResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedTrackedResource.setType(reader.getString());
+                    deserializedTrackedResource.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
                     deserializedTrackedResource.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {

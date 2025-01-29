@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Operation request details. */
+/**
+ * Operation request details.
+ */
 @Fluent
-public final class RequestContract {
+public final class RequestContract implements JsonSerializable<RequestContract> {
     /*
      * Operation request description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Collection of operation request query parameters.
      */
-    @JsonProperty(value = "queryParameters")
     private List<ParameterContract> queryParameters;
 
     /*
      * Collection of operation request headers.
      */
-    @JsonProperty(value = "headers")
     private List<ParameterContract> headers;
 
     /*
      * Collection of operation request representations.
      */
-    @JsonProperty(value = "representations")
     private List<RepresentationContract> representations;
 
-    /** Creates an instance of RequestContract class. */
+    /**
+     * Creates an instance of RequestContract class.
+     */
     public RequestContract() {
     }
 
     /**
      * Get the description property: Operation request description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -50,7 +54,7 @@ public final class RequestContract {
 
     /**
      * Set the description property: Operation request description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RequestContract object itself.
      */
@@ -61,7 +65,7 @@ public final class RequestContract {
 
     /**
      * Get the queryParameters property: Collection of operation request query parameters.
-     *
+     * 
      * @return the queryParameters value.
      */
     public List<ParameterContract> queryParameters() {
@@ -70,7 +74,7 @@ public final class RequestContract {
 
     /**
      * Set the queryParameters property: Collection of operation request query parameters.
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the RequestContract object itself.
      */
@@ -81,7 +85,7 @@ public final class RequestContract {
 
     /**
      * Get the headers property: Collection of operation request headers.
-     *
+     * 
      * @return the headers value.
      */
     public List<ParameterContract> headers() {
@@ -90,7 +94,7 @@ public final class RequestContract {
 
     /**
      * Set the headers property: Collection of operation request headers.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the RequestContract object itself.
      */
@@ -101,7 +105,7 @@ public final class RequestContract {
 
     /**
      * Get the representations property: Collection of operation request representations.
-     *
+     * 
      * @return the representations value.
      */
     public List<RepresentationContract> representations() {
@@ -110,7 +114,7 @@ public final class RequestContract {
 
     /**
      * Set the representations property: Collection of operation request representations.
-     *
+     * 
      * @param representations the representations value to set.
      * @return the RequestContract object itself.
      */
@@ -121,7 +125,7 @@ public final class RequestContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -134,5 +138,57 @@ public final class RequestContract {
         if (representations() != null) {
             representations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("queryParameters", this.queryParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("representations", this.representations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestContract if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestContract.
+     */
+    public static RequestContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestContract deserializedRequestContract = new RequestContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedRequestContract.description = reader.getString();
+                } else if ("queryParameters".equals(fieldName)) {
+                    List<ParameterContract> queryParameters
+                        = reader.readArray(reader1 -> ParameterContract.fromJson(reader1));
+                    deserializedRequestContract.queryParameters = queryParameters;
+                } else if ("headers".equals(fieldName)) {
+                    List<ParameterContract> headers = reader.readArray(reader1 -> ParameterContract.fromJson(reader1));
+                    deserializedRequestContract.headers = headers;
+                } else if ("representations".equals(fieldName)) {
+                    List<RepresentationContract> representations
+                        = reader.readArray(reader1 -> RepresentationContract.fromJson(reader1));
+                    deserializedRequestContract.representations = representations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestContract;
+        });
     }
 }

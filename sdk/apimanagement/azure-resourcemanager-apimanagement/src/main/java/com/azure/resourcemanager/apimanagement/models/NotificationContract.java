@@ -6,53 +6,55 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.NotificationContractInner;
 
-/** An immutable client-side representation of NotificationContract. */
+/**
+ * An immutable client-side representation of NotificationContract.
+ */
 public interface NotificationContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the title property: Title of the Notification.
-     *
+     * 
      * @return the title value.
      */
     String title();
 
     /**
      * Gets the description property: Description of the Notification.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the recipients property: Recipient Parameter values.
-     *
+     * 
      * @return the recipients value.
      */
     RecipientsContractProperties recipients();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.NotificationContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     NotificationContractInner innerModel();

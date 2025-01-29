@@ -6,32 +6,38 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.VCenterInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of VCenters. */
+/**
+ * List of VCenters.
+ */
 @Fluent
-public final class VCentersList {
+public final class VCentersList implements JsonSerializable<VCentersList> {
     /*
      * Url to follow for getting next page of VCenters.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of VCenters
      */
-    @JsonProperty(value = "value", required = true)
     private List<VCenterInner> value;
 
-    /** Creates an instance of VCentersList class. */
+    /**
+     * Creates an instance of VCentersList class.
+     */
     public VCentersList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of VCenters.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +46,7 @@ public final class VCentersList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of VCenters.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VCentersList object itself.
      */
@@ -51,7 +57,7 @@ public final class VCentersList {
 
     /**
      * Get the value property: Array of VCenters.
-     *
+     * 
      * @return the value value.
      */
     public List<VCenterInner> value() {
@@ -60,7 +66,7 @@ public final class VCentersList {
 
     /**
      * Set the value property: Array of VCenters.
-     *
+     * 
      * @param value the value value to set.
      * @return the VCentersList object itself.
      */
@@ -71,17 +77,58 @@ public final class VCentersList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model VCentersList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model VCentersList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VCentersList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VCentersList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VCentersList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VCentersList.
+     */
+    public static VCentersList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VCentersList deserializedVCentersList = new VCentersList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VCenterInner> value = reader.readArray(reader1 -> VCenterInner.fromJson(reader1));
+                    deserializedVCentersList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVCentersList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVCentersList;
+        });
+    }
 }

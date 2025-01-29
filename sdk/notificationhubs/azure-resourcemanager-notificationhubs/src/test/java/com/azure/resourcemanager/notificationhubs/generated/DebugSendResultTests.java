@@ -6,18 +6,24 @@ package com.azure.resourcemanager.notificationhubs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResult;
+import org.junit.jupiter.api.Assertions;
 
 public final class DebugSendResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DebugSendResult model = BinaryData.fromString(
-            "{\"success\":5040157276386873949,\"failure\":7701952608806501172,\"results\":[{\"applicationPlatform\":\"s\",\"pnsHandle\":\"yb\",\"registrationId\":\"qedqytbciqfoufl\",\"outcome\":\"nkzsmodmglou\"},{\"applicationPlatform\":\"b\",\"pnsHandle\":\"tmut\",\"registrationId\":\"qktapspwgcuert\",\"outcome\":\"kdosvqw\"},{\"applicationPlatform\":\"mdgbbjfdd\",\"pnsHandle\":\"bmbexppbhtqqro\",\"registrationId\":\"p\",\"outcome\":\"s\"},{\"applicationPlatform\":\"gbquxigj\",\"pnsHandle\":\"gzjaoyfhrtxilne\",\"registrationId\":\"ujysvle\",\"outcome\":\"vfqawrlyxwjkcpr\"}]}")
-            .toObject(DebugSendResult.class);
+        DebugSendResult model
+            = BinaryData.fromString("{\"success\":22.663057,\"failure\":29.506851,\"results\":\"datahb\"}")
+                .toObject(DebugSendResult.class);
+        Assertions.assertEquals(22.663057F, model.success());
+        Assertions.assertEquals(29.506851F, model.failure());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DebugSendResult model = new DebugSendResult();
+        DebugSendResult model
+            = new DebugSendResult().withSuccess(22.663057F).withFailure(29.506851F).withResults("datahb");
         model = BinaryData.fromObject(model).toObject(DebugSendResult.class);
+        Assertions.assertEquals(22.663057F, model.success());
+        Assertions.assertEquals(29.506851F, model.failure());
     }
 }

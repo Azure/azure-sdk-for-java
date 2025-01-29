@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class JobRunScanStatus extends ExpandableStringEnum<JobRunScanStatu
      * @param name a name to look for.
      * @return the corresponding JobRunScanStatus.
      */
-    @JsonCreator
     public static JobRunScanStatus fromString(String name) {
         return fromString(name, JobRunScanStatus.class);
     }

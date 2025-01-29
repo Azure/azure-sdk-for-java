@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The agentPool resource provisioning status definition.
  */
 @Fluent
-public class AgentPoolProvisioningStatus {
+public class AgentPoolProvisioningStatus implements JsonSerializable<AgentPoolProvisioningStatus> {
     /*
      * The status of the latest long running operation for the agent pool.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * The observed status of the agent pool.
      */
-    @JsonProperty(value = "status")
     private AgentPoolProvisioningStatusStatus status;
 
     /**
@@ -37,6 +39,17 @@ public class AgentPoolProvisioningStatus {
      */
     public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The status of the latest long running operation for the agent pool.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the AgentPoolProvisioningStatus object itself.
+     */
+    AgentPoolProvisioningStatus withProvisioningState(ResourceProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -68,5 +81,44 @@ public class AgentPoolProvisioningStatus {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolProvisioningStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolProvisioningStatus if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolProvisioningStatus.
+     */
+    public static AgentPoolProvisioningStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolProvisioningStatus deserializedAgentPoolProvisioningStatus = new AgentPoolProvisioningStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedAgentPoolProvisioningStatus.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAgentPoolProvisioningStatus.status = AgentPoolProvisioningStatusStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolProvisioningStatus;
+        });
     }
 }

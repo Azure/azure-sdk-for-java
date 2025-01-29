@@ -19,7 +19,9 @@ import java.util.Map;
 @Fluent
 public final class RedirectIncompatibleRowSettings implements JsonSerializable<RedirectIncompatibleRowSettings> {
     /*
-     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression with resultType string).
+     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting incompatible
+     * row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression with
+     * resultType string).
      */
     private Object linkedServiceName;
 

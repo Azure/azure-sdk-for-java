@@ -19,28 +19,60 @@ import java.time.OffsetDateTime;
 @Fluent
 public interface SqlServerKey
     extends HasId, HasInnerModel<ServerKeyInner>, HasName, HasResourceGroup, Indexable, Refreshable<SqlServerKey> {
-    /** @return name of the SQL Server to which this DNS alias belongs */
+    /**
+     * Gets the name of the SQL Server to which this DNS alias belongs.
+     *
+     * @return name of the SQL Server to which this DNS alias belongs
+     */
     String sqlServerName();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the kind of encryption protector; this is metadata used for the Azure Portal experience */
+    /**
+     * Gets the kind of encryption protector.
+     *
+     * @return the kind of encryption protector; this is metadata used for the Azure Portal experience
+     */
     String kind();
 
-    /** @return the resource location */
+    /**
+     * Gets the resource location.
+     *
+     * @return the resource location
+     */
     Region region();
 
-    /** @return the server key type */
+    /**
+     * Gets the server key type.
+     *
+     * @return the server key type
+     */
     ServerKeyType serverKeyType();
 
-    /** @return the URI of the server key */
+    /**
+     * Gets the URI of the server key.
+     *
+     * @return the URI of the server key
+     */
     String uri();
 
-    /** @return the thumbprint of the server key */
+    /**
+     * Gets the thumbprint of the server key.
+     *
+     * @return the thumbprint of the server key
+     */
     String thumbprint();
 
-    /** @return the server key creation date */
+    /**
+     * Gets the server key creation date.
+     *
+     * @return the server key creation date
+     */
     OffsetDateTime creationDate();
 
     /** Deletes the SQL Server Key. */

@@ -34,7 +34,8 @@ public final class TransferToParticipantRequestInternal
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     private String operationCallbackUri;
 
@@ -44,7 +45,8 @@ public final class TransferToParticipantRequestInternal
     private CustomCallingContext customCallingContext;
 
     /*
-     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to a Pstn target.
+     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call
+     * to a Pstn target.
      */
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
@@ -119,7 +121,8 @@ public final class TransferToParticipantRequestInternal
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -130,7 +133,8 @@ public final class TransferToParticipantRequestInternal
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
@@ -183,9 +187,6 @@ public final class TransferToParticipantRequestInternal
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

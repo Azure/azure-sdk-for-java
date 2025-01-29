@@ -17,7 +17,7 @@ public final class DscCompilationJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DscCompilationJobProperties model = BinaryData.fromString(
-            "{\"configuration\":{\"name\":\"bxu\"},\"startedBy\":\"bhqwalmuzyoxa\",\"jobId\":\"517c542a-3c6d-4f6f-b97e-1b75c227092b\",\"creationTime\":\"2021-04-14T09:10:53Z\",\"provisioningState\":\"Succeeded\",\"runOn\":\"ncuxrhdwb\",\"status\":\"Disconnected\",\"statusDetails\":\"niwdjsw\",\"startTime\":\"2021-09-04T13:55:51Z\",\"endTime\":\"2021-08-07T21:53:51Z\",\"exception\":\"gnxytxhpzxbz\",\"lastModifiedTime\":\"2021-01-14T15:07:39Z\",\"lastStatusModifiedTime\":\"2021-03-26T15:31:42Z\",\"parameters\":{\"wtctyqi\":\"cuh\",\"bhvgy\":\"lbbovplw\",\"svmkfssxquk\":\"gu\",\"mg\":\"fpl\"}}")
+            "{\"configuration\":{\"name\":\"bxu\"},\"startedBy\":\"bhqwalmuzyoxa\",\"jobId\":\"7c240544-7b71-4ba8-a98b-f0cb61483931\",\"creationTime\":\"2021-04-14T09:10:53Z\",\"provisioningState\":\"Succeeded\",\"runOn\":\"ncuxrhdwb\",\"status\":\"Disconnected\",\"statusDetails\":\"niwdjsw\",\"startTime\":\"2021-09-04T13:55:51Z\",\"endTime\":\"2021-08-07T21:53:51Z\",\"exception\":\"gnxytxhpzxbz\",\"lastModifiedTime\":\"2021-01-14T15:07:39Z\",\"lastStatusModifiedTime\":\"2021-03-26T15:31:42Z\",\"parameters\":{\"wtctyqi\":\"cuh\",\"bhvgy\":\"lbbovplw\",\"svmkfssxquk\":\"gu\",\"mg\":\"fpl\"}}")
             .toObject(DscCompilationJobProperties.class);
         Assertions.assertEquals("bxu", model.configuration().name());
         Assertions.assertEquals(JobProvisioningState.SUCCEEDED, model.provisioningState());

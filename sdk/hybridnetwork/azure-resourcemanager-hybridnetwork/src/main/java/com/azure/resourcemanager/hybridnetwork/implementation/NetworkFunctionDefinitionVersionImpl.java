@@ -143,12 +143,12 @@ public final class NetworkFunctionDefinitionVersionImpl implements NetworkFuncti
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publisherName = Utils.getValueFromIdByName(innerObject.id(), "publishers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.publisherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publishers");
         this.networkFunctionDefinitionGroupName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionGroups");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionGroups");
         this.networkFunctionDefinitionVersionName
-            = Utils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionVersions");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFunctionDefinitionVersions");
     }
 
     public NetworkFunctionDefinitionVersion refresh() {

@@ -25,11 +25,6 @@ public final class SlackChannel extends Channel {
      */
     private SlackChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of SlackChannel class.
      */
@@ -64,16 +59,6 @@ public final class SlackChannel extends Channel {
     public SlackChannel withProperties(SlackChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class SlackChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedSlackChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedSlackChannel.provisioningState = reader.getString();
+                    deserializedSlackChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedSlackChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.storagecache.models.PrimingJob;
  */
 public final class CachesStartPrimingJobSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StartPrimingJob.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StartPrimingJob.
+     * json
      */
     /**
      * Sample code: StartPrimingJob.

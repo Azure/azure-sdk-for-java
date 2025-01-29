@@ -23,26 +23,36 @@ public interface EventHubDisasterRecoveryPairing
     extends NestedResource, HasManager<EventHubsManager>, Refreshable<EventHubDisasterRecoveryPairing>,
     Updatable<EventHubDisasterRecoveryPairing.Update>, HasInnerModel<ArmDisasterRecoveryInner> {
     /**
+     * Gets primary event hub namespace resource group.
+     *
      * @return primary event hub namespace resource group
      */
     String primaryNamespaceResourceGroupName();
 
     /**
+     * Gets primary event hub namespace in the pairing.
+     *
      * @return primary event hub namespace in the pairing
      */
     String primaryNamespaceName();
 
     /**
+     * Gets secondary event hub namespace in the pairing.
+     *
      * @return secondary event hub namespace in the pairing
      */
     String secondaryNamespaceId();
 
     /**
+     * Gets the namespace role.
+     *
      * @return the namespace role
      */
     RoleDisasterRecovery namespaceRole();
 
     /**
+     * Gets provisioning state of the pairing.
+     *
      * @return provisioning state of the pairing
      */
     ProvisioningStateDR provisioningState();
@@ -72,11 +82,15 @@ public interface EventHubDisasterRecoveryPairing
     void failOver();
 
     /**
+     * Gets the authorization rules for the event hub disaster recovery pairing.
+     *
      * @return the authorization rules for the event hub disaster recovery pairing
      */
     PagedFlux<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRulesAsync();
 
     /**
+     * Gets the authorization rules for the event hub disaster recovery pairing.
+     *
      * @return the authorization rules for the event hub disaster recovery pairing
      */
     PagedIterable<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRules();

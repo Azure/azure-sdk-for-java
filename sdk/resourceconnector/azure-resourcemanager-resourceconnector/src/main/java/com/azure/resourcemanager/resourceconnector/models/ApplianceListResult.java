@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Appliances operation response. */
+/**
+ * The List Appliances operation response.
+ */
 @Immutable
-public final class ApplianceListResult {
+public final class ApplianceListResult implements JsonSerializable<ApplianceListResult> {
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The list of Appliances.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplianceInner> value;
 
-    /** Creates an instance of ApplianceListResult class. */
+    /**
+     * Creates an instance of ApplianceListResult class.
+     */
     public ApplianceListResult() {
     }
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class ApplianceListResult {
 
     /**
      * Get the value property: The list of Appliances.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplianceInner> value() {
@@ -48,12 +54,50 @@ public final class ApplianceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceListResult.
+     */
+    public static ApplianceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceListResult deserializedApplianceListResult = new ApplianceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedApplianceListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ApplianceInner> value = reader.readArray(reader1 -> ApplianceInner.fromJson(reader1));
+                    deserializedApplianceListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceListResult;
+        });
     }
 }

@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.quantum.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quantum.models.ApiKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Result of list Api keys and connection strings.
  */
 @Fluent
-public final class ListKeysResultInner {
+public final class ListKeysResultInner implements JsonSerializable<ListKeysResultInner> {
     /*
      * Indicator of enablement of the Quantum workspace Api keys.
      */
-    @JsonProperty(value = "apiKeyEnabled")
     private Boolean apiKeyEnabled;
 
     /*
      * The quantum workspace primary api key.
      */
-    @JsonProperty(value = "primaryKey")
     private ApiKey primaryKey;
 
     /*
      * The quantum workspace secondary api key.
      */
-    @JsonProperty(value = "secondaryKey")
     private ApiKey secondaryKey;
 
     /*
      * The connection string of the primary api key.
      */
-    @JsonProperty(value = "primaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryConnectionString;
 
     /*
      * The connection string of the secondary api key.
      */
-    @JsonProperty(value = "secondaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryConnectionString;
 
     /**
@@ -139,5 +138,51 @@ public final class ListKeysResultInner {
         if (secondaryKey() != null) {
             secondaryKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("apiKeyEnabled", this.apiKeyEnabled);
+        jsonWriter.writeJsonField("primaryKey", this.primaryKey);
+        jsonWriter.writeJsonField("secondaryKey", this.secondaryKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListKeysResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListKeysResultInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListKeysResultInner.
+     */
+    public static ListKeysResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListKeysResultInner deserializedListKeysResultInner = new ListKeysResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiKeyEnabled".equals(fieldName)) {
+                    deserializedListKeysResultInner.apiKeyEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedListKeysResultInner.primaryKey = ApiKey.fromJson(reader);
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedListKeysResultInner.secondaryKey = ApiKey.fromJson(reader);
+                } else if ("primaryConnectionString".equals(fieldName)) {
+                    deserializedListKeysResultInner.primaryConnectionString = reader.getString();
+                } else if ("secondaryConnectionString".equals(fieldName)) {
+                    deserializedListKeysResultInner.secondaryConnectionString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListKeysResultInner;
+        });
     }
 }

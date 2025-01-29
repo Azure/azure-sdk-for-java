@@ -27,7 +27,7 @@ public final class IncidentsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.incidents().deleteWithResponse("on", "zpghlrdtbgblxbu", "brvjztaflv", com.azure.core.util.Context.NONE);
+        manager.incidents().deleteWithResponse("jeaoqaqbz", "yh", "w", com.azure.core.util.Context.NONE);
 
     }
 }

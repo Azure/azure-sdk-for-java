@@ -19,8 +19,8 @@ public final class FirmwaresDeleteSamples {
      */
     public static void
         firmwaresDeleteMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +34,7 @@ public final class FirmwaresDeleteSamples {
      */
     public static void
         firmwaresDeleteMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE);
     }
 }

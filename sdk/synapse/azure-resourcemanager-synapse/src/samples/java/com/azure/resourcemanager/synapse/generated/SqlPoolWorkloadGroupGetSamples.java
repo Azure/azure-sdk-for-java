@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class SqlPoolWorkloadGroupGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolWorkloadGroup.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolWorkloadGroup.json
      */
     /**
      * Sample code: Get a a workload group of a SQL Analytics pool.

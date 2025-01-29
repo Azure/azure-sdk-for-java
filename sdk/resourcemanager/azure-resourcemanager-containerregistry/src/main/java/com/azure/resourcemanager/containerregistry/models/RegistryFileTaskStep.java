@@ -12,13 +12,25 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure RegistryFileTaskStep registry task. */
 @Fluent()
 public interface RegistryFileTaskStep extends RegistryTaskStep {
-    /** @return the task file path of this file task step */
+    /**
+     * Gets the task file path of this file task step.
+     *
+     * @return the task file path of this file task step
+     */
     String taskFilePath();
 
-    /** @return the values file path of this file task step */
+    /**
+     * Gets the values file path of this file task step.
+     *
+     * @return the values file path of this file task step
+     */
     String valuesFilePath();
 
-    /** @return the values of this file task step */
+    /**
+     * Gets the values of this file task step.
+     *
+     * @return the values of this file task step
+     */
     List<SetValue> values();
 
     /** Container interface for all the definitions related to a RegistryFileTaskStep. */

@@ -14,12 +14,18 @@ import java.util.Set;
 public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPrivateIpAddress, HasSubnet {
 
     /**
+     * Gets associated subnet.
+     *
      * @return associated subnet
      *     <p>Note this makes a separate call to Azure.
      */
     Subnet getSubnet();
 
-    /** @return the availability zones assigned to private frontend. */
+    /**
+     * Gets the availability zones assigned to private frontend.
+     *
+     * @return the availability zones assigned to private frontend.
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
     /** Grouping of private frontend definition stages. */

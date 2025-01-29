@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.DnsEntityProperties;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +18,11 @@ import java.util.Map;
  * Represents a dns entity.
  */
 @Immutable
-public final class DnsEntity extends EntityInner {
+public final class DnsEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.DNS_RESOLUTION;
+    private EntityKindEnum kind = EntityKindEnum.DNS_RESOLUTION;
 
     /*
      * Dns entity properties
@@ -62,7 +61,7 @@ public final class DnsEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -219,7 +218,7 @@ public final class DnsEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedDnsEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedDnsEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedDnsEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedDnsEntity.innerProperties = DnsEntityProperties.fromJson(reader);
                 } else {

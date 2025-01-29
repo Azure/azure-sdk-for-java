@@ -10,7 +10,6 @@ module com.azure.resourcemanager.migrationdiscoverysap {
     exports com.azure.resourcemanager.migrationdiscoverysap.fluent.models;
     exports com.azure.resourcemanager.migrationdiscoverysap.models;
 
-    opens com.azure.resourcemanager.migrationdiscoverysap.fluent.models
-        to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.migrationdiscoverysap.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.migrationdiscoverysap.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.migrationdiscoverysap.models to com.azure.core;
 }

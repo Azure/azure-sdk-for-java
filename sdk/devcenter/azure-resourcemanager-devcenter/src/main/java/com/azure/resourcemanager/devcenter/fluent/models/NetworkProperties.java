@@ -6,10 +6,13 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Network properties.
@@ -19,25 +22,22 @@ public final class NetworkProperties extends NetworkConnectionUpdateProperties {
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * Overall health status of the network connection. Health checks are run on creation, update, and periodically to validate the network connection.
+     * Overall health status of the network connection. Health checks are run on creation, update, and periodically to
+     * validate the network connection.
      */
-    @JsonProperty(value = "healthCheckStatus", access = JsonProperty.Access.WRITE_ONLY)
     private HealthCheckStatus healthCheckStatus;
 
     /*
      * The name for resource group where NICs will be placed.
      */
-    @JsonProperty(value = "networkingResourceGroupName")
     private String networkingResourceGroupName;
 
     /*
      * AAD Join type.
      */
-    @JsonProperty(value = "domainJoinType", required = true)
     private DomainJoinType domainJoinType;
 
     /**
@@ -157,7 +157,6 @@ public final class NetworkProperties extends NetworkConnectionUpdateProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (domainJoinType() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -166,4 +165,64 @@ public final class NetworkProperties extends NetworkConnectionUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", subnetId());
+        jsonWriter.writeStringField("domainName", domainName());
+        jsonWriter.writeStringField("organizationUnit", organizationUnit());
+        jsonWriter.writeStringField("domainUsername", domainUsername());
+        jsonWriter.writeStringField("domainPassword", domainPassword());
+        jsonWriter.writeStringField("domainJoinType",
+            this.domainJoinType == null ? null : this.domainJoinType.toString());
+        jsonWriter.writeStringField("networkingResourceGroupName", this.networkingResourceGroupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkProperties.
+     */
+    public static NetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProperties deserializedNetworkProperties = new NetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedNetworkProperties.withSubnetId(reader.getString());
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedNetworkProperties.withDomainName(reader.getString());
+                } else if ("organizationUnit".equals(fieldName)) {
+                    deserializedNetworkProperties.withOrganizationUnit(reader.getString());
+                } else if ("domainUsername".equals(fieldName)) {
+                    deserializedNetworkProperties.withDomainUsername(reader.getString());
+                } else if ("domainPassword".equals(fieldName)) {
+                    deserializedNetworkProperties.withDomainPassword(reader.getString());
+                } else if ("domainJoinType".equals(fieldName)) {
+                    deserializedNetworkProperties.domainJoinType = DomainJoinType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("healthCheckStatus".equals(fieldName)) {
+                    deserializedNetworkProperties.healthCheckStatus = HealthCheckStatus.fromString(reader.getString());
+                } else if ("networkingResourceGroupName".equals(fieldName)) {
+                    deserializedNetworkProperties.networkingResourceGroupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProperties;
+        });
+    }
 }

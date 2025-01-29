@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cache security settings.
  */
 @Fluent
-public final class CacheSecuritySettings {
+public final class CacheSecuritySettings implements JsonSerializable<CacheSecuritySettings> {
     /*
      * NFS access policies defined for this cache.
      */
-    @JsonProperty(value = "accessPolicies")
     private List<NfsAccessPolicy> accessPolicies;
 
     /**
@@ -54,5 +57,44 @@ public final class CacheSecuritySettings {
         if (accessPolicies() != null) {
             accessPolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("accessPolicies", this.accessPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheSecuritySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheSecuritySettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheSecuritySettings.
+     */
+    public static CacheSecuritySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheSecuritySettings deserializedCacheSecuritySettings = new CacheSecuritySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessPolicies".equals(fieldName)) {
+                    List<NfsAccessPolicy> accessPolicies
+                        = reader.readArray(reader1 -> NfsAccessPolicy.fromJson(reader1));
+                    deserializedCacheSecuritySettings.accessPolicies = accessPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheSecuritySettings;
+        });
     }
 }

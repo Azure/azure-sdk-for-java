@@ -18,7 +18,6 @@ import java.util.Set;
  */
 @Fluent
 public class BlobDownloadToFileOptions {
-
     private final String filePath;
     private BlobRange range;
     private ParallelTransferOptions parallelTransferOptions;
@@ -31,6 +30,7 @@ public class BlobDownloadToFileOptions {
      * Constructs a {@link BlobDownloadToFileOptions}.
      *
      * @param filePath Path of the file to download to.
+     * @throws NullPointerException If {@code filePath} is null.
      */
     public BlobDownloadToFileOptions(String filePath) {
         StorageImplUtils.assertNotNull("filePath", filePath);
@@ -38,6 +38,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the path of the file to download to.
+     *
      * @return The path of the file to download to.
      */
     public String getFilePath() {
@@ -45,6 +47,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the {@link BlobRange}.
+     *
      * @return {@link BlobRange}
      */
     public BlobRange getRange() {
@@ -52,6 +56,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the {@link ParallelTransferOptions}.
+     *
      * @return {@link ParallelTransferOptions}
      */
     public ParallelTransferOptions getParallelTransferOptions() {
@@ -59,6 +65,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the {@link DownloadRetryOptions}.
+     *
      * @return {@link DownloadRetryOptions}
      */
     public DownloadRetryOptions getDownloadRetryOptions() {
@@ -66,6 +74,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -73,6 +83,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets whether the contentMD5 for the specified blob range should be returned.
+     *
      * @return Whether the contentMD5 for the specified blob range should be returned.
      */
     public boolean isRetrieveContentRangeMd5() {
@@ -80,6 +92,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Gets the {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     *
      * @return {@link OpenOption OpenOptions} to use to configure how to open or create the file.
      */
     public Set<OpenOption> getOpenOptions() {
@@ -87,6 +101,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Sets the {@link BlobRange}.
+     *
      * @param range {@link BlobRange}
      * @return The updated options.
      */
@@ -96,6 +112,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Sets the {@link ParallelTransferOptions}.
+     *
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
@@ -105,6 +123,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Sets the {@link DownloadRetryOptions}.
+     *
      * @param downloadRetryOptions {@link DownloadRetryOptions}
      * @return The updated options.
      */
@@ -114,6 +134,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -123,6 +145,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Sets whether the contentMD5 for the specified blob range should be returned.
+     *
      * @param retrieveContentRangeMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return The updated options.
      */
@@ -132,6 +156,8 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
+     * Sets the {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     *
      * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
      * @return The updated options.
      */

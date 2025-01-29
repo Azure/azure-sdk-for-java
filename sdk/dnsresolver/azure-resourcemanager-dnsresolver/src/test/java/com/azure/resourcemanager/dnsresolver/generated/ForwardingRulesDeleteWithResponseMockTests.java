@@ -28,8 +28,7 @@ public final class ForwardingRulesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.forwardingRules()
-            .deleteWithResponse("ioolvrwxkvtkkgll", "wjygvjayvblmhvk", "uhbxvvy", "gsopbyrqufegxu",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rbuukzclewyhmlwp", "ztzp", "fn", "ckw", com.azure.core.util.Context.NONE);
 
     }
 }

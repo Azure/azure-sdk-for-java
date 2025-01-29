@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a schedules applicable to a virtual machine. */
+/**
+ * Properties of a schedules applicable to a virtual machine.
+ */
 @Fluent
-public final class ApplicableSchedulePropertiesInner {
+public final class ApplicableSchedulePropertiesInner implements JsonSerializable<ApplicableSchedulePropertiesInner> {
     /*
      * The auto-shutdown schedule, if one has been set at the lab or lab resource level.
      */
-    @JsonProperty(value = "labVmsShutdown")
     private ScheduleInner labVmsShutdown;
 
     /*
      * The auto-startup schedule, if one has been set at the lab or lab resource level.
      */
-    @JsonProperty(value = "labVmsStartup")
     private ScheduleInner labVmsStartup;
 
-    /** Creates an instance of ApplicableSchedulePropertiesInner class. */
+    /**
+     * Creates an instance of ApplicableSchedulePropertiesInner class.
+     */
     public ApplicableSchedulePropertiesInner() {
     }
 
     /**
      * Get the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
      * level.
-     *
+     * 
      * @return the labVmsShutdown value.
      */
     public ScheduleInner labVmsShutdown() {
@@ -39,7 +45,7 @@ public final class ApplicableSchedulePropertiesInner {
     /**
      * Set the labVmsShutdown property: The auto-shutdown schedule, if one has been set at the lab or lab resource
      * level.
-     *
+     * 
      * @param labVmsShutdown the labVmsShutdown value to set.
      * @return the ApplicableSchedulePropertiesInner object itself.
      */
@@ -50,7 +56,7 @@ public final class ApplicableSchedulePropertiesInner {
 
     /**
      * Get the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
-     *
+     * 
      * @return the labVmsStartup value.
      */
     public ScheduleInner labVmsStartup() {
@@ -59,7 +65,7 @@ public final class ApplicableSchedulePropertiesInner {
 
     /**
      * Set the labVmsStartup property: The auto-startup schedule, if one has been set at the lab or lab resource level.
-     *
+     * 
      * @param labVmsStartup the labVmsStartup value to set.
      * @return the ApplicableSchedulePropertiesInner object itself.
      */
@@ -70,7 +76,7 @@ public final class ApplicableSchedulePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -80,5 +86,45 @@ public final class ApplicableSchedulePropertiesInner {
         if (labVmsStartup() != null) {
             labVmsStartup().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("labVmsShutdown", this.labVmsShutdown);
+        jsonWriter.writeJsonField("labVmsStartup", this.labVmsStartup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicableSchedulePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicableSchedulePropertiesInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicableSchedulePropertiesInner.
+     */
+    public static ApplicableSchedulePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicableSchedulePropertiesInner deserializedApplicableSchedulePropertiesInner
+                = new ApplicableSchedulePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("labVmsShutdown".equals(fieldName)) {
+                    deserializedApplicableSchedulePropertiesInner.labVmsShutdown = ScheduleInner.fromJson(reader);
+                } else if ("labVmsStartup".equals(fieldName)) {
+                    deserializedApplicableSchedulePropertiesInner.labVmsStartup = ScheduleInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicableSchedulePropertiesInner;
+        });
     }
 }

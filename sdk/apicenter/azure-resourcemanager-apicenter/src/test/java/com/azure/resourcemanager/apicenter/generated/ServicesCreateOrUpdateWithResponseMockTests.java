@@ -6,50 +6,31 @@ package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
 import com.azure.resourcemanager.apicenter.models.ServiceProperties;
 import com.azure.resourcemanager.apicenter.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"f61d776f-58df-489c-8d8a-4a2aa9a956aa\",\"tenantId\":\"f1e53774-6500-4c12-9baf-ead965993b37\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mubyynt\":{\"principalId\":\"bb08376d-bb27-4ae2-aa13-ad3ee818d332\",\"clientId\":\"50e43af6-1b30-496b-8135-c8df929ddee8\"},\"bqtkoievseotgqr\":{\"principalId\":\"4118343a-b4c8-400b-8948-96d08b8b19ca\",\"clientId\":\"3f8ff19e-7f53-4f28-8100-f714a1280a05\"},\"muwlauwzizxbm\":{\"principalId\":\"005584e9-0237-448a-bfc2-a6205ee0325a\",\"clientId\":\"b7393661-ce8c-495f-bf6b-b20048537bf6\"}}},\"location\":\"cjefuzmu\",\"tags\":{\"bhjpglkfgohdne\":\"ttdumorppxebmnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"8b369e7c-f2df-4b0a-b3e6-54af5b086ed0\",\"tenantId\":\"28bf0f77-43f0-41ab-a318-278e969c0479\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mubyynt\":{\"principalId\":\"b83e0951-434b-4b45-9c09-b1535a375fd8\",\"clientId\":\"b6b414d8-cbf3-417a-8ce5-5787ac2d40db\"},\"bqtkoievseotgqr\":{\"principalId\":\"3a2bda92-0819-4564-a2ee-d5bf37ef9c17\",\"clientId\":\"8f340e50-450b-4bba-bd85-ff1a015d908f\"},\"muwlauwzizxbm\":{\"principalId\":\"8efa50ee-a589-4198-895e-0ffa46c82a62\",\"clientId\":\"880c22a1-6609-4bdd-adb1-4c042d97f583\"}}},\"location\":\"cjefuzmu\",\"tags\":{\"bhjpglkfgohdne\":\"ttdumorppxebmnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiCenterManager manager = ApiCenterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

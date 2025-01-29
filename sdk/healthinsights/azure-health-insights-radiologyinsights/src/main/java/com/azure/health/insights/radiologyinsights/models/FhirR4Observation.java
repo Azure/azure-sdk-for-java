@@ -531,74 +531,6 @@ public final class FhirR4Observation extends FhirR4DomainResource {
         return this.component;
     }
 
-    /*
-     * Extensions that cannot be ignored
-     */
-    @Generated
-    private List<FhirR4Extension> modifierExtension;
-
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /*
-     * Contained, inline Resources
-     */
-    @Generated
-    private List<FhirR4Resource> contained;
-
-    /*
-     * Text summary of the resource, for human interpretation
-     */
-    @Generated
-    private FhirR4Narrative text;
-
-    /**
-     * Get the modifierExtension property: Extensions that cannot be ignored.
-     *
-     * @return the modifierExtension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getModifierExtension() {
-        return this.modifierExtension;
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
-    /**
-     * Get the contained property: Contained, inline Resources.
-     *
-     * @return the contained value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Resource> getContained() {
-        return this.contained;
-    }
-
-    /**
-     * Get the text property: Text summary of the resource, for human interpretation.
-     *
-     * @return the text value.
-     */
-    @Generated
-    @Override
-    public FhirR4Narrative getText() {
-        return this.text;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -801,10 +733,10 @@ public final class FhirR4Observation extends FhirR4DomainResource {
             deserializedFhirR4Observation.setMeta(meta);
             deserializedFhirR4Observation.setImplicitRules(implicitRules);
             deserializedFhirR4Observation.setLanguage(language);
-            deserializedFhirR4Observation.text = text;
-            deserializedFhirR4Observation.contained = contained;
-            deserializedFhirR4Observation.extension = extension;
-            deserializedFhirR4Observation.modifierExtension = modifierExtension;
+            deserializedFhirR4Observation.setText(text);
+            deserializedFhirR4Observation.setContained(contained);
+            deserializedFhirR4Observation.setExtension(extension);
+            deserializedFhirR4Observation.setModifierExtension(modifierExtension);
             deserializedFhirR4Observation.resourceType = resourceType;
             deserializedFhirR4Observation.identifier = identifier;
             deserializedFhirR4Observation.category = category;

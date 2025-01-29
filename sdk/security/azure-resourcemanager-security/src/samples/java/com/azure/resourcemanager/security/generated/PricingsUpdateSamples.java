@@ -13,7 +13,9 @@ import com.azure.resourcemanager.security.models.PricingTier;
  */
 public final class PricingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutPricingByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for CloudPosture plan).
@@ -28,7 +30,9 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingByNamePartialSuccess_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutPricingByNamePartialSuccess_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for CloudPosture plan) - partial success.
@@ -43,7 +47,9 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutPricingVMsByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutPricingVMsByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for VirtualMachines plan).
@@ -59,7 +65,9 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/PutResourcePricingByNameVirtualMachines_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2024-01-01/examples/Pricings/
+     * PutResourcePricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Update pricing on resource (example for VirtualMachines plan).

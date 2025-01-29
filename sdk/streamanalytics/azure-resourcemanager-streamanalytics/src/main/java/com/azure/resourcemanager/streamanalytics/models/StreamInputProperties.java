@@ -26,18 +26,6 @@ public final class StreamInputProperties extends InputProperties {
      */
     private StreamInputDataSource datasource;
 
-    /*
-     * The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource has
-     * changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for
-     * optimistic concurrency.
-     */
-    private String etag;
-
-    /*
-     * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
-     */
-    private Diagnostics diagnostics;
-
     /**
      * Creates an instance of StreamInputProperties class.
      */
@@ -78,29 +66,6 @@ public final class StreamInputProperties extends InputProperties {
     }
 
     /**
-     * Get the etag property: The current entity tag for the input. This is an opaque string. You can use it to detect
-     * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
-     * for write operations for optimistic concurrency.
-     * 
-     * @return the etag value.
-     */
-    @Override
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Get the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
-     * warrant customer attention.
-     * 
-     * @return the diagnostics value.
-     */
-    @Override
-    public Diagnostics diagnostics() {
-        return this.diagnostics;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -128,15 +93,6 @@ public final class StreamInputProperties extends InputProperties {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StreamInputProperties withWatermarkSettings(InputWatermarkProperties watermarkSettings) {
-        super.withWatermarkSettings(watermarkSettings);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -155,9 +111,6 @@ public final class StreamInputProperties extends InputProperties {
         if (compression() != null) {
             compression().validate();
         }
-        if (watermarkSettings() != null) {
-            watermarkSettings().validate();
-        }
     }
 
     /**
@@ -169,7 +122,6 @@ public final class StreamInputProperties extends InputProperties {
         jsonWriter.writeJsonField("serialization", serialization());
         jsonWriter.writeJsonField("compression", compression());
         jsonWriter.writeStringField("partitionKey", partitionKey());
-        jsonWriter.writeJsonField("watermarkSettings", watermarkSettings());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("datasource", this.datasource);
         return jsonWriter.writeEndObject();
@@ -193,15 +145,13 @@ public final class StreamInputProperties extends InputProperties {
                 if ("serialization".equals(fieldName)) {
                     deserializedStreamInputProperties.withSerialization(Serialization.fromJson(reader));
                 } else if ("diagnostics".equals(fieldName)) {
-                    deserializedStreamInputProperties.diagnostics = Diagnostics.fromJson(reader);
+                    deserializedStreamInputProperties.withDiagnostics(Diagnostics.fromJson(reader));
                 } else if ("etag".equals(fieldName)) {
-                    deserializedStreamInputProperties.etag = reader.getString();
+                    deserializedStreamInputProperties.withEtag(reader.getString());
                 } else if ("compression".equals(fieldName)) {
                     deserializedStreamInputProperties.withCompression(Compression.fromJson(reader));
                 } else if ("partitionKey".equals(fieldName)) {
                     deserializedStreamInputProperties.withPartitionKey(reader.getString());
-                } else if ("watermarkSettings".equals(fieldName)) {
-                    deserializedStreamInputProperties.withWatermarkSettings(InputWatermarkProperties.fromJson(reader));
                 } else if ("type".equals(fieldName)) {
                     deserializedStreamInputProperties.type = reader.getString();
                 } else if ("datasource".equals(fieldName)) {

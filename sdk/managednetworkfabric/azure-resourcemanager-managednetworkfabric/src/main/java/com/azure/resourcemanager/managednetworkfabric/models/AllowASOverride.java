@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enable Or Disable state. */
+/**
+ * Enable Or Disable state.
+ */
 public final class AllowASOverride extends ExpandableStringEnum<AllowASOverride> {
-    /** Static value Enable for AllowASOverride. */
+    /**
+     * Static value Enable for AllowASOverride.
+     */
     public static final AllowASOverride ENABLE = fromString("Enable");
 
-    /** Static value Disable for AllowASOverride. */
+    /**
+     * Static value Disable for AllowASOverride.
+     */
     public static final AllowASOverride DISABLE = fromString("Disable");
 
     /**
      * Creates a new instance of AllowASOverride value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AllowASOverride extends ExpandableStringEnum<AllowASOverride>
 
     /**
      * Creates or finds a AllowASOverride from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AllowASOverride.
      */
-    @JsonCreator
     public static AllowASOverride fromString(String name) {
         return fromString(name, AllowASOverride.class);
     }
 
     /**
      * Gets known AllowASOverride values.
-     *
+     * 
      * @return known AllowASOverride values.
      */
     public static Collection<AllowASOverride> values() {

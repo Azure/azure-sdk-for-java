@@ -152,7 +152,6 @@ public final class SalesforceSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

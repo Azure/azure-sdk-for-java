@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -80,7 +80,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ManagedNetworkFabricManager. Self service experience for Azure Network Fabric API. */
+/**
+ * Entry point to ManagedNetworkFabricManager.
+ * Self service experience for Azure Network Fabric API.
+ */
 public final class ManagedNetworkFabricManager {
     private AccessControlLists accessControlLists;
 
@@ -144,7 +147,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Creates an instance of Managed Network Fabric service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Managed Network Fabric service API instance.
@@ -157,7 +160,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Creates an instance of Managed Network Fabric service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Managed Network Fabric service API instance.
@@ -170,14 +173,16 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets a Configurable instance that can be used to create ManagedNetworkFabricManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ManagedNetworkFabricManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -249,8 +254,8 @@ public final class ManagedNetworkFabricManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -292,7 +297,7 @@ public final class ManagedNetworkFabricManager {
                 .append("-")
                 .append("com.azure.resourcemanager.managednetworkfabric")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -325,7 +330,7 @@ public final class ManagedNetworkFabricManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -340,7 +345,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of AccessControlLists. It manages AccessControlList.
-     *
+     * 
      * @return Resource collection API of AccessControlLists.
      */
     public AccessControlLists accessControlLists() {
@@ -352,7 +357,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of InternetGateways. It manages InternetGateway.
-     *
+     * 
      * @return Resource collection API of InternetGateways.
      */
     public InternetGateways internetGateways() {
@@ -364,7 +369,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of InternetGatewayRules. It manages InternetGatewayRule.
-     *
+     * 
      * @return Resource collection API of InternetGatewayRules.
      */
     public InternetGatewayRules internetGatewayRules() {
@@ -376,7 +381,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of IpCommunities. It manages IpCommunity.
-     *
+     * 
      * @return Resource collection API of IpCommunities.
      */
     public IpCommunities ipCommunities() {
@@ -388,7 +393,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of IpExtendedCommunities. It manages IpExtendedCommunity.
-     *
+     * 
      * @return Resource collection API of IpExtendedCommunities.
      */
     public IpExtendedCommunities ipExtendedCommunities() {
@@ -400,7 +405,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of IpPrefixes. It manages IpPrefix.
-     *
+     * 
      * @return Resource collection API of IpPrefixes.
      */
     public IpPrefixes ipPrefixes() {
@@ -412,7 +417,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of L2IsolationDomains. It manages L2IsolationDomain.
-     *
+     * 
      * @return Resource collection API of L2IsolationDomains.
      */
     public L2IsolationDomains l2IsolationDomains() {
@@ -424,7 +429,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of L3IsolationDomains. It manages L3IsolationDomain.
-     *
+     * 
      * @return Resource collection API of L3IsolationDomains.
      */
     public L3IsolationDomains l3IsolationDomains() {
@@ -436,7 +441,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of InternalNetworks. It manages InternalNetwork.
-     *
+     * 
      * @return Resource collection API of InternalNetworks.
      */
     public InternalNetworks internalNetworks() {
@@ -448,7 +453,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of ExternalNetworks. It manages ExternalNetwork.
-     *
+     * 
      * @return Resource collection API of ExternalNetworks.
      */
     public ExternalNetworks externalNetworks() {
@@ -460,7 +465,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NeighborGroups. It manages NeighborGroup.
-     *
+     * 
      * @return Resource collection API of NeighborGroups.
      */
     public NeighborGroups neighborGroups() {
@@ -472,7 +477,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkDeviceSkus.
-     *
+     * 
      * @return Resource collection API of NetworkDeviceSkus.
      */
     public NetworkDeviceSkus networkDeviceSkus() {
@@ -484,7 +489,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkDevices. It manages NetworkDevice.
-     *
+     * 
      * @return Resource collection API of NetworkDevices.
      */
     public NetworkDevices networkDevices() {
@@ -496,7 +501,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkInterfaces. It manages NetworkInterface.
-     *
+     * 
      * @return Resource collection API of NetworkInterfaces.
      */
     public NetworkInterfaces networkInterfaces() {
@@ -508,7 +513,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkFabricControllers. It manages NetworkFabricController.
-     *
+     * 
      * @return Resource collection API of NetworkFabricControllers.
      */
     public NetworkFabricControllers networkFabricControllers() {
@@ -521,7 +526,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkFabricSkus.
-     *
+     * 
      * @return Resource collection API of NetworkFabricSkus.
      */
     public NetworkFabricSkus networkFabricSkus() {
@@ -533,7 +538,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkFabrics. It manages NetworkFabric.
-     *
+     * 
      * @return Resource collection API of NetworkFabrics.
      */
     public NetworkFabrics networkFabrics() {
@@ -545,7 +550,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkToNetworkInterconnects. It manages NetworkToNetworkInterconnect.
-     *
+     * 
      * @return Resource collection API of NetworkToNetworkInterconnects.
      */
     public NetworkToNetworkInterconnects networkToNetworkInterconnects() {
@@ -558,7 +563,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkPacketBrokers. It manages NetworkPacketBroker.
-     *
+     * 
      * @return Resource collection API of NetworkPacketBrokers.
      */
     public NetworkPacketBrokers networkPacketBrokers() {
@@ -570,7 +575,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkRacks. It manages NetworkRack.
-     *
+     * 
      * @return Resource collection API of NetworkRacks.
      */
     public NetworkRacks networkRacks() {
@@ -582,7 +587,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkTapRules. It manages NetworkTapRule.
-     *
+     * 
      * @return Resource collection API of NetworkTapRules.
      */
     public NetworkTapRules networkTapRules() {
@@ -594,7 +599,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of NetworkTaps. It manages NetworkTap.
-     *
+     * 
      * @return Resource collection API of NetworkTaps.
      */
     public NetworkTaps networkTaps() {
@@ -606,7 +611,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -618,7 +623,7 @@ public final class ManagedNetworkFabricManager {
 
     /**
      * Gets the resource collection API of RoutePolicies. It manages RoutePolicy.
-     *
+     * 
      * @return Resource collection API of RoutePolicies.
      */
     public RoutePolicies routePolicies() {
@@ -629,8 +634,10 @@ public final class ManagedNetworkFabricManager {
     }
 
     /**
-     * @return Wrapped service client AzureNetworkFabricManagementServiceApi providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureNetworkFabricManagementServiceApi providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureNetworkFabricManagementServiceApi.
      */
     public AzureNetworkFabricManagementServiceApi serviceClient() {
         return this.clientObject;

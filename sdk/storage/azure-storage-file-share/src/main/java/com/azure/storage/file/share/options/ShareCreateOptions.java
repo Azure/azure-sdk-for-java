@@ -137,7 +137,8 @@ public class ShareCreateOptions {
     /**
      * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
      * Optional. Supported in version 2023-08-03 and above.  Only applicable for premium file storage accounts.
-     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS
+     * is enabled.
      * If not specified, the default is true.
      * @return the enableSnapshotVirtualDirectoryAccess value.
      */
@@ -148,7 +149,8 @@ public class ShareCreateOptions {
     /**
      * Set the enableSnapshotVirtualDirectoryAccess property:
      * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
-     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS
+     * is enabled.
      * If not specified, the default is true.
      * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareCreateOptions object itself.

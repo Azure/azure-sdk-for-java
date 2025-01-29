@@ -16,7 +16,6 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
  */
 @Fluent
 public class DataLakeFileFlushOptions {
-
     private Boolean retainUncommittedData;
     private Boolean close;
     private PathHttpHeaders pathHttpHeaders;
@@ -24,6 +23,12 @@ public class DataLakeFileFlushOptions {
     private LeaseAction leaseAction;
     private Integer leaseDuration;
     private String proposedLeaseId;
+
+    /**
+     * Creates a new instance of {@link DataLakeFileFlushOptions}.
+     */
+    public DataLakeFileFlushOptions() {
+    }
 
     /**
      * If "true", uncommitted data is retained after the flush operation completes; otherwise, the uncommitted data is
@@ -161,6 +166,8 @@ public class DataLakeFileFlushOptions {
     }
 
     /**
+     * Gets the lease duration in seconds.
+     *
      * @return the lease duration in seconds.
      */
     public Integer getLeaseDuration() {

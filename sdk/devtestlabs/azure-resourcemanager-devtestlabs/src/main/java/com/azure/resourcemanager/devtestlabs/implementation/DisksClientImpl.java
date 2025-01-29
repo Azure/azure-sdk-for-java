@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DisksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DisksClient.
+ */
 public final class DisksClientImpl implements DisksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DisksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of DisksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DisksClientImpl(DevTestLabsClientImpl client) {
@@ -157,7 +163,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -168,8 +174,8 @@ public final class DisksClientImpl implements DisksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -204,7 +210,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -216,8 +222,8 @@ public final class DisksClientImpl implements DisksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskInner>> listSinglePageAsync(String resourceGroupName, String labName,
@@ -251,7 +257,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -274,7 +280,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -296,7 +302,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -320,7 +326,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -340,7 +346,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -363,7 +369,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -407,7 +413,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -451,7 +457,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -470,7 +476,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -490,7 +496,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get disk.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -508,7 +514,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -557,7 +563,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -606,7 +612,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -628,7 +634,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -652,7 +658,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -671,7 +677,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -691,7 +697,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -711,7 +717,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -732,7 +738,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -751,7 +757,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Create or replace an existing disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -771,7 +777,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -814,7 +820,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -857,7 +863,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -877,7 +883,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -900,7 +906,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -918,7 +924,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -937,7 +943,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -955,7 +961,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -975,7 +981,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -991,7 +997,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1008,7 +1014,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1057,7 +1063,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1106,7 +1112,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1126,7 +1132,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1146,7 +1152,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Allows modifying tags of disks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1164,7 +1170,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1215,7 +1221,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1265,7 +1271,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1287,7 +1293,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1311,7 +1317,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1330,7 +1336,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1351,7 +1357,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1371,7 +1377,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1392,7 +1398,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1410,7 +1416,7 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1430,7 +1436,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1482,7 +1488,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1533,7 +1539,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1556,7 +1562,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1581,7 +1587,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1601,7 +1607,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1623,7 +1629,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1644,7 +1650,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1666,7 +1672,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1685,7 +1691,7 @@ public final class DisksClientImpl implements DisksClient {
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -1704,14 +1710,13 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskInner>> listNextSinglePageAsync(String nextLink) {
@@ -1731,15 +1736,14 @@ public final class DisksClientImpl implements DisksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskInner>> listNextSinglePageAsync(String nextLink, Context context) {

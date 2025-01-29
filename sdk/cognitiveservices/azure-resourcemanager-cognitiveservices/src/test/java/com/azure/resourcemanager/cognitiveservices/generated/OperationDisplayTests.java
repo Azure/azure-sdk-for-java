@@ -10,8 +10,9 @@ import com.azure.resourcemanager.cognitiveservices.models.OperationDisplay;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model = BinaryData.fromString(
-            "{\"provider\":\"zywbiex\",\"resource\":\"eyueaxibxujwb\",\"operation\":\"walm\",\"description\":\"yoxa\"}")
+        OperationDisplay model = BinaryData
+            .fromString(
+                "{\"provider\":\"otogtwrupqs\",\"resource\":\"nmic\",\"operation\":\"vce\",\"description\":\"eil\"}")
             .toObject(OperationDisplay.class);
     }
 

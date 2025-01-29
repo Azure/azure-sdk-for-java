@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The SubscriptionLifecycleNotificationSpecifications model. */
+/**
+ * The SubscriptionLifecycleNotificationSpecifications model.
+ */
 @Fluent
-public class SubscriptionLifecycleNotificationSpecifications {
+public class SubscriptionLifecycleNotificationSpecifications
+    implements JsonSerializable<SubscriptionLifecycleNotificationSpecifications> {
     /*
      * The subscriptionStateOverrideActions property.
      */
-    @JsonProperty(value = "subscriptionStateOverrideActions")
     private List<SubscriptionStateOverrideAction> subscriptionStateOverrideActions;
 
     /*
      * The softDeleteTTL property.
      */
-    @JsonProperty(value = "softDeleteTTL")
     private Duration softDeleteTtl;
 
-    /** Creates an instance of SubscriptionLifecycleNotificationSpecifications class. */
+    /**
+     * Creates an instance of SubscriptionLifecycleNotificationSpecifications class.
+     */
     public SubscriptionLifecycleNotificationSpecifications() {
     }
 
     /**
      * Get the subscriptionStateOverrideActions property: The subscriptionStateOverrideActions property.
-     *
+     * 
      * @return the subscriptionStateOverrideActions value.
      */
     public List<SubscriptionStateOverrideAction> subscriptionStateOverrideActions() {
@@ -39,7 +47,7 @@ public class SubscriptionLifecycleNotificationSpecifications {
 
     /**
      * Set the subscriptionStateOverrideActions property: The subscriptionStateOverrideActions property.
-     *
+     * 
      * @param subscriptionStateOverrideActions the subscriptionStateOverrideActions value to set.
      * @return the SubscriptionLifecycleNotificationSpecifications object itself.
      */
@@ -51,7 +59,7 @@ public class SubscriptionLifecycleNotificationSpecifications {
 
     /**
      * Get the softDeleteTtl property: The softDeleteTTL property.
-     *
+     * 
      * @return the softDeleteTtl value.
      */
     public Duration softDeleteTtl() {
@@ -60,7 +68,7 @@ public class SubscriptionLifecycleNotificationSpecifications {
 
     /**
      * Set the softDeleteTtl property: The softDeleteTTL property.
-     *
+     * 
      * @param softDeleteTtl the softDeleteTtl value to set.
      * @return the SubscriptionLifecycleNotificationSpecifications object itself.
      */
@@ -71,12 +79,57 @@ public class SubscriptionLifecycleNotificationSpecifications {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subscriptionStateOverrideActions() != null) {
             subscriptionStateOverrideActions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("subscriptionStateOverrideActions", this.subscriptionStateOverrideActions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("softDeleteTTL", CoreUtils.durationToStringWithDays(this.softDeleteTtl));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionLifecycleNotificationSpecifications from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionLifecycleNotificationSpecifications if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionLifecycleNotificationSpecifications.
+     */
+    public static SubscriptionLifecycleNotificationSpecifications fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionLifecycleNotificationSpecifications deserializedSubscriptionLifecycleNotificationSpecifications
+                = new SubscriptionLifecycleNotificationSpecifications();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionStateOverrideActions".equals(fieldName)) {
+                    List<SubscriptionStateOverrideAction> subscriptionStateOverrideActions
+                        = reader.readArray(reader1 -> SubscriptionStateOverrideAction.fromJson(reader1));
+                    deserializedSubscriptionLifecycleNotificationSpecifications.subscriptionStateOverrideActions
+                        = subscriptionStateOverrideActions;
+                } else if ("softDeleteTTL".equals(fieldName)) {
+                    deserializedSubscriptionLifecycleNotificationSpecifications.softDeleteTtl
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionLifecycleNotificationSpecifications;
+        });
     }
 }

@@ -16,10 +16,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"category\":\"jvlgfggcvkyyliz\",\"endpoints\":[{\"domainName\":\"psfxsf\",\"endpointDetails\":[{}]},{\"domainName\":\"vtmva\",\"endpointDetails\":[{}]},{\"domainName\":\"dqlvhukoveof\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"jfnmjmvlwyz\",\"endpointDetails\":[{},{},{},{}]}]}]}")
+            "{\"value\":[{\"category\":\"svlxotogtwrup\",\"endpoints\":[{\"domainName\":\"nmic\",\"endpointDetails\":[{}]},{\"domainName\":\"eoveilovnotyf\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"jbkcnxdhbttkph\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"vjtoqnermclfp\",\"endpointDetails\":[{},{}]}]},{\"category\":\"xus\",\"endpoints\":[{\"domainName\":\"bgyepsbj\",\"endpointDetails\":[{}]},{\"domainName\":\"ugxywpmueef\",\"endpointDetails\":[{},{}]}]},{\"category\":\"qkqujidsu\",\"endpoints\":[{\"domainName\":\"bglaocqxtccm\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"xy\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"yrxvwfudwpznt\",\"endpointDetails\":[{},{}]}]}]}")
             .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
-        Assertions.assertEquals("jvlgfggcvkyyliz", model.value().get(0).category());
-        Assertions.assertEquals("psfxsf", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("svlxotogtwrup", model.value().get(0).category());
+        Assertions.assertEquals("nmic", model.value().get(0).endpoints().get(0).domainName());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,30 +30,65 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
                     Arrays
                         .asList(
                             new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
-                                .withCategory("jvlgfggcvkyyliz")
+                                .withCategory("svlxotogtwrup")
                                 .withEndpoints(Arrays.asList(
-                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("psfxsf")
-                                        .withEndpointDetails(Arrays.asList(
-                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
-                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("vtmva")
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("nmic")
                                         .withEndpointDetails(Arrays.asList(
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
                                     new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                                        .withDomainName("dqlvhukoveof")
+                                        .withDomainName("eoveilovnotyf")
                                         .withEndpointDetails(Arrays.asList(
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
                                     new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                                        .withDomainName("jfnmjmvlwyz")
+                                        .withDomainName("jbkcnxdhbttkph")
                                         .withEndpointDetails(Arrays.asList(
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
                                             new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
-                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()))))));
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                        .withDomainName("vjtoqnermclfp")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())))),
+                            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint().withCategory("xus")
+                                .withEndpoints(Arrays.asList(
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                        .withDomainName("bgyepsbj")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                        .withDomainName("ugxywpmueef")
+                                        .withEndpointDetails(Arrays.asList(
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())))),
+                            new IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()
+                                .withCategory("qkqujidsu")
+                                .withEndpoints(Arrays
+                                    .asList(
+                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                            .withDomainName("bglaocqxtccm")
+                                            .withEndpointDetails(
+                                                Arrays.asList(
+                                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                                    new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("xy")
+                                            .withEndpointDetails(Arrays.asList(
+                                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails())),
+                                        new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
+                                            .withDomainName("yrxvwfudwpznt")
+                                            .withEndpointDetails(Arrays.asList(
+                                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails(),
+                                                new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()))))));
         model = BinaryData.fromObject(model)
             .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner.class);
-        Assertions.assertEquals("jvlgfggcvkyyliz", model.value().get(0).category());
-        Assertions.assertEquals("psfxsf", model.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("svlxotogtwrup", model.value().get(0).category());
+        Assertions.assertEquals("nmic", model.value().get(0).endpoints().get(0).domainName());
     }
 }

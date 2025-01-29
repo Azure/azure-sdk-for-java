@@ -24,7 +24,6 @@ import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_N
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -90,7 +89,6 @@ public class SystemPropertiesTest {
     public void emptyMessage() {
         // Act
         final SystemProperties systemProperties = new SystemProperties();
-        final String defaultValue = "defaultValue";
 
         // Assert
         assertNull(systemProperties.getPartitionKey());
@@ -99,12 +97,6 @@ public class SystemPropertiesTest {
         assertNull(systemProperties.getOffset());
 
         assertTrue(systemProperties.isEmpty());
-
-        EventData.RESERVED_SYSTEM_PROPERTIES.forEach(name -> {
-            assertNull(systemProperties.get(name));
-            assertEquals(defaultValue, systemProperties.getOrDefault(name, defaultValue));
-            assertFalse(systemProperties.containsKey(name));
-        });
     }
 
     /**

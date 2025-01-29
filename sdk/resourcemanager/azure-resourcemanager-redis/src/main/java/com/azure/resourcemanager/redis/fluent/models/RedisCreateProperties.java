@@ -15,6 +15,7 @@ import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
+import com.azure.resourcemanager.redis.models.ZonalAllocationPolicy;
 import java.io.IOException;
 import java.util.Map;
 
@@ -213,10 +214,20 @@ public class RedisCreateProperties extends RedisCommonProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RedisCreateProperties withZonalAllocationPolicy(ZonalAllocationPolicy zonalAllocationPolicy) {
+        super.withZonalAllocationPolicy(zonalAllocationPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (sku() == null) {
             throw LOGGER.atError()
@@ -250,6 +261,8 @@ public class RedisCreateProperties extends RedisCommonProperties {
             publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
         jsonWriter.writeStringField("updateChannel", updateChannel() == null ? null : updateChannel().toString());
         jsonWriter.writeBooleanField("disableAccessKeyAuthentication", disableAccessKeyAuthentication());
+        jsonWriter.writeStringField("zonalAllocationPolicy",
+            zonalAllocationPolicy() == null ? null : zonalAllocationPolicy().toString());
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeStringField("staticIP", this.staticIp);
@@ -297,6 +310,9 @@ public class RedisCreateProperties extends RedisCommonProperties {
                 } else if ("disableAccessKeyAuthentication".equals(fieldName)) {
                     deserializedRedisCreateProperties
                         .withDisableAccessKeyAuthentication(reader.getNullable(JsonReader::getBoolean));
+                } else if ("zonalAllocationPolicy".equals(fieldName)) {
+                    deserializedRedisCreateProperties
+                        .withZonalAllocationPolicy(ZonalAllocationPolicy.fromString(reader.getString()));
                 } else if ("sku".equals(fieldName)) {
                     deserializedRedisCreateProperties.sku = Sku.fromJson(reader);
                 } else if ("subnetId".equals(fieldName)) {

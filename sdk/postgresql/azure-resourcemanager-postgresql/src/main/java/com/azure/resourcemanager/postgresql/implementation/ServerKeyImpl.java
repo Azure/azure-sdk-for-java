@@ -43,6 +43,10 @@ public final class ServerKeyImpl implements ServerKey, ServerKey.Definition, Ser
         return this.innerModel().creationDate();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServerKeyInner innerModel() {
         return this.innerObject;
     }
@@ -104,9 +108,9 @@ public final class ServerKeyImpl implements ServerKey, ServerKey.Definition, Ser
     ServerKeyImpl(ServerKeyInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.keyName = Utils.getValueFromIdByName(innerObject.id(), "keys");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
+        this.keyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "keys");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public ServerKey refresh() {

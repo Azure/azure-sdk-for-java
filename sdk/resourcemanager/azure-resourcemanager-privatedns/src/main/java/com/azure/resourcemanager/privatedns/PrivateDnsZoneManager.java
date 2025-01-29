@@ -84,6 +84,8 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
     }
 
     /**
+     * Gets the entry point to private DNS zone management.
+     *
      * @return the entry point to private DNS zone management.
      */
     public PrivateDnsZones privateZones() {

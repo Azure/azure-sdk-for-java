@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryRequirementsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryRequirements model
-            = BinaryData.fromString("{\"time\":\"2021-01-26T18:01:46Z\",\"content\":\"nqnm\",\"filename\":\"ngz\"}")
-                .toObject(LibraryRequirements.class);
-        Assertions.assertEquals("nqnm", model.content());
-        Assertions.assertEquals("ngz", model.filename());
+        LibraryRequirements model = BinaryData
+            .fromString("{\"time\":\"2021-06-07T12:27:36Z\",\"content\":\"depoog\",\"filename\":\"uvamiheognarxzxt\"}")
+            .toObject(LibraryRequirements.class);
+        Assertions.assertEquals("depoog", model.content());
+        Assertions.assertEquals("uvamiheognarxzxt", model.filename());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryRequirements model = new LibraryRequirements().withContent("nqnm").withFilename("ngz");
+        LibraryRequirements model = new LibraryRequirements().withContent("depoog").withFilename("uvamiheognarxzxt");
         model = BinaryData.fromObject(model).toObject(LibraryRequirements.class);
-        Assertions.assertEquals("nqnm", model.content());
-        Assertions.assertEquals("ngz", model.filename());
+        Assertions.assertEquals("depoog", model.content());
+        Assertions.assertEquals("uvamiheognarxzxt", model.filename());
     }
 }

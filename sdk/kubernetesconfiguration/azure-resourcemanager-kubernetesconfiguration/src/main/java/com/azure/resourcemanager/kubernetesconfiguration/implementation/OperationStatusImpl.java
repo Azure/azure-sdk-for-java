@@ -55,14 +55,14 @@ public final class OperationStatusImpl implements OperationStatus {
         String clusterResourceName, String clusterName) {
         PagedIterable<OperationStatusResultInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new OperationStatusResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationStatusResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationStatusResult> list(String resourceGroupName, String clusterRp,
         String clusterResourceName, String clusterName, Context context) {
         PagedIterable<OperationStatusResultInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new OperationStatusResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationStatusResultImpl(inner1, this.manager()));
     }
 
     private OperationStatusClient serviceClient() {
