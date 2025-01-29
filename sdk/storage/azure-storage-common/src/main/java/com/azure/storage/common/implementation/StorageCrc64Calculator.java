@@ -2583,7 +2583,6 @@ public class StorageCrc64Calculator {
             uFinalCrcAB ^= multiplyCrcByPowerOfX((uInitialCrcA ^ uInitialCrcAB), uSizeA);
         }
 
-        //uFinalCrcAB ^= (uInitialCrcB ^ ~0L); // Ensure unsigned XOR logic
         uFinalCrcAB ^= ~uInitialCrcB; // Ensure unsigned XOR logic
         uFinalCrcAB = multiplyCrcByPowerOfX(uFinalCrcAB, uSizeB);
         uFinalCrcAB ^= uFinalCrcB;
