@@ -3,6 +3,7 @@
 ### 4.67.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added Beta public API to enable http2. - See [PR 43123](https://github.com/Azure/azure-sdk-for-java/pull/43123)
 
 #### Breaking Changes
 
