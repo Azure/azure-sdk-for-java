@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The key vault server error.
+ * The FullBackupOperationError model.
  */
 @Immutable
-public final class Error implements JsonSerializable<Error> {
+public final class FullBackupOperationError implements JsonSerializable<FullBackupOperationError> {
 
     /*
      * The error code.
@@ -33,13 +33,13 @@ public final class Error implements JsonSerializable<Error> {
      * The key vault server error.
      */
     @Generated
-    private Error innerError;
+    private FullBackupOperationError innerError;
 
     /**
-     * Creates an instance of Error class.
+     * Creates an instance of FullBackupOperationError class.
      */
     @Generated
-    private Error() {
+    private FullBackupOperationError() {
     }
 
     /**
@@ -68,7 +68,7 @@ public final class Error implements JsonSerializable<Error> {
      * @return the innerError value.
      */
     @Generated
-    public Error getInnerError() {
+    public FullBackupOperationError getInnerError() {
         return this.innerError;
     }
 
@@ -83,31 +83,31 @@ public final class Error implements JsonSerializable<Error> {
     }
 
     /**
-     * Reads an instance of Error from the JsonReader.
+     * Reads an instance of FullBackupOperationError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IOException If an error occurs while reading the Error.
+     * @return An instance of FullBackupOperationError if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FullBackupOperationError.
      */
     @Generated
-    public static Error fromJson(JsonReader jsonReader) throws IOException {
+    public static FullBackupOperationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Error deserializedError = new Error();
+            FullBackupOperationError deserializedFullBackupOperationError = new FullBackupOperationError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("code".equals(fieldName)) {
-                    deserializedError.code = reader.getString();
+                    deserializedFullBackupOperationError.code = reader.getString();
                 } else if ("message".equals(fieldName)) {
-                    deserializedError.message = reader.getString();
+                    deserializedFullBackupOperationError.message = reader.getString();
                 } else if ("innererror".equals(fieldName)) {
-                    deserializedError.innerError = Error.fromJson(reader);
+                    deserializedFullBackupOperationError.innerError = FullBackupOperationError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedError;
+            return deserializedFullBackupOperationError;
         });
     }
 }
