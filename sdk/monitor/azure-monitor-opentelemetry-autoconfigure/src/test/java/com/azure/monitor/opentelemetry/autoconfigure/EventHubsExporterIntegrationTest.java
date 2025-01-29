@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.FluxUtil;
@@ -37,6 +38,14 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     private static final String STORAGE_CONNECTION_STRING = System.getenv("STORAGE_CONNECTION_STRING");
     private static final String CONTAINER_NAME = System.getenv("STORAGE_CONTAINER_NAME");
 
+    private TokenCredential credential;
+
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        credential = TokenCredentialUtil.getTestTokenCredential(interceptorManager);
+    }
+
     @Test
     public void producerTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(2);
@@ -55,8 +64,10 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             return next.process();
         };
         Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
-        EventHubProducerAsyncClient producer
-            = new EventHubClientBuilder().connectionString(CONNECTION_STRING).buildAsyncProducerClient();
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder().credential(credential)
+            .fullyQualifiedNamespace("namespace")
+            .eventHubName("event-hub")
+            .buildAsyncProducerClient();
         Span span = tracer.spanBuilder(spanName).startSpan();
         Scope scope = span.makeCurrent();
         try {
@@ -68,7 +79,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             span.end();
             scope.close();
         }
-        assertTrue(exporterCountDown.await(5, TimeUnit.SECONDS));
+        assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
     }
 
     @Disabled("Processor integration tests require separate consumer group to not have partition contention in CI - https://github.com/Azure/azure-sdk-for-java/issues/23567")
