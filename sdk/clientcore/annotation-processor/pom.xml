@@ -150,7 +150,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.squareup:javapoet:[1.13.0]</include> <!-- {x-include-update;com.squareup:javapoet:;external_dependency} -->
+                <include>com.squareup:javapoet:[1.13.0]</include> <!-- {x-include-update;com.squareup:javapoet;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
