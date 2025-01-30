@@ -223,9 +223,6 @@ org.revapi:revapi-maven-plugin;0.14.6
 # <some unique identifier, area name preferred>_groupId:artifactId;dependency-version
 
 # The OpenTelemetry exporter is replaced with the OpenTelemetry SDK Autoconfigure Distro
-otel_exporter_deprecated_com.azure:azure-core;1.54.1
-otel_exporter_deprecated_com.azure:azure-json;1.4.0
-otel_exporter_deprecated_com.azure:azure-core-http-netty;1.15.7
 otel_exporter_deprecated_io.opentelemetry:opentelemetry-api;1.43.0
 otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk;1.43.0
 otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-metrics;1.43.0

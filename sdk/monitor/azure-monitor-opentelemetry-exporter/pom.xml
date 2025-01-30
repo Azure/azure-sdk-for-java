@@ -47,17 +47,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;otel_exporter_deprecated_com.azure:azure-core;external_dependency} -->
+      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;otel_exporter_deprecated_com.azure:azure-json;external_dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.7</version> <!-- {x-version-update;otel_exporter_deprecated_com.azure:azure-core-http-netty;external_dependency} -->
+      <version>1.15.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
