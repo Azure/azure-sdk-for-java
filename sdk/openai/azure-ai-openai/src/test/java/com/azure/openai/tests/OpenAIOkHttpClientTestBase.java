@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.openai.models.ChatCompletionContentPartImage.Type.IMAGE_URL;
-import static com.openai.models.ChatCompletionContentPartText.Type.TEXT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -66,16 +64,16 @@ public class OpenAIOkHttpClientTestBase {
 
     // Request: Helper methods to prepare request params
     ChatCompletionMessageParam createSystemMessageParam() {
-        return ChatCompletionMessageParam.ofChatCompletionSystemMessageParam(ChatCompletionSystemMessageParam.builder()
-                .role(ChatCompletionSystemMessageParam.Role.SYSTEM)
-                .content(ChatCompletionSystemMessageParam.Content.ofTextContent(ASSISTANT_CONTENT))
+        return ChatCompletionMessageParam.ofSystem(ChatCompletionSystemMessageParam.builder()
+                .role(JsonValue.from("system"))
+                .content(ChatCompletionSystemMessageParam.Content.ofText(ASSISTANT_CONTENT))
                 .build());
     }
 
     ChatCompletionMessageParam createUserMessageParam(String content) {
-        return ChatCompletionMessageParam.ofChatCompletionUserMessageParam(ChatCompletionUserMessageParam.builder()
-                .role(ChatCompletionUserMessageParam.Role.USER)
-                .content(ChatCompletionUserMessageParam.Content.ofTextContent(content))
+        return ChatCompletionMessageParam.ofUser(ChatCompletionUserMessageParam.builder()
+                .role(JsonValue.from("user"))
+                .content(ChatCompletionUserMessageParam.Content.ofText(content))
                 .build());
     }
 
@@ -130,7 +128,7 @@ public class OpenAIOkHttpClientTestBase {
 
     ChatCompletionCreateParams createChatCompletionParamsWithTool(String testModel, String userMessage) {
         ChatCompletionTool chatCompletionTool = ChatCompletionTool.builder()
-            .type(ChatCompletionTool.Type.FUNCTION)
+            .type(JsonValue.from("function"))
             .function(FunctionDefinition.builder()
                 .name("get_current_weather")
                 .description("Get the current weather in a given location")
@@ -178,17 +176,15 @@ public class OpenAIOkHttpClientTestBase {
 
     ChatCompletionCreateParams createChatCompletionParamsWithImageUrl(String testModel) {
         ChatCompletionMessageParam userMessageParam =
-                ChatCompletionMessageParam.ofChatCompletionUserMessageParam(ChatCompletionUserMessageParam.builder()
-                        .role(ChatCompletionUserMessageParam.Role.USER)
+                ChatCompletionMessageParam.ofUser(ChatCompletionUserMessageParam.builder()
+                        .role(JsonValue.from("user"))
                         .content(ChatCompletionUserMessageParam.Content.ofArrayOfContentParts(asList(
-                                ChatCompletionContentPart.ofChatCompletionContentPartText(
+                                ChatCompletionContentPart.ofText(
                                         ChatCompletionContentPartText.builder()
-                                                .type(TEXT)
                                                 .text("What's in this image?")
                                                 .build()),
-                                ChatCompletionContentPart.ofChatCompletionContentPartImage(
+                                ChatCompletionContentPart.ofImageUrl(
                                         ChatCompletionContentPartImage.builder()
-                                                .type(IMAGE_URL)
                                                 .imageUrl(ChatCompletionContentPartImage.ImageUrl.builder()
                                                         .url(
                                                                 "https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/images/handwritten-note.jpg")
@@ -284,10 +280,10 @@ public class OpenAIOkHttpClientTestBase {
             List<ChatCompletionMessageParam> messages,
             List<ChatCompletionCreateParams.Function> functions,
             String content) {
-        messages.add(ChatCompletionMessageParam.ofChatCompletionFunctionMessageParam(
+        messages.add(ChatCompletionMessageParam.ofFunction(
                 ChatCompletionFunctionMessageParam.builder()
                         .name("get_current_temperature")
-                        .role(ChatCompletionFunctionMessageParam.Role.FUNCTION)
+                        .role(JsonValue.from("function"))
                         .content(content)
                         .build()));
         return ChatCompletionCreateParams.builder()
@@ -305,18 +301,18 @@ public class OpenAIOkHttpClientTestBase {
         ChatCompletionCreateParams.Builder paramsBuilder = params.toBuilder();
 
         // Add tool response to messages: Assistant
-        paramsBuilder.addMessage(ChatCompletionMessageParam.ofChatCompletionAssistantMessageParam(
+        paramsBuilder.addMessage(ChatCompletionMessageParam.ofAssistant(
                 ChatCompletionAssistantMessageParam.builder()
-                        .role(ChatCompletionAssistantMessageParam.Role.ASSISTANT)
+                        .role(JsonValue.from("assistant"))
                         .toolCalls(chatCompletionMessageToolCalls)
                         .build()));
 
         // Add tool response to messages: Tool
         ChatCompletionMessageParam toolMessageParam =
-                ChatCompletionMessageParam.ofChatCompletionToolMessageParam(ChatCompletionToolMessageParam.builder()
-                        .role(ChatCompletionToolMessageParam.Role.TOOL)
+                ChatCompletionMessageParam.ofTool(ChatCompletionToolMessageParam.builder()
+                        .role(JsonValue.from("tool"))
                         .toolCallId(chatCompletionMessageToolCalls.get(0).id())
-                        .content(ChatCompletionToolMessageParam.Content.ofTextContent(
+                        .content(ChatCompletionToolMessageParam.Content.ofText(
                                 "{\"temperature\": \"22\", \"unit\": \"celsius\", \"description\": \"Sunny\"}"))
                         .build());
         // Add the tool message to the params
@@ -324,10 +320,10 @@ public class OpenAIOkHttpClientTestBase {
 
         if (chatCompletionMessageToolCalls.size() > 1) {
             ChatCompletionMessageParam toolMessageParam2 =
-                    ChatCompletionMessageParam.ofChatCompletionToolMessageParam(ChatCompletionToolMessageParam.builder()
-                            .role(ChatCompletionToolMessageParam.Role.TOOL)
+                    ChatCompletionMessageParam.ofTool(ChatCompletionToolMessageParam.builder()
+                            .role(JsonValue.from("tool"))
                             .toolCallId(chatCompletionMessageToolCalls.get(1).id())
-                            .content(ChatCompletionToolMessageParam.Content.ofTextContent(
+                            .content(ChatCompletionToolMessageParam.Content.ofText(
                                     "{\"temperature\": \"80\", \"unit\": \"fahrenheit\", \"description\": \"Sunny\"}"))
                             .build());
             paramsBuilder.addMessage(toolMessageParam2);
@@ -361,7 +357,7 @@ public class OpenAIOkHttpClientTestBase {
     // Response: Helper methods to assert response
     void assertChatCompletion(ChatCompletion chatCompletion, int expectedChoicesSize) {
         assertNotNull(chatCompletion._id());
-        assertEquals("chat.completion", chatCompletion.object_().toString());
+        assertEquals("chat.completion", chatCompletion._object_().toString());
         assertNotNull(chatCompletion.model());
         assertNotNull(chatCompletion.created());
 
@@ -377,7 +373,7 @@ public class OpenAIOkHttpClientTestBase {
             assertEquals(i, choice.index());
             assertNotNull(choice.finishReason());
             assertTrue(choice.message().content().isPresent());
-            assertNotNull(choice.message().role());
+            assertNotNull(choice.message()._role());
         }
     }
 
@@ -398,12 +394,12 @@ public class OpenAIOkHttpClientTestBase {
                 .contains("22"));
         assertEquals(
                 "assistant",
-                functionCompletion.choices().get(0).message().role().toString());
+                functionCompletion.choices().get(0).message()._role().toString());
     }
 
     void assertChatCompletion(ChatCompletion chatCompletion) {
         assertNotNull(chatCompletion._id());
-        assertEquals("chat.completion", chatCompletion.object_().toString());
+        assertEquals("chat.completion", chatCompletion._object_().toString());
         assertNotNull(chatCompletion.model());
         assertNotNull(chatCompletion.created());
 
@@ -434,7 +430,7 @@ public class OpenAIOkHttpClientTestBase {
         assertTrue(content.contains("sunny"));
         assertTrue(content.contains("22"));
         assertEquals(
-                "assistant", toolCompletion.choices().get(0).message().role().toString());
+                "assistant", toolCompletion.choices().get(0).message()._role().toString());
 
         if (choices.size() > 1) {
             String content2 = choices.get(1).message().content().get().toLowerCase();
@@ -442,7 +438,7 @@ public class OpenAIOkHttpClientTestBase {
             assertTrue(content2.contains("80"));
             assertEquals(
                     "assistant",
-                    toolCompletion.choices().get(1).message().role().toString());
+                    toolCompletion.choices().get(1).message()._role().toString());
         }
     }
 
@@ -474,7 +470,7 @@ public class OpenAIOkHttpClientTestBase {
 
     void assertChatCompletionWithoutSensitiveContent(ChatCompletion chatCompletion) {
         assertNotNull(chatCompletion._id());
-        assertEquals("chat.completion", chatCompletion.object_().toString());
+        assertEquals("chat.completion", chatCompletion._object_().toString());
         assertNotNull(chatCompletion.model());
         assertNotNull(chatCompletion.created());
 
@@ -484,7 +480,7 @@ public class OpenAIOkHttpClientTestBase {
         assertNotNull(choice.finishReason());
         assertEquals(0, choice.index());
         assertTrue(choice.message().content().isPresent());
-        assertNotNull(choice.message().role());
+        assertNotNull(choice.message()._role());
 
         assertPromptAndContentFilterResults(chatCompletion);
     }
