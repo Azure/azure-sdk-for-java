@@ -51,6 +51,9 @@ extends:
   template: ../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: ${{ parameters.Service }}
+    # This is Necessary since FromSource runs hover around 60,
+    # which is the default, and intermittently time out.
+    TimeoutInMinutes: 90
     # See pr->paths->exclude comment above. Anything added/removed there
     # needs to be added/removed here.
     ExcludePaths:
