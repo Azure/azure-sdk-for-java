@@ -255,7 +255,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestStandardizer
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             assertRestException(
                 () -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"), true, Context.NONE)
-                    .getValue(), HttpURLConnection.HTTP_PRECON_FAILED);
+                    .getValue(),
+                HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addConfigurationSettingWithResponse(initial, Context.NONE).getValue().getETag();
 
@@ -370,7 +371,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestStandardizer
         assertConfigurationEquals(neverRetrievedConfiguration,
             client.addConfigurationSettingWithResponse(neverRetrievedConfiguration, Context.NONE).getValue());
 
-        assertRestException(() -> client.getConfigurationSetting("myNonExistentKey", null, null), HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getConfigurationSetting("myNonExistentKey", null, null),
+            HttpURLConnection.HTTP_NOT_FOUND);
         assertRestException(
             () -> client.getConfigurationSetting(nonExistentLabel.getKey(), nonExistentLabel.getLabel()),
             HttpURLConnection.HTTP_NOT_FOUND);
@@ -487,7 +489,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestStandardizer
             assertConfigurationEquals(update, client.getConfigurationSetting(initial.getKey(), initial.getLabel()));
             assertRestException(
                 () -> client.deleteConfigurationSettingWithResponse(initiallyAddedConfig, true, Context.NONE)
-                    .getValue(), HttpURLConnection.HTTP_PRECON_FAILED);
+                    .getValue(),
+                HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update,
                 client.deleteConfigurationSettingWithResponse(updatedConfig, true, Context.NONE).getValue());
             assertRestException(() -> client.getConfigurationSetting(initial.getKey(), initial.getLabel()),
@@ -522,7 +525,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestStandardizer
             client.setReadOnlyWithResponse(expected, true, Context.NONE).getValue();
 
             // unsuccessfully delete
-            assertRestException(() -> client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE), 409);
+            assertRestException(() -> client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
+                409);
 
             // clear read-only setting and delete
             client.setReadOnly(expected.getKey(), expected.getLabel(), false);
@@ -548,7 +552,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestStandardizer
             client.setReadOnlyWithResponse(expected, true, Context.NONE);
 
             // unsuccessfully deleted
-            assertRestException(() -> client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE), 409);
+            assertRestException(() -> client.deleteConfigurationSettingWithResponse(expected, false, Context.NONE),
+                409);
 
             // unlock setting and delete
             client.setReadOnlyWithResponse(expected, false, Context.NONE);

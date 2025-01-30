@@ -179,7 +179,7 @@ public abstract class ConfigurationClientTestStandardizer extends ConfigurationC
         String key = getKey();
         String valueWithAdditionalFields
             = "{\"uri\":\"uriValue\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}";
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}";
 
         testRunner.accept(new SecretReferenceConfigurationSetting(key, valueWithAdditionalFields));
     }

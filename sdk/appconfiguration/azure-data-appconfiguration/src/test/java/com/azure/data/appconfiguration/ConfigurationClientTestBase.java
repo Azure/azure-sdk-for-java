@@ -62,8 +62,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH + 2);
     }
 
-    protected <T extends HttpTrait<ConfigurationClientBuilder> & TokenCredentialTrait<ConfigurationClientBuilder>> T setupBuilder(
-        T builder, HttpClient httpClient, ConfigurationServiceVersion serviceVersion, boolean sync) {
+    protected <T extends HttpTrait<ConfigurationClientBuilder> & TokenCredentialTrait<ConfigurationClientBuilder>> T
+        setupBuilder(T builder, HttpClient httpClient, ConfigurationServiceVersion serviceVersion, boolean sync) {
         if (tokenCredential == null) {
             tokenCredential = TestHelper.getTokenCredential(interceptorManager);
         }
@@ -75,9 +75,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
         Objects.requireNonNull(endpoint, "Az Config endpoint expected to be set.");
 
-        builder.credential(tokenCredential)
-            .endpoint(endpoint)
-            .serviceVersion(serviceVersion);
+        builder.credential(tokenCredential).endpoint(endpoint).serviceVersion(serviceVersion);
 
         httpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
         if (sync) {
@@ -89,8 +87,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Collections.singletonList(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token", "If-Match"))));
+            interceptorManager.addMatchers(Collections
+                .singletonList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token", "If-Match"))));
         }
 
         // Disable `$.key` snanitizer

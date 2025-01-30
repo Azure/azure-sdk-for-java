@@ -61,8 +61,7 @@ public class SecretReferenceConfigurationSettingUnitTest {
     @Test
     public void reserveUnknownPropertiesTest() {
         SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting();
-        String newSettingValueJSON
-            = getUnknownPropertiesSecretReferenceConfigurationSettingValue();
+        String newSettingValueJSON = getUnknownPropertiesSecretReferenceConfigurationSettingValue();
 
         setting.setValue(newSettingValueJSON);
         assertEquals(newSettingValueJSON, setting.getValue());
@@ -74,8 +73,9 @@ public class SecretReferenceConfigurationSettingUnitTest {
     }
 
     String getUnknownPropertiesSecretReferenceConfigurationSettingValue() {
-        return String.format("{\"uri\":\"%s\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}",
+        return String.format(
+            "{\"uri\":\"%s\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}",
             UPDATED_SECRET_ID_VALUE);
     }
 

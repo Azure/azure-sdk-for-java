@@ -184,8 +184,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
         addExistingSettingRunner((expected) -> StepVerifier
             .create(client.addConfigurationSettingWithResponse(expected)
                 .then(client.addConfigurationSettingWithResponse(expected)))
-            .verifyErrorSatisfies(
-                ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED)));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
@@ -247,8 +246,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                     (FeatureFlagConfigurationSetting) response))
                 .verifyComplete();
             StepVerifier.create(client.getConfigurationSetting(expected))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -287,8 +285,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                     (SecretReferenceConfigurationSetting) response))
                 .verifyComplete();
             StepVerifier.create(client.getConfigurationSetting(expected))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -304,8 +301,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier
                 .create(client.addConfigurationSettingWithResponse(initial)
@@ -315,8 +311,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                 .verifyComplete();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial, true))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(update, null, false))
                 .assertNext(response -> assertConfigurationEquals(update, response))
@@ -434,12 +429,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
             .verifyComplete();
 
         StepVerifier.create(client.getConfigurationSetting("myNonExistentKey", null, null))
-            .verifyErrorSatisfies(
-                ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
 
         StepVerifier.create(client.getConfigurationSettingWithResponse(nonExistentLabel, null, false))
-            .verifyErrorSatisfies(
-                ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -463,8 +456,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(expected, null, false))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -483,8 +475,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSetting(expected))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -505,8 +496,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSetting(expected))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -527,8 +517,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSetting(expected))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -586,16 +575,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
                 .verifyComplete();
 
             StepVerifier.create(client.deleteConfigurationSettingWithResponse(initiallyAddedConfig, true))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.deleteConfigurationSettingWithResponse(updatedConfig, true))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(initial, null, false))
-                .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -1501,9 +1488,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
             StepVerifier
                 .create(client.archiveSnapshotWithResponse(snapshotResult.getName(),
                     new MatchConditions().setIfMatch(snapshotResult.getETag())))
-                .assertNext(
-                    response -> assertConfigurationSnapshotWithResponse(name, ConfigurationSnapshotStatus.ARCHIVED,
-                        filters, response))
+                .assertNext(response -> assertConfigurationSnapshotWithResponse(name,
+                    ConfigurationSnapshotStatus.ARCHIVED, filters, response))
                 .verifyComplete();
         });
     }
@@ -1571,9 +1557,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestStandar
             StepVerifier
                 .create(client.recoverSnapshotWithResponse(snapshotResult.getName(),
                     new MatchConditions().setIfMatch(snapshotResult.getETag())))
-                .assertNext(
-                    response -> assertConfigurationSnapshotWithResponse(name, ConfigurationSnapshotStatus.READY,
-                        filters, response))
+                .assertNext(response -> assertConfigurationSnapshotWithResponse(name, ConfigurationSnapshotStatus.READY,
+                    filters, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.

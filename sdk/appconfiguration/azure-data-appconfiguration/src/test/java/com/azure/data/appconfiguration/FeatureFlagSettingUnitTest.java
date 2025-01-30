@@ -149,8 +149,7 @@ public class FeatureFlagSettingUnitTest {
     }
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(List<FeatureFlagFilter> filters) {
-        return new FeatureFlagConfigurationSetting(NEW_KEY, IS_ENABLED)
-            .setDescription(DESCRIPTION_VALUE)
+        return new FeatureFlagConfigurationSetting(NEW_KEY, IS_ENABLED).setDescription(DESCRIPTION_VALUE)
             .setDisplayName(DISPLAY_NAME_VALUE)
             .setClientFilters(filters);
     }
