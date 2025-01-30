@@ -162,7 +162,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     private final ServiceBusSessionManager unNamedSessionManager;  // to obtain a session in V1
     private final ServiceBusSessionAcquirer sessionAcquirer;       // to obtain a session in V2
     private final String identifier;
-    final ServiceBusSessionIdPageRetriever sessionIdPageRetriever;
+    final ServiceBusSessionPageRetriever sessionIdPageRetriever;
 
     ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
         MessagingEntityType entityType, ReceiverOptions receiverOptions, ConnectionCacheWrapper connectionCacheWrapper,
@@ -191,7 +191,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         this.identifier = identifier;
         this.tracer = instrumentation.getTracer();
         this.sessionIdPageRetriever
-            = new ServiceBusSessionIdPageRetriever(connectionCacheWrapper, entityPath, entityType);
+            = new ServiceBusSessionPageRetriever(connectionCacheWrapper, entityPath, entityType);
     }
 
     /**
@@ -272,10 +272,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      * Enumerates sessions on the messaging entity.
      *
      * @param pageSize the maximum number of sessions to be fetched in a single call.
-     * @return A {@link ServiceBusSessionIdFlux} to enumerate sessions.
+     * @return A {@link ServiceBusSessionPagedFlux} to enumerate sessions.
      */
-    public ServiceBusSessionIdFlux listSessions(Integer pageSize) {
-        return new ServiceBusSessionIdFlux(() -> sessionIdPageRetriever, pageSize);
+    public ServiceBusSessionPagedFlux listSessions(Integer pageSize) {
+        return new ServiceBusSessionPagedFlux(() -> sessionIdPageRetriever, pageSize);
     }
 
     private Mono<ServiceBusReceiverAsyncClient> acquireSpecificOrNextSession(String specificSessionId,

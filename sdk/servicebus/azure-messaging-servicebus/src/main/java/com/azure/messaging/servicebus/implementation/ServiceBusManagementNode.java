@@ -155,8 +155,45 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @param top the maximum number of session to return.
      * @return a page with session ids and the skip value to retrieve next page.
      */
-    Mono<SessionIdPage> getSessionIds(int skip, int top);
+    Mono<ListSessionsResponse> listSessions(int skip, int top);
 
     @Override
     void close();
+
+    /**
+     * A page of session ids.
+     */
+    final class ListSessionsResponse {
+        private final List<String> ids;
+        private final int skip;
+
+        /**
+         * Creates an instance of {@link ListSessionsResponse}.
+         *
+         * @param ids the session ids.
+         * @param skip the skip value to get the next set of sessions.
+         */
+        ListSessionsResponse(List<String> ids, int skip) {
+            this.skip = skip;
+            this.ids = ids;
+        }
+
+        /**
+         * Gets the list of sessions.
+         *
+         * @return a list containing the sessions.
+         */
+        public List<String> getIds() {
+            return ids;
+        }
+
+        /**
+         * Gets the skip value to get the next set of sessions.
+         *
+         * @return the skip value.
+         */
+        public int getSkip() {
+            return skip;
+        }
+    }
 }

@@ -674,7 +674,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<SessionIdPage> getSessionIds(int skip, int top) {
+    public Mono<ListSessionsResponse> listSessions(int skip, int top) {
         // See https://learn.microsoft.com/azure/service-bus-messaging/service-bus-amqp-request-response#enumerate-sessions
         //
         return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {
@@ -723,7 +723,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                             sessionsIds), getErrorContext()));
                 }
 
-                return Mono.just(new SessionIdPage(Arrays.asList((String[]) sessionsIds), (int) s));
+                return Mono.just(new ListSessionsResponse(Arrays.asList((String[]) sessionsIds), (int) s));
             } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
                 return Mono.empty();
             }

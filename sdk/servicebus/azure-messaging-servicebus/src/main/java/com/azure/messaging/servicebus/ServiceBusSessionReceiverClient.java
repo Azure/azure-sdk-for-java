@@ -206,13 +206,13 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * Enumerates sessions on the messaging entity.
      *
      * @param pageSize the maximum number of sessions to be fetched in a single call.
-     * @return A {@link ServiceBusSessionIdIterable} to enumerate sessions.
+     * @return A {@link ServiceBusSessionPagedIterable} to enumerate sessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceBusSessionIdIterable listSessions(Integer pageSize) {
-        final PageRetrieverSync<String, ServiceBusSessionIdPage> pageRetriever
+    public ServiceBusSessionPagedIterable listSessions(Integer pageSize) {
+        final PageRetrieverSync<String, ServiceBusSessionPage> pageRetriever
             = sessionAsyncClient.sessionIdPageRetriever.sync(pageSize);
-        return new ServiceBusSessionIdIterable(() -> pageRetriever, pageSize);
+        return new ServiceBusSessionPagedIterable(() -> pageRetriever, pageSize);
     }
 
     @Override

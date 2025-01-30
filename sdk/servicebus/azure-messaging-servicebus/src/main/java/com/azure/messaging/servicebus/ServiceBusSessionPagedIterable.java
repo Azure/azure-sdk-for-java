@@ -11,15 +11,15 @@ import java.util.function.Supplier;
 /**
  * An {@link Iterable} that supports paging and provides a way to enumerate all sessions.
  */
-public final class ServiceBusSessionIdIterable
-    extends ContinuablePagedIterable<String, String, ServiceBusSessionIdPage> {
+public final class ServiceBusSessionPagedIterable
+    extends ContinuablePagedIterable<String, ServiceBusSession, ServiceBusSessionPage> {
     /**
-     * Creates an instance of {@link ServiceBusSessionIdIterable}.
+     * Creates an instance of {@link ServiceBusSessionPagedIterable}.
      *
      * @param provider the supplier that provides the service to retrieve pages of sessions.
      * @param pageSize the number of sessions to include in each page.
      */
-    ServiceBusSessionIdIterable(Supplier<PageRetrieverSync<String, ServiceBusSessionIdPage>> provider, int pageSize) {
+    ServiceBusSessionPagedIterable(Supplier<PageRetrieverSync<String, ServiceBusSessionPage>> provider, int pageSize) {
         super(provider, pageSize, null);
     }
 }
