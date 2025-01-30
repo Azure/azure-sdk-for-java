@@ -3,45 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
-import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
-import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
-import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
-import com.azure.communication.callautomation.models.CallLocator;
-import com.azure.communication.callautomation.models.CallLocatorKind;
-import com.azure.communication.callautomation.models.ChannelAffinity;
-import com.azure.communication.callautomation.models.DownloadToFileOptions;
-import com.azure.communication.callautomation.models.GroupCallLocator;
-import com.azure.communication.callautomation.models.ParallelDownloadOptions;
-import com.azure.communication.callautomation.models.RecordingStateResult;
-import com.azure.communication.callautomation.models.ServerCallLocator;
-import com.azure.communication.callautomation.models.RoomCallLocator;
-import com.azure.communication.callautomation.models.StartRecordingOptions;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRange;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -58,8 +19,48 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
+import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
+import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingResultResponse;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
+import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
+import com.azure.communication.callautomation.models.CallLocator;
+import com.azure.communication.callautomation.models.CallLocatorKind;
+import com.azure.communication.callautomation.models.ChannelAffinity;
+import com.azure.communication.callautomation.models.DownloadToFileOptions;
+import com.azure.communication.callautomation.models.GroupCallLocator;
+import com.azure.communication.callautomation.models.ParallelDownloadOptions;
+import com.azure.communication.callautomation.models.RecordingStateResult;
+import com.azure.communication.callautomation.models.RoomCallLocator;
+import com.azure.communication.callautomation.models.ServerCallLocator;
+import com.azure.communication.callautomation.models.StartRecordingOptions;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * CallRecordingAsync.
@@ -333,6 +334,43 @@ public final class CallRecordingAsync {
                 return callRecordingsInternal.getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
                     .map(response -> new SimpleResponse<>(response,
                         RecordingStateResponseConstructorProxy.create(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get recording result by recording id.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RecordingResultResponse> getRecordingResult(String recordingId) {
+        return getRecordingResultResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
+    }
+
+    /**
+     * Get recording result by recording id.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RecordingResultResponse>> getRecordingResultResponse(String recordingId) {
+        return getRecordingResultResponseInternal(recordingId, null);
+    }
+
+    Mono<Response<RecordingResultResponse>> getRecordingResultResponseInternal(String recordingId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callRecordingsInternal.getRecordingResultWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
