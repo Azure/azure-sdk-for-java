@@ -212,13 +212,13 @@ public class ClientTelemetry {
         return this.clientMetricsEnabled;
     }
 
-    public Mono<?> init() {
-        return loadAzureVmMetaData()
-            .doOnTerminate(() -> {
-                if (this.isClientTelemetryEnabled()) {
-                    sendClientTelemetry().subscribe();
-                }
-            });
+    public Mono<Void> init() {
+        return loadAzureVmMetaData().then(Mono.defer(() -> {
+            if (isClientTelemetryEnabled()) {
+                return sendClientTelemetry();
+            }
+            return Mono.empty();
+        }));
     }
 
     public void close() {
@@ -356,7 +356,7 @@ public class ClientTelemetry {
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
 
-    private Mono<?> loadAzureVmMetaData() {
+    private Mono<Object> loadAzureVmMetaData() {
         if (Configs.shouldDisableIMDSAccess()) {
             logger.info("Access to IMDS to get Azure VM metadata is disabled");
             return Mono.empty();
@@ -384,12 +384,13 @@ public class ClientTelemetry {
 
         return httpResponseMono
             .flatMap(HttpResponse::bodyAsString)
-            .map(metadataJson -> parse(metadataJson,
-                AzureVMMetadata.class))
-            .doOnSuccess(metadata -> {
+            .flatMap(metadataJson -> {
+                AzureVMMetadata metadata = parse(metadataJson, AzureVMMetadata.class);
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);
-                this.populateAzureVmMetaData(metadata);
-            }).onErrorResume(throwable -> {
+                populateAzureVmMetaData(metadata);
+                return Mono.empty();
+            })
+            .onErrorResume(throwable -> {
                 logger.info("Client is not on azure vm");
                 logger.debug("Unable to get azure vm metadata", throwable);
                 return Mono.empty();
