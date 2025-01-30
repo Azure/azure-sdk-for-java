@@ -19,7 +19,7 @@ public class SecretReferenceConfigurationSettingUnitTest {
     @Test
     public void accessingStronglyTypedPropertiesAfterSettingDifferentSecretReferenceJSON() {
         // Create a new configuration setting,
-        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
+        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting();
         String expectedNewSettingValue = getSecretReferenceConfigurationSettingValue(SECRET_ID_VALUE);
         assertEquals(expectedNewSettingValue, setting.getValue());
 
@@ -34,7 +34,7 @@ public class SecretReferenceConfigurationSettingUnitTest {
     @Test
     public void accessingValueAfterChangingStronglyTypedProperties() {
         // Create a new feature flag configuration setting,
-        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
+        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting();
         String expectedNewSettingValue = getSecretReferenceConfigurationSettingValue(SECRET_ID_VALUE);
         assertEquals(expectedNewSettingValue, setting.getValue());
         // Change  strongly-type properties.
@@ -47,7 +47,7 @@ public class SecretReferenceConfigurationSettingUnitTest {
     @Test
     public void throwExceptionWhenInvalidNonJsonSecretReferenceValue() {
         // Create a new feature flag configuration setting,
-        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
+        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting();
 
         String expectedValue = getSecretReferenceConfigurationSettingValue(SECRET_ID_VALUE);
         String originalValue = setting.getValue();
@@ -55,14 +55,14 @@ public class SecretReferenceConfigurationSettingUnitTest {
         assertThrows(IllegalArgumentException.class,
             () -> setting.setValue("invalidValueForSecretReferenceConfigurationSetting"));
         assertEquals(originalValue, setting.getValue());
-        assertThrows(IllegalArgumentException.class, () -> setting.getSecretId());
+        assertThrows(IllegalArgumentException.class, setting::getSecretId);
     }
 
     @Test
     public void reserveUnknownPropertiesTest() {
-        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
+        SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting();
         String newSettingValueJSON
-            = getUnknownPropertiesSecretReferenceConfigurationSettingValue(UPDATED_SECRET_ID_VALUE);
+            = getUnknownPropertiesSecretReferenceConfigurationSettingValue();
 
         setting.setValue(newSettingValueJSON);
         assertEquals(newSettingValueJSON, setting.getValue());
@@ -73,12 +73,13 @@ public class SecretReferenceConfigurationSettingUnitTest {
         return String.format("{\"uri\":\"%s\"}", secretId);
     }
 
-    String getUnknownPropertiesSecretReferenceConfigurationSettingValue(String secretId) {
+    String getUnknownPropertiesSecretReferenceConfigurationSettingValue() {
         return String.format("{\"uri\":\"%s\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}", secretId);
+            + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}",
+            UPDATED_SECRET_ID_VALUE);
     }
 
-    private SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting(String key, String secretId) {
-        return new SecretReferenceConfigurationSetting(key, secretId);
+    private SecretReferenceConfigurationSetting getSecretReferenceConfigurationSetting() {
+        return new SecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
     }
 }

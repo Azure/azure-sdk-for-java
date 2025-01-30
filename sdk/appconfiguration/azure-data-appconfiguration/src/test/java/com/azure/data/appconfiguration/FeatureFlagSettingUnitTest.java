@@ -7,7 +7,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +33,8 @@ public class FeatureFlagSettingUnitTest {
     public void accessingStronglyTypedPropertiesAfterSettingDifferentFeatureFlagJSON() {
         // Create a new feature flag configuration setting,
         final List<FeatureFlagFilter> featureFlagFilters
-            = Arrays.asList(getFlagFilter(FILTER_NAME, getFilterParameters()));
-        FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
+            = Collections.singletonList(getFlagFilter(getFilterParameters()));
+        FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(featureFlagFilters);
         String expectedNewSettingValue
             = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE, DISPLAY_NAME_VALUE, IS_ENABLED);
         assertEquals(expectedNewSettingValue, setting.getValue());
@@ -83,18 +82,17 @@ public class FeatureFlagSettingUnitTest {
 
         assertThrows(IllegalArgumentException.class, () -> setting.setValue("invalidValueForFeatureFlagSetting"));
         assertEquals(expectedValue, setting.getValue());
-        assertThrows(IllegalArgumentException.class, () -> setting.getFeatureId());
-        assertThrows(IllegalArgumentException.class, () -> setting.getDescription());
-        assertThrows(IllegalArgumentException.class, () -> setting.getDisplayName());
-        assertThrows(IllegalArgumentException.class, () -> setting.isEnabled());
-        assertThrows(IllegalArgumentException.class, () -> setting.getClientFilters());
+        assertThrows(IllegalArgumentException.class, setting::getFeatureId);
+        assertThrows(IllegalArgumentException.class, setting::getDescription);
+        assertThrows(IllegalArgumentException.class, setting::getDisplayName);
+        assertThrows(IllegalArgumentException.class, setting::isEnabled);
+        assertThrows(IllegalArgumentException.class, setting::getClientFilters);
     }
 
     @Test
     public void reserveUnknownPropertiesTest() {
         FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
-        String newSettingValueJSON = getUnknownPropertiesFeatureFlagConfigurationSettingValue(UPDATED_KEY,
-            UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
+        String newSettingValueJSON = getUnknownPropertiesFeatureFlagConfigurationSettingValue();
 
         setting.setValue(newSettingValueJSON);
         assertEquals(newSettingValueJSON, setting.getValue());
@@ -127,9 +125,8 @@ public class FeatureFlagSettingUnitTest {
     private FeatureFlagConfigurationSetting createFeatureFlagConfigurationSetting() {
         // Create a new feature flag configuration setting,
         final List<FeatureFlagFilter> featureFlagFilters
-            = Arrays.asList(getFlagFilter(FILTER_NAME, getFilterParameters()));
-        return getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE, DISPLAY_NAME_VALUE, IS_ENABLED,
-            featureFlagFilters);
+            = Collections.singletonList(getFlagFilter(getFilterParameters()));
+        return getFeatureFlagConfigurationSetting(featureFlagFilters);
     }
 
     private String getFeatureFlagConfigurationSettingValue(String id, String description, String displayName,
@@ -141,26 +138,25 @@ public class FeatureFlagSettingUnitTest {
             id, description, displayName, isEnabled);
     }
 
-    private String getUnknownPropertiesFeatureFlagConfigurationSettingValue(String id, String description,
-        String displayName, boolean isEnabled) {
+    private String getUnknownPropertiesFeatureFlagConfigurationSettingValue() {
         return String.format(
             "{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
                 + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
                 + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
                 + "},\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
                 + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}",
-            id, description, displayName, isEnabled);
+            UPDATED_KEY, UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
     }
 
-    private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String id, String description,
-        String displayName, boolean isEnabled, List<FeatureFlagFilter> filters) {
-        return new FeatureFlagConfigurationSetting(id, isEnabled).setDescription(description)
-            .setDisplayName(displayName)
+    private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(List<FeatureFlagFilter> filters) {
+        return new FeatureFlagConfigurationSetting(NEW_KEY, IS_ENABLED)
+            .setDescription(DESCRIPTION_VALUE)
+            .setDisplayName(DISPLAY_NAME_VALUE)
             .setClientFilters(filters);
     }
 
-    private FeatureFlagFilter getFlagFilter(String filterName, Map<String, Object> filterParameters) {
-        return new FeatureFlagFilter(filterName).setParameters(filterParameters);
+    private FeatureFlagFilter getFlagFilter(Map<String, Object> filterParameters) {
+        return new FeatureFlagFilter(FILTER_NAME).setParameters(filterParameters);
     }
 
     private Map<String, Object> getFilterParameters() {
