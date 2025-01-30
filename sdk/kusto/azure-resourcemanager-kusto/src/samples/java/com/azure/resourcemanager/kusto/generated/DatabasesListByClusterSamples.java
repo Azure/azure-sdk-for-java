@@ -10,7 +10,7 @@ package com.azure.resourcemanager.kusto.generated;
 public final class DatabasesListByClusterSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesListByCluster
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesListByCluster
      * .json
      */
     /**

@@ -22,7 +22,7 @@ public final class AttachedDatabaseConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"location\":\"zmkw\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"oxaxm\",\"clusterResourceId\":\"e\",\"attachedDatabaseNames\":[\"h\",\"jnhgwydyyn\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"gbv\",\"ta\"],\"tablesToExclude\":[\"fdlpukhpyr\"],\"externalTablesToInclude\":[\"zjcpeogk\",\"nmg\"],\"externalTablesToExclude\":[\"uxddbhfh\",\"fpazjzoywjxhpd\",\"lontacnpq\",\"tehtuevrhrljyoog\"],\"materializedViewsToInclude\":[\"nsduugwbsre\",\"rfqkfuar\",\"nlvhhtklnvnafvv\",\"yfedevjbo\"],\"materializedViewsToExclude\":[\"qxypokkhminq\",\"ymc\",\"ngnbdxxew\",\"ninvudbchaqdt\"],\"functionsToInclude\":[\"crqctmxxdtddmflh\"],\"functionsToExclude\":[\"xzvtzna\"]},\"databaseNameOverride\":\"bannovvoxczytp\",\"databaseNamePrefix\":\"nwvroevytlyokrr\"},\"id\":\"o\",\"name\":\"uxvnsasbcrymodi\",\"type\":\"rxklobdxnazpmk\"}";
+            = "{\"location\":\"dxxewuninv\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"h\",\"clusterResourceId\":\"qdtvqecrqctmxx\",\"attachedDatabaseNames\":[\"dmflhuytx\"],\"defaultPrincipalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"apxbannovvoxczy\",\"prwnwvroevytlyo\",\"rrrouuxvnsa\"],\"tablesToExclude\":[\"rymo\",\"izrxklob\",\"xnazpmkml\",\"vevfxz\"],\"externalTablesToInclude\":[\"hbzxli\",\"hrdd\",\"tfgxqbawpcb\",\"nzqcy\"],\"externalTablesToExclude\":[\"p\",\"ofyuicd\",\"zb\"],\"materializedViewsToInclude\":[\"wwgbdv\"],\"materializedViewsToExclude\":[\"dmhm\",\"ffplfmuvapckcc\"],\"functionsToInclude\":[\"weyoxoy\"],\"functionsToExclude\":[\"phaimmoi\"]},\"databaseNameOverride\":\"qboshbra\",\"databaseNamePrefix\":\"pyyrmfs\"},\"id\":\"bpav\",\"name\":\"opfppdbwnupgah\",\"type\":\"kuma\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,24 +32,23 @@ public final class AttachedDatabaseConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AttachedDatabaseConfiguration response = manager.attachedDatabaseConfigurations()
-            .getWithResponse("nlgmtrwahzjmu", "ftbyrplro", "kpigqfusu", com.azure.core.util.Context.NONE)
+            .getWithResponse("lcqxypokk", "minqcym", "zng", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zmkw", response.location());
-        Assertions.assertEquals("oxaxm", response.databaseName());
-        Assertions.assertEquals("e", response.clusterResourceId());
-        Assertions.assertEquals(DefaultPrincipalsModificationKind.NONE, response.defaultPrincipalsModificationKind());
-        Assertions.assertEquals("gbv", response.tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("fdlpukhpyr", response.tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("zjcpeogk", response.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("uxddbhfh", response.tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("nsduugwbsre",
-            response.tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("qxypokkhminq",
-            response.tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("crqctmxxdtddmflh", response.tableLevelSharingProperties().functionsToInclude().get(0));
-        Assertions.assertEquals("xzvtzna", response.tableLevelSharingProperties().functionsToExclude().get(0));
-        Assertions.assertEquals("bannovvoxczytp", response.databaseNameOverride());
-        Assertions.assertEquals("nwvroevytlyokrr", response.databaseNamePrefix());
+        Assertions.assertEquals("dxxewuninv", response.location());
+        Assertions.assertEquals("h", response.databaseName());
+        Assertions.assertEquals("qdtvqecrqctmxx", response.clusterResourceId());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.REPLACE,
+            response.defaultPrincipalsModificationKind());
+        Assertions.assertEquals("apxbannovvoxczy", response.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("rymo", response.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("hbzxli", response.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions.assertEquals("p", response.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("wwgbdv", response.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("dmhm", response.tableLevelSharingProperties().materializedViewsToExclude().get(0));
+        Assertions.assertEquals("weyoxoy", response.tableLevelSharingProperties().functionsToInclude().get(0));
+        Assertions.assertEquals("phaimmoi", response.tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("qboshbra", response.databaseNameOverride());
+        Assertions.assertEquals("pyyrmfs", response.databaseNamePrefix());
     }
 }

@@ -101,7 +101,7 @@ public final class ImplUtils {
      * @return True if the character sequence is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(CharSequence charSequence) {
-        return charSequence == null || charSequence.isEmpty();
+        return charSequence == null || charSequence.length() == 0;
     }
 
     /**

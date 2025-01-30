@@ -13,19 +13,19 @@ public final class PrivateEndpointConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionProperties model = BinaryData.fromString(
-            "{\"privateEndpoint\":{\"id\":\"qjhqjbas\"},\"privateLinkServiceConnectionState\":{\"status\":\"smjqulngsntnbyb\",\"description\":\"gc\",\"actionsRequired\":\"wclxxwrl\"},\"groupId\":\"ouskcqvkocrc\",\"provisioningState\":\"kwt\"}")
+            "{\"privateEndpoint\":{\"id\":\"xxwr\"},\"privateLinkServiceConnectionState\":{\"status\":\"douskcqvkocrcjdk\",\"description\":\"nh\",\"actionsRequired\":\"njbiksqrglssain\"},\"groupId\":\"jwnzlljfmp\",\"provisioningState\":\"ebvmgxsabkyqd\"}")
             .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals("smjqulngsntnbyb", model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("gc", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("nh", model.privateLinkServiceConnectionState().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionProperties model
             = new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionStateProperty().withStatus("smjqulngsntnbyb").withDescription("gc"));
+                new PrivateLinkServiceConnectionStateProperty().withStatus("douskcqvkocrcjdk").withDescription("nh"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals("smjqulngsntnbyb", model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("gc", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("nh", model.privateLinkServiceConnectionState().description());
     }
 }
