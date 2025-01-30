@@ -451,6 +451,8 @@ jobs:
           - ${{ config }}
         - ${{ each config in parameters.AdditionalMatrixConfigs }}:
           - ${{ config }}
+      ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+        EnablePRGeneration: true
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
