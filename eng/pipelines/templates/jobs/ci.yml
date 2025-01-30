@@ -453,6 +453,10 @@ jobs:
           - ${{ config }}
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
+        SparseCheckoutPaths:
+          - '**/*.xml'
+          - '**/*.md'
+          - '**/ci*.yml' # necessary for save-package-properties.yml
         PreGenerationSteps:
           - task: UsePythonVersion@0
             displayName: 'Use Python $(PythonVersion)'
