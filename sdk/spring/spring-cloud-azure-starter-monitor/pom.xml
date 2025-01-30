@@ -52,7 +52,7 @@
     <!-- End of OTel dependencies -->
 
     <!-- Redeclaration of the OpenTelemetry exporter dependencies if Spring Monitor is released
-     and the OpenTelemetry exporter on Maven has older OpenTelemetry versions -->
+     and the OpenTelemetry Autoconfigure on Maven has older OpenTelemetry versions -->
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
@@ -77,6 +77,11 @@
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
       <version>1.46.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+      <version>1.46.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
     <!-- End of redeclaration of the OpenTelemetry exporter dependencies -->
 
