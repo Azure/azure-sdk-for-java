@@ -117,7 +117,7 @@ public class MessageEncoderTests {
             Arguments.of(1024, 512, Flags.NONE), Arguments.of(1024, 512, Flags.STORAGE_CRC64),
             Arguments.of(1024, 200, Flags.NONE), Arguments.of(1024, 200, Flags.STORAGE_CRC64),
             Arguments.of(1024 * 10, 2, Flags.NONE), Arguments.of(1024 * 10, 2, Flags.STORAGE_CRC64),
-            Arguments.of(1025 * 50, 512, Flags.NONE), Arguments.of(1024 * 50, 512, Flags.STORAGE_CRC64),
+            Arguments.of(1024 * 50, 512, Flags.NONE), Arguments.of(1024 * 50, 512, Flags.STORAGE_CRC64),
             Arguments.of(1024 * 1024, 512, Flags.NONE), Arguments.of(1024 * 1024, 512, Flags.STORAGE_CRC64),
             Arguments.of(1024 * 1024, 1024, Flags.NONE), Arguments.of(1024 * 1024, 1024, Flags.STORAGE_CRC64),
             Arguments.of(1024 * 1024 * 4, 1024 * 1024, Flags.NONE),

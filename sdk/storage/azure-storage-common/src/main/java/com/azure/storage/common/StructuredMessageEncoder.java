@@ -57,6 +57,9 @@ public class StructuredMessageEncoder {
 
     /**
      * temp comment to allow building
+     * @param contentLength The length of the content to be encoded.
+     * @param segmentSize The size of each segment.
+     * @param flags The flags to be set.
      */
     public StructuredMessageEncoder(int contentLength, int segmentSize, Flags flags) {
         if (segmentSize < 1) {
@@ -187,6 +190,9 @@ public class StructuredMessageEncoder {
 
     /**
      * temp comment to allow building
+     * @param innerBuffer The buffer to be encoded.
+     * @return The encoded buffer.
+     * @throws IOException If an error occurs while encoding the buffer.
      */
     public ByteBuffer encode(ByteBuffer innerBuffer) throws IOException {
         StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
@@ -345,6 +351,7 @@ public class StructuredMessageEncoder {
 
     /**
      * temp comment to allow building
+     * @return The length of the message.
      */
     public int getMessageLength() {
         return messageLength;

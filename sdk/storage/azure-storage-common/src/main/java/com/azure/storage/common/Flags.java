@@ -38,7 +38,7 @@ public enum Flags {
         }
         Flags[] items = Flags.values();
         for (Flags item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
+            if (item.getValue() == Integer.parseInt(value)) {
                 return item;
             }
         }
