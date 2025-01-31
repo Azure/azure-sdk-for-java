@@ -144,7 +144,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
-      <version>1.0.48</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+      <version>1.2.1</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -164,7 +164,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.41</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.1</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -212,7 +212,7 @@
             <bannedDependencies>
               <includes>
                 <include>io.netty:netty-tcnative-boringssl-static:[2.0.69.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty-http:[1.0.48]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.2.1]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.115.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-common:[4.1.115.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
                 <include>io.netty:netty-codec:[4.1.115.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
