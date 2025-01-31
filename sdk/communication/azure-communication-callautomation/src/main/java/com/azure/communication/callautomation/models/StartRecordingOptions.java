@@ -3,11 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.List;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * The options for creating a call.
@@ -15,9 +14,11 @@ import java.util.Objects;
 @Fluent
 public final class StartRecordingOptions {
     /**
-     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
+     * is a {@link GroupCallLocator} or {@link ServerCallLocator} or {@null} for locating the call.
      */
     private final CallLocator callLocator;
+
+    private final String callConnectionId;
 
     private String recordingStateCallbackUrl;
 
@@ -38,11 +39,11 @@ public final class StartRecordingOptions {
     /**
      * Constructor
      *
-     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
+     * @param callLocator is a {@link GroupCallLocator} or {@link ServerCallLocator} or {@null} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
-        Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
+        this.callConnectionId = null; // Initialize callConnectionId to null
     }
 
     /**
@@ -52,6 +53,25 @@ public final class StartRecordingOptions {
      */
     public CallLocator getCallLocator() {
         return this.callLocator;
+    }
+
+    /**
+    * Constructor
+    *
+    * @param callConnectionId the ID of the call connection.
+    */
+    public StartRecordingOptions(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        this.callLocator = null; // Initialize callLocator to null
+    }
+
+    /**
+    * Get callConnectionId for the call
+    *
+    * @return callConnectionId for the call
+    */
+    public String getCallConnectionId() {
+        return callConnectionId;
     }
 
     /**
