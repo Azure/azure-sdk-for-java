@@ -1,5 +1,7 @@
 # Core shared library for Java
 
+JRS-This is just a change for testing purposes and will not be checked in.
+
 Client Core provides shared primitives, abstractions, and helpers for modern SDK client libraries. These libraries
 can be easily identified by package names starting with `io.clientcore`, e.g. `io.clientcore.core` would be found within
 the `/sdk/clientcore/core` directory.
@@ -146,9 +148,9 @@ sequentially to prepare it being sent by an `HttpClient`.
 
 ### Configuring Builders
 
-Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a 
-variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as 
-`Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic 
+Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a
+variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as
+`Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic
 methods to be used for all builders `core` provides a set of interfaces that can be implemented to provide
 the necessary functionality.
 
@@ -157,10 +159,10 @@ the necessary functionality.
 `HttpTrait<T>` contains methods for setting key configurations for HTTP-based clients. This interface will allow you to
 configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, and `HttpLogOptions`.
 
-For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be 
-created based on classpath configurations. This can cause confusion if 
-you're expecting specific behavior for your client, such as using a proxy that wasn't loaded from the environment. To 
-avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your 
+For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be
+created based on classpath configurations. This can cause confusion if
+you're expecting specific behavior for your client, such as using a proxy that wasn't loaded from the environment. To
+avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your
 configurations aren't based on the environment running the application.
 
 #### Credential Traits

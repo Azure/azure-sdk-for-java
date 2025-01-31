@@ -94,7 +94,8 @@ class PackageProps {
 
                 # if we know this is the matrix for our file, we should now see if there is a custom matrix config for the package
                 $matrixConfigList = GetValueSafelyFrom-Yaml $content @("extends", "parameters", "MatrixConfigs")
-
+                # JRS - it's unclear if this is the place add AdditionalMatrixConfigs, it seems
+                # that if this is set, it'll replace the basic test matrix
                 if ($matrixConfigList) {
                     $result.MatrixConfigs = $matrixConfigList
                 }
