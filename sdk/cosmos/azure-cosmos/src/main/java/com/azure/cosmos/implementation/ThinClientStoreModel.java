@@ -76,6 +76,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     @Override
+    public URI getRootUri(RxDocumentServiceRequest request) {
+        return this.globalEndpointManager.resolveServiceEndpoint(request).thinClientEndpoint;
+    }
+
+    @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
 
         // todo - neharao1 - validate b/w name() v/s toString()
@@ -94,7 +99,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 
-        // todo: comment can be removed - RntbdRequestEncoder does the same - a type of ChannelHandler in ChannelPipeline (a Netty concept)
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
         // todo: need to conditionally add some headers (userAgent, replicaId/endpoint, etc)

@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -45,7 +46,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private int staleContainerRetryCount;
     private boolean isReadRequest;
     private boolean canUseMultipleWriteLocations;
-    private URI locationEndpoint;
+    private LocationCache.LocationEndpoints locationEndpoints;
     private RetryContext retryContext;
     private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
@@ -86,7 +87,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             isReadRequest,
             canUseMultipleWriteLocations,
             e);
-        if (this.locationEndpoint == null) {
+        // TODO: verify this logic
+        if (this.locationEndpoints.gatewayEndpoint == null && this.locationEndpoints.thinClientEndpoint == null) {
             // on before request is not invoked because Document Service Request creation failed.
             logger.error("locationEndpoint is null because ClientRetryPolicy::onBeforeRequest(.) is not invoked, " +
                                  "probably request creation failed due to invalid options, serialization setting, etc.");
@@ -335,13 +337,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private Mono<Void> refreshLocation(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
         this.failoverRetryCount++;
 
-        // Mark the current read endpoint as unavailable
+        // Mark the current read endpoints as unavailable
         if (isReadRequest) {
-            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);
-            this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoint);
+            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoints.gatewayEndpoint);
+            logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoints.thinClientEndpoint);
+            // adding an extra call here will cause updateLocationCache to be called twice, is this ok or should we consolidate
+            this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoints.gatewayEndpoint);
+            this.globalEndpointManager.markEndpointUnavailableForRead(this.locationEndpoints.thinClientEndpoint);
         } else {
-            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoint);
-            this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoint);
+            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoints.gatewayEndpoint);
+            logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoints.thinClientEndpoint);
+            // adding an extra call here will cause updateLocationCache to be called twice, is this ok or should we consolidate
+            this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoints.gatewayEndpoint);
+            this.globalEndpointManager.markEndpointUnavailableForWrite(this.locationEndpoints.thinClientEndpoint);
         }
 
         this.retryContext = new RetryContext(this.failoverRetryCount, usePreferredLocations);
@@ -401,7 +409,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        logger.info("shouldRetryOnServiceUnavailable() Retrying. Received on endpoint {}, IsReadRequest = {}", this.locationEndpoint, isReadRequest);
+        logger.info("shouldRetryOnServiceUnavailable() Retrying. Received on endpoints {}, {}, IsReadRequest = {}",
+            this.locationEndpoints.gatewayEndpoint,
+            this.locationEndpoints.thinClientEndpoint,
+            isReadRequest);
 
         // Retrying on second PreferredLocations
         // RetryCount is used as zero-based index
@@ -458,9 +469,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
-        this.locationEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
+        this.locationEndpoints = this.globalEndpointManager.resolveServiceEndpoint(request);
         if (request.requestContext != null) {
-            request.requestContext.routeToLocation(this.locationEndpoint);
+            // TODO: try both endpoints before we force cross-region retry
+            request.requestContext.locationEndpoints = this.locationEndpoints;
+            request.requestContext.routeToLocation(Configs.getThinclientEnabled() ? this.locationEndpoints.thinClientEndpoint : this.locationEndpoints.gatewayEndpoint);
         }
     }
 

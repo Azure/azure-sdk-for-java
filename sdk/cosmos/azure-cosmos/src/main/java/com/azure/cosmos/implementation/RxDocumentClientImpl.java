@@ -210,6 +210,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
     private RxGatewayStoreModel gatewayProxy;
+    private RxGatewayStoreModel thinProxy;
     private RxStoreModel storeModel;
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -260,6 +261,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
     private List<CosmosOperationPolicy> operationPolicies;
     private AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
+    private final boolean isThinClientEnabled;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -488,7 +490,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-            this.serviceEndpoint = serviceEndpoint;
+            this.isThinClientEnabled = this.configs.getThinclientEnabled();
+            // TODO: we have a default thinclient endpoint in configs, but it is not set to anything - need
+            //  to figure out what default will be
+            this.serviceEndpoint = this.isThinClientEnabled ? this.configs.getThinclientEndpoint() : serviceEndpoint;
             this.credential = credential;
             this.tokenCredential = tokenCredential;
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
@@ -684,6 +689,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.reactorHttpClient,
                 this.apiType);
 
+            this.thinProxy = createThinProxy(this.sessionContainer,
+                this.consistencyLevel,
+                this.userAgentContainer,
+                this.globalEndpointManager,
+                this.reactorHttpClient);
+
             this.globalEndpointManager.init();
 
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
@@ -824,6 +835,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 globalEndpointManager,
                 httpClient,
                 apiType);
+    }
+
+    ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,
+                                             ConsistencyLevel consistencyLevel,
+                                             UserAgentContainer userAgentContainer,
+                                             GlobalEndpointManager globalEndpointManager,
+                                             HttpClient httpClient) {
+        return new ThinClientStoreModel(
+            this,
+            sessionContainer,
+            consistencyLevel,
+            userAgentContainer,
+            globalEndpointManager,
+            httpClient);
     }
 
     private HttpClient httpClient() {
@@ -1860,6 +1885,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
+        request.useThinProxy = Configs.getThinclientEnabled() && request.useGatewayMode ? true : false;
+
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
@@ -2023,6 +2050,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return Mono, which on subscription will populate the headers in the request passed in the argument.
      */
     public Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+        // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
+        if (this.isThinClientEnabled) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
+        }
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
@@ -5711,6 +5742,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
+        if (request.useThinProxy) {
+            return this.thinProxy;
+        }
+
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {

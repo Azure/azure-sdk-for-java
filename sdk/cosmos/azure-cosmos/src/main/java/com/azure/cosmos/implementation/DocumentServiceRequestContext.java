@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
@@ -40,6 +41,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
     public volatile URI locationEndpointToRoute;
+    public volatile LocationCache.LocationEndpoints locationEndpoints;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;

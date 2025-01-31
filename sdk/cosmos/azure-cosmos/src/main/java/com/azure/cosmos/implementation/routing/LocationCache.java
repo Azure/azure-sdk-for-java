@@ -20,10 +20,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.stream.Location;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +44,7 @@ public class LocationCache {
     private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
 
     private final boolean enableEndpointDiscovery;
-    private final URI defaultEndpoint;
+    private final LocationEndpoints defaultEndpoint;
     private final boolean useMultipleWriteLocations;
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
@@ -65,7 +67,7 @@ public class LocationCache {
         );
 
         this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, defaultEndpoint);
-        this.defaultEndpoint = defaultEndpoint;
+        this.defaultEndpoint = new LocationEndpoints(defaultEndpoint); // assuming default endpoint as gateway
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
         this.useMultipleWriteLocations = connectionPolicy.isMultipleWriteRegionsEnabled();
 
@@ -86,7 +88,7 @@ public class LocationCache {
      * 2. Endpoint availability
      * @return
      */
-    public UnmodifiableList<URI> getReadEndpoints() {
+    public UnmodifiableList<LocationEndpoints> getReadEndpoints() {
         if (this.locationUnavailabilityInfoByEndpoint.size() > 0
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
@@ -101,7 +103,7 @@ public class LocationCache {
      * 2. Endpoint availability
      * @return
      */
-    public UnmodifiableList<URI> getWriteEndpoints() {
+    public UnmodifiableList<LocationEndpoints> getWriteEndpoints() {
         if (this.locationUnavailabilityInfoByEndpoint.size() > 0
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
@@ -109,7 +111,6 @@ public class LocationCache {
 
         return this.locationInfo.writeEndpoints;
     }
-
 
     /***
      * Get the list of available read endpoints.
@@ -119,7 +120,10 @@ public class LocationCache {
      * @return
      */
     public List<URI> getAvailableReadEndpoints() {
-        return this.locationInfo.availableReadEndpointByLocation.values().stream().collect(Collectors.toList());
+        return this.locationInfo.availableReadEndpointsByLocation.values().stream().map(locationEndpoints -> {
+                // TODO: Integrate thinclient endpoints into fault injection
+                return locationEndpoints.gatewayEndpoint;
+            }).collect(Collectors.toList());
     }
 
     /***
@@ -130,7 +134,10 @@ public class LocationCache {
      * @return
      */
     public List<URI> getAvailableWriteEndpoints() {
-        return this.locationInfo.availableWriteEndpointByLocation.values().stream().collect(Collectors.toList());
+        return this.locationInfo.availableWriteEndpointsByLocation.values().stream().map(locationEndpoints -> {
+            // TODO: Integrate thinclient endpoints into fault injection
+            return locationEndpoints.gatewayEndpoint;
+        }).collect(Collectors.toList());
     }
 
     public List<String> getEffectivePreferredLocations() {
@@ -159,13 +166,15 @@ public class LocationCache {
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
+                databaseAccount.getThinClientWritableLocations(),
+                databaseAccount.getThinClientReadableLocations(),
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
     }
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {
         this.updateLocationCache(
-                null, null , preferredLocations, null);
+                null, null, null, null, preferredLocations, null);
     }
 
     /**
@@ -186,11 +195,11 @@ public class LocationCache {
      * @param request Request for which getEndpoint is to be resolved
      * @return Resolved getEndpoint
      */
-    public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
+    public LocationEndpoints resolveServiceEndpoint(RxDocumentServiceRequest request) {
         Objects.requireNonNull(request.requestContext,
             "RxDocumentServiceRequest.requestContext is required and cannot be null.");
         if(request.requestContext.locationEndpointToRoute != null) {
-            return request.requestContext.locationEndpointToRoute;
+            return new LocationEndpoints(request.requestContext.locationEndpointToRoute);
         }
 
         int locationIndex = Utils.getValueOrDefault(request.requestContext.locationIndexToRoute, 0);
@@ -205,24 +214,28 @@ public class LocationCache {
             if(this.enableEndpointDiscovery && currentLocationInfo.availableWriteLocations.size() > 0) {
                 locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
-                return currentLocationInfo.availableWriteEndpointByLocation.get(writeLocation);
+                URI thinclientEndpoint = currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation).thinClientEndpoint;
+                URI gatewayEndpoint = currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation).gatewayEndpoint;
+                // Bubble up both endpoints so we can try both before we have to do a cross-region retry
+                return new LocationEndpoints(gatewayEndpoint, thinclientEndpoint);
             } else {
+                // assuming defaultEndpoint would be gateway endpoint here
                 return this.defaultEndpoint;
             }
         } else {
-            UnmodifiableList<URI> endpoints =
+            UnmodifiableList<LocationEndpoints> endpoints =
                 request.getOperationType().isWriteOperation()? this.getApplicableWriteEndpoints(request) : this.getApplicableReadEndpoints(request);
             return endpoints.get(locationIndex % endpoints.size());
         }
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<LocationEndpoints> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         return this.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
+    public UnmodifiableList<LocationEndpoints> getApplicableWriteEndpoints(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
 
-        UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
+        UnmodifiableList<LocationEndpoints> writeEndpoints = this.getWriteEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -250,12 +263,12 @@ public class LocationCache {
             effectiveExcludedRegionsWithPartitionUnavailableRegions);
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<LocationEndpoints> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         return this.getApplicableReadEndpoints(request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
-        UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
+    public UnmodifiableList<LocationEndpoints> getApplicableReadEndpoints(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
+        UnmodifiableList<LocationEndpoints> readEndpoints = this.getReadEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -283,16 +296,20 @@ public class LocationCache {
             effectiveExcludedRegionsWithPartitionUnavailableRegions);
     }
 
-    private UnmodifiableList<URI> getApplicableEndpoints(
-        UnmodifiableList<URI> endpoints,
+    private UnmodifiableList<LocationEndpoints> getApplicableEndpoints(
+        UnmodifiableList<LocationEndpoints> endpoints,
         UnmodifiableMap<URI, String> regionNameByEndpoint,
-        URI fallbackEndpoint,
+        LocationEndpoints fallbackEndpoint,
         List<String> excludeRegionList) {
 
-        List<URI> applicableEndpoints = new ArrayList<>();
-        for (URI endpoint : endpoints) {
+        List<LocationEndpoints> applicableEndpoints = new ArrayList<>();
+        for (LocationEndpoints endpoint : endpoints) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
-            if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
+            // TODO: @jeet1995: validate this logic
+            URI endpointToTry = endpoint.gatewayEndpoint != null ? endpoint.gatewayEndpoint : fallbackEndpoint.gatewayEndpoint;
+            // TODO: @jeet1995: validate this logic
+            if (Utils.tryGetValue(regionNameByEndpoint, endpoint.gatewayEndpoint, regionName) ||
+                Utils.tryGetValue(regionNameByEndpoint, endpoint.thinClientEndpoint, regionName)) {
                 if (!excludeRegionList.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
                     applicableEndpoints.add(endpoint);
                 }
@@ -314,22 +331,24 @@ public class LocationCache {
     }
 
     public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {
-        Utils.ValueHolder<URI> endpointValueHolder = new Utils.ValueHolder<>();
+        Utils.ValueHolder<LocationEndpoints> endpointValueHolder = new Utils.ValueHolder<>();
         if (writeOnly) {
-            Utils.tryGetValue(this.locationInfo.availableWriteEndpointByLocation, region, endpointValueHolder);
+            Utils.tryGetValue(this.locationInfo.availableWriteEndpointsByLocation, region, endpointValueHolder);
         } else {
-            Utils.tryGetValue(this.locationInfo.availableReadEndpointByLocation, region, endpointValueHolder);
+            Utils.tryGetValue(this.locationInfo.availableReadEndpointsByLocation, region, endpointValueHolder);
         }
 
         if (endpointValueHolder.v != null) {
-            return endpointValueHolder.v;
+            // TODO: Figure out how to integrate thinclient into fault injection
+            return endpointValueHolder.v.gatewayEndpoint;
         }
 
         throw new IllegalArgumentException("Can not find service endpoint for region " + region);
     }
 
     public URI getDefaultEndpoint() {
-        return this.defaultEndpoint;
+        // assuming default endpoint as gateway, don't want to pull LocationEndpoints type up from here
+        return this.defaultEndpoint.gatewayEndpoint;
     }
 
     public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {
@@ -345,9 +364,11 @@ public class LocationCache {
         if (this.enableEndpointDiscovery) {
 
             boolean shouldRefresh = this.useMultipleWriteLocations && !this.enableMultipleWriteLocations;
-            List<URI> readLocationEndpoints = currentLocationInfo.readEndpoints;
-            if (this.isEndpointUnavailable(readLocationEndpoints.get(0), OperationType.Read)) {
-                // Since most preferred read endpoint is unavailable, we can only refresh in background if
+            List<LocationEndpoints> readLocationEndpoints = currentLocationInfo.readEndpoints;
+            // TODO: @jeet1995 validate this logic
+            if (this.isEndpointUnavailable(readLocationEndpoints.get(0).gatewayEndpoint, OperationType.Read) &&
+                this.isEndpointUnavailable(readLocationEndpoints.get(0).thinClientEndpoint, OperationType.Read)) {
+                // Since most preferred read endpoints are unavailable, we can only refresh in background if
                 // we have an alternate read endpoint
                 canRefreshInBackground.v = anyEndpointsAvailable(readLocationEndpoints,OperationType.Read);
                 logger.debug("shouldRefreshEndpoints = true,  since the first read endpoint " +
@@ -358,17 +379,25 @@ public class LocationCache {
             }
 
             if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                Utils.ValueHolder<URI> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
+                Utils.ValueHolder<LocationEndpoints> mostPreferredReadEndpointHolder = new Utils.ValueHolder<>();
                 logger.debug("getReadEndpoints [{}]", readLocationEndpoints);
 
-                if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
+                if (Utils.tryGetValue(currentLocationInfo.availableReadEndpointsByLocation, mostPreferredLocation, mostPreferredReadEndpointHolder)) {
+                    URI mostPreferredLocationGatewayEndpoint = mostPreferredReadEndpointHolder.v.gatewayEndpoint;
+                    URI mostPreferredLocationThinclientEndpoint = mostPreferredReadEndpointHolder.v.thinClientEndpoint;
                     logger.debug("most preferred is [{}], most preferred available is [{}]",
                             mostPreferredLocation, mostPreferredReadEndpointHolder.v);
-                    if (!areEqual(mostPreferredReadEndpointHolder.v, readLocationEndpoints.get(0))) {
+                    if (!areEqual(mostPreferredLocationThinclientEndpoint, readLocationEndpoints.get(0).thinClientEndpoint)) {
                         // For reads, we can always refresh in background as we can alternate to
                         // other available read endpoints
                         logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
-                                " is not available for read.", mostPreferredLocation);
+                                " is not available for read.", mostPreferredLocationThinclientEndpoint);
+                        return true;
+                    } else if (!areEqual(mostPreferredLocationGatewayEndpoint, readLocationEndpoints.get(0).gatewayEndpoint)) {
+                        // For reads, we can always refresh in background as we can alternate to
+                        // other available read endpoints
+                        logger.debug("shouldRefreshEndpoints = true, most preferred location [{}]" +
+                            " is not available for read.", mostPreferredLocationGatewayEndpoint);
                         return true;
                     }
 
@@ -382,12 +411,14 @@ public class LocationCache {
                 }
             }
 
-            Utils.ValueHolder<URI> mostPreferredWriteEndpointHolder = new Utils.ValueHolder<>();
-            List<URI> writeLocationEndpoints = currentLocationInfo.writeEndpoints;
+            Utils.ValueHolder<LocationEndpoints> mostPreferredWriteEndpointHolder = new Utils.ValueHolder<>();
+            List<LocationEndpoints> writeLocationEndpoints = currentLocationInfo.writeEndpoints;
             logger.debug("getWriteEndpoints [{}]", writeLocationEndpoints);
 
             if (!this.canUseMultipleWriteLocations()) {
-                if (this.isEndpointUnavailable(writeLocationEndpoints.get(0), OperationType.Write)) {
+                // TODO: @jeet1995 validate this logic
+                if (this.isEndpointUnavailable(writeLocationEndpoints.get(0).thinClientEndpoint, OperationType.Write) &&
+                    this.isEndpointUnavailable(writeLocationEndpoints.get(0).gatewayEndpoint, OperationType.Write)) {
                     // Since most preferred write endpoint is unavailable, we can only refresh in background if
                     // we have an alternate write endpoint
                     canRefreshInBackground.v = anyEndpointsAvailable(writeLocationEndpoints,OperationType.Write);
@@ -403,15 +434,28 @@ public class LocationCache {
                     return shouldRefresh;
                 }
             } else if (!Strings.isNullOrEmpty(mostPreferredLocation)) {
-                if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
-                    shouldRefresh = ! areEqual(mostPreferredWriteEndpointHolder.v,writeLocationEndpoints.get(0));
+                if (Utils.tryGetValue(currentLocationInfo.availableWriteEndpointsByLocation, mostPreferredLocation, mostPreferredWriteEndpointHolder)) {
+                    URI mostPreferredLocationGatewayEndpoint = mostPreferredWriteEndpointHolder.v.gatewayEndpoint;
+                    URI mostPreferredLocationThinclientEndpoint = mostPreferredWriteEndpointHolder.v.thinClientEndpoint;
 
-                    if (shouldRefresh) {
-                        logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
-                                writeLocationEndpoints.get(0), mostPreferredWriteEndpointHolder.v);
-                    } else {
-                        logger.debug("shouldRefreshEndpoints: false, write endpoint [{}] is the same as most preferred [{}]",
-                                writeLocationEndpoints.get(0), mostPreferredWriteEndpointHolder.v);
+                    if (mostPreferredLocationThinclientEndpoint != null) {
+                        shouldRefresh = ! areEqual(mostPreferredLocationThinclientEndpoint, writeLocationEndpoints.get(0).thinClientEndpoint);
+                        if (shouldRefresh) {
+                            logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationThinclientEndpoint);
+                        } else {
+                            logger.debug("shouldRefreshEndpoints: false, write endpoint [{}] is the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationThinclientEndpoint);
+                        }
+                    } else if (mostPreferredLocationGatewayEndpoint != null) {
+                        shouldRefresh = ! areEqual(mostPreferredLocationGatewayEndpoint, writeLocationEndpoints.get(0).gatewayEndpoint);
+                        if (shouldRefresh) {
+                            logger.debug("shouldRefreshEndpoints: true, write endpoint [{}] is not the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationGatewayEndpoint);
+                        } else {
+                            logger.debug("shouldRefreshEndpoints: false, write endpoint [{}] is the same as most preferred [{}]",
+                                writeLocationEndpoints.get(0), mostPreferredLocationGatewayEndpoint);
+                        }
                     }
 
                     return shouldRefresh;
@@ -494,11 +538,13 @@ public class LocationCache {
         }
     }
 
-    private boolean anyEndpointsAvailable(List<URI> endpoints, OperationType expectedAvailableOperations) {
+    private boolean anyEndpointsAvailable(List<LocationEndpoints> endpoints, OperationType expectedAvailableOperations) {
         Utils.ValueHolder<LocationUnavailabilityInfo> unavailabilityInfoHolder = new Utils.ValueHolder<>();
         boolean anyEndpointsAvailable = false;
-        for (URI endpoint : endpoints) {
-            if (!isEndpointUnavailable(endpoint, expectedAvailableOperations)) {
+        for (LocationEndpoints endpoint : endpoints) {
+            // TODO: @jeet1995 validate this logic
+            if (!isEndpointUnavailable(endpoint.gatewayEndpoint, expectedAvailableOperations) ||
+                !isEndpointUnavailable(endpoint.thinClientEndpoint, expectedAvailableOperations)) {
                 anyEndpointsAvailable = true;
                 break;
             }
@@ -538,12 +584,14 @@ public class LocationCache {
     }
 
     private void updateLocationCache(){
-        updateLocationCache(null, null, null, null);
+        updateLocationCache(null, null, null, null, null, null);
     }
 
     private void updateLocationCache(
-            Iterable<DatabaseAccountLocation> writeLocations,
-            Iterable<DatabaseAccountLocation> readLocations,
+            Iterable<DatabaseAccountLocation> gatewayWriteLocations,
+            Iterable<DatabaseAccountLocation> gatewayReadLocations,
+            Iterable<DatabaseAccountLocation> thinclientWriteLocations,
+            Iterable<DatabaseAccountLocation> thinclientReadLocations,
             UnmodifiableList<String> preferenceList,
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
@@ -561,24 +609,20 @@ public class LocationCache {
 
             this.clearStaleEndpointUnavailabilityInfo();
 
-            if (readLocations != null) {
-                Utils.ValueHolder<UnmodifiableList<String>> out = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
-                Utils.ValueHolder<UnmodifiableMap<URI, String>> outReadRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
-                nextLocationInfo.availableReadEndpointByLocation = this.getEndpointByLocation(readLocations, out, outReadRegionMap);
-                nextLocationInfo.availableReadLocations =  out.v;
-                nextLocationInfo.regionNameByReadEndpoint = outReadRegionMap.v;
-            }
+            Utils.ValueHolder<UnmodifiableList<String>> readValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
+            Utils.ValueHolder<UnmodifiableMap<URI, String>> readRegionMapValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
+            nextLocationInfo.availableReadEndpointsByLocation = this.getEndpointsByLocation(gatewayReadLocations, thinclientReadLocations, readValueHolder, readRegionMapValueHolder);
+            nextLocationInfo.availableReadLocations =  readValueHolder.v;
+            nextLocationInfo.regionNameByReadEndpoint = readRegionMapValueHolder.v;
 
-            if (writeLocations != null) {
-                Utils.ValueHolder<UnmodifiableList<String>> out = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
-                Utils.ValueHolder<UnmodifiableMap<URI, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
-                nextLocationInfo.availableWriteEndpointByLocation = this.getEndpointByLocation(writeLocations, out, outWriteRegionMap);
-                nextLocationInfo.availableWriteLocations = out.v;
-                nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
-            }
+            Utils.ValueHolder<UnmodifiableList<String>> writeValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
+            Utils.ValueHolder<UnmodifiableMap<URI, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
+            nextLocationInfo.availableWriteEndpointsByLocation = this.getEndpointsByLocation(gatewayWriteLocations, thinclientWriteLocations, writeValueHolder, outWriteRegionMap);
+            nextLocationInfo.availableWriteLocations = writeValueHolder.v;
+            nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
 
-            nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
-            nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
+            nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointsByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
+            nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointsByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
 
             if (nextLocationInfo.preferredLocations == null || nextLocationInfo.preferredLocations.isEmpty()) {
 
@@ -598,11 +642,11 @@ public class LocationCache {
         }
     }
 
-    private UnmodifiableList<URI> getPreferredAvailableEndpoints(UnmodifiableMap<String, URI> endpointsByLocation,
+    private UnmodifiableList<LocationEndpoints> getPreferredAvailableEndpoints(UnmodifiableMap<String, LocationEndpoints> endpointsByLocation,
                                                                  UnmodifiableList<String> orderedLocations,
                                                                  OperationType expectedAvailableOperation,
                                                                  URI fallbackEndpoint) {
-        List<URI> endpoints = new ArrayList<>();
+        List<LocationEndpoints> endpoints = new ArrayList<>();
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         // if enableEndpointDiscovery is false, we always use the defaultEndpoint that user passed in during documentClient init
         if (this.enableEndpointDiscovery) {
@@ -616,48 +660,77 @@ public class LocationCache {
 
                 if (currentLocationInfo.preferredLocations != null && !currentLocationInfo.preferredLocations.isEmpty()) {
                     for (String location: currentLocationInfo.preferredLocations) {
-                        Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>();
-                        if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
-                            if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
-                                unavailableEndpoints.add(endpoint.v);
+                        Utils.ValueHolder<LocationEndpoints> locationEndpoints = new Utils.ValueHolder<>();
+                        if (Utils.tryGetValue(endpointsByLocation, location, locationEndpoints)) {
+                            URI thinclientEndpoint = locationEndpoints.v.thinClientEndpoint;
+                            boolean addThinclientEndpoint = false;
+                            if (thinclientEndpoint != null && this.isEndpointUnavailable(thinclientEndpoint, expectedAvailableOperation)) {
+                                unavailableEndpoints.add(thinclientEndpoint);
                             } else {
-                                endpoints.add(endpoint.v);
+                                addThinclientEndpoint = true;
+                            }
+                            URI gatewayEndpoint = locationEndpoints.v.gatewayEndpoint;
+                            boolean addGatewayEndpoint = false;
+                            if (gatewayEndpoint != null && this.isEndpointUnavailable(gatewayEndpoint, expectedAvailableOperation)) {
+                                unavailableEndpoints.add(gatewayEndpoint);
+                            } else {
+                                addGatewayEndpoint = true;
                             }
                         }
                     }
                 } else {
                     for (String location : orderedLocations) {
-                        Utils.ValueHolder<URI> endpoint = Utils.ValueHolder.initialize(null);
-                        if (Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
-
+                        Utils.ValueHolder<LocationEndpoints> locationEndpoints = Utils.ValueHolder.initialize(null);
+                        if (Utils.tryGetValue(endpointsByLocation, location, locationEndpoints)) {
+                            URI gatewayEndpoint = locationEndpoints.v.gatewayEndpoint;
+                            URI thinClientEndpoint = locationEndpoints.v.thinClientEndpoint;
                             // if defaultEndpoint equals a regional endpoint then use
                             // whatever the fallback endpoint is
-                            if (this.defaultEndpoint.equals(endpoint.v)) {
+                            if (thinClientEndpoint != null && this.defaultEndpoint.equals(thinClientEndpoint)) {
+                                endpoints = new ArrayList<>();
+                                break;
+                            }
+                            if (gatewayEndpoint != null && this.defaultEndpoint.equals(gatewayEndpoint)) {
                                 endpoints = new ArrayList<>();
                                 break;
                             }
 
-                            if (this.isEndpointUnavailable(endpoint.v, expectedAvailableOperation)) {
-                                unavailableEndpoints.add(endpoint.v);
+                            LocationEndpoints endpointsToAdd = new LocationEndpoints(null);
+                            if (gatewayEndpoint != null && this.isEndpointUnavailable(gatewayEndpoint, expectedAvailableOperation)) {
+                                unavailableEndpoints.add(gatewayEndpoint);
                             } else {
-                                endpoints.add(endpoint.v);
+                                endpointsToAdd.gatewayEndpoint = gatewayEndpoint;
+                            }
+                            if (thinClientEndpoint != null && this.isEndpointUnavailable(thinClientEndpoint, expectedAvailableOperation)) {
+                                unavailableEndpoints.add(thinClientEndpoint);
+                            } else {
+                                endpointsToAdd.thinClientEndpoint = thinClientEndpoint;
+                            }
+
+                            if (endpointsToAdd.gatewayEndpoint != null || endpointsToAdd.thinClientEndpoint != null) {
+                                endpoints.add(endpointsToAdd);
                             }
                         }
                     }
                 }
 
                 if (endpoints.isEmpty()) {
-                    endpoints.add(fallbackEndpoint);
+                    endpoints.add(new LocationEndpoints(fallbackEndpoint));
                 }
 
                 endpoints.addAll(unavailableEndpoints);
             } else {
                 for (String location : orderedLocations) {
 
-                    Utils.ValueHolder<URI> endpoint = Utils.ValueHolder.initialize(null);
+                    Utils.ValueHolder<LocationEndpoints> locationEndpoint = Utils.ValueHolder.initialize(null);
                     if (!Strings.isNullOrEmpty(location) && // location is empty during manual failover
-                        Utils.tryGetValue(endpointsByLocation, location, endpoint)) {
-                        endpoints.add(endpoint.v);
+                        Utils.tryGetValue(endpointsByLocation, location, locationEndpoint)) {
+                        if (locationEndpoint.v.thinClientEndpoint != null) {
+                            endpoints.add(locationEndpoint.v.thinClientEndpoint);
+                        }
+                        if (locationEndpoint.v.gatewayEndpoint != null) {
+                            endpoints.add(locationEndpoint.v.gatewayEndpoint);
+                        }
                     }
                 }
             }
@@ -667,37 +740,59 @@ public class LocationCache {
             endpoints.add(fallbackEndpoint);
         }
 
-        return new UnmodifiableList<URI>(endpoints);
+        return new UnmodifiableList<LocationEndpoints>(endpoints);
     }
 
+    private void addEndpoints(Iterable<DatabaseAccountLocation> locations,
+                              Map<String, LocationEndpoints> endpointsByLocation,
+                              Map<URI, String> regionByEndpoint,
+                              List<String> parsedLocations,
+                              boolean isThinclient) {
+        for (DatabaseAccountLocation dbAccountLocation: locations) {
+            if (!Strings.isNullOrEmpty(dbAccountLocation.getName())) {
+                try {
+                    String location = dbAccountLocation.getName().toLowerCase(Locale.ROOT);
+                    URI endpoint = new URI(dbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
+                    if (isThinclient) {
+                        // there should be a LocationEndpoints object with gateway endpoint at this point
+                        endpointsByLocation.get(location).thinClientEndpoint = endpoint;
+                    } else {
+                        if (!endpointsByLocation.containsKey(location)) {
+                            endpointsByLocation.put(location, new LocationEndpoints(endpoint));
+                        }
+                    }
+                    regionByEndpoint.put(endpoint, dbAccountLocation.getName().toLowerCase(Locale.ROOT));
+                    parsedLocations.add(dbAccountLocation.getName());
+                } catch (Exception e) {
+                    logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]",
+                        dbAccountLocation.getName(),
+                        dbAccountLocation.getEndpoint());
+                }
+            }
+        }
+    }
 
-
-    private UnmodifiableMap<String, URI> getEndpointByLocation(Iterable<DatabaseAccountLocation> locations,
-                                                               Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
-                                                               Utils.ValueHolder<UnmodifiableMap<URI, String>> regionMap) {
-        Map<String, URI> endpointsByLocation = new CaseInsensitiveMap<>();
+    private UnmodifiableMap<String, LocationEndpoints> getEndpointsByLocation(Iterable<DatabaseAccountLocation> gatewayLocations,
+                                                                              Iterable<DatabaseAccountLocation> thinclientLocations,
+                                                                              Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
+                                                                              Utils.ValueHolder<UnmodifiableMap<URI, String>> regionMap) {
+        Map<String, LocationEndpoints> endpointsByLocation = new CaseInsensitiveMap<>();
         Map<URI, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();
 
-        for (DatabaseAccountLocation location: locations) {
-            if (!Strings.isNullOrEmpty(location.getName())) {
-                try {
-                    URI endpoint = new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
-                    endpointsByLocation.put(location.getName().toLowerCase(Locale.ROOT), endpoint);
-                    regionByEndpoint.put(endpoint, location.getName().toLowerCase(Locale.ROOT));
-                    parsedLocations.add(location.getName());
-                } catch (Exception e) {
-                    logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as it is location name is either empty or endpoint is malformed [{}]",
-                            location.getName(),
-                            location.getEndpoint());
-                }
-            }
+        // order is important here, always check for gateway first to ensure we have a gateway endpoint
+        if (gatewayLocations != null) {
+            addEndpoints(gatewayLocations, endpointsByLocation, regionByEndpoint, parsedLocations, false);
+        }
+
+        if (thinclientLocations != null) {
+            addEndpoints(thinclientLocations, endpointsByLocation, regionByEndpoint, parsedLocations, true);
         }
 
         orderedLocations.v = new UnmodifiableList<String>(parsedLocations);
         regionMap.v = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(regionByEndpoint);
 
-        return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
+        return (UnmodifiableMap<String, LocationEndpoints>) UnmodifiableMap.<String, LocationEndpoints>unmodifiableMap(endpointsByLocation);
     }
 
     public boolean canUseMultipleWriteLocations() {
@@ -772,28 +867,43 @@ public class LocationCache {
         return excludedRegionsSupplier != null && excludedRegionsSupplier.get() != null;
     }
 
+    public static class LocationEndpoints {
+        public URI gatewayEndpoint;
+        public URI thinClientEndpoint;
+
+        public LocationEndpoints(URI gatewayEndpoint) {
+            this.gatewayEndpoint = gatewayEndpoint;
+            this.thinClientEndpoint = null;
+        }
+
+        public LocationEndpoints(URI gatewayEndpoint, URI thinClientEndpoint) {
+            this.gatewayEndpoint = gatewayEndpoint;
+            this.thinClientEndpoint = thinClientEndpoint;
+        }
+    }
+
     static class DatabaseAccountLocationsInfo {
+        private UnmodifiableList<LocationEndpoints> writeEndpoints;
+        private UnmodifiableList<LocationEndpoints> readEndpoints;
         private UnmodifiableList<String> preferredLocations;
         private UnmodifiableList<String> effectivePreferredLocations;
         // lower-case region
         private UnmodifiableList<String> availableWriteLocations;
         // lower-case region
         private UnmodifiableList<String> availableReadLocations;
-        private UnmodifiableMap<String, URI> availableWriteEndpointByLocation;
-        private UnmodifiableMap<String, URI> availableReadEndpointByLocation;
+        private UnmodifiableMap<String, LocationEndpoints> availableWriteEndpointsByLocation;
+        private UnmodifiableMap<String, LocationEndpoints> availableReadEndpointsByLocation;
         private UnmodifiableMap<URI, String> regionNameByWriteEndpoint;
         private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
-        private UnmodifiableList<URI> writeEndpoints;
-        private UnmodifiableList<URI> readEndpoints;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
-            this.availableWriteEndpointByLocation
-                = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
-            this.availableReadEndpointByLocation
-                = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableWriteEndpointsByLocation
+                = (UnmodifiableMap<String, LocationEndpoints>) UnmodifiableMap.<String, LocationEndpoints>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableReadEndpointsByLocation
+                = (UnmodifiableMap<String, LocationEndpoints>) UnmodifiableMap.<String, LocationEndpoints>unmodifiableMap(new CaseInsensitiveMap<>());
             this.regionNameByWriteEndpoint
                 = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
             this.regionNameByReadEndpoint
@@ -809,10 +919,10 @@ public class LocationCache {
             this.effectivePreferredLocations = other.effectivePreferredLocations;
             this.availableWriteLocations = other.availableWriteLocations;
             this.availableReadLocations = other.availableReadLocations;
-            this.availableWriteEndpointByLocation = other.availableWriteEndpointByLocation;
+            this.availableWriteEndpointsByLocation = other.availableWriteEndpointsByLocation;
             this.regionNameByWriteEndpoint = other.regionNameByWriteEndpoint;
             this.regionNameByReadEndpoint = other.regionNameByReadEndpoint;
-            this.availableReadEndpointByLocation = other.availableReadEndpointByLocation;
+            this.availableReadEndpointsByLocation = other.availableReadEndpointsByLocation;
             this.writeEndpoints = other.writeEndpoints;
             this.readEndpoints = other.readEndpoints;
         }

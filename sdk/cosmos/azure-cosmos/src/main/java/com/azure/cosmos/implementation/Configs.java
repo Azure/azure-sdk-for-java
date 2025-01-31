@@ -48,10 +48,10 @@ public class Configs {
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
-    private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
+    public static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
     private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
     private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
-    private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
+    public static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
@@ -306,7 +306,7 @@ public class Configs {
 
     // Flag to indicate whether enabled http2 for gateway
     private static final boolean DEFAULT_HTTP2_ENABLED = false;
-    private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
+    public static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
     private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
 
     // Config to indicate the maximum number of live connections to keep in the pool for http2
