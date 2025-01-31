@@ -1,13 +1,11 @@
 # Azure Mixed Reality client library for Java
 
-Mixed Reality services, like Azure Spatial Anchors, Azure Remote Rendering, and others, use the Mixed Reality security
+Mixed Reality services, like Azure Remote Rendering use the Mixed Reality security
 token service (STS) for authentication. This package supports exchanging Mixed Reality account credentials for an access
 token from the STS that can be used to access Mixed Reality services.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
-
-![Mixed Reality service authentication diagram](https://learn.microsoft.com/azure/spatial-anchors/concepts/media/spatial-anchors-authentication-overview.png)
 
 ## Getting started
 
@@ -16,7 +14,6 @@ token from the STS that can be used to access Mixed Reality services.
 - You must have an [Azure subscription](https://azure.microsoft.com/free/).
 - You must have an account with an [Azure Mixed Reality service](https://azure.microsoft.com/topic/mixed-reality/):
   - [Azure Remote Rendering](https://learn.microsoft.com/azure/remote-rendering/)
-  - [Azure Spatial Anchors](https://learn.microsoft.com/azure/spatial-anchors/)
 - [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
 - Familiarity with the authentication and credential concepts from [Azure.Identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity).
@@ -80,8 +77,6 @@ Mixed Reality services support a few different forms of authentication:
     method for production applications because it allows you to avoid embedding the credentials for access to a Mixed
     Reality service in your client application.
 
-See [here](https://learn.microsoft.com/azure/spatial-anchors/concepts/authentication) for detailed instructions and information.
-
 ## Key concepts
 
 ### MixedRealityStsClient
@@ -130,24 +125,6 @@ AccessToken token = client.getToken();
 ```
 
 See the authentication examples [above](#authenticate-the-client) for more complex authentication scenarios.
-
-#### Using the access token in a Mixed Reality client library
-
-Some Mixed Reality client libraries might accept an access token in place of a credential. For example:
-
-```java
-// getMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
-// a Mixed Reality access token from a web service. The web service would use the
-// MixedRealityStsClient and credentials to obtain an access token to be returned
-// to the client.
-AccessToken accessToken = getMixedRealityAccessTokenFromWebService();
-
-SpatialAnchorsAccount account = new SpatialAnchorsAccount(accountId, accountDomain);
-SpatialAnchorsClient client = new SpatialAnchorsClient(account, accessToken);
-```
-
-Note: The `SpatialAnchorsClient` usage above is hypothetical and may not reflect the actual library. Consult the
-documentation for the client library you're using to determine if and how this might be supported.
 
 ## Troubleshooting
 
