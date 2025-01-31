@@ -27,7 +27,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     private String serverCallId;
 
     /*
-     * The Acs room id
+     * The Acs room id. (Not supported for Start Recording)
      */
     private String roomId;
 
@@ -83,7 +83,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     }
 
     /**
-     * Get the roomId property: The Acs room id.
+     * Get the roomId property: The Acs room id. (Not supported for Start Recording).
      * 
      * @return the roomId value.
      */
@@ -92,7 +92,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     }
 
     /**
-     * Set the roomId property: The Acs room id.
+     * Set the roomId property: The Acs room id. (Not supported for Start Recording).
      * 
      * @param roomId the roomId value to set.
      * @return the CallLocatorInternal object itself.

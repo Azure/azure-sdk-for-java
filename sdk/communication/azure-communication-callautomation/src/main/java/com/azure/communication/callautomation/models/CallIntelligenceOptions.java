@@ -17,6 +17,11 @@ public final class CallIntelligenceOptions {
     private String cognitiveServicesEndpoint;
 
     /**
+    * A backup endpoint URL of the Azure Cognitive Services resource attached
+    */
+    private String backupCognitiveServicesEndpoint;
+
+    /**
      * Creates an instance of {@link CallIntelligenceOptions}.
      */
     public CallIntelligenceOptions() {
@@ -37,11 +42,32 @@ public final class CallIntelligenceOptions {
      * attached.
      *
      * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
-     * @return the CreateGroupCallOptions object itself.
+     * @return the CallIntelligenceOptions object itself.
      */
     public CallIntelligenceOptions setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
         this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
         return this;
     }
 
+    /**
+    * Get the backupCognitiveServicesEndpoint property: A backup endpoint URL of the Azure Cognitive Services resource
+    * attached.
+    *
+    * @return the backupCognitiveServicesEndpoint value.
+    */
+    public String getBackupCognitiveServicesEndpoint() {
+        return this.backupCognitiveServicesEndpoint;
+    }
+
+    /**
+     * Set the backupCognitiveServicesEndpoint property: A backup endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param backupCognitiveServicesEndpoint the backupCognitiveServicesEndpoint value to set.
+     * @return the CallIntelligenceOptions object itself.
+     */
+    public CallIntelligenceOptions setBackupCognitiveServicesEndpoint(String backupCognitiveServicesEndpoint) {
+        this.backupCognitiveServicesEndpoint = backupCognitiveServicesEndpoint;
+        return this;
+    }
 }
