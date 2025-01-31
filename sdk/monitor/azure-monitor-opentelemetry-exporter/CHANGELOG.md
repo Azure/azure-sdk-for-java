@@ -6,7 +6,7 @@
 
 This package has been deprecated and will no longer be maintained. We encourage you to upgrade to the replacement package, `azure-monitor-opentelemetry-autoconfigure`, to continue receiving updates.
 Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details. 
-Checkout the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/MIGRATION.md) for detailed instructions on how to update your application code from version 1.x to the `azure-monitor-opentelemetry-autoconfigure` library.
+Checkout the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/MIGRATION.md) for detailed instructions on how to update your application code from version 1.0.0-beta.x to the `azure-monitor-opentelemetry-autoconfigure` library.
 
 ## 1.0.0-beta.31 (2024-10-23)
 
