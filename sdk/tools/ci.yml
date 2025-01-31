@@ -46,3 +46,8 @@ extends:
         safeName: azuresdkbuildtool
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
+      - name: azure-openrewrite
+        groupId: com.azure
+        safeName: azureopenrewrite
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
