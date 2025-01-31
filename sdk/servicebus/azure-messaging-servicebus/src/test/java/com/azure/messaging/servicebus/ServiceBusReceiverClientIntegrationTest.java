@@ -386,7 +386,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
@@ -396,6 +396,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+
+        TimeUnit.SECONDS.sleep(5);
 
         // Act
         ServiceBusReceivedMessage receivedMessage = receiver.peekMessage();
