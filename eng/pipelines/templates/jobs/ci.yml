@@ -457,6 +457,7 @@ jobs:
           - '**/*.xml'
           - '**/*.md'
           - '**/ci*.yml' # necessary for save-package-properties.yml
+          - "**/*matrix*.json" # necessary for test matrix generation
         PreGenerationSteps:
           - task: UsePythonVersion@0
             displayName: 'Use Python $(PythonVersion)'
