@@ -13,4 +13,4 @@ Replace the `azure-monitor-opentelemetry-exporter` dependency by the following o
 
 ## Update the Java code
 
-Replace the `com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter` method by the `com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure` one.
+Replace the `com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter` class by `com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure`.
