@@ -3,10 +3,7 @@
 
 package io.clientcore.annotation.processor.utils;
 
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import io.clientcore.core.http.models.HttpResponse;
-import org.junit.jupiter.api.BeforeEach;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,53 +13,38 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ResponseBodyModeGenerationTest {
 
-    private MethodSpec.Builder methodBuilder;
-
-    @BeforeEach
-    void setUp() {
-        methodBuilder = MethodSpec.methodBuilder("testMethod");
-    }
-
     @Test
     void generateResponseBodyModeWithRequestOptions() {
-        TypeName returnTypeName = TypeName.get(String.class);
-        ResponseBodyModeGeneration.generateResponseBodyMode(methodBuilder, returnTypeName, true);
-        MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(methodSpec.toString().contains("responseBodyMode = requestOptions.getResponseBodyMode()"));
+        BlockStmt body = new BlockStmt();
+        ResponseBodyModeGeneration.generateResponseBodyMode(body, "String", true);
+        assertTrue(body.toString().contains("responseBodyMode = requestOptions.getResponseBodyMode()"));
     }
 
     @Test
     void generateResponseBodyModeWithoutRequestOptions() {
-        TypeName returnTypeName = TypeName.get(String.class);
-        ResponseBodyModeGeneration.generateResponseBodyMode(methodBuilder, returnTypeName, false);
-        MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(methodSpec.toString()
-            .contains("responseBodyMode = io.clientcore.core.http.models" + ".ResponseBodyMode.DESERIALIZE"));
+        BlockStmt body = new BlockStmt();
+        ResponseBodyModeGeneration.generateResponseBodyMode(body, "String", false);
+        assertTrue(body.toString().contains("responseBodyMode = ResponseBodyMode.DESERIALIZE"));
     }
 
     @Test
     void generateResponseHandlingWithVoidReturnType() {
-        TypeName returnTypeName = TypeName.VOID;
-        ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
-        MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(methodSpec.toString().contains("return"));
+        BlockStmt body = new BlockStmt();
+        ResponseBodyModeGeneration.generateResponseHandling(body, "void", false);
+        assertTrue(body.toString().contains("return"));
     }
 
     @Test
     void generateResponseHandlingWithResponseReturnType() {
-        TypeName returnTypeName = TypeName.get(HttpResponse.class);
-        ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
-        MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(
-            methodSpec.toString().contains("io.clientcore.core.implementation.http.HttpResponseAccessHelper.setValue"));
+        BlockStmt body = new BlockStmt();
+        ResponseBodyModeGeneration.generateResponseHandling(body, "HttpResponse", false);
+        assertTrue(body.toString().contains("HttpResponseAccessHelper.setValue"));
     }
 
     @Test
     void generateResponseHandlingWithNonDeserializeMode() {
-        TypeName returnTypeName = TypeName.get(HttpResponse.class);
-        ResponseBodyModeGeneration.generateResponseHandling(methodBuilder, returnTypeName, false);
-        MethodSpec methodSpec = methodBuilder.build();
-        assertTrue(methodSpec.toString()
-            .contains("io.clientcore.core.implementation.http.HttpResponseAccessHelper.setBodyDeserializer"));
+        BlockStmt body = new BlockStmt();
+        ResponseBodyModeGeneration.generateResponseHandling(body, "HttpResponse", false);
+        assertTrue(body.toString().contains("HttpResponseAccessHelper.setBodyDeserializer"));
     }
 }

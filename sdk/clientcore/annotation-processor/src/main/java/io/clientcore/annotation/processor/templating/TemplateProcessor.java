@@ -18,7 +18,7 @@ public interface TemplateProcessor {
      * @return a new instance of JavaPoetTemplateProcessor
      */
     static TemplateProcessor getInstance() {
-        return new JavaPoetTemplateProcessor();
+        return new JavaParserTemplateProcessor();
     }
 
     /**

@@ -12,7 +12,7 @@
   </Match>
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
-    <Class name="io.clientcore.annotation.processor.templating.JavaPoetTemplateProcessor" />
+    <Class name="io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor" />
   </Match>
   <Match>
     <Bug pattern="DM_DEFAULT_ENCODING" />
@@ -23,15 +23,11 @@
     <Class name="io.clientcore.annotation.processor.templating.APIGenerationTest" />
   </Match>
   <Match>
-    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" />
-    <Class name="io.clientcore.annotation.processor.templating.JavaPoetTemplateProcessor" />
-  </Match>
-  <Match>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
     <Or>
       <Class name="io.clientcore.annotation.processor.templating.APIGenerationTest" />
       <Class name="io.clientcore.annotation.processor.templating.HttpPipelineBuilderMethodTest" />
-      <Class name="io.clientcore.annotation.processor.templating.JavaPoetTemplateProcessor" />
+      <Class name="io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor" />
     </Or>
   </Match>
 </FindBugsFilter>
