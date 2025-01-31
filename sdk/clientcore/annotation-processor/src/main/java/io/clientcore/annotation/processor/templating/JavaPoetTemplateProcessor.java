@@ -10,6 +10,8 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -21,8 +23,6 @@ import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.annotation.processor.models.HttpRequestContext;
-import io.clientcore.annotation.processor.models.TemplateInput;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
@@ -100,24 +100,14 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
                     Modifier.STATIC)
                 .build();
 
-        // Add the static getInstance method
-        MethodSpec getInstanceMethod = MethodSpec.methodBuilder("getInstance")
-            .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.SYNCHRONIZED)
+        // Add the static getNewInstance method
+        MethodSpec getNewInstanceMethod = MethodSpec.methodBuilder("getNewInstance")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
             .returns(ClassName.get(packageName, serviceInterfaceImplShortName))
             .addParameter(HTTP_PIPELINE, "pipeline")
             .addParameter(OBJECT_SERIALIZER, "serializer")
-            .addParameter(serviceVersionType, "serviceVersion")
-            .beginControlFlow("if (instance == null)")
-            .addStatement("instance = new $T(pipeline, serializer, serviceVersion)",
+            .addStatement("return new $T(pipeline, serializer)",
                 ClassName.get(packageName, serviceInterfaceImplShortName))
-            .endControlFlow()
-            .addStatement("return instance")
-            .build();
-
-        // Add reset instance method
-        MethodSpec resetInstanceMethod = MethodSpec.methodBuilder("reset")
-            .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.SYNCHRONIZED)
-            .addStatement("instance = null")
             .build();
 
         classBuilder = TypeSpec.classBuilder(serviceInterfaceImplShortName)
@@ -132,8 +122,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             .addMethod(getServiceVersionMethod())
             .addMethod(constructor)
             .addField(instanceField)
-            .addMethod(getInstanceMethod)
-            .addMethod(resetInstanceMethod);
+            .addMethod(getNewInstanceMethod);
 
         getGeneratedServiceMethods(templateInput);
 
@@ -179,11 +168,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
             .addParameter(HTTP_PIPELINE, "defaultPipeline")
             .addStatement("this.defaultPipeline = defaultPipeline")
             .addParameter(OBJECT_SERIALIZER, "serializer")
-            .addParameter(serviceVersionType, "serviceVersion")
             .addStatement("this.serializer = serializer == null ? new $T() : serializer", JsonSerializer.class)
-            .addStatement("this.serviceVersion = serviceVersion == null ? $T.getLatest() : serviceVersion",
-                serviceVersionType)
-            .addStatement("this.apiVersion = this.serviceVersion.getVersion()")
             .build();
     }
 
@@ -222,6 +207,7 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(method.getMethodName())
             .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Override.class)
             .returns(inferTypeNameFromReturnType(method.getMethodReturnType()));
 
         // add method parameters, with Context at the end
@@ -250,29 +236,25 @@ public class JavaPoetTemplateProcessor implements TemplateProcessor {
 
     private void generateInternalMethod(HttpRequestContext method) {
         TypeName returnTypeName = inferTypeNameFromReturnType(method.getMethodReturnType());
-        MethodSpec.Builder methodBuilder = createMethodBuilder(method, returnTypeName);
+        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(method.getMethodName())
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Override.class)
+            .returns(returnTypeName);
 
-        addMethodParameters(methodBuilder, method);
+        for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
+            methodBuilder.addParameter(TypeName.get(parameter.getTypeMirror()), parameter.getName());
+        }
+        methodBuilder.addStatement("HttpPipeline pipeline = this.getPipeline()");
+
         initializeHttpRequest(methodBuilder, method);
         addHeadersToRequest(methodBuilder, method);
         addRequestBody(methodBuilder, method);
-
         finalizeHttpRequest(methodBuilder, returnTypeName, method);
 
         classBuilder.addMethod(methodBuilder.build());
     }
 
     // Helper methods
-    private MethodSpec.Builder createMethodBuilder(HttpRequestContext method, TypeName returnTypeName) {
-        return MethodSpec.methodBuilder(method.getMethodName()).addModifiers(Modifier.PUBLIC).returns(returnTypeName);
-    }
-
-    private void addMethodParameters(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
-        for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
-            methodBuilder.addParameter(TypeName.get(parameter.getTypeMirror()), parameter.getName());
-        }
-        methodBuilder.addStatement("HttpPipeline pipeline = this.getPipeline()");
-    }
 
     private void initializeHttpRequest(MethodSpec.Builder methodBuilder, HttpRequestContext method) {
         methodBuilder.addStatement("String host = $L", method.getHost())
