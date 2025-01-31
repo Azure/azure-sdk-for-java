@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -109,9 +110,36 @@ public class StorageCrc64CalculatorTests {
             Arguments.of(10, Constants.KB, Constants.KB), Arguments.of(2, Constants.KB, 4 * Constants.KB),
             Arguments.of(3, Constants.KB, 4 * Constants.KB), Arguments.of(10, Constants.KB, 4 * Constants.KB),
             Arguments.of(2, Constants.KB, Constants.MB), Arguments.of(3, Constants.KB, Constants.MB),
-            Arguments.of(2, Constants.KB, 512 * Constants.MB), Arguments.of(3, Constants.KB, 512 * Constants.MB),
-            Arguments.of(2, Constants.KB, Constants.GB));
+            Arguments.of(2, Constants.KB, 512 * Constants.MB), Arguments.of(3, Constants.KB, 512 * Constants.MB));
     }
+    
+@Test
+void testComputeInChunks() {
+    int maxBlockSize = Constants.GB;
+    int chunkSize = 8 * Constants.KB;
+    String baseString = "Hello World! This is testing chunked crc.";
+    byte[] baseBytes = baseString.getBytes();
+    int baseLength = baseBytes.length;
+
+    // Calculate the total length of the data
+    byte[] data = new byte[maxBlockSize];
+
+    // Fill the data array by repeating the base string
+    for (int i = 0; i < maxBlockSize; i += baseLength) {
+        System.arraycopy(baseBytes, 0, data, i, Math.min(baseLength, maxBlockSize - i));
+    }
+
+    long wholeCrc = 5459856940289730830L;
+
+    long chunkedCrc = 0;
+    for (int offset = 0; offset < data.length; offset += chunkSize) {
+        int length = Math.min(chunkSize, data.length - offset);
+        chunkedCrc = StorageCrc64Calculator.concat(0, 0, chunkedCrc, offset, 0,
+            StorageCrc64Calculator.compute(Arrays.copyOfRange(data, offset, offset + length), 0), length);
+    }
+
+    assertEquals(wholeCrc, chunkedCrc);
+}
 
     @ParameterizedTest
     @CsvSource({
