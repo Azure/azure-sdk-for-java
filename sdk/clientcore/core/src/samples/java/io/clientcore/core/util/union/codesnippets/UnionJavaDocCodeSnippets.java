@@ -34,7 +34,7 @@ public class UnionJavaDocCodeSnippets {
     public void unionConsumeIfElseStatement() {
         // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement
         Union union = Union.ofTypes(String.class, Integer.class);
-        union = union.setValue("Hello");
+        union.setValue("Hello");
         Object value = union.getValue();
         // we can write an if-else block to consume the value in Java 8+, or switch pattern match in Java 17+
         if (value instanceof String) {
@@ -53,7 +53,7 @@ public class UnionJavaDocCodeSnippets {
     public void unionConsumeLambda() {
         // BEGIN: io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda
         Union union = Union.ofTypes(String.class, Integer.class);
-        union = union.setValue("Hello");
+        union.setValue("Hello");
         union.tryConsume(
             v -> System.out.println("String value: " + v), String.class);
         union.tryConsume(

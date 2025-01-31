@@ -12,7 +12,7 @@ public class BasicUnion {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
 
         // This union allows for String, Integer, and Double types
-        union = union.setValue("Hello");
+        union.setValue("Hello");
 
         // we can (attempt to) exhaustively consume the union using a switch statement...
         handleUnion(union);
@@ -28,9 +28,9 @@ public class BasicUnion {
         System.out.println("Value (from getValue(Class<?> cls)): " + value);
 
         // Of course, this union supports Integer and Double types as well:
-        union = union.setValue(123);
+        union.setValue(123);
         handleUnion(union);
-        union = union.setValue(3.14);
+        union.setValue(3.14);
         handleUnion(union);
 
         // This will throw an IllegalArgumentException, as the union does not support the type Long

@@ -72,15 +72,15 @@ public class UnionTests {
     void setAndGetValue() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
 
-        union = union.setValue(STRING_VALUE);
+        union.setValue(STRING_VALUE);
         assertEquals(String.class, union.getCurrentType());
         assertEquals(STRING_VALUE, union.getValue());
 
-        union = union.setValue(INT_VALUE);
+        union.setValue(INT_VALUE);
         assertEquals(Integer.class, union.getCurrentType());
         assertEquals(INT_VALUE, union.getValue(Integer.class));
 
-        union = union.setValue(DOUBLE_VALUE);
+        union.setValue(DOUBLE_VALUE);
         assertEquals(Double.class, union.getCurrentType());
         assertEquals(DOUBLE_VALUE, union.getValue(Double.class));
     }
@@ -95,11 +95,11 @@ public class UnionTests {
     @Test
     void tryConsumeWithValidType() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
-        union = union.setValue(STRING_VALUE);
+        union.setValue(STRING_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(STRING_VALUE, value), String.class));
-        union = union.setValue(INT_VALUE);
+        union.setValue(INT_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(INT_VALUE, value), Integer.class));
-        union = union.setValue(DOUBLE_VALUE);
+        union.setValue(DOUBLE_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(DOUBLE_VALUE, value), Double.class));
     }
 
@@ -107,7 +107,7 @@ public class UnionTests {
     void tryConsumeWithInvalidType() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
 
-        union = union.setValue(INT_VALUE);
+        union.setValue(INT_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(INT_VALUE, value), Integer.class));
         assertFalse(union.tryConsume(value -> fail("Should not consume String"), String.class));
         assertFalse(union.tryConsume(value -> fail("Should not consume Double"), Double.class));
@@ -120,15 +120,15 @@ public class UnionTests {
     @Test
     void createUnionWithMultipleTypesAutoboxing() {
         Union union = Union.ofTypes(String.class, int.class, double.class);
-        union = union.setValue(STRING_VALUE);
+        union.setValue(STRING_VALUE);
         assertEquals(String.class, union.getCurrentType());
         assertEquals(STRING_VALUE, union.getValue());
 
-        union = union.setValue(42);
+        union.setValue(42);
         assertEquals(int.class, union.getCurrentType());
         assertEquals(42, union.getValue(int.class));
 
-        union = union.setValue(DOUBLE_VALUE);
+        union.setValue(DOUBLE_VALUE);
         assertEquals(double.class, union.getCurrentType());
         assertEquals(DOUBLE_VALUE, union.getValue(double.class));
     }
@@ -136,15 +136,15 @@ public class UnionTests {
     @Test
     void setAndGetValueAutoboxing() {
         Union union = Union.ofTypes(String.class, double.class, int.class);
-        union = union.setValue(STRING_VALUE);
+        union.setValue(STRING_VALUE);
         assertEquals(String.class, union.getCurrentType());
         assertEquals(STRING_VALUE, union.getValue(String.class));
 
-        union = union.setValue(INT_VALUE);
+        union.setValue(INT_VALUE);
         assertEquals(int.class, union.getCurrentType());
         assertEquals(INT_VALUE, union.getValue(int.class));
 
-        union = union.setValue(DOUBLE_VALUE);
+        union.setValue(DOUBLE_VALUE);
         assertEquals(double.class, union.getCurrentType());
         assertEquals(DOUBLE_VALUE, union.getValue(double.class));
     }
@@ -159,15 +159,15 @@ public class UnionTests {
     void tryConsumeWithValidTypeAutoboxing() {
         Union union = Union.ofTypes(String.class, int.class, double.class);
 
-        union = union.setValue(STRING_VALUE);
+        union.setValue(STRING_VALUE);
         assertEquals(String.class, union.getCurrentType());
         assertTrue(union.tryConsume(value -> assertEquals(STRING_VALUE, value), String.class));
 
-        union = union.setValue(INT_VALUE);
+        union.setValue(INT_VALUE);
         assertEquals(int.class, union.getCurrentType());
         assertTrue(union.tryConsume(value -> assertEquals(INT_VALUE, value), int.class));
 
-        union = union.setValue(DOUBLE_VALUE);
+        union.setValue(DOUBLE_VALUE);
         assertEquals(double.class, union.getCurrentType());
         assertTrue(union.tryConsume(value -> assertEquals(DOUBLE_VALUE, value), double.class));
     }
@@ -175,7 +175,7 @@ public class UnionTests {
     @Test
     void tryConsumeWithInvalidTypeAutoboxing() {
         Union union = Union.ofTypes(String.class, int.class, double.class);
-        union = union.setValue(INT_VALUE);
+        union.setValue(INT_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(INT_VALUE, value), int.class));
         assertFalse(union.tryConsume(value -> fail("Should not consume String"), String.class));
         assertFalse(union.tryConsume(value -> fail("Should not consume Double"), Double.class));
@@ -196,15 +196,15 @@ public class UnionTests {
     void setAndGetValueWithArrayTypes() {
         Union union = Union.ofTypes(String[].class, int[].class, float[].class);
 
-        union = union.setValue(STRING_ARRAY_VALUE);
+        union.setValue(STRING_ARRAY_VALUE);
         assertEquals(String[].class, union.getCurrentType());
         assertArrayEquals(STRING_ARRAY_VALUE, union.getValue(String[].class));
 
-        union = union.setValue(INT_ARRAY_VALUE);
+        union.setValue(INT_ARRAY_VALUE);
         assertEquals(int[].class, union.getCurrentType());
         assertArrayEquals(INT_ARRAY_VALUE, union.getValue(int[].class));
 
-        union = union.setValue(FLOAT_ARRAY_VALUE);
+        union.setValue(FLOAT_ARRAY_VALUE);
         assertEquals(float[].class, union.getCurrentType());
         assertArrayEquals(FLOAT_ARRAY_VALUE, union.getValue(float[].class));
     }
@@ -220,20 +220,20 @@ public class UnionTests {
     void tryConsumeWithValidArrayType() {
         Union union = Union.ofTypes(String[].class, int[].class, float[].class);
 
-        union = union.setValue(STRING_ARRAY_VALUE);
+        union.setValue(STRING_ARRAY_VALUE);
         assertTrue(union.tryConsume(value -> assertArrayEquals(STRING_ARRAY_VALUE, value), String[].class));
 
-        union = union.setValue(INT_ARRAY_VALUE);
+        union.setValue(INT_ARRAY_VALUE);
         assertTrue(union.tryConsume(value -> assertArrayEquals(INT_ARRAY_VALUE, value), int[].class));
 
-        union = union.setValue(FLOAT_ARRAY_VALUE);
+        union.setValue(FLOAT_ARRAY_VALUE);
         assertTrue(union.tryConsume(value -> assertArrayEquals(FLOAT_ARRAY_VALUE, value), float[].class));
     }
 
     @Test
     void tryConsumeWithInvalidArrayType() {
         Union union = Union.ofTypes(String[].class, int[].class, float[].class);
-        union = union.setValue(INT_ARRAY_VALUE);
+        union.setValue(INT_ARRAY_VALUE);
 
         assertTrue(union.tryConsume(value -> assertArrayEquals(INT_ARRAY_VALUE, value), int[].class));
         assertFalse(union.tryConsume(value -> fail("Should not consume Double"), double[].class));
@@ -253,15 +253,15 @@ public class UnionTests {
     void setAndGetValueWithParameterizedTypes() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE, LIST_OF_INTEGER_TYPE, LIST_OF_DOUBLE_TYPE);
 
-        union = union.setValue(LIST_OF_STRING_VALUE);
+        union.setValue(LIST_OF_STRING_VALUE);
         assertEquals(LIST_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(LIST_OF_STRING_VALUE, union.getValue(LIST_OF_STRING_TYPE));
 
-        union = union.setValue(LIST_OF_INTEGER_VALUE);
+        union.setValue(LIST_OF_INTEGER_VALUE);
         assertEquals(LIST_OF_INTEGER_TYPE, union.getCurrentType());
         assertEquals(LIST_OF_INTEGER_VALUE, union.getValue(LIST_OF_INTEGER_TYPE));
 
-        union = union.setValue(LIST_OF_DOUBLE_VALUE);
+        union.setValue(LIST_OF_DOUBLE_VALUE);
         assertEquals(LIST_OF_DOUBLE_TYPE, union.getCurrentType());
         assertEquals(LIST_OF_DOUBLE_VALUE, union.getValue(LIST_OF_DOUBLE_TYPE));
     }
@@ -279,13 +279,13 @@ public class UnionTests {
     void tryConsumeWithValidParameterizedType() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE, LIST_OF_INTEGER_TYPE, LIST_OF_DOUBLE_TYPE);
 
-        union = union.setValue(LIST_OF_STRING_VALUE);
+        union.setValue(LIST_OF_STRING_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(LIST_OF_STRING_VALUE, value), LIST_OF_STRING_TYPE));
 
-        union = union.setValue(LIST_OF_INTEGER_VALUE);
+        union.setValue(LIST_OF_INTEGER_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(LIST_OF_INTEGER_VALUE, value), LIST_OF_INTEGER_TYPE));
 
-        union = union.setValue(LIST_OF_DOUBLE_VALUE);
+        union.setValue(LIST_OF_DOUBLE_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(LIST_OF_DOUBLE_VALUE, value), LIST_OF_DOUBLE_TYPE));
     }
 
@@ -293,7 +293,7 @@ public class UnionTests {
     void tryConsumeWithInvalidParameterizedType() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE, LIST_OF_INTEGER_TYPE, LIST_OF_DOUBLE_TYPE, LIST_OF_FLOAT_TYPE);
 
-        union = union.setValue(LIST_OF_INTEGER_VALUE);
+        union.setValue(LIST_OF_INTEGER_VALUE);
         assertTrue(union.tryConsume(value -> assertEquals(LIST_OF_INTEGER_VALUE, value), LIST_OF_INTEGER_TYPE));
         assertFalse(union.tryConsume(value -> fail("Should not consume List<String>"), LIST_OF_STRING_TYPE));
         assertFalse(union.tryConsume(value -> fail("Should not consume List<Long>"), LIST_OF_LONG_TYPE));
@@ -312,8 +312,7 @@ public class UnionTests {
     @Test
     void setAndGetValueWithNull() {
         Union union = Union.ofTypes(String.class, Integer.class, Double.class);
-
-        assertThrows(IllegalArgumentException.class, () -> union.setValue(null));
+        union.setValue(null);
         assertNull(union.getValue());
     }
 
@@ -321,7 +320,7 @@ public class UnionTests {
     void setAndGetValueWithEmptyCollection() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE);
         List<String> emptyList = Arrays.asList();
-        union = union.setValue(emptyList);
+        union.setValue(emptyList);
         assertEquals(LIST_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(emptyList, union.getValue(LIST_OF_STRING_TYPE));
     }
@@ -341,7 +340,7 @@ public class UnionTests {
         Union union = Union.ofTypes(listOfListOfString);
 
         List<List<String>> nestedList = Arrays.asList(LIST_OF_STRING_VALUE);
-        union = union.setValue(nestedList);
+        union.setValue(nestedList);
         assertEquals(listOfListOfString, union.getCurrentType());
         assertEquals(nestedList, union.getValue(listOfListOfString));
     }
@@ -350,11 +349,11 @@ public class UnionTests {
     void setAndGetValueWithPrimitiveArray() {
         Union union = Union.ofTypes(int[].class, double[].class);
 
-        union = union.setValue(INT_ARRAY_VALUE);
+        union.setValue(INT_ARRAY_VALUE);
         assertEquals(int[].class, union.getCurrentType());
         assertArrayEquals(INT_ARRAY_VALUE, union.getValue(int[].class));
 
-        union = union.setValue(DOUBLE_ARRAY_VALUE);
+        union.setValue(DOUBLE_ARRAY_VALUE);
         assertEquals(double[].class, union.getCurrentType());
         assertArrayEquals(DOUBLE_ARRAY_VALUE, union.getValue(double[].class));
     }
@@ -366,7 +365,7 @@ public class UnionTests {
         Union union = Union.ofTypes(listOfListOfListOfString);
 
         List<List<List<String>>> deeplyNestedList = Arrays.asList(Arrays.asList(LIST_OF_STRING_VALUE));
-        union = union.setValue(deeplyNestedList);
+        union.setValue(deeplyNestedList);
         assertEquals(listOfListOfListOfString, union.getCurrentType());
         assertEquals(deeplyNestedList, union.getValue(listOfListOfListOfString));
     }
@@ -375,15 +374,15 @@ public class UnionTests {
     void setAndGetValueWithMixedParameterizedTypesAndClass() {
         Union union = Union.ofTypes(LIST_OF_STRING_TYPE, SET_OF_STRING_TYPE, String.class);
 
-        union = union.setValue(LIST_OF_STRING_VALUE);
+        union.setValue(LIST_OF_STRING_VALUE);
         assertEquals(LIST_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(LIST_OF_STRING_VALUE, union.getValue(LIST_OF_STRING_TYPE));
 
-        union = union.setValue(SET_OF_STRING_VALUE);
+        union.setValue(SET_OF_STRING_VALUE);
         assertEquals(SET_OF_STRING_TYPE, union.getCurrentType());
         assertEquals(SET_OF_STRING_VALUE, union.getValue(SET_OF_STRING_TYPE));
 
-        union = union.setValue(STRING_VALUE);
+        union.setValue(STRING_VALUE);
         assertEquals(String.class, union.getCurrentType());
         assertEquals(STRING_VALUE, union.getValue(String.class));
     }
@@ -394,7 +393,7 @@ public class UnionTests {
         String key = "key";
         String value = "value";
         Map<String, String> map = Collections.singletonMap(key, value);
-        union = union.setValue(map);
+        union.setValue(map);
 
         assertEquals(Map.class, union.getCurrentType());
         assertEquals(map, union.getValue(Map.class));
@@ -407,14 +406,14 @@ public class UnionTests {
     @Test
     void unionWithBooleanShortBytes() {
         Union union = Union.ofTypes(Boolean.class, Short.class, Byte.class);
-        union = union.setValue(true);
+        union.setValue(true);
         assertEquals(Boolean.class, union.getCurrentType());
         assertEquals(true, union.getValue(boolean.class));
 
-        union = union.setValue((short) 1);
+        union.setValue((short) 1);
         assertEquals(Short.class, union.getCurrentType());
         assertEquals((short) 1, union.getValue(Short.class));
-        union = union.setValue((byte) 1);
+        union.setValue((byte) 1);
         assertEquals(Byte.class, union.getCurrentType());
         assertEquals((byte) 1, union.getValue(Byte.class));
 
@@ -426,7 +425,7 @@ public class UnionTests {
         Union union = Union.ofTypes(String.class, Union.class);
         Union nestedUnion = Union.ofTypes(String.class, Integer.class, Double.class);
         nestedUnion = nestedUnion.setValue(STRING_VALUE);
-        union = union.setValue(nestedUnion);
+        union.setValue(nestedUnion);
 
         assertEquals(Union.class, union.getCurrentType());
         Union unionValue = union.getValue(Union.class);

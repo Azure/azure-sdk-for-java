@@ -21,15 +21,15 @@ public class ModelType {
     // This would be the case (as we see in GenericModelType) where there are multiple types of the same class, such as
     // List<String>, List<Integer>, and List<Float>.
     public ModelType setProp(String str) {
-        prop = prop.setValue(str);
+        prop.setValue(str);
         return this;
     }
     public ModelType setProp(Integer integer) {
-        prop = prop.setValue(integer);
+        prop.setValue(integer);
         return this;
     }
     public ModelType setProp(Double dbl) {
-        prop = prop.setValue(dbl);
+        prop.setValue(dbl);
         return this;
     }
 

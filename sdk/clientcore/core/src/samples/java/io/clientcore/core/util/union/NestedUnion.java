@@ -34,13 +34,13 @@ public class NestedUnion {
         }
 
         public ClassA setProp(String str) {
-            prop = prop.setValue(str);
+            prop.setValue(str);
             return this;
         }
 
         // Nested Class B contains a Union type property.
         public ClassA setProp(NestedClassB b) {
-            prop = prop.setValue(b);
+            prop.setValue(b);
             return this;
         }
     }
@@ -53,12 +53,12 @@ public class NestedUnion {
         }
 
         public NestedClassB setProp(String str) {
-            prop = prop.setValue(str);
+            prop.setValue(str);
             return this;
         }
 
         public NestedClassB setProp(List<Integer> intList) {
-            prop = prop.setValue(intList);
+            prop.setValue(intList);
             return this;
         }
     }

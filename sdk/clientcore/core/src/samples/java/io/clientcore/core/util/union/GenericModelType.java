@@ -28,15 +28,15 @@ public class GenericModelType {
 
     // but our setter methods need to have more complex names, to differentiate them at runtime.
     public GenericModelType setPropAsStrings(List<String> strValues) {
-        prop = prop.setValue(strValues);
+        prop.setValue(strValues);
         return this;
     }
     public GenericModelType setPropAsIntegers(List<Integer> intValues) {
-        prop = prop.setValue(intValues);
+        prop.setValue(intValues);
         return this;
     }
     public GenericModelType setPropAsFloats(List<Float> floatValues) {
-        prop = prop.setValue(floatValues);
+        prop.setValue(floatValues);
         return this;
     }
 
@@ -47,12 +47,14 @@ public class GenericModelType {
         // in this case, it isn't possible to switch over the values easily (as we could in the ModelType class), as the
         // types are all List types (and we would need to inspect the values inside the list to be sure). Instead, we
         // can use the tryConsume method to consume the value if it is of the expected type.
-        model.getProp().tryConsume(strings -> System.out.println("Strings: " + strings), List.class, String.class);
-
-        model.setPropAsIntegers(Arrays.asList(1, 2, 3));
-        model.getProp().tryConsume(integers -> System.out.println("Integers: " + integers), List.class, Integer.class);
-
-        model.setPropAsFloats(Arrays.asList(1.0f, 2.0f, 3.0f));
-        model.getProp().tryConsume(floats -> System.out.println("Floats: " + floats), List.class, Float.class);
+        if (model.getProp().tryConsume(integers -> System.out.println("Integers: " + integers), List.class, Integer.class)) {
+            System.out.println("Consumed as integers");
+        } else if (model.getProp().tryConsume(strings -> System.out.println("Strings: " + strings), List.class, String.class)) {
+            System.out.println("consumed as strings");
+        } else if (model.getProp().tryConsume(floats -> System.out.println("Floats: " + floats), List.class, Float.class)) {
+            System.out.println("consumed as floats");
+        } else {
+            System.out.println("Not consumed as integers, strings, floats");
+        }
     }
 }

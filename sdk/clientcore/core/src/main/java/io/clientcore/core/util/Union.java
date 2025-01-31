@@ -52,7 +52,7 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsIfElseStatement -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
- * union = union.setValue&#40;&quot;Hello&quot;&#41;;
+ * union.setValue&#40;&quot;Hello&quot;&#41;;
  * Object value = union.getValue&#40;&#41;;
  * &#47;&#47; we can write an if-else block to consume the value in Java 8+, or switch pattern match in Java 17+
  * if &#40;value instanceof String&#41; &#123;
@@ -72,7 +72,7 @@ import java.util.function.Consumer;
  * <!-- src_embed io.clientcore.core.util.union.UnionJavaDocCodeSnippetsLambda -->
  * <pre>
  * Union union = Union.ofTypes&#40;String.class, Integer.class&#41;;
- * union = union.setValue&#40;&quot;Hello&quot;&#41;;
+ * union.setValue&#40;&quot;Hello&quot;&#41;;
  * union.tryConsume&#40;
  *     v -&gt; System.out.println&#40;&quot;String value: &quot; + v&#41;, String.class&#41;;
  * union.tryConsume&#40;
@@ -110,13 +110,6 @@ public final class Union {
         this.types = Collections.unmodifiableList(typeCopy);
     }
 
-    // This internal constructor is used to create a new instance of Union with the provided types and value.
-    private Union(List<Type> types, Object value, Type currentType) {
-        this.types = Collections.unmodifiableList(types);
-        this.value = value;
-        this.currentType = currentType;
-    }
-
     /**
      * Creates a new instance of {@link Union} with the provided types.
      * <p>
@@ -150,14 +143,20 @@ public final class Union {
      */
     @SuppressWarnings("unchecked")
     public Union setValue(Object value) {
+        if (value == null) {
+            this.value = null;
+            return this;
+        }
+
         for (Type type : types) {
             if (isInstanceOfType(value, type) || isPrimitiveTypeMatch(value, type)) {
-                return new Union(types, value, type);
+                this.value = value;
+                this.currentType = type;
+                return this;
             }
         }
 
-        throw LOGGER.logThrowableAsError(
-            new IllegalArgumentException("Invalid type: " + (value == null ? "Null" : value.getClass().getName())));
+        throw LOGGER.logThrowableAsError(new IllegalArgumentException("Invalid type: " + value.getClass().getName()));
     }
 
     /**

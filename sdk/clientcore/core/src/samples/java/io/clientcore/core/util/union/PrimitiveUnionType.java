@@ -22,15 +22,15 @@ public class PrimitiveUnionType {
     // This would be the case (as we see in GenericModelType) where there are multiple types of the same class, such as
     // List<String>, List<Integer>, and List<Float>.
     public PrimitiveUnionType setProp(int i) {
-        prop = prop.setValue(i);
+        prop.setValue(i);
         return this;
     }
     public PrimitiveUnionType setProp(float f) {
-        prop = prop.setValue(f);
+        prop.setValue(f);
         return this;
     }
     public PrimitiveUnionType setProp(double d) {
-        prop = prop.setValue(d);
+        prop.setValue(d);
         return this;
     }
 
