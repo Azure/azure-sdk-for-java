@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -207,7 +208,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     }
 
     @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
-    public void addressRefreshHttpTimeoutWillNotDoCrossRegionRetry(boolean shouldUsePreferredRegionsOnClient) {
+    public void addressRefreshHttpTimeoutWillDoCrossRegionRetryForReads(boolean shouldUsePreferredRegionsOnClient) {
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
@@ -262,10 +263,78 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            resultantCosmosAsyncContainer
+            CosmosItemResponse<TestItem> itemResponse = resultantCosmosAsyncContainer
                 .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
                 .block();
-            fail("addressRefreshHttpTimeoutWillNotDoCrossRegionRetry() should fail due to addressRefresh timeout");
+
+            assertThat(itemResponse).isNotNull();
+
+            CosmosDiagnostics diagnostics = itemResponse.getDiagnostics();
+
+            assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
+            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
+            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(1));
+        } finally {
+            addressRefreshDelayRule.disable();
+            serverGoneRule.disable();
+        }
+    }
+
+    @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
+    public void addressRefreshHttpTimeoutWillNotDoCrossRegionRetryForWrites(boolean shouldUsePreferredRegionsOnClient) {
+
+        CosmosAsyncContainer resultantCosmosAsyncContainer;
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
+        }
+
+        // create fault injection rules for address refresh
+        FaultInjectionRule addressRefreshDelayRule = new FaultInjectionRuleBuilder("addressRefreshDelayRule")
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(11))
+                    .times(4) // make sure it will exhaust the local region retry
+                    .build()
+            )
+            .build();
+
+        // Create gone rules to force address refresh will bound to happen
+        FaultInjectionRule serverGoneRule = new FaultInjectionRuleBuilder("serverGoneRule")
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                    .times(4) // client is on session consistency, make sure exception will be bubbled up to goneAndRetry policy
+                    .build()
+            )
+            .build();
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(
+                resultantCosmosAsyncContainer,
+                Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
+        try {
+            TestItem newItem = TestItem.createNewItem();
+            resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
             assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
             assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
