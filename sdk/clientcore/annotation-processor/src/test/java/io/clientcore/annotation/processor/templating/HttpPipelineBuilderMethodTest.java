@@ -3,18 +3,15 @@
 
 package io.clientcore.annotation.processor.templating;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.MethodSpec;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Modifier;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
@@ -37,15 +34,13 @@ public class HttpPipelineBuilderMethodTest {
 
     private static final String PACKAGE_NAME = "com.example";
     private static final String SERVICE_INTERFACE_SHORT_NAME = getExampleClientServiceImpl();
-    private static final ClassName CLIENT_LOGGER_NAME = ClassName.bestGuess(ClientLogger.class.getName());
-    private static final ClassName HTTP_PIPELINE = ClassName.bestGuess(HttpPipeline.class.getName());
-    private JavaPoetTemplateProcessor processor;
+    private JavaParserTemplateProcessor processor;
     private ProcessingEnvironment processingEnv;
     private TemplateInput templateInput;
 
     @BeforeEach
     public void setUp() {
-        processor = new JavaPoetTemplateProcessor();
+        processor = new JavaParserTemplateProcessor();
         processingEnv = mock(ProcessingEnvironment.class);
         templateInput = mock(TemplateInput.class);
 
@@ -75,44 +70,47 @@ public class HttpPipelineBuilderMethodTest {
 
     @Test
     public void testGetEndpointMethod() {
-        MethodSpec method = processor.getEndpointMethod();
-        assertEquals("getEndpoint", method.name);
-        assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
-        assertEquals(ClassName.get("java.lang", "String"), method.returnType);
+        MethodDeclaration method = processor.getEndpointMethod();
+        assertEquals("getEndpoint", method.getNameAsString());
+        assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
+        assertEquals("String", method.getTypeAsString());
     }
 
     @Test
     public void testGetPipelineMethod() {
-        MethodSpec method = processor.getPipelineMethod();
-        assertEquals("getPipeline", method.name);
-        assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
-        assertEquals(HTTP_PIPELINE, method.returnType);
+        MethodDeclaration method = processor.getPipelineMethod();
+        assertEquals("getPipeline", method.getNameAsString());
+        assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
+        assertEquals("HttpPipeline", method.getTypeAsString());
     }
 
     @Test
     public void testGetServiceVersionMethod() {
-        MethodSpec method = processor.getServiceVersionMethod();
-        assertEquals("getServiceVersion", method.name);
-        assertEquals(Modifier.PUBLIC, method.modifiers.iterator().next());
+        MethodDeclaration method = processor.getServiceVersionMethod("ExampleClientService");
+        assertEquals("getServiceVersion", method.getNameAsString());
+        assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
         when(templateInput.getServiceInterfaceShortName()).thenReturn("ExampleClientService");
-        assertTrue(method.code.toString().contains("return serviceVersion"));
+        assertTrue(method.getBody().get().toString().contains("return serviceVersion"));
     }
 
     @Test
     public void testGetServiceVersionType() {
         assertEquals("com.example.ExampleServiceVersion",
-            JavaPoetTemplateProcessor.getServiceVersionType(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME).toString());
+            JavaParserTemplateProcessor.getServiceVersionType(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME));
     }
 
     @Test
     public void testLoggerFieldGeneration() {
-        FieldSpec loggerField = processor.getLoggerField(PACKAGE_NAME, SERVICE_INTERFACE_SHORT_NAME);
-        assertEquals(new HashSet<>(Arrays.asList(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)),
-            loggerField.modifiers);
-        assertEquals(CLIENT_LOGGER_NAME, loggerField.type);
-        assertEquals("LOGGER", loggerField.name);
-        assertTrue(loggerField.initializer.toString()
-            .contains(
-                "new io.clientcore.core.instrumentation.logging.ClientLogger(com.example.ExampleClientServiceImpl.class)"));
+        FieldDeclaration loggerField = processor.getLoggerField(SERVICE_INTERFACE_SHORT_NAME);
+        assertEquals(
+            new HashSet<>(
+                Arrays.asList(Modifier.privateModifier(), Modifier.staticModifier(), Modifier.finalModifier())),
+            new HashSet<>(loggerField.getModifiers()));
+        assertEquals("ClientLogger", loggerField.getVariable(0).getTypeAsString());
+        assertEquals("LOGGER", loggerField.getVariable(0).getNameAsString());
+
+        String expected = "new ClientLogger(ExampleClientServiceImpl.class)";
+        String actual = loggerField.getVariable(0).getInitializer().get().toString();
+        assertTrue(actual.contains(expected), "Expected to contain: " + expected + " Actual: " + actual);
     }
 }

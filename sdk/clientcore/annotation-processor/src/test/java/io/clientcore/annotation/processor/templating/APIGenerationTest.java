@@ -3,10 +3,11 @@
 
 package io.clientcore.annotation.processor.templating;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
-import com.squareup.javapoet.MethodSpec;
 import io.clientcore.core.http.models.HttpMethod;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +21,12 @@ import static org.mockito.Mockito.mock;
  */
 public class APIGenerationTest {
 
-    private JavaPoetTemplateProcessor processor;
+    private JavaParserTemplateProcessor processor;
     private TemplateInput templateInput;
 
     @BeforeEach
     public void setUp() {
-        processor = new JavaPoetTemplateProcessor();
+        processor = new JavaParserTemplateProcessor();
         templateInput = mock(TemplateInput.class);
     }
 
@@ -49,10 +50,15 @@ public class APIGenerationTest {
             .setBody(new HttpRequestContext.Body("multipart/form-data", "BinaryData", "audioTranscriptionOptions"));
         templateInput.setHttpRequestContexts(Collections.singletonList(getUserMethodContext));
 
-        MethodSpec getUserMethodGenerationSpec = processor.generatePublicMethod(getUserMethodContext);
-        assertEquals("getUser", getUserMethodGenerationSpec.name);
-        assertEquals("User", getUserMethodGenerationSpec.returnType.toString());
+        MethodDeclaration getUserMethodGenerationSpec = processor.generatePublicMethod(getUserMethodContext);
+        assertEquals("getUser", getUserMethodGenerationSpec.getNameAsString());
+        assertEquals("User", getUserMethodGenerationSpec.getTypeAsString());
         // assert code block contains the expected method body
-        assertEquals("return getUser();\n", getUserMethodGenerationSpec.code.toString());
+        StringBuilder actual = new StringBuilder();
+        for (Statement statement : getUserMethodGenerationSpec.getBody().get().getStatements()) {
+            actual.append(statement.toString());
+        }
+
+        assertEquals("return getUser();", actual.toString());
     }
 }

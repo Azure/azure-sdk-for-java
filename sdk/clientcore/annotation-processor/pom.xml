@@ -103,9 +103,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.squareup</groupId>
-      <artifactId>javapoet</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.squareup:javapoet;external_dependency} -->
+      <groupId>com.github.javaparser</groupId>
+      <artifactId>javaparser-core</artifactId>
+      <version>3.26.2</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -150,7 +150,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.squareup:javapoet:[1.13.0]</include> <!-- {x-include-update;com.squareup:javapoet;external_dependency} -->
+                <include>com.github.javaparser:javaparser-core:[3.26.2]</include> <!-- {x-include-update;com.github.javaparser:javaparser-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
