@@ -121,7 +121,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 return this.documentClient.createDocumentChangeFeedQuery(
                     this.settings.getCollectionSelfLink(),
                     this.options,
-                    JsonNode.class).limitRequest(1);
+                    JsonNode.class);
             })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());

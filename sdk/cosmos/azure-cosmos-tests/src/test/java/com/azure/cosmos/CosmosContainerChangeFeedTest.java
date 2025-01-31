@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -116,6 +117,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 // both partitions have more than the endLSN
                 { 11000, true, 5, 6, 30},
                 { 11000, false, 5, 6, 30},
+        };
+    }
+
+    @DataProvider(name = "changeFeedQueryPrefetchingDataProvider")
+    public static Object[][] changeFeedQueryPrefetchingDataProvider() {
+        return new Object[][]{
+            {ChangeFeedMode.FULL_FIDELITY},
+            { ChangeFeedMode.INCREMENTAL},
         };
     }
 
@@ -321,6 +330,63 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
             drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
         }
+    }
+
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider", timeOut = TIMEOUT)
+    public void asyncChangeFeedPrefetching(ChangeFeedMode changeFeedMode) throws Exception {
+        this.createContainer(
+            (cp) -> {
+                if (changeFeedMode.equals(ChangeFeedMode.INCREMENTAL)) {
+                    return cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy());
+                }
+                return cp.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
+            }
+        );
+        CosmosChangeFeedRequestOptions options;
+        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forFullRange())
+                .setMaxItemCount(10).allVersionsAndDeletes();
+        } else {
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(FeedRange.forFullRange()).setMaxItemCount(10);
+        }
+        AtomicInteger count = new AtomicInteger(0);
+        insertDocuments(5, 20);
+        AtomicReference<String> continuation = new AtomicReference<>("");
+        createdContainer.asyncContainer.queryChangeFeed(options, ObjectNode.class).handle((r) -> {
+                count.incrementAndGet();
+                continuation.set(r.getContinuationToken());
+            }
+        ).byPage().subscribe();
+
+        CosmosChangeFeedRequestOptions optionsFF = null;
+        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
+            insertDocuments(5, 20);
+            count.set(0);
+            optionsFF = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuation.get())
+                .setMaxItemCount(10).allVersionsAndDeletes();
+            createdContainer.asyncContainer.queryChangeFeed(optionsFF, ObjectNode.class).handle((r) -> {
+                count.incrementAndGet();
+                continuation.set(r.getContinuationToken());
+            }
+        ).byPage().subscribe();
+        }
+        Thread.sleep(3000);
+        assertThat(count.get()).isGreaterThan(2);
+
+        if (changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)) {
+            // full fidelity is only from now so need to insert more documents
+            insertDocuments(5, 20);
+        }
+        count.set(0);
+        // should only get two pages
+        createdContainer.asyncContainer.queryChangeFeed(changeFeedMode.equals(ChangeFeedMode.FULL_FIDELITY)? optionsFF
+            : options, ObjectNode.class).handle((r) -> count.incrementAndGet())
+            .byPage().take(2, true).subscribe();
+        Thread.sleep(3000);
+        assertThat(count.get()).isEqualTo(2);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
