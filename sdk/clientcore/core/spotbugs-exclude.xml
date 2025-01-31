@@ -226,7 +226,11 @@
   </Match>
   <Match>
     <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
-    <Class name="io.clientcore.core.serialization.json.contract.JsonWriterContractTests" />
+    <Or>
+      <Class name="io.clientcore.core.serialization.json.contract.JsonWriterContractTests" />
+      <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
+    </Or>
+
   </Match>
   <Match>
     <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL" />

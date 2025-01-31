@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.instrumentation.otel.tracing;
+package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
-import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -14,7 +14,10 @@ import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_KEY_CLASS;
 
-class OTelContext {
+/**
+ * This class provides access to the OpenTelemetry context.
+ */
+public class OTelContext {
     private static final ClientLogger LOGGER = new ClientLogger(OTelContext.class);
     private static final TracingScope NOOP_SCOPE = () -> {
     };
@@ -67,27 +70,45 @@ class OTelContext {
         CLIENT_CORE_SPAN_CONTEXT_KEY = clientCoreSpanContextKey;
     }
 
-    static Object getCurrent() {
+    /**
+     * Get the current OpenTelemetry context.
+     * @return the current OpenTelemetry context
+     */
+    public static Object getCurrent() {
         Object currentContext = CURRENT_INVOKER.invoke();
         assert CONTEXT_CLASS.isInstance(currentContext);
         return currentContext;
     }
 
-    static AutoCloseable makeCurrent(Object context) {
-        assert CONTEXT_CLASS.isInstance(context);
+    /**
+     * Make the given context the current context.
+     *
+     * @param context the context
+     * @return an AutoCloseable that will restore the previous context when closed
+     */
+    public static AutoCloseable makeCurrent(Object context) {
         Object scope = MAKE_CURRENT_INVOKER.invoke(context);
         assert scope instanceof AutoCloseable;
         return (AutoCloseable) scope;
     }
 
-    static Object markCoreSpan(Object context, OTelSpan span) {
-        assert CONTEXT_CLASS.isInstance(context);
+    /**
+     * Mark the given context with the given core span.
+     * @param context the context
+     * @param span the core span
+     * @return the updated context
+     */
+    public static Object markCoreSpan(Object context, OTelSpan span) {
         Object updatedContext = WITH_INVOKER.invoke(context, CLIENT_CORE_SPAN_CONTEXT_KEY, span);
         return updatedContext == null ? context : updatedContext;
     }
 
-    static OTelSpan getClientCoreSpan(Object context) {
-        assert CONTEXT_CLASS.isInstance(context);
+    /**
+     * Get the core span from the given context.
+     * @param context the context
+     * @return the core span
+     */
+    public static OTelSpan getClientCoreSpan(Object context) {
         Object clientCoreSpan = GET_INVOKER.invoke(context, CLIENT_CORE_SPAN_CONTEXT_KEY);
         assert clientCoreSpan == null || clientCoreSpan instanceof OTelSpan;
         return (OTelSpan) clientCoreSpan;
@@ -99,7 +120,7 @@ class OTelContext {
      * @param context the context
      * @return the OpenTelemetry context
      */
-    static Object fromInstrumentationContext(InstrumentationContext context) {
+    public static Object fromInstrumentationContext(InstrumentationContext context) {
         if (context instanceof OTelSpanContext) {
             Object otelContext = ((OTelSpanContext) context).getOtelContext();
             if (otelContext != null) {

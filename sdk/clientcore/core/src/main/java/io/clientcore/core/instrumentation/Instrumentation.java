@@ -6,9 +6,11 @@ package io.clientcore.core.instrumentation;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -16,14 +18,14 @@ import java.util.Objects;
  */
 public interface Instrumentation {
     /**
-     * Gets the tracer.
+     * Creates the tracer.
      * <p>
      * Tracer lifetime should usually match the client lifetime. Avoid creating new tracers for each request.
      *
      * <p><strong>This method is intended to be used by client libraries. Application developers
      * should use OpenTelemetry API directly</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.telemetry.tracing.createtracer -->
+     * <!-- src_embed io.clientcore.core.instrumentation.createtracer -->
      * <pre>
      *
      * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
@@ -31,15 +33,70 @@ public interface Instrumentation {
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
      *
-     * Tracer tracer = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;.getTracer&#40;&#41;;
+     * Tracer tracer = instrumentation.createTracer&#40;&#41;;
      *
      * </pre>
-     * <!-- end io.clientcore.core.telemetry.tracing.createtracer -->
+     * <!-- end io.clientcore.core.instrumentation.createtracer -->
      *
      * @return The tracer.
      */
-    Tracer getTracer();
+    Tracer createTracer();
+
+    /**
+     * Creates the meter.
+     * <p>
+     * Meter lifetime should usually match the client lifetime. Avoid creating new meters for each request.
+     *
+     * <p><strong>This method is intended to be used by client libraries. Application developers
+     * should use OpenTelemetry API directly</strong></p>
+     *
+     * <!-- src_embed io.clientcore.core.instrumentation.createmeter -->
+     * <pre>
+     *
+     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *
+     * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Meter meter = instrumentation.createMeter&#40;&#41;;
+     * &#47;&#47; Close the meter when it's no longer needed.
+     * meter.close&#40;&#41;;
+     *
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.createmeter -->
+     *
+     * @return The meter.
+     */
+    Meter createMeter();
+
+    /**
+     * Converts the given attributes into the implementation-specific attributes.
+     * Reuse created attributes when possible between operations to avoid unnecessary overhead.
+     *
+     * <p><strong>This method is intended to be used by client libraries. Application developers
+     * should use OpenTelemetry API directly</strong></p>
+     * <!-- src_embed io.clientcore.core.instrumentation.createattributes -->
+     * <pre>
+     *
+     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
+     *
+     * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * InstrumentationAttributes attributes = instrumentation
+     *     .createAttributes&#40;Collections.singletonMap&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.createattributes -->
+     *
+     * @param attributes Attributes to convert to implementation-specific attributes.
+     * @return The implementation-specific attributes instance.
+     */
+    InstrumentationAttributes createAttributes(Map<String, Object> attributes);
 
     /**
      * Gets the implementation of W3C Trace Context propagator.
@@ -74,9 +131,6 @@ public interface Instrumentation {
     /**
      * Retrieves the instrumentation context from the given context. The type of the context is determined by the
      * instrumentation implementation.
-     * <p>
-     * When using OpenTelemetry, the context can be a {@code io.opentelemetry.api.trace.Span}, {@code io.opentelemetry.api.trace.SpanContext},
-     * {@code io.opentelemetry.context.Context} or any implementation of {@link InstrumentationContext}.
      * <!-- src_embed io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
      * <pre>
      *
@@ -86,11 +140,13 @@ public interface Instrumentation {
      *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;;
      *
      * &#47;&#47; run on another thread
-     * client.clientCall&#40;options&#41;;
+     * client.downloadContent&#40;options&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
-     *
+     * <p>
+     * When using OpenTelemetry, the context can be a {@code io.opentelemetry.api.trace.Span}, {@code io.opentelemetry.api.trace.SpanContext},
+     * {@code io.opentelemetry.context.Context} or any implementation of {@link InstrumentationContext}.
      * <!-- src_embed io.clientcore.core.telemetry.correlationwithexplicitcontext -->
      * <pre>
      *

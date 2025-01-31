@@ -64,12 +64,12 @@ public class TracingShimBenchmarks {
             = Instrumentation
                 .create(new InstrumentationOptions().setTelemetryProvider(openTelemetry),
                     new LibraryInstrumentationOptions("test"))
-                .getTracer();
+                .createTracer();
         shimTracerDisabled
             = Instrumentation
                 .create(new InstrumentationOptions().setTelemetryProvider(OpenTelemetry.noop()),
                     new LibraryInstrumentationOptions("test"))
-                .getTracer();
+                .createTracer();
     }
 
     @Benchmark
