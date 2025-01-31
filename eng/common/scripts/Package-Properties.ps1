@@ -126,7 +126,7 @@ class PackageProps {
                     # JRS - This change will have to be made in azure-sdk-tools
                     # but right now it's being done for testing
                     if ($ciArtifactResult.AdditionalMatrixConfigs) {
-                        Write-Host "JRS-adding AdditionalMatrixConfigs from $($ciFile.FullName)"
+                        LogWarning "JRS-adding AdditionalMatrixConfigs from $($ciFile.FullName)"
                         $this.CIMatrixConfigs += $ciArtifactResult.AdditionalMatrixConfigs
                     }
                     break
