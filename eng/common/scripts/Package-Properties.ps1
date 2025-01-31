@@ -123,6 +123,11 @@ class PackageProps {
                     $this.CIMatrixConfigs = $ciArtifactResult.MatrixConfigs
                     # if this package appeared in this ci file, then we should
                     # treat this CI file as the source of the Matrix for this package
+                    # JRS - This change will have to be made in azure-sdk-tools
+                    # but right now it's being done for testing
+                    if ($ciArtifactResult.AdditionalMatrixConfigs) {
+                        $this.CIMatrixConfigs += $ciArtifactResult.AdditionalMatrixConfigs
+                    }
                     break
                 }
             }
