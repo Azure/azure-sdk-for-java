@@ -6,6 +6,13 @@ This client library provides support for exporting OpenTelemetry data to Azure M
   
 [Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
+## Deprecation Notice
+
+> Please note, this package has been deprecated and will no longer be maintained. We encourage you to
+> upgrade to the replacement package, `azure-monitor-opentelemetry-autoconfigure`, to continue receiving updates.
+> Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+> Checkout the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/MIGRATION.md) for detailed instructions on how to update your application code from version 1.x to the `azure-monitor-opentelemetry-autoconfigure` library.
+
 ## Getting started
 
 ### Prerequisites
