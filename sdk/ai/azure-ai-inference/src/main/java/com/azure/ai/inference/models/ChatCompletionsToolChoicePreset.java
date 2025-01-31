@@ -10,56 +10,56 @@ import java.util.Collection;
 /**
  * Represents a generic policy for how a chat completions tool may be selected.
  */
-public final class ChatCompletionsToolSelectionPreset extends ExpandableStringEnum<ChatCompletionsToolSelectionPreset> {
+public final class ChatCompletionsToolChoicePreset extends ExpandableStringEnum<ChatCompletionsToolChoicePreset> {
 
     /**
      * Specifies that the model may either use any of the tools provided in this chat completions request or
      * instead return a standard chat completions response as if no tools were provided.
      */
     @Generated
-    public static final ChatCompletionsToolSelectionPreset AUTO = fromString("auto");
+    public static final ChatCompletionsToolChoicePreset AUTO = fromString("auto");
 
     /**
      * Specifies that the model should not respond with a tool call and should instead provide a standard chat
      * completions response. Response content may still be influenced by the provided tool definitions.
      */
     @Generated
-    public static final ChatCompletionsToolSelectionPreset NONE = fromString("none");
+    public static final ChatCompletionsToolChoicePreset NONE = fromString("none");
 
     /**
      * Specifies that the model should respond with a call to one or more tools.
      */
     @Generated
-    public static final ChatCompletionsToolSelectionPreset REQUIRED = fromString("required");
+    public static final ChatCompletionsToolChoicePreset REQUIRED = fromString("required");
 
     /**
-     * Creates a new instance of ChatCompletionsToolSelectionPreset value.
+     * Creates a new instance of ChatCompletionsToolChoicePreset value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ChatCompletionsToolSelectionPreset() {
+    public ChatCompletionsToolChoicePreset() {
     }
 
     /**
-     * Creates or finds a ChatCompletionsToolSelectionPreset from its string representation.
+     * Creates or finds a ChatCompletionsToolChoicePreset from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding ChatCompletionsToolSelectionPreset.
+     * @return the corresponding ChatCompletionsToolChoicePreset.
      */
     @Generated
-    public static ChatCompletionsToolSelectionPreset fromString(String name) {
-        return fromString(name, ChatCompletionsToolSelectionPreset.class);
+    public static ChatCompletionsToolChoicePreset fromString(String name) {
+        return fromString(name, ChatCompletionsToolChoicePreset.class);
     }
 
     /**
-     * Gets known ChatCompletionsToolSelectionPreset values.
+     * Gets known ChatCompletionsToolChoicePreset values.
      *
-     * @return known ChatCompletionsToolSelectionPreset values.
+     * @return known ChatCompletionsToolChoicePreset values.
      */
     @Generated
-    public static Collection<ChatCompletionsToolSelectionPreset> values() {
-        return values(ChatCompletionsToolSelectionPreset.class);
+    public static Collection<ChatCompletionsToolChoicePreset> values() {
+        return values(ChatCompletionsToolChoicePreset.class);
     }
 }

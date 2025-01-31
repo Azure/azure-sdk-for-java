@@ -15,8 +15,8 @@ import java.io.IOException;
  * A tool selection of a specific, named function tool that will limit chat completions to using the named function.
  */
 @Immutable
-public final class ChatCompletionsFunctionToolSelection
-    implements JsonSerializable<ChatCompletionsFunctionToolSelection> {
+public final class ChatCompletionsNamedToolChoiceFunction
+    implements JsonSerializable<ChatCompletionsNamedToolChoiceFunction> {
 
     /*
      * The name of the function that should be called.
@@ -25,12 +25,12 @@ public final class ChatCompletionsFunctionToolSelection
     private final String name;
 
     /**
-     * Creates an instance of ChatCompletionsFunctionToolSelection class.
+     * Creates an instance of ChatCompletionsNamedToolChoiceFunction class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public ChatCompletionsFunctionToolSelection(String name) {
+    public ChatCompletionsNamedToolChoiceFunction(String name) {
         this.name = name;
     }
 
@@ -56,16 +56,16 @@ public final class ChatCompletionsFunctionToolSelection
     }
 
     /**
-     * Reads an instance of ChatCompletionsFunctionToolSelection from the JsonReader.
+     * Reads an instance of ChatCompletionsNamedToolChoiceFunction from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatCompletionsFunctionToolSelection if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of ChatCompletionsNamedToolChoiceFunction if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatCompletionsFunctionToolSelection.
+     * @throws IOException If an error occurs while reading the ChatCompletionsNamedToolChoiceFunction.
      */
     @Generated
-    public static ChatCompletionsFunctionToolSelection fromJson(JsonReader jsonReader) throws IOException {
+    public static ChatCompletionsNamedToolChoiceFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -77,7 +77,7 @@ public final class ChatCompletionsFunctionToolSelection
                     reader.skipChildren();
                 }
             }
-            return new ChatCompletionsFunctionToolSelection(name);
+            return new ChatCompletionsNamedToolChoiceFunction(name);
         });
     }
 }
