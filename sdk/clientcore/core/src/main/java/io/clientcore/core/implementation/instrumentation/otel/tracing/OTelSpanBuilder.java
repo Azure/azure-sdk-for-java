@@ -6,8 +6,10 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.instrumentation.otel.OTelAttributes;
 import io.clientcore.core.implementation.instrumentation.otel.OTelContext;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
+import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -18,6 +20,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelAttributeKey.castAttributeValue;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelAttributeKey.getKey;
+import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTES_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.CONTEXT_CLASS;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.SPAN_BUILDER_CLASS;
@@ -35,6 +38,7 @@ public class OTelSpanBuilder implements SpanBuilder {
     private static final FallbackInvoker SET_ATTRIBUTE_INVOKER;
     private static final FallbackInvoker SET_SPAN_KIND_INVOKER;
     private static final FallbackInvoker START_SPAN_INVOKER;
+    private static final FallbackInvoker SET_ALL_ATTRIBUTES_INVOKER;
     private static final Object INTERNAL_KIND;
     private static final Object SERVER_KIND;
     private static final Object CLIENT_KIND;
@@ -51,6 +55,7 @@ public class OTelSpanBuilder implements SpanBuilder {
         ReflectiveInvoker setAttributeInvoker = null;
         ReflectiveInvoker setSpanKindInvoker = null;
         ReflectiveInvoker startSpanInvoker = null;
+        ReflectiveInvoker setAllAttributesInvoker = null;
 
         Object internalKind = null;
         Object serverKind = null;
@@ -70,6 +75,8 @@ public class OTelSpanBuilder implements SpanBuilder {
                     SPAN_BUILDER_CLASS.getMethod("setSpanKind", SPAN_KIND_CLASS));
 
                 startSpanInvoker = getMethodInvoker(SPAN_BUILDER_CLASS, SPAN_BUILDER_CLASS.getMethod("startSpan"));
+                setAllAttributesInvoker = getMethodInvoker(SPAN_BUILDER_CLASS,
+                    SPAN_BUILDER_CLASS.getMethod("setAllAttributes", ATTRIBUTES_CLASS));
 
                 internalKind = SPAN_KIND_CLASS.getField("INTERNAL").get(null);
                 serverKind = SPAN_KIND_CLASS.getField("SERVER").get(null);
@@ -85,6 +92,7 @@ public class OTelSpanBuilder implements SpanBuilder {
         SET_ATTRIBUTE_INVOKER = new FallbackInvoker(setAttributeInvoker, LOGGER);
         SET_SPAN_KIND_INVOKER = new FallbackInvoker(setSpanKindInvoker, LOGGER);
         START_SPAN_INVOKER = new FallbackInvoker(startSpanInvoker, OTelSpan.NOOP_SPAN.getOtelSpan(), LOGGER);
+        SET_ALL_ATTRIBUTES_INVOKER = new FallbackInvoker(setAllAttributesInvoker, LOGGER);
         INTERNAL_KIND = internalKind;
         SERVER_KIND = serverKind;
         CLIENT_KIND = clientKind;
@@ -111,6 +119,18 @@ public class OTelSpanBuilder implements SpanBuilder {
             Object otelKey = getKey(key, value);
             if (otelKey != null) {
                 SET_ATTRIBUTE_INVOKER.invoke(otelSpanBuilder, otelKey, castAttributeValue(value));
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public SpanBuilder setAllAttributes(InstrumentationAttributes attributes) {
+        if (isInitialized() && attributes instanceof OTelAttributes) {
+            Object otelAttributes = ((OTelAttributes) attributes).getOTelAttributes();
+            if (otelAttributes != null) {
+                SET_ALL_ATTRIBUTES_INVOKER.invoke(otelSpanBuilder, otelAttributes);
             }
         }
 

@@ -3,11 +3,14 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
+import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
+
+import java.util.Map;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_KIND_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_NAME_KEY;
@@ -42,6 +45,19 @@ final class FallbackSpanBuilder implements SpanBuilder {
     public SpanBuilder setAttribute(String key, Object value) {
         if (log != null) {
             log.addKeyValue(key, value);
+        }
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SpanBuilder setAllAttributes(InstrumentationAttributes attributes) {
+        if (log != null && attributes instanceof FallbackAttributes) {
+            for (Map.Entry<String, Object> entry : ((FallbackAttributes) attributes).getAttributes().entrySet()) {
+                log.addKeyValue(entry.getKey(), entry.getValue());
+            }
         }
         return this;
     }

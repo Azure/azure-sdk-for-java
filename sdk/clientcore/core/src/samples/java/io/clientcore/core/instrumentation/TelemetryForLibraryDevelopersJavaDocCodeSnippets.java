@@ -20,6 +20,7 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,9 +64,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
-        Meter meter = instrumentation.createMeter();
-        // Close the meter when it's no longer needed.
-        meter.close();
+        instrumentation.createMeter();
 
         // END: io.clientcore.core.instrumentation.createmeter
     }
@@ -81,9 +80,10 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.instrumentation.histogram
 
+        List<Double> bucketBoundariesAdvice = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
         DoubleHistogram histogram = meter.createDoubleHistogram("sample.client.operation.duration",
             "s",
-            "Sample client library operation duration");
+            "Sample client library operation duration", bucketBoundariesAdvice);
         InstrumentationAttributes successAttributes  = instrumentation.createAttributes(
             Collections.singletonMap("operation.name", "{operationName}"));
 
@@ -105,7 +105,6 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         // END: io.clientcore.core.instrumentation.histogram
-        meter.close();
     }
 
     public void counter() {
@@ -141,7 +140,6 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         // END: io.clientcore.core.instrumentation.counter
-        meter.close();
     }
 
     public void upDownCounter() {
@@ -167,7 +165,6 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         }
 
         // END: io.clientcore.core.instrumentation.updowncounter
-        meter.close();
     }
 
     public void createAttributes() {
@@ -231,7 +228,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS);
         Tracer tracer = instrumentation.createTracer();
         Meter meter = instrumentation.createMeter();
-        DoubleHistogram callDuration = meter.createDoubleHistogram("sample.client.operation.duration", "s", "Sample client library operation duration");
+        DoubleHistogram callDuration = meter.createDoubleHistogram("sample.client.operation.duration", "s", "Sample client library operation duration", null);
 
         Map<String, Object> successMap = new HashMap<>();
         successMap.put("operation.name", "{operationName}");
@@ -281,7 +278,6 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             span.end();
         }
 
-        meter.close();
         // END:  io.clientcore.core.instrumentation.measureduration
     }
 

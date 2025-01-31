@@ -59,7 +59,7 @@ class OpenTelemetryMeter implements Meter {
             return OpenTelemetryDoubleHistogram.NOOP;
         }
 
-        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name).setDescription(description);
+        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name).setDescription(description).setExplicitBucketBoundariesAdvice();
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
         }

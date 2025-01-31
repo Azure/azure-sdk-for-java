@@ -60,13 +60,7 @@ public class FallbackInstrumentation implements Instrumentation {
 
     @Override
     public InstrumentationAttributes createAttributes(Map<String, Object> attributes) {
-        if (attributes != null) {
-            for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-                Objects.requireNonNull(entry.getKey(), "attribute key cannot be null.");
-                Objects.requireNonNull(entry.getValue(), "attribute value cannot be null.");
-            }
-        }
-        return NoopAttributes.INSTANCE;
+        return new FallbackAttributes(attributes);
     }
 
     /**

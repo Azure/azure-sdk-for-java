@@ -13,13 +13,18 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
+import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Application developers that don't have OpenTelemetry on the classpath
@@ -174,21 +179,15 @@ public class TelemetryJavaDocCodeSnippets {
         private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
         private final HttpPipeline httpPipeline;
         private final Instrumentation instrumentation;
-        private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
-        private final io.clientcore.core.instrumentation.metrics.Meter meter;
-        private final DoubleHistogram callDurationHistogram;
-        private final InstrumentationAttributes downloadContentSuccessAttributes;
+        private final InstrumentationScopeFactory downloadContentInstrumentation;
         private final URI endpoint;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, URI endpoint) {
             this.httpPipeline = httpPipeline;
             this.endpoint = endpoint;
             this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-            this.tracer = instrumentation.createTracer();
-            this.meter = instrumentation.createMeter();
-            this.callDurationHistogram = meter.createDoubleHistogram("sample.client.operation.duration", "Duration of Sample client operations", "s");
-            // caching most-used attribute instances to avoid performance overhead
-            this.downloadContentSuccessAttributes = createAttributes("downloadContent", endpoint, null, instrumentation);
+            this.downloadContentInstrumentation = new InstrumentationScopeFactory("downloadContent", endpoint, "sample.client.operation.duration",
+                "Duration of the sample client calls", instrumentation);
         }
 
         public Response<?> downloadContent() {
@@ -197,7 +196,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         @SuppressWarnings("try")
         public Response<?> downloadContent(RequestOptions options) {
-            if (!tracer.isEnabled() && !meter.isEnabled()) {
+            if (!downloadContentInstrumentation.isEnabled()) {
                 return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
             }
 
@@ -205,41 +204,105 @@ public class TelemetryJavaDocCodeSnippets {
                 options = new RequestOptions();
             }
 
-            final long startTime = System.nanoTime();
-            RuntimeException error = null;
+            InstrumentationScopeFactory.Scope scope = downloadContentInstrumentation.startScope(options);
+            try {
+                if (scope.getInstrumentationContext().isValid()) {
+                    options.setInstrumentationContext(scope.getInstrumentationContext());
+                }
 
-            Span span = tracer.spanBuilder("downloadContent", SpanKind.CLIENT, options.getInstrumentationContext())
-                .startSpan();
-
-            if (span.getInstrumentationContext().isValid()) {
-                options.setInstrumentationContext(span.getInstrumentationContext());
-            }
-
-            try (TracingScope scope = span.makeCurrent()) {
                 return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
             } catch (RuntimeException t) {
-                error = t;
+                scope.setError(t);
                 throw t;
             } finally {
-                span.end(error);
+                scope.close();
+            }
+        }
+    }
 
-                if (callDurationHistogram.isEnabled()) {
-                    InstrumentationAttributes attributes = error == null ? downloadContentSuccessAttributes : createAttributes("downloadContent", endpoint, error.getClass().getCanonicalName(), instrumentation);
-                    callDurationHistogram.record((System.nanoTime() - startTime) / 1e9, attributes, options.getInstrumentationContext());
+    static class InstrumentationScopeFactory {
+        private static final List<Double> DURATION_BOUNDARIES_ADVICE = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
+        private final Tracer tracer;
+        private final DoubleHistogram callDuration;
+        private final String operationName;
+
+        private final InstrumentationAttributes successAttributes;
+
+        InstrumentationScopeFactory(String operationName, URI serviceEndpoint, String metricName, String metricDescription, Instrumentation instrumentation) {
+            Objects.requireNonNull(operationName, "'operationName' cannot be null");
+            Objects.requireNonNull(serviceEndpoint, "'serviceEndpoint' cannot be null");
+            Objects.requireNonNull(metricName, "'metricName' cannot be null");
+            Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null");
+
+
+            this.tracer = instrumentation.createTracer();
+            Meter meter = instrumentation.createMeter();
+            this.callDuration = meter.createDoubleHistogram(metricName, metricDescription, "s", DURATION_BOUNDARIES_ADVICE);
+            this.successAttributes = createAttributes(operationName, serviceEndpoint, instrumentation);
+            this.operationName = operationName;
+        }
+
+        public boolean isEnabled() {
+            return tracer.isEnabled() || callDuration.isEnabled();
+        }
+
+        public Scope startScope(RequestOptions requestOptions) {
+            InstrumentationContext parent = requestOptions == null ? null : requestOptions.getInstrumentationContext();
+            return new Scope(operationName, successAttributes, parent, tracer, callDuration).makeCurrent();
+        }
+
+        class Scope implements AutoCloseable {
+            private final Span span;
+            private final InstrumentationContext instrumentationContext;
+            private final InstrumentationAttributes startAttributes;
+            private final long startTimeNs;
+            private Throwable error;
+            private TracingScope tracingScope;
+
+            Scope(String operationName, InstrumentationAttributes startAttributes, InstrumentationContext parent, Tracer tracer, DoubleHistogram callDuration) {
+                this.startAttributes = startAttributes;
+                this.span = tracer.spanBuilder(operationName, SpanKind.CLIENT, parent)
+                    .setAllAttributes(startAttributes)
+                    .startSpan();
+                this.instrumentationContext = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parent;
+                this.startTimeNs = callDuration.isEnabled() ? System.nanoTime() : 0;
+            }
+
+            Scope makeCurrent() {
+                this.tracingScope = span.makeCurrent();
+                return this;
+            }
+
+            Scope setError(Throwable error) {
+                this.error = error;
+                return this;
+            }
+
+            InstrumentationContext getInstrumentationContext() {
+                return instrumentationContext;
+            }
+
+            @Override
+            public void close() {
+                if (callDuration.isEnabled()) {
+                    InstrumentationAttributes attributes = error == null ? successAttributes : startAttributes.put("error.type", error.getClass().getCanonicalName());
+                    callDuration.record((System.nanoTime() - startTimeNs) / 1e9, attributes, instrumentationContext);
+                }
+
+                span.end(error);
+                if (tracingScope != null) {
+                    tracingScope.close();
+                    tracingScope = null;
                 }
             }
         }
 
-        private static InstrumentationAttributes createAttributes(String operationName, URI endpoint, String errorType, Instrumentation instrumentation) {
-            Map<String, Object> attributeMap = new HashMap<>(errorType == null ? 4 : 8);
+        private static InstrumentationAttributes createAttributes(String operationName, URI endpoint, Instrumentation instrumentation) {
+            Map<String, Object> attributeMap = new HashMap<>(4);
             attributeMap.put("operation.name", operationName);
             attributeMap.put("server.address", endpoint.getHost());
             if (endpoint.getPort() != -1) {
                 attributeMap.put("server.port", endpoint.getPort());
-            }
-
-            if (errorType != null) {
-                attributeMap.put("error.type", errorType);
             }
 
             return instrumentation.createAttributes(attributeMap);
