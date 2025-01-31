@@ -100,12 +100,14 @@ function GeneratePRMatrixForBatch {
     $matrixResults = @()
     foreach ($matrixConfig in $matrixConfigs) {
       Write-Host "Generating config for $($matrixConfig.Path)"
+      $nonSparse = $matrixConfig.PSObject.Properties['NonSparseParameters'] ? $matrixConfig.NonSparseParameters : @()
 
       $matrixResults = @()
       if ($directBatch) {
         $matrixResults = GenerateMatrixForConfig `
           -ConfigPath $matrixConfig.Path `
           -Selection $matrixConfig.Selection `
+          -NonSparseParameters $nonSparse `
           -DisplayNameFilter $DisplayNameFilter `
           -Filters $Filters `
           -Replace $Replace
