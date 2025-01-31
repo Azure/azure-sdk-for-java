@@ -6,6 +6,8 @@ package io.clientcore.core.util.union;
 import io.clientcore.core.implementation.GenericParameterizedType;
 import io.clientcore.core.util.Union;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,14 +49,35 @@ public class GenericModelType {
         // in this case, it isn't possible to switch over the values easily (as we could in the ModelType class), as the
         // types are all List types (and we would need to inspect the values inside the list to be sure). Instead, we
         // can use the tryConsume method to consume the value if it is of the expected type.
+        List<Type> types = model.getProp().getSupportedTypes();
+        for (Type type : types) {
+            if (type instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) type;
+                if (parameterizedType.getRawType() == List.class) {
+                    Type actualType = parameterizedType.getActualTypeArguments()[0];
+                    if (actualType == String.class) {
+                        model.getProp().tryConsume(strings -> System.out.println("Strings: " + strings), List.class, String.class);
+                        break;
+                    } else if (actualType == Integer.class) {
+                        model.getProp().tryConsume(integers -> System.out.println("Integers: " + integers), List.class, Integer.class);
+                        break;
+                    } else if (actualType == Float.class) {
+                        model.getProp().tryConsume(floats -> System.out.println("Floats: " + floats), List.class, Float.class);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // or, we can use the returned boolean value to determine if the value was consumed
         if (model.getProp().tryConsume(integers -> System.out.println("Integers: " + integers), List.class, Integer.class)) {
-            System.out.println("Consumed as integers");
+            System.out.println("Consumed as Integers");
         } else if (model.getProp().tryConsume(strings -> System.out.println("Strings: " + strings), List.class, String.class)) {
-            System.out.println("consumed as strings");
+            System.out.println("consumed as Strings");
         } else if (model.getProp().tryConsume(floats -> System.out.println("Floats: " + floats), List.class, Float.class)) {
-            System.out.println("consumed as floats");
+            System.out.println("consumed as Floats");
         } else {
-            System.out.println("Not consumed as integers, strings, floats");
+            System.out.println("Not consumed as Integers, Strings, Floats");
         }
     }
 }
