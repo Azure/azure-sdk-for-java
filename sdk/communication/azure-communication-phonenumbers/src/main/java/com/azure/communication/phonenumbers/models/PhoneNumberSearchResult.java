@@ -53,16 +53,6 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      */
     private OffsetDateTime searchExpiresBy;
 
-    /*
-     * The error code of the search.
-     */
-    private Integer errorCode;
-
-    /*
-     * Mapping Error Messages to Codes
-     */
-    private PhoneNumberSearchResultError error;
-
     /**
      * Creates an instance of PhoneNumberSearchResult class.
      */
@@ -135,24 +125,6 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Get the errorCode property: The error code of the search.
-     * 
-     * @return the errorCode value.
-     */
-    public Integer getErrorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Get the error property: Mapping Error Messages to Codes.
-     * 
-     * @return the error value.
-     */
-    public PhoneNumberSearchResultError getError() {
-        return this.error;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -195,11 +167,6 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
                 } else if ("searchExpiresBy".equals(fieldName)) {
                     deserializedPhoneNumberSearchResult.searchExpiresBy
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("errorCode".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.errorCode = reader.getNullable(JsonReader::getInt);
-                } else if ("error".equals(fieldName)) {
-                    deserializedPhoneNumberSearchResult.error
-                        = PhoneNumberSearchResultError.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
