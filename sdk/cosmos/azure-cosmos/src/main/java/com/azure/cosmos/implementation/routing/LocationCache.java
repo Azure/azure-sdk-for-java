@@ -695,22 +695,27 @@ public class LocationCache {
                                 break;
                             }
 
+                            LocationEndpoints endpointsToAdd = new LocationEndpoints(null);
                             if (gatewayEndpoint != null && this.isEndpointUnavailable(gatewayEndpoint, expectedAvailableOperation)) {
                                 unavailableEndpoints.add(gatewayEndpoint);
                             } else {
-                                endpoints.add(new LocationEndpoints(gatewayEndpoint));
+                                endpointsToAdd.gatewayEndpoint = gatewayEndpoint;
                             }
                             if (thinClientEndpoint != null && this.isEndpointUnavailable(thinClientEndpoint, expectedAvailableOperation)) {
                                 unavailableEndpoints.add(thinClientEndpoint);
                             } else {
-                                endpoints.c
+                                endpointsToAdd.thinClientEndpoint = thinClientEndpoint;
+                            }
+
+                            if (endpointsToAdd.gatewayEndpoint != null || endpointsToAdd.thinClientEndpoint != null) {
+                                endpoints.add(endpointsToAdd);
                             }
                         }
                     }
                 }
 
                 if (endpoints.isEmpty()) {
-                    endpoints.add(fallbackEndpoint);
+                    endpoints.add(new LocationEndpoints(fallbackEndpoint));
                 }
 
                 endpoints.addAll(unavailableEndpoints);
