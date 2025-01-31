@@ -92,6 +92,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
     private volatile boolean hasFeedRangeFilteringBeenApplied = false;
+    public boolean isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
 
     private final AtomicReference<HttpTransportSerializer> httpTransportSerializer = new AtomicReference<>(null);
 
@@ -1109,6 +1110,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.isFeed = this.isFeed;
         rxDocumentServiceRequest.resourceId = this.resourceId;
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
+        rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
         return rxDocumentServiceRequest;
     }
 

@@ -64,6 +64,7 @@ public class SpyClientUnderTestFactory {
                     null,
                     null,
                     null,
+                    false,
                     false);
         }
 

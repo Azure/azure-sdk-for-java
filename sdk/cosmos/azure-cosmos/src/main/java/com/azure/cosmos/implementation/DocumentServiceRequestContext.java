@@ -7,12 +7,11 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
@@ -36,6 +35,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
     public volatile PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker;
+    public volatile PartitionKeyRange resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
@@ -62,8 +62,9 @@ public class DocumentServiceRequestContext implements Cloneable {
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
     private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
-
     private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
+    private PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover;
+
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
     private volatile Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> regionToLocationSpecificHealthContext
         = new Utils.ValueHolder<>();
@@ -153,6 +154,8 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
         context.feedOperationContextForCircuitBreaker = this.feedOperationContextForCircuitBreaker;
         context.pointOperationContextForCircuitBreaker = this.pointOperationContextForCircuitBreaker;
+        context.pointOperationContextForPerPartitionAutomaticFailover = this.pointOperationContextForPerPartitionAutomaticFailover;
+
         return context;
     }
 
@@ -184,7 +187,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         return unavailableRegionsForPartition;
     }
 
-    public void setUnavailableRegionsForPartition(List<String> unavailableRegionsForPartition) {
+    public void setUnavailableRegionsForPerPartitionCircuitBreaker(List<String> unavailableRegionsForPartition) {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 
@@ -192,15 +195,23 @@ public class DocumentServiceRequestContext implements Cloneable {
         return pointOperationContextForCircuitBreaker;
     }
 
-    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+    public void setPointOperationContextForCircuitBreaker(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
         this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
+    }
+
+    public PointOperationContextForPerPartitionAutomaticFailover getPointOperationContextForPerPartitionAutomaticFailover() {
+        return this.pointOperationContextForPerPartitionAutomaticFailover;
+    }
+
+    public void setPointOperationContextForPerPartitionAutomaticFailover(PointOperationContextForPerPartitionAutomaticFailover pointOperationContextForPerPartitionAutomaticFailover) {
+        this.pointOperationContextForPerPartitionAutomaticFailover = pointOperationContextForPerPartitionAutomaticFailover;
     }
 
     public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
         return feedOperationContextForCircuitBreaker;
     }
 
-    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
+    public void setFeedOperationContextForCircuitBreaker(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
         this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
     }
 

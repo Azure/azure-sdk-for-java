@@ -431,18 +431,34 @@ public class LocationCache {
     }
 
     public String getRegionName(URI locationEndpoint, com.azure.cosmos.implementation.OperationType operationType) {
+        return this.getRegionName(locationEndpoint, operationType, false);
+    }
+
+    public String getRegionName(URI locationEndpoint, com.azure.cosmos.implementation.OperationType operationType, boolean isPerPartitionAutomaticFailoverEnabled) {
+
         Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
-        if (operationType.isWriteOperation()) {
-            if (Utils.tryGetValue(this.locationInfo.regionNameByWriteEndpoint, locationEndpoint, regionName)) {
-                return regionName.v;
-            }
-        } else {
+
+        if (isPerPartitionAutomaticFailoverEnabled) {
+
+            // in case PPAF is enabled, even a write request may be targeted to a read region at the account-level
             if (Utils.tryGetValue(this.locationInfo.regionNameByReadEndpoint, locationEndpoint, regionName)) {
                 return regionName.v;
             }
+        } else {
+            if (operationType.isWriteOperation()) {
+                if (Utils.tryGetValue(this.locationInfo.regionNameByWriteEndpoint, locationEndpoint, regionName)) {
+                    return regionName.v;
+                }
+            } else {
+                if (Utils.tryGetValue(this.locationInfo.regionNameByReadEndpoint, locationEndpoint, regionName)) {
+                    return regionName.v;
+                }
+            }
         }
 
-        //If preferred list is not set, locationEndpoint will be default endpoint, so return the hub region
+        // if the flow of control reaches here, it means one possibility is that the locationEndpoint
+        // is a default endpoint. The default endpoint maps to the hub region in multi-write accounts (typically
+        // the first account-level write region) or the primary region in multi-region single-write accounts
         return this.locationInfo.availableWriteLocations.get(0).toLowerCase(Locale.ROOT);
     }
 
