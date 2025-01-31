@@ -76,6 +76,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     @Override
+    public URI getRootUri(RxDocumentServiceRequest request) {
+        return this.globalEndpointManager.resolveServiceEndpoint(request).thinClientEndpoint;
+    }
+
+    @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
 
         // todo - neharao1 - validate b/w name() v/s toString()
