@@ -78,25 +78,40 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <proc>only</proc>
-          <!-- Supported source version 'RELEASE_8' from annotation processor 'io.clientcore.annotation.processor.AnnotationProcessor' less than -source '17' -->
-          <failOnWarning>false</failOnWarning>
-          <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
-          <annotationProcessorPaths>
-            <annotationProcessorPath>
-              <groupId>io.clientcore</groupId>
-              <artifactId>annotation-processor</artifactId>
-              <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
-            </annotationProcessorPath>
-          </annotationProcessorPaths>
-          <annotationProcessors>
-            <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
-          </annotationProcessors>
-          <compileSourceRoots>
-            <compileSourceRoot>${project.build.directory}/generated-sources/</compileSourceRoot>
-          </compileSourceRoots>
-        </configuration>
+        <executions>
+          <execution>
+            <id>compile-generated-code</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <proc>none</proc>
+            </configuration>
+          </execution>
+          <execution>
+            <id>annotation-processing</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <proc>only</proc>
+              <failOnWarning>false</failOnWarning>
+              <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
+              <annotationProcessorPaths>
+                <annotationProcessorPath>
+                  <groupId>io.clientcore</groupId>
+                  <artifactId>annotation-processor</artifactId>
+                  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+                </annotationProcessorPath>
+              </annotationProcessorPaths>
+              <annotationProcessors>
+                <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
+              </annotationProcessors>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
