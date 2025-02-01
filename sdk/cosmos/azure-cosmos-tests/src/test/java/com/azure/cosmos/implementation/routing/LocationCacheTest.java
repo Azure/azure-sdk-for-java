@@ -21,6 +21,8 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.ModelBridgeUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -62,6 +64,8 @@ public class LocationCacheTest {
     private final static URI Location4Endpoint = createUrl("https://location4.documents.azure.com");
 
     private static HashMap<String, URI> EndpointByLocation = new HashMap<>();
+
+    private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
 
     static {
         EndpointByLocation.put("location1", LocationCacheTest.Location1Endpoint);

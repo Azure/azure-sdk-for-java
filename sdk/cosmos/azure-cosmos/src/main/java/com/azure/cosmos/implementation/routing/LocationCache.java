@@ -87,7 +87,7 @@ public class LocationCache {
      * @return
      */
     public UnmodifiableList<ConsolidatedRegionalEndpoint> getReadEndpoints() {
-        if (!this.locationUnavailabilityInfoByEndpoint.isEmpty()
+        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
         }
@@ -102,7 +102,7 @@ public class LocationCache {
      * @return
      */
     public UnmodifiableList<ConsolidatedRegionalEndpoint> getWriteEndpoints() {
-        if (!this.locationUnavailabilityInfoByEndpoint.isEmpty()
+        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
         }
@@ -555,8 +555,8 @@ public class LocationCache {
     private void updateLocationCache(
             Iterable<DatabaseAccountLocation> gatewayWriteLocations,
             Iterable<DatabaseAccountLocation> gatewayReadLocations,
-            Iterable<DatabaseAccountLocation> thinclientWriteLocations,
-            Iterable<DatabaseAccountLocation> thinclientReadLocations,
+            Iterable<DatabaseAccountLocation> thinClientWriteLocations,
+            Iterable<DatabaseAccountLocation> thinClientReadLocations,
             UnmodifiableList<String> preferenceList,
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
@@ -574,17 +574,21 @@ public class LocationCache {
 
             this.clearStaleEndpointUnavailabilityInfo();
 
-            Utils.ValueHolder<UnmodifiableList<String>> readValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
-            Utils.ValueHolder<UnmodifiableMap<ConsolidatedRegionalEndpoint, String>> readRegionMapValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
-            nextLocationInfo.availableReadEndpointsByLocation = this.getEndpointsByLocation(gatewayReadLocations, thinclientReadLocations, readValueHolder, readRegionMapValueHolder);
-            nextLocationInfo.availableReadLocations =  readValueHolder.v;
-            nextLocationInfo.regionNameByReadEndpoint = readRegionMapValueHolder.v;
+            if (gatewayReadLocations != null) {
+                Utils.ValueHolder<UnmodifiableList<String>> readValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
+                Utils.ValueHolder<UnmodifiableMap<ConsolidatedRegionalEndpoint, String>> readRegionMapValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
+                nextLocationInfo.availableReadEndpointsByLocation = this.getEndpointsByLocation(gatewayReadLocations, thinClientReadLocations, readValueHolder, readRegionMapValueHolder);
+                nextLocationInfo.availableReadLocations =  readValueHolder.v;
+                nextLocationInfo.regionNameByReadEndpoint = readRegionMapValueHolder.v;
+            }
 
-            Utils.ValueHolder<UnmodifiableList<String>> writeValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
-            Utils.ValueHolder<UnmodifiableMap<ConsolidatedRegionalEndpoint, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
-            nextLocationInfo.availableWriteEndpointsByLocation = this.getEndpointsByLocation(gatewayWriteLocations, thinclientWriteLocations, writeValueHolder, outWriteRegionMap);
-            nextLocationInfo.availableWriteLocations = writeValueHolder.v;
-            nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
+            if (gatewayWriteLocations != null) {
+                Utils.ValueHolder<UnmodifiableList<String>> writeValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
+                Utils.ValueHolder<UnmodifiableMap<ConsolidatedRegionalEndpoint, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
+                nextLocationInfo.availableWriteEndpointsByLocation = this.getEndpointsByLocation(gatewayWriteLocations, thinClientWriteLocations, writeValueHolder, outWriteRegionMap);
+                nextLocationInfo.availableWriteLocations = writeValueHolder.v;
+                nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
+            }
 
             nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointsByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
             nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointsByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0).getGatewayLocationEndpoint());
@@ -849,12 +853,12 @@ public class LocationCache {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             ConsolidatedRegionalEndpoint that = (ConsolidatedRegionalEndpoint) o;
-            return Objects.equals(gatewayLocationEndpoint, that.gatewayLocationEndpoint) || Objects.equals(thinClientLocationEndpoint, that.thinClientLocationEndpoint);
+            return this.gatewayLocationEndpoint.equals(that.gatewayLocationEndpoint);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(gatewayLocationEndpoint);
+            return Objects.hash(this.gatewayLocationEndpoint);
         }
     }
 
