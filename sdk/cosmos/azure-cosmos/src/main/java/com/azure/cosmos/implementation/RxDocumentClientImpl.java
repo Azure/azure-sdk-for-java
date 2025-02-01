@@ -56,6 +56,7 @@ import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.query.PipelinedQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -146,7 +147,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final static List<String> EMPTY_REGION_LIST = Collections.emptyList();
 
-    private final static List<URI> EMPTY_ENDPOINT_LIST = Collections.emptyList();
+    private final static List<LocationCache.ConsolidatedLocationEndpoints> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -490,7 +491,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-            this.isThinClientEnabled = this.configs.getThinclientEnabled();
+            this.isThinClientEnabled = this.configs.isThinClientEnabled();
             // TODO: we have a default thinclient endpoint in configs, but it is not set to anything - need
             //  to figure out what default will be
             this.serviceEndpoint = this.isThinClientEnabled ? this.configs.getThinclientEndpoint() : serviceEndpoint;
@@ -1885,7 +1886,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        request.useThinProxy = Configs.getThinclientEnabled() && request.useGatewayMode ? true : false;
+        request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
 
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
@@ -6486,7 +6487,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param operationType - the operationT
      * @return the applicable endpoints ordered by preference list if any
      */
-    private List<URI> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
+    private List<LocationCache.ConsolidatedLocationEndpoints> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
         if (operationType.isReadOnlyOperation()) {
             return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
         } else if (operationType.isWriteOperation()) {
@@ -6496,7 +6497,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return EMPTY_ENDPOINT_LIST;
     }
 
-    private static List<URI> withoutNulls(List<URI> orderedEffectiveEndpointsList) {
+    private static List<LocationCache.ConsolidatedLocationEndpoints> withoutNulls(List<LocationCache.ConsolidatedLocationEndpoints> orderedEffectiveEndpointsList) {
         if (orderedEffectiveEndpointsList == null) {
             return EMPTY_ENDPOINT_LIST;
         }
@@ -6555,7 +6556,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        List<URI> endpoints = getApplicableEndPoints(operationType, excludedRegions);
+        List<LocationCache.ConsolidatedLocationEndpoints> consolidatedLocationEndpointsList = getApplicableEndPoints(operationType, excludedRegions);
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
@@ -6563,8 +6564,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
-        endpoints.forEach(uri -> {
-            String regionName = this.globalEndpointManager.getRegionName(uri, operationType);
+        consolidatedLocationEndpointsList.forEach(consolidatedLocationEndpoints -> {
+            String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayLocationEndpoint(), operationType);
             if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
                 orderedRegionsForSpeculation.add(regionName);
             }
@@ -6768,7 +6769,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
 
-        URI firstContactedLocationEndpoint = diagnosticsAccessor
+        LocationCache.ConsolidatedLocationEndpoints firstContactedLocationEndpoint = diagnosticsAccessor
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {

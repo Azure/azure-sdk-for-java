@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
@@ -41,7 +40,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
     public volatile URI locationEndpointToRoute;
-    public volatile LocationCache.LocationEndpoints locationEndpoints;
+    public volatile LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpointsToRoute;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
@@ -83,6 +82,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.locationIndexToRoute = locationIndex;
         this.usePreferredLocations = usePreferredLocations;
         this.locationEndpointToRoute = null;
+        this.consolidatedLocationEndpointsToRoute = null;
     }
 
     /**
@@ -91,8 +91,9 @@ public class DocumentServiceRequestContext implements Cloneable {
      *
      * @param locationEndpoint Location endpoint to which the request should be routed.
      */
-    public void routeToLocation(URI locationEndpoint) {
+    public void routeToLocation(URI locationEndpoint, LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpointsToRoute) {
         this.locationEndpointToRoute = locationEndpoint;
+        this.consolidatedLocationEndpointsToRoute = consolidatedLocationEndpointsToRoute;
         this.locationIndexToRoute = null;
         this.usePreferredLocations = null;
     }
@@ -103,6 +104,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public void clearRouteToLocation() {
         this.locationIndexToRoute = null;
         this.locationEndpointToRoute = null;
+        this.consolidatedLocationEndpointsToRoute = null;
         this.usePreferredLocations = null;
     }
 

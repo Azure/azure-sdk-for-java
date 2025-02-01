@@ -77,7 +77,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
-        return this.globalEndpointManager.resolveServiceEndpoint(request).thinClientEndpoint;
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getThinClientLocationEndpoint();
     }
 
     @Override

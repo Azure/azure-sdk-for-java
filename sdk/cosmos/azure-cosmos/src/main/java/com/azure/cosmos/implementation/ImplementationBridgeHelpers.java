@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
@@ -837,7 +838,7 @@ public class ImplementationBridgeHelpers {
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
 
-            URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
+            LocationCache.ConsolidatedLocationEndpoints getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
 
             void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
 

@@ -15,10 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -428,7 +426,7 @@ public class Configs {
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
     }
 
-    public static boolean getThinclientEnabled() {
+    public static boolean isThinClientEnabled() {
         String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
             return Boolean.parseBoolean(valueFromSystemProperty);

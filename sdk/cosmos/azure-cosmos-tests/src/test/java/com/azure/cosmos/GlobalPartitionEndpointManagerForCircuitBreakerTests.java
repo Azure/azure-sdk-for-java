@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -167,12 +168,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String maxExclusive = "BB";
         String collectionResourceId = "dbs/db1/colls/coll1";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -185,11 +186,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getReadEndpoints()).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getWriteEndpoints()).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getReadEndpoints()).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getWriteEndpoints()).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         globalPartitionEndpointManagerForCircuitBreaker
-            .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+            .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
         Class<?> partitionLevelUnavailabilityInfoClass
@@ -235,12 +236,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String maxExclusive = "BB";
         String collectionResourceId = "dbs/db1/colls/coll1";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -253,15 +254,15 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
@@ -310,12 +311,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String maxExclusive = "BB";
         String collectionResourceId = "dbs/db1/colls/coll1";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -328,15 +329,15 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
@@ -396,12 +397,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String maxExclusive = "BB";
         String collectionResourceId = "dbs/db1/colls/coll1";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -414,15 +415,15 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
@@ -489,12 +490,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String maxExclusive = "BB";
         String collectionResourceId = "dbs/db1/colls/coll1";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -507,15 +508,15 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
@@ -556,7 +557,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
         locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
@@ -581,12 +582,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String maxExclusive = "BB";
         String collectionResourceId = "dbs/db1/colls/coll1";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
@@ -599,8 +600,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker
@@ -609,11 +610,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationEastUsEndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUsEndpointToLocationPair.getKey(), null));
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request, LocationCentralUsEndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(LocationCentralUsEndpointToLocationPair.getKey(), null));
         }
 
         Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
@@ -653,12 +654,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String collectionResourceId1 = "dbs/db1/colls/coll1";
         String collectionResourceId2 = "dbs/db1/colls/coll2";
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
         RxDocumentServiceRequest request1 = constructRxDocumentServiceRequestInstance(
@@ -681,15 +682,15 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             maxExclusive,
             LocationEastUs2EndpointToLocationPair.getKey());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(request1, LocationEastUs2EndpointToLocationPair.getKey());
+                .handleLocationExceptionForPartitionKeyRange(request1, new LocationCache.ConsolidatedLocationEndpoints(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
         globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request2);
@@ -766,16 +767,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String collectionResourceId = "dbs/db1/colls/coll1";
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive);
 
-        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteEndpoints = ImmutableList.of(
                 LocationEastUs2EndpointToLocationPair,
                 LocationEastUsEndpointToLocationPair,
                 LocationCentralUsEndpointToLocationPair)
             .stream()
-            .map(Pair::getLeft)
+            .map(uriStringPair -> new LocationCache.ConsolidatedLocationEndpoints(uriStringPair.getLeft(), null))
             .collect(Collectors.toList());
 
-        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         RxDocumentServiceRequest requestCentralUs = constructRxDocumentServiceRequestInstance(
             readOperationTrue ? OperationType.Read : OperationType.Create,
@@ -883,10 +884,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         URI locationWithFailure,
         String collectionResourceId,
         PartitionKeyRange partitionKeyRange,
-        List<URI> applicableReadWriteLocations) {
+        List<LocationCache.ConsolidatedLocationEndpoints> applicableReadWriteLocations) {
 
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
-        globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, locationWithFailure);
+        globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedLocationEndpoints(locationWithFailure, null));
 
         List<String> unavailableRegions
             = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(collectionResourceId, partitionKeyRange, request.getOperationType());
