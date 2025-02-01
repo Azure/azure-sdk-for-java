@@ -142,11 +142,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificHealthContext locationSpecificHealthContext
-            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
@@ -210,11 +210,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificHealthContext locationSpecificHealthContext
-            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
@@ -283,11 +283,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificHealthContext locationSpecificHealthContext
-            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
@@ -358,11 +358,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificHealthContext locationSpecificHealthContext
-            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
@@ -373,7 +373,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
@@ -444,11 +444,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificHealthContext locationSpecificHealthContext
-            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
@@ -537,11 +537,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificHealthContext locationSpecificHealthContext
-            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
@@ -559,7 +559,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
         }
 
-        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
@@ -714,21 +714,21 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId1));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartitionForColl1
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl1);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartitionForColl1
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl1);
 
         Object partitionLevelLocationUnavailabilityInfoSnapshotForColl2
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId2));
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartitionForColl2
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl2);
+        ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartitionForColl2
+            = (ConcurrentHashMap<LocationCache.ConsolidatedRegionalEndpoint, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl2);
 
         LocationSpecificHealthContext locationSpecificHealthContext1
-            = locationEndpointToLocationSpecificContextForPartitionForColl1.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartitionForColl1.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         LocationSpecificHealthContext locationSpecificHealthContext2
-            = locationEndpointToLocationSpecificContextForPartitionForColl2.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartitionForColl2.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         assertThat(locationSpecificHealthContext1.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificHealthContext1.isExceptionThresholdBreached()).isTrue();
@@ -915,6 +915,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(partitionKeyRangeId, minInclusive, maxExclusive);
         request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRange;
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
+        request.requestContext.consolidatedRegionalEndpointToRoute = new LocationCache.ConsolidatedRegionalEndpoint(locationEndpointToRoute, null);
+
         request.requestContext.setExcludeRegions(Collections.emptyList());
         request.requestContext.setPointOperationContext(
             new PointOperationContextForCircuitBreaker(
