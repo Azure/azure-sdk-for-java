@@ -92,10 +92,10 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
 
-        for (LocationCache.ConsolidatedLocationEndpoints endpoint : endpointManager.getWriteEndpoints()) {
+        for (LocationCache.ConsolidatedRegionalEndpoint endpoint : endpointManager.getWriteEndpoints()) {
             this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint());
         }
-        for (LocationCache.ConsolidatedLocationEndpoints endpoint : endpointManager.getReadEndpoints()) {
+        for (LocationCache.ConsolidatedRegionalEndpoint endpoint : endpointManager.getReadEndpoints()) {
             this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint());
         }
     }
@@ -273,7 +273,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
-        LocationCache.ConsolidatedLocationEndpoints endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+        LocationCache.ConsolidatedRegionalEndpoint endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
         return this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint()).addressResolver;
     }
 
@@ -300,13 +300,13 @@ public class GlobalAddressResolver implements IAddressResolver {
         });
 
         if (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-            List<LocationCache.ConsolidatedLocationEndpoints> allConsolidatedEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
+            List<LocationCache.ConsolidatedRegionalEndpoint> allConsolidatedEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
             allConsolidatedEndpoints.addAll(this.endpointManager.getReadEndpoints());
             Collections.reverse(allConsolidatedEndpoints);
-            LinkedList<LocationCache.ConsolidatedLocationEndpoints> endpoints = new LinkedList<>(allConsolidatedEndpoints);
+            LinkedList<LocationCache.ConsolidatedRegionalEndpoint> endpoints = new LinkedList<>(allConsolidatedEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (!endpoints.isEmpty()) {
-                    LocationCache.ConsolidatedLocationEndpoints dequeueEndpoint = endpoints.pop();
+                    LocationCache.ConsolidatedRegionalEndpoint dequeueEndpoint = endpoints.pop();
                     if (this.addressCacheByEndpoint.get(dequeueEndpoint.getGatewayLocationEndpoint()) != null) {
                         this.addressCacheByEndpoint.remove(dequeueEndpoint.getGatewayLocationEndpoint());
                     }

@@ -72,8 +72,8 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
                     if (request.requestContext != null && request.requestContext.locationEndpointToRoute != null) {
 
-                        LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpoints = request.requestContext.consolidatedLocationEndpointsToRoute;
-                        URI locationEndpointToRoute = consolidatedLocationEndpoints.getGatewayLocationEndpoint();
+                        LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = request.requestContext.consolidatedRegionalEndpointToRoute;
+                        URI locationEndpointToRoute = consolidatedRegionalEndpoint.getGatewayLocationEndpoint();
 
                         if (request.isReadOnlyRequest()) {
                             logger.warn("Marking the endpoint : {} as unavailable for read.", locationEndpointToRoute);

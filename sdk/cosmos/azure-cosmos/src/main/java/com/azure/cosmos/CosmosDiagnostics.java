@@ -331,7 +331,7 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getFirstContactedRegion();
     }
 
-    LocationCache.ConsolidatedLocationEndpoints getFirstContactedLocationEndpoint() {
+    LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint() {
         return this.clientSideRequestStatistics.getFirstContactedLocationEndpoint();
     }
 
@@ -479,7 +479,7 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public LocationCache.ConsolidatedLocationEndpoints getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics) {
+                public LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics) {
 
                     if (cosmosDiagnostics == null) {
                         return null;

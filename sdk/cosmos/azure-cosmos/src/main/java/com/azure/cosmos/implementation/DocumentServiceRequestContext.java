@@ -40,7 +40,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
     public volatile URI locationEndpointToRoute;
-    public volatile LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpointsToRoute;
+    public volatile LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpointToRoute;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
@@ -82,7 +82,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.locationIndexToRoute = locationIndex;
         this.usePreferredLocations = usePreferredLocations;
         this.locationEndpointToRoute = null;
-        this.consolidatedLocationEndpointsToRoute = null;
+        this.consolidatedRegionalEndpointToRoute = null;
     }
 
     /**
@@ -91,9 +91,9 @@ public class DocumentServiceRequestContext implements Cloneable {
      *
      * @param locationEndpoint Location endpoint to which the request should be routed.
      */
-    public void routeToLocation(URI locationEndpoint, LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpointsToRoute) {
+    public void routeToLocation(URI locationEndpoint, LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpointToRoute) {
         this.locationEndpointToRoute = locationEndpoint;
-        this.consolidatedLocationEndpointsToRoute = consolidatedLocationEndpointsToRoute;
+        this.consolidatedRegionalEndpointToRoute = consolidatedRegionalEndpointToRoute;
         this.locationIndexToRoute = null;
         this.usePreferredLocations = null;
     }
@@ -104,7 +104,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public void clearRouteToLocation() {
         this.locationIndexToRoute = null;
         this.locationEndpointToRoute = null;
-        this.consolidatedLocationEndpointsToRoute = null;
+        this.consolidatedRegionalEndpointToRoute = null;
         this.usePreferredLocations = null;
     }
 

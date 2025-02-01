@@ -164,7 +164,7 @@ public class ClientSideRequestStatistics {
             this.requestPayloadSizeInBytes = 0;
         }
 
-        LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpoints = null;
+        LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = null;
         URI locationEndPoint = null;
 
         if (request.requestContext != null) {
@@ -179,7 +179,7 @@ public class ClientSideRequestStatistics {
             }
 
             locationEndPoint = request.requestContext.locationEndpointToRoute;
-            consolidatedLocationEndpoints = request.requestContext.consolidatedLocationEndpointsToRoute;
+            consolidatedRegionalEndpoint = request.requestContext.consolidatedRegionalEndpointToRoute;
 
             List<String> excludedRegions = request.requestContext.getExcludeRegions();
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
@@ -193,12 +193,12 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (consolidatedLocationEndpoints != null) {
+            if (consolidatedRegionalEndpoint != null) {
                 storeResponseStatistics.regionName =
-                    globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayLocationEndpoint(), request.getOperationType());
+                    globalEndpointManager.getRegionName(consolidatedRegionalEndpoint.getGatewayLocationEndpoint(), request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
-                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, consolidatedLocationEndpoints));
+                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, consolidatedRegionalEndpoint));
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -222,11 +222,11 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpoints = null;
+            LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = null;
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
 
-                consolidatedLocationEndpoints = rxDocumentServiceRequest.requestContext.consolidatedLocationEndpointsToRoute;
+                consolidatedRegionalEndpoint = rxDocumentServiceRequest.requestContext.consolidatedRegionalEndpointToRoute;
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
 
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
@@ -241,7 +241,7 @@ public class ClientSideRequestStatistics {
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
 
-                this.regionsContactedWithContext.add(new RegionWithContext(regionName, consolidatedLocationEndpoints));
+                this.regionsContactedWithContext.add(new RegionWithContext(regionName, consolidatedRegionalEndpoint));
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -659,7 +659,7 @@ public class ClientSideRequestStatistics {
         return this.regionsContactedWithContext.first().regionContacted;
     }
 
-    public LocationCache.ConsolidatedLocationEndpoints getFirstContactedLocationEndpoint() {
+    public LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint() {
         if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
             return null;
         }
@@ -1056,10 +1056,10 @@ public class ClientSideRequestStatistics {
     static class RegionWithContext implements Comparable<RegionWithContext> {
 
         private final String regionContacted;
-        private final LocationCache.ConsolidatedLocationEndpoints locationEndpointsContacted;
+        private final LocationCache.ConsolidatedRegionalEndpoint locationEndpointsContacted;
         private final long recordedTimestamp;
 
-        RegionWithContext(String regionContacted, LocationCache.ConsolidatedLocationEndpoints locationEndpointsContacted) {
+        RegionWithContext(String regionContacted, LocationCache.ConsolidatedRegionalEndpoint locationEndpointsContacted) {
             this.regionContacted = regionContacted;
             this.locationEndpointsContacted = locationEndpointsContacted;
             this.recordedTimestamp = System.currentTimeMillis();

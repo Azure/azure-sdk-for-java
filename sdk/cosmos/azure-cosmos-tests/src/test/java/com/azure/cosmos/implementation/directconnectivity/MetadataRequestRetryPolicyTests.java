@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyControlPlaneHotPath;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -234,14 +235,14 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(asyncDocumentClient);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(asyncDocumentClient);
 
-            List<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            List<LocationCache.ConsolidatedRegionalEndpoint> readEndpoints = globalEndpointManager.getReadEndpoints();
 
             Map<URI, GlobalAddressResolver.EndpointCache> endpointCacheByURIMap = globalAddressResolver.addressCacheByEndpoint;
 
             Map<String, HttpClientUnderTestWrapper> httpClientWrapperByRegionMap = new ConcurrentHashMap<>();
 
             for (int i = 0; i < preferredRegions.size(); i++) {
-                URI readEndpoint = readEndpoints.get(i);
+                URI readEndpoint = readEndpoints.get(i).getGatewayLocationEndpoint();
                 GlobalAddressResolver.EndpointCache endpointCache = endpointCacheByURIMap.get(readEndpoint);
                 GatewayAddressCache gatewayAddressCache = endpointCache.addressCache;
                 HttpClientUnderTestWrapper httpClientUnderTestWrapper = getHttpClientUnderTestWrapper(configs);

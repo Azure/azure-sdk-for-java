@@ -147,7 +147,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final static List<String> EMPTY_REGION_LIST = Collections.emptyList();
 
-    private final static List<LocationCache.ConsolidatedLocationEndpoints> EMPTY_ENDPOINT_LIST = Collections.emptyList();
+    private final static List<LocationCache.ConsolidatedRegionalEndpoint> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -6487,7 +6487,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param operationType - the operationT
      * @return the applicable endpoints ordered by preference list if any
      */
-    private List<LocationCache.ConsolidatedLocationEndpoints> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
+    private List<LocationCache.ConsolidatedRegionalEndpoint> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
         if (operationType.isReadOnlyOperation()) {
             return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
         } else if (operationType.isWriteOperation()) {
@@ -6497,7 +6497,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return EMPTY_ENDPOINT_LIST;
     }
 
-    private static List<LocationCache.ConsolidatedLocationEndpoints> withoutNulls(List<LocationCache.ConsolidatedLocationEndpoints> orderedEffectiveEndpointsList) {
+    private static List<LocationCache.ConsolidatedRegionalEndpoint> withoutNulls(List<LocationCache.ConsolidatedRegionalEndpoint> orderedEffectiveEndpointsList) {
         if (orderedEffectiveEndpointsList == null) {
             return EMPTY_ENDPOINT_LIST;
         }
@@ -6556,7 +6556,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        List<LocationCache.ConsolidatedLocationEndpoints> consolidatedLocationEndpointsList = getApplicableEndPoints(operationType, excludedRegions);
+        List<LocationCache.ConsolidatedRegionalEndpoint> consolidatedRegionalEndpointList = getApplicableEndPoints(operationType, excludedRegions);
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
@@ -6564,7 +6564,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
-        consolidatedLocationEndpointsList.forEach(consolidatedLocationEndpoints -> {
+        consolidatedRegionalEndpointList.forEach(consolidatedLocationEndpoints -> {
             String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayLocationEndpoint(), operationType);
             if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
                 orderedRegionsForSpeculation.add(regionName);
@@ -6769,7 +6769,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
 
-        LocationCache.ConsolidatedLocationEndpoints firstContactedLocationEndpoint = diagnosticsAccessor
+        LocationCache.ConsolidatedRegionalEndpoint firstContactedLocationEndpoint = diagnosticsAccessor
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {

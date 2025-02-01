@@ -48,7 +48,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private boolean isReadRequest;
     private boolean canUseMultipleWriteLocations;
     private URI locationEndpoint;
-    private LocationCache.ConsolidatedLocationEndpoints consolidatedLocationEndpoints;
+    private LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint;
     private RetryContext retryContext;
     private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
@@ -89,7 +89,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             isReadRequest,
             canUseMultipleWriteLocations,
             e);
-        if (this.locationEndpoint == null || this.consolidatedLocationEndpoints == null) {
+        if (this.locationEndpoint == null || this.consolidatedRegionalEndpoint == null) {
             // on before request is not invoked because Document Service Request creation failed.
             logger.error("locationEndpoint is null because ClientRetryPolicy::onBeforeRequest(.) is not invoked, " +
                                  "probably request creation failed due to invalid options, serialization setting, etc.");
@@ -231,7 +231,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return ShouldRetryResult.noRetry();
         } else {
             if (this.canUseMultipleWriteLocations) {
-                UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> endpoints =
+                UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> endpoints =
                     this.isReadRequest ?
                         this.globalEndpointManager.getApplicableReadEndpoints(request) : this.globalEndpointManager.getApplicableWriteEndpoints(request);
 
@@ -307,7 +307,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(this.request);
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.consolidatedLocationEndpointsToRoute);
+            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.consolidatedRegionalEndpointToRoute);
         }
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
@@ -341,10 +341,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // Mark the current read endpoint as unavailable
         if (isReadRequest) {
             logger.warn("marking the endpoint {} as unavailable for read",this.locationEndpoint);
-            this.globalEndpointManager.markEndpointUnavailableForRead(this.consolidatedLocationEndpoints.getGatewayLocationEndpoint());
+            this.globalEndpointManager.markEndpointUnavailableForRead(this.consolidatedRegionalEndpoint.getGatewayLocationEndpoint());
         } else {
             logger.warn("marking the endpoint {} as unavailable for write",this.locationEndpoint);
-            this.globalEndpointManager.markEndpointUnavailableForWrite(this.consolidatedLocationEndpoints.getGatewayLocationEndpoint());
+            this.globalEndpointManager.markEndpointUnavailableForWrite(this.consolidatedRegionalEndpoint.getGatewayLocationEndpoint());
         }
 
         this.retryContext = new RetryContext(this.failoverRetryCount, usePreferredLocations);
@@ -359,7 +359,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
             this.globalPartitionEndpointManagerForCircuitBreaker
-                .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.consolidatedLocationEndpointsToRoute);
+                .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.consolidatedRegionalEndpointToRoute);
         }
 
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
@@ -421,7 +421,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
                 this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
                     this.request,
-                    this.request.requestContext.consolidatedLocationEndpointsToRoute);
+                    this.request.requestContext.consolidatedRegionalEndpointToRoute);
             }
         }
 
@@ -434,7 +434,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
             this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
                 this.request,
-                this.request.requestContext.consolidatedLocationEndpointsToRoute);
+                this.request.requestContext.consolidatedRegionalEndpointToRoute);
         }
 
         return Mono.just(ShouldRetryResult.NO_RETRY);
@@ -463,17 +463,17 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
-        this.consolidatedLocationEndpoints = this.globalEndpointManager.resolveServiceEndpoint(request);
-        this.locationEndpoint = request.useThinProxy && this.consolidatedLocationEndpoints.getThinClientLocationEndpoint() != null ?
-            this.consolidatedLocationEndpoints.getThinClientLocationEndpoint() :
-            this.consolidatedLocationEndpoints.getGatewayLocationEndpoint();
+        this.consolidatedRegionalEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
+        this.locationEndpoint = request.useThinProxy && this.consolidatedRegionalEndpoint.getThinClientLocationEndpoint() != null ?
+            this.consolidatedRegionalEndpoint.getThinClientLocationEndpoint() :
+            this.consolidatedRegionalEndpoint.getGatewayLocationEndpoint();
 
-        if (this.consolidatedLocationEndpoints.getThinClientLocationEndpoint() == null) {
+        if (this.consolidatedRegionalEndpoint.getThinClientLocationEndpoint() == null) {
             request.useThinProxy = false;
         }
 
         if (request.requestContext != null) {
-            request.requestContext.routeToLocation(this.locationEndpoint, this.consolidatedLocationEndpoints);
+            request.requestContext.routeToLocation(this.locationEndpoint, this.consolidatedRegionalEndpoint);
         }
     }
 
@@ -524,8 +524,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         Objects.requireNonNull(request, "Argument 'request' must not be null'");
         Objects.requireNonNull(request.requestContext, "Argument 'request.requestContext' must not be null'");
-        Objects.requireNonNull(request.requestContext.consolidatedLocationEndpointsToRoute, "Argument 'request.requestContext.consolidatedLocationEndpointsToRoute' must not be null'");
+        Objects.requireNonNull(request.requestContext.consolidatedRegionalEndpointToRoute, "Argument 'request.requestContext.consolidatedRegionalEndpointToRoute' must not be null'");
 
-        return request.requestContext.consolidatedLocationEndpointsToRoute.getGatewayLocationEndpoint();
+        return request.requestContext.consolidatedRegionalEndpointToRoute.getGatewayLocationEndpoint();
     }
 }

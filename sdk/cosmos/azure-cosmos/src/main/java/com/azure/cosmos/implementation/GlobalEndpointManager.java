@@ -88,32 +88,32 @@ public class GlobalEndpointManager implements AutoCloseable {
         startRefreshLocationTimerAsync(true).block(maxInitializationTime);
     }
 
-    public UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> getReadEndpoints() {
+    public UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> getReadEndpoints() {
         // readonly
         return this.locationCache.getReadEndpoints();
     }
 
-    public UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> getWriteEndpoints() {
+    public UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> getWriteEndpoints() {
         //readonly
         return this.locationCache.getWriteEndpoints();
     }
 
-    public UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(request);
     }
 
-    public UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(request);
     }
 
-    public UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> getApplicableReadEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> getApplicableReadEndpoints(List<String> excludedRegions) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
     }
 
-    public UnmodifiableList<LocationCache.ConsolidatedLocationEndpoints> getApplicableWriteEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> getApplicableWriteEndpoints(List<String> excludedRegions) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
     }
@@ -146,8 +146,8 @@ public class GlobalEndpointManager implements AutoCloseable {
                 });
     }
 
-    public LocationCache.ConsolidatedLocationEndpoints resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        LocationCache.ConsolidatedLocationEndpoints serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
+    public LocationCache.ConsolidatedRegionalEndpoint resolveServiceEndpoint(RxDocumentServiceRequest request) {
+        LocationCache.ConsolidatedRegionalEndpoint serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
             // TODO: integrate thin client into fault injection
             request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoints.getGatewayLocationEndpoint());

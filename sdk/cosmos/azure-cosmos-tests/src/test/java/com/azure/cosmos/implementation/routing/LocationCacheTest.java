@@ -512,11 +512,11 @@ public class LocationCacheTest {
             request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
 
             if (request.isReadOnlyRequest()) {
-                List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+                List<LocationCache.ConsolidatedRegionalEndpoint> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
                 assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size());
                 expectedApplicableEndpoints.forEach(endpoint -> assertThat(expectedApplicableEndpoints.contains(endpoint)).isTrue());
             } else {
-                List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+                List<LocationCache.ConsolidatedRegionalEndpoint> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
                 assertThat(applicableWriteEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size());
                 expectedApplicableEndpoints.forEach(endpoint -> assertThat(expectedApplicableEndpoints.contains(endpoint)).isTrue());
             }
@@ -532,8 +532,8 @@ public class LocationCacheTest {
         boolean isDefaultEndpointAlsoRegionalEndpoint) {
 
         this.initialize(true, true, isPreferredLocationsListEmpty, isDefaultEndpointAlsoRegionalEndpoint);
-        List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
-        List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+        List<LocationCache.ConsolidatedRegionalEndpoint> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+        List<LocationCache.ConsolidatedRegionalEndpoint> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
 
         if (request.isReadOnlyRequest()) {
             assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableReadEndpoints.size());
@@ -667,8 +667,8 @@ public class LocationCacheTest {
                         endpointDiscoveryEnabled,
                         isPreferredListEmpty);
 
-                UnmodifiableList<URI> currentWriteEndpoints = this.cache.getWriteEndpoints();
-                UnmodifiableList<URI> currentReadEndpoints = this.cache.getReadEndpoints();
+                UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> currentWriteEndpoints = this.cache.getWriteEndpoints();
+                UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> currentReadEndpoints = this.cache.getReadEndpoints();
                 for (int i = 0; i < readLocationIndex; i++) {
                     this.cache.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));
                     this.endpointManager.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));;
@@ -898,7 +898,7 @@ public class LocationCacheTest {
 
         // If current write endpoint is unavailable, write endpoints order doesn't change
         // ALL write requests flip-flop between current write and alternate write endpoint
-        UnmodifiableList<URI> writeEndpoints = this.cache.getWriteEndpoints();
+        UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> writeEndpoints = this.cache.getWriteEndpoints();
 
         assertThat(firstAvailableWriteEndpoint).isEqualTo(writeEndpoints.get(0));
         assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
@@ -913,13 +913,13 @@ public class LocationCacheTest {
         assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(false));
     }
 
-    private URI resolveEndpointForReadRequest(boolean masterResourceType) {
+    private LocationCache.ConsolidatedRegionalEndpoint resolveEndpointForReadRequest(boolean masterResourceType) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read,
                 masterResourceType ? ResourceType.Database : ResourceType.Document);
         return this.cache.resolveServiceEndpoint(request);
     }
 
-    private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
+    private LocationCache.ConsolidatedRegionalEndpoint resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, resourceType);
         request.requestContext.routeToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
