@@ -459,7 +459,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(new LocationCache.ConsolidatedRegionalEndpoint(LocationEastUs2EndpointToLocationPair.getKey(), null));
 
         int successCountToUpgradeStatus = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus.HealthyTentative, readOperationTrue);
 

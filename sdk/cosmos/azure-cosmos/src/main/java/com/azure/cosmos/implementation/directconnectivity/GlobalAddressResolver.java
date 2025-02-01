@@ -137,7 +137,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     .getCosmosContainerIdentityAccessor()
                                     .getContainerLink(cosmosContainerIdentity);
 
-                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.isEmpty()) {
                                     logger.warn(
                                         "There is no pkRanges found for collection {}, no connections will be opened",
                                         collection.getResourceId());
@@ -155,8 +155,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
                                     return Flux.fromIterable(this.endpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                                         .flatMap(readEndpoint -> {
-                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
-                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint);
+                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint.getGatewayLocationEndpoint())) {
+                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint.getGatewayLocationEndpoint());
                                                 return this.resolveAddressesPerCollection(
                                                         endpointCache,
                                                         containerLinkToPkrs.left,

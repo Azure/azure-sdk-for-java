@@ -129,7 +129,7 @@ public class GlobalAddressResolverTest {
         Set<URI> urlsAfterResolve = globalAddressResolver.addressCacheByEndpoint.keySet();
         assertThat(urlsAfterResolve.size()).isEqualTo(5);
         assertThat(urlsAfterResolve.contains(urlforRead2)).isFalse();//Last read will be removed from addressCacheByEndpoint after 5 endpoints
-        assertThat(urlsBeforeResolve.contains(testUrl)).isTrue();//New endpoint will be added in addressCacheByEndpoint
+        assertThat(urlsBeforeResolve.contains(testUrl.getGatewayLocationEndpoint())).isTrue();//New endpoint will be added in addressCacheByEndpoint
     }
 
     @Test(groups = "unit")
