@@ -23,9 +23,11 @@ public interface DoubleHistogram {
      * <!-- src_embed io.clientcore.core.instrumentation.histogram -->
      * <pre>
      *
+     * List&lt;Double&gt; bucketBoundariesAdvice = Arrays.asList&#40;0.005d, 0.01d, 0.025d, 0.05d, 0.075d,
+     *     0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d&#41;;
      * DoubleHistogram histogram = meter.createDoubleHistogram&#40;&quot;sample.client.operation.duration&quot;,
      *     &quot;s&quot;,
-     *     &quot;Sample client library operation duration&quot;&#41;;
+     *     &quot;Sample client library operation duration&quot;, bucketBoundariesAdvice&#41;;
      * InstrumentationAttributes successAttributes  = instrumentation.createAttributes&#40;
      *     Collections.singletonMap&#40;&quot;operation.name&quot;, &quot;&#123;operationName&#125;&quot;&#41;&#41;;
      *

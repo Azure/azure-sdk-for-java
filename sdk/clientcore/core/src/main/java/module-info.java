@@ -8,6 +8,7 @@ module io.clientcore.core {
     requires transitive java.xml;
 
     requires java.net.http;
+    requires jdk.httpserver;
 
     // public API surface area
     exports io.clientcore.core.annotation;

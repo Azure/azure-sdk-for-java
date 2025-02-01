@@ -104,29 +104,31 @@ public class MeterTests {
 
         Attributes otelAttributes = Attributes.builder().put("key1", "value").put("key2", 42).build();
 
-        DoubleHistogram histogram = meter.createDoubleHistogram("core.test-histogram", "important metric", "unit", Arrays.asList(0d, 1d, 2d, 42d));
+        DoubleHistogram histogram = meter.createDoubleHistogram("core.test-histogram", "important metric", "unit",
+            Arrays.asList(0d, 1d, 2d, 42d));
         histogram.record(1, attributes, null);
         histogram.record(10, attributes, null);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
-        assertThat(sdkMeterReader.collectAllMetrics()).satisfiesExactly(metric -> assertThat(metric)
-            .hasResource(RESOURCE)
-            .hasInstrumentationScope(INSTRUMENTATION_SCOPE)
-            .hasName("core.test-histogram")
-            .hasDescription("important metric")
-            .hasUnit("unit")
-            .hasHistogramSatisfying(h -> h.isCumulative()
-                .hasPointsSatisfying(point -> point.hasStartEpochNanos(testClock.now() - SECOND_NANOS)
-                    .hasEpochNanos(testClock.now())
-                    .hasAttributes(otelAttributes)
-                    .hasCount(2)
-                    .hasSum(11)
-                    .hasBucketBoundaries(0, 1, 2, 42)
-                    .hasBucketCounts(0, 1, 0, 1, 0))));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(metric -> assertThat(metric).hasResource(RESOURCE)
+                .hasInstrumentationScope(INSTRUMENTATION_SCOPE)
+                .hasName("core.test-histogram")
+                .hasDescription("important metric")
+                .hasUnit("unit")
+                .hasHistogramSatisfying(h -> h.isCumulative()
+                    .hasPointsSatisfying(point -> point.hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                        .hasEpochNanos(testClock.now())
+                        .hasAttributes(otelAttributes)
+                        .hasCount(2)
+                        .hasSum(11)
+                        .hasBucketBoundaries(0, 1, 2, 42)
+                        .hasBucketCounts(0, 1, 0, 1, 0))));
     }
 
     @Test
     public void histogramWithContext() {
-        DoubleHistogram histogram = meter.createDoubleHistogram("core.test-histogram", "important metric", "unit", null);
+        DoubleHistogram histogram
+            = meter.createDoubleHistogram("core.test-histogram", "important metric", "unit", null);
         InstrumentationAttributes attributes
             = instrumentation.createAttributes(Collections.singletonMap("key1", "value"));
         Attributes otelAttributes = Attributes.builder().put("key1", "value").build();

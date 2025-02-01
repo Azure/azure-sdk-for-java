@@ -33,7 +33,7 @@ public interface SpanBuilder {
      * Attributes added on span builder are used to make sampling decisions,
      * and if the span is sampled, they are added to the resulting span.
      * <p>
-     * <strong>When adding attributes, make sure to follow <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry semantic conventions</a>
+     * <strong>When adding attributes, make sure to follow <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry semantic conventions</a></strong>
      * @param attributes The attributes to set.
      * @return Updated {@link SpanBuilder} object.
      */

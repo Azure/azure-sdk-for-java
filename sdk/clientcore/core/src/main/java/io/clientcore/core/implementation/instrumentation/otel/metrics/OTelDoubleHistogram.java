@@ -79,7 +79,8 @@ final class OTelDoubleHistogram implements DoubleHistogram {
         this.otelHistogram = otelHistogram;
     }
 
-    public static DoubleHistogram create(Object otelMeter, String name, String description, String unit, List<Double> bucketBoundaries) {
+    public static DoubleHistogram create(Object otelMeter, String name, String description, String unit,
+        List<Double> bucketBoundaries) {
         if (otelMeter == null || !OTelInitializer.isInitialized()) {
             return NOOP;
         }

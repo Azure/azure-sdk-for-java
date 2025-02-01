@@ -29,7 +29,6 @@ import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -172,13 +171,13 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final String REQUEST_DURATION_METRIC_NAME = "http.client.request.duration";
     private static final String REQUEST_DURATION_METRIC_DESCRIPTION = "Duration of HTTP client requests";
     private static final String REQUEST_DURATION_METRIC_UNIT = "s";
-    private static final List<Double> REQUEST_DURATION_BOUNDARIES_ADVICE = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
+    private static final List<Double> REQUEST_DURATION_BOUNDARIES_ADVICE
+        = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
 
     // request log level is low (verbose) since almost all request details are also
     // captured on the response log.
     private static final ClientLogger.LogLevel HTTP_REQUEST_LOG_LEVEL = ClientLogger.LogLevel.VERBOSE;
     private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
-
 
     private final Tracer tracer;
     private final Meter meter;

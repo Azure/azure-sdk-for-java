@@ -13,10 +13,10 @@ import java.util.Objects;
 class FallbackAttributes implements InstrumentationAttributes {
     private final Map<String, Object> attributes;
 
-    public FallbackAttributes(Map<String, Object> attributes) {
+    FallbackAttributes(Map<String, Object> attributes) {
         if (attributes == null) {
-           this.attributes = Collections.emptyMap();
-           return;
+            this.attributes = Collections.emptyMap();
+            return;
         }
 
         for (Map.Entry<String, Object> entry : attributes.entrySet()) {

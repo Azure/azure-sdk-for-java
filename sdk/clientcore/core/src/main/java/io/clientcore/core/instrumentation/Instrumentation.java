@@ -7,6 +7,7 @@ import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstru
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
 import io.clientcore.core.instrumentation.metrics.Meter;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 
@@ -61,9 +62,7 @@ public interface Instrumentation {
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
-     * Meter meter = instrumentation.createMeter&#40;&#41;;
-     * &#47;&#47; Close the meter when it's no longer needed.
-     * meter.close&#40;&#41;;
+     * instrumentation.createMeter&#40;&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.createmeter -->
@@ -179,4 +178,16 @@ public interface Instrumentation {
             return FallbackInstrumentation.DEFAULT_INSTANCE.createInstrumentationContext(context);
         }
     }
+
+    /**
+     * Determines whether the client call should be instrumented.
+     *
+     * <p><strong>This method is intended to be used by client libraries. Application developers
+     * should use OpenTelemetry API directly</strong></p>
+     *
+     * @param spanKind the kind of the span to be created.
+     * @param context the instrumentation context call happens in.
+     * @return {@code true} if the client call should be instrumented, otherwise {@code false}.
+     */
+    boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context);
 }

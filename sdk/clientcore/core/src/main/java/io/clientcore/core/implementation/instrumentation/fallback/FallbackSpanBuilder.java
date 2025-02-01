@@ -20,15 +20,18 @@ final class FallbackSpanBuilder implements SpanBuilder {
     static final FallbackSpanBuilder NOOP = new FallbackSpanBuilder();
     private final ClientLogger.LoggingEvent log;
     private final FallbackSpanContext parentSpanContext;
+    private final SpanKind spanKind;
 
     private FallbackSpanBuilder() {
         this.log = null;
         this.parentSpanContext = FallbackSpanContext.INVALID;
+        this.spanKind = null;
     }
 
     FallbackSpanBuilder(ClientLogger logger, String spanName, SpanKind spanKind,
         InstrumentationContext instrumentationContext) {
         this.parentSpanContext = FallbackSpanContext.fromInstrumentationContext(instrumentationContext);
+        this.spanKind = spanKind;
         this.log = logger.atVerbose();
         if (log.isEnabled()) {
             log.addKeyValue(SPAN_NAME_KEY, spanName).addKeyValue(SPAN_KIND_KEY, spanKind.name());
@@ -68,7 +71,7 @@ final class FallbackSpanBuilder implements SpanBuilder {
     @Override
     public Span startSpan() {
         if (log != null) {
-            return new FallbackSpan(log, parentSpanContext, log.isEnabled());
+            return new FallbackSpan(log, spanKind, parentSpanContext, log.isEnabled());
         }
 
         return Span.noop();

@@ -82,7 +82,8 @@ public class OTelMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public DoubleHistogram createDoubleHistogram(String name, String description, String unit, List<Double> bucketBoundaries) {
+    public DoubleHistogram createDoubleHistogram(String name, String description, String unit,
+        List<Double> bucketBoundaries) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
         Objects.requireNonNull(unit, "'unit' cannot be null.");

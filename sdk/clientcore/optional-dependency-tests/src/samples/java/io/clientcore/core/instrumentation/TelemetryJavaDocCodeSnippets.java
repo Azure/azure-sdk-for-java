@@ -11,8 +11,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.instrumentation.tracing.SpanKind;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
@@ -20,8 +18,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.net.URI;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -185,42 +182,36 @@ public class TelemetryJavaDocCodeSnippets {
     static class SampleClient {
         private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
         private final HttpPipeline httpPipeline;
-        private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
+        private final URI serviceEndpoint;
+        private final ClientCallInstrumentation clientInstrumentation;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).createTracer();
+            this.serviceEndpoint = URI.create("https://example.com");
+            Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+            clientInstrumentation = new ClientCallInstrumentation("sample", "clientCall", serviceEndpoint, instrumentation);
         }
 
-        public void clientCall() {
-            this.clientCall(null);
+        public Response<?> clientCall() {
+            return this.clientCall(null);
         }
 
         @SuppressWarnings("try")
-        public void clientCall(RequestOptions options) {
-            io.clientcore.core.instrumentation.tracing.Span span = tracer.spanBuilder("clientCall", SpanKind.CLIENT, null)
-                .startSpan();
+        public Response<?> clientCall(RequestOptions options) {
+            if (!clientInstrumentation.shouldInstrument(options)) {
+                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
+            }
 
-            if (options == null) {
+            if (options == null || options == RequestOptions.none()) {
                 options = new RequestOptions();
             }
 
-            options.setInstrumentationContext(span.getInstrumentationContext());
-
-            try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response = httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"));
-                response.close();
-                span.end();
+            ClientCallInstrumentation.Scope scope = clientInstrumentation.startScope(options);
+            try (scope) {
+                return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
             } catch (Throwable t) {
-                span.end(t);
-
-                if (t instanceof IOException) {
-                    throw new UncheckedIOException((IOException) t);
-                } else if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                } else {
-                    throw new RuntimeException(t);
-                }
+                scope.setError(t);
+                throw t;
             }
         }
     }
