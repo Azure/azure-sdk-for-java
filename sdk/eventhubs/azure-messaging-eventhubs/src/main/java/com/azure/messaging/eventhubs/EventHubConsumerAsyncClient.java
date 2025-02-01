@@ -15,7 +15,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentedMessageFlux;
@@ -298,10 +297,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
         return consumerGroup;
     }
 
-    boolean isV2() {
-        return connectionProcessor.isV2();
-    }
-
     /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
@@ -581,18 +576,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final MessageFluxWrapper linkMessageProcessor;
-        if (connectionProcessor.isV2()) {
-            MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven,
-                MessageFlux.NULL_RETRY_POLICY);
-            linkMessageProcessor
-                = new MessageFluxWrapper(InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation));
-        } else {
-            final AmqpReceiveLinkProcessor receiveLinkProcessor
-                = receiveLinkFlux.subscribeWith(new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId,
-                    connectionProcessor, instrumentation));
-            linkMessageProcessor = new MessageFluxWrapper(receiveLinkProcessor);
-        }
+        final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven,
+            MessageFlux.NULL_RETRY_POLICY);
+        final MessageFluxWrapper linkMessageProcessor
+            = new MessageFluxWrapper(InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,

@@ -123,6 +123,7 @@ public class EventHubConsumerClientTest {
 
         when(amqpReceiveLink.getCredits()).thenReturn(10);
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         connectionOptions
             = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
@@ -287,6 +288,7 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointStates2.flux());
         when(amqpReceiveLink2.getCredits()).thenReturn(10);
         when(amqpReceiveLink2.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(amqpReceiveLink2.closeAsync()).thenReturn(Mono.empty());
 
         // Act
         sendMessages(messageProcessor, numberOfEvents, PARTITION_ID);
