@@ -775,7 +775,7 @@ public class LocationCacheTest {
         boolean isMostPreferredLocationUnavailableForRead = isFirstReadEndpointUnavailable;
         boolean isMostPreferredLocationUnavailableForWrite = useMultipleWriteLocations ?
                 false : isFirstWriteEndpointUnavailable;
-        if (this.preferredLocations.size() > 0 || isPreferredListEmpty) {
+        if (!this.preferredLocations.isEmpty() || isPreferredListEmpty) {
             String mostPreferredReadLocationName = (isPreferredListEmpty && endpointDiscoveryEnabled) ? preferredAvailableReadRegionsOrAccountLevelReadEndpoints.get(0) :
                 this.preferredLocations.stream()
                     .filter(location -> toStream(databaseAccount.getReadableLocations())

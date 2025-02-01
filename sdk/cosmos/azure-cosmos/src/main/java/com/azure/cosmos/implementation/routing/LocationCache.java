@@ -87,7 +87,7 @@ public class LocationCache {
      * @return
      */
     public UnmodifiableList<ConsolidatedRegionalEndpoint> getReadEndpoints() {
-        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
+        if (!this.locationUnavailabilityInfoByEndpoint.isEmpty()
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
         }
@@ -102,7 +102,7 @@ public class LocationCache {
      * @return
      */
     public UnmodifiableList<ConsolidatedRegionalEndpoint> getWriteEndpoints() {
-        if (this.locationUnavailabilityInfoByEndpoint.size() > 0
+        if (!this.locationUnavailabilityInfoByEndpoint.isEmpty()
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
         }
@@ -213,7 +213,7 @@ public class LocationCache {
             // first and the second writable region in DatabaseAccount (for manual failover)
             DatabaseAccountLocationsInfo currentLocationInfo =  this.locationInfo;
 
-            if (this.enableEndpointDiscovery && currentLocationInfo.availableWriteLocations.size() > 0) {
+            if (this.enableEndpointDiscovery && !currentLocationInfo.availableWriteLocations.isEmpty()) {
                 locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
                 return currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation);
@@ -641,7 +641,7 @@ public class LocationCache {
 
                             // if defaultEndpoint equals a regional endpoint then use
                             // whatever the fallback endpoint is
-                            if (this.defaultEndpoint.equals(endpoint.v)) {
+                            if (this.defaultEndpoint.equals(endpoint.v.getGatewayLocationEndpoint())) {
                                 endpoints = new ArrayList<>();
                                 break;
                             }
