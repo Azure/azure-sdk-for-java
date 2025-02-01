@@ -363,6 +363,16 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listMetricDimensionValuesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMetricsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -2011,13 +2021,7 @@ public final class LoadTestRunClientImpl {
      * 
      * <pre>
      * {@code
-     * {
-     *     name: String (Optional)
-     *     value (Optional): [
-     *         String (Optional)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
+     * String
      * }
      * </pre>
      * 
@@ -2033,15 +2037,18 @@ public final class LoadTestRunClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
+     * @return metrics dimension values along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDimensionValuesWithResponseAsync(String testRunId, String name,
+    private Mono<PagedResponse<BinaryData>> listMetricDimensionValuesSinglePageAsync(String testRunId, String name,
         String metricname, String metricNamespace, String timespan, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listMetricDimensionValues(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                testRunId, name, metricname, metricNamespace, timespan, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(
+                context -> service.listMetricDimensionValues(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                    testRunId, name, metricname, metricNamespace, timespan, accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2058,13 +2065,7 @@ public final class LoadTestRunClientImpl {
      * 
      * <pre>
      * {@code
-     * {
-     *     name: String (Optional)
-     *     value (Optional): [
-     *         String (Optional)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
+     * String
      * }
      * </pre>
      * 
@@ -2080,13 +2081,57 @@ public final class LoadTestRunClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response}.
+     * @return metrics dimension values as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricDimensionValuesWithResponse(String testRunId, String name, String metricname,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetricDimensionValuesAsync(String testRunId, String name, String metricname,
         String metricNamespace, String timespan, RequestOptions requestOptions) {
-        return listMetricDimensionValuesWithResponseAsync(testRunId, name, metricname, metricNamespace, timespan,
-            requestOptions).block();
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(
+            () -> listMetricDimensionValuesSinglePageAsync(testRunId, name, metricname, metricNamespace, timespan,
+                requestOptions),
+            nextLink -> listMetricDimensionValuesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * String
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetricDimensionValues(String testRunId, String name, String metricname,
+        String metricNamespace, String timespan, RequestOptions requestOptions) {
+        return new PagedIterable<>(
+            listMetricDimensionValuesAsync(testRunId, name, metricname, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -3887,12 +3932,12 @@ public final class LoadTestRunClientImpl {
      * the created time range to filter test profile runs.</td></tr>
      * <tr><td>createdDateEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of the
      * created time range to filter test profile runs.</td></tr>
-     * <tr><td>testProfileRunIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profile runs
-     * to filter.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated IDs of the test profiles which should be
-     * associated with the test profile runs to fetch.</td></tr>
-     * <tr><td>statuses</td><td>String</td><td>No</td><td>Comma separated list of Statuses of the test profile runs to
-     * filter.</td></tr>
+     * <tr><td>testProfileRunIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated IDs of the test profiles
+     * which should be associated with the test profile runs to fetch. In the form of "," separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of Statuses of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3982,12 +4027,12 @@ public final class LoadTestRunClientImpl {
      * the created time range to filter test profile runs.</td></tr>
      * <tr><td>createdDateEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of the
      * created time range to filter test profile runs.</td></tr>
-     * <tr><td>testProfileRunIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profile runs
-     * to filter.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated IDs of the test profiles which should be
-     * associated with the test profile runs to fetch.</td></tr>
-     * <tr><td>statuses</td><td>String</td><td>No</td><td>Comma separated list of Statuses of the test profile runs to
-     * filter.</td></tr>
+     * <tr><td>testProfileRunIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated IDs of the test profiles
+     * which should be associated with the test profile runs to fetch. In the form of "," separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of Statuses of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4095,12 +4140,12 @@ public final class LoadTestRunClientImpl {
      * the created time range to filter test profile runs.</td></tr>
      * <tr><td>createdDateEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of the
      * created time range to filter test profile runs.</td></tr>
-     * <tr><td>testProfileRunIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profile runs
-     * to filter.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated IDs of the test profiles which should be
-     * associated with the test profile runs to fetch.</td></tr>
-     * <tr><td>statuses</td><td>String</td><td>No</td><td>Comma separated list of Statuses of the test profile runs to
-     * filter.</td></tr>
+     * <tr><td>testProfileRunIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated IDs of the test profiles
+     * which should be associated with the test profile runs to fetch. In the form of "," separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of Statuses of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4293,6 +4338,37 @@ public final class LoadTestRunClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopTestProfileRunWithResponse(String testProfileRunId, RequestOptions requestOptions) {
         return stopTestProfileRunWithResponseAsync(testProfileRunId, requestOptions).block();
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * String
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listMetricDimensionValuesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listMetricDimensionValuesNext(nextLink, this.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**

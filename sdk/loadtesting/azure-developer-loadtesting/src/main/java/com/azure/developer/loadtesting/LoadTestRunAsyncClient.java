@@ -22,7 +22,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl;
-import com.azure.developer.loadtesting.models.DimensionValueList;
 import com.azure.developer.loadtesting.models.MetricDefinitionCollection;
 import com.azure.developer.loadtesting.models.MetricNamespaceCollection;
 import com.azure.developer.loadtesting.models.TestProfileRun;
@@ -33,6 +32,8 @@ import com.azure.developer.loadtesting.models.TestRunServerMetricConfig;
 import com.azure.developer.loadtesting.models.TimeGrain;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1360,52 +1361,6 @@ public final class LoadTestRunAsyncClient {
     }
 
     /**
-     * List the dimension values for the given metric dimension name.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
-     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Optional)
-     *     value (Optional): [
-     *         String (Optional)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param name Dimension name.
-     * @param metricname Metric name.
-     * @param metricNamespace Metric namespace to query metric definitions for.
-     * @param timespan The timespan of the query. It is a string with the following format
-     * 'startDateTime_ISO/endDateTime_ISO'.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDimensionValuesWithResponse(String testRunId, String name,
-        String metricname, String metricNamespace, String timespan, RequestOptions requestOptions) {
-        return this.serviceClient.listMetricDimensionValuesWithResponseAsync(testRunId, name, metricname,
-            metricNamespace, timespan, requestOptions);
-    }
-
-    /**
      * Create and start a new test profile run.
      *
      * Create and start a new test profile run with the given test profile run Id.
@@ -1633,12 +1588,12 @@ public final class LoadTestRunAsyncClient {
      * the created time range to filter test profile runs.</td></tr>
      * <tr><td>createdDateEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of the
      * created time range to filter test profile runs.</td></tr>
-     * <tr><td>testProfileRunIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profile runs
-     * to filter.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated IDs of the test profiles which should be
-     * associated with the test profile runs to fetch.</td></tr>
-     * <tr><td>statuses</td><td>String</td><td>No</td><td>Comma separated list of Statuses of the test profile runs to
-     * filter.</td></tr>
+     * <tr><td>testProfileRunIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated IDs of the test profiles
+     * which should be associated with the test profile runs to fetch. In the form of "," separated string.</td></tr>
+     * <tr><td>statuses</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of Statuses of the test
+     * profile runs to filter. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2023,20 +1978,31 @@ public final class LoadTestRunAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics dimension values on successful completion of {@link Mono}.
+     * @return metrics dimension values as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DimensionValueList> listMetricDimensionValues(String testRunId, String name, String metricname,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listMetricDimensionValues(String testRunId, String name, String metricname,
         String metricNamespace, String timespan, TimeGrain interval) {
-        // Generated convenience method for listMetricDimensionValuesWithResponse
+        // Generated convenience method for listMetricDimensionValues
         RequestOptions requestOptions = new RequestOptions();
         if (interval != null) {
             requestOptions.addQueryParam("interval", interval.toString(), false);
         }
-        return listMetricDimensionValuesWithResponse(testRunId, name, metricname, metricNamespace, timespan,
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DimensionValueList.class));
+        PagedFlux<BinaryData> pagedFluxResponse
+            = listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, String>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(String.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2055,17 +2021,28 @@ public final class LoadTestRunAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics dimension values on successful completion of {@link Mono}.
+     * @return metrics dimension values as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DimensionValueList> listMetricDimensionValues(String testRunId, String name, String metricname,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listMetricDimensionValues(String testRunId, String name, String metricname,
         String metricNamespace, String timespan) {
-        // Generated convenience method for listMetricDimensionValuesWithResponse
+        // Generated convenience method for listMetricDimensionValues
         RequestOptions requestOptions = new RequestOptions();
-        return listMetricDimensionValuesWithResponse(testRunId, name, metricname, metricNamespace, timespan,
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(DimensionValueList.class));
+        PagedFlux<BinaryData> pagedFluxResponse
+            = listMetricDimensionValues(testRunId, name, metricname, metricNamespace, timespan, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, String>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(String.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -2309,81 +2286,6 @@ public final class LoadTestRunAsyncClient {
      *
      * Get all test profile runs for the given filters.
      *
-     * @param minStartDateTime Minimum Start DateTime(RFC 3339 literal format) of the test profile runs to filter on.
-     * @param maxStartDateTime Maximum Start DateTime(RFC 3339 literal format) of the test profile runs to filter on.
-     * @param minEndDateTime Minimum End DateTime(RFC 3339 literal format) of the test profile runs to filter on.
-     * @param maxEndDateTime Maximum End DateTime(RFC 3339 literal format) of the test profile runs to filter on.
-     * @param createdDateStartTime Start DateTime(RFC 3339 literal format) of the created time range to filter test
-     * profile runs.
-     * @param createdDateEndTime End DateTime(RFC 3339 literal format) of the created time range to filter test profile
-     * runs.
-     * @param testProfileRunIds Comma separated list of IDs of the test profile runs to filter.
-     * @param testProfileIds Comma separated IDs of the test profiles which should be associated with the test profile
-     * runs to fetch.
-     * @param statuses Comma separated list of Statuses of the test profile runs to filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of TestProfileRun items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TestProfileRun> listTestProfileRuns(OffsetDateTime minStartDateTime,
-        OffsetDateTime maxStartDateTime, OffsetDateTime minEndDateTime, OffsetDateTime maxEndDateTime,
-        OffsetDateTime createdDateStartTime, OffsetDateTime createdDateEndTime, String testProfileRunIds,
-        String testProfileIds, String statuses) {
-        // Generated convenience method for listTestProfileRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (minStartDateTime != null) {
-            requestOptions.addQueryParam("minStartDateTime", String.valueOf(minStartDateTime), false);
-        }
-        if (maxStartDateTime != null) {
-            requestOptions.addQueryParam("maxStartDateTime", String.valueOf(maxStartDateTime), false);
-        }
-        if (minEndDateTime != null) {
-            requestOptions.addQueryParam("minEndDateTime", String.valueOf(minEndDateTime), false);
-        }
-        if (maxEndDateTime != null) {
-            requestOptions.addQueryParam("maxEndDateTime", String.valueOf(maxEndDateTime), false);
-        }
-        if (createdDateStartTime != null) {
-            requestOptions.addQueryParam("createdDateStartTime", String.valueOf(createdDateStartTime), false);
-        }
-        if (createdDateEndTime != null) {
-            requestOptions.addQueryParam("createdDateEndTime", String.valueOf(createdDateEndTime), false);
-        }
-        if (testProfileRunIds != null) {
-            requestOptions.addQueryParam("testProfileRunIds", testProfileRunIds, false);
-        }
-        if (testProfileIds != null) {
-            requestOptions.addQueryParam("testProfileIds", testProfileIds, false);
-        }
-        if (statuses != null) {
-            requestOptions.addQueryParam("statuses", statuses, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listTestProfileRuns(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, TestProfileRun>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(TestProfileRun.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List test profile runs.
-     *
-     * Get all test profile runs for the given filters.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2433,5 +2335,132 @@ public final class LoadTestRunAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return stopTestProfileRunWithResponse(testProfileRunId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TestProfileRun.class));
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * String
+     * }
+     * </pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetricDimensionValues(String testRunId, String name, String metricname,
+        String metricNamespace, String timespan, RequestOptions requestOptions) {
+        return this.serviceClient.listMetricDimensionValuesAsync(testRunId, name, metricname, metricNamespace, timespan,
+            requestOptions);
+    }
+
+    /**
+     * List test profile runs.
+     *
+     * Get all test profile runs for the given filters.
+     *
+     * @param minStartDateTime Minimum Start DateTime(RFC 3339 literal format) of the test profile runs to filter on.
+     * @param maxStartDateTime Maximum Start DateTime(RFC 3339 literal format) of the test profile runs to filter on.
+     * @param minEndDateTime Minimum End DateTime(RFC 3339 literal format) of the test profile runs to filter on.
+     * @param maxEndDateTime Maximum End DateTime(RFC 3339 literal format) of the test profile runs to filter on.
+     * @param createdDateStartTime Start DateTime(RFC 3339 literal format) of the created time range to filter test
+     * profile runs.
+     * @param createdDateEndTime End DateTime(RFC 3339 literal format) of the created time range to filter test profile
+     * runs.
+     * @param testProfileRunIds Comma separated list of IDs of the test profile runs to filter.
+     * @param testProfileIds Comma separated IDs of the test profiles which should be associated with the test profile
+     * runs to fetch.
+     * @param statuses Comma separated list of Statuses of the test profile runs to filter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of TestProfileRun items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TestProfileRun> listTestProfileRuns(OffsetDateTime minStartDateTime,
+        OffsetDateTime maxStartDateTime, OffsetDateTime minEndDateTime, OffsetDateTime maxEndDateTime,
+        OffsetDateTime createdDateStartTime, OffsetDateTime createdDateEndTime, List<String> testProfileRunIds,
+        List<String> testProfileIds, List<String> statuses) {
+        // Generated convenience method for listTestProfileRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (minStartDateTime != null) {
+            requestOptions.addQueryParam("minStartDateTime", String.valueOf(minStartDateTime), false);
+        }
+        if (maxStartDateTime != null) {
+            requestOptions.addQueryParam("maxStartDateTime", String.valueOf(maxStartDateTime), false);
+        }
+        if (minEndDateTime != null) {
+            requestOptions.addQueryParam("minEndDateTime", String.valueOf(minEndDateTime), false);
+        }
+        if (maxEndDateTime != null) {
+            requestOptions.addQueryParam("maxEndDateTime", String.valueOf(maxEndDateTime), false);
+        }
+        if (createdDateStartTime != null) {
+            requestOptions.addQueryParam("createdDateStartTime", String.valueOf(createdDateStartTime), false);
+        }
+        if (createdDateEndTime != null) {
+            requestOptions.addQueryParam("createdDateEndTime", String.valueOf(createdDateEndTime), false);
+        }
+        if (testProfileRunIds != null) {
+            requestOptions.addQueryParam("testProfileRunIds",
+                testProfileRunIds.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (testProfileIds != null) {
+            requestOptions.addQueryParam("testProfileIds",
+                testProfileIds.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (statuses != null) {
+            requestOptions.addQueryParam("statuses",
+                statuses.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listTestProfileRuns(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, TestProfileRun>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(TestProfileRun.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }

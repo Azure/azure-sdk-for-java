@@ -26,6 +26,7 @@ import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestServerMetricConfig;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous LoadTestAdministrationClient type.
@@ -1122,10 +1123,10 @@ public final class LoadTestAdministrationClient {
      * of the last updated time range to filter test profiles.</td></tr>
      * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of
      * the last updated time range to filter test profiles.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profiles to
-     * filter.</td></tr>
-     * <tr><td>testIds</td><td>String</td><td>No</td><td>Comma separated list IDs of the tests which should be
-     * associated with the test profiles to fetch.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profiles to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list IDs of the tests which should
+     * be associated with the test profiles to fetch. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1582,6 +1583,25 @@ public final class LoadTestAdministrationClient {
      *
      * Get all test profiles for the given filters.
      *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of TestProfile items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TestProfile> listTestProfiles() {
+        // Generated convenience method for listTestProfiles
+        return new PagedIterable<>(client.listTestProfiles());
+    }
+
+    /**
+     * List test profiles.
+     *
+     * Get all test profiles for the given filters.
+     *
      * @param lastModifiedStartTime Start DateTime(RFC 3339 literal format) of the last updated time range to filter
      * test profiles.
      * @param lastModifiedEndTime End DateTime(RFC 3339 literal format) of the last updated time range to filter test
@@ -1599,28 +1619,9 @@ public final class LoadTestAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TestProfile> listTestProfiles(OffsetDateTime lastModifiedStartTime,
-        OffsetDateTime lastModifiedEndTime, String testProfileIds, String testIds) {
+        OffsetDateTime lastModifiedEndTime, List<String> testProfileIds, List<String> testIds) {
         // Generated convenience method for listTestProfiles
         return new PagedIterable<>(
             client.listTestProfiles(lastModifiedStartTime, lastModifiedEndTime, testProfileIds, testIds));
-    }
-
-    /**
-     * List test profiles.
-     *
-     * Get all test profiles for the given filters.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of TestProfile items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TestProfile> listTestProfiles() {
-        // Generated convenience method for listTestProfiles
-        return new PagedIterable<>(client.listTestProfiles());
     }
 }

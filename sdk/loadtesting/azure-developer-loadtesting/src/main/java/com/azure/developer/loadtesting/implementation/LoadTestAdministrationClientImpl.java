@@ -2630,10 +2630,10 @@ public final class LoadTestAdministrationClientImpl {
      * of the last updated time range to filter test profiles.</td></tr>
      * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of
      * the last updated time range to filter test profiles.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profiles to
-     * filter.</td></tr>
-     * <tr><td>testIds</td><td>String</td><td>No</td><td>Comma separated list IDs of the tests which should be
-     * associated with the test profiles to fetch.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profiles to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list IDs of the tests which should
+     * be associated with the test profiles to fetch. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2689,10 +2689,10 @@ public final class LoadTestAdministrationClientImpl {
      * of the last updated time range to filter test profiles.</td></tr>
      * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of
      * the last updated time range to filter test profiles.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profiles to
-     * filter.</td></tr>
-     * <tr><td>testIds</td><td>String</td><td>No</td><td>Comma separated list IDs of the tests which should be
-     * associated with the test profiles to fetch.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profiles to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list IDs of the tests which should
+     * be associated with the test profiles to fetch. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2766,10 +2766,10 @@ public final class LoadTestAdministrationClientImpl {
      * of the last updated time range to filter test profiles.</td></tr>
      * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of
      * the last updated time range to filter test profiles.</td></tr>
-     * <tr><td>testProfileIds</td><td>String</td><td>No</td><td>Comma separated list of IDs of the test profiles to
-     * filter.</td></tr>
-     * <tr><td>testIds</td><td>String</td><td>No</td><td>Comma separated list IDs of the tests which should be
-     * associated with the test profiles to fetch.</td></tr>
+     * <tr><td>testProfileIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of IDs of the test
+     * profiles to filter. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list IDs of the tests which should
+     * be associated with the test profiles to fetch. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
