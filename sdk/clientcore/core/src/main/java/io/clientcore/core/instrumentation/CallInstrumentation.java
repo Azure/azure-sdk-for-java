@@ -29,7 +29,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SE
  * <p><strong>This method is intended to be used by client libraries. Application developers
  * should use OpenTelemetry API directly</strong></p>
  */
-public class ClientCallInstrumentation {
+public class CallInstrumentation {
 
     private static final List<Double> DURATION_BOUNDARIES_ADVICE
         = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
@@ -41,7 +41,7 @@ public class ClientCallInstrumentation {
     private final InstrumentationAttributes successAttributes;
 
     /**
-     * Creates a new instance of {@link ClientCallInstrumentation}.
+     * Creates a new instance of {@link CallInstrumentation}.
      *
      * @param clientName the name of the client. The name is used as a prefix for the metric name following {@code {client-name.}client.operation.duration} format.
      * It should be short, unique, and descriptive.
@@ -51,7 +51,7 @@ public class ClientCallInstrumentation {
      * @param serviceEndpoint the service endpoint URI. The host and port are used as values for the {@code server.address} and {@code server.port} attributes.
      * @param instrumentation the instrumentation instance.
      */
-    public ClientCallInstrumentation(String clientName, String operationName, URI serviceEndpoint,
+    public CallInstrumentation(String clientName, String operationName, URI serviceEndpoint,
         Instrumentation instrumentation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(serviceEndpoint, "'serviceEndpoint' cannot be null");
