@@ -1110,7 +1110,7 @@ public class EventHubClientBuilder
             final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
             final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
             return new EventHubReactorAmqpConnection(connectionId, connectionOptions, getEventHubName.get(), provider,
-                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, true, true);
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer);
         };
         final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         final String entityPath = getEventHubName.get();

@@ -185,7 +185,7 @@ public class EventHubReactorConnectionTest {
 
         final EventHubReactorAmqpConnection connection
             = new EventHubReactorAmqpConnection(CONNECTION_ID, connectionOptions, "event-hub-name", reactorProvider,
-                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, false);
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
