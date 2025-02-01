@@ -491,10 +491,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
-            this.isThinClientEnabled = this.configs.isThinClientEnabled();
-            // TODO: we have a default thinclient endpoint in configs, but it is not set to anything - need
-            //  to figure out what default will be
-            this.serviceEndpoint = this.isThinClientEnabled ? this.configs.getThinclientEndpoint() : serviceEndpoint;
+            this.isThinClientEnabled = Configs.isThinClientEnabled();
+            this.serviceEndpoint = serviceEndpoint;
             this.credential = credential;
             this.tokenCredential = tokenCredential;
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;

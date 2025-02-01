@@ -686,50 +686,54 @@ public class LocationCache {
         Map<ConsolidatedRegionalEndpoint, String> regionByEndpoint,
         List<String> parsedLocations) {
 
-        for (DatabaseAccountLocation gatewayDbAccountLocation : gatewayDbAccountLocations) {
-            if (!Strings.isNullOrEmpty(gatewayDbAccountLocation.getName())) {
-                try {
+        if (gatewayDbAccountLocations != null) {
+            for (DatabaseAccountLocation gatewayDbAccountLocation : gatewayDbAccountLocations) {
+                if (!Strings.isNullOrEmpty(gatewayDbAccountLocation.getName())) {
+                    try {
 
-                    String location = gatewayDbAccountLocation.getName().toLowerCase(Locale.ROOT);
-                    URI endpoint = new URI(gatewayDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
+                        String location = gatewayDbAccountLocation.getName().toLowerCase(Locale.ROOT);
+                        URI endpoint = new URI(gatewayDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
-                    ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = new ConsolidatedRegionalEndpoint(endpoint, null);
+                        ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = new ConsolidatedRegionalEndpoint(endpoint, null);
 
-                    if (!endpointsByLocation.containsKey(location)) {
-                        endpointsByLocation.put(location, consolidatedRegionalEndpoint);
+                        if (!endpointsByLocation.containsKey(location)) {
+                            endpointsByLocation.put(location, consolidatedRegionalEndpoint);
+                        }
+
+                        if (!regionByEndpoint.containsKey(consolidatedRegionalEndpoint)) {
+                            regionByEndpoint.put(consolidatedRegionalEndpoint, location);
+                        }
+
+                        parsedLocations.add(gatewayDbAccountLocation.getName());
+                    } catch (Exception e) {
+                        logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]",
+                            gatewayDbAccountLocation.getName(),
+                            gatewayDbAccountLocation.getEndpoint());
                     }
-
-                    if (!regionByEndpoint.containsKey(consolidatedRegionalEndpoint)) {
-                        regionByEndpoint.put(consolidatedRegionalEndpoint, location);
-                    }
-
-                    parsedLocations.add(gatewayDbAccountLocation.getName());
-                } catch (Exception e) {
-                    logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]",
-                        gatewayDbAccountLocation.getName(),
-                        gatewayDbAccountLocation.getEndpoint());
                 }
             }
         }
 
-        for (DatabaseAccountLocation thinClientDbAccountLocation: thinClientDbAccountLocations) {
-            if (!Strings.isNullOrEmpty(thinClientDbAccountLocation.getName())) {
-                try {
-                    String location = thinClientDbAccountLocation.getName().toLowerCase(Locale.ROOT);
-                    URI endpoint = new URI(thinClientDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
+        if (thinClientDbAccountLocations != null) {
+            for (DatabaseAccountLocation thinClientDbAccountLocation: thinClientDbAccountLocations) {
+                if (!Strings.isNullOrEmpty(thinClientDbAccountLocation.getName())) {
+                    try {
+                        String location = thinClientDbAccountLocation.getName().toLowerCase(Locale.ROOT);
+                        URI endpoint = new URI(thinClientDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
-                    ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = endpointsByLocation.get(location);
+                        ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = endpointsByLocation.get(location);
 
-                    if (consolidatedRegionalEndpoint == null) {
-                        throw new IllegalStateException(String.format("Gateway location endpoint doesn't exist while thin client location endpoint exists for location %s", location));
+                        if (consolidatedRegionalEndpoint == null) {
+                            throw new IllegalStateException(String.format("Gateway location endpoint doesn't exist while thin client location endpoint exists for location %s", location));
+                        }
+
+                        consolidatedRegionalEndpoint.thinClientLocationEndpoint = endpoint;
+
+                    } catch (Exception e) {
+                        logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]",
+                            thinClientDbAccountLocation.getName(),
+                            thinClientDbAccountLocation.getEndpoint());
                     }
-
-                    consolidatedRegionalEndpoint.thinClientLocationEndpoint = endpoint;
-
-                } catch (Exception e) {
-                    logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as its location name is either empty or endpoint is malformed [{}]",
-                        thinClientDbAccountLocation.getName(),
-                        thinClientDbAccountLocation.getEndpoint());
                 }
             }
         }

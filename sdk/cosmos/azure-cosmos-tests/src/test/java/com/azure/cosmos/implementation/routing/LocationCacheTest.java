@@ -480,9 +480,9 @@ public class LocationCacheTest {
     @Test(groups = "long")
     public void validateWriteEndpointOrderWithClientSideDisableMultipleWriteLocation()  throws Exception {
         this.initialize(false, true, false);
-        assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(LocationCacheTest.Location1Endpoint);
-        assertThat(this.cache.getWriteEndpoints().get(1)).isEqualTo(LocationCacheTest.Location2Endpoint);
-        assertThat(this.cache.getWriteEndpoints().get(2)).isEqualTo(LocationCacheTest.Location3Endpoint);
+        assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(new LocationCache.ConsolidatedRegionalEndpoint(LocationCacheTest.Location1Endpoint, null));
+        assertThat(this.cache.getWriteEndpoints().get(1)).isEqualTo(new LocationCache.ConsolidatedRegionalEndpoint(LocationCacheTest.Location2Endpoint, null));
+        assertThat(this.cache.getWriteEndpoints().get(2)).isEqualTo(new LocationCache.ConsolidatedRegionalEndpoint(LocationCacheTest.Location3Endpoint, null));
     }
 
     @Test(groups = "unit", dataProvider = "excludedRegionsTestConfigs")
@@ -900,17 +900,17 @@ public class LocationCacheTest {
         // ALL write requests flip-flop between current write and alternate write endpoint
         UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> writeEndpoints = this.cache.getWriteEndpoints();
 
-        assertThat(firstAvailableWriteEndpoint).isEqualTo(writeEndpoints.get(0));
-        assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
-        assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(firstAvailableWriteEndpoint, null)).isEqualTo(writeEndpoints.get(0));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(secondAvailableWriteEndpoint, null)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(firstAvailableWriteEndpoint, null)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
 
         // Writes to other resource types should be directed to first/second write getEndpoint
-        assertThat(firstWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
-        assertThat(secondWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(firstWriteEnpoint, null)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(secondWriteEnpoint, null)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
 
         // Reads should be directed to available read endpoints regardless of resource type
-        assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(true));
-        assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(false));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(firstAvailableReadEndpoint, null)).isEqualTo(this.resolveEndpointForReadRequest(true));
+        assertThat(new LocationCache.ConsolidatedRegionalEndpoint(firstAvailableReadEndpoint, null)).isEqualTo(this.resolveEndpointForReadRequest(false));
     }
 
     private LocationCache.ConsolidatedRegionalEndpoint resolveEndpointForReadRequest(boolean masterResourceType) {
