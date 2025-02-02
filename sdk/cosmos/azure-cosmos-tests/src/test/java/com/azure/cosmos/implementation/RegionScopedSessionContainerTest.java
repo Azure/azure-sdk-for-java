@@ -1774,6 +1774,7 @@ public class RegionScopedSessionContainerTest {
             resourceType);
 
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
+        request.requestContext.consolidatedRegionalEndpointToRoute = new LocationCache.ConsolidatedRegionalEndpoint(locationEndpointToRoute, null);
 
         return request;
     }

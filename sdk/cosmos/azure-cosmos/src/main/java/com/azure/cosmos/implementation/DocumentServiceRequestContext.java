@@ -146,6 +146,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
         context.locationEndpointToRoute = this.locationEndpointToRoute;
+        context.consolidatedRegionalEndpointToRoute = this.consolidatedRegionalEndpointToRoute;
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
