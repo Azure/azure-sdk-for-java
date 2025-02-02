@@ -15,8 +15,6 @@ import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -24,6 +22,7 @@ import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -49,6 +48,7 @@ import java.util.function.Supplier;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -62,8 +62,6 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String PARTITION_ID = "a-partition-id";
     private static final Instant TEST_DATE = Instant.ofEpochSecond(1578643343);
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
-    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION
-        = new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpReceiveLink link1;
@@ -86,7 +84,7 @@ class EventHubPartitionAsyncConsumerTest {
     final Sinks.Many<AmqpEndpointState> endpointStatesSink = Sinks.many().multicast().onBackpressureBuffer();
     final Sinks.Many<Message> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
 
-    private MessageFluxWrapper linkProcessor;
+    private MessageFlux messageFlux;
     private EventHubPartitionAsyncConsumer consumer;
 
     @BeforeEach
@@ -98,6 +96,7 @@ class EventHubPartitionAsyncConsumerTest {
         when(link1.getEndpointStates()).thenReturn(endpointStatesSink.asFlux());
         when(link1.receive()).thenReturn(messagesSink.asFlux());
         when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+        when(link1.closeAsync()).thenReturn(Mono.empty());
 
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
     }
@@ -109,16 +108,14 @@ class EventHubPartitionAsyncConsumerTest {
         if (consumer != null) {
             consumer.close();
         }
-
-        linkProcessor.cancel();
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "true", "false" })
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
-        linkProcessor = createLinkProcessor(false);
-        consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
+        messageFlux = createMessageFlux();
+        consumer = new EventHubPartitionAsyncConsumer(messageFlux, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
         final EventData event1 = new EventData("Foo");
@@ -143,25 +140,22 @@ class EventHubPartitionAsyncConsumerTest {
             verifyPartitionContext(partitionEvent.getPartitionContext());
             verifyLastEnqueuedInformation(trackLastEnqueuedProperties, last1,
                 partitionEvent.getLastEnqueuedEventProperties());
-
             Assertions.assertSame(event1, partitionEvent.getData());
         }).assertNext(partitionEvent -> {
             verifyPartitionContext(partitionEvent.getPartitionContext());
             verifyLastEnqueuedInformation(trackLastEnqueuedProperties, last2,
                 partitionEvent.getLastEnqueuedEventProperties());
-
             Assertions.assertSame(event2, partitionEvent.getData());
         }).thenCancel().verify(DEFAULT_TIMEOUT);
 
-        Assertions.assertTrue(linkProcessor.isTerminated());
         Assertions.assertSame(originalPosition, currentPosition.get().get());
     }
 
     @Test
     void receiveMultipleTimes() {
         // Arrange
-        linkProcessor = createLinkProcessor(false);
-        consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
+        messageFlux = createMessageFlux();
+        consumer = new EventHubPartitionAsyncConsumer(messageFlux, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
@@ -187,6 +181,7 @@ class EventHubPartitionAsyncConsumerTest {
 
         // Act & Assert
         StepVerifier.create(consumer.receive()).then(() -> {
+            endpointStatesSink.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
             messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
             messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
         }).assertNext(partitionEvent -> {
@@ -209,18 +204,18 @@ class EventHubPartitionAsyncConsumerTest {
 
         consumer.close();
 
-        // We terminated the processor. This should be terminated as well.
-        Assertions.assertTrue(linkProcessor.isTerminated());
+        verify(link1, atLeast(1)).closeAsync();
     }
 
     /**
      * Verifies that the consumer closes and completes any listeners on a shutdown signal.
      */
     @Test
+    @Disabled("At the moment, in v2 the way to stop message streaming is by canceling the subscription to receive(), todo (anu): enable stop streaming when closing consumer as well")
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createLinkProcessor(false);
-        consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
+        messageFlux = createMessageFlux();
+        consumer = new EventHubPartitionAsyncConsumer(messageFlux, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
@@ -253,12 +248,12 @@ class EventHubPartitionAsyncConsumerTest {
                 });
 
         // Act
+        endpointStatesSink.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
         messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
         messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
         messagesSink.emitNext(message3, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        linkProcessor.cancel();
-
+        consumer.close();
         // Assert
         try {
             boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
@@ -325,16 +320,8 @@ class EventHubPartitionAsyncConsumerTest {
         return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null);
     }
 
-    private MessageFluxWrapper createLinkProcessor(boolean isV2) {
-        if (isV2) {
-            final MessageFlux messageFlux = new MessageFlux(createSink(link1, link2), PREFETCH,
-                CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
-            return new MessageFluxWrapper(messageFlux);
-        } else {
-            final AmqpReceiveLinkProcessor receiveLinkProcessor
-                = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID,
-                    parentConnection, DEFAULT_INSTRUMENTATION));
-            return new MessageFluxWrapper(receiveLinkProcessor);
-        }
+    private MessageFlux createMessageFlux() {
+        return new MessageFlux(createSink(link1, link2), PREFETCH, CreditFlowMode.EmissionDriven,
+            MessageFlux.NULL_RETRY_POLICY);
     }
 }

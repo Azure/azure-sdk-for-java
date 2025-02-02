@@ -319,6 +319,7 @@ class EventHubConsumerAsyncClientTest {
                 .create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
                 .then(() -> receiveLink0.emitMessages(numberOfEvents))
                 .expectNextCount(numberOfEvents)
+                .then(receiveLink0::setEndpointCompleted)
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
             // ^ Here the un-subscription will cause receiveLink0 to be closed. The next receive() below will
@@ -328,6 +329,7 @@ class EventHubConsumerAsyncClientTest {
                 .create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
                 .then(() -> receiveLink1.emitMessages(numberOfEvents))
                 .expectNextCount(numberOfEvents)
+                .then(receiveLink1::setEndpointCompleted)
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
