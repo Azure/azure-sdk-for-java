@@ -17,69 +17,18 @@ import java.util.List;
  */
 @Immutable
 public final class MapsGeofenceExitedEventData extends MapsGeofenceEventProperties {
-    /*
-     * True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the
-     * Azure Maps event subscriber.
-     */
-    @Generated
-    private Boolean isEventPublished;
-
-    /*
-     * Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
-     */
-    @Generated
-    private List<String> invalidPeriodGeofenceGeometryId;
-
-    /*
-     * Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
-     */
-    @Generated
-    private List<String> expiredGeofenceGeometryId;
-
     /**
      * Creates an instance of MapsGeofenceExitedEventData class.
      * 
+     * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
      * @param geometries the geometries value to set.
+     * @param invalidPeriodGeofenceGeometryId the invalidPeriodGeofenceGeometryId value to set.
+     * @param isEventPublished the isEventPublished value to set.
      */
     @Generated
-    private MapsGeofenceExitedEventData(List<MapsGeofenceGeometry> geometries) {
-        super(geometries);
-    }
-
-    /**
-     * Get the isEventPublished property: True if at least one event is published to the Azure Maps event subscriber,
-     * false if no event is published to the Azure Maps event subscriber.
-     * 
-     * @return the isEventPublished value.
-     */
-    @Generated
-    @Override
-    public Boolean isEventPublished() {
-        return this.isEventPublished;
-    }
-
-    /**
-     * Get the invalidPeriodGeofenceGeometryId property: Lists of the geometry ID of the geofence which is in invalid
-     * period relative to the user time in the request.
-     * 
-     * @return the invalidPeriodGeofenceGeometryId value.
-     */
-    @Generated
-    @Override
-    public List<String> getInvalidPeriodGeofenceGeometryId() {
-        return this.invalidPeriodGeofenceGeometryId;
-    }
-
-    /**
-     * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
-     * the user time in the request.
-     * 
-     * @return the expiredGeofenceGeometryId value.
-     */
-    @Generated
-    @Override
-    public List<String> getExpiredGeofenceGeometryId() {
-        return this.expiredGeofenceGeometryId;
+    private MapsGeofenceExitedEventData(List<String> expiredGeofenceGeometryId, List<MapsGeofenceGeometry> geometries,
+        List<String> invalidPeriodGeofenceGeometryId, boolean isEventPublished) {
+        super(expiredGeofenceGeometryId, geometries, invalidPeriodGeofenceGeometryId, isEventPublished);
     }
 
     /**
@@ -89,9 +38,9 @@ public final class MapsGeofenceExitedEventData extends MapsGeofenceEventProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("geometries", getGeometries(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("expiredGeofenceGeometryId", getExpiredGeofenceGeometryId(),
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("geometries", getGeometries(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("invalidPeriodGeofenceGeometryId", getInvalidPeriodGeofenceGeometryId(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("isEventPublished", isEventPublished());
@@ -110,33 +59,28 @@ public final class MapsGeofenceExitedEventData extends MapsGeofenceEventProperti
     @Generated
     public static MapsGeofenceExitedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<MapsGeofenceGeometry> geometries = null;
             List<String> expiredGeofenceGeometryId = null;
+            List<MapsGeofenceGeometry> geometries = null;
             List<String> invalidPeriodGeofenceGeometryId = null;
-            Boolean isEventPublished = null;
+            boolean isEventPublished = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("geometries".equals(fieldName)) {
-                    geometries = reader.readArray(reader1 -> MapsGeofenceGeometry.fromJson(reader1));
-                } else if ("expiredGeofenceGeometryId".equals(fieldName)) {
+                if ("expiredGeofenceGeometryId".equals(fieldName)) {
                     expiredGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
+                } else if ("geometries".equals(fieldName)) {
+                    geometries = reader.readArray(reader1 -> MapsGeofenceGeometry.fromJson(reader1));
                 } else if ("invalidPeriodGeofenceGeometryId".equals(fieldName)) {
                     invalidPeriodGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
                 } else if ("isEventPublished".equals(fieldName)) {
-                    isEventPublished = reader.getNullable(JsonReader::getBoolean);
+                    isEventPublished = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MapsGeofenceExitedEventData deserializedMapsGeofenceExitedEventData
-                = new MapsGeofenceExitedEventData(geometries);
-            deserializedMapsGeofenceExitedEventData.expiredGeofenceGeometryId = expiredGeofenceGeometryId;
-            deserializedMapsGeofenceExitedEventData.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
-            deserializedMapsGeofenceExitedEventData.isEventPublished = isEventPublished;
-
-            return deserializedMapsGeofenceExitedEventData;
+            return new MapsGeofenceExitedEventData(expiredGeofenceGeometryId, geometries,
+                invalidPeriodGeofenceGeometryId, isEventPublished);
         });
     }
 }

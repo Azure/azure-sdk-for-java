@@ -23,7 +23,7 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * Lists of the geometry ID of the geofence which is expired relative to the user time in the request.
      */
     @Generated
-    private List<String> expiredGeofenceGeometryId;
+    private final List<String> expiredGeofenceGeometryId;
 
     /*
      * Lists the fence geometries that either fully contain the coordinate position or have an overlap with the
@@ -36,23 +36,30 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
      * Lists of the geometry ID of the geofence which is in invalid period relative to the user time in the request.
      */
     @Generated
-    private List<String> invalidPeriodGeofenceGeometryId;
+    private final List<String> invalidPeriodGeofenceGeometryId;
 
     /*
      * True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the
      * Azure Maps event subscriber.
      */
     @Generated
-    private Boolean isEventPublished;
+    private final boolean isEventPublished;
 
     /**
      * Creates an instance of MapsGeofenceEventProperties class.
      * 
+     * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
      * @param geometries the geometries value to set.
+     * @param invalidPeriodGeofenceGeometryId the invalidPeriodGeofenceGeometryId value to set.
+     * @param isEventPublished the isEventPublished value to set.
      */
     @Generated
-    protected MapsGeofenceEventProperties(List<MapsGeofenceGeometry> geometries) {
+    protected MapsGeofenceEventProperties(List<String> expiredGeofenceGeometryId, List<MapsGeofenceGeometry> geometries,
+        List<String> invalidPeriodGeofenceGeometryId, boolean isEventPublished) {
+        this.expiredGeofenceGeometryId = expiredGeofenceGeometryId;
         this.geometries = geometries;
+        this.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
+        this.isEventPublished = isEventPublished;
     }
 
     /**
@@ -64,19 +71,6 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     @Generated
     public List<String> getExpiredGeofenceGeometryId() {
         return this.expiredGeofenceGeometryId;
-    }
-
-    /**
-     * Set the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
-     * the user time in the request.
-     * 
-     * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
-     * @return the MapsGeofenceEventProperties object itself.
-     */
-    @Generated
-    MapsGeofenceEventProperties setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {
-        this.expiredGeofenceGeometryId = expiredGeofenceGeometryId;
-        return this;
     }
 
     /**
@@ -102,40 +96,14 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     }
 
     /**
-     * Set the invalidPeriodGeofenceGeometryId property: Lists of the geometry ID of the geofence which is in invalid
-     * period relative to the user time in the request.
-     * 
-     * @param invalidPeriodGeofenceGeometryId the invalidPeriodGeofenceGeometryId value to set.
-     * @return the MapsGeofenceEventProperties object itself.
-     */
-    @Generated
-    MapsGeofenceEventProperties setInvalidPeriodGeofenceGeometryId(List<String> invalidPeriodGeofenceGeometryId) {
-        this.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
-        return this;
-    }
-
-    /**
      * Get the isEventPublished property: True if at least one event is published to the Azure Maps event subscriber,
      * false if no event is published to the Azure Maps event subscriber.
      * 
      * @return the isEventPublished value.
      */
     @Generated
-    public Boolean isEventPublished() {
+    public boolean isEventPublished() {
         return this.isEventPublished;
-    }
-
-    /**
-     * Set the isEventPublished property: True if at least one event is published to the Azure Maps event subscriber,
-     * false if no event is published to the Azure Maps event subscriber.
-     * 
-     * @param isEventPublished the isEventPublished value to set.
-     * @return the MapsGeofenceEventProperties object itself.
-     */
-    @Generated
-    MapsGeofenceEventProperties setIsEventPublished(Boolean isEventPublished) {
-        this.isEventPublished = isEventPublished;
-        return this;
     }
 
     /**
@@ -145,9 +113,9 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("geometries", this.geometries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("expiredGeofenceGeometryId", this.expiredGeofenceGeometryId,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("geometries", this.geometries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("invalidPeriodGeofenceGeometryId", this.invalidPeriodGeofenceGeometryId,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("isEventPublished", this.isEventPublished);
@@ -166,33 +134,28 @@ public class MapsGeofenceEventProperties implements JsonSerializable<MapsGeofenc
     @Generated
     public static MapsGeofenceEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<MapsGeofenceGeometry> geometries = null;
             List<String> expiredGeofenceGeometryId = null;
+            List<MapsGeofenceGeometry> geometries = null;
             List<String> invalidPeriodGeofenceGeometryId = null;
-            Boolean isEventPublished = null;
+            boolean isEventPublished = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("geometries".equals(fieldName)) {
-                    geometries = reader.readArray(reader1 -> MapsGeofenceGeometry.fromJson(reader1));
-                } else if ("expiredGeofenceGeometryId".equals(fieldName)) {
+                if ("expiredGeofenceGeometryId".equals(fieldName)) {
                     expiredGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
+                } else if ("geometries".equals(fieldName)) {
+                    geometries = reader.readArray(reader1 -> MapsGeofenceGeometry.fromJson(reader1));
                 } else if ("invalidPeriodGeofenceGeometryId".equals(fieldName)) {
                     invalidPeriodGeofenceGeometryId = reader.readArray(reader1 -> reader1.getString());
                 } else if ("isEventPublished".equals(fieldName)) {
-                    isEventPublished = reader.getNullable(JsonReader::getBoolean);
+                    isEventPublished = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
-            MapsGeofenceEventProperties deserializedMapsGeofenceEventProperties
-                = new MapsGeofenceEventProperties(geometries);
-            deserializedMapsGeofenceEventProperties.expiredGeofenceGeometryId = expiredGeofenceGeometryId;
-            deserializedMapsGeofenceEventProperties.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
-            deserializedMapsGeofenceEventProperties.isEventPublished = isEventPublished;
-
-            return deserializedMapsGeofenceEventProperties;
+            return new MapsGeofenceEventProperties(expiredGeofenceGeometryId, geometries,
+                invalidPeriodGeofenceGeometryId, isEventPublished);
         });
     }
 }

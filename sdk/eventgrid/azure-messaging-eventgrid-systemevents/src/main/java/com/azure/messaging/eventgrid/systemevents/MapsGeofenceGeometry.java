@@ -21,7 +21,7 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * ID of the device.
      */
     @Generated
-    private String deviceId;
+    private final String deviceId;
 
     /*
      * Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of
@@ -32,25 +32,25 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * the geofence. A value of -999 means that there is great confidence the coordinate is well within the geofence.
      */
     @Generated
-    private Double distance;
+    private final double distance;
 
     /*
      * The unique ID for the geofence geometry.
      */
     @Generated
-    private String geometryId;
+    private final String geometryId;
 
     /*
      * Latitude of the nearest point of the geometry.
      */
     @Generated
-    private Double nearestLat;
+    private final double nearestLat;
 
     /*
      * Longitude of the nearest point of the geometry.
      */
     @Generated
-    private Double nearestLon;
+    private final double nearestLon;
 
     /*
      * The unique id returned from user upload service when uploading a geofence. Will not be included in geofencing
@@ -61,9 +61,21 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
 
     /**
      * Creates an instance of MapsGeofenceGeometry class.
+     * 
+     * @param deviceId the deviceId value to set.
+     * @param distance the distance value to set.
+     * @param geometryId the geometryId value to set.
+     * @param nearestLat the nearestLat value to set.
+     * @param nearestLon the nearestLon value to set.
      */
     @Generated
-    private MapsGeofenceGeometry() {
+    private MapsGeofenceGeometry(String deviceId, double distance, String geometryId, double nearestLat,
+        double nearestLon) {
+        this.deviceId = deviceId;
+        this.distance = distance;
+        this.geometryId = geometryId;
+        this.nearestLat = nearestLat;
+        this.nearestLon = nearestLon;
     }
 
     /**
@@ -88,7 +100,7 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @return the distance value.
      */
     @Generated
-    public Double getDistance() {
+    public double getDistance() {
         return this.distance;
     }
 
@@ -108,7 +120,7 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @return the nearestLat value.
      */
     @Generated
-    public Double getNearestLat() {
+    public double getNearestLat() {
         return this.nearestLat;
     }
 
@@ -118,7 +130,7 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @return the nearestLon value.
      */
     @Generated
-    public Double getNearestLon() {
+    public double getNearestLon() {
         return this.nearestLon;
     }
 
@@ -141,10 +153,10 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("deviceId", this.deviceId);
-        jsonWriter.writeNumberField("distance", this.distance);
+        jsonWriter.writeDoubleField("distance", this.distance);
         jsonWriter.writeStringField("geometryId", this.geometryId);
-        jsonWriter.writeNumberField("nearestLat", this.nearestLat);
-        jsonWriter.writeNumberField("nearestLon", this.nearestLon);
+        jsonWriter.writeDoubleField("nearestLat", this.nearestLat);
+        jsonWriter.writeDoubleField("nearestLon", this.nearestLon);
         jsonWriter.writeStringField("udId", this.udId);
         return jsonWriter.writeEndObject();
     }
@@ -155,32 +167,41 @@ public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofence
      * @param jsonReader The JsonReader being read.
      * @return An instance of MapsGeofenceGeometry if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MapsGeofenceGeometry.
      */
     @Generated
     public static MapsGeofenceGeometry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MapsGeofenceGeometry deserializedMapsGeofenceGeometry = new MapsGeofenceGeometry();
+            String deviceId = null;
+            double distance = 0.0;
+            String geometryId = null;
+            double nearestLat = 0.0;
+            double nearestLon = 0.0;
+            String udId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("deviceId".equals(fieldName)) {
-                    deserializedMapsGeofenceGeometry.deviceId = reader.getString();
+                    deviceId = reader.getString();
                 } else if ("distance".equals(fieldName)) {
-                    deserializedMapsGeofenceGeometry.distance = reader.getNullable(JsonReader::getDouble);
+                    distance = reader.getDouble();
                 } else if ("geometryId".equals(fieldName)) {
-                    deserializedMapsGeofenceGeometry.geometryId = reader.getString();
+                    geometryId = reader.getString();
                 } else if ("nearestLat".equals(fieldName)) {
-                    deserializedMapsGeofenceGeometry.nearestLat = reader.getNullable(JsonReader::getDouble);
+                    nearestLat = reader.getDouble();
                 } else if ("nearestLon".equals(fieldName)) {
-                    deserializedMapsGeofenceGeometry.nearestLon = reader.getNullable(JsonReader::getDouble);
+                    nearestLon = reader.getDouble();
                 } else if ("udId".equals(fieldName)) {
-                    deserializedMapsGeofenceGeometry.udId = reader.getString();
+                    udId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            MapsGeofenceGeometry deserializedMapsGeofenceGeometry
+                = new MapsGeofenceGeometry(deviceId, distance, geometryId, nearestLat, nearestLon);
+            deserializedMapsGeofenceGeometry.udId = udId;
 
             return deserializedMapsGeofenceGeometry;
         });
