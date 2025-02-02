@@ -4,27 +4,9 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpInstrumentationOptions;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
-import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
-import io.clientcore.core.instrumentation.tracing.SpanKind;
-import io.clientcore.core.instrumentation.tracing.Tracer;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
-
-import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Application developers that don't have OpenTelemetry on the classpath
@@ -157,58 +139,6 @@ public class TelemetryJavaDocCodeSnippets {
         @Override
         public Span getSpan() {
             return Span.noop();
-        }
-    }
-
-    static class SampleClientBuilder {
-        private HttpInstrumentationOptions instrumentationOptions;
-        public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
-            this.instrumentationOptions = instrumentationOptions;
-            return this;
-        }
-
-        public SampleClient build() {
-            HttpPipeline pipeline = new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
-                .build();
-            return new SampleClient(instrumentationOptions, pipeline, URI.create("https://example.com"));
-        }
-    }
-
-    static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
-        private final HttpPipeline httpPipeline;
-        private final ClientCallInstrumentation downloadContentInstrumentation;
-        private final URI endpoint;
-
-        SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, URI endpoint) {
-            this.httpPipeline = httpPipeline;
-            this.endpoint = endpoint;
-            Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-            this.downloadContentInstrumentation = new ClientCallInstrumentation("sample", "downloadContent", endpoint, instrumentation);
-        }
-
-        public Response<?> downloadContent() {
-            return this.downloadContent(null);
-        }
-
-        @SuppressWarnings("try")
-        public Response<?> downloadContent(RequestOptions options) {
-            if (!downloadContentInstrumentation.shouldInstrument(options)) {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
-            }
-
-            if (options == null || options == RequestOptions.none()) {
-                options = new RequestOptions();
-            }
-
-            ClientCallInstrumentation.Scope scope = downloadContentInstrumentation.startScope(options);
-            try (scope) {
-                return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
-            } catch (RuntimeException t) {
-                scope.setError(t);
-                throw t;
-            }
         }
     }
 }

@@ -180,16 +180,18 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
+        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("contoso.sample");
+        private final static String SAMPLE_OPERATION_DURATION_METRIC_NAME = "contoso.sample.client.operation.duration";
         private final HttpPipeline httpPipeline;
         private final URI serviceEndpoint;
-        private final ClientCallInstrumentation clientInstrumentation;
+        private final OperationInstrumentation clientCallInstrumentation;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
             this.serviceEndpoint = URI.create("https://example.com");
             Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-            clientInstrumentation = new ClientCallInstrumentation("sample", "clientCall", serviceEndpoint, instrumentation);
+            clientCallInstrumentation = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails(SAMPLE_OPERATION_DURATION_METRIC_NAME, "clientCall")
+                .endpoint(this.serviceEndpoint));
         }
 
         public Response<?> clientCall() {
@@ -198,7 +200,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         @SuppressWarnings("try")
         public Response<?> clientCall(RequestOptions options) {
-            if (!clientInstrumentation.shouldInstrument(options)) {
+            if (!clientCallInstrumentation.shouldInstrument(options)) {
                 return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
             }
 
@@ -206,12 +208,14 @@ public class TelemetryJavaDocCodeSnippets {
                 options = new RequestOptions();
             }
 
-            ClientCallInstrumentation.Scope scope = clientInstrumentation.startScope(options);
-            try (scope) {
+            OperationInstrumentation.Scope scope = clientCallInstrumentation.startScope(options);
+            try {
                 return httpPipeline.send(new HttpRequest(HttpMethod.GET, serviceEndpoint));
             } catch (Throwable t) {
                 scope.setError(t);
                 throw t;
+            } finally {
+                scope.close();
             }
         }
     }

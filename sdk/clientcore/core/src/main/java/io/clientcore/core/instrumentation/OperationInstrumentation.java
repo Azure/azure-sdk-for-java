@@ -4,6 +4,7 @@
 package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.implementation.instrumentation.NoopInstrumentationContext;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -15,7 +16,6 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -26,10 +26,13 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SE
 
 /**
  * Provides convenient methods to instrument client call with distributed tracing and metrics.
- * <p><strong>This method is intended to be used by client libraries. Application developers
+ *
+ * <p><strong>This class is intended to be used by client libraries. Application developers
  * should use OpenTelemetry API directly</strong></p>
+ *
+ * This class is typically used by the auto-generated code and provides generic instrumentation.
  */
-public class CallInstrumentation {
+public final class OperationInstrumentation {
 
     private static final List<Double> DURATION_BOUNDARIES_ADVICE
         = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
@@ -37,57 +40,56 @@ public class CallInstrumentation {
     private final DoubleHistogram callDuration;
     private final String operationName;
     private final Instrumentation instrumentation;
+    private final SpanKind spanKind;
 
-    private final InstrumentationAttributes successAttributes;
+    private final InstrumentationAttributes commonAttributes;
 
     /**
-     * Creates a new instance of {@link CallInstrumentation}.
+     * Creates a new instance of {@link OperationInstrumentation}.
      *
-     * @param clientName the name of the client. The name is used as a prefix for the metric name following {@code {client-name.}client.operation.duration} format.
-     * It should be short, unique, and descriptive.
-     * See <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/general/naming.md#metrics">OpenTelemetry naming conventions</a> for more information.
-     *
-     * @param operationName the name of the operation. The name is used as a value for the {@code operation.name} attribute.
-     * @param serviceEndpoint the service endpoint URI. The host and port are used as values for the {@code server.address} and {@code server.port} attributes.
+     * @param operationInfo the operation information.
      * @param instrumentation the instrumentation instance.
      */
-    public CallInstrumentation(String clientName, String operationName, URI serviceEndpoint,
-        Instrumentation instrumentation) {
-        Objects.requireNonNull(operationName, "'operationName' cannot be null");
-        Objects.requireNonNull(serviceEndpoint, "'serviceEndpoint' cannot be null");
-        Objects.requireNonNull(clientName, "'clientName' cannot be null");
+    OperationInstrumentation(InstrumentedOperationDetails operationInfo, Instrumentation instrumentation) {
+        Objects.requireNonNull(operationInfo, "'operationInfo' cannot be null");
         Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null");
 
         this.instrumentation = instrumentation;
         this.tracer = instrumentation.createTracer();
-        Meter meter = instrumentation.createMeter();
-        String metricName = clientName.toLowerCase(Locale.ROOT) + "." + "client.operation.duration";
-        String metricDescription = "Duration of " + clientName + " client service method call";
-        this.callDuration = meter.createDoubleHistogram(metricName, metricDescription, "s", DURATION_BOUNDARIES_ADVICE);
-        this.successAttributes = createAttributes(operationName, serviceEndpoint, instrumentation);
-        this.operationName = operationName;
+        this.callDuration = createCallDurationMetric(operationInfo, instrumentation);
+        this.commonAttributes = createAttributes(operationInfo, instrumentation);
+        this.operationName = operationInfo.getOperationName();
+        this.spanKind = operationInfo.getSpanKind();
     }
 
     /**
      * Determines whether the client call should be instrumented.
+     *
+     * <!-- begin io.clientcore.core.telemetry.instrumentation.shouldinstrument -->
+     * <!-- end io.clientcore.core.telemetry.instrumentation.shouldinstrument -->
+     *
      * @param requestOptions the request options.
      * @return {@code true} if the client call should be instrumented, otherwise {@code false}.
      */
     public boolean shouldInstrument(RequestOptions requestOptions) {
-        return instrumentation.shouldInstrument(SpanKind.CLIENT,
+        return instrumentation.shouldInstrument(spanKind,
             requestOptions == null ? null : requestOptions.getInstrumentationContext());
     }
 
     /**
      * Starts a new scope for the client call which includes starting a new span for the client call if tracing is enabled.
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
-     *
+     * <p>
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
      * <p>
      * The scope MUST be closed on the same thread that created it.
      * <p>
      * <strong>Closing the returned scope end the underlying span and records duration measurement.</strong>
-     * @param requestOptions the request options.
      *
+     * <!-- begin io.clientcore.core.telemetry.instrumentation.startscope -->
+     * <!-- end io.clientcore.core.telemetry.instrumentation.startscope -->
+     *
+     * @param requestOptions the request options.
      * @return the scope.
      */
     public Scope startScope(RequestOptions requestOptions) {
@@ -97,13 +99,10 @@ public class CallInstrumentation {
         }
 
         InstrumentationContext parent = requestOptions.getInstrumentationContext();
-        Span span = tracer.spanBuilder(operationName, SpanKind.CLIENT, parent)
-            .setAllAttributes(successAttributes)
-            .startSpan();
-        Scope scope = new Scope(successAttributes, requestOptions.getInstrumentationContext(), span, callDuration);
+        Scope scope = new Scope(operationName, spanKind, commonAttributes, parent, tracer, callDuration);
 
-        if (scope.instrumentationContext.isValid()) {
-            requestOptions.setInstrumentationContext(scope.instrumentationContext);
+        if (scope.getInstrumentationContext().isValid()) {
+            requestOptions.setInstrumentationContext(scope.getInstrumentationContext());
         }
 
         return scope.makeCurrent();
@@ -116,7 +115,7 @@ public class CallInstrumentation {
         static final Scope NOOP = new Scope();
         private final Span span;
         private final InstrumentationContext instrumentationContext;
-        private final InstrumentationAttributes startAttributes;
+        private final InstrumentationAttributes commonAttributes;
         private final long startTimeNs;
         private final DoubleHistogram callDuration;
         private Throwable error;
@@ -124,18 +123,21 @@ public class CallInstrumentation {
 
         private Scope() {
             this.span = null;
-            this.instrumentationContext = null;
-            this.startAttributes = null;
+            this.instrumentationContext = NoopInstrumentationContext.INSTANCE;
+            this.commonAttributes = null;
             this.startTimeNs = 0;
             this.callDuration = null;
         }
 
-        Scope(InstrumentationAttributes startAttributes, InstrumentationContext parent, Span span,
-            DoubleHistogram callDuration) {
-            this.startAttributes = startAttributes;
-            this.span = span;
-            this.instrumentationContext
-                = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parent;
+        Scope(String operationName, SpanKind kind, InstrumentationAttributes commonAttributes,
+            InstrumentationContext parent, Tracer tracer, DoubleHistogram callDuration) {
+            this.commonAttributes = commonAttributes;
+            this.span = tracer.spanBuilder(operationName, kind, parent).setAllAttributes(commonAttributes).startSpan();
+
+            this.instrumentationContext = (parent == null || span.getInstrumentationContext().isValid())
+                ? span.getInstrumentationContext()
+                : parent;
+
             this.startTimeNs = callDuration.isEnabled() ? System.nanoTime() : 0;
             this.callDuration = callDuration;
         }
@@ -157,6 +159,7 @@ public class CallInstrumentation {
          *
          * <strong>It is important to record any exceptions that are about to be thrown
          * to the user code including unchecked ones.</strong>
+         *
          * @param throwable The throwable to set on the scope.
          * @return The updated {@link Scope} object.
          */
@@ -167,6 +170,8 @@ public class CallInstrumentation {
 
         /**
          * Gets the instrumentation context identifying this call.
+         * <!-- begin io.clientcore.core.instrumentation.enrich -->
+         * <!-- end io.clientcore.core.instrumentation.enrich -->
          * @return The instrumentation context.
          */
         public InstrumentationContext getInstrumentationContext() {
@@ -180,8 +185,8 @@ public class CallInstrumentation {
         public void close() {
             if (callDuration != null && callDuration.isEnabled()) {
                 InstrumentationAttributes attributes = error == null
-                    ? startAttributes
-                    : startAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
+                    ? commonAttributes
+                    : commonAttributes.put(ERROR_TYPE_KEY, error.getClass().getCanonicalName());
                 callDuration.record((System.nanoTime() - startTimeNs) / 1e9, attributes, instrumentationContext);
             }
 
@@ -196,14 +201,16 @@ public class CallInstrumentation {
         }
     }
 
-    private static InstrumentationAttributes createAttributes(String operationName, URI endpoint,
+    private static InstrumentationAttributes createAttributes(InstrumentedOperationDetails operationInfo,
         Instrumentation instrumentation) {
         Map<String, Object> attributeMap = new HashMap<>(4);
-        attributeMap.put(OPERATION_NAME_KEY, operationName);
-        attributeMap.put(SERVER_ADDRESS_KEY, endpoint.getHost());
-        int port = getServerPort(endpoint);
-        if (port != -1) {
-            attributeMap.put(SERVER_PORT_KEY, port);
+        attributeMap.put(OPERATION_NAME_KEY, operationInfo.getOperationName());
+        if (operationInfo.getEndpoint() != null) {
+            attributeMap.put(SERVER_ADDRESS_KEY, operationInfo.getEndpoint().getHost());
+            int port = getServerPort(operationInfo.getEndpoint());
+            if (port != -1) {
+                attributeMap.put(SERVER_PORT_KEY, port);
+            }
         }
 
         return instrumentation.createAttributes(attributeMap);
@@ -231,5 +238,17 @@ public class CallInstrumentation {
             }
         }
         return port;
+    }
+
+    private static DoubleHistogram createCallDurationMetric(InstrumentedOperationDetails operationInfo,
+        Instrumentation instrumentation) {
+        Meter meter = instrumentation.createMeter();
+
+        // TODO (lmolkova): it'd be great to get typespec namespace (e.g. Azure.Batch)
+        // Metric name should be fully qualified, e.g. `azure.batch` or `azure.storage.blob` - if we
+        // had it from typespec, we could auto-generate metric name and description.
+        String metricDescription = "Duration of client operation";
+        return meter.createDoubleHistogram(operationInfo.getDurationMetricName(), metricDescription, "s",
+            DURATION_BOUNDARIES_ADVICE);
     }
 }

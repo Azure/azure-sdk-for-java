@@ -108,6 +108,18 @@ public interface Instrumentation {
     TraceContextPropagator getW3CTraceContextPropagator();
 
     /**
+     * Determines whether the client call should be instrumented.
+     *
+     * <p><strong>This method is intended to be used by client libraries. Application developers
+     * should use OpenTelemetry API directly</strong></p>
+     *
+     * @param spanKind the kind of the span to be created.
+     * @param context the instrumentation context call happens in.
+     * @return {@code true} if the client call should be instrumented, otherwise {@code false}.
+     */
+    boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context);
+
+    /**
      * Gets the singleton instance of the resolved telemetry provider.
      *
      * <p><strong>This method is intended to be used by client libraries. Application developers
@@ -180,14 +192,19 @@ public interface Instrumentation {
     }
 
     /**
-     * Determines whether the client call should be instrumented.
+     * Creates the operation instrumentation.
+     * <!-- src_embed io.clientcore.core.telemetry.instrumentation.create -->
+     * <pre>
+     * InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails&#40;SAMPLE_CLIENT_DURATION_METRIC,
+     *     &quot;downloadContent&quot;&#41;.endpoint&#40;endpoint&#41;;
+     * this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation&#40;downloadDetails&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.telemetry.instrumentation.create -->
      *
-     * <p><strong>This method is intended to be used by client libraries. Application developers
-     * should use OpenTelemetry API directly</strong></p>
-     *
-     * @param spanKind the kind of the span to be created.
-     * @param context the instrumentation context call happens in.
-     * @return {@code true} if the client call should be instrumented, otherwise {@code false}.
+     * @param operationDetails The details of the operation to be instrumented.
+     * @return The operation instrumentation.
      */
-    boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context);
+    default OperationInstrumentation createOperationInstrumentation(InstrumentedOperationDetails operationDetails) {
+        return new OperationInstrumentation(operationDetails, this);
+    }
 }

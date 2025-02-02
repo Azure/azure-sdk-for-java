@@ -209,7 +209,7 @@ public class OTelInstrumentation implements Instrumentation {
      * @param context the context to get the span kind from
      * @return the span kind or {@code null} if the context is not recognized
      */
-    private SpanKind tryGetSpanKind(InstrumentationContext context) {
+    private static SpanKind tryGetSpanKind(InstrumentationContext context) {
         if (context instanceof OTelSpanContext) {
             Span span = context.getSpan();
             if (span instanceof OTelSpan) {

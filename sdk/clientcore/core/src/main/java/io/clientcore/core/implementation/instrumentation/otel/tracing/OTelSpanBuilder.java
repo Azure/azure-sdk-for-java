@@ -144,26 +144,23 @@ public class OTelSpanBuilder implements SpanBuilder {
     public Span startSpan() {
         if (isInitialized()) {
             Object otelParentContext = OTelContext.fromInstrumentationContext(context);
-            SET_PARENT_INVOKER.invoke(otelSpanBuilder, otelParentContext);
-            SET_SPAN_KIND_INVOKER.invoke(otelSpanBuilder, toOtelSpanKind(spanKind));
-            Object otelSpan = shouldSuppress(otelParentContext)
-                ? OTelSpan.createPropagatingSpan(otelParentContext)
-                : START_SPAN_INVOKER.invoke(otelSpanBuilder);
+            OTelSpan parentSpan = OTelContext.getClientCoreSpan(otelParentContext);
+            SpanKind parentKind = parentSpan == null ? null : parentSpan.getSpanKind();
+            Object otelSpan;
+            if (suppressNestedSpans && parentKind == spanKind) {
+                otelSpan = OTelSpan.createPropagatingSpan(otelParentContext);
+            } else {
+                SET_PARENT_INVOKER.invoke(otelSpanBuilder, otelParentContext);
+                SET_SPAN_KIND_INVOKER.invoke(otelSpanBuilder, toOtelSpanKind(spanKind));
+                otelSpan = START_SPAN_INVOKER.invoke(otelSpanBuilder);
+            }
+
             if (otelSpan != null) {
                 return new OTelSpan(otelSpan, otelParentContext, this.spanKind);
             }
         }
 
         return OTelSpan.NOOP_SPAN;
-    }
-
-    private boolean shouldSuppress(Object parentContext) {
-        if (suppressNestedSpans && (this.spanKind == SpanKind.CLIENT || this.spanKind == SpanKind.INTERNAL)) {
-            OTelSpan span = OTelContext.getClientCoreSpan(parentContext);
-            return span != null && (span.getSpanKind() == SpanKind.INTERNAL || span.getSpanKind() == SpanKind.CLIENT);
-        }
-
-        return false;
     }
 
     private Object toOtelSpanKind(SpanKind spanKind) {
