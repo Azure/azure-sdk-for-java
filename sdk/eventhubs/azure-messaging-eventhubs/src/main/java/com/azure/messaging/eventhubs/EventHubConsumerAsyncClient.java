@@ -21,6 +21,7 @@ import com.azure.messaging.eventhubs.implementation.instrumentation.Instrumented
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -578,10 +579,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven,
             MessageFlux.NULL_RETRY_POLICY);
-        final MessageFluxWrapper linkMessageProcessor
-            = new MessageFluxWrapper(InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation));
-
-        return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
+        final Flux<Message> instrumentedFlux
+            = InstrumentedMessageFlux.instrument(messageFlux, partitionId, instrumentation);
+        return new EventHubPartitionAsyncConsumer(instrumentedFlux, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
             receiveOptions.getTrackLastEnqueuedEventProperties());
     }
