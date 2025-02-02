@@ -72,6 +72,7 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.eventhubs.TestUtils.assertAllAttributes;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static com.azure.messaging.eventhubs.TestUtils.getSpanName;
@@ -925,7 +926,7 @@ class EventHubConsumerAsyncClientTest {
             CONSUMER_GROUP, prefetch, true, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
     }
 
-    private static final class MockConnection implements Closeable {
+    static final class MockConnection implements Closeable {
         private final EventHubReactorAmqpConnection connection;
         private final TestPublisher<AmqpEndpointState> endpointStates;
 
@@ -1004,7 +1005,7 @@ class EventHubConsumerAsyncClientTest {
         }
     }
 
-    private static final class MockManagementNode implements AutoCloseable {
+    static final class MockManagementNode implements AutoCloseable {
         private final EventHubManagementNode node;
         private final Answer<Mono<EventHubManagementNode>> getNodeAnswer;
 
@@ -1037,7 +1038,7 @@ class EventHubConsumerAsyncClientTest {
         }
     }
 
-    private static final class MockReceiveLink implements Closeable {
+    static final class MockReceiveLink implements Closeable {
         private final AmqpReceiveLink link;
         private final String partitionId;
         private final String messageTrackingUUID;
@@ -1107,6 +1108,7 @@ class EventHubConsumerAsyncClientTest {
         void emitMessages(int numberOfEvents, Instant enqueueTime) {
             for (int i = 0; i < numberOfEvents; i++) {
                 final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID);
+                message.getApplicationProperties().getValue().put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());
                 message.getApplicationProperties().getValue().put(PARTITION_ID_HEADER, partitionId);
                 if (enqueueTime != null) {
                     message.getMessageAnnotations()
@@ -1115,6 +1117,10 @@ class EventHubConsumerAsyncClientTest {
                 }
                 messages.next(message);
             }
+        }
+
+        void verifyReceiveCalled() {
+            verify(link, times(1)).receive();
         }
 
         @Override
