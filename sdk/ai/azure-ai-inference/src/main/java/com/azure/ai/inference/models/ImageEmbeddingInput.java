@@ -9,7 +9,12 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
 
 /**
  * Represents an image with optional text.
@@ -30,6 +35,29 @@ public final class ImageEmbeddingInput implements JsonSerializable<ImageEmbeddin
     @Generated
     private String text;
 
+    /**
+     * Creates an instance of ImageEmbeddingInput class.
+     *
+     * @param filePath path to the imageFile.
+     * @param imageFormatType format of the image
+     * @throws RuntimeException If an error occurs while reading the file or file not found.
+     */
+    public ImageEmbeddingInput(Path filePath, String imageFormatType) {
+        try {
+            byte[] bytes = Files.readAllBytes(filePath);
+            String encodedFile = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
+            String urlTemplate = "data:image/%s;base64,%s";
+            this.image = String.format(urlTemplate, imageFormatType, encodedFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the type property: The discriminated object type.
+    
     /**
      * Creates an instance of ImageEmbeddingInput class.
      *
