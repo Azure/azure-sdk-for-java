@@ -85,7 +85,11 @@ public final class RedisManager extends Manager<RedisManagementClient> {
                 .buildClient());
     }
 
-    /** @return the Redis Cache management API entry point */
+    /**
+     * Gets the API entry point of the Redis Cache management.
+     *
+     * @return the Redis Cache management API entry point
+     */
     public RedisCaches redisCaches() {
         if (redisCaches == null) {
             redisCaches = new RedisCachesImpl(this);

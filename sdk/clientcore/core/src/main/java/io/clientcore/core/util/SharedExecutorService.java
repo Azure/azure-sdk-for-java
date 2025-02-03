@@ -7,6 +7,7 @@ import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
 import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Collection;

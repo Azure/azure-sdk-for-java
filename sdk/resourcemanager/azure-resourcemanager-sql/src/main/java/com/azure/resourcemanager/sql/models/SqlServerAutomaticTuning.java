@@ -16,13 +16,25 @@ import java.util.Map;
 public interface SqlServerAutomaticTuning extends HasInnerModel<ServerAutomaticTuningInner>,
     Refreshable<SqlServerAutomaticTuning>, Updatable<SqlServerAutomaticTuning.Update> {
 
-    /** @return the server automatic tuning desired state */
+    /**
+     * Gets the server automatic tuning desired state.
+     *
+     * @return the server automatic tuning desired state
+     */
     AutomaticTuningServerMode desiredState();
 
-    /** @return the server automatic tuning actual state */
+    /**
+     * Gets the server automatic tuning actual state.
+     *
+     * @return the server automatic tuning actual state
+     */
     AutomaticTuningServerMode actualState();
 
-    /** @return the server automatic tuning individual options */
+    /**
+     * Gets the server automatic tuning individual options.
+     *
+     * @return the server automatic tuning individual options
+     */
     Map<String, AutomaticTuningServerOptions> tuningOptions();
 
     /**************************************************************

@@ -30,6 +30,10 @@ parameters:
     displayName: 'http-okhttp3'
     type: boolean
     default: false
+  - name: release_clientcoreannotationprocessor
+    displayName: 'annotation-processor'
+    type: boolean
+    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -50,3 +54,12 @@ extends:
         groupId: io.clientcore
         safeName: httpokhttp3
         releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
+      - name: annotation-processor
+        groupId: io.clientcore
+        safeName: annotationprocessor
+        releaseInBatch: ${{ parameters.release_clientcoreannotationprocessor }}
+    AdditionalModules:
+      - name: optional-dependency-tests
+        groupId: io.clientcore
+      - name: annotation-processor-test
+        groupId: io.clientcore

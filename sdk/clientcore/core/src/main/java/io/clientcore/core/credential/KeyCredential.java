@@ -3,7 +3,7 @@
 
 package io.clientcore.core.credential;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
 

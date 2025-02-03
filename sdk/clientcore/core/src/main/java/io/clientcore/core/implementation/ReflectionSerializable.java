@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;

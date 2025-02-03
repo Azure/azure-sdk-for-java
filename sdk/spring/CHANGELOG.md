@@ -1,6 +1,7 @@
 # Release History
 
 ## 5.20.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.4.2 and Spring Cloud dependencies version to 2024.0.0
 Upgrade Spring Boot dependencies version to 3.4.1 and Spring Cloud dependencies version to 2024.0.0
 
 ### Spring Cloud Azure Autoconfigure
@@ -8,7 +9,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix bug: Registered the empty value for ineligible definition, it causes NPE when sending message via bean `StreamBridge`. [#43366](https://github.com/Azure/azure-sdk-for-java/issues/43366).
+- Fix bug: Not working when using Spring Kafka and Kafka Binder via connection string auth [#43853](https://github.com/Azure/azure-sdk-for-java/issues/43853).
 
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+- Fix bug: The `PropertiesMerger` implementation not handling property `CustomEndpointAddress`. [#43555](https://github.com/Azure/azure-sdk-for-java/issues/43555).
 
 ## 5.19.0 (2024-12-17)
 - This release is compatible with Spring Boot 3.4.0, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>0), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)
