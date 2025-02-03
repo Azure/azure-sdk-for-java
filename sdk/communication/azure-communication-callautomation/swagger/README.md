@@ -277,6 +277,7 @@ directive:
 - remove-model: HoldAudioPaused
 - remove-model: PlayPaused
 - remove-model: PlayResumed
+- remove-model: IncomingCall
 
 ```
 
