@@ -45,8 +45,6 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
 
-    static final String NAME = "redirect";
-
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HttpHeaderName locationHeader;
 

@@ -51,8 +51,6 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
     private static final double JITTER_FACTOR = 0.05;
 
-    static final String NAME = "retry";
-
     static {
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_REQUEST_RETRY_COUNT);
 

@@ -175,8 +175,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger.LogLevel HTTP_REQUEST_LOG_LEVEL = ClientLogger.LogLevel.VERBOSE;
     private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
 
-    static final String NAME = "instrumentation";
-
     private final Tracer tracer;
     private final Meter meter;
     private final boolean isTracingEnabled;

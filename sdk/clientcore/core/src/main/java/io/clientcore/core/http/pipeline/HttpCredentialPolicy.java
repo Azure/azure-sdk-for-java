@@ -7,8 +7,6 @@ package io.clientcore.core.http.pipeline;
  * credential policies and to differentiate them from other forms of {@link HttpPipelinePolicy}s.
  */
 public abstract class HttpCredentialPolicy implements HttpPipelinePolicy {
-    static final String NAME = "credential";
-
     /**
      * Creates an instance of {@link HttpCredentialPolicy}.
      */
