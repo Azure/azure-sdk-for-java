@@ -112,7 +112,7 @@ public class StorageCrc64CalculatorTests {
             Arguments.of(2, Constants.KB, Constants.MB), Arguments.of(3, Constants.KB, Constants.MB),
             Arguments.of(2, Constants.KB, 512 * Constants.MB), Arguments.of(3, Constants.KB, 512 * Constants.MB));
     }
-    
+
 @Test
 void testComputeInChunks() {
     int maxBlockSize = Constants.GB;
