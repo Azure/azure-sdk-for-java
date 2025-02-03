@@ -206,7 +206,7 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     }
 
     /**
-     * Get the realFeelTemperature property: RealFeelâ„¢ Temperature values for the quarter.
+     * Get the realFeelTemperature property: RealFeel™ Temperature values for the quarter.
      *
      * @return the realFeelTemperature value.
      */
