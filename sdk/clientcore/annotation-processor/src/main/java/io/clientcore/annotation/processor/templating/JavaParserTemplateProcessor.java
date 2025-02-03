@@ -13,7 +13,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
@@ -341,22 +340,21 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         body.addStatement(StaticJavaParser.parseStatement("int responseCode = response.getStatusCode();"));
+        String expectedResponseCheck;
         if (method.getExpectedStatusCodes().size() == 1) {
-            body.addStatement(StaticJavaParser.parseStatement(
-                "boolean expectedResponse = responseCode == " + method.getExpectedStatusCodes().get(0) + ";"));
+            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
         } else {
             String statusCodes = method.getExpectedStatusCodes()
                 .stream()
                 .map(code -> "responseCode == " + code)
                 .collect(Collectors.joining(" || "));
-            body.addStatement("boolean expectedResponse = " + statusCodes);
+            expectedResponseCheck = "(" + statusCodes + ");";
         }
+        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
 
         body.tryAddImportToParentCompilationUnit(RuntimeException.class);
-        IfStmt ifStmt = new IfStmt().setCondition(StaticJavaParser.parseExpression("!expectedResponse"))
-            .setThenStmt(StaticJavaParser
-                .parseBlock("{ throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
-        body.addStatement(ifStmt);
+        body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
+            + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
     }
 
     /**
@@ -392,11 +390,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 body.tryAddImportToParentCompilationUnit(BinaryData.class);
                 body.addStatement(
                     StaticJavaParser.parseStatement("BinaryData binaryData = (BinaryData) " + parameterName + ";"));
-                IfStmt ifStmt = new IfStmt()
-                    .setCondition(StaticJavaParser.parseExpression("binaryData.getLength() != null"))
-                    .setThenStmt(StaticJavaParser.parseBlock(
-                        "{ httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength())); httpRequest.setBody(binaryData); }"));
-                body.addStatement(ifStmt);
+                body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null) {"
+                    + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength()));"
+                    + "httpRequest.setBody(binaryData); }"));
                 return;
             }
 

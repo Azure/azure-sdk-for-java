@@ -64,4 +64,8 @@ public interface TestInterfaceClientService {
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
     Response<Foo> getFoo(@PathParam("key") String key, @QueryParam("label") String label,
         @HeaderParam("Sync-Token") String syncToken);
+
+    @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 204, 404 })
+    Response<Void> deleteFoo(@PathParam("key") String key, @QueryParam("label") String label,
+        @HeaderParam("Sync-Token") String syncToken);
 }

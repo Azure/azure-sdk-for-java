@@ -4,12 +4,9 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
-import com.github.javaparser.ast.stmt.TryStmt;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
@@ -47,17 +44,18 @@ public final class ResponseBodyModeGeneration {
         }
 
         // Fallback to assignment based on return type if responseBodyMode is still null.
-        IfStmt ifStmt = new IfStmt().setCondition(StaticJavaParser.parseExpression("responseBodyMode == null"));
+        String enumName;
         if (returnTypeName.contains("InputStream")) {
-            ifStmt.setThenStmt(StaticJavaParser.parseBlock("{ responseBodyMode = ResponseBodyMode.STREAM; }"));
+            enumName = "STREAM";
         } else if (returnTypeName.contains("byte[]")) {
-            ifStmt.setThenStmt(StaticJavaParser.parseBlock("{ responseBodyMode = ResponseBodyMode.BYTES; }"));
+            enumName = "BYTES";
         } else if (returnTypeName.contains("BinaryData")) {
-            ifStmt.setThenStmt(StaticJavaParser.parseBlock("{ responseBodyMode = ResponseBodyMode.IGNORE; }"));
+            enumName = "IGNORE";
         } else {
-            ifStmt.setThenStmt(StaticJavaParser.parseBlock("{ responseBodyMode = ResponseBodyMode.DESERIALIZE; }"));
+            enumName = "DESERIALIZE";
         }
-        body.addStatement(ifStmt);
+        body.addStatement(StaticJavaParser.parseStatement(
+            "if (responseBodyMode == null)" + "{ responseBodyMode = ResponseBodyMode." + enumName + "; }"));
     }
 
     /**
@@ -69,13 +67,12 @@ public final class ResponseBodyModeGeneration {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
         body.tryAddImportToParentCompilationUnit(HttpResponse.class);
         body.tryAddImportToParentCompilationUnit(HttpResponseAccessHelper.class);
-        IfStmt ifStmt = new IfStmt()
-            .setCondition(StaticJavaParser.parseExpression("responseBodyMode == ResponseBodyMode.DESERIALIZE"))
-            .setThenStmt(StaticJavaParser.parseBlock("{ BinaryData responseBody = response.getBody();"
-                + "HttpResponseAccessHelper.setValue((HttpResponse<?>) response, responseBody); }"))
-            .setElseStmt(StaticJavaParser.parseBlock("{ BinaryData responseBody = response.getBody();"
-                + "HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) -> responseBody); }"));
-        body.addStatement(ifStmt);
+
+        body.addStatement(StaticJavaParser.parseStatement("if (responseBodyMode == ResponseBodyMode.DESERIALIZE)"
+            + "{ BinaryData responseBody = response.getBody();"
+            + "HttpResponseAccessHelper.setValue((HttpResponse<?>) response, responseBody); } else {"
+            + "BinaryData responseBody = response.getBody();"
+            + "HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) -> responseBody); }"));
     }
 
     /**
@@ -110,15 +107,9 @@ public final class ResponseBodyModeGeneration {
     private static void closeResponse(BlockStmt body) {
         body.tryAddImportToParentCompilationUnit(IOException.class);
         body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
-        TryStmt tryStmt = new TryStmt();
 
-        tryStmt.setTryBlock(StaticJavaParser.parseBlock("{ response.close(); }"))
-            .getCatchClauses()
-            .add(new CatchClause().setParameter(new Parameter().setType(IOException.class).setName("e"))
-                .setBody(
-                    StaticJavaParser.parseBlock("{ throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }")));
-
-        body.addStatement(tryStmt);
+        body.addStatement(StaticJavaParser.parseStatement("try { response.close(); }"
+            + "catch (IOException e) { throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
     }
 
     /**
