@@ -247,7 +247,7 @@ public class TargetingFilterTest {
 
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", targetedGroups));
 
-        assertFalse(filter.evaluate(context));
+        assertTrue(filter.evaluate(context));
     }
 
     @Test

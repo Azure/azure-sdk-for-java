@@ -107,7 +107,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @return Key Vault Secret Value
      * @throws InvalidConfigurationPropertyValueException
      */
-    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
+    private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
         throws InvalidConfigurationPropertyValueException {
         // Parsing Key Vault Reference for URI
         try {
@@ -129,7 +129,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         handleJson(setting, trimStrings);
     }
 
-    void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
+    private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
@@ -138,7 +138,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         }
     }
 
-    protected String trimKey(String key, List<String> trimStrings) {
+    private String trimKey(String key, List<String> trimStrings) {
         key = key.trim();
         if (trimStrings != null) {
             for (String trim : trimStrings) {
