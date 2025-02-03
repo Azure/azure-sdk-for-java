@@ -15,12 +15,12 @@ $PackageRepositoryUri = "https://repo1.maven.org/maven2"
 function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
   $SdkType = $Env:SdkType
   if ($SdkType) {
-    Write-Host "SdkType env var was set to '$SdkType'"
+    Write-Verbose "SdkType env var was set to '$SdkType'"
   } else {
     $SdkType = "client"
-    Write-Host "SdkType env var was not set, default to 'client'"
+    Write-Verbose "SdkType env var was not set, default to 'client'"
   }
-  Write-Host "Processing SdkType=$SdkType"
+  Write-Verbose "Processing SdkType=$SdkType"
 
   $allPackageProps = @()
   $sdkRoot = Join-Path $RepoRoot "sdk"
@@ -28,7 +28,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
 
   if ($serviceDirectory) {
     $searchPath = Join-Path $sdkRoot $serviceDirectory
-    Write-Host "searchPath=$searchPath"
+    Write-Verbose "searchPath=$searchPath"
     [array]$ymlFiles = Get-ChildItem -Path $searchPath "ci*.yml" | Where-Object { $_.PSIsContainer -eq $false}
   } else {
     # The reason for the exclude folders are POM only releases (nothing is built) or
@@ -56,7 +56,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
     # 6a. If #5 has a match, create the PackageProp and add it to the list
     # 6b. If #5 doesn't have a match, then skip it. This is the case where it's either
     #     an AdditionalModule or something from another track.
-    Write-Host "Processing $ymlFile"
+    Write-Verbose "Processing $ymlFile"
     $ymlFileContent = LoadFrom-Yaml $ymlFile
     $YmlFileSdkType = GetValueSafelyFrom-Yaml $ymlFileContent @("extends", "parameters", "SDKType")
     $ymlDir = Split-Path -Path $ymlFile -Parent
@@ -65,7 +65,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $YmlFileSdkType = "client"
     }
     if ($YmlFileSdkType -ne $SdkType) {
-      Write-Host "SdkType in yml file is '$YmlFileSdkType' which is not '$SdkType', skipping..."
+      Write-Verbose "SdkType in yml file is '$YmlFileSdkType' which is not '$SdkType', skipping..."
       continue
     }
     # ServiceDirectory
@@ -125,17 +125,17 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $xmlPomFile.Load($pomFile)
 
       if ($xmlPomFile.project.psobject.properties.name -notcontains "artifactId" -or !$xmlPomFile.project.artifactId) {
-        Write-Host "$pomFile doesn't have a defined artifactId so skipping this pom."
+        Write-Verbose "$pomFile doesn't have a defined artifactId so skipping this pom."
         continue
       }
 
       if ($xmlPomFile.project.psobject.properties.name -notcontains "version" -or !$xmlPomFile.project.version) {
-        Write-Host "$pomFile doesn't have a defined version so skipping this pom."
+        Write-Verbose "$pomFile doesn't have a defined version so skipping this pom."
         continue
       }
 
       if ($xmlPomFile.project.psobject.properties.name -notcontains "groupid" -or !$xmlPomFile.project.groupId) {
-        Write-Host "$pomFile doesn't have a defined groupId so skipping this pom."
+        Write-Verbose "$pomFile doesn't have a defined groupId so skipping this pom."
         continue
       }
 
@@ -145,7 +145,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
       $keyFromPom = "$($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId)"
       if (-not $ArtifactsHashSet.Contains($keyFromPom))
       {
-        Write-Host "$ymlFile does not contain $($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId), skipping"
+        Write-Verbose "$ymlFile does not contain $($xmlPomFile.project.groupId):$($xmlPomFile.project.artifactId), skipping"
         continue
       }
       # At this point everything is valid
@@ -474,7 +474,7 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
     $response = (Invoke-RestMethod -Method GET -Uri $Uri).response
     if($response.numFound -ne 0)
     {
-      $existingVersion = $response.docs.v
+      $existingVersion = @($response.docs.v)
       if ($existingVersion.Count -gt 0)
       {
         [Array]::Reverse($existingVersion)
