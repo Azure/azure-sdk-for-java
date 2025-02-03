@@ -45,7 +45,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
+//@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
 public class VectorIndexTest extends TestSuiteBase {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
@@ -326,12 +326,14 @@ public class VectorIndexTest extends TestSuiteBase {
         cosmosVectorIndexSpec2.setPath("/vector2");
         cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
         cosmosVectorIndexSpec2.setQuantizationSizeInBytes(2);
+        cosmosVectorIndexSpec2.setVectorIndexShardKey(List.of("/vector2"));
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec3.setPath("/vector3");
         cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
         cosmosVectorIndexSpec3.setQuantizationSizeInBytes(2);
         cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
+        cosmosVectorIndexSpec3.setVectorIndexShardKey(List.of("/vector3"));
 
         return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
     }
