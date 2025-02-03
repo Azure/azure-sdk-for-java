@@ -2,13 +2,9 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Update to latest API spec. `temperatureSummary` returns `past3Hours`, `past6Hours`, `past9Hours`, `past12Hours`, `past18Hours`, and `past24Hours`.
 
 ## 1.0.0-beta.2 (2024-12-27)
 
