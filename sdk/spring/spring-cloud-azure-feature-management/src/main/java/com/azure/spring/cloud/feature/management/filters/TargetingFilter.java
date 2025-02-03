@@ -168,8 +168,10 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
 
         Audience audience;
         String exclusionValue = FeatureFilterUtils.getKeyCase(parameters, EXCLUSION_CAMEL);
-        String exclusionUserValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
-        String exclusionGroupsValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
+        String exclusionUserValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue),
+            "Users");
+        String exclusionGroupsValue = FeatureFilterUtils
+            .getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
 
         if (((Map<String, Object>) parameters.getOrDefault(exclusionValue, new HashMap<>()))
             .get(exclusionUserValue) instanceof List) {
@@ -267,22 +269,8 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         return (!hasUserDefined && !(hasGroupsDefined && hasAtLeastOneGroup));
     }
 
-    /**
-     * Computes the percentage that the contextId falls into.
-     *
-     * @param contextId Id of the context being targeted
-     * @return the bucket value of the context id
-     * @throws TargetingException Unable to create hash of target context
-     */
-    protected double isTargetedPercentage(String contextId) {
-        return FeatureFilterUtils.isTargetedPercentage(contextId);
-    }
-
     private boolean isTargeted(String contextId, double percentage) {
-        if (percentage == 100) {
-            return true;
-        }
-        return isTargetedPercentage(contextId) < percentage;
+        return FeatureFilterUtils.isTargetedPercentage(contextId) < percentage;
     }
 
     /**
