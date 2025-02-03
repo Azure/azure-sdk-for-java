@@ -4,10 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.context;
 
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 
 /**
  * {@code @Configuration} class that registers a {@link AzureServiceClientBuilderFactoryPostProcessor}
@@ -16,7 +14,6 @@ import org.springframework.context.annotation.Role;
  * @since 5.19.0
  */
 @Configuration(proxyBeanMethods = false)
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 class AzureServiceClientBuilderFactoryConfiguration {
 
     /**
@@ -24,7 +21,6 @@ class AzureServiceClientBuilderFactoryConfiguration {
      * @return the BPP.
      */
     @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }

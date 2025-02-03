@@ -5,10 +5,14 @@ package io.clientcore.core.implementation.instrumentation.fallback;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
+import io.clientcore.core.instrumentation.metrics.LongCounter;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
@@ -23,6 +27,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,17 +61,18 @@ public class FallbackInstrumentationTests {
     private static final Instrumentation DEFAULT_INSTRUMENTATION = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
-    private static final TraceContextGetter<Map<String, String>> GETTER = new TraceContextGetter<>() {
-        @Override
-        public Iterable<String> keys(Map<String, String> carrier) {
-            return carrier.keySet();
-        }
+    private static final TraceContextGetter<Map<String, String>> GETTER
+        = new TraceContextGetter<Map<String, String>>() {
+            @Override
+            public Iterable<String> keys(Map<String, String> carrier) {
+                return carrier.keySet();
+            }
 
-        @Override
-        public String get(Map<String, String> carrier, String key) {
-            return carrier.get(key);
-        }
-    };
+            @Override
+            public String get(Map<String, String> carrier, String key) {
+                return carrier.get(key);
+            }
+        };
 
     public FallbackInstrumentationTests() {
         logCaptureStream = new AccessibleByteArrayOutputStream();
@@ -74,7 +80,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void basicTracing() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
         assertTrue(tracer.isEnabled());
 
         Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
@@ -89,7 +95,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void basicTracingExplicitParentSpan() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         Span parent = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
         Span child = tracer.spanBuilder("child", INTERNAL, parent.getInstrumentationContext()).startSpan();
@@ -107,7 +113,7 @@ public class FallbackInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void basicTracingImplicitParentSpan() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         assertSame(Span.noop(), FallbackScope.getCurrentSpan());
         Span parent = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
@@ -129,7 +135,7 @@ public class FallbackInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void basicTracingExplicitAndImplicitParentSpan() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         Span span = tracer.spanBuilder("span", INTERNAL, null).startSpan();
         try (TracingScope scope = span.makeCurrent()) {
@@ -157,7 +163,7 @@ public class FallbackInstrumentationTests {
     @Test
     @SuppressWarnings("try")
     public void tracingImplicitParentSpan() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         Span parent = tracer.spanBuilder("parent", INTERNAL, null).startSpan();
         try (TracingScope scope = parent.makeCurrent()) {
@@ -188,7 +194,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void testWrongScopeClosure() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         Span span1 = tracer.spanBuilder("span1", INTERNAL, null).startSpan();
         TracingScope scope1 = span1.makeCurrent();
@@ -211,7 +217,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void basicTracingExplicitParentContext() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
         Span child = tracer.spanBuilder("parent", INTERNAL, parentContext).startSpan();
@@ -327,7 +333,7 @@ public class FallbackInstrumentationTests {
         InstrumentationOptions options = new InstrumentationOptions().setTracingEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
 
-        Tracer tracer = instrumentation.getTracer();
+        Tracer tracer = instrumentation.createTracer();
         assertFalse(tracer.isEnabled());
 
         // should not throw
@@ -356,14 +362,14 @@ public class FallbackInstrumentationTests {
         // should not throw
         InstrumentationOptions options
             = new InstrumentationOptions().setTelemetryProvider("this is not a valid provider");
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
         assertTrue(tracer.isEnabled());
     }
 
     @Test
     public void createInstrumentationBadOptions() {
         assertThrows(NullPointerException.class,
-            () -> Instrumentation.create(new InstrumentationOptions(), null).getTracer());
+            () -> Instrumentation.create(new InstrumentationOptions(), null).createTracer());
     }
 
     @ParameterizedTest
@@ -372,7 +378,7 @@ public class FallbackInstrumentationTests {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
-        Tracer tracer = instrumentation.getTracer();
+        Tracer tracer = instrumentation.createTracer();
 
         Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
         assertEquals(expectLogs, span.isRecording());
@@ -397,7 +403,7 @@ public class FallbackInstrumentationTests {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
-        Tracer tracer = instrumentation.getTracer();
+        Tracer tracer = instrumentation.createTracer();
 
         long startTime = System.nanoTime();
         Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
@@ -424,7 +430,7 @@ public class FallbackInstrumentationTests {
     public void tracingWithAttributesLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
 
         Span span = tracer.spanBuilder("test-span", PRODUCER, null)
             .setAttribute("builder-string-key", "builder-value")
@@ -462,7 +468,7 @@ public class FallbackInstrumentationTests {
     public void tracingWithExceptionLogsEnabled() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
 
         Span span = tracer.spanBuilder("test-span", SERVER, null).startSpan();
 
@@ -480,7 +486,7 @@ public class FallbackInstrumentationTests {
     public void tracingLogsEnabledParent() {
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
 
         Span parent = tracer.spanBuilder("parent", CONSUMER, null).startSpan();
         Span child = tracer.spanBuilder("child", CLIENT, parent.getInstrumentationContext()).startSpan();
@@ -499,7 +505,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void testCreateInstrumentationContextFromSpan() {
-        Tracer tracer = DEFAULT_INSTRUMENTATION.getTracer();
+        Tracer tracer = DEFAULT_INSTRUMENTATION.createTracer();
 
         Span span = tracer.spanBuilder("span", CONSUMER, null).startSpan();
         InstrumentationContext fromSpan = Instrumentation.createInstrumentationContext(span);
@@ -530,6 +536,71 @@ public class FallbackInstrumentationTests {
         assertEquals("00", fromNull.getTraceFlags());
         assertFalse(fromNull.isValid());
         assertSame(Span.noop(), fromNull.getSpan());
+    }
+
+    @Test
+    public void testCreateMeterAndInstruments() {
+        Meter meter = DEFAULT_INSTRUMENTATION.createMeter();
+        assertFalse(meter.isEnabled());
+
+        InstrumentationAttributes attributes = DEFAULT_INSTRUMENTATION.createAttributes(Collections.emptyMap());
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1");
+        histogram.record(42.0, attributes, null);
+        assertFalse(histogram.isEnabled());
+
+        LongCounter counter = meter.createLongCounter("test", "description", "1");
+        counter.add(42, attributes, null);
+        assertFalse(counter.isEnabled());
+
+        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", "1");
+        upDownCounter.add(42, attributes, null);
+        assertFalse(upDownCounter.isEnabled());
+    }
+
+    @Test
+    public void testInvalidParams() {
+        Meter meter = DEFAULT_INSTRUMENTATION.createMeter();
+
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", "description", null));
+
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1");
+        assertThrows(NullPointerException.class, () -> histogram.record(42.0, null, null));
+
+        LongCounter counter = meter.createLongCounter("test", "description", "1");
+        assertThrows(NullPointerException.class, () -> counter.add(42, null, null));
+
+        LongCounter upDownCounter = meter.createLongUpDownCounter("test", "description", "1");
+        assertThrows(NullPointerException.class, () -> upDownCounter.add(42, null, null));
+    }
+
+    @Test
+    public void testGetAttributes() {
+        InstrumentationAttributes attributes = DEFAULT_INSTRUMENTATION.createAttributes(Collections.emptyMap());
+        assertNotNull(attributes);
+
+        // does not throw
+        attributes.put("key", "value1");
+        attributes.put("key", "value2");
+        DEFAULT_INSTRUMENTATION.createAttributes(null);
+    }
+
+    @Test
+    public void testAttributesInvalidParams() {
+        assertThrows(NullPointerException.class,
+            () -> DEFAULT_INSTRUMENTATION.createAttributes(Collections.singletonMap(null, "value")));
+        assertThrows(NullPointerException.class,
+            () -> DEFAULT_INSTRUMENTATION.createAttributes(Collections.singletonMap("key", null)));
+        InstrumentationAttributes attributes = DEFAULT_INSTRUMENTATION.createAttributes(null);
+        assertThrows(NullPointerException.class, () -> attributes.put(null, "value"));
+        assertThrows(NullPointerException.class, () -> attributes.put("key", null));
     }
 
     public static Stream<Object> notSupportedContexts() {

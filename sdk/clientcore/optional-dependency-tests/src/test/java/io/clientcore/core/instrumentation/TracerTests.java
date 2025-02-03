@@ -47,7 +47,7 @@ public class TracerTests {
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
     }
 
     @AfterEach

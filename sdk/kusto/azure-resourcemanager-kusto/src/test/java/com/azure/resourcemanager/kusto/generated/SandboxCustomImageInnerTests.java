@@ -13,21 +13,24 @@ public final class SandboxCustomImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SandboxCustomImageInner model = BinaryData.fromString(
-            "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"skfc\",\"requirementsFileContent\":\"qumiek\",\"provisioningState\":\"Failed\"},\"id\":\"zikhl\",\"name\":\"fjhdg\",\"type\":\"gge\"}")
+            "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"rvexztvb\",\"baseImageName\":\"gsfraoyzkoow\",\"requirementsFileContent\":\"mnguxawqaldsyu\",\"provisioningState\":\"Creating\"},\"id\":\"merqfobwyznkb\",\"name\":\"kutwpf\",\"type\":\"pagmhrskdsnf\"}")
             .toObject(SandboxCustomImageInner.class);
         Assertions.assertEquals(Language.PYTHON, model.language());
-        Assertions.assertEquals("skfc", model.languageVersion());
-        Assertions.assertEquals("qumiek", model.requirementsFileContent());
+        Assertions.assertEquals("rvexztvb", model.languageVersion());
+        Assertions.assertEquals("gsfraoyzkoow", model.baseImageName());
+        Assertions.assertEquals("mnguxawqaldsyu", model.requirementsFileContent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SandboxCustomImageInner model = new SandboxCustomImageInner().withLanguage(Language.PYTHON)
-            .withLanguageVersion("skfc")
-            .withRequirementsFileContent("qumiek");
+            .withLanguageVersion("rvexztvb")
+            .withBaseImageName("gsfraoyzkoow")
+            .withRequirementsFileContent("mnguxawqaldsyu");
         model = BinaryData.fromObject(model).toObject(SandboxCustomImageInner.class);
         Assertions.assertEquals(Language.PYTHON, model.language());
-        Assertions.assertEquals("skfc", model.languageVersion());
-        Assertions.assertEquals("qumiek", model.requirementsFileContent());
+        Assertions.assertEquals("rvexztvb", model.languageVersion());
+        Assertions.assertEquals("gsfraoyzkoow", model.baseImageName());
+        Assertions.assertEquals("mnguxawqaldsyu", model.requirementsFileContent());
     }
 }

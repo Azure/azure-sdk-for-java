@@ -95,18 +95,11 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
-      # This is the case for the PullReqest pipeline which has a ServiceDirectory of 'auto'.
-      # For the PullRequest pipeline, the packageInfo files generated from the diff end up
-      # being the source of truth for the artifacts list.
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-          parameters:
-            ServiceDirectory: ${{parameters.ServiceDirectory}}
-            ExcludePaths: ${{parameters.ExcludePaths}}
-
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build'
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ExcludePaths: ${{parameters.ExcludePaths}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
@@ -203,8 +196,11 @@ jobs:
           arguments: >
             -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
             -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
+            -PackageInfoDir $(Build.ArtifactStagingDirectory)/PackageInfo
             -InformationAction Continue
 
+      # This only copies the ReleaseArtifacts but for the PR pipeline just copy
+      # all of the built artifacts.
       - task: PowerShell@2
         displayName: 'Copy artifacts to staging'
         inputs:
@@ -215,6 +211,7 @@ jobs:
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
+            -PackageInfoDir $(Build.ArtifactStagingDirectory)/PackageInfo
             -InformationAction Continue
 
       - task: Powershell@2
@@ -303,6 +300,8 @@ jobs:
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Analyze'
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ExcludePaths: ${{parameters.ExcludePaths}}
 
       - task: PowerShell@2
         displayName: Generate directories variable for sparse checkout
@@ -332,9 +331,14 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-        parameters:
-          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        - template: /eng/common/pipelines/templates/steps/verify-readmes.yml
+          parameters:
+            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+      - ${{ else }}:
+        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+          parameters:
+            ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
@@ -345,9 +349,24 @@ jobs:
             Directory: sdk/${{ parameters.ServiceDirectory }}
           CheckLinkGuidance: $true
 
-      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        - pwsh: |
+            $diffJson = Get-Content '$(Build.ArtifactStagingDirectory)/diff/diff.json' -Raw
+            $diff = ConvertFrom-Json $diffJson
+            $changedServicesString = ''
+            if ($diff.ChangedServices) {
+                $changedServicesString = $diff.ChangedServices -join ","
+            }
+            Write-Host "changedServicesString='$changedServicesString'"
+            Write-Host "##vso[task.setvariable variable=SamplesServiceDirectories;]$changedServicesString"
+          displayName: Get samples service directories from PR diff
+        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+          parameters:
+            ServiceDirectories: $(SamplesServiceDirectories)
+      - ${{ else }}:
+        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+          parameters:
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
@@ -356,13 +375,18 @@ jobs:
           BasePathLength: 38
 
       - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ each artifact in parameters.Artifacts }}:
-          - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-            - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-              parameters:
-                PackageName: ${{artifact.name}}
-                ServiceName: ${{parameters.ServiceDirectory}}
-                ForRelease: false
+        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+            parameters:
+              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+        - ${{ else }}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceName: ${{parameters.ServiceDirectory}}
+                  ForRelease: false
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -422,7 +446,11 @@ jobs:
       OsVmImage: $(LINUXVMIMAGE)
       Pool: $(LINUXPOOL)
       Os: linux
-      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixConfigs:
+        - ${{ each config in parameters.MatrixConfigs }}:
+          - ${{ config }}
+        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+          - ${{ config }}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
@@ -430,6 +458,7 @@ jobs:
       AdditionalParameters:
         SDKType: ${{ parameters.SDKType }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        ExcludePaths: ${{ parameters.ExcludePaths }}
         TestPipeline: ${{ parameters.TestPipeline }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
