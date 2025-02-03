@@ -64,15 +64,15 @@ public class FeatureFilterUtils {
             throw new TargetingException("Unable to create Targeting Hash for " + contextId);
         }
 
-        BigInteger bi = fromLittleEndianByteArray(hash);
+        BigInteger bi = bigEndianToLittleEndian(hash);
 
         return (bi.longValue() / (Math.pow(2, 32) - 1)) * 100;
     }
 
-    public static BigInteger fromLittleEndianByteArray(byte[] bytes) {
+    public static BigInteger bigEndianToLittleEndian(byte[] bigEndian) {
         byte[] reversedBytes = new byte[4];
         for (int i = 0; i < 4; i++) {
-            reversedBytes[i] = bytes[3 - i];
+            reversedBytes[i] = bigEndian[3 - i];
         }
 
         return new BigInteger(1, reversedBytes);
