@@ -75,11 +75,11 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
             builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+                .endpoint(Configuration.getGlobalConfiguration().get("IMAGE_EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_IMAGE_EMBEDDINGS_KEY")));
         } else {
-            builder.endpoint(Configuration.getGlobalConfiguration().get("EMBEDDINGS_MODEL_ENDPOINT"))
-                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_EMBEDDINGS_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("IMAGE_EMBEDDINGS_MODEL_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_IMAGE_EMBEDDINGS_KEY")));
         }
         return builder;
     }

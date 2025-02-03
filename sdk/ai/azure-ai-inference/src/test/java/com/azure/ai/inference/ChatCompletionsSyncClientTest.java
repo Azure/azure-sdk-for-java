@@ -61,6 +61,8 @@ import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertChatSp
 import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertNoChatEventsCaptured;
 import static com.azure.ai.inference.ChatCompletionClientTracerTest.getChatSpan;
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_PATH;
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_FORMAT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -72,8 +74,6 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     private static final String FUNCTION_RETURN = "-7";
     private static final String TEST_URL
         = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
-    private static final String TEST_IMAGE_PATH = "./src/samples/resources/sample-images/sample.png";
-    private static final String TEST_IMAGE_FORMAT = "png";
 
     private ChatCompletionsClientBuilder getBuilder(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
