@@ -29,8 +29,8 @@
  * a layer of abstraction over the HTTP protocol, allowing client libraries to focus on service-specific logic.</p>
  *
  * @see io.clientcore.core.http.pipeline.HttpPipelinePolicy
- * @see io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel
- * @see io.clientcore.core.http.models.HttpLogOptions
+ * @see io.clientcore.core.http.models.HttpInstrumentationOptions.HttpLogDetailLevel
+ * @see io.clientcore.core.http.models.HttpInstrumentationOptions
  * @see io.clientcore.core.http.pipeline.HttpInstrumentationPolicy
  * @see io.clientcore.core.http.pipeline.HttpPipelinePolicy
  * @see io.clientcore.core.http.pipeline.HttpRetryPolicy
