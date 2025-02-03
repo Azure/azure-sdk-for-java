@@ -15,8 +15,8 @@
       "NotFromSource_TestsOnly": {
         "TestFromSource": false,
         "RunAggregateReports": false,
-        "TestOptions": "",
-        "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+        "TestGoals": "verify"
       }
     }
   },
@@ -27,6 +27,36 @@
     }
   ],
   "include": [
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.8",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.11",
+      "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.http.okhttp3.OkHttpHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Djacoco.skip",
+          "TestGoals": "verify"
+        }
+      }
+    },
     {
       "Agent": {
           "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }

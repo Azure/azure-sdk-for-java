@@ -11,7 +11,7 @@ public final class GroupQuotaDetailsNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaDetailsName model
-            = BinaryData.fromString("{\"value\":\"kwtmutduqktapspw\",\"localizedValue\":\"uertumk\"}")
+            = BinaryData.fromString("{\"value\":\"nguitnwuizgazxu\",\"localizedValue\":\"zuckyfi\"}")
                 .toObject(GroupQuotaDetailsName.class);
     }
 

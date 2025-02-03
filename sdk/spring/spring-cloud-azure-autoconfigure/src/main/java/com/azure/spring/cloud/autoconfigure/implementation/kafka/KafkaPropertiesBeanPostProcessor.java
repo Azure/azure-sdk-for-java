@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -12,10 +11,6 @@ import java.util.Map;
 class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostProcessor<KafkaProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
-
-    KafkaPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
 
     @Override
     protected Map<String, Object> getMergedProducerProperties(KafkaProperties properties) {

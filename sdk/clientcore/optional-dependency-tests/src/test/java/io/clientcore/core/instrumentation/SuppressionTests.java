@@ -49,7 +49,7 @@ public class SuppressionTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions otelOptions;
     private Tracer tracer;
 
     @BeforeEach
@@ -57,8 +57,8 @@ public class SuppressionTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
+        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
     }
 
     @AfterEach
@@ -98,7 +98,7 @@ public class SuppressionTests {
         Tracer outerTracer = tracer;
         Tracer innerTracer = Instrumentation
             .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
-            .getTracer();
+            .createTracer();
 
         RequestOptions options = new RequestOptions();
         Span outerSpan = outerTracer.spanBuilder("outerSpan", CLIENT, options.getInstrumentationContext()).startSpan();
@@ -122,7 +122,7 @@ public class SuppressionTests {
     public void disabledSuppressionDoesNotAffectChildren() {
         Tracer outerTracer = Instrumentation
             .create(otelOptions, new LibraryInstrumentationOptions("test-library").disableSpanSuppression(true))
-            .getTracer();
+            .createTracer();
         Tracer innerTracer = tracer;
 
         RequestOptions options = new RequestOptions();
@@ -155,7 +155,7 @@ public class SuppressionTests {
 
     @Test
     public void multipleLayers() {
-        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
 
         RequestOptions options = new RequestOptions();
 
@@ -307,9 +307,9 @@ public class SuppressionTests {
         private final HttpPipeline pipeline;
         private final Tracer tracer;
 
-        SampleClient(HttpPipeline pipeline, InstrumentationOptions<?> options) {
+        SampleClient(HttpPipeline pipeline, InstrumentationOptions options) {
             this.pipeline = pipeline;
-            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+            this.tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
         }
 
         @SuppressWarnings("try")

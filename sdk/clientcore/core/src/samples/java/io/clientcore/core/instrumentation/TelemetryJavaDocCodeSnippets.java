@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -11,12 +12,14 @@ import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Application developers that don't have OpenTelemetry on the classpath
@@ -45,7 +48,7 @@ public class TelemetryJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.telemetry.fallback.tracing
 
         SampleClient client = new SampleClientBuilder().build();
-        client.clientCall();
+        client.downloadContent();
 
         // END: io.clientcore.core.telemetry.fallback.tracing
     }
@@ -59,11 +62,11 @@ public class TelemetryJavaDocCodeSnippets {
 
         ClientLogger logger = new ClientLogger("sample-client-traces");
 
-        InstrumentationOptions<ClientLogger> instrumentationOptions = new InstrumentationOptions<ClientLogger>()
-            .setProvider(logger);
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setTelemetryProvider(logger);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
-        client.clientCall();
+        client.downloadContent();
 
         // END: io.clientcore.core.telemetry.usecustomlogger
     }
@@ -75,13 +78,29 @@ public class TelemetryJavaDocCodeSnippets {
     public void disableDistributedTracing() {
         // BEGIN: io.clientcore.core.telemetry.fallback.disabledistributedtracing
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>()
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
             .setTracingEnabled(false);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
-        client.clientCall();
+        client.downloadContent();
 
         // END: io.clientcore.core.telemetry.fallback.disabledistributedtracing
+    }
+
+    /**
+     * This code snippet shows how to disable metrics
+     * for a specific instance of client.
+     */
+    public void disableMetrics() {
+        // BEGIN: io.clientcore.core.telemetry.fallback.disablemetrics
+
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setMetricsEnabled(false);
+
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+        client.downloadContent();
+
+        // END: io.clientcore.core.telemetry.fallback.disablemetrics
     }
 
     /**
@@ -96,7 +115,7 @@ public class TelemetryJavaDocCodeSnippets {
             .setInstrumentationContext(new MyInstrumentationContext("e4eaaaf2d48f4bf3b299a8a2a2a77ad7", "5e0c63257de34c56"));
 
         // run on another thread
-        client.clientCall(options);
+        client.downloadContent(options);
 
         // END: io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext
     }
@@ -137,60 +156,93 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClientBuilder {
-        private InstrumentationOptions<?> instrumentationOptions;
-        // TODO (limolkova): do we need InstrumnetationTrait?
-        public SampleClientBuilder instrumentationOptions(InstrumentationOptions<?> instrumentationOptions) {
+        private HttpInstrumentationOptions instrumentationOptions;
+        public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
             this.instrumentationOptions = instrumentationOptions;
             return this;
         }
 
         public SampleClient build() {
-            return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions, null))
-                .build());
+            HttpPipeline pipeline = new HttpPipelineBuilder()
+                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
+                .build();
+            return new SampleClient(instrumentationOptions, pipeline, URI.create("https://example.com"));
         }
     }
 
     static class SampleClient {
         private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
         private final HttpPipeline httpPipeline;
+        private final Instrumentation instrumentation;
         private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
+        private final io.clientcore.core.instrumentation.metrics.Meter meter;
+        private final DoubleHistogram callDurationHistogram;
+        private final InstrumentationAttributes downloadContentSuccessAttributes;
+        private final URI endpoint;
 
-        SampleClient(InstrumentationOptions<?> instrumentationOptions, HttpPipeline httpPipeline) {
+        SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline, URI endpoint) {
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.endpoint = endpoint;
+            this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+            this.tracer = instrumentation.createTracer();
+            this.meter = instrumentation.createMeter();
+            this.callDurationHistogram = meter.createDoubleHistogram("sample.client.operation.duration", "Duration of Sample client operations", "s");
+            // caching most-used attribute instances to avoid performance overhead
+            this.downloadContentSuccessAttributes = createAttributes("downloadContent", endpoint, null, instrumentation);
         }
 
-        public void clientCall() {
-            this.clientCall(null);
+        public Response<?> downloadContent() {
+            return this.downloadContent(null);
         }
 
         @SuppressWarnings("try")
-        public void clientCall(RequestOptions options) {
-            Span span = tracer.spanBuilder("clientCall", SpanKind.CLIENT, options.getInstrumentationContext())
-                .startSpan();
+        public Response<?> downloadContent(RequestOptions options) {
+            if (!tracer.isEnabled() && !meter.isEnabled()) {
+                return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
+            }
 
-            if (options == null) {
+            if (options == null || options == RequestOptions.none()) {
                 options = new RequestOptions();
             }
 
-            options.setInstrumentationContext(span.getInstrumentationContext());
+            final long startTime = System.nanoTime();
+            RuntimeException error = null;
+
+            Span span = tracer.spanBuilder("downloadContent", SpanKind.CLIENT, options.getInstrumentationContext())
+                .startSpan();
+
+            if (span.getInstrumentationContext().isValid()) {
+                options.setInstrumentationContext(span.getInstrumentationContext());
+            }
 
             try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response = httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"));
-                response.close();
-                span.end();
-            } catch (Throwable t) {
-                span.end(t);
+                return httpPipeline.send(new HttpRequest(HttpMethod.GET, endpoint));
+            } catch (RuntimeException t) {
+                error = t;
+                throw t;
+            } finally {
+                span.end(error);
 
-                if (t instanceof IOException) {
-                    throw new UncheckedIOException((IOException) t);
-                } else if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                } else {
-                    throw new RuntimeException(t);
+                if (callDurationHistogram.isEnabled()) {
+                    InstrumentationAttributes attributes = error == null ? downloadContentSuccessAttributes : createAttributes("downloadContent", endpoint, error.getClass().getCanonicalName(), instrumentation);
+                    callDurationHistogram.record((System.nanoTime() - startTime) / 1e9, attributes, options.getInstrumentationContext());
                 }
             }
+        }
+
+        private static InstrumentationAttributes createAttributes(String operationName, URI endpoint, String errorType, Instrumentation instrumentation) {
+            Map<String, Object> attributeMap = new HashMap<>(errorType == null ? 4 : 8);
+            attributeMap.put("operation.name", operationName);
+            attributeMap.put("server.address", endpoint.getHost());
+            if (endpoint.getPort() != -1) {
+                attributeMap.put("server.port", endpoint.getPort());
+            }
+
+            if (errorType != null) {
+                attributeMap.put("error.type", errorType);
+            }
+
+            return instrumentation.createAttributes(attributeMap);
         }
     }
 }
