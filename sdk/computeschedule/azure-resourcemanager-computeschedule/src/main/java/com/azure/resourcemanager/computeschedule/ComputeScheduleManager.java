@@ -23,8 +23,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleClient;
-import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleClientBuilder;
+import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleMgmtClient;
+import com.azure.resourcemanager.computeschedule.implementation.ComputeScheduleMgmtClientBuilder;
 import com.azure.resourcemanager.computeschedule.implementation.OperationsImpl;
 import com.azure.resourcemanager.computeschedule.implementation.ScheduledActionsImpl;
 import com.azure.resourcemanager.computeschedule.models.Operations;
@@ -45,12 +45,12 @@ public final class ComputeScheduleManager {
 
     private ScheduledActions scheduledActions;
 
-    private final ComputeScheduleClient clientObject;
+    private final ComputeScheduleMgmtClient clientObject;
 
     private ComputeScheduleManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new ComputeScheduleClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new ComputeScheduleMgmtClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -280,12 +280,12 @@ public final class ComputeScheduleManager {
     }
 
     /**
-     * Gets wrapped service client ComputeScheduleClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client ComputeScheduleMgmtClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client ComputeScheduleClient.
+     * @return Wrapped service client ComputeScheduleMgmtClient.
      */
-    public ComputeScheduleClient serviceClient() {
+    public ComputeScheduleMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

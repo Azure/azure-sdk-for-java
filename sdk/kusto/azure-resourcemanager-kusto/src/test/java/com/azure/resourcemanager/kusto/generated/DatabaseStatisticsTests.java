@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseStatistics model = BinaryData.fromString("{\"size\":48.312317}").toObject(DatabaseStatistics.class);
-        Assertions.assertEquals(48.312317F, model.size());
+        DatabaseStatistics model = BinaryData.fromString("{\"size\":81.256256}").toObject(DatabaseStatistics.class);
+        Assertions.assertEquals(81.256256F, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseStatistics model = new DatabaseStatistics().withSize(48.312317F);
+        DatabaseStatistics model = new DatabaseStatistics().withSize(81.256256F);
         model = BinaryData.fromObject(model).toObject(DatabaseStatistics.class);
-        Assertions.assertEquals(48.312317F, model.size());
+        Assertions.assertEquals(81.256256F, model.size());
     }
 }

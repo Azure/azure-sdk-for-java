@@ -24,7 +24,7 @@ public final class QuotasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"dsnfdsdoakgtdl\",\"name\":{\"value\":\"zev\",\"localizedValue\":\"hewpusdsttwv\"},\"resourceType\":\"vbbejdcng\",\"quotaPeriod\":\"m\",\"isQuotaApplicable\":false,\"properties\":\"datafgmjzrwrdgrt\"},\"id\":\"aenuuz\",\"name\":\"opbminrfdw\",\"type\":\"yuhhziu\"}";
+            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"wqm\",\"name\":{\"value\":\"lkrm\",\"localizedValue\":\"i\"},\"resourceType\":\"xacqqudfnbyx\",\"quotaPeriod\":\"aabjyvayffimrz\",\"isQuotaApplicable\":true,\"properties\":\"dataqogsexnevfd\"},\"id\":\"wnwmewzs\",\"name\":\"yceuzsoib\",\"type\":\"ud\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class QuotasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CurrentQuotaLimitBase response = manager.quotas()
-            .define("pzfoqoui")
-            .withExistingScope("ybxarzgszu")
+            .define("tcs")
+            .withExistingScope("fcktqumiekke")
             .withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
-                .withName(new ResourceName().withValue("azxkhnzbonlwnto"))
-                .withResourceType("kszzcmrvexztv")
-                .withProperties("dataguxawqaldsyuuxi"))
+                .withName(new ResourceName().withValue("unygaeqid"))
+                .withResourceType("uvarmywdmjsjq")
+                .withProperties("dataduhpk"))
             .create();
 
-        Assertions.assertEquals("zev", response.properties().name().value());
-        Assertions.assertEquals("vbbejdcng", response.properties().resourceType());
+        Assertions.assertEquals("lkrm", response.properties().name().value());
+        Assertions.assertEquals("xacqqudfnbyx", response.properties().resourceType());
     }
 }

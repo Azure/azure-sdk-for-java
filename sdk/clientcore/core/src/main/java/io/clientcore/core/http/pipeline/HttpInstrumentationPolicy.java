@@ -6,7 +6,7 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
@@ -16,7 +16,8 @@ import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationO
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
-import io.clientcore.core.instrumentation.InstrumentationOptions;
+import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
+import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
@@ -29,6 +30,7 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
 import java.net.URI;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_CONTENT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_BODY_SIZE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_REQUEST_DURATION_KEY;
@@ -69,7 +72,7 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * {@link HttpRetryPolicy} and {@link HttpRedirectPolicy} so that it's executed on each try or redirect and logging happens
  * in the scope of the span.
  * <p>
- * The policy supports basic customizations using {@link InstrumentationOptions} and {@link HttpLogOptions}.
+ * The policy supports basic customizations using {@link HttpInstrumentationOptions}.
  * <p>
  * If your client library needs a different approach to distributed tracing,
  * you can create a custom policy and use it instead of the {@link HttpInstrumentationPolicy}. If you want to enrich instrumentation
@@ -77,38 +80,38 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * so that it's executed in the scope of the span created by the {@link HttpInstrumentationPolicy}.
  *
  * <p><strong>Configure instrumentation policy:</strong></p>
- * <!-- src_embed io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
+ * <!-- src_embed io.clientcore.core.instrumentation.instrumentationpolicy -->
  * <pre>
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;&#41;
+ *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
- * <!-- end io.clientcore.core.telemetry.tracing.instrumentationpolicy -->
+ * <!-- end io.clientcore.core.instrumentation.instrumentationpolicy -->
  *
  * <p><strong>Customize instrumentation policy:</strong></p>
- * <!-- src_embed io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
+ * <!-- src_embed io.clientcore.core.instrumentation.customizeinstrumentationpolicy -->
  * <pre>
  *
  * &#47;&#47; You can configure URL sanitization to include additional query parameters to preserve
  * &#47;&#47; in `url.full` attribute.
- * HttpLogOptions logOptions = new HttpLogOptions&#40;&#41;;
- * logOptions.addAllowedQueryParamName&#40;&quot;documentId&quot;&#41;;
+ * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;;
+ * instrumentationOptions.addAllowedQueryParamName&#40;&quot;documentId&quot;&#41;;
  *
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;&#41;
+ *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;&#41;
  *     .build&#40;&#41;;
  *
  * </pre>
- * <!-- end io.clientcore.core.telemetry.tracing.customizeinstrumentationpolicy -->
+ * <!-- end io.clientcore.core.instrumentation.customizeinstrumentationpolicy -->
  *
  * <p><strong>Enrich HTTP spans with additional attributes:</strong></p>
- * <!-- src_embed io.clientcore.core.telemetry.tracing.enrichhttpspans -->
+ * <!-- src_embed io.clientcore.core.instrumentation.enrichhttpspans -->
  * <pre>
  *
  * HttpPipelinePolicy enrichingPolicy = &#40;request, next&#41; -&gt; &#123;
@@ -125,18 +128,18 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;
  *         new HttpRetryPolicy&#40;&#41;,
- *         new HttpInstrumentationPolicy&#40;instrumentationOptions, logOptions&#41;,
+ *         new HttpInstrumentationPolicy&#40;instrumentationOptions&#41;,
  *         enrichingPolicy&#41;
  *     .build&#40;&#41;;
  *
  *
  * </pre>
- * <!-- end io.clientcore.core.telemetry.tracing.enrichhttpspans -->
+ * <!-- end io.clientcore.core.instrumentation.enrichhttpspans -->
  *
  */
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
-    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
+    private static final HttpInstrumentationOptions DEFAULT_OPTIONS = new HttpInstrumentationOptions();
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
     private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
@@ -161,6 +164,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
+    // HTTP request duration metric is formally defined in the OpenTelemetry Semantic Conventions:
+    // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-metrics.md#metric-httpclientrequestduration
+    private static final String REQUEST_DURATION_METRIC_NAME = "http.client.request.duration";
+    private static final String REQUEST_DURATION_METRIC_DESCRIPTION = "Duration of HTTP client requests";
+    private static final String REQUEST_DURATION_METRIC_UNIT = "s";
 
     // request log level is low (verbose) since almost all request details are also
     // captured on the response log.
@@ -168,28 +176,45 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
 
     private final Tracer tracer;
+    private final Meter meter;
+    private final boolean isTracingEnabled;
+    private final boolean isMetricsEnabled;
+    private final Instrumentation instrumentation;
+    private final DoubleHistogram httpRequestDuration;
     private final TraceContextPropagator traceContextPropagator;
     private final Set<String> allowedQueryParameterNames;
-    private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final Set<HttpHeaderName> allowedHeaderNames;
+    private final boolean isLoggingEnabled;
+    private final boolean isContentLoggingEnabled;
+    private final boolean isRedactedHeadersLoggingEnabled;
 
     /**
      * Creates a new instrumentation policy.
      * @param instrumentationOptions Application telemetry options.
-     * @param logOptions Http log options. TODO: we should merge this with telemetry options.
      */
-    public HttpInstrumentationPolicy(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions logOptions) {
-        Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-        this.tracer = instrumentation.getTracer();
+    public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
+        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+        this.tracer = instrumentation.createTracer();
+        this.meter = instrumentation.createMeter();
+        this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,
+            REQUEST_DURATION_METRIC_DESCRIPTION, REQUEST_DURATION_METRIC_UNIT);
         this.traceContextPropagator = instrumentation.getW3CTraceContextPropagator();
 
-        HttpLogOptions logOptionsToUse = logOptions == null ? DEFAULT_LOG_OPTIONS : logOptions;
-        this.httpLogDetailLevel = logOptionsToUse.getLogLevel();
-        this.allowedHeaderNames = logOptionsToUse.getAllowedHeaderNames();
-        this.allowedQueryParameterNames = logOptionsToUse.getAllowedQueryParamNames()
+        HttpInstrumentationOptions optionsToUse
+            = instrumentationOptions == null ? DEFAULT_OPTIONS : instrumentationOptions;
+        this.isLoggingEnabled = optionsToUse.getHttpLogLevel() != HttpInstrumentationOptions.HttpLogDetailLevel.NONE;
+        this.isContentLoggingEnabled
+            = optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY
+                || optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS;
+        this.isRedactedHeadersLoggingEnabled = optionsToUse.isRedactedHeaderNamesLoggingEnabled();
+        this.allowedHeaderNames = optionsToUse.getAllowedHeaderNames();
+        this.allowedQueryParameterNames = optionsToUse.getAllowedQueryParamNames()
             .stream()
             .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
             .collect(Collectors.toSet());
+
+        this.isTracingEnabled = tracer.isEnabled();
+        this.isMetricsEnabled = meter.isEnabled();
     }
 
     /**
@@ -198,37 +223,38 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     @SuppressWarnings("try")
     @Override
     public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
-        boolean isTracingEnabled = tracer.isEnabled();
-        if (!isTracingEnabled && httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+        if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
             return next.process();
         }
 
         ClientLogger logger = getLogger(request);
         final long startNs = System.nanoTime();
-        String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
-        int tryCount = HttpRequestAccessHelper.getTryCount(request);
+        final String redactedUrl = getRedactedUri(request.getUri(), allowedQueryParameterNames);
+        final int tryCount = HttpRequestAccessHelper.getTryCount(request);
         final long requestContentLength = getContentLength(logger, request.getBody(), request.getHeaders(), true);
 
-        InstrumentationContext instrumentationContext
-            = request.getRequestOptions() == null ? null : request.getRequestOptions().getInstrumentationContext();
-        Span span = Span.noop();
-        if (isTracingEnabled) {
-            if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
-                request.setRequestOptions(new RequestOptions());
-            }
-
-            span = startHttpSpan(request, redactedUrl, instrumentationContext);
-            instrumentationContext = span.getInstrumentationContext();
-            request.getRequestOptions().setInstrumentationContext(instrumentationContext);
+        Map<String, Object> metricAttributes = isMetricsEnabled ? new HashMap<>(8) : null;
+        if (request.getRequestOptions() == null || request.getRequestOptions() == RequestOptions.none()) {
+            request.setRequestOptions(new RequestOptions());
         }
 
-        // even if tracing is disabled, we could have a valid context to propagate
-        // if it was provided by the application explicitly.
-        if (instrumentationContext != null && instrumentationContext.isValid()) {
-            traceContextPropagator.inject(instrumentationContext, request.getHeaders(), SETTER);
+        InstrumentationContext parentContext = request.getRequestOptions().getInstrumentationContext();
+
+        SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, parentContext);
+        setStartAttributes(request, redactedUrl, spanBuilder, metricAttributes);
+        Span span = spanBuilder.startSpan();
+
+        InstrumentationContext context
+            = span.getInstrumentationContext().isValid() ? span.getInstrumentationContext() : parentContext;
+
+        if (context != null && context.isValid()) {
+            request.getRequestOptions().setInstrumentationContext(context);
+            // even if tracing is disabled, we could have a valid context to propagate
+            // if it was provided by the application explicitly.
+            traceContextPropagator.inject(context, request.getHeaders(), SETTER);
         }
 
-        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, instrumentationContext);
+        logRequest(logger, request, startNs, requestContentLength, redactedUrl, tryCount, context);
 
         try (TracingScope scope = span.makeCurrent()) {
             Response<?> response = next.process();
@@ -244,75 +270,114 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
                 return null;
             }
 
-            addDetails(request, response, tryCount, span);
-            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount,
-                instrumentationContext);
+            addDetails(request, response.getStatusCode(), tryCount, span, metricAttributes);
+            response = logResponse(logger, response, startNs, requestContentLength, redactedUrl, tryCount, context);
             span.end();
             return response;
         } catch (RuntimeException t) {
-            span.end(unwrap(t));
-            // TODO (limolkova) test otel scope still covers this
+            Throwable cause = unwrap(t);
+            if (metricAttributes != null) {
+                metricAttributes.put(ERROR_TYPE_KEY, cause.getClass().getCanonicalName());
+            }
+            span.end(cause);
             throw logException(logger, request, null, t, startNs, null, requestContentLength, redactedUrl, tryCount,
-                instrumentationContext);
+                context);
+        } finally {
+            if (isMetricsEnabled) {
+                httpRequestDuration.record((System.nanoTime() - startNs) / 1_000_000_000.0,
+                    instrumentation.createAttributes(metricAttributes), context);
+            }
         }
     }
 
-    private Span startHttpSpan(HttpRequest request, String sanitizedUrl, InstrumentationContext context) {
-        SpanBuilder spanBuilder = tracer.spanBuilder(request.getHttpMethod().toString(), CLIENT, context)
-            .setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
-            .setAttribute(URL_FULL_KEY, sanitizedUrl)
-            .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
-        maybeSetServerPort(spanBuilder, request.getUri());
-        return spanBuilder.startSpan();
+    private void setStartAttributes(HttpRequest request, String sanitizedUrl, SpanBuilder spanBuilder,
+        Map<String, Object> metricAttributes) {
+        if (!isTracingEnabled && !isMetricsEnabled) {
+            return;
+        }
+
+        int port = getServerPort(request.getUri());
+        if (isTracingEnabled) {
+            spanBuilder.setAttribute(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString())
+                .setAttribute(URL_FULL_KEY, sanitizedUrl)
+                .setAttribute(SERVER_ADDRESS_KEY, request.getUri().getHost());
+
+            if (port > 0) {
+                spanBuilder.setAttribute(SERVER_PORT_KEY, port);
+            }
+        }
+
+        if (isMetricsEnabled) {
+            metricAttributes.put(HTTP_REQUEST_METHOD_KEY, request.getHttpMethod().toString());
+            metricAttributes.put(SERVER_ADDRESS_KEY, request.getUri().getHost());
+            if (port > 0) {
+                metricAttributes.put(SERVER_PORT_KEY, port);
+            }
+        }
     }
 
     /**
      * Does the best effort to capture the server port with minimum perf overhead.
      * If port is not set, we check scheme for "http" and "https" (case-sensitive).
-     * If scheme is not one of those, we don't set the port.
+     * If scheme is not one of those, returns -1.
      *
-     * @param spanBuilder span builder
      * @param uri request URI
      */
-    private static void maybeSetServerPort(SpanBuilder spanBuilder, URI uri) {
+    private static int getServerPort(URI uri) {
         int port = uri.getPort();
-        if (port != -1) {
-            spanBuilder.setAttribute(SERVER_PORT_KEY, port);
-        } else {
+        if (port == -1) {
             switch (uri.getScheme()) {
                 case "http":
-                    spanBuilder.setAttribute(SERVER_PORT_KEY, 80);
-                    break;
+                    return 80;
 
                 case "https":
-                    spanBuilder.setAttribute(SERVER_PORT_KEY, 443);
-                    break;
+                    return 443;
 
                 default:
                     break;
             }
         }
+        return port;
     }
 
-    private void addDetails(HttpRequest request, Response<?> response, int tryCount, Span span) {
-        if (!span.isRecording()) {
+    private void addDetails(HttpRequest request, int statusCode, int tryCount, Span span,
+        Map<String, Object> metricAttributes) {
+        if (!span.isRecording() && !isMetricsEnabled) {
             return;
         }
 
-        span.setAttribute(HTTP_RESPONSE_STATUS_CODE_KEY, (long) response.getStatusCode());
-
-        if (tryCount > 0) {
-            span.setAttribute(HTTP_REQUEST_RESEND_COUNT_KEY, (long) tryCount);
+        String error = null;
+        if (statusCode >= 400) {
+            error = String.valueOf(statusCode);
         }
 
-        String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
-        if (userAgent != null) {
-            span.setAttribute(USER_AGENT_ORIGINAL_KEY, userAgent);
+        if (span.isRecording()) {
+            span.setAttribute(HTTP_RESPONSE_STATUS_CODE_KEY, (long) statusCode);
+
+            if (tryCount > 0) {
+                span.setAttribute(HTTP_REQUEST_RESEND_COUNT_KEY, (long) tryCount);
+            }
+
+            String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
+            if (userAgent != null) {
+                span.setAttribute(USER_AGENT_ORIGINAL_KEY, userAgent);
+            }
+
+            if (error != null) {
+                span.setError(error);
+            }
         }
 
-        if (response.getStatusCode() >= 400) {
-            span.setError(String.valueOf(response.getStatusCode()));
+        if (isMetricsEnabled) {
+            if (statusCode > 0) {
+                metricAttributes.put(HTTP_RESPONSE_STATUS_CODE_KEY, statusCode);
+            }
+
+            if (error != null) {
+                metricAttributes.put(ERROR_TYPE_KEY, error);
+            }
         }
+
         // TODO (lmolkova) url.template and experimental features
     }
 
@@ -355,7 +420,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
         String redactedUrl, int tryCount, InstrumentationContext context) {
         ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
-        if (!logBuilder.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+        if (!logBuilder.isEnabled() || !isLoggingEnabled) {
             return;
         }
 
@@ -368,7 +433,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         addHeadersToLogMessage(request.getHeaders(), logBuilder);
 
-        if (httpLogDetailLevel.shouldLogBody() && canLogBody(request.getBody())) {
+        if (isContentLoggingEnabled && canLogBody(request.getBody())) {
             try {
                 BinaryData bufferedBody = request.getBody().toReplayableBinaryData();
                 request.setBody(bufferedBody);
@@ -386,7 +451,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
         ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
-        if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+        if (!isLoggingEnabled) {
             return response;
         }
 
@@ -408,7 +473,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             addHeadersToLogMessage(response.getHeaders(), logBuilder);
         }
 
-        if (httpLogDetailLevel.shouldLogBody() && canLogBody(response.getBody())) {
+        if (isContentLoggingEnabled && canLogBody(response.getBody())) {
             return new LoggingHttpResponse<>(response, content -> {
                 if (logBuilder.isEnabled()) {
                     logBuilder.addKeyValue(HTTP_RESPONSE_BODY_CONTENT_KEY, content.toString())
@@ -431,7 +496,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         int tryCount, InstrumentationContext context) {
 
         ClientLogger.LoggingEvent log = logger.atLevel(ClientLogger.LogLevel.WARNING);
-        if (!log.isEnabled() || httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
+        if (!log.isEnabled() || !isLoggingEnabled) {
             return throwable;
         }
 
@@ -484,11 +549,12 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param logBuilder Log message builder.
      */
     private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEvent logBuilder) {
-        if (httpLogDetailLevel.shouldLogHeaders()) {
-            for (HttpHeader header : headers) {
-                HttpHeaderName headerName = header.getName();
-                String headerValue = allowedHeaderNames.contains(headerName) ? header.getValue() : REDACTED_PLACEHOLDER;
-                logBuilder.addKeyValue(headerName.toString(), headerValue);
+        for (HttpHeader header : headers) {
+            HttpHeaderName headerName = header.getName();
+            if (allowedHeaderNames.contains(headerName)) {
+                logBuilder.addKeyValue(headerName.toString(), header.getValue());
+            } else if (isRedactedHeadersLoggingEnabled) {
+                logBuilder.addKeyValue(headerName.toString(), REDACTED_PLACEHOLDER);
             }
         }
     }

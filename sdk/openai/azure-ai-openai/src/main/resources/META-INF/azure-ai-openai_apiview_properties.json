@@ -95,7 +95,7 @@
     "com.azure.ai.openai.implementation.models.FileListResponse": "Azure.OpenAI.FileListResponse",
     "com.azure.ai.openai.implementation.models.FunctionCallPreset": "Azure.OpenAI.FunctionCallPreset",
     "com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch": "Azure.OpenAI.OpenAIPageableListOf",
-    "com.azure.ai.openai.implementation.models.UploadFileRequest": "uploadFile.Request.anonymous",
+    "com.azure.ai.openai.implementation.models.UploadFileRequest": "Client.uploadFile.Request.anonymous",
     "com.azure.ai.openai.models.AddUploadPartRequest": "Azure.OpenAI.AddUploadPartRequest",
     "com.azure.ai.openai.models.AudioTaskLabel": "Azure.OpenAI.AudioTaskLabel",
     "com.azure.ai.openai.models.AudioTranscription": "Azure.OpenAI.AudioTranscription",
@@ -191,8 +191,8 @@
     "com.azure.ai.openai.models.ContentFilterResultsForPrompt": "Azure.OpenAI.ContentFilterResultsForPrompt",
     "com.azure.ai.openai.models.ContentFilterSeverity": "Azure.OpenAI.ContentFilterSeverity",
     "com.azure.ai.openai.models.CreateUploadRequest": "Azure.OpenAI.CreateUploadRequest",
-    "com.azure.ai.openai.models.CreateUploadRequestPurpose": "CreateUploadRequest.purpose.anonymous",
-    "com.azure.ai.openai.models.DataFileDetails": "null",
+    "com.azure.ai.openai.models.CreateUploadRequestPurpose": "Azure.OpenAI.CreateUploadRequest.purpose.anonymous",
+    "com.azure.ai.openai.models.DataFileDetails": null,
     "com.azure.ai.openai.models.ElasticsearchChatExtensionConfiguration": "Azure.OpenAI.ElasticsearchChatExtensionConfiguration",
     "com.azure.ai.openai.models.ElasticsearchChatExtensionParameters": "Azure.OpenAI.ElasticsearchChatExtensionParameters",
     "com.azure.ai.openai.models.ElasticsearchIndexFieldMappingOptions": "Azure.OpenAI.ElasticsearchIndexFieldMappingOptions",
@@ -203,7 +203,7 @@
     "com.azure.ai.openai.models.EmbeddingsOptions": "Azure.OpenAI.EmbeddingsOptions",
     "com.azure.ai.openai.models.EmbeddingsUsage": "Azure.OpenAI.EmbeddingsUsage",
     "com.azure.ai.openai.models.FileDeletionStatus": "Azure.OpenAI.FileDeletionStatus",
-    "com.azure.ai.openai.models.FileDetails": "null",
+    "com.azure.ai.openai.models.FileDetails": null,
     "com.azure.ai.openai.models.FilePurpose": "Azure.OpenAI.FilePurpose",
     "com.azure.ai.openai.models.FileState": "Azure.OpenAI.FileState",
     "com.azure.ai.openai.models.FunctionCall": "Azure.OpenAI.FunctionCall",
@@ -250,9 +250,9 @@
     "com.azure.ai.openai.models.SpeechGenerationResponseFormat": "Azure.OpenAI.SpeechGenerationResponseFormat",
     "com.azure.ai.openai.models.SpeechVoice": "Azure.OpenAI.SpeechVoice",
     "com.azure.ai.openai.models.Upload": "Azure.OpenAI.Upload",
-    "com.azure.ai.openai.models.UploadObject": "null",
+    "com.azure.ai.openai.models.UploadObject": null,
     "com.azure.ai.openai.models.UploadPart": "Azure.OpenAI.UploadPart",
-    "com.azure.ai.openai.models.UploadPurpose": "Upload.purpose.anonymous",
-    "com.azure.ai.openai.models.UploadStatus": "Upload.status.anonymous"
+    "com.azure.ai.openai.models.UploadPurpose": "Azure.OpenAI.Upload.purpose.anonymous",
+    "com.azure.ai.openai.models.UploadStatus": "Azure.OpenAI.Upload.status.anonymous"
   }
 }

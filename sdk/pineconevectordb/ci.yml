@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/pineconevectordb/ci.yml
+      - sdk/pineconevectordb/azure-resourcemanager-pineconevectordb/
+    exclude:
+      - sdk/pineconevectordb/pom.xml
+      - sdk/pineconevectordb/azure-resourcemanager-pineconevectordb/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/pineconevectordb/ci.yml
+      - sdk/pineconevectordb/azure-resourcemanager-pineconevectordb/
+    exclude:
+      - sdk/pineconevectordb/pom.xml
+      - sdk/pineconevectordb/azure-resourcemanager-pineconevectordb/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerpineconevectordb
+    displayName: azure-resourcemanager-pineconevectordb
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: pineconevectordb
+    Artifacts:
+      - name: azure-resourcemanager-pineconevectordb
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerpineconevectordb
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerpineconevectordb }}

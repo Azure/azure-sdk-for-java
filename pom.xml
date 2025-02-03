@@ -16,7 +16,6 @@
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
-    <module>sdk/aot</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
@@ -34,7 +33,6 @@
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
     <module>sdk/batch</module>
-    <module>sdk/batchai</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
@@ -57,7 +55,6 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
-    <module>sdk/corev2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
@@ -132,7 +129,6 @@
     <module>sdk/logic</module>
     <module>sdk/logz</module>
     <module>sdk/machinelearning</module>
-    <module>sdk/machinelearningservices</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
@@ -167,6 +163,7 @@
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
+    <module>sdk/pineconevectordb</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
     <module>sdk/postgresql</module>
@@ -214,7 +211,6 @@
     <module>sdk/storage</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
-    <module>sdk/storageimportexport</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -229,7 +225,6 @@
     <module>sdk/tools</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/videoanalyzer</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>

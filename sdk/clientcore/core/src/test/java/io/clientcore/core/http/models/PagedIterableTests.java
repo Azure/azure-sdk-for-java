@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -77,12 +78,12 @@ public class PagedIterableTests {
     public void iterateResponseContainsEmptyArray() {
         pagedResponses = new ArrayList<>(3);
         // second page is empty but has nextLink
-        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, List.of(0, 1, 2), null, "1",
-            null, null, null));
+        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, Arrays.asList(0, 1, 2),
+            null, "1", null, null, null));
         pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, Collections.emptyList(),
             null, "2", null, null, null));
-        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, List.of(3, 4), null, null,
-            null, null, null));
+        pagedResponses.add(new PagedResponse<>(httpRequest, 200, httpHeaders, responseBody, Arrays.asList(3, 4), null,
+            null, null, null, null));
 
         PagedIterable<Integer> pagedIterable
             = new PagedIterable<>(pagingOptions -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
