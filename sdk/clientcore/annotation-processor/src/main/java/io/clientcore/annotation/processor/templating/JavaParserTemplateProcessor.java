@@ -6,10 +6,12 @@ package io.clientcore.annotation.processor.templating;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
@@ -21,11 +23,8 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -33,7 +32,6 @@ import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -61,24 +59,24 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         String serviceInterfaceImplShortName = templateInput.getServiceInterfaceImplShortName();
         String serviceInterfaceShortName = templateInput.getServiceInterfaceShortName();
 
-        compilationUnit.setLineComment(
-            "Copyright (c) Microsoft Corporation. All rights reserved.\nLicensed under the MIT License.");
+        templateInput.getImports().keySet().forEach(compilationUnit::addImport);
+
+        // For multi-line LineComments they need to be added individually as orphan comments.
+        compilationUnit.addOrphanComment(new LineComment("Copyright (c) Microsoft Corporation. All rights reserved."));
+        compilationUnit.addOrphanComment(new LineComment("Licensed under the MIT License."));
         compilationUnit.setPackageDeclaration(packageName);
         classBuilder = compilationUnit.addClass(serviceInterfaceImplShortName, Modifier.Keyword.PUBLIC);
 
+        // Import the service interface using the fully qualified name.
+        // TODO (alzimmer): Should check if the service interface and implementation are in the same package. If so,
+        //  this import isn't needed. But this can be a final touches thing.
         compilationUnit.addImport(templateInput.getServiceInterfaceFQN());
-        compilationUnit.addImport(ByteBuffer.class);
-        compilationUnit.addImport(IOException.class);
-        compilationUnit.addImport(UncheckedIOException.class);
-        compilationUnit.addImport(ResponseBodyMode.class);
-        compilationUnit.addImport(HttpResponse.class);
-        compilationUnit.addImport(HttpResponseAccessHelper.class);
 
         classBuilder.addImplementedType(serviceInterfaceShortName);
 
-        // add LoggerField
-        compilationUnit.addImport(ClientLogger.class);
-        classBuilder.addMember(getLoggerField(serviceInterfaceImplShortName));
+        // Add ClientLogger static instantiation.
+        configureLoggerField(classBuilder.addField("ClientLogger", "LOGGER", Modifier.Keyword.PRIVATE,
+            Modifier.Keyword.STATIC, Modifier.Keyword.FINAL), serviceInterfaceShortName);
 
         // Create the defaultPipeline field
         classBuilder.addField(HttpPipeline.class, "defaultPipeline", Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL);
@@ -120,8 +118,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setBody(StaticJavaParser
                 .parseBlock("{ return new " + serviceInterfaceImplShortName + "(pipeline, serializer); }"));
 
-        classBuilder.addMember(getPipelineMethod());
-        classBuilder.addMember(getServiceVersionMethod(serviceVersionClassName));
+        configurePipelineMethod(classBuilder.addMethod("getPipeline", Modifier.Keyword.PUBLIC));
+        configureServiceVersionMethod(classBuilder.addMethod("getServiceVersion", Modifier.Keyword.PUBLIC),
+            serviceVersionClassName);
 
         getGeneratedServiceMethods(templateInput);
 
@@ -144,20 +143,30 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                         || parameter.getName().equals("apiVersion")));
 
             if (generateInternalOnly) {
-                generateInternalMethod(method); // Generate the internal method
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method); // Generate the internal method
             } else {
-                classBuilder.addMember(generatePublicMethod(method));
-                generateInternalMethod(method);
+                configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method);
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method);
             }
         }
     }
 
-    FieldDeclaration getLoggerField(String serviceInterfaceShortName) {
-        return new FieldDeclaration()
-            .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
-            .addVariable(new VariableDeclarator().setType("ClientLogger")
+    // Pattern for all field and method creation is to mutate the passed declaration.
+    // This pattern allows for addition of imports to be done in these methods using
+    // 'tryAddImportToParentCompilationUnit', as that method follows the chain of parent nodes to add the import to the
+    // creating CompilationUnit (if it exists).
+    //
+    // So, instead of needing a bunch of 'CompilationUnit.addImport' calls before creating the class, fields, and
+    // methods contained by source file, we can add the imports as we create the methods. This works as declarations
+    // will look for a parent node, in this case a ClassOrInterfaceDeclaration, and then look for the parent node of
+    // that (the CompilationUnit) to add the import to.
+
+    void configureLoggerField(FieldDeclaration field, String serviceInterfaceShortName) {
+        field.tryAddImportToParentCompilationUnit(ClientLogger.class);
+        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
+            .setVariables(new NodeList<>(new VariableDeclarator().setType("ClientLogger")
                 .setName("LOGGER")
-                .setInitializer("new ClientLogger(" + serviceInterfaceShortName + ".class)"));
+                .setInitializer("new ClientLogger(" + serviceInterfaceShortName + ".class)")));
     }
 
     static String getServiceVersionType(String packageName, String serviceInterfaceShortName) {
@@ -166,29 +175,30 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             + "ServiceVersion";
     }
 
-    MethodDeclaration getEndpointMethod() {
-        return new MethodDeclaration().setName("getEndpoint")
+    void configureEndpointMethod(MethodDeclaration endpointMethod) {
+        endpointMethod.setName("getEndpoint")
             .setModifiers(Modifier.Keyword.PUBLIC)
             .setType(String.class)
             .setBody(new BlockStmt().addStatement(new ReturnStmt("endpoint")));
     }
 
-    MethodDeclaration getPipelineMethod() {
-        return new MethodDeclaration().setName("getPipeline")
+    void configurePipelineMethod(MethodDeclaration pipelineMethod) {
+        pipelineMethod.tryAddImportToParentCompilationUnit(HttpPipeline.class);
+        pipelineMethod.setName("getPipeline")
             .setModifiers(Modifier.Keyword.PUBLIC)
             .setType(HttpPipeline.class)
             .setBody(new BlockStmt().addStatement(new ReturnStmt("defaultPipeline")));
     }
 
-    MethodDeclaration getServiceVersionMethod(String serviceVersionType) {
-        return new MethodDeclaration().setName("getServiceVersion")
+    void configureServiceVersionMethod(MethodDeclaration serviceVersionMethod, String serviceVersionType) {
+        serviceVersionMethod.setName("getServiceVersion")
             .setModifiers(Modifier.Keyword.PUBLIC)
             .setType(serviceVersionType)
             .setBody(new BlockStmt().addStatement(new ReturnStmt("serviceVersion")));
     }
 
-    MethodDeclaration generatePublicMethod(HttpRequestContext method) {
-        MethodDeclaration methodBuilder = new MethodDeclaration().setName(method.getMethodName())
+    void configurePublicMethod(MethodDeclaration publicMethod, HttpRequestContext method) {
+        publicMethod.setName(method.getMethodName())
             .setModifiers(Modifier.Keyword.PUBLIC)
             .addMarkerAnnotation(Override.class)
             .setType(inferTypeNameFromReturnType(method.getMethodReturnType()));
@@ -199,7 +209,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             if (parameter.getName().equals("endpoint") || parameter.getName().equals("apiVersion")) {
                 continue;
             }
-            methodBuilder.addParameter(parameter.getShortTypeName(), parameter.getName());
+            publicMethod.addParameter(parameter.getShortTypeName(), parameter.getName());
         }
 
         // add call to the overloaded version of this method
@@ -210,27 +220,26 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .orElse("");
 
         if (!"void".equals(method.getMethodReturnType())) {
-            methodBuilder
+            publicMethod
                 .setBody(new BlockStmt().addStatement(new ReturnStmt(method.getMethodName() + "(" + params + ")")));
         } else {
-            methodBuilder.setBody(StaticJavaParser.parseBlock("{" + method.getMethodName() + "(" + params + ")}"));
+            publicMethod.setBody(StaticJavaParser.parseBlock("{" + method.getMethodName() + "(" + params + ")}"));
         }
-        System.out.println("methodBuilder: " + methodBuilder);
-        return methodBuilder;
+        System.out.println("methodBuilder: " + publicMethod);
     }
 
-    private void generateInternalMethod(HttpRequestContext method) {
+    private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
         String returnTypeName = inferTypeNameFromReturnType(method.getMethodReturnType());
-        MethodDeclaration methodBuilder = new MethodDeclaration().setName(method.getMethodName())
+        internalMethod.setName(method.getMethodName())
             .setModifiers(Modifier.Keyword.PUBLIC)
             .addMarkerAnnotation(Override.class)
             .setType(returnTypeName);
 
         for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
-            methodBuilder.addParameter(parameter.getShortTypeName(), parameter.getName());
+            internalMethod.addParameter(parameter.getShortTypeName(), parameter.getName());
         }
 
-        BlockStmt body = new BlockStmt();
+        BlockStmt body = internalMethod.getBody().get();
         body.addStatement(StaticJavaParser.parseStatement("HttpPipeline pipeline = this.getPipeline();"));
 
         initializeHttpRequest(body, method);
@@ -238,15 +247,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         addRequestBody(body, method);
         finalizeHttpRequest(body, returnTypeName, method);
 
-        methodBuilder.setBody(body);
-        classBuilder.addMember(methodBuilder);
+        internalMethod.setBody(body);
     }
 
     // Helper methods
 
     private void initializeHttpRequest(BlockStmt body, HttpRequestContext method) {
-        compilationUnit.addImport(HttpRequest.class);
-        compilationUnit.addImport(HttpMethod.class);
+        body.tryAddImportToParentCompilationUnit(HttpRequest.class);
+        body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
         body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
         Statement statement = StaticJavaParser.parseStatement(
@@ -260,8 +268,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        compilationUnit.addImport(HttpHeaders.class);
-        compilationUnit.addImport(HttpHeaderName.class);
+        body.tryAddImportToParentCompilationUnit(HttpHeaders.class);
+        body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
 
         Statement statement = StaticJavaParser.parseStatement("HttpHeaders headers = new HttpHeaders();");
         statement.setLineComment("Set the headers");
@@ -313,7 +321,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     private void finalizeHttpRequest(BlockStmt body, String returnTypeName, HttpRequestContext method) {
-        compilationUnit.addImport(Response.class);
+        body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
         statement.setLineComment("Send the request through the pipeline");
@@ -344,7 +352,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement("boolean expectedResponse = " + statusCodes);
         }
 
-        compilationUnit.addImport(RuntimeException.class);
+        body.tryAddImportToParentCompilationUnit(RuntimeException.class);
         IfStmt ifStmt = new IfStmt().setCondition(StaticJavaParser.parseExpression("!expectedResponse"))
             .setThenStmt(StaticJavaParser
                 .parseBlock("{ throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
@@ -381,7 +389,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 setContentTypeHeader(body, contentType);
             }
             if ("io.clientcore.core.util.binarydata.BinaryData".equals(parameterType)) {
-                compilationUnit.addImport(BinaryData.class);
+                body.tryAddImportToParentCompilationUnit(BinaryData.class);
                 body.addStatement(
                     StaticJavaParser.parseStatement("BinaryData binaryData = (BinaryData) " + parameterName + ";"));
                 IfStmt ifStmt = new IfStmt()
@@ -461,7 +469,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             //    methodBuilder
             //            .addStatement("httpRequest.setBody($T.fromBytes($L))", BinaryData.class, array);
             //}
-            compilationUnit.addImport(ByteBuffer.class);
+            body.tryAddImportToParentCompilationUnit(ByteBuffer.class);
             body.addStatement(StaticJavaParser.parseStatement(
                 "httpRequest.setBody(BinaryData.fromBytes(((ByteBuffer) " + parameterName + ").array()));"));
         } else {

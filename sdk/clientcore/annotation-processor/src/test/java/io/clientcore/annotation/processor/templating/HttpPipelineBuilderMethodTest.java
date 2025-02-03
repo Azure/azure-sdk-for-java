@@ -70,7 +70,8 @@ public class HttpPipelineBuilderMethodTest {
 
     @Test
     public void testGetEndpointMethod() {
-        MethodDeclaration method = processor.getEndpointMethod();
+        MethodDeclaration method = new MethodDeclaration();
+        processor.configureEndpointMethod(method);
         assertEquals("getEndpoint", method.getNameAsString());
         assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
         assertEquals("String", method.getTypeAsString());
@@ -78,7 +79,8 @@ public class HttpPipelineBuilderMethodTest {
 
     @Test
     public void testGetPipelineMethod() {
-        MethodDeclaration method = processor.getPipelineMethod();
+        MethodDeclaration method = new MethodDeclaration();
+        processor.configurePipelineMethod(method);
         assertEquals("getPipeline", method.getNameAsString());
         assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
         assertEquals("HttpPipeline", method.getTypeAsString());
@@ -86,7 +88,8 @@ public class HttpPipelineBuilderMethodTest {
 
     @Test
     public void testGetServiceVersionMethod() {
-        MethodDeclaration method = processor.getServiceVersionMethod("ExampleClientService");
+        MethodDeclaration method = new MethodDeclaration();
+        processor.configureServiceVersionMethod(method, "ExampleClientService");
         assertEquals("getServiceVersion", method.getNameAsString());
         assertEquals(Modifier.publicModifier(), method.getModifiers().iterator().next());
         when(templateInput.getServiceInterfaceShortName()).thenReturn("ExampleClientService");
@@ -101,7 +104,8 @@ public class HttpPipelineBuilderMethodTest {
 
     @Test
     public void testLoggerFieldGeneration() {
-        FieldDeclaration loggerField = processor.getLoggerField(SERVICE_INTERFACE_SHORT_NAME);
+        FieldDeclaration loggerField = new FieldDeclaration();
+        processor.configureLoggerField(loggerField, SERVICE_INTERFACE_SHORT_NAME);
         assertEquals(
             new HashSet<>(
                 Arrays.asList(Modifier.privateModifier(), Modifier.staticModifier(), Modifier.finalModifier())),

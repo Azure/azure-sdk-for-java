@@ -50,7 +50,8 @@ public class APIGenerationTest {
             .setBody(new HttpRequestContext.Body("multipart/form-data", "BinaryData", "audioTranscriptionOptions"));
         templateInput.setHttpRequestContexts(Collections.singletonList(getUserMethodContext));
 
-        MethodDeclaration getUserMethodGenerationSpec = processor.generatePublicMethod(getUserMethodContext);
+        MethodDeclaration getUserMethodGenerationSpec = new MethodDeclaration();
+        processor.configurePublicMethod(getUserMethodGenerationSpec, getUserMethodContext);
         assertEquals("getUser", getUserMethodGenerationSpec.getNameAsString());
         assertEquals("User", getUserMethodGenerationSpec.getTypeAsString());
         // assert code block contains the expected method body

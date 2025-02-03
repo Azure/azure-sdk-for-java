@@ -10,8 +10,14 @@ import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.TryStmt;
+import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.http.models.ResponseBodyMode;
+import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -26,6 +32,7 @@ public final class ResponseBodyModeGeneration {
      * @param useRequestOptions whether request options are used.
      */
     public static void generateResponseBodyMode(BlockStmt body, String returnTypeName, boolean useRequestOptions) {
+        body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
         body.addStatement(StaticJavaParser.parseStatement("ResponseBodyMode responseBodyMode = null;"));
 
         // Assign responseBodyMode based on request options.
@@ -59,6 +66,9 @@ public final class ResponseBodyModeGeneration {
      * @param body the method builder to append generated code.
      */
     public static void handleDeserializeResponse(BlockStmt body) {
+        body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
+        body.tryAddImportToParentCompilationUnit(HttpResponse.class);
+        body.tryAddImportToParentCompilationUnit(HttpResponseAccessHelper.class);
         IfStmt ifStmt = new IfStmt()
             .setCondition(StaticJavaParser.parseExpression("responseBodyMode == ResponseBodyMode.DESERIALIZE"))
             .setThenStmt(StaticJavaParser.parseBlock("{ BinaryData responseBody = response.getBody();"
@@ -98,6 +108,8 @@ public final class ResponseBodyModeGeneration {
     }
 
     private static void closeResponse(BlockStmt body) {
+        body.tryAddImportToParentCompilationUnit(IOException.class);
+        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
         TryStmt tryStmt = new TryStmt();
 
         tryStmt.setTryBlock(StaticJavaParser.parseBlock("{ response.close(); }"))
@@ -126,6 +138,8 @@ public final class ResponseBodyModeGeneration {
      * @param body the method builder to append generated code.
      */
     public static void handleResponseModeToCreateResponse(String returnTypeName, BlockStmt body) {
+        body.tryAddImportToParentCompilationUnit(BinaryData.class);
+        body.tryAddImportToParentCompilationUnit(InputStream.class);
         if (returnTypeName.contains("Boolean") || returnTypeName.contains("boolean")) {
             body.addStatement(new ReturnStmt("(response.getStatusCode() / 100) == 2"));
         } else if (returnTypeName.contains("byte[]")) {
