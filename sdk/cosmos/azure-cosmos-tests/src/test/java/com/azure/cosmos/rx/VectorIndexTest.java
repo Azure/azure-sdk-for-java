@@ -326,14 +326,14 @@ public class VectorIndexTest extends TestSuiteBase {
         cosmosVectorIndexSpec2.setPath("/vector2");
         cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
         cosmosVectorIndexSpec2.setQuantizationSizeInBytes(2);
-        cosmosVectorIndexSpec2.setVectorIndexShardKey(List.of("/vector2"));
+        cosmosVectorIndexSpec2.setVectorIndexShardKey(List.of("/zipCode"));
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec3.setPath("/vector3");
         cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
         cosmosVectorIndexSpec3.setQuantizationSizeInBytes(2);
         cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
-        cosmosVectorIndexSpec3.setVectorIndexShardKey(List.of("/vector3"));
+        cosmosVectorIndexSpec3.setVectorIndexShardKey(List.of("/country/city"));
 
         return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
     }
