@@ -251,6 +251,12 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
     }
 
     @Override
+    public HttpInstrumentationOptions setMetricsEnabled(boolean isMetricsEnabled) {
+        super.setMetricsEnabled(isMetricsEnabled);
+        return this;
+    }
+
+    @Override
     public HttpInstrumentationOptions setTelemetryProvider(Object telemetryProvider) {
         super.setTelemetryProvider(telemetryProvider);
         return this;

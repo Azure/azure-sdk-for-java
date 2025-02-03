@@ -36,7 +36,9 @@
       <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
+      <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
       <Class name="io.clientcore.core.util.SharedExecutorService" />
+      <Class name="io.clientcore.core.util.Union" />
       <Class name="io.clientcore.core.util.binarydata.FileBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
@@ -232,7 +234,11 @@
   </Match>
   <Match>
     <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
-    <Class name="io.clientcore.core.serialization.json.contract.JsonWriterContractTests" />
+    <Or>
+      <Class name="io.clientcore.core.serialization.json.contract.JsonWriterContractTests" />
+      <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
+    </Or>
+
   </Match>
   <Match>
     <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL" />
@@ -285,6 +291,10 @@
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
     <Class name="io.clientcore.core.http.client.implementation.InputStreamTimeoutResponseSubscriber" />
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED" />
+    <Class name="io.clientcore.core.util.UnionTests" />
   </Match>
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
