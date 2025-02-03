@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.instrumentation.otel.OTelContext;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
@@ -107,7 +108,10 @@ public class OTelSpanBuilder implements SpanBuilder {
     @Override
     public SpanBuilder setAttribute(String key, Object value) {
         if (isInitialized()) {
-            SET_ATTRIBUTE_INVOKER.invoke(otelSpanBuilder, getKey(key, value), castAttributeValue(value));
+            Object otelKey = getKey(key, value);
+            if (otelKey != null) {
+                SET_ATTRIBUTE_INVOKER.invoke(otelSpanBuilder, otelKey, castAttributeValue(value));
+            }
         }
 
         return this;

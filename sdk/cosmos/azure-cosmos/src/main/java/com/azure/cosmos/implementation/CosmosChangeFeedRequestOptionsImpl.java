@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosRequestOptions;
@@ -52,7 +53,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private Long endLSN;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
-        this.continuationState = toBeCloned.continuationState;
+        if (toBeCloned.continuationState != null) {
+            this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) toBeCloned.continuationState);
+        } else {
+            this.continuationState = null;
+        }
         this.feedRangeInternal = toBeCloned.feedRangeInternal;
         this.properties = toBeCloned.properties;
         this.maxItemCount = toBeCloned.maxItemCount;
@@ -93,7 +98,12 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
-        this.continuationState = continuationState;
+        if (continuationState != null) {
+            this.continuationState = new ChangeFeedStateV1((ChangeFeedStateV1) continuationState);
+        } else {
+            this.continuationState = null;
+        }
+
 
         if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
             throw new IllegalArgumentException(
