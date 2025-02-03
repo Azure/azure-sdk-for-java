@@ -2,21 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.targeting.Audience;
 import com.azure.spring.cloud.feature.management.implementation.targeting.Exclusion;
 import com.azure.spring.cloud.feature.management.implementation.targeting.GroupRollout;
@@ -133,8 +129,10 @@ public class TargetingFilter implements FeatureFilter {
 
         Audience audience;
         String exclusionValue = FeatureFilterUtils.getKeyCase(parameters, EXCLUSION_CAMEL);
-        String exclusionUserValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
-        String exclusionGroupsValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
+        String exclusionUserValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue),
+            "Users");
+        String exclusionGroupsValue = FeatureFilterUtils
+            .getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
 
         if (((Map<String, Object>) parameters.getOrDefault(exclusionValue, new HashMap<>()))
             .get(exclusionUserValue) instanceof List) {
@@ -227,35 +225,8 @@ public class TargetingFilter implements FeatureFilter {
         return (!hasUserDefined && !(hasGroupsDefined && hasAtLeastOneGroup));
     }
 
-    /**
-     * Computes the percentage that the contextId falls into.
-     *
-     * @param contextId Id of the context being targeted
-     * @return the bucket value of the context id
-     * @throws TargetingException Unable to create hash of target context
-     */
-    protected double isTargetedPercentage(String contextId) {
-        byte[] hash = null;
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            hash = digest.digest(contextId.getBytes(Charset.defaultCharset()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new TargetingException("Unable to find SHA-256 for targeting.", e);
-        }
-
-        if (hash == null) {
-            throw new TargetingException("Unable to create Targeting Hash for " + contextId);
-        }
-
-        ByteBuffer wrapped = ByteBuffer.wrap(hash);
-        int contextMarker = Math.abs(wrapped.getInt());
-
-        return (contextMarker / (double) Integer.MAX_VALUE) * 100;
-    }
-
     private boolean isTargeted(String contextId, double percentage) {
-        return isTargetedPercentage(contextId) < percentage;
+        return FeatureFilterUtils.isTargetedPercentage(contextId) < percentage;
     }
 
     /**
