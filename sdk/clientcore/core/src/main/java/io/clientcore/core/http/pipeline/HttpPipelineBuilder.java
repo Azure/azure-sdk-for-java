@@ -8,13 +8,9 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link HttpPipeline},
@@ -48,26 +44,16 @@ import java.util.Set;
  */
 public class HttpPipelineBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineBuilder.class);
-    private static final Set<String> RESERVED = new HashSet<>(Arrays.asList(HttpRedirectPolicy.NAME,
-        HttpRetryPolicy.NAME, HttpCredentialPolicy.NAME, HttpInstrumentationPolicy.NAME));
-
-    private final Set<String> policyNames = new HashSet<>();
 
     private HttpClient httpClient;
 
     private final LinkedList<HttpPipelinePolicy> beforeRedirect = new LinkedList<>();
     private HttpRedirectPolicy redirectPolicy;
-    private final LinkedList<HttpPipelinePolicy> afterRedirect = new LinkedList<>();
-
-    private final LinkedList<HttpPipelinePolicy> beforeRetry = new LinkedList<>();
+    private final LinkedList<HttpPipelinePolicy> bewteenRedirectAndRetry = new LinkedList<>();
     private HttpRetryPolicy retryPolicy;
-    private final LinkedList<HttpPipelinePolicy> afterRetry = new LinkedList<>();
-
-    private final LinkedList<HttpPipelinePolicy> beforeCredential = new LinkedList<>();
+    private final LinkedList<HttpPipelinePolicy> betweenRetryAndAuthentication = new LinkedList<>();
     private HttpCredentialPolicy credentialPolicy;
-    private final LinkedList<HttpPipelinePolicy> afterCredential = new LinkedList<>();
-
-    private final LinkedList<HttpPipelinePolicy> beforeInstrumentation = new LinkedList<>();
+    private final LinkedList<HttpPipelinePolicy> betweenAuthenticationAndInstrumentation = new LinkedList<>();
     private HttpInstrumentationPolicy instrumentationPolicy;
     private final LinkedList<HttpPipelinePolicy> afterInstrumentation = new LinkedList<>();
 
@@ -87,12 +73,31 @@ public class HttpPipelineBuilder {
      * @return A HttpPipeline with the options set from the builder.
      */
     public HttpPipeline build() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>(beforeRedirect);
 
-        addPolicies(policies, beforeRedirect, redirectPolicy, afterRedirect);
-        addPolicies(policies, beforeRetry, retryPolicy, afterRetry);
-        addPolicies(policies, beforeCredential, credentialPolicy, afterCredential);
-        addPolicies(policies, beforeInstrumentation, instrumentationPolicy, afterInstrumentation);
+        if (redirectPolicy != null) {
+            policies.add(redirectPolicy);
+        }
+
+        policies.addAll(bewteenRedirectAndRetry);
+
+        if (retryPolicy != null) {
+            policies.add(retryPolicy);
+        }
+
+        policies.addAll(betweenRetryAndAuthentication);
+
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
+        }
+
+        policies.addAll(betweenAuthenticationAndInstrumentation);
+
+        if (instrumentationPolicy != null) {
+            policies.add(instrumentationPolicy);
+        }
+
+        policies.addAll(afterInstrumentation);
 
         HttpClient client;
 
@@ -109,15 +114,6 @@ public class HttpPipelineBuilder {
         return new HttpPipeline(client, policies);
     }
 
-    private static void addPolicies(List<HttpPipelinePolicy> policies, List<HttpPipelinePolicy> before,
-        HttpPipelinePolicy policy, List<HttpPipelinePolicy> after) {
-        policies.addAll(before);
-        if (policy != null) {
-            policies.add(policy);
-        }
-        policies.addAll(after);
-    }
-
     /**
      * Sets the HttpClient that the pipeline will use to send requests.
      *
@@ -131,393 +127,80 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Sets the {@link HttpRedirectPolicy} that the pipeline will use to handle HTTP redirects.
+     * Adds an {@link HttpPipelinePolicy} to the builder.
      * <p>
-     * If {@code redirectPolicy} is null the pipeline will not handle redirects.
+     * The {@code policy} passed will be positioned based on {@link HttpPipelinePolicy#getOrder()}. If the
+     * {@link HttpPipelineOrder} is null an {@link IllegalArgumentException} will be thrown.
+     * <p>
+     * If the {@code policy} is one of the pillar policies ({@link HttpRedirectPolicy}, {@link HttpRetryPolicy},
+     * {@link HttpCredentialPolicy}, or {@link HttpInstrumentationPolicy}) the {@link HttpPipelineOrder} will be ignored
+     * as those policies are positioned in a specific location within the pipeline. If a duplicate pillar policy is
+     * added (for example two {@link HttpRetryPolicy}) the last one added will be used and a message will be logged.
      *
-     * @param redirectPolicy The redirect policy to set.
+     * @param policy The policy to add to the pipeline.
      * @return The updated HttpPipelineBuilder object.
      */
-    public HttpPipelineBuilder setRedirectPolicy(HttpRedirectPolicy redirectPolicy) {
-        this.redirectPolicy = redirectPolicy;
-        policyNames.add(redirectPolicy.getName());
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpRetryPolicy} that the pipeline will use to handle retries.
-     * <p>
-     * If {@code retryPolicy} is null the pipeline will use the default retry policy
-     * ({@link HttpRetryPolicy#HttpRetryPolicy()}.
-     *
-     * @param retryPolicy The retry policy to set.
-     * @return The updated HttpPipelineBuilder object.
-     */
-    public HttpPipelineBuilder setRetryPolicy(HttpRetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-        policyNames.add(retryPolicy.getName());
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpCredentialPolicy} that the pipeline will use to authenticate requests.
-     * <p>
-     * If {@code credentialPolicy} is null the pipeline will not authenticate requests.
-     *
-     * @param credentialPolicy The credential policy to set.
-     * @return The updated HttpPipelineBuilder object.
-     */
-    public HttpPipelineBuilder setCredentialPolicy(HttpCredentialPolicy credentialPolicy) {
-        this.credentialPolicy = credentialPolicy;
-        policyNames.add(credentialPolicy.getName());
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpInstrumentationPolicy} that the pipeline will use to instrument HTTP requests and responses.
-     * <p>
-     * If {@code instrumentationPolicy} is null the pipeline will not collect telemetry about HTTP requests and
-     * responses.
-     *
-     * @param instrumentationPolicy The telemetry policy to set.
-     * @return The updated HttpPipelineBuilder object.
-     */
-    public HttpPipelineBuilder setInstrumentationPolicy(HttpInstrumentationPolicy instrumentationPolicy) {
-        this.instrumentationPolicy = instrumentationPolicy;
-        policyNames.add(instrumentationPolicy.getName());
-
-        return this;
-    }
-
-    /**
-     * Adds the given {@code policy} before the {@code position} in the pipeline.
-     * <p>
-     * When this method is called multiple times with the same {@code position}, the policies will be added in the order
-     * they were added. For example, if {@code policy1} and then {@code policy2} are added before
-     * {@link HttpPipelinePosition#RETRY} the resulting ordering will be {@code policy1}, {@code policy2},
-     * {@link HttpRetryPolicy}.
-     * <p>
-     * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
-     * set methods that configure the respective policies.
-     *
-     * @param policy The policy to add.
-     * @param position The position to add the policy before.
-     * @return The updated HttpPipelineBuilder object.
-     * @throws NullPointerException If {@code policy} or {@code position} is null.
-     * @throws IllegalStateException If the {@code policy} shares the same name as a policy already in the pipeline.
-     */
-    public HttpPipelineBuilder addPolicyBefore(HttpPipelinePolicy policy, HttpPipelinePosition position) {
-        return addPolicy(policy, position, true);
-    }
-
-    /**
-     * Adds the given {@code policy} after the {@code position} in the pipeline.
-     * <p>
-     * When this method is called multiple times with the same {@code position}, the policies will be added in the order
-     * they were added. For example, if {@code policy1} and then {@code policy2} are added after
-     * {@link HttpPipelinePosition#RETRY} the resulting ordering will be {@link HttpRetryPolicy}, {@code policy2},
-     * {@code policy1}.
-     * <p>
-     * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
-     * set methods that configure the respective policies.
-     *
-     * @param policy The policy to add.
-     * @param position The position to add the policy after.
-     * @return The updated HttpPipelineBuilder object.
-     * @throws NullPointerException If {@code policy} or {@code position} is null.
-     * @throws IllegalStateException If the {@code policy} shares the same name as a policy already in the pipeline.
-     */
-    public HttpPipelineBuilder addPolicyAfter(HttpPipelinePolicy policy, HttpPipelinePosition position) {
-        return addPolicy(policy, position, false);
-    }
-
-    private HttpPipelineBuilder addPolicy(HttpPipelinePolicy policy, HttpPipelinePosition position, boolean before) {
+    public HttpPipelineBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
-        Objects.requireNonNull(position, "'position' cannot be null.");
 
-        String lowerCaseName = policy.getName().toLowerCase();
-        if (RESERVED.contains(lowerCaseName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policy.getName()));
-        }
-
-        if (!policyNames.add(lowerCaseName)) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "A policy with the same name already exists in the pipeline: " + policy.getName()));
-        }
-
-        switch (position) {
-            case REDIRECT:
-                if (before) {
-                    beforeRedirect.add(policy);
-                } else {
-                    afterRedirect.push(policy);
-                }
-                break;
-
-            case RETRY:
-                if (before) {
-                    beforeRetry.add(policy);
-                } else {
-                    afterRetry.push(policy);
-                }
-                break;
-
-            case AUTHENTICATION:
-                if (before) {
-                    beforeCredential.add(policy);
-                } else {
-                    afterCredential.push(policy);
-                }
-                break;
-
-            case INSTRUMENTATION:
-                if (before) {
-                    beforeInstrumentation.add(policy);
-                } else {
-                    afterInstrumentation.push(policy);
-                }
-                break;
-
-            default:
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown position: " + position));
-        }
-
-        policyNames.add(lowerCaseName);
-        return this;
-    }
-
-    /**
-     * Adds the given {@code policy} before the {@link HttpPipelinePolicy} with the given name in the pipeline.
-     * <p>
-     * When this method is called multiple times with the same {@code policyName}, the policies will be added in the
-     * order they were added. For example, if {@code policy1} and then {@code policy2} are added before
-     * {@code "retry"} the resulting ordering will be {@code policy1}, {@code policy2}, {@code retry}.
-     * <p>
-     * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
-     * set methods that configure the respective policies.
-     *
-     * @param policy The policy to add.
-     * @param policyName The name of the policy to add the policy before.
-     * @return The updated HttpPipelineBuilder object.
-     * @throws NullPointerException If {@code policy} or {@code policyName} is null.
-     * @throws NoSuchElementException If a policy with the given name is not found.
-     * @throws IllegalStateException If the {@code policy} shares the same name as a policy already in the pipeline.
-     */
-    public HttpPipelineBuilder addPolicyBefore(HttpPipelinePolicy policy, String policyName) {
-        return addPolicy(policy, policyName, true);
-    }
-
-    /**
-     * Adds the given {@code policy} after the {@link HttpPipelinePolicy} with the given name in the pipeline.
-     * <p>
-     * When this method is called multiple times with the same {@code policyName}, the policies will be added in the
-     * order they were added. For example, if {@code policy1} and then {@code policy2} are added after
-     * {@code "retry"} the resulting ordering will be {@code retry}, {@code policy2}, {@code policy1}.
-     * <p>
-     * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
-     * set methods that configure the respective policies.
-     *
-     * @param policy The policy to add.
-     * @param policyName The name of the policy to add the policy after.
-     * @return The updated HttpPipelineBuilder object.
-     * @throws NullPointerException If {@code policy} or {@code policyName} is null.
-     * @throws NoSuchElementException If a policy with the given name is not found.
-     * @throws IllegalStateException If the {@code policy} shares the same name as a policy already in the pipeline.
-     */
-    public HttpPipelineBuilder addPolicyAfter(HttpPipelinePolicy policy, String policyName) {
-        return addPolicy(policy, policyName, false);
-    }
-
-    private HttpPipelineBuilder addPolicy(HttpPipelinePolicy policy, String policyName, boolean before) {
-        Objects.requireNonNull(policy, "'policy' cannot be null.");
-        Objects.requireNonNull(policyName, "'policyName' cannot be null.");
-
-        String lowerCaseName = policy.getName().toLowerCase();
-        if (RESERVED.contains(lowerCaseName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policy.getName()));
-        }
-
-        if (!policyNames.add(lowerCaseName)) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "A policy with the same name already exists in the pipeline: " + policy.getName()));
-        }
-
-        if (!policyNames.contains(policyName.toLowerCase())) {
-            throw LOGGER.logThrowableAsError(
-                new NoSuchElementException("A policy with the name '" + policyName + "' was not found."));
-        }
-
-        if (attemptToAdd(policy, policyName, before, beforeRedirect, redirectPolicy, afterCredential)
-            || attemptToAdd(policy, policyName, before, beforeRetry, retryPolicy, afterRetry)
-            || attemptToAdd(policy, policyName, before, beforeCredential, credentialPolicy, afterCredential)
-            || attemptToAdd(policy, policyName, before, beforeInstrumentation, instrumentationPolicy,
-                afterInstrumentation)) {
+        if (tryAddPillar(policy)) {
             return this;
         }
 
-        throw LOGGER.logThrowableAsError(new IllegalStateException("Should not reach here."));
+        HttpPipelineOrder order = policy.getOrder();
+        if (order == null) {
+            throw LOGGER.atError()
+                .addKeyValue("policyType", policy.getClass())
+                .log("Policy order cannot be null.", new IllegalArgumentException("Policy order cannot be null."));
+        }
+
+        if (order == HttpPipelineOrder.BEFORE_REDIRECT) {
+            beforeRedirect.add(policy);
+        } else if (order == HttpPipelineOrder.BETWEEN_REDIRECT_AND_RETRY) {
+            bewteenRedirectAndRetry.add(policy);
+        } else if (order == HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION) {
+            betweenRetryAndAuthentication.add(policy);
+        } else if (order == HttpPipelineOrder.BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION) {
+            betweenAuthenticationAndInstrumentation.add(policy);
+        } else if (order == HttpPipelineOrder.AFTER_INSTRUMENTATION) {
+            afterInstrumentation.add(policy);
+        } else {
+            throw LOGGER.atError()
+                .addKeyValue("policyType", policy.getClass())
+                .addKeyValue("order", order)
+                .log("Unknown policy order.", new IllegalArgumentException("Unknown policy order."));
+        }
+
+        return this;
     }
 
-    private boolean attemptToAdd(HttpPipelinePolicy policy, String policyName, boolean before,
-        LinkedList<HttpPipelinePolicy> beforePolicies, HttpPipelinePolicy keyPolicy,
-        LinkedList<HttpPipelinePolicy> afterPolicies) {
-        int position = 0;
-        for (HttpPipelinePolicy toCheck : beforePolicies) {
-            if (toCheck.getName().equalsIgnoreCase(policyName)) {
-                if (before) {
-                    beforePolicies.add(position, policy);
-                } else {
-                    if (position == beforePolicies.size() - 1) {
-                        beforePolicies.add(policy);
-                    } else {
-                        beforePolicies.add(position + 1, policy);
-                    }
-                }
-                return true;
-            }
-
-            position++;
+    private boolean tryAddPillar(HttpPipelinePolicy policy) {
+        HttpPipelinePolicy previous = null;
+        boolean added = false;
+        if (policy instanceof HttpRedirectPolicy) {
+            previous = redirectPolicy;
+            redirectPolicy = (HttpRedirectPolicy) policy;
+            added = true;
+        } else if (policy instanceof HttpRetryPolicy) {
+            previous = retryPolicy;
+            retryPolicy = (HttpRetryPolicy) policy;
+            added = true;
+        } else if (policy instanceof HttpCredentialPolicy) {
+            previous = credentialPolicy;
+            credentialPolicy = (HttpCredentialPolicy) policy;
+            added = true;
+        } else if (policy instanceof HttpInstrumentationPolicy) {
+            previous = instrumentationPolicy;
+            instrumentationPolicy = (HttpInstrumentationPolicy) policy;
+            added = true;
         }
 
-        if (keyPolicy != null && keyPolicy.getName().equalsIgnoreCase(policyName)) {
-            if (before) {
-                beforePolicies.add(policy);
-            } else {
-                afterPolicies.push(policy);
-            }
-            return true;
+        if (previous != null) {
+            LOGGER.atWarning()
+                .addKeyValue("policyType", previous.getClass().getSimpleName())
+                .log("A pillar policy was replaced in the pipeline.");
         }
 
-        position = 0;
-        for (HttpPipelinePolicy toCheck : afterPolicies) {
-            if (toCheck.getName().equalsIgnoreCase(policyName)) {
-                if (before) {
-                    afterPolicies.add(position, policy);
-                } else {
-                    if (position == afterPolicies.size() - 1) {
-                        afterPolicies.add(policy);
-                    } else {
-                        afterPolicies.add(position + 1, policy);
-                    }
-                }
-                return true;
-            }
-
-            position++;
-        }
-
-        return false;
-    }
-
-    /**
-     * Replaces an existing policy with the given {@link HttpPipelinePolicy#getName()} with the provided {@code policy}.
-     * <p>
-     * If the policy with the given name is not found an {@link NoSuchElementException} will be thrown.
-     * <p>
-     * If the name of the {@code policy} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"},
-     * or {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the
-     * set methods that configure the respective policies.
-     *
-     * @param policy The policy to set.
-     * @return The updated HttpPipelineBuilder object.
-     * @throws NullPointerException If {@code policy} is null.
-     * @throws NoSuchElementException If a policy with the given name is not found.
-     * @throws IllegalStateException If the name of the {@code policy} is reserved.
-     */
-    public HttpPipelineBuilder replacePolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "'policy' cannot be null.");
-        String lowerCaseName = policy.getName().toLowerCase();
-        if (!policyNames.contains(lowerCaseName)) {
-            throw LOGGER.logThrowableAsError(
-                new NoSuchElementException("A policy with the name '" + policy.getName() + "' was not found."));
-        }
-
-        if (RESERVED.contains(lowerCaseName)) {
-            throw LOGGER
-                .logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policy.getName()));
-        }
-
-        return setOrRemove(policy, policy.getName());
-    }
-
-    /**
-     * Removes the policy with the given {@code policyName} from the pipeline.
-     * <p>
-     * If a policy with the given name is not found this is a no-op.
-     * <p>
-     * If the {@code policyName} is any of {@code "redirect"}, {@code "retry"}, {@code "credential"}, or
-     * {@code "instrumentation"} an {@link IllegalStateException} will be thrown. These names are reserved for the set
-     * methods that configure the respective policies.
-     *
-     * @param policyName The name of the policy to remove.
-     * @return The updated HttpPipelineBuilder object.
-     * @throws NullPointerException If {@code policyName} is null.
-     * @throws IllegalStateException If the {@code policyName} is reserved.
-     */
-    public HttpPipelineBuilder removePolicy(String policyName) {
-        Objects.requireNonNull(policyName, "'policyName' cannot be null.");
-        String lowerCaseName = policyName.toLowerCase();
-        if (!policyNames.contains(lowerCaseName)) {
-            return this;
-        }
-
-        if (RESERVED.contains(lowerCaseName)) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException("The policy name is reserved: " + policyName));
-        }
-
-        return setOrRemove(null, policyName);
-    }
-
-    private HttpPipelineBuilder setOrRemove(HttpPipelinePolicy policy, String policyName) {
-        if (attemptToSetOrRemove(policy, policyName, beforeRedirect, afterCredential)
-            || attemptToSetOrRemove(policy, policyName, beforeRetry, afterRetry)
-            || attemptToSetOrRemove(policy, policyName, beforeCredential, afterCredential)
-            || attemptToSetOrRemove(policy, policyName, beforeInstrumentation, afterInstrumentation)) {
-            return this;
-        }
-
-        throw LOGGER.logThrowableAsError(new IllegalStateException("Should not reach here."));
-    }
-
-    private boolean attemptToSetOrRemove(HttpPipelinePolicy policy, String policyName,
-        LinkedList<HttpPipelinePolicy> beforePolicies, LinkedList<HttpPipelinePolicy> afterPolicies) {
-        int position = 0;
-        for (HttpPipelinePolicy toCheck : beforePolicies) {
-            if (toCheck.getName().equalsIgnoreCase(policyName)) {
-                if (policy != null) {
-                    beforePolicies.set(position, policy);
-                } else {
-                    beforePolicies.remove(position);
-                }
-                return true;
-            }
-
-            position++;
-        }
-
-        position = 0;
-        for (HttpPipelinePolicy toCheck : afterPolicies) {
-            if (toCheck.getName().equalsIgnoreCase(policyName)) {
-                if (policy != null) {
-                    afterPolicies.set(position, policy);
-                } else {
-                    afterPolicies.remove(position);
-                }
-                return true;
-            }
-
-            position++;
-        }
-
-        return false;
+        return added;
     }
 }

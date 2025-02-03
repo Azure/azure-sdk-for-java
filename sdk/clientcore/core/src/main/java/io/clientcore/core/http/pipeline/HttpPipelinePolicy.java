@@ -24,18 +24,18 @@ public interface HttpPipelinePolicy {
     Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
 
     /**
-     * Gets the name of this {@link HttpPipelinePolicy}.
+     * Gets the position in the {@link HttpPipelineBuilder} the policy will be placed when added.
      * <p>
-     * Policy names do not have to be unique and are used to identify or change a policy in the pipeline. But, when
-     * creating an {@link HttpPipeline} all policy names must be unique.
+     * Policy order does not need to be unique. When multiple polices with the same {@link HttpPipelineOrder} are added
+     * they will be handled based on the documentation of {@link HttpPipelineOrder}.
      * <p>
-     * When policy names are compared they will be compared in a case-insensitive manner.
+     * By default, this method returns {@link HttpPipelineOrder#BETWEEN_RETRY_AND_AUTHENTICATION}.
      * <p>
-     * By default, this method returns an empty string.
+     * If this method returns null, an exception will be thrown when it is added to the {@link HttpPipelineBuilder}.
      *
-     * @return The name of this policy.
+     * @return The order of this policy.
      */
-    default String getName() {
-        return "";
+    default HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION;
     }
 }

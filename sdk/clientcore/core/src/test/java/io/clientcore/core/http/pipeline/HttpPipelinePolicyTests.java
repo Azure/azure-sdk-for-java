@@ -13,7 +13,6 @@ import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,10 +23,8 @@ public class HttpPipelinePolicyTests {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .addPolicyBefore(policy1, HttpPipelinePosition.RETRY)
-            .addPolicyBefore(policy2, HttpPipelinePosition.RETRY)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).addPolicy(policy1).addPolicy(policy2).build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
 
@@ -40,7 +37,7 @@ public class HttpPipelinePolicyTests {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .addPolicyBefore(policyWithDefaultSyncImplementation, HttpPipelinePosition.RETRY)
+            .addPolicy(policyWithDefaultSyncImplementation)
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
@@ -55,40 +52,24 @@ public class HttpPipelinePolicyTests {
     @Test
     public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
-        HttpPipelinePolicy badPolicy1 = new HttpPipelinePolicy() {
-            @Override
-            public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                return next.process();
+        HttpPipelinePolicy badPolicy1 = (ignored, next) -> {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
-            @Override
-            public String getName() {
-                return "badPolicy1";
-            }
+            return next.process();
         };
 
-        HttpPipelinePolicy badPolicy2 = new HttpPipelinePolicy() {
-            @Override
-            public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                return next.process();
+        HttpPipelinePolicy badPolicy2 = (ignored, next) -> {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
-            @Override
-            public String getName() {
-                return "badPolicy2";
-            }
+            return next.process();
         };
 
         HttpClient badClient = (request) -> {
@@ -101,9 +82,9 @@ public class HttpPipelinePolicyTests {
         };
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(badClient)
-            .addPolicyBefore(policy1, HttpPipelinePosition.RETRY)
-            .addPolicyBefore(badPolicy1, HttpPipelinePosition.RETRY)
-            .addPolicyBefore(badPolicy2, HttpPipelinePosition.RETRY)
+            .addPolicy(policy1)
+            .addPolicy(badPolicy1)
+            .addPolicy(badPolicy2)
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
@@ -111,18 +92,12 @@ public class HttpPipelinePolicyTests {
 
     private static class SyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger syncCalls = new AtomicInteger();
-        final String name = new String(new SecureRandom().generateSeed(24));
 
         @Override
         public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
-        }
-
-        @Override
-        public String getName() {
-            return name;
         }
     }
 

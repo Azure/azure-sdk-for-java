@@ -16,7 +16,7 @@ public abstract class HttpCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public final String getName() {
-        return NAME;
+    public final HttpPipelineOrder getOrder() {
+        return null;
     }
 }

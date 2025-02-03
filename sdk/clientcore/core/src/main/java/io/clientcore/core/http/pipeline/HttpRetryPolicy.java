@@ -128,8 +128,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public String getName() {
-        return NAME;
+    public HttpPipelineOrder getOrder() {
+        return null;
     }
 
     /*

@@ -64,7 +64,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
+            .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -86,7 +86,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(
+            .addPolicy(
                 new HttpRedirectPolicy(new HttpRedirectOptions(5, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET))))
             .build();
 
@@ -109,7 +109,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(
+            .addPolicy(new HttpRedirectPolicy(
                 new HttpRedirectOptions(5, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET, HttpMethod.HEAD))))
             .build();
 
@@ -133,7 +133,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
+            .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -159,7 +159,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
+            .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -181,8 +181,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(
-                new HttpRedirectPolicy(new HttpRedirectOptions(5, HttpHeaderName.fromString("Location1"), null)))
+            .addPolicy(new HttpRedirectPolicy(new HttpRedirectOptions(5, HttpHeaderName.fromString("Location1"), null)))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -220,7 +219,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(new HttpRedirectOptions(5, null, allowedMethods)))
+            .addPolicy(new HttpRedirectPolicy(new HttpRedirectOptions(5, null, allowedMethods)))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -240,7 +239,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
+            .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -262,7 +261,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
+            .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
         try (Response<?> response1 = sendRequest(pipeline, HttpMethod.GET)) {
@@ -287,7 +286,7 @@ public class RedirectPolicyTest {
                     return new MockHttpResponse(request, 200);
                 }
             }
-        }).setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY)).build();
+        }).addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY)).build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(401, response.getStatusCode());
@@ -308,7 +307,7 @@ public class RedirectPolicyTest {
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .setRedirectPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
+            .addPolicy(new HttpRedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -326,8 +325,8 @@ public class RedirectPolicyTest {
                     && redirectCondition.getResponse().getStatusCode() == 429);
 
         AtomicInteger attemptCount = new AtomicInteger();
-        HttpPipeline pipeline = new HttpPipelineBuilder().setRedirectPolicy(new HttpRedirectPolicy(httpRedirectOptions))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy(httpRedirectOptions)).httpClient(request -> {
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
                     return new MockHttpResponse(request, 429,
@@ -335,8 +334,7 @@ public class RedirectPolicyTest {
                 } else {
                     return new MockHttpResponse(request, 200);
                 }
-            })
-            .build();
+            }).build();
 
         try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
             assertEquals(200, response.getStatusCode());

@@ -29,10 +29,10 @@ public class HttpInstrumentationPolicyFallbackTests {
             = new HttpInstrumentationOptions().setTracingEnabled(false)
                 .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .setInstrumentationPolicy(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
-            .httpClient(request -> new MockHttpResponse(request, 200))
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
+                .httpClient(request -> new MockHttpResponse(request, 200))
+                .build();
 
         // should not throw
         try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
@@ -48,10 +48,10 @@ public class HttpInstrumentationPolicyFallbackTests {
         HttpInstrumentationOptions tracingOnLoggingOnOptions
             = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .setInstrumentationPolicy(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
-            .httpClient(request -> new MockHttpResponse(request, statusCode))
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
+                .httpClient(request -> new MockHttpResponse(request, statusCode))
+                .build();
 
         // should not throw
         try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {

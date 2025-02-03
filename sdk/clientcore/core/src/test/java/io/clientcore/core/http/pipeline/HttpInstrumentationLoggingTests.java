@@ -530,8 +530,8 @@ public class HttpInstrumentationLoggingTests {
 
         AtomicReference<InstrumentationContext> firstTryContext = new AtomicReference<>();
         UnknownHostException expectedException = new UnknownHostException("test exception");
-        HttpPipeline pipeline = new HttpPipelineBuilder().setRetryPolicy(new HttpRetryPolicy())
-            .setInstrumentationPolicy(new HttpInstrumentationPolicy(options))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 assertEquals(traceparent(request.getRequestOptions().getInstrumentationContext()),
                     request.getHeaders().get(TRACEPARENT).getValue());
@@ -571,8 +571,8 @@ public class HttpInstrumentationLoggingTests {
 
         AtomicReference<InstrumentationContext> firstTryContext = new AtomicReference<>();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().setRetryPolicy(new HttpRetryPolicy())
-            .setInstrumentationPolicy(new HttpInstrumentationPolicy(options))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
                     firstTryContext.set(request.getRequestOptions().getInstrumentationContext());
@@ -605,7 +605,7 @@ public class HttpInstrumentationLoggingTests {
         int maxRetries = 3;
         HttpRetryOptions retryOptions = new HttpRetryOptions(maxRetries, Duration.ofMillis(5));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().setRetryPolicy(new HttpRetryPolicy(retryOptions))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions))
             .httpClient(request -> new MockHttpResponse(request, 500))
             .build();
 
@@ -644,8 +644,8 @@ public class HttpInstrumentationLoggingTests {
 
         AtomicReference<InstrumentationContext> firstRedirectContext = new AtomicReference<>();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().setRedirectPolicy(new HttpRedirectPolicy())
-            .setInstrumentationPolicy(new HttpInstrumentationPolicy(options))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
                     firstRedirectContext.set(request.getRequestOptions().getInstrumentationContext());
@@ -678,12 +678,11 @@ public class HttpInstrumentationLoggingTests {
     public void redirectLoggingMethodNotSupported() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().setRedirectPolicy(new HttpRedirectPolicy()).httpClient(request -> {
-                count.getAndIncrement();
-                HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
-                return new MockHttpResponse(request, 302, httpHeaders);
-            }).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
+            count.getAndIncrement();
+            HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
+            return new MockHttpResponse(request, 302, httpHeaders);
+        }).build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger, parentContext);
@@ -702,12 +701,11 @@ public class HttpInstrumentationLoggingTests {
     public void redirectToTheSameUri() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().setRedirectPolicy(new HttpRedirectPolicy()).httpClient(request -> {
-                count.getAndIncrement();
-                HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
-                return new MockHttpResponse(request, 302, httpHeaders);
-            }).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
+            count.getAndIncrement();
+            HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
+            return new MockHttpResponse(request, 302, httpHeaders);
+        }).build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger, parentContext);
@@ -727,13 +725,12 @@ public class HttpInstrumentationLoggingTests {
     public void redirectAttemptsExhausted() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
         ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().setRedirectPolicy(new HttpRedirectPolicy()).httpClient(request -> {
-                count.getAndIncrement();
-                HttpHeaders httpHeaders
-                    = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + count.get());
-                return new MockHttpResponse(request, 302, httpHeaders);
-            }).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
+            count.getAndIncrement();
+            HttpHeaders httpHeaders
+                = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + count.get());
+            return new MockHttpResponse(request, 302, httpHeaders);
+        }).build();
 
         InstrumentationContext parentContext = createRandomInstrumentationContext();
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger, parentContext);
@@ -1001,7 +998,7 @@ public class HttpInstrumentationLoggingTests {
 
     private HttpPipeline createPipeline(HttpInstrumentationOptions instrumentationOptions,
         Function<HttpRequest, Response<?>> httpClient) {
-        return new HttpPipelineBuilder().setInstrumentationPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
+        return new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .httpClient(httpClient::apply)
             .build();
     }
