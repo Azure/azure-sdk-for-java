@@ -28,3 +28,9 @@ pipelines:
           lastModifiedDate: 2025-02-03
         binskim:
           lastModifiedDate: 2025-02-03
+      source:
+        credscan:
+          lastModifiedDate: 2025-02-03
+        armory:
+          lastModifiedDate: 2025-02-03
+    usedNonDefaultBranch: true
