@@ -303,3 +303,10 @@ pipelines:
           lastModifiedDate: 2025-02-04
         binskim:
           lastModifiedDate: 2025-02-04
+  2077:
+    retail:
+      binary:
+        credscan:
+          lastModifiedDate: 2025-02-04
+        binskim:
+          lastModifiedDate: 2025-02-04
