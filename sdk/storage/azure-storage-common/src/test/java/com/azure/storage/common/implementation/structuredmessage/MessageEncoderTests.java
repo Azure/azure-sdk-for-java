@@ -45,7 +45,7 @@ public class MessageEncoderTests {
     }
 
     private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize,
-        StructuredMessageFlags structuredMessageFlags, int invalidateCrcSegment) throws IOException {
+        StructuredMessageFlags structuredMessageFlags) throws IOException {
         int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
         int segmentFooterLength = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
 
@@ -93,9 +93,6 @@ public class MessageEncoderTests {
 
         // Message footer
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-            if (invalidateCrcSegment == -1) {
-                messageCRC += 5;
-            }
             byte[] crcBytes
                 = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN).putLong(messageCRC).array();
             message.write(crcBytes);
@@ -110,8 +107,7 @@ public class MessageEncoderTests {
     }
 
     private static Stream<Arguments> readAllSupplier() {
-        return Stream.of(Arguments.of(0, 1, StructuredMessageFlags.NONE),
-            Arguments.of(0, 1, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(10, 1, StructuredMessageFlags.NONE),
+        return Stream.of(Arguments.of(10, 1, StructuredMessageFlags.NONE),
             Arguments.of(10, 1, StructuredMessageFlags.STORAGE_CRC64),
             Arguments.of(1024, 1024, StructuredMessageFlags.NONE),
             Arguments.of(1024, 1024, StructuredMessageFlags.STORAGE_CRC64),
@@ -151,7 +147,7 @@ public class MessageEncoderTests {
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
 
         byte[] actual = structuredMessageEncoder.encode(unencodedBuffer).array();
-        byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags, 0).array();
+        byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags).array();
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -160,7 +156,8 @@ public class MessageEncoderTests {
         return Stream.of(Arguments.of(30, StructuredMessageFlags.NONE),
             Arguments.of(30, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(15, StructuredMessageFlags.NONE),
             Arguments.of(15, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(11, StructuredMessageFlags.NONE),
-            Arguments.of(11, StructuredMessageFlags.STORAGE_CRC64));
+            Arguments.of(11, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(8, StructuredMessageFlags.NONE),
+            Arguments.of(8, StructuredMessageFlags.STORAGE_CRC64));
     }
 
     @ParameterizedTest
@@ -181,7 +178,7 @@ public class MessageEncoderTests {
 
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(30, segmentSize, flags);
 
-        byte[] expected = buildStructuredMessage(allWrappedData, segmentSize, flags, 0).array();
+        byte[] expected = buildStructuredMessage(allWrappedData, segmentSize, flags).array();
 
         ByteArrayOutputStream allActualData = new ByteArrayOutputStream();
         allActualData.write(structuredMessageEncoder.encode(wrappedData1).array());

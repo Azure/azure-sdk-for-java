@@ -41,19 +41,12 @@ public class StructuredMessageEncoder {
     private final int segmentSize;
     private final int numSegments;
 
-    private int contentOffset;
+    private int currentContentOffset;
     private int currentSegmentNumber;
-    private SMRegion currentRegion;
-    private int currentRegionLength;
-    private int currentRegionOffset;
-    private int checksumOffset;
+    private int currentSegmentOffset;
+    private int currentMessageLength;
     private long messageCRC64;
     private final Map<Integer, Long> segmentCRC64s;
-    private int currentEncodedDataLength;
-
-    private enum SMRegion {
-        MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER, SEGMENT_CONTENT,
-    }
 
     /**
      * temp comment to allow building
@@ -65,6 +58,9 @@ public class StructuredMessageEncoder {
         if (segmentSize < 1) {
             throw new IllegalArgumentException("Segment size must be at least 1.");
         }
+        if (contentLength < 1) {
+            throw new IllegalArgumentException("Content length must be at least 1.");
+        }
 
         this.messageVersion = DEFAULT_MESSAGE_VERSION;
         this.contentLength = contentLength;
@@ -72,14 +68,12 @@ public class StructuredMessageEncoder {
         this.segmentSize = segmentSize;
         this.numSegments = Math.max(1, (int) Math.ceil((double) this.contentLength / this.segmentSize));
         this.messageLength = calculateMessageLength();
-        this.contentOffset = 0;
+        this.currentContentOffset = 0;
         this.currentSegmentNumber = 0;
-        this.currentRegion = SMRegion.MESSAGE_HEADER;
-        this.currentRegionLength = getMessageHeaderLength();
-        this.currentRegionOffset = 0;
-        this.checksumOffset = 0;
+        this.currentSegmentOffset = 0;
         this.messageCRC64 = 0;
         this.segmentCRC64s = new HashMap<>();
+        this.currentMessageLength = 0;
     }
 
     private int getMessageHeaderLength() {
@@ -98,6 +92,15 @@ public class StructuredMessageEncoder {
         return (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) ? CRC64_LENGTH : 0;
     }
 
+    private int getSegmentContentLength() {
+        // last segment size is remaining content
+        if (currentSegmentNumber == numSegments) {
+            return contentLength - ((currentSegmentNumber - 1) * segmentSize);
+        } else {
+            return segmentSize;
+        }
+    }
+
     private byte[] generateMessageHeader() {
         // 1 byte version, 8 byte size, 2 byte structuredMessageFlags, 2 byte numSegments
         ByteBuffer buffer = ByteBuffer.allocate(getMessageHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
@@ -110,45 +113,13 @@ public class StructuredMessageEncoder {
     }
 
     private byte[] generateSegmentHeader() {
-        int segmentHeaderSize = Math.min(segmentSize, contentLength - contentOffset);
+        int segmentHeaderSize = Math.min(segmentSize, contentLength - currentContentOffset);
         // 2 byte number, 8 byte size
         ByteBuffer buffer = ByteBuffer.allocate(getSegmentHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short) currentSegmentNumber);
         buffer.putLong(segmentHeaderSize);
 
         return buffer.array();
-    }
-
-    private void updateCurrentRegionLength() {
-        switch (currentRegion) {
-            case MESSAGE_HEADER:
-                currentRegionLength = getMessageHeaderLength();
-                break;
-
-            case SEGMENT_HEADER:
-                currentRegionLength = getSegmentHeaderLength();
-                break;
-
-            case SEGMENT_CONTENT:
-                // last segment size is remaining content
-                if (currentSegmentNumber == numSegments) {
-                    currentRegionLength = contentLength - ((currentSegmentNumber - 1) * segmentSize);
-                } else {
-                    currentRegionLength = segmentSize;
-                }
-                break;
-
-            case SEGMENT_FOOTER:
-                currentRegionLength = getSegmentFooterLength();
-                break;
-
-            case MESSAGE_FOOTER:
-                currentRegionLength = getMessageFooterLength();
-                break;
-
-            default:
-                throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
-        }
     }
 
     /**
@@ -160,68 +131,99 @@ public class StructuredMessageEncoder {
     public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
+        if (unencodedBuffer.capacity() < 1) {
+            return ByteBuffer.allocate(0);
+        }
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        while (currentEncodedDataLength < messageLength) {
-            if (currentRegion == SMRegion.SEGMENT_CONTENT) {
-                encodeContent(unencodedBuffer, byteArrayOutputStream);
-                if (currentRegion != SMRegion.SEGMENT_FOOTER && !unencodedBuffer.hasRemaining()) {
-                    break;
-                }
-            } else { // MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER
-                encodeMetadataRegion(currentRegion, byteArrayOutputStream);
+        // if we are at the beginning of the message, encode message header
+        if (currentMessageLength == 0) {
+            encodeMessageHeader(byteArrayOutputStream);
+        }
+
+        while (unencodedBuffer.hasRemaining()) {
+            // if we are at the beginning of a segment's content, encode segment header
+            if (currentSegmentOffset == 0) {
+                encodeSegmentHeader(byteArrayOutputStream);
             }
+
+            encodeSegmentContent(unencodedBuffer, byteArrayOutputStream);
+
+            // if we are at the end of a segment's content, encode segment footer
+            if (currentSegmentOffset == getSegmentContentLength()) {
+                encodeSegmentFooter(byteArrayOutputStream);
+            }
+        }
+
+        // if all content has been encoded, encode message footer
+        if (currentContentOffset == contentLength) {
+            encodeMessageFooter(byteArrayOutputStream);
         }
 
         return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
     }
 
-    private void encodeMetadataRegion(SMRegion region, ByteArrayOutputStream output) {
-        byte[] metadata = getMetadataRegion(region);
+    private void encodeMessageHeader(ByteArrayOutputStream output) {
+        byte[] metadata = generateMessageHeader();
+        output.write(metadata, 0, metadata.length);
 
-        int readSize = currentRegionLength;
-
-        output.write(metadata, 0, readSize);
-
-        currentRegionOffset += readSize;
-        currentEncodedDataLength += readSize;
-        // If we have read all the metadata for this region, advance to the next region
-        if (currentRegion != SMRegion.MESSAGE_FOOTER) {
-            advanceRegion(region);
-        }
+        currentMessageLength += metadata.length;
     }
 
-    private void encodeContent(ByteBuffer unencodedBuffer, ByteArrayOutputStream output) throws IOException {
-        int tempChecksumOffset = checksumOffset - contentOffset;
+    private void encodeSegmentHeader(ByteArrayOutputStream output) {
+        incrementCurrentSegment();
+        byte[] metadata = generateSegmentHeader();
+        output.write(metadata, 0, metadata.length);
 
-        int readSize = Math.min(unencodedBuffer.remaining(), currentRegionLength - currentRegionOffset);
+        currentMessageLength += metadata.length;
+    }
 
-        if (tempChecksumOffset != 0) {
-            readSize = Math.min(readSize, tempChecksumOffset);
+    private void encodeSegmentFooter(ByteArrayOutputStream output) {
+        byte[] metadata;
+        if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
+            metadata = ByteBuffer.allocate(CRC64_LENGTH)
+                .order(ByteOrder.LITTLE_ENDIAN)
+                .putLong(segmentCRC64s.get(currentSegmentNumber))
+                .array();
+        } else {
+            metadata = new byte[0];
         }
+        output.write(metadata, 0, metadata.length);
+
+        currentMessageLength += metadata.length;
+        currentSegmentOffset = 0;
+    }
+
+    private void encodeMessageFooter(ByteArrayOutputStream output) {
+        byte[] metadata;
+        if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
+            metadata = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN).putLong(messageCRC64).array();
+        } else {
+            metadata = new byte[0];
+        }
+
+        output.write(metadata, 0, metadata.length);
+        currentMessageLength += metadata.length;
+    }
+
+    private void encodeSegmentContent(ByteBuffer unencodedBuffer, ByteArrayOutputStream output) {
+        int readSize = Math.min(unencodedBuffer.remaining(), getSegmentContentLength() - currentSegmentOffset);
 
         byte[] content = new byte[readSize];
         unencodedBuffer.get(content, 0, readSize);
-        output.write(content);
 
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-            if (tempChecksumOffset == 0) {
-                segmentCRC64s.put(currentSegmentNumber,
-                    StorageCrc64Calculator.compute(content, segmentCRC64s.get(currentSegmentNumber)));
-                messageCRC64 = StorageCrc64Calculator.compute(content, messageCRC64);
-            }
+            segmentCRC64s.put(currentSegmentNumber,
+                StorageCrc64Calculator.compute(content, segmentCRC64s.get(currentSegmentNumber)));
+            messageCRC64 = StorageCrc64Calculator.compute(content, messageCRC64);
         }
 
-        contentOffset += readSize;
-        if (contentOffset > checksumOffset) {
-            checksumOffset += readSize;
-        }
+        currentContentOffset += readSize;
+        currentSegmentOffset += readSize;
 
-        currentRegionOffset += readSize;
-        currentEncodedDataLength += readSize;
-        if (currentRegionOffset == currentRegionLength) {
-            advanceRegion(SMRegion.SEGMENT_CONTENT);
-        }
+        output.write(content, 0, content.length);
+        currentMessageLength += readSize;
     }
 
     private int calculateMessageLength() {
@@ -231,78 +233,6 @@ public class StructuredMessageEncoder {
         length += contentLength;
         length += getMessageFooterLength();
         return length;
-    }
-
-    private byte[] getMetadataRegion(SMRegion region) {
-        byte[] metadata;
-        switch (region) {
-            case MESSAGE_HEADER:
-                metadata = generateMessageHeader();
-                break;
-
-            case SEGMENT_HEADER:
-                metadata = generateSegmentHeader();
-                break;
-
-            case SEGMENT_FOOTER:
-                if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-                    metadata = ByteBuffer.allocate(CRC64_LENGTH)
-                        .order(ByteOrder.LITTLE_ENDIAN)
-                        .putLong(segmentCRC64s.get(currentSegmentNumber))
-                        .array();
-                } else {
-                    metadata = new byte[0];
-                }
-                break;
-
-            case MESSAGE_FOOTER:
-                if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-                    metadata = ByteBuffer.allocate(CRC64_LENGTH)
-                        .order(ByteOrder.LITTLE_ENDIAN)
-                        .putLong(messageCRC64)
-                        .array();
-                } else {
-                    metadata = new byte[0];
-                }
-                break;
-
-            default:
-                throw new IllegalArgumentException("Invalid metadata SMRegion " + currentRegion);
-        }
-
-        return metadata;
-    }
-
-    private void advanceRegion(SMRegion current) {
-        currentRegionOffset = 0;
-        switch (current) {
-            case MESSAGE_HEADER:
-                currentRegion = SMRegion.SEGMENT_HEADER;
-                incrementCurrentSegment();
-                break;
-
-            case SEGMENT_HEADER:
-                currentRegion = SMRegion.SEGMENT_CONTENT;
-                break;
-
-            case SEGMENT_CONTENT:
-                currentRegion = SMRegion.SEGMENT_FOOTER;
-                break;
-
-            case SEGMENT_FOOTER:
-                if (contentOffset == contentLength) {
-                    currentRegion = SMRegion.MESSAGE_FOOTER;
-                } else {
-                    currentRegion = SMRegion.SEGMENT_HEADER;
-                    incrementCurrentSegment();
-                }
-                break;
-
-            default:
-                throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
-        }
-
-        updateCurrentRegionLength();
     }
 
     private void incrementCurrentSegment() {
