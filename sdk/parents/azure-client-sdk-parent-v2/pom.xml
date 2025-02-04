@@ -98,8 +98,6 @@
     <projectTestSourceDirectory>${project.build.testSourceDirectory}</projectTestSourceDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
-    <playbackServerPort>11080</playbackServerPort>
-    <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
@@ -211,15 +209,6 @@
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
 
-    <!-- This property configures whether doclinting is performed when generating Javadocs. -->
-    <doclint>all</doclint>
-
-    <!-- This property configures whether doclinting includes warning and erroring for missing tags and descriptions. -->
-    <!-- By default, missing tags and descriptions are included as issues. -->
-    <!-- If needed, temporarily, override this property in a child POM with a value of '-' to exclude this validation. -->
-    <!-- Even with this validation excluded other linting tooling, such as Checkstyle, may still raise errors. -->
-    <doclintMissingInclusion></doclintMissingInclusion>
-
     <!-- The following properties configure compile skipping. -->
     <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
     <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
@@ -231,9 +220,6 @@
 
     <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
     <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
-
-    <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
-    <java.security.manager.configuration></java.security.manager.configuration>
 
     <!-- JavaDoc properties -->
 
@@ -702,9 +688,6 @@
               <arg>-Xlint:try</arg>
               <arg>-Xlint:unchecked</arg>
               <arg>-Xlint:varargs</arg>
-              <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-              <arg>-Xlint:removal</arg>
-              <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
             </compilerArgs>
 
             <!-- Default is annotation processing being off. -->
@@ -782,9 +765,6 @@
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
-            <jvmArgs>
-              ${java.security.manager.configuration}
-            </jvmArgs>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -804,7 +784,7 @@
           <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <skip>${maven.javadoc.skip}</skip>
-            <release>17</release>
+            <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
@@ -817,33 +797,18 @@
               *.implementation*:
               *.samples:
               com.azure.tools.checkstyle*:
-              com.azure.core.test*:
-              com.azure.endtoend*:
-              com.azure.perf*:
-              com.azure.storage.internal.avro*:
               ${javadoc.excludePackageNames}
             </excludePackageNames>
+            <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
+            <sourceFileExcludes>
+              <sourceFileExclude>module-info.java</sourceFileExclude>
+            </sourceFileExcludes>
             <sourcepath>
               ${javadoc.sourcepath}
             </sourcepath>
             <links combine.children="append">
               <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
-
-              <!-- Reactor APIs -->
-              <link>https://projectreactor.io/docs/core/release/api/</link> <!-- TODO (alzimmer): We need to version this. Right now it is always going to point to latest which may be wrong -->
-              <link>https://projectreactor.io/docs/netty/release/api/</link>
-
-              <!-- Jackson APIs -->
-              <link>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</link>
-              <link>https://fasterxml.github.io/jackson-core/javadoc/2.12/</link>
-              <link>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</link>
-
-              <!-- Netty APIs -->
-              <link>https://netty.io/4.1/api/</link>
-
-              <!-- Avro APIs -->
-              <link>https://avro.apache.org/docs/current/api/java/</link>
             </links>
             <detectJavaApiLink>false</detectJavaApiLink>
             <offline>true</offline>
@@ -853,46 +818,10 @@
                 <url>https://docs.oracle.com/javase/8/docs/api/</url>
                 <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/java8/</location>
               </offlineLink>
-
-              <!-- Reactor APIs -->
-              <offlineLink>
-                <url>https://projectreactor.io/docs/core/release/api/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-core/</location>
-              </offlineLink>
-              <offlineLink>
-                <url>https://projectreactor.io/docs/netty/release/api/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/reactor-netty/</location>
-              </offlineLink>
-
-              <!-- Jackson APIs -->
-              <offlineLink>
-                <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-annotations/</location>
-              </offlineLink>
-              <offlineLink>
-                <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-core/</location>
-              </offlineLink>
-              <offlineLink>
-                <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/jackson-databind/</location>
-              </offlineLink>
-
-              <!-- Netty APIs -->
-              <offlineLink>
-                <url>https://netty.io/4.1/api/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/netty/</location>
-              </offlineLink>
-
-              <!-- Avro APIs -->
-              <offlineLink>
-                <url>https://avro.apache.org/docs/current/api/java/</url>
-                <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/apache-avro/</location>
-              </offlineLink>
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
-            <doclint>${doclint},${doclintMissingInclusion}missing</doclint>
+            <doclint>all</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
           </configuration>
@@ -1171,42 +1100,73 @@
   </reporting>
 
   <profiles>
+
+    <!-- Skip module-info.java on Java 8 -->
     <profile>
-      <id>java-baseline</id>
+      <id>java8</id>
       <activation>
-        <jdk>17</jdk>
+        <jdk>[1.8,9)</jdk>
       </activation>
       <properties>
-        <maven.compiler.release>17</maven.compiler.release>
-        <maven.compiler.testRelease>17</maven.compiler.testRelease>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
       </properties>
       <build>
         <plugins>
+          <!-- Don't compile module-info.java, see java 9+ profile -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>default-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <useModulePath>false</useModulePath>
-                </configuration>
-              </execution>
-            </executions>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+              <testExcludes>
+                <testExclude>module-info.java</testExclude>
+              </testExcludes>
+
+              <testSource>1.8</testSource>
+              <testTarget>1.8</testTarget>
+            </configuration>
+          </plugin>
+          <!-- Avoid errors from module-info -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <sourceFileExcludes>
+                <sourceFileExclude>module-info.java</sourceFileExclude>
+              </sourceFileExcludes>
+            </configuration>
           </plugin>
         </plugins>
       </build>
+      <reporting>
+        <plugins>
+          <!-- Avoid errors from module-info -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <sourceFileExcludes>
+                <sourceFileExclude>module-info.java</sourceFileExclude>
+              </sourceFileExcludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
 
-    <!-- Setup for Java 18+ -->
+    <!-- Setup for Java 9+ -->
     <profile>
-      <id>java-18-plus</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[18,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -1214,6 +1174,13 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <compilerArgs combine.children="append">
+                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:removal</arg>
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+              </compilerArgs>
+            </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
               <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
@@ -1223,23 +1190,41 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <compilerArgs combine.children="append">
-                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
-                  </compilerArgs>
                   <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
 
-              <!-- then compile with Java 17 as the base version -->
-              <!-- this is the ClientCore baseline for jars that are released to Maven and should only be updated
-              when the ClientCore SDK policy is changed -->
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <includes>
+                    <include>module-info.java</include>
+                  </includes>
+                </configuration>
+              </execution>
+
+              <!-- then compile without module-info for Java 8 -->
               <execution>
                 <id>base-compile</id>
                 <goals>
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <release>17</release>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
+                  <release>8</release>
+                  <excludes>
+                    <exclude>module-info.java</exclude>
+                  </excludes>
                 </configuration>
               </execution>
 
@@ -1250,28 +1235,57 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <compilerArgs combine.children="append">
-                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
-                  </compilerArgs>
                   <release>${java.vm.specification.version}</release>
                   <testRelease>${java.vm.specification.version}</testRelease>
                   <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
 
-              <!-- then compile with Java 17 -->
+              <!-- then compile with Java 8 -->
               <execution>
                 <id>base-testCompile</id>
                 <goals>
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <release>17</release>
-                  <testRelease>17</testRelease>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
+                  <testExcludes>
+                    <testExclude>module-info.java</testExclude>
+                  </testExcludes>
                   <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                ${defaultSurefireArgLine}
+                ${javaModulesSurefireArgLine}
+                ${additionalSurefireArgLine}
+              </argLine>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                ${defaultFailsafeArgLine}
+                ${javaModulesFailsafeArgLine}
+                ${additionalFailsafeArgLine}
+              </argLine>
+            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -1365,92 +1379,6 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-no-azure-test-mode-env</id>
-      <activation>
-        <property>
-          <name>!env.AZURE_TEST_MODE</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-azure-test-mode-playback-env</id>
-      <activation>
-        <property>
-          <name>env.AZURE_TEST_MODE</name>
-          <value>PLAYBACK</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-no-azure-test-mode-prop</id>
-      <activation>
-        <property>
-          <name>AZURE_TEST_MODE</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback-azure-test-mode-playback-prop</id>
-      <activation>
-        <property>
-          <name>AZURE_TEST_MODE</name>
-          <value>PLAYBACK</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
-            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -1618,6 +1546,44 @@
           </snapshots>
         </repository>
       </repositories>
+    </profile>
+
+    <profile>
+      <id>test-module-base-compile</id>
+      <activation>
+        <file>
+          <exists>${projectTestSourceDirectory}/module-info.java</exists>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <testRelease>11</testRelease>
+                  <testIncludes>
+                    <testInclude>module-info.java</testInclude>
+                  </testIncludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
