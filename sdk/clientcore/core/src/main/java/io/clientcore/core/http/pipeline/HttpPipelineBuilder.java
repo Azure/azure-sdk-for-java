@@ -55,7 +55,6 @@ public class HttpPipelineBuilder {
     private HttpCredentialPolicy credentialPolicy;
     private final LinkedList<HttpPipelinePolicy> betweenAuthenticationAndInstrumentation = new LinkedList<>();
     private HttpInstrumentationPolicy instrumentationPolicy;
-    private final LinkedList<HttpPipelinePolicy> afterInstrumentation = new LinkedList<>();
 
     /**
      * Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
@@ -96,8 +95,6 @@ public class HttpPipelineBuilder {
         if (instrumentationPolicy != null) {
             policies.add(instrumentationPolicy);
         }
-
-        policies.addAll(afterInstrumentation);
 
         HttpClient client;
 
@@ -162,8 +159,6 @@ public class HttpPipelineBuilder {
             betweenRetryAndAuthentication.add(policy);
         } else if (order == HttpPipelineOrder.BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION) {
             betweenAuthenticationAndInstrumentation.add(policy);
-        } else if (order == HttpPipelineOrder.AFTER_INSTRUMENTATION) {
-            afterInstrumentation.add(policy);
         } else {
             throw LOGGER.atError()
                 .addKeyValue("policyType", policy.getClass())

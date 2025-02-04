@@ -139,25 +139,6 @@ public final class HttpPipelineOrder implements ExpandableEnum<String> {
     public static final HttpPipelineOrder BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION
         = new HttpPipelineOrder("BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION");
 
-    /**
-     * The policy will be position after the {@link HttpInstrumentationPolicy}.
-     * <p>
-     * If multiple {@link HttpPipelinePolicy policies} are added with this order, they will be executed in the order
-     * they were added after {@link HttpInstrumentationPolicy}. Or, visually:
-     * <pre>
-     *     +------------------------+
-     *     | Instrumentation Policy |
-     *     +------------------------+
-     *     |    1st added After     |
-     *     +------------------------+
-     *     |    2nd added After     |
-     *     +------------------------+
-     *     |    3rd added After     |
-     *     +------------------------+
-     * </pre>
-     */
-    public static final HttpPipelineOrder AFTER_INSTRUMENTATION = new HttpPipelineOrder("AFTER_INSTRUMENTATION");
-
     // Package-private HttpPipelineOrder constants for pillar policies.
     static final HttpPipelineOrder REDIRECT = new HttpPipelineOrder("REDIRECT");
     static final HttpPipelineOrder RETRY = new HttpPipelineOrder("RETRY");
