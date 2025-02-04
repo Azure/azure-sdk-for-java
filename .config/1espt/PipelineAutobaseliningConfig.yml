@@ -34,3 +34,10 @@ pipelines:
         armory:
           lastModifiedDate: 2025-02-03
     usedNonDefaultBranch: true
+  6387:
+    retail:
+      binary:
+        credscan:
+          lastModifiedDate: 2025-02-04
+        binskim:
+          lastModifiedDate: 2025-02-04
