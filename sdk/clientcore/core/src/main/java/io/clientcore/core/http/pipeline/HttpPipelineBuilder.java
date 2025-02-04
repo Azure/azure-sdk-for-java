@@ -49,7 +49,7 @@ public class HttpPipelineBuilder {
 
     private final LinkedList<HttpPipelinePolicy> beforeRedirect = new LinkedList<>();
     private HttpRedirectPolicy redirectPolicy;
-    private final LinkedList<HttpPipelinePolicy> bewteenRedirectAndRetry = new LinkedList<>();
+    private final LinkedList<HttpPipelinePolicy> betweenRedirectAndRetry = new LinkedList<>();
     private HttpRetryPolicy retryPolicy;
     private final LinkedList<HttpPipelinePolicy> betweenRetryAndAuthentication = new LinkedList<>();
     private HttpCredentialPolicy credentialPolicy;
@@ -79,7 +79,7 @@ public class HttpPipelineBuilder {
             policies.add(redirectPolicy);
         }
 
-        policies.addAll(bewteenRedirectAndRetry);
+        policies.addAll(betweenRedirectAndRetry);
 
         if (retryPolicy != null) {
             policies.add(retryPolicy);
@@ -157,7 +157,7 @@ public class HttpPipelineBuilder {
         if (order == HttpPipelineOrder.BEFORE_REDIRECT) {
             beforeRedirect.add(policy);
         } else if (order == HttpPipelineOrder.BETWEEN_REDIRECT_AND_RETRY) {
-            bewteenRedirectAndRetry.add(policy);
+            betweenRedirectAndRetry.add(policy);
         } else if (order == HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION) {
             betweenRetryAndAuthentication.add(policy);
         } else if (order == HttpPipelineOrder.BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION) {
@@ -177,19 +177,21 @@ public class HttpPipelineBuilder {
     private boolean tryAddPillar(HttpPipelinePolicy policy) {
         HttpPipelinePolicy previous = null;
         boolean added = false;
-        if (policy instanceof HttpRedirectPolicy) {
+
+        HttpPipelineOrder order = policy.getOrder();
+        if (order == HttpPipelineOrder.REDIRECT) {
             previous = redirectPolicy;
             redirectPolicy = (HttpRedirectPolicy) policy;
             added = true;
-        } else if (policy instanceof HttpRetryPolicy) {
+        } else if (order == HttpPipelineOrder.RETRY) {
             previous = retryPolicy;
             retryPolicy = (HttpRetryPolicy) policy;
             added = true;
-        } else if (policy instanceof HttpCredentialPolicy) {
+        } else if (order == HttpPipelineOrder.AUTHENTICATION) {
             previous = credentialPolicy;
             credentialPolicy = (HttpCredentialPolicy) policy;
             added = true;
-        } else if (policy instanceof HttpInstrumentationPolicy) {
+        } else if (order == HttpPipelineOrder.INSTRUMENTATION) {
             previous = instrumentationPolicy;
             instrumentationPolicy = (HttpInstrumentationPolicy) policy;
             added = true;

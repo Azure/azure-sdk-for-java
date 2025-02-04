@@ -647,6 +647,6 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpPipelineOrder getOrder() {
-        return null;
+        return HttpPipelineOrder.INSTRUMENTATION;
     }
 }

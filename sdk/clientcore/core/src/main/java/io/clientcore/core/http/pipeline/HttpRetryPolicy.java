@@ -127,7 +127,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpPipelineOrder getOrder() {
-        return null;
+        return HttpPipelineOrder.RETRY;
     }
 
     /*
@@ -332,7 +332,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                     && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
                     && code != HttpURLConnection.HTTP_VERSION));
         } else {
-            return requestRetryCondition.getException() instanceof Exception;
+            return requestRetryCondition.getException() != null;
         }
     }
 

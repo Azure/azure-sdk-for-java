@@ -93,7 +93,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpPipelineOrder getOrder() {
-        return null;
+        return HttpPipelineOrder.REDIRECT;
     }
 
     /**

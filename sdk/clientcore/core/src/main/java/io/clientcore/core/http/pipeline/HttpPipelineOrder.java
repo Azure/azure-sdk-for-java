@@ -157,4 +157,11 @@ public final class HttpPipelineOrder implements ExpandableEnum<String> {
      * </pre>
      */
     public static final HttpPipelineOrder AFTER_INSTRUMENTATION = new HttpPipelineOrder("AFTER_INSTRUMENTATION");
+
+    // Package-private HttpPipelineOrder constants for pillar policies.
+    static final HttpPipelineOrder REDIRECT = new HttpPipelineOrder("REDIRECT");
+    static final HttpPipelineOrder RETRY = new HttpPipelineOrder("RETRY");
+    static final HttpPipelineOrder AUTHENTICATION = new HttpPipelineOrder("AUTHENTICATION");
+    static final HttpPipelineOrder INSTRUMENTATION = new HttpPipelineOrder("INSTRUMENTATION");
+
 }
