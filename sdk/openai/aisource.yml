@@ -1,2 +1,5 @@
-parameters:
-  DisableAzureResourceCreation: false
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: openai
+    DisableAzureResourceCreation: true
