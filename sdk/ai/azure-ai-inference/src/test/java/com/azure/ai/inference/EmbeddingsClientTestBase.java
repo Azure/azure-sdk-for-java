@@ -19,13 +19,18 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.azure.ai.inference.TestUtils.FAKE_API_KEY;
+import static com.azure.ai.inference.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_PATH;
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_FORMAT;
 
 public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
     protected EmbeddingsClient embeddingsClient;
@@ -108,6 +113,10 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         testRunner.accept(getPrompts());
     }
 
+    void getImageEmbeddingsRunner(Consumer<List<ImageEmbeddingInput>> testRunner) {
+        testRunner.accept(getInputs());
+    }
+
     static void assertEmbeddings(EmbeddingsResult actual) {
         List<EmbeddingItem> data = actual.getData();
         assertNotNull(data);
@@ -126,5 +135,12 @@ public abstract class EmbeddingsClientTestBase extends TestProxyTestBase {
         prompts.add("Can you help me?");
         prompts.add("What's the best way to train a parrot?");
         return prompts;
+    }
+
+    private List<ImageEmbeddingInput> getInputs() {
+        Path testFilePath = Paths.get(TEST_IMAGE_PATH);
+        List<ImageEmbeddingInput> inputList = new ArrayList<>();
+        inputList.add(new ImageEmbeddingInput(testFilePath, TEST_IMAGE_FORMAT));
+        return inputList;
     }
 }

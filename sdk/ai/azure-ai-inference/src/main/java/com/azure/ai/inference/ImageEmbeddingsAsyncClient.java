@@ -4,9 +4,11 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
+import com.azure.ai.inference.implementation.models.EmbedRequest;
 import com.azure.ai.inference.implementation.models.ImageEmbedRequest;
 import com.azure.ai.inference.models.EmbeddingsResult;
 import com.azure.ai.inference.models.ExtraParameters;
+import com.azure.ai.inference.models.ImageEmbeddingInput;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -22,6 +24,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * Initializes a new instance of the asynchronous ImageEmbeddingsClient type.
@@ -56,7 +60,7 @@ public final class ImageEmbeddingsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -76,9 +80,9 @@ public final class ImageEmbeddingsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -119,7 +123,7 @@ public final class ImageEmbeddingsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -144,6 +148,35 @@ public final class ImageEmbeddingsAsyncClient {
         return this.serviceClient.getModelInfoWithResponseAsync(requestOptions);
     }
 
+    /**
+     * Return the embedding vectors for given text prompts.
+     * The method makes a REST API call to the `/embeddings` route on the given endpoint.
+     *
+     * @param input Inputs, instances of ImageEmbeddingsInput.
+     * To embed multiple inputs in a single request, pass an array
+     * of strings or array of token arrays.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return representation of the response data from an embeddings request.
+     * Image embeddings measure the relatedness of images and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<EmbeddingsResult> embed(List<ImageEmbeddingInput> input) {
+        // Generated convenience method for embedWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        ImageEmbedRequest embedRequestObj = new ImageEmbedRequest(input);
+        BinaryData embedRequest = BinaryData.fromObject(embedRequestObj);
+        return embedWithResponse(embedRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(EmbeddingsResult.class));
+    }
+
+    /**
+    
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
