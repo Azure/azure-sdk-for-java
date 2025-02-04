@@ -186,3 +186,10 @@ pipelines:
           lastModifiedDate: 2025-02-04
         binskim:
           lastModifiedDate: 2025-02-04
+  762:
+    retail:
+      binary:
+        credscan:
+          lastModifiedDate: 2025-02-04
+        binskim:
+          lastModifiedDate: 2025-02-04
