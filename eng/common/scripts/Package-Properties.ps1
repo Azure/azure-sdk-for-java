@@ -102,6 +102,7 @@ class PackageProps {
                 if ($matrixConfigList) {
                     $result.MatrixConfigs = $matrixConfigList
                     if ($additionalMatrixConfigList) {
+                        Write-Host "JRS-Adding AdditionalMatrixConfigs"
                         $result.MatrixConfigs += $additionalMatrixConfigList
                     }
                 } else {
