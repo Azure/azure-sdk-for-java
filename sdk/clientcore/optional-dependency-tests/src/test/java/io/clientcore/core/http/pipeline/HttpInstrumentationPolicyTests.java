@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
@@ -44,7 +45,6 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -419,47 +419,45 @@ public class HttpInstrumentationPolicyTests {
     }
 
     @Test
-    @Disabled("Ongoing work whether HttpPipelineBuilder and HttpPipelineOrder will support adding policies after "
-        + "instrumentation or whether HttpInstrumentationPolicy will be extensible.")
     public void enrichSpans() throws IOException {
-        //        HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(
-        //            otelOptions.setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS));
-        //
-        //        HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
-        //            @Override
-        //            public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
-        //                io.clientcore.core.instrumentation.tracing.Span span
-        //                    = request.getRequestOptions().getInstrumentationContext().getSpan();
-        //                if (span.isRecording()) {
-        //                    span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
-        //                }
-        //
-        //                return next.process();
-        //            }
-        //
-        //            @Override
-        //            public HttpPipelineOrder getOrder() {
-        //                return HttpPipelineOrder.AFTER_INSTRUMENTATION;
-        //            }
-        //        };
-        //
-        //        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(httpInstrumentationPolicy)
-        //            .addPolicy(enrichingPolicy)
-        //            .httpClient(request -> new MockHttpResponse(request, 200))
-        //            .build();
-        //
-        //        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
-        //        request.getHeaders().set(CUSTOM_REQUEST_ID, "42");
-        //
-        //        pipeline.send(request).close();
-        //
-        //        assertNotNull(exporter.getFinishedSpanItems());
-        //        assertEquals(1, exporter.getFinishedSpanItems().size());
-        //
-        //        SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
-        //        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
-        //
-        //        assertEquals("42", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
+        HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(
+            otelOptions.setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS));
+
+        HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Response<?> process(HttpRequest request, HttpPipelineNextPolicy next) {
+                io.clientcore.core.instrumentation.tracing.Span span
+                    = request.getRequestOptions().getInstrumentationContext().getSpan();
+                if (span.isRecording()) {
+                    span.setAttribute("custom.request.id", request.getHeaders().getValue(CUSTOM_REQUEST_ID));
+                }
+
+                return next.process();
+            }
+
+            @Override
+            public HttpPipelineOrder getOrder() {
+                return HttpPipelineOrder.AFTER_INSTRUMENTATION;
+            }
+        };
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(httpInstrumentationPolicy)
+            .addPolicy(enrichingPolicy)
+            .httpClient(request -> new MockHttpResponse(request, 200))
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
+        request.getHeaders().set(CUSTOM_REQUEST_ID, "42");
+
+        pipeline.send(request).close();
+
+        assertNotNull(exporter.getFinishedSpanItems());
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+
+        SpanData exportedSpan = exporter.getFinishedSpanItems().get(0);
+        assertHttpSpan(exportedSpan, HttpMethod.GET, "https://localhost/", 200);
+
+        assertEquals("42", exportedSpan.getAttributes().get(AttributeKey.stringKey("custom.request.id")));
     }
 
     @SuppressWarnings("try")

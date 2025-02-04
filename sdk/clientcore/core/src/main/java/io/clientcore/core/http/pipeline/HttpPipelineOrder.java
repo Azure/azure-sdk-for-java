@@ -41,15 +41,15 @@ import io.clientcore.core.util.ExpandableEnum;
  *     +--------------------------+
  * </pre>
  */
-public final class HttpPipelineOrder implements ExpandableEnum<String> {
-    private final String value;
+public final class HttpPipelineOrder implements ExpandableEnum<Integer> {
+    private final int value;
 
-    private HttpPipelineOrder(String value) {
+    private HttpPipelineOrder(Integer value) {
         this.value = value;
     }
 
     @Override
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
@@ -70,7 +70,7 @@ public final class HttpPipelineOrder implements ExpandableEnum<String> {
      *     +------------------+
      * </pre>
      */
-    public static final HttpPipelineOrder BEFORE_REDIRECT = new HttpPipelineOrder("BEFORE_REDIRECT");
+    public static final HttpPipelineOrder BEFORE_REDIRECT = new HttpPipelineOrder(1000);
 
     /**
      * The policy will be position after the {@link HttpRedirectPolicy} and before the {@link HttpRetryPolicy}.
@@ -91,8 +91,7 @@ public final class HttpPipelineOrder implements ExpandableEnum<String> {
      *     +-------------------+
      * </pre>
      */
-    public static final HttpPipelineOrder BETWEEN_REDIRECT_AND_RETRY
-        = new HttpPipelineOrder("BETWEEN_REDIRECT_AND_RETRY");
+    public static final HttpPipelineOrder BETWEEN_REDIRECT_AND_RETRY = new HttpPipelineOrder(3000);
 
     /**
      * The policy will be position after the {@link HttpRetryPolicy} and before the {@link HttpCredentialPolicy}.
@@ -113,8 +112,7 @@ public final class HttpPipelineOrder implements ExpandableEnum<String> {
      *     +-----------------------+
      * </pre>
      */
-    public static final HttpPipelineOrder BETWEEN_RETRY_AND_AUTHENTICATION
-        = new HttpPipelineOrder("BETWEEN_RETRY_AND_AUTHENTICATION");
+    public static final HttpPipelineOrder BETWEEN_RETRY_AND_AUTHENTICATION = new HttpPipelineOrder(5000);
 
     /**
      * The policy will be position after the {@link HttpCredentialPolicy} and before the
@@ -136,13 +134,31 @@ public final class HttpPipelineOrder implements ExpandableEnum<String> {
      *     +------------------------+
      * </pre>
      */
-    public static final HttpPipelineOrder BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION
-        = new HttpPipelineOrder("BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION");
+    public static final HttpPipelineOrder BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION = new HttpPipelineOrder(7000);
+
+    /**
+     * The policy will be position after the {@link HttpInstrumentationPolicy}.
+     * <p>
+     * If multiple {@link HttpPipelinePolicy policies} are added with this order, they will be executed in the order
+     * they were added after {@link HttpInstrumentationPolicy}. Or, visually:
+     * <pre>
+     *     +------------------------+
+     *     | Instrumentation Policy |
+     *     +------------------------+
+     *     |    1st added After     |
+     *     +------------------------+
+     *     |    2nd added After     |
+     *     +------------------------+
+     *     |    3rd added After     |
+     *     +------------------------+
+     * </pre>
+     */
+    public static final HttpPipelineOrder AFTER_INSTRUMENTATION = new HttpPipelineOrder(9000);
 
     // Package-private HttpPipelineOrder constants for pillar policies.
-    static final HttpPipelineOrder REDIRECT = new HttpPipelineOrder("REDIRECT");
-    static final HttpPipelineOrder RETRY = new HttpPipelineOrder("RETRY");
-    static final HttpPipelineOrder AUTHENTICATION = new HttpPipelineOrder("AUTHENTICATION");
-    static final HttpPipelineOrder INSTRUMENTATION = new HttpPipelineOrder("INSTRUMENTATION");
+    static final HttpPipelineOrder REDIRECT = new HttpPipelineOrder(2000);
+    static final HttpPipelineOrder RETRY = new HttpPipelineOrder(4000);
+    static final HttpPipelineOrder AUTHENTICATION = new HttpPipelineOrder(6000);
+    static final HttpPipelineOrder INSTRUMENTATION = new HttpPipelineOrder(8000);
 
 }
