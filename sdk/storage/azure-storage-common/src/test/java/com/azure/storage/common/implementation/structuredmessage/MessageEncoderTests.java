@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,6 +18,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 public class MessageEncoderTests {
+
+    private static final int V1_HEADER_LENGTH = 13;
+    private static final int V1_SEGMENT_HEADER_LENGTH = 10;
+    private static final int CRC64_LENGTH = 8;
+
     private static byte[] getRandomData(int size) {
         byte[] result = new byte[size];
         ThreadLocalRandom.current().nextBytes(result);
@@ -35,21 +38,19 @@ public class MessageEncoderTests {
         stream.write(segHeader.array()); // Write segment header
         stream.write(data); // Write segment content
         if (dataCrc != -1) {
-            ByteBuffer segFooter
-                = ByteBuffer.allocate(StructuredMessageEncoder.CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN);
+            ByteBuffer segFooter = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN);
             segFooter.putLong(dataCrc);
             stream.write(segFooter.array()); // Write segment footer
         }
     }
 
-    private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize, Flags flags,
-        int invalidateCrcSegment) throws IOException {
+    private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize,
+        StructuredMessageFlags structuredMessageFlags, int invalidateCrcSegment) throws IOException {
         int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
-        int segmentFooterLength = flags == Flags.STORAGE_CRC64 ? StructuredMessageEncoder.CRC64_LENGTH : 0;
+        int segmentFooterLength = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
 
-        int messageLength = StructuredMessageEncoder.V1_HEADER_LENGTH
-            + ((StructuredMessageEncoder.V1_SEGMENT_HEADER_LENGTH + segmentFooterLength) * segmentCount)
-            + data.capacity() + (flags == Flags.STORAGE_CRC64 ? StructuredMessageEncoder.CRC64_LENGTH : 0);
+        int messageLength = V1_HEADER_LENGTH + ((V1_SEGMENT_HEADER_LENGTH + segmentFooterLength) * segmentCount)
+            + data.capacity() + (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0);
 
         long messageCRC = 0;
 
@@ -57,14 +58,14 @@ public class MessageEncoderTests {
         ByteBuffer buffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN); //1 + 8 + 2 + 2
         buffer.put((byte) 0x01);
         buffer.putLong(messageLength);
-        buffer.putShort((short) flags.getValue());
+        buffer.putShort((short) structuredMessageFlags.getValue());
         buffer.putShort((short) segmentCount);
 
         ByteArrayOutputStream message = new ByteArrayOutputStream();
         message.write(buffer.array());
 
         if (data.capacity() == 0) {
-            int crc = flags == Flags.STORAGE_CRC64 ? 0 : -1;
+            int crc = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? 0 : -1;
             writeSegment(1, data.array(), crc, message);
         } else {
             // Segments
@@ -78,7 +79,7 @@ public class MessageEncoderTests {
                 offset += size;
 
                 long segmentCrc = -1;
-                if (flags == Flags.STORAGE_CRC64) {
+                if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
                     segmentCrc = StorageCrc64Calculator.compute(segmentData, 0);
                     if (i == -1) {
                         segmentCrc += 5;
@@ -91,14 +92,12 @@ public class MessageEncoderTests {
         }
 
         // Message footer
-        if (flags == Flags.STORAGE_CRC64) {
+        if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
             if (invalidateCrcSegment == -1) {
                 messageCRC += 5;
             }
-            byte[] crcBytes = ByteBuffer.allocate(StructuredMessageEncoder.CRC64_LENGTH)
-                .order(ByteOrder.LITTLE_ENDIAN)
-                .putLong(messageCRC)
-                .array();
+            byte[] crcBytes
+                = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN).putLong(messageCRC).array();
             message.write(crcBytes);
         }
 
@@ -111,49 +110,62 @@ public class MessageEncoderTests {
     }
 
     private static Stream<Arguments> readAllSupplier() {
-        return Stream.of(Arguments.of(0, 1, Flags.NONE), Arguments.of(0, 1, Flags.STORAGE_CRC64),
-            Arguments.of(10, 1, Flags.NONE), Arguments.of(10, 1, Flags.STORAGE_CRC64),
-            Arguments.of(1024, 1024, Flags.NONE), Arguments.of(1024, 1024, Flags.STORAGE_CRC64),
-            Arguments.of(1024, 512, Flags.NONE), Arguments.of(1024, 512, Flags.STORAGE_CRC64),
-            Arguments.of(1024, 200, Flags.NONE), Arguments.of(1024, 200, Flags.STORAGE_CRC64),
-            Arguments.of(1024 * 10, 2, Flags.NONE), Arguments.of(1024 * 10, 2, Flags.STORAGE_CRC64),
-            Arguments.of(1024 * 50, 512, Flags.NONE), Arguments.of(1024 * 50, 512, Flags.STORAGE_CRC64),
-            Arguments.of(1024 * 1024, 512, Flags.NONE), Arguments.of(1024 * 1024, 512, Flags.STORAGE_CRC64),
-            Arguments.of(1024 * 1024, 1024, Flags.NONE), Arguments.of(1024 * 1024, 1024, Flags.STORAGE_CRC64),
-            Arguments.of(1024 * 1024 * 4, 1024 * 1024, Flags.NONE),
-            Arguments.of(1024 * 1024 * 4, 1024 * 1024, Flags.STORAGE_CRC64),
-            Arguments.of(1024 * 1024 * 8, 1024 * 1024, Flags.NONE),
-            Arguments.of(1024 * 1024 * 8, 1024 * 1024, Flags.STORAGE_CRC64), Arguments.of(1234, 123, Flags.NONE),
-            Arguments.of(1234, 123, Flags.STORAGE_CRC64), Arguments.of(1234 * 10, 12, Flags.NONE),
-            Arguments.of(1234 * 10, 12, Flags.STORAGE_CRC64), Arguments.of(1234 * 1234, 567, Flags.NONE),
-            Arguments.of(1234 * 1234, 567, Flags.STORAGE_CRC64), Arguments.of(1234 * 1234 * 8, 1234 * 1234, Flags.NONE),
-            Arguments.of(1234 * 1234 * 8, 1234 * 1234, Flags.STORAGE_CRC64));
+        return Stream.of(Arguments.of(0, 1, StructuredMessageFlags.NONE),
+            Arguments.of(0, 1, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(10, 1, StructuredMessageFlags.NONE),
+            Arguments.of(10, 1, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024, 1024, StructuredMessageFlags.NONE),
+            Arguments.of(1024, 1024, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024, 512, StructuredMessageFlags.NONE),
+            Arguments.of(1024, 512, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024, 200, StructuredMessageFlags.NONE),
+            Arguments.of(1024, 200, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 10, 2, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 10, 2, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 50, 512, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 50, 512, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024, 512, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 1024, 512, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024, 1024, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 1024, 1024, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024 * 4, 1024 * 1024, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 1024 * 4, 1024 * 1024, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024 * 1024 * 8, 1024 * 1024, StructuredMessageFlags.NONE),
+            Arguments.of(1024 * 1024 * 8, 1024 * 1024, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1234, 123, StructuredMessageFlags.NONE),
+            Arguments.of(1234, 123, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1234 * 10, 12, StructuredMessageFlags.NONE),
+            Arguments.of(1234 * 10, 12, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1234 * 1234, 567, StructuredMessageFlags.NONE),
+            Arguments.of(1234 * 1234, 567, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1234 * 1234 * 8, 1234 * 1234, StructuredMessageFlags.NONE),
+            Arguments.of(1234 * 1234 * 8, 1234 * 1234, StructuredMessageFlags.STORAGE_CRC64));
     }
 
     @ParameterizedTest
     @MethodSource("readAllSupplier")
-    public void readAll(int size, int segmentSize, Flags flags) throws IOException {
+    public void readAll(int size, int segmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data = getRandomData(size);
 
-        ByteBuffer innerBuffer = ByteBuffer.wrap(data);
+        ByteBuffer unencodedBuffer = ByteBuffer.wrap(data);
 
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
 
-        byte[] actual = structuredMessageEncoder.encode(innerBuffer).array();
-        byte[] expected = buildStructuredMessage(innerBuffer, segmentSize, flags, 0).array();
+        byte[] actual = structuredMessageEncoder.encode(unencodedBuffer).array();
+        byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags, 0).array();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     private static Stream<Arguments> readMultipleSupplier() {
-        return Stream.of(Arguments.of(30, Flags.NONE), Arguments.of(30, Flags.STORAGE_CRC64),
-            Arguments.of(15, Flags.NONE), Arguments.of(15, Flags.STORAGE_CRC64), Arguments.of(11, Flags.NONE),
-            Arguments.of(11, Flags.STORAGE_CRC64));
+        return Stream.of(Arguments.of(30, StructuredMessageFlags.NONE),
+            Arguments.of(30, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(15, StructuredMessageFlags.NONE),
+            Arguments.of(15, StructuredMessageFlags.STORAGE_CRC64), Arguments.of(11, StructuredMessageFlags.NONE),
+            Arguments.of(11, StructuredMessageFlags.STORAGE_CRC64));
     }
 
     @ParameterizedTest
     @MethodSource("readMultipleSupplier")
-    public void readMultiple(int segmentSize, Flags flags) throws IOException {
+    public void readMultiple(int segmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data1 = getRandomData(10);
         byte[] data2 = getRandomData(10);
         byte[] data3 = getRandomData(10);

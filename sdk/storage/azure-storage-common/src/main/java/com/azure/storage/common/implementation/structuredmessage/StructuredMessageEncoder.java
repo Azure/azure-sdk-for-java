@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -20,28 +20,27 @@ public class StructuredMessageEncoder {
     /**
      * temp comment to allow building
      */
-    public static final int DEFAULT_MESSAGE_VERSION = 1;
+    private static final int DEFAULT_MESSAGE_VERSION = 1;
     /**
      * temp comment to allow building
      */
-    public static final int V1_HEADER_LENGTH = 13;
+    private static final int V1_HEADER_LENGTH = 13;
     /**
      * temp comment to allow building
      */
-    public static final int V1_SEGMENT_HEADER_LENGTH = 10;
+    private static final int V1_SEGMENT_HEADER_LENGTH = 10;
     /**
      * temp comment to allow building
      */
-    public static final int CRC64_LENGTH = 8;
+    private static final int CRC64_LENGTH = 8;
 
     private final int messageVersion;
     private final int contentLength;
     private final int messageLength;
-    private final Flags flags;
+    private final StructuredMessageFlags structuredMessageFlags;
     private final int segmentSize;
     private final int numSegments;
 
-    private ByteBuffer innerBuffer;
     private int contentOffset;
     private int currentSegmentNumber;
     private SMRegion currentRegion;
@@ -50,6 +49,7 @@ public class StructuredMessageEncoder {
     private int checksumOffset;
     private long messageCRC64;
     private final Map<Integer, Long> segmentCRC64s;
+    private int currentEncodedDataLength;
 
     private enum SMRegion {
         MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER, SEGMENT_CONTENT,
@@ -59,16 +59,16 @@ public class StructuredMessageEncoder {
      * temp comment to allow building
      * @param contentLength The length of the content to be encoded.
      * @param segmentSize The size of each segment.
-     * @param flags The flags to be set.
+     * @param structuredMessageFlags The structuredMessageFlags to be set.
      */
-    public StructuredMessageEncoder(int contentLength, int segmentSize, Flags flags) {
+    public StructuredMessageEncoder(int contentLength, int segmentSize, StructuredMessageFlags structuredMessageFlags) {
         if (segmentSize < 1) {
             throw new IllegalArgumentException("Segment size must be at least 1.");
         }
 
         this.messageVersion = DEFAULT_MESSAGE_VERSION;
         this.contentLength = contentLength;
-        this.flags = flags;
+        this.structuredMessageFlags = structuredMessageFlags;
         this.segmentSize = segmentSize;
         this.numSegments = Math.max(1, (int) Math.ceil((double) this.contentLength / this.segmentSize));
         this.messageLength = calculateMessageLength();
@@ -91,29 +91,30 @@ public class StructuredMessageEncoder {
     }
 
     private int getSegmentFooterLength() {
-        return (flags == Flags.STORAGE_CRC64) ? CRC64_LENGTH : 0;
+        return (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) ? CRC64_LENGTH : 0;
     }
 
     private int getMessageFooterLength() {
-        return (flags == Flags.STORAGE_CRC64) ? CRC64_LENGTH : 0;
+        return (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) ? CRC64_LENGTH : 0;
     }
 
-    private byte[] generateMessageHeader(int version, int size, Flags flags, int numSegments) {
-        // 1 byte version, 8 byte size, 2 byte flags, 2 byte numSegments
-        ByteBuffer buffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.put((byte) version);
-        buffer.putLong(size);
-        buffer.putShort((short) flags.getValue());
+    private byte[] generateMessageHeader() {
+        // 1 byte version, 8 byte size, 2 byte structuredMessageFlags, 2 byte numSegments
+        ByteBuffer buffer = ByteBuffer.allocate(getMessageHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put((byte) messageVersion);
+        buffer.putLong(messageLength);
+        buffer.putShort((short) structuredMessageFlags.getValue());
         buffer.putShort((short) numSegments);
 
         return buffer.array();
     }
 
-    private byte[] generateSegmentHeader(int number, int size) {
+    private byte[] generateSegmentHeader() {
+        int segmentHeaderSize = Math.min(segmentSize, contentLength - contentOffset);
         // 2 byte number, 8 byte size
-        ByteBuffer buffer = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.putShort((short) number);
-        buffer.putLong(size);
+        ByteBuffer buffer = ByteBuffer.allocate(getSegmentHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
+        buffer.putShort((short) currentSegmentNumber);
+        buffer.putLong(segmentHeaderSize);
 
         return buffer.array();
     }
@@ -150,60 +151,21 @@ public class StructuredMessageEncoder {
         }
     }
 
-    private int tell() {
-        int position;
-
-        switch (currentRegion) {
-            case MESSAGE_HEADER:
-                position = currentRegionOffset;
-                break;
-
-            case SEGMENT_HEADER:
-                position = getMessageHeaderLength() + contentOffset
-                    + (currentSegmentNumber - 1) * (getSegmentHeaderLength() + getSegmentFooterLength())
-                    + currentRegionOffset;
-                break;
-
-            case SEGMENT_CONTENT:
-                position = getMessageHeaderLength() + contentOffset
-                    + (currentSegmentNumber - 1) * (getSegmentHeaderLength() + getSegmentFooterLength())
-                    + getSegmentHeaderLength();
-                break;
-
-            case SEGMENT_FOOTER:
-                position = getMessageHeaderLength() + contentOffset
-                    + (currentSegmentNumber - 1) * (getSegmentHeaderLength() + getSegmentFooterLength())
-                    + getSegmentHeaderLength() + currentRegionOffset;
-                break;
-
-            case MESSAGE_FOOTER:
-                position = getMessageHeaderLength() + contentOffset
-                    + currentSegmentNumber * (getSegmentHeaderLength() + getSegmentFooterLength())
-                    + currentRegionOffset;
-                break;
-
-            default:
-                throw new IllegalArgumentException("Invalid SMRegion " + currentRegion);
-        }
-        return position;
-    }
-
     /**
      * temp comment to allow building
-     * @param innerBuffer The buffer to be encoded.
+     * @param unencodedBuffer The buffer to be encoded.
      * @return The encoded buffer.
      * @throws IOException If an error occurs while encoding the buffer.
      */
-    public ByteBuffer encode(ByteBuffer innerBuffer) throws IOException {
-        StorageImplUtils.assertNotNull("innerBuffer", innerBuffer);
-        this.innerBuffer = innerBuffer;
+    public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
+        StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        while (tell() < messageLength) {
+        while (currentEncodedDataLength < messageLength) {
             if (currentRegion == SMRegion.SEGMENT_CONTENT) {
-                encodeContent(byteArrayOutputStream);
-                if (currentRegion != SMRegion.SEGMENT_FOOTER && !innerBuffer.hasRemaining()) {
+                encodeContent(unencodedBuffer, byteArrayOutputStream);
+                if (currentRegion != SMRegion.SEGMENT_FOOTER && !unencodedBuffer.hasRemaining()) {
                     break;
                 }
             } else { // MESSAGE_HEADER, MESSAGE_FOOTER, SEGMENT_HEADER, SEGMENT_FOOTER
@@ -222,26 +184,27 @@ public class StructuredMessageEncoder {
         output.write(metadata, 0, readSize);
 
         currentRegionOffset += readSize;
+        currentEncodedDataLength += readSize;
         // If we have read all the metadata for this region, advance to the next region
         if (currentRegion != SMRegion.MESSAGE_FOOTER) {
             advanceRegion(region);
         }
     }
 
-    private void encodeContent(ByteArrayOutputStream output) throws IOException {
+    private void encodeContent(ByteBuffer unencodedBuffer, ByteArrayOutputStream output) throws IOException {
         int tempChecksumOffset = checksumOffset - contentOffset;
 
-        int readSize = Math.min(innerBuffer.remaining(), currentRegionLength - currentRegionOffset);
+        int readSize = Math.min(unencodedBuffer.remaining(), currentRegionLength - currentRegionOffset);
 
         if (tempChecksumOffset != 0) {
             readSize = Math.min(readSize, tempChecksumOffset);
         }
 
         byte[] content = new byte[readSize];
-        innerBuffer.get(content, 0, readSize);
+        unencodedBuffer.get(content, 0, readSize);
         output.write(content);
 
-        if (flags == Flags.STORAGE_CRC64) {
+        if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
             if (tempChecksumOffset == 0) {
                 segmentCRC64s.put(currentSegmentNumber,
                     StorageCrc64Calculator.compute(content, segmentCRC64s.get(currentSegmentNumber)));
@@ -255,6 +218,7 @@ public class StructuredMessageEncoder {
         }
 
         currentRegionOffset += readSize;
+        currentEncodedDataLength += readSize;
         if (currentRegionOffset == currentRegionLength) {
             advanceRegion(SMRegion.SEGMENT_CONTENT);
         }
@@ -273,16 +237,15 @@ public class StructuredMessageEncoder {
         byte[] metadata;
         switch (region) {
             case MESSAGE_HEADER:
-                metadata = generateMessageHeader(messageVersion, messageLength, flags, numSegments);
+                metadata = generateMessageHeader();
                 break;
 
             case SEGMENT_HEADER:
-                int segmentHeaderSize = Math.min(segmentSize, contentLength - contentOffset);
-                metadata = generateSegmentHeader(currentSegmentNumber, segmentHeaderSize);
+                metadata = generateSegmentHeader();
                 break;
 
             case SEGMENT_FOOTER:
-                if (flags == Flags.STORAGE_CRC64) {
+                if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
                     metadata = ByteBuffer.allocate(CRC64_LENGTH)
                         .order(ByteOrder.LITTLE_ENDIAN)
                         .putLong(segmentCRC64s.get(currentSegmentNumber))
@@ -293,7 +256,7 @@ public class StructuredMessageEncoder {
                 break;
 
             case MESSAGE_FOOTER:
-                if (flags == Flags.STORAGE_CRC64) {
+                if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
                     metadata = ByteBuffer.allocate(CRC64_LENGTH)
                         .order(ByteOrder.LITTLE_ENDIAN)
                         .putLong(messageCRC64)
@@ -344,7 +307,7 @@ public class StructuredMessageEncoder {
 
     private void incrementCurrentSegment() {
         currentSegmentNumber++;
-        if (flags == Flags.STORAGE_CRC64) {
+        if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
             segmentCRC64s.putIfAbsent(currentSegmentNumber, 0L);
         }
     }
