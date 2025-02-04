@@ -80,11 +80,11 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         assertThrows(NullPointerException.class, () -> instrumentation.createOperationInstrumentation(null));
 
-        assertThrows(NullPointerException.class, () -> new InstrumentedOperationDetails(null, "call"));
-        assertThrows(NullPointerException.class, () -> new InstrumentedOperationDetails("test", null));
+        assertThrows(NullPointerException.class, () -> new InstrumentedOperationDetails(null, "test"));
+        assertThrows(NullPointerException.class, () -> new InstrumentedOperationDetails("call", null));
 
         OperationInstrumentation instr
-            = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("test", "call"));
+            = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
         assertThrows(NullPointerException.class, () -> instr.startScope(null));
         assertThrows(IllegalStateException.class, () -> instr.startScope(RequestOptions.none()));
     }
@@ -94,7 +94,7 @@ public class OperationInstrumentationTests {
     public void basicCall(SpanKind kind) {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test", "call").spanKind(kind).endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call", "test").spanKind(kind).endpoint(DEFAULT_ENDPOINT));
 
         RequestOptions options = new RequestOptions();
         OperationInstrumentation.Scope scope = call.startScope(options);
@@ -117,7 +117,7 @@ public class OperationInstrumentationTests {
     public void callWithError() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test", "call").endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call", "test").endpoint(DEFAULT_ENDPOINT));
 
         RequestOptions options = new RequestOptions();
 
@@ -138,7 +138,7 @@ public class OperationInstrumentationTests {
     public void noEndpoint() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call
-            = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("test", "call"));
+            = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
 
         RequestOptions options = new RequestOptions();
 
@@ -157,7 +157,7 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         URI endpoint = URI.create(uri);
         OperationInstrumentation call = instrumentation
-            .createOperationInstrumentation(new InstrumentedOperationDetails("test", "Call").endpoint(endpoint));
+            .createOperationInstrumentation(new InstrumentedOperationDetails("Call", "test").endpoint(endpoint));
 
         RequestOptions options = new RequestOptions();
 
@@ -178,7 +178,7 @@ public class OperationInstrumentationTests {
         otelOptions.setTracingEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test.client.operation.duration", "call").endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
         RequestOptions options = new RequestOptions();
 
@@ -198,7 +198,7 @@ public class OperationInstrumentationTests {
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test.client.operation.duration", "call").endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
         RequestOptions options = new RequestOptions();
         assertTrue(call.shouldInstrument(options));
@@ -216,7 +216,7 @@ public class OperationInstrumentationTests {
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test.client.operation.duration", "call").endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
         RequestOptions options = new RequestOptions();
         assertFalse(call.shouldInstrument(options));
@@ -239,11 +239,11 @@ public class OperationInstrumentationTests {
         Instrumentation instrumentation2 = Instrumentation.create(otelOptions, libOptions2);
 
         OperationInstrumentation call1 = instrumentation1.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test1", "call1").spanKind(SpanKind.CONSUMER));
+            new InstrumentedOperationDetails("call1", "test1").spanKind(SpanKind.CONSUMER));
         OperationInstrumentation call2
-            = instrumentation2.createOperationInstrumentation(new InstrumentedOperationDetails("test2", "call2"));
+            = instrumentation2.createOperationInstrumentation(new InstrumentedOperationDetails("call2", "test2"));
         OperationInstrumentation call3
-            = instrumentation2.createOperationInstrumentation(new InstrumentedOperationDetails("test3", "call3"));
+            = instrumentation2.createOperationInstrumentation(new InstrumentedOperationDetails("call3", "test3"));
 
         RequestOptions options = new RequestOptions();
 
@@ -277,11 +277,11 @@ public class OperationInstrumentationTests {
     public void testSiblingOperations() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call1 = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test1", "call1").spanKind(SpanKind.CONSUMER).endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call1", "test1").spanKind(SpanKind.CONSUMER).endpoint(DEFAULT_ENDPOINT));
         OperationInstrumentation call2 = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test2", "call2").endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call2", "test2").endpoint(DEFAULT_ENDPOINT));
         OperationInstrumentation call3 = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails("test3", "call3").endpoint(DEFAULT_ENDPOINT));
+            new InstrumentedOperationDetails("call3", "test3").endpoint(DEFAULT_ENDPOINT));
 
         RequestOptions options1 = new RequestOptions();
 

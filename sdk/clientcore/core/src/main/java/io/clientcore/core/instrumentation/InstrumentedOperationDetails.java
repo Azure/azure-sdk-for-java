@@ -20,15 +20,14 @@ public class InstrumentedOperationDetails {
     /**
      * Creates a new instance of {@link InstrumentedOperationDetails}.
      *
+     * @param operationName the name of the operation. The name is used as a value for the {@code operation.name} attribute.
      * @param durationMetricName fully qualified name of the duration metric to report. It should be following {@code {client-name}.client.operation.duration} format.
      * See <a href="https://github.com/open-telemetry/semantic-conventions/blob/main/docs/general/naming.md#metrics">OpenTelemetry naming conventions</a> for more information.
      * The same metric is reported for different operations of the same client, but with different {@code operation.name} attribute.
-     *
-     * @param operationName the name of the operation. The name is used as a value for the {@code operation.name} attribute.
      */
-    public InstrumentedOperationDetails(String durationMetricName, String operationName) {
-        Objects.requireNonNull(durationMetricName, "'metricName' cannot be null");
+    public InstrumentedOperationDetails(String operationName, String durationMetricName) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
+        Objects.requireNonNull(durationMetricName, "'metricName' cannot be null");
 
         this.operationName = operationName;
         this.metricName = durationMetricName;

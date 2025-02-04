@@ -415,9 +415,9 @@ public class SuppressionTests {
             Instrumentation instrumentation = Instrumentation.create(options, libOptions);
 
             protocolInstrumentation = instrumentation.createOperationInstrumentation(
-                new InstrumentedOperationDetails(SAMPLE_CLIENT_DURATION_METRIC, "protocol").endpoint(serviceEndpoint));
+                new InstrumentedOperationDetails("protocol", SAMPLE_CLIENT_DURATION_METRIC).endpoint(serviceEndpoint));
             convenienceInstrumentation = instrumentation.createOperationInstrumentation(
-                new InstrumentedOperationDetails(SAMPLE_CLIENT_DURATION_METRIC, "convenience")
+                new InstrumentedOperationDetails("convenience", SAMPLE_CLIENT_DURATION_METRIC)
                     .endpoint(serviceEndpoint));
         }
 

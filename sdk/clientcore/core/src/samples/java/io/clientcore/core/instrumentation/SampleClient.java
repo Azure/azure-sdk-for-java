@@ -25,13 +25,13 @@ class SampleClient {
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
 
         // BEGIN: io.clientcore.core.telemetry.instrumentation.create
-        InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails(SAMPLE_CLIENT_DURATION_METRIC,
-            "downloadContent").endpoint(endpoint);
+        InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent",
+            SAMPLE_CLIENT_DURATION_METRIC).endpoint(endpoint);
         this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
         // END: io.clientcore.core.telemetry.instrumentation.create
 
         this.createInstrumentation = instrumentation.createOperationInstrumentation(
-            new InstrumentedOperationDetails(SAMPLE_CLIENT_DURATION_METRIC, "create")
+            new InstrumentedOperationDetails("create", SAMPLE_CLIENT_DURATION_METRIC)
                 .endpoint(endpoint));
     }
 

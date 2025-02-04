@@ -227,7 +227,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS);
         URI serviceEndpoint = URI.create("https://example.com");
         final String durationMetricName = "sample.client.operation.duration";
-        InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails(durationMetricName, "downloadContent")
+        InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent", durationMetricName)
             .endpoint(serviceEndpoint);
 
         RequestOptions requestOptions = null;
@@ -268,7 +268,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         Instrumentation instrumentation = Instrumentation.create(null, LIBRARY_OPTIONS);
         URI serviceEndpoint = URI.create("https://example.com");
         final String durationMetricName = "sample.client.operation.duration";
-        InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails(durationMetricName, "downloadContent")
+        InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent", durationMetricName)
             .endpoint(serviceEndpoint);
 
         RequestOptions requestOptions = null;

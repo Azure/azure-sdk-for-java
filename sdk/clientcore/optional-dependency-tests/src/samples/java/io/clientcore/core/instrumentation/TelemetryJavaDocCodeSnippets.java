@@ -191,7 +191,7 @@ public class TelemetryJavaDocCodeSnippets {
             this.httpPipeline = httpPipeline;
             this.serviceEndpoint = URI.create("https://example.com");
             Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
-            clientCallInstrumentation = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails(SAMPLE_OPERATION_DURATION_METRIC_NAME, "clientCall")
+            clientCallInstrumentation = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("clientCall", SAMPLE_OPERATION_DURATION_METRIC_NAME)
                 .endpoint(this.serviceEndpoint));
         }
 

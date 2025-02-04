@@ -164,6 +164,7 @@ public interface Instrumentation {
      * Tracer tracer = GlobalOpenTelemetry.getTracer&#40;&quot;sample&quot;&#41;;
      * Span span = tracer.spanBuilder&#40;&quot;my-operation&quot;&#41;
      *     .startSpan&#40;&#41;;
+     *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
      * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.
@@ -195,8 +196,8 @@ public interface Instrumentation {
      * Creates the operation instrumentation.
      * <!-- src_embed io.clientcore.core.telemetry.instrumentation.create -->
      * <pre>
-     * InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails&#40;SAMPLE_CLIENT_DURATION_METRIC,
-     *     &quot;downloadContent&quot;&#41;.endpoint&#40;endpoint&#41;;
+     * InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails&#40;&quot;downloadContent&quot;,
+     *     SAMPLE_CLIENT_DURATION_METRIC&#41;.endpoint&#40;endpoint&#41;;
      * this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation&#40;downloadDetails&#41;;
      * </pre>
      * <!-- end io.clientcore.core.telemetry.instrumentation.create -->
