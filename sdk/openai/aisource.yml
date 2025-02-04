@@ -4,3 +4,7 @@ extends:
     ServiceDirectory: openai
     DisableAzureResourceCreation: true
     UseFederatedAuth: false
+    Artifacts:
+      - name: azure-ai-openai
+        groupId: com.azure
+        safeName: azureaiopenai
