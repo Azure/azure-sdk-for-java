@@ -1,17 +1,3 @@
 parameters:
+  PreSteps: []
   DisableAzureResourceCreation: false
-
-extends:
-  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  parameters:
-    ServiceDirectory: openai
-    Artifacts:
-      - name: azure-ai-openai
-        groupId: com.azure
-        safeName: azureaiopenai
-    EnvVars:
-      AZURE_OPENAI_ENDPOINT: $(AOAI-ENDPOINT-SWEDENCENTRAL)
-      AZURE_OPENAI_KEY: $(AOAI-API-KEY-SWEDENCENTRAL)
-      NON_AZURE_OPENAI_KEY: $(OPENAI-API-KEY)
-      AZURE_TEST_RUN_LIVE: 'true'
-      API_VERSION_GA: '2024-06-01'
