@@ -3,4 +3,6 @@ extends:
   parameters:
     ServiceDirectory: openai
     DisableAzureResourceCreation: true
-    ServiceConnection: azure-sdk-tests-openai
+    CloudConfig:
+      Public:
+        ServiceConnection: azure-sdk-tests-openai
