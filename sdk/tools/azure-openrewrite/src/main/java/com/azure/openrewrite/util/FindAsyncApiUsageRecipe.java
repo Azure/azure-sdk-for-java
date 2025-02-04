@@ -5,9 +5,12 @@ package com.azure.openrewrite.util;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.TreeVisitor;
+import org.openrewrite.internal.ListUtils;
 import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.JavaType;
+import org.openrewrite.java.tree.TextComment;
+import org.openrewrite.marker.Markers;
 
 public class FindAsyncApiUsageRecipe extends Recipe {
     transient AsyncUsageReport asyncUsageReport = new AsyncUsageReport(this);
@@ -26,16 +29,18 @@ public class FindAsyncApiUsageRecipe extends Recipe {
     public TreeVisitor<J, ExecutionContext> getVisitor() {
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
-            public J.MethodDeclaration visitMethodDeclaration(J.MethodDeclaration method, ExecutionContext ctx) {
-
+            public J.MethodInvocation visitMethodInvocation(J.MethodInvocation method, ExecutionContext ctx) {
                 if (isAsyncApi(method)) {
                     asyncUsageReport.insertRow(ctx, new AsyncUsageReport.Row(
-                            getCursor().firstEnclosing(J.CompilationUnit.class).getSourcePath().toString(),
-                            method.getSimpleName()
+                        getCursor().firstEnclosing(J.CompilationUnit.class).getSourcePath().toString(),
+                        method.getSimpleName()
+                    ));
+                    method = method.withComments(ListUtils.concat(
+                        method.getComments(),
+                        new TextComment(false, "This is an async api. Manual migration needed. See guidance.", "\n", Markers.EMPTY)
                     ));
                 }
-
-                return super.visitMethodDeclaration(method, ctx);
+                return super.visitMethodInvocation(method, ctx);
             }
 
             /**
@@ -51,29 +56,17 @@ public class FindAsyncApiUsageRecipe extends Recipe {
              * @return True if the method is an async API, false otherwise
              */
 
-            private boolean isAsyncApi(J.MethodDeclaration method) {
-                JavaType returnType = method.getType();
-
-                // exclude non-public methods
-                if (!method.hasModifier(J.Modifier.Type.Public)) {
+            private boolean isAsyncApi(J.MethodInvocation method) {
+                JavaType.Method methodType = method.getMethodType();
+                if (methodType == null) {
+                    return false;
+                }
+                String returnTypeString = methodType.getReturnType().toString();
+                String packageName = methodType.getDeclaringType().getPackageName();
+                if (!packageName.startsWith("com.azure.")) {
                     return false;
                 }
 
-                J.Package p = getCursor().firstEnclosing(J.CompilationUnit.class).getPackageDeclaration();
-                if (p == null) {
-                    return false;
-                }
-                String packageName = p.getExpression().toString();
-                System.out.println("package: " + packageName);
-
-                // exclude implementation and test packages
-                if (packageName.contains("implementation") || packageName.contains("test")) {
-                    return false;
-                }
-
-                String returnTypeString = returnType.toString();
-                System.out.println("name: " + method.getName());
-                System.out.println("type: " + method.getType());
                 return returnTypeString.startsWith("reactor.core.publisher.Flux<") ||
                     returnTypeString.startsWith("reactor.core.publisher.Mono<") ||
                     returnTypeString.startsWith("com.azure.core.http.rest.PagedFlux<") ||
