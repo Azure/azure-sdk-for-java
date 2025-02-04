@@ -26,7 +26,7 @@ public final class CosmosVectorIndexSpec {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer indexingSearchListSize;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> vectorIndexShardKey;
+    private List<String> vectorIndexShardKeys;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -153,33 +153,33 @@ public final class CosmosVectorIndexSpec {
     }
 
     /**
-     * Gets the vector indexing shard key
+     * Gets the vector indexing shard keys
      *
-     * @return vectorIndexShardKey the list of string containing the shard keys used for partitioning the
+     * @return vectorIndexShardKeys the list of string containing the shard keys used for partitioning the
      * vector indexes. This applies to index types diskANN and quantizedFlat. The maximum allowed size for
-     * this array is 1 - that is, there is only one allowed path.
+     * this array is currently limited to 1 - that is, there is only one allowed path.
      */
-    public List<String> getVectorIndexShardKey() {
-        if (this.vectorIndexShardKey == null) {
-            this.vectorIndexShardKey = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEY, String.class);
+    public List<String> getVectorIndexShardKeys() {
+        if (this.vectorIndexShardKeys == null) {
+            this.vectorIndexShardKeys = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, String.class);
         }
-        return this.vectorIndexShardKey;
+        return this.vectorIndexShardKeys;
     }
 
     /**
-     * Sets the indexing search list size
+     * Sets the vector indexing shard keys
      *
-     * @param vectorIndexShardKey vectorIndexShardKey the list of string containing the shard keys used for partitioning the
+     * @param vectorIndexShardKeys vectorIndexShardKeys the list of string containing the shard keys used for partitioning the
      *                            vector indexes. This applies to index types diskANN and quantizedFlat. The maximum allowed size for
-     *                            this array is 1 - that is, there is only one allowed path.
+     *                            this array is currently limited to 1 - that is, there is only one allowed path.
      * @return CosmosVectorIndexSpec
      */
-    public CosmosVectorIndexSpec setVectorIndexShardKey(List<String> vectorIndexShardKey) {
-        if (validateIndexType(IndexProperty.VECTOR_INDEX_SHARD_KEY) && vectorIndexShardKey != null) {
-            this.vectorIndexShardKey = vectorIndexShardKey;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEY, this.vectorIndexShardKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    public CosmosVectorIndexSpec setVectorIndexShardKeys(List<String> vectorIndexShardKeys) {
+        if (validateIndexType(IndexProperty.VECTOR_INDEX_SHARD_KEYS) && vectorIndexShardKeys != null) {
+            this.vectorIndexShardKeys = vectorIndexShardKeys;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, this.vectorIndexShardKeys, CosmosItemSerializer.DEFAULT_SERIALIZER);
         } else {
-            this.vectorIndexShardKey = null;
+            this.vectorIndexShardKeys = null;
         }
         return this;
     }
@@ -194,7 +194,7 @@ public final class CosmosVectorIndexSpec {
 
     private Boolean validateIndexType(IndexProperty indexProperty) {
         String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
-        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) || (indexProperty.equals(IndexProperty.VECTOR_INDEX_SHARD_KEY))) {
+        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) || (indexProperty.equals(IndexProperty.VECTOR_INDEX_SHARD_KEYS))) {
             return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
         }
