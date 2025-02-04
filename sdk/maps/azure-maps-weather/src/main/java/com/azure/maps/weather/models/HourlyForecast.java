@@ -432,7 +432,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("date",
-                this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
         jsonWriter.writeStringField("iconPhrase", this.iconPhrase);
         jsonWriter.writeBooleanField("hasPrecipitation", this.hasPrecipitation);
@@ -476,8 +476,8 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedHourlyForecast.timestamp = reader
-                            .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedHourlyForecast.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("iconCode".equals(fieldName)) {
                     deserializedHourlyForecast.iconCode = IconCode.fromInt(reader.getInt());
                 } else if ("iconPhrase".equals(fieldName)) {

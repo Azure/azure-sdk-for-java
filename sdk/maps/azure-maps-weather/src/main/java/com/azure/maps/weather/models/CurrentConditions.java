@@ -514,7 +514,7 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dateTime",
-                this.dateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTime));
+            this.dateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTime));
         jsonWriter.writeStringField("phrase", this.description);
         jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
         jsonWriter.writeBooleanField("hasPrecipitation", this.hasPrecipitation);
@@ -535,7 +535,7 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
         jsonWriter.writeJsonField("pressure", this.pressure);
         jsonWriter.writeJsonField("pressureTendency", this.pressureTendency);
         jsonWriter.writeJsonField("pastTwentyFourHourTemperatureDeparture",
-                this.pastTwentyFourHourTemperatureDeparture);
+            this.pastTwentyFourHourTemperatureDeparture);
         jsonWriter.writeJsonField("apparentTemperature", this.apparentTemperature);
         jsonWriter.writeJsonField("windChillTemperature", this.windChillTemperature);
         jsonWriter.writeJsonField("wetBulbTemperature", this.wetBulbTemperature);
@@ -560,8 +560,8 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dateTime".equals(fieldName)) {
-                    deserializedCurrentConditions.dateTime = reader
-                            .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCurrentConditions.dateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("phrase".equals(fieldName)) {
                     deserializedCurrentConditions.description = reader.getString();
                 } else if ("iconCode".equals(fieldName)) {
@@ -601,8 +601,8 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
                 } else if ("pressureTendency".equals(fieldName)) {
                     deserializedCurrentConditions.pressureTendency = PressureTendency.fromJson(reader);
                 } else if ("pastTwentyFourHourTemperatureDeparture".equals(fieldName)) {
-                    deserializedCurrentConditions.pastTwentyFourHourTemperatureDeparture = WeatherUnitDetails
-                            .fromJson(reader);
+                    deserializedCurrentConditions.pastTwentyFourHourTemperatureDeparture
+                        = WeatherUnitDetails.fromJson(reader);
                 } else if ("apparentTemperature".equals(fieldName)) {
                     deserializedCurrentConditions.apparentTemperature = WeatherUnitDetails.fromJson(reader);
                 } else if ("windChillTemperature".equals(fieldName)) {
