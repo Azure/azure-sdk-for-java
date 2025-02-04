@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.openrewrite.util;
 
 import org.openrewrite.DataTable;
@@ -20,7 +22,5 @@ public class AsyncUsageReport extends DataTable<AsyncUsageReport.Row> {
             this.file = file;
             this.api = api;
         }
-
-        // Getters and setters
     }
 }
