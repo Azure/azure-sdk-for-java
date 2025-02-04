@@ -19,6 +19,29 @@
   <version>11.8.0-beta.5</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
   <packaging>jar</packaging>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.openrewrite.maven</groupId>
+        <artifactId>rewrite-maven-plugin</artifactId>
+        <version>6.0.5</version>
+        <configuration>
+          <exportDatatables>true</exportDatatables>
+          <activeRecipes>
+            <recipe>com.azure.openrewrite.util.FindAsyncApiUsageRecipe</recipe>
+          </activeRecipes>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-openrewrite</artifactId>
+            <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-openrewrite;dependency} -->
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

@@ -37,7 +37,7 @@ public class FindAsyncApiUsageRecipe extends Recipe {
                     ));
                     method = method.withComments(ListUtils.concat(
                         method.getComments(),
-                        new TextComment(false, "This is an async api. Manual migration needed. See guidance.", "\n", Markers.EMPTY)
+                        new TextComment(false, "This is an async api. Manual migration needed. See guidance.", "\n ", Markers.EMPTY)
                     ));
                 }
                 return super.visitMethodInvocation(method, ctx);
