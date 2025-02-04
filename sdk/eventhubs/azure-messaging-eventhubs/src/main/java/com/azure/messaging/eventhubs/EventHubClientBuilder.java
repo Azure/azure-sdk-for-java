@@ -260,7 +260,7 @@ public class EventHubClientBuilder
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private ConnectionCacheWrapper eventHubConnectionProcessor;
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> eventHubConnectionProcessor;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -990,12 +990,11 @@ public class EventHubClientBuilder
         final Meter meter = createMeter();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final ConnectionCacheWrapper processor;
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> processor;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor
-                        = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter));
+                    eventHubConnectionProcessor = buildConnectionCache(messageSerializer, meter);
                 }
             }
 
@@ -1004,7 +1003,7 @@ public class EventHubClientBuilder
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter));
+            processor = buildConnectionCache(messageSerializer, meter);
         }
 
         String identifier;
