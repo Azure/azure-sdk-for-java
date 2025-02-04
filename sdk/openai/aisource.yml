@@ -1,3 +1,2 @@
 parameters:
-  PreSteps: []
   DisableAzureResourceCreation: false
