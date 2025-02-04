@@ -24,8 +24,6 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -99,7 +97,7 @@ public class EventHubProducerClientTest {
     @Mock
     private AmqpSendLink sendLink;
     @Mock
-    private EventHubAmqpConnection connection;
+    private EventHubReactorAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -126,12 +124,13 @@ public class EventHubProducerClientTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
             AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(),
             new ClientOptions(), SslDomain.VerifyMode.ANONYMOUS_PEER, "test-product", "test-client-version");
-        connectionProcessor = createConnectionProcessor(connection, connectionOptions.getRetry(), false);
+        connectionProcessor = createConnectionProcessor(connection, connectionOptions.getRetry());
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         when(connection.closeAsync()).thenReturn(Mono.empty());
     }
 
@@ -597,18 +596,11 @@ public class EventHubProducerClientTest {
         }
     }
 
-    private ConnectionCacheWrapper createConnectionProcessor(EventHubAmqpConnection connection,
-        AmqpRetryOptions retryOptions, boolean isV2) {
-        if (isV2) {
-            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache
-                = new ReactorConnectionCache<>(null, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
-            return new ConnectionCacheWrapper(cache);
-        } else {
-            final EventHubConnectionProcessor processor
-                = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
-                    .subscribeWith(new EventHubConnectionProcessor(HOSTNAME, "event-hub-path", retryOptions));
-            return new ConnectionCacheWrapper(processor);
-        }
+    private ConnectionCacheWrapper createConnectionProcessor(EventHubReactorAmqpConnection connection,
+        AmqpRetryOptions retryOptions) {
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        final ReactorConnectionCache<EventHubReactorAmqpConnection> cache
+            = new ReactorConnectionCache<>(() -> connection, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
+        return new ConnectionCacheWrapper(cache);
     }
 }
