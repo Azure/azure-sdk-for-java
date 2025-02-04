@@ -2,6 +2,8 @@
 
 [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
 
+JRS - THIS WILL NOT BE CHECKED IN
+
 Azure Core provides shared primitives, abstractions, and helpers for modern Java Azure SDK client libraries.
 These libraries follow
 the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html)
@@ -116,22 +118,22 @@ polling is cancelled or reaches a terminal state.
 
 ### Configuring Builders
 
-Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a 
-variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as 
-`Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic 
+Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a
+variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as
+`Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic
 methods to be used for all builders `azure-core` provides a set of interfaces that can be implemented to provide
 the necessary functionality.
 
 #### HttpTrait<T>
 
 `HttpTrait<T>` contains methods for setting key configurations for HTTP-based clients. This interface will allow you to
-configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, `HttpLogOptions`, and `ClientOptions` 
+configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, `HttpLogOptions`, and `ClientOptions`
 (preferably `HttpClientOptions` as it is more specific for HTTP-based service clients).
 
-For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be 
-created based on classpath configurations and the `ClientOptions` based to the builder. This can cause confusion if 
-you're expecting specific behavior for your client, such as using a proxy that wasn't loaded from the environment. To 
-avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your 
+For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be
+created based on classpath configurations and the `ClientOptions` based to the builder. This can cause confusion if
+you're expecting specific behavior for your client, such as using a proxy that wasn't loaded from the environment. To
+avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your
 configurations aren't based on the environment running the application.
 
 #### Credential Traits
@@ -185,7 +187,7 @@ and generally should be retried by the `RetryPolicy`.
 #### HttpPipeline Timeouts
 
 HttpPipeline timeouts are the next level of timeout handling the Azure SDKs provide. These timeouts are configured using
-an `HttpPipelinePolicy` and configuring a timeout using either `Mono.timeout` for asynchronous requests or an 
+an `HttpPipelinePolicy` and configuring a timeout using either `Mono.timeout` for asynchronous requests or an
 `ExecutorService` with a timed `get(long, TimeUnit)` for synchronous requests.
 
 Depending on the location within the `HttpPipeline`, these timeouts may be captured by the `RetryPolicy` and retried.

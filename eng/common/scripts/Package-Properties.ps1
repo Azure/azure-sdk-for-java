@@ -93,10 +93,22 @@ class PackageProps {
                 }
 
                 # if we know this is the matrix for our file, we should now see if there is a custom matrix config for the package
+                # note: the MatrixConfigs in a service directory's ci.yml will override the default MatrixConfigs for the repository
+                # which is why we can't just add AdditionalMatrixConfigs from a ci.yml file unless there is a MatrixConfigs also in
+                # in that file and this needs to be fixed
                 $matrixConfigList = GetValueSafelyFrom-Yaml $content @("extends", "parameters", "MatrixConfigs")
+                $additionalMatrixConfigList = GetValueSafelyFrom-Yaml $content @("extends", "parameters", "AdditionalMatrixConfigs")
 
                 if ($matrixConfigList) {
                     $result.MatrixConfigs = $matrixConfigList
+                    if ($additionalMatrixConfigList) {
+                        $result.MatrixConfigs += $additionalMatrixConfigList
+                    }
+                } else {
+                    # TODO: Log a warning if an AdditionalMatrixConfigs is in a ci.yml file that doesn't have a MatrixConfigs
+                    if ($additionalMatrixConfigList) {
+                        LogWarning "YML file $ymlPath doesn't have a MatrixConfigs but has an AdditionalMatrixConfigs. Right now, a file needs to have both."
+                    }
                 }
 
                 return $result
