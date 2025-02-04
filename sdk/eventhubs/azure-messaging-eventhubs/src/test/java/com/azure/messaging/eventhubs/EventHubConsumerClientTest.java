@@ -4,10 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
@@ -93,7 +95,7 @@ public class EventHubConsumerClientTest {
             final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(false);
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH, Duration.ofSeconds(5));
 
             // Act and assert
@@ -126,7 +128,7 @@ public class EventHubConsumerClientTest {
             final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH, Duration.ofSeconds(5));
 
             // Act and assert
@@ -165,7 +167,7 @@ public class EventHubConsumerClientTest {
             final Semaphore semaphore = new Semaphore(1);
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
 
             // Act and assert
             //
@@ -213,7 +215,7 @@ public class EventHubConsumerClientTest {
             receiveLink0.arrange(numberOfEvents);
             receiveLink1.arrange(numberOfEvents);
             connection.arrange(receiveLink0, receiveLink1);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH, Duration.ofSeconds(5));
 
             // Act and assert
@@ -266,7 +268,7 @@ public class EventHubConsumerClientTest {
             final Duration timeout = Duration.ofSeconds(1);
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH, Duration.ofSeconds(5));
 
             // Act and assert
@@ -318,8 +320,8 @@ public class EventHubConsumerClientTest {
         return Integer.valueOf(value);
     }
 
-    private EventHubConsumerClient createConsumer(ConnectionCacheWrapper connectionCache, int prefetch,
-        Duration tryTimeout) {
+    private EventHubConsumerClient createConsumer(ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache,
+        int prefetch, Duration tryTimeout) {
         final EventHubConsumerAsyncClient asyncConsumer
             = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
                 CONSUMER_GROUP, prefetch, true, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
