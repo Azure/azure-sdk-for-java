@@ -150,6 +150,7 @@ public class TelemetryJavaDocCodeSnippets {
         Tracer tracer = GlobalOpenTelemetry.getTracer("sample");
         Span span = tracer.spanBuilder("my-operation")
             .startSpan();
+
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.

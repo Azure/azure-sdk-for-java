@@ -47,8 +47,6 @@ public class OperationInstrumentationTests {
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
     private static final URI DEFAULT_ENDPOINT = URI.create("https://localhost");
 
-    private static final long SECOND_NANOS = 1_000_000_000;
-
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private SdkMeterProvider meterProvider;
