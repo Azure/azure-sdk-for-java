@@ -113,33 +113,32 @@ public class StorageCrc64CalculatorTests {
             Arguments.of(2, Constants.KB, 512 * Constants.MB), Arguments.of(3, Constants.KB, 512 * Constants.MB));
     }
 
-@Test
-void testComputeInChunks() {
-    int maxBlockSize = Constants.GB;
-    int chunkSize = 8 * Constants.KB;
-    String baseString = "Hello World! This is testing chunked crc.";
-    byte[] baseBytes = baseString.getBytes();
-    int baseLength = baseBytes.length;
+    @Test
+    void testComputeInChunks() {
+        int maxBlockSize = Constants.GB;
+        int chunkSize = 8 * Constants.KB;
+        String baseString = "Hello World! This is testing chunked crc.";
+        byte[] baseBytes = baseString.getBytes();
+        int baseLength = baseBytes.length;
 
-    // Calculate the total length of the data
-    byte[] data = new byte[maxBlockSize];
+        long wholeCrc = 8100535992282268188L;
 
-    // Fill the data array by repeating the base string
-    for (int i = 0; i < maxBlockSize; i += baseLength) {
-        System.arraycopy(baseBytes, 0, data, i, Math.min(baseLength, maxBlockSize - i));
+        long chunkedCrc = 0;
+        int totalLength = 0;
+
+        while (totalLength < maxBlockSize) {
+            int length = Math.min(chunkSize, maxBlockSize - totalLength);
+            byte[] chunk = new byte[length];
+            for (int i = 0; i < length; i += baseLength) {
+                System.arraycopy(baseBytes, 0, chunk, i, Math.min(baseLength, length - i));
+            }
+            long chunkCrc = StorageCrc64Calculator.compute(chunk, 0);
+            chunkedCrc = StorageCrc64Calculator.concat(chunkedCrc, 0, chunkCrc, length, 0, chunkCrc, length);
+            totalLength += length;
+        }
+
+        assertEquals(wholeCrc, chunkedCrc);
     }
-
-    long wholeCrc = 5459856940289730830L;
-
-    long chunkedCrc = 0;
-    for (int offset = 0; offset < data.length; offset += chunkSize) {
-        int length = Math.min(chunkSize, data.length - offset);
-        chunkedCrc = StorageCrc64Calculator.concat(0, 0, chunkedCrc, offset, 0,
-            StorageCrc64Calculator.compute(Arrays.copyOfRange(data, offset, offset + length), 0), length);
-    }
-
-    assertEquals(wholeCrc, chunkedCrc);
-}
 
     @ParameterizedTest
     @CsvSource({
