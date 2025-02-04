@@ -4,6 +4,8 @@ extends:
     ServiceDirectory: openai
     DisableAzureResourceCreation: true
     UseFederatedAuth: false
+    PreSteps:
+      - template: /eng/pipelines/templates/stages/openai-build.yml
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure
