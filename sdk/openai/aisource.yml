@@ -1,12 +1,12 @@
 trigger: none
 
+parameters:
+  DisableAzureResourceCreation: true
+
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: openai
-    CloudConfig:
-      Public:
-        ServiceConnection: azure-sdk-tests-openai
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure
