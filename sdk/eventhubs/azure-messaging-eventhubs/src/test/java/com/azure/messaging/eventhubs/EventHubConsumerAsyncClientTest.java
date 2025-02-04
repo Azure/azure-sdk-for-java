@@ -154,7 +154,7 @@ class EventHubConsumerAsyncClientTest {
             final int numberToReceive = 3;
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, DEFAULT_PREFETCH_COUNT);
 
             // Act and assert
@@ -188,7 +188,7 @@ class EventHubConsumerAsyncClientTest {
             final ReceiveOptions receiveOptions = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, DEFAULT_PREFETCH_COUNT);
 
             // Act and assert
@@ -228,7 +228,7 @@ class EventHubConsumerAsyncClientTest {
             final int numberOfEvents = 10;
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -264,7 +264,7 @@ class EventHubConsumerAsyncClientTest {
             final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -307,7 +307,7 @@ class EventHubConsumerAsyncClientTest {
             receiveLink0.arrange(numberOfEvents);
             receiveLink1.arrange(numberOfEvents);
             connection.arrange(receiveLink0, receiveLink1);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -361,7 +361,7 @@ class EventHubConsumerAsyncClientTest {
             final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
             receiveLink.arrange(PREFETCH);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -427,7 +427,7 @@ class EventHubConsumerAsyncClientTest {
             final AtomicInteger counter = new AtomicInteger();
             receiveLink.arrange(PREFETCH);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -504,7 +504,7 @@ class EventHubConsumerAsyncClientTest {
             receiveLink2.arrange(numberOfEvents);
             node.arrange(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions), null);
             connection.arrange(node, receiveLink0, receiveLink1, receiveLink2);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -548,7 +548,7 @@ class EventHubConsumerAsyncClientTest {
             receiveLink2.arrange(numberOfEvents);
             node.arrange(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions), null);
             connection.arrange(node, receiveLink0, receiveLink1, receiveLink2);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -587,7 +587,7 @@ class EventHubConsumerAsyncClientTest {
         try (MockConnection connection = new MockConnection()) {
             final boolean isSharedConnection = true;
             connection.arrange();
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
 
             // Act and assert
             //
@@ -611,7 +611,7 @@ class EventHubConsumerAsyncClientTest {
         try (MockConnection connection = new MockConnection()) {
             final boolean isSharedConnection = false;
             connection.arrange();
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
 
             // Act and assert
             //
@@ -634,7 +634,7 @@ class EventHubConsumerAsyncClientTest {
             final int numberOfEvents = 2;
             receiveLink.arrange(numberOfEvents);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             final TestMeter meter = new TestMeter();
             final EventHubsConsumerInstrumentation instrumentation
                 = new EventHubsConsumerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
@@ -679,7 +679,7 @@ class EventHubConsumerAsyncClientTest {
             MockReceiveLink receiveLink = new MockReceiveLink(PARTITION_ID, messageTrackingUUID)) {
             receiveLink.arrange(1);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             final TestMeter meter = new TestMeter();
             final EventHubsConsumerInstrumentation instrumentation
                 = new EventHubsConsumerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
@@ -721,7 +721,7 @@ class EventHubConsumerAsyncClientTest {
             MockReceiveLink receiveLink = new MockReceiveLink(PARTITION_ID, messageTrackingUUID)) {
             receiveLink.arrange(1);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             final TestMeter meter = new TestMeter(false);
             final EventHubsConsumerInstrumentation instrumentation
                 = new EventHubsConsumerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
@@ -751,7 +751,7 @@ class EventHubConsumerAsyncClientTest {
             MockReceiveLink receiveLink = new MockReceiveLink(PARTITION_ID, messageTrackingUUID)) {
             receiveLink.arrange(1);
             connection.arrange(receiveLink);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             final EventHubsConsumerInstrumentation instrumentation
                 = new EventHubsConsumerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP, false);
             consumer = createConsumer(connectionCache, instrumentation, PREFETCH);
@@ -785,7 +785,7 @@ class EventHubConsumerAsyncClientTest {
                 OffsetDateTime.now().toString(), Instant.now(), false);
             node.arrange(eventHubProperties, partitionProperties);
             connection.arrange(node, (MockReceiveLink) null);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
 
             final Tracer tracer = mock(Tracer.class);
             when(tracer.isEnabled()).thenReturn(true);
@@ -872,7 +872,7 @@ class EventHubConsumerAsyncClientTest {
                 OffsetDateTime.now().toString(), Instant.now(), false);
             node.arrange(properties, partitionProperties);
             connection.arrange(node, (MockReceiveLink) null);
-            final ConnectionCacheWrapper connectionCache = connection.wrapInCache();
+            final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache = connection.wrapInCache();
             consumer = createConsumer(connectionCache, PREFETCH);
 
             // Act and assert
@@ -915,12 +915,14 @@ class EventHubConsumerAsyncClientTest {
         Assertions.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
     }
 
-    private EventHubConsumerAsyncClient createConsumer(ConnectionCacheWrapper connectionCache, int prefetch) {
+    private EventHubConsumerAsyncClient
+        createConsumer(ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache, int prefetch) {
         return new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, prefetch, true, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
     }
 
-    private EventHubConsumerAsyncClient createConsumer(ConnectionCacheWrapper connectionCache,
+    private EventHubConsumerAsyncClient createConsumer(
+        ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache,
         EventHubsConsumerInstrumentation instrumentation, int prefetch) {
         return new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, messageSerializer,
             CONSUMER_GROUP, prefetch, true, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
@@ -959,11 +961,10 @@ class EventHubConsumerAsyncClientTest {
             return connection;
         }
 
-        ConnectionCacheWrapper wrapInCache() {
+        ReactorConnectionCache<EventHubReactorAmqpConnection> wrapInCache() {
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(RETRY_OPTIONS);
-            final ReactorConnectionCache<EventHubReactorAmqpConnection> cache = new ReactorConnectionCache<>(
-                () -> connection, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
-            return new ConnectionCacheWrapper(cache);
+            return new ReactorConnectionCache<>(() -> connection, HOSTNAME, EVENT_HUB_NAME, retryPolicy,
+                new HashMap<>(0));
         }
 
         void setEndpointActive() {

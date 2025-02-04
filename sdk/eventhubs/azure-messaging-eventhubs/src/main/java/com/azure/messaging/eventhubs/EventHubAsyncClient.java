@@ -3,11 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,6 +18,8 @@ import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Objects;
+
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 
 /**
  * An <strong>asynchronous</strong> client that is the main point of interaction with Azure Event Hubs. It connects to a
@@ -28,7 +33,7 @@ import java.util.Objects;
 class EventHubAsyncClient implements Closeable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
-    private final ConnectionCacheWrapper connectionProcessor;
+    private final ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
@@ -36,11 +41,11 @@ class EventHubAsyncClient implements Closeable {
     private final Tracer tracer;
     private final Meter meter;
 
-    EventHubAsyncClient(ConnectionCacheWrapper connectionProcessor, MessageSerializer messageSerializer,
-        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter,
-        Tracer tracer) {
+    EventHubAsyncClient(ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache,
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
+        String identifier, Meter meter, Tracer tracer) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.connectionCache = Objects.requireNonNull(connectionCache, "'connectionCache' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
@@ -56,7 +61,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The fully qualified namespace of this Event Hub.
      */
     String getFullyQualifiedNamespace() {
-        return connectionProcessor.getFullyQualifiedNamespace();
+        return connectionCache.getFullyQualifiedNamespace();
     }
 
     /**
@@ -65,7 +70,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The Event Hub name this client interacts with.
      */
     String getEventHubName() {
-        return connectionProcessor.getEventHubName();
+        return connectionCache.getEntityPath();
     }
 
     /**
@@ -74,8 +79,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The set of information for the Event Hub that this client is associated with.
      */
     Mono<EventHubProperties> getProperties() {
-        return connectionProcessor.getManagementNodeWithRetries()
-            .flatMap(EventHubManagementNode::getEventHubProperties);
+        return getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -95,8 +99,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
     Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return connectionProcessor.getManagementNodeWithRetries()
-            .flatMap(node -> node.getPartitionProperties(partitionId));
+        return getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -107,10 +110,10 @@ class EventHubAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient createProducer() {
         EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter,
-            connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEventHubName());
-        return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, connectionProcessor.getRetryOptions(), messageSerializer, scheduler,
-            isSharedConnection, onClientClose, identifier, instrumentation);
+            connectionCache.getFullyQualifiedNamespace(), connectionCache.getEntityPath());
+        return new EventHubProducerAsyncClient(connectionCache.getFullyQualifiedNamespace(), getEventHubName(),
+            connectionCache, connectionCache.getRetryOptions(), messageSerializer, scheduler, isSharedConnection,
+            onClientClose, identifier, instrumentation);
     }
 
     /**
@@ -133,12 +136,11 @@ class EventHubAsyncClient implements Closeable {
                 .logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 
-        EventHubsConsumerInstrumentation instrumentation
-            = new EventHubsConsumerInstrumentation(tracer, meter, connectionProcessor.getFullyQualifiedNamespace(),
-                connectionProcessor.getEventHubName(), consumerGroup, isSync);
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+            connectionCache.getFullyQualifiedNamespace(), connectionCache.getEntityPath(), consumerGroup, isSync);
 
-        return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection, onClientClose,
+        return new EventHubConsumerAsyncClient(connectionCache.getFullyQualifiedNamespace(), getEventHubName(),
+            connectionCache, messageSerializer, consumerGroup, prefetchCount, isSharedConnection, onClientClose,
             identifier, instrumentation);
     }
 
@@ -149,7 +151,7 @@ class EventHubAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        connectionProcessor.dispose();
+        connectionCache.dispose();
     }
 
     /**
@@ -159,5 +161,11 @@ class EventHubAsyncClient implements Closeable {
      */
     public String getIdentifier() {
         return identifier;
+    }
+
+    private Mono<EventHubManagementNode> getManagementNodeWithRetries() {
+        final AmqpRetryOptions retryOptions = connectionCache.getRetryOptions();
+        return withRetry(connectionCache.get().flatMap(EventHubReactorAmqpConnection::getManagementNode), retryOptions,
+            "Time out creating management node.");
     }
 }

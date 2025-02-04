@@ -108,7 +108,7 @@ public class EventHubProducerClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private EventHubProducerAsyncClient asyncProducer;
-    private ConnectionCacheWrapper connectionProcessor;
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> connectionCache;
 
     @BeforeEach
     public void setup() {
@@ -124,8 +124,8 @@ public class EventHubProducerClientTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
             AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(),
             new ClientOptions(), SslDomain.VerifyMode.ANONYMOUS_PEER, "test-product", "test-client-version");
-        connectionProcessor = createConnectionProcessor(connection, connectionOptions.getRetry());
-        asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        connectionCache = createConnectionProcessor(connection, connectionOptions.getRetry());
+        asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
 
@@ -184,7 +184,7 @@ public class EventHubProducerClientTest {
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
 
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
@@ -246,7 +246,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
@@ -293,7 +293,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(1024));
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(), false, onClientClosed,
+            connectionCache, retryOptions, messageSerializer, Schedulers.parallel(), false, onClientClosed,
             CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
@@ -397,7 +397,7 @@ public class EventHubProducerClientTest {
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer
-            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+            = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionCache, retryOptions,
                 messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer);
 
@@ -596,11 +596,9 @@ public class EventHubProducerClientTest {
         }
     }
 
-    private ConnectionCacheWrapper createConnectionProcessor(EventHubReactorAmqpConnection connection,
-        AmqpRetryOptions retryOptions) {
+    private ReactorConnectionCache<EventHubReactorAmqpConnection>
+        createConnectionProcessor(EventHubReactorAmqpConnection connection, AmqpRetryOptions retryOptions) {
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-        final ReactorConnectionCache<EventHubReactorAmqpConnection> cache
-            = new ReactorConnectionCache<>(() -> connection, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
-        return new ConnectionCacheWrapper(cache);
+        return new ReactorConnectionCache<>(() -> connection, HOSTNAME, EVENT_HUB_NAME, retryPolicy, new HashMap<>(0));
     }
 }
