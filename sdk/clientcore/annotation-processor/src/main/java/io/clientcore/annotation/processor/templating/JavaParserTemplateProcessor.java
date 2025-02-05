@@ -12,6 +12,10 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
@@ -197,8 +201,13 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     void configurePublicMethod(MethodDeclaration publicMethod, HttpRequestContext method) {
+        // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
+        //  improve / fix the generated code to no longer need it.
         publicMethod.setName(method.getMethodName())
             .setModifiers(Modifier.Keyword.PUBLIC)
+            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"),
+                new ArrayInitializerExpr(
+                    new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
             .setType(inferTypeNameFromReturnType(method.getMethodReturnType()));
 
@@ -229,8 +238,13 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
         String returnTypeName = inferTypeNameFromReturnType(method.getMethodReturnType());
+        // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
+        //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
             .setModifiers(Modifier.Keyword.PUBLIC)
+            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"),
+                new ArrayInitializerExpr(
+                    new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
             .setType(returnTypeName);
 

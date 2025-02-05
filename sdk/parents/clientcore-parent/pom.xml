@@ -716,7 +716,7 @@
               <arg>-Xlint:empty</arg>
               <arg>-Xlint:fallthrough</arg>
               <arg>-Xlint:finally</arg>
-              <arg>-Xlint:-options</arg>
+              <arg>-Xlint:options</arg>
               <arg>-Xlint:overrides</arg>
               <arg>-Xlint:path</arg>
               <!-- <arg>-Xlint:processing</arg> -->
@@ -729,6 +729,8 @@
             </compilerArgs>
 
             <createMissingPackageInfoClass>false</createMissingPackageInfoClass>
+
+            <proc>none</proc>
           </configuration>
         </plugin>
 

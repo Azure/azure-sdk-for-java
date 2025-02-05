@@ -10,6 +10,7 @@ import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestInterfaceGenerationTests {
 
@@ -31,8 +32,8 @@ public class TestInterfaceGenerationTests {
         assertNotNull(testInterface);
 
         // test getFoo method
-        // Response<Foo> response = testInterface.getFoo("key", "label", "syncToken", "apiVersion", "acceptDatetime", "ifMatch", "ifNoneMatch", "select", "accept");
-        // assertNotNull(response);
+        // LocalHttpClient doesn't handle /kv/{key} yet and will just return 400.
+        assertThrows(RuntimeException.class, () -> testInterface.getFoo("key", "label", "syncToken"));
     }
 
 }
