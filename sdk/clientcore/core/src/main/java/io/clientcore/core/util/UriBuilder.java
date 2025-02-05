@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.util;
+package io.clientcore.core.util;
+
+import io.clientcore.core.implementation.util.QueryParameter;
+import io.clientcore.core.implementation.util.UriToken;
+import io.clientcore.core.implementation.util.UriTokenType;
+import io.clientcore.core.implementation.util.UriTokenizer;
+import io.clientcore.core.implementation.util.UriTokenizerState;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -427,7 +433,7 @@ public final class UriBuilder {
      * @return The UriBuilder that was parsed from the URI object.
      */
     public static UriBuilder parse(URI uri) {
-        return parseUri(uri, true);
+        return parse(uri, true);
     }
 
     /**
@@ -437,7 +443,7 @@ public final class UriBuilder {
      * @param includeQuery Whether the query string should be excluded.
      * @return The UriBuilder that represents the parsed URI.
      */
-    private static UriBuilder parseUri(URI uri, boolean includeQuery) {
+    public static UriBuilder parse(URI uri, boolean includeQuery) {
         final UriBuilder result = new UriBuilder();
 
         if (uri != null) {
