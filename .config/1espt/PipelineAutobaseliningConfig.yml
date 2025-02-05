@@ -86,3 +86,17 @@ pipelines:
           lastModifiedDate: 2025-02-05
         binskim:
           lastModifiedDate: 2025-02-05
+  5629:
+    retail:
+      source:
+        credscan:
+          lastModifiedDate: 2025-02-05
+        psscriptanalyzer:
+          lastModifiedDate: 2025-02-05
+        armory:
+          lastModifiedDate: 2025-02-05
+      binary:
+        credscan:
+          lastModifiedDate: 2025-02-05
+        binskim:
+          lastModifiedDate: 2025-02-05
