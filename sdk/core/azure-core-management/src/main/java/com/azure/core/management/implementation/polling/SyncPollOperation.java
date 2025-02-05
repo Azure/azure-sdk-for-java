@@ -23,6 +23,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Synchronous poll operation for Azure resource manager (ARM) long-running-operation (LRO).
+ */
 public class SyncPollOperation {
     private static final LongRunningOperationStatus LRO_CANCELLED
         = LongRunningOperationStatus.fromString("Cancelled", true);
