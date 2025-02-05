@@ -196,29 +196,29 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.throttlingRetry.shouldRetry(e);
     }
 
-      private boolean canGatewayRequestFailoverOnTimeout(RxDocumentServiceRequest request) {
-        //Query Plan requests
+      private boolean canRequestToGatewayBeSafelyRetriedOnReadTimeout(RxDocumentServiceRequest request) {
+
+        // QueryPlan requests can be safely retried on GW read timeouts
         if(request.getOperationType() == OperationType.QueryPlan) {
             return true;
         }
 
-        //Meta data request check
         boolean isMetaDataRequest = request.isMetadataRequest();
 
-        //Meta Data Read
-        if(isMetaDataRequest && request.isReadOnly()) {
+        // Metadata read requests can be safely retried on GW read timeouts
+        if (isMetaDataRequest && request.isReadOnly()) {
               return true;
         }
 
-        //Data Plane Read
-        if(!isMetaDataRequest
-            && !request.isAddressRefresh()
-            && request.isReadOnly()) {
-            return true;
-        }
-
-        return false;
-    }
+        // Document requests encapsulate address resolution to the Gateway
+        // Address resolution flows are present in GatewayAddressCache and use MetadataRequestRetryPolicy & OpenConnectionAndInitCachesRetryPolicy
+        // Address resolution flows are retried in a purely region-scoped manner by the above retry policies as addresses are unique to a partition-region combo
+        // If flow of control has reached here - we are at the level of the 'Document' request which ideally can be retried on
+        // a different region for Document reads
+        // For Document writes being retried on a different region there is no guarantee of idempotency as isAddressRefresh property
+        // on RxDocumentServiceRequest instance is not set back to false after address resolution completes so hard to stay what stage timed out - address resolution or the Document write
+        return request.isReadOnly();
+      }
 
     private ShouldRetryResult shouldRetryOnSessionNotAvailable(RxDocumentServiceRequest request) {
         this.sessionTokenRetryCount++;
@@ -301,14 +301,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldRetryOnGatewayTimeout() {
 
-        boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(this.request);
+        boolean canPerformCrossRegionRetryOnGatewayReadTimeout = canRequestToGatewayBeSafelyRetriedOnReadTimeout(this.request);
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
             this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
-        if (canFailoverOnTimeout) {
+        if (canPerformCrossRegionRetryOnGatewayReadTimeout) {
             if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
                 logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
                 return Mono.just(ShouldRetryResult.noRetry());
