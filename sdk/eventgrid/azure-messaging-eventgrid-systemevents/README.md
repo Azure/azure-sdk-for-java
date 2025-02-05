@@ -36,6 +36,11 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
+### Examples
+
+-```java com.azure.messaging.eventgrid.readme
+-```
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
