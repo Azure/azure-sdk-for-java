@@ -24,7 +24,7 @@ Various documentation is available to help you get started
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-messaging-eventgrid</artifactId>
+    <artifactId>azure-messaging-eventgrid-systemevents</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -35,11 +35,6 @@ Various documentation is available to help you get started
 [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
 
 ## Key concepts
-
-## Examples
-
-```java com.azure.messaging.eventgrid.readme
-```
 
 ### Service API versions
 
