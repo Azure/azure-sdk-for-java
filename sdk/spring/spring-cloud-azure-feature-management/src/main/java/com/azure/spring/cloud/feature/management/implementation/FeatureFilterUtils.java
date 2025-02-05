@@ -15,6 +15,10 @@ import com.azure.spring.cloud.feature.management.models.TargetingException;
 
 public class FeatureFilterUtils {
 
+    public static void updateValueFromMapToList(Map<String, Object> parameters, String key) {
+        updateValueFromMapToList(parameters, key, false);
+    }
+
     /**
      * Looks at the given key in the parameters and coverts it to a list if it is currently a map.
      *
@@ -22,11 +26,13 @@ public class FeatureFilterUtils {
      * @param key key of object int the parameters map
      */
     @SuppressWarnings("unchecked")
-    public static void updateValueFromMapToList(Map<String, Object> parameters, String key) {
+    public static void updateValueFromMapToList(Map<String, Object> parameters, String key, boolean fixNull) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
             Collection<Object> toType = ((Map<String, Object>) objectMap).values();
             parameters.put(key, toType);
+        } else if ((objectMap != null && objectMap.equals("")) || (objectMap == null && fixNull)) {
+            parameters.put(key, new ArrayList<Object>());
         } else if (objectMap != null) {
             parameters.put(key, objectMap);
         }
@@ -74,7 +80,6 @@ public class FeatureFilterUtils {
         for (int i = 0; i < 4; i++) {
             reversedBytes[i] = bigEndian[3 - i];
         }
-
         return new BigInteger(1, reversedBytes);
     }
 
