@@ -672,6 +672,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.gatewayProxy).setSessionContainer(this.sessionContainer);
     }
 
+    private void updateThinProxy() {
+        (this.thinProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
+        (this.thinProxy).setCollectionCache(this.collectionCache);
+        (this.thinProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
+        (this.thinProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.thinProxy).setSessionContainer(this.sessionContainer);
+    }
+
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
 
@@ -721,6 +729,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache);
 
             updateGatewayProxy();
+            updateThinProxy();
             clientTelemetry = new ClientTelemetry(
                     this,
                     null,
@@ -1884,7 +1893,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
+        // TODO: Configs.isThinClientEnabled() && request.useGatewayMode -> false for some reason, fix it
         request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
+        request.useThinProxy = true;
 
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
@@ -5741,6 +5752,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
+        // TODO: request.useThinProxy is false here, fix it
+
+        // TODO: remove, for testing
+        if (request.isMetadataRequest()) {
+            return this.gatewayProxy;
+        }
+
         if (request.useThinProxy) {
             return this.thinProxy;
         }
