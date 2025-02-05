@@ -181,12 +181,12 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
             TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-                messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, false, false);
+                messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, true, true);
         }
 
         private Mono<RequestResponseChannel> getCBSChannel(String linkName) {
             final String sessionName = "cbs-" + linkName;
-            return createRequestResponseChannel(sessionName, linkName, "$cbs");
+            return newRequestResponseChannel(sessionName, linkName, "$cbs");
         }
     }
 }

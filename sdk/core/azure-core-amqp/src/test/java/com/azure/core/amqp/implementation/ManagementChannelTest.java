@@ -3,7 +3,9 @@
 
 package com.azure.core.amqp.implementation;
 
-import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -49,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -83,9 +86,9 @@ public class ManagementChannelTest {
     @Mock
     private TokenManager tokenManager;
     @Mock
-    private RequestResponseChannel requestResponseChannel;
+    private ReactorConnection connection;
     @Mock
-    private AmqpRetryPolicy retryPolicy;
+    private RequestResponseChannel requestResponseChannel;
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
@@ -93,19 +96,18 @@ public class ManagementChannelTest {
 
         autoCloseable = MockitoAnnotations.openMocks(this);
 
-        final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono
-            = Mono.defer(() -> Mono.just(requestResponseChannel))
-                .subscribeWith(new AmqpChannelProcessor<>("foo", RequestResponseChannel::getEndpointStates, retryPolicy,
-                    new HashMap<>()));
-
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(tokenProviderResults.flux());
 
         when(requestResponseChannel.getErrorContext()).thenReturn(errorContext);
-        when(requestResponseChannel.getEndpointStates()).thenReturn(Flux.never());
+        when(requestResponseChannel.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
 
-        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(requestResponseMono);
-        managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager);
+        when(connection.newRequestResponseChannel(anyString(), anyString(), anyString()))
+            .thenReturn(Mono.just(requestResponseChannel));
+
+        final RequestResponseChannelCache cache = new RequestResponseChannelCache(connection, ENTITY_PATH,
+            "cbs-session", "$cbs", new FixedAmqpRetryPolicy(new AmqpRetryOptions()));
+        managementChannel = new ManagementChannel(new ChannelCacheWrapper(cache), NAMESPACE, ENTITY_PATH, tokenManager);
     }
 
     @AfterEach

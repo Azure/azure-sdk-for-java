@@ -42,8 +42,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -55,6 +53,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.channels.Pipe;
 import java.time.Duration;
 import java.util.Arrays;
@@ -151,9 +150,17 @@ class ReactorConnectionTest {
             reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(), connectionHandler))
                 .thenReturn(connectionProtonJ);
         when(reactor.attachments()).thenReturn(mock(Record.class));
-
-        final Pipe pipe = Pipe.open();
-        final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, pipe);
+        final ReactorDispatcher reactorDispatcher = mock(ReactorDispatcher.class);
+        try {
+            doAnswer(invocation -> {
+                final Runnable work = invocation.getArgument(0);
+                work.run();
+                return null;
+            }).when(reactorDispatcher).invoke(any(Runnable.class));
+        } catch (IOException ioe) {
+            throw new UncheckedIOException(ioe);
+        }
+        when(reactorDispatcher.getShutdownSignal()).thenReturn(Mono.never());
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
@@ -173,7 +180,7 @@ class ReactorConnectionTest {
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true,
-            false);
+            true);
 
         // Setting up onConnectionRemoteOpen.
         when(connectionEvent.getConnection()).thenReturn(connectionProtonJ);
@@ -463,9 +470,8 @@ class ReactorConnectionTest {
     /**
      * Verifies that if the connection cannot be created within the timeout period, it errors.
      */
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void createCBSNodeTimeoutException(boolean isV2) throws IOException {
+    @Test
+    void createCBSNodeTimeoutException() throws IOException {
         when(reactor.process()).then(invocation -> {
             TimeUnit.SECONDS.sleep(10);
             return true;
@@ -505,7 +511,7 @@ class ReactorConnectionTest {
         // Act and Assert
         final ReactorConnection connectionBad
             = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider, linkProvider,
-                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2, false);
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
 
         StepVerifier.create(connectionBad.getClaimsBasedSecurityNode()).expectErrorSatisfies(error -> {
             assertTrue(error instanceof AmqpException);
@@ -519,13 +525,6 @@ class ReactorConnectionTest {
             assertNotNull(amqpException.getContext());
             assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
         }).verify(VERIFY_TIMEOUT);
-
-        if (!isV2) {
-            StepVerifier.create(handler.getEndpointStates().collectList()).expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertTrue(((AmqpException) error).isTransient());
-            }).verify(VERIFY_TIMEOUT);
-        }
     }
 
     /**
@@ -696,7 +695,7 @@ class ReactorConnectionTest {
             .expectErrorSatisfies(assertException)
             .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(connection.createRequestResponseChannel(SESSION_NAME, "test-link-name", "test-entity-path"))
+        StepVerifier.create(connection.newRequestResponseChannel(SESSION_NAME, "test-link-name", "test-entity-path"))
             .expectError(IllegalStateException.class)
             .verify(VERIFY_TIMEOUT);
 
@@ -741,7 +740,7 @@ class ReactorConnectionTest {
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true,
-            false);
+            true);
     }
 
     @Test
@@ -751,7 +750,7 @@ class ReactorConnectionTest {
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2
             = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
-                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, false);
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -778,7 +777,7 @@ class ReactorConnectionTest {
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2
             = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
-                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, false);
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 

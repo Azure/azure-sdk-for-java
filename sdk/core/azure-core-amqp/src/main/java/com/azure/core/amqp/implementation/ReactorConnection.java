@@ -13,13 +13,11 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
-import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
@@ -30,11 +28,9 @@ import reactor.core.publisher.Sinks;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -47,7 +43,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -65,7 +60,6 @@ public class ReactorConnection implements AmqpConnection {
 
     private final ClientLogger logger;
     private final ReactorSessionCache sessionCache;
-    private final ConcurrentMap<String, SessionSubscription> sessionMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, AmqpManagementNode> managementNodes = new ConcurrentHashMap<>();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -91,11 +85,8 @@ public class ReactorConnection implements AmqpConnection {
     private ReactorExecutor reactorExecutor;
 
     private volatile ClaimsBasedSecurityChannel cbsChannel;
-    private volatile AmqpChannelProcessor<RequestResponseChannel> cbsChannelProcessor;
     private volatile RequestResponseChannelCache cbsChannelCache;
     private volatile Connection connection;
-    private final boolean isV2;
-    private final boolean useSessionChannelCache;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -134,15 +125,6 @@ public class ReactorConnection implements AmqpConnection {
         this.operationTimeout = connectionOptions.getRetry().getTryTimeout();
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
-        this.isV2 = isV2;
-        if (!isV2 && useSessionChannelCache) {
-            // Internal-Error: When client is in V1 mode, the builder should have ignored the attempt to opt in
-            // the "com.azure.core.amqp.cache" configuration.
-            logger.atError().log("Internal-Error: Unexpected attempt to use SessionCache and ChannelCache in V1.");
-            this.useSessionChannelCache = false;
-        } else {
-            this.useSessionChannelCache = useSessionChannelCache;
-        }
         this.sessionCache = new ReactorSessionCache(connectionId, handler.getHostname(), handlerProvider,
             reactorProvider, operationTimeout, logger);
 
@@ -155,12 +137,6 @@ public class ReactorConnection implements AmqpConnection {
                             String.format("Connection '%s' not active within the timout: %s.", connectionId,
                                 operationTimeout),
                             handler.getErrorContext());
-                        if (!isV2) {
-                            // this is temp patch to make v1 stack retry on timeout.
-                            // V2 stack does connection management differently via ReactorConnectionCache
-                            // and does not need to call into handler here
-                            handler.onError(exception);
-                        }
                         return exception;
                     }));
             return activeEndpoint.thenReturn(reactorConnection);
@@ -270,18 +246,9 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue("address", address)
                     .log("Creating management node.");
 
-                final ChannelCacheWrapper channelCache;
-                if (useSessionChannelCache) {
-                    // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-                    final RequestResponseChannelCache cache
-                        = new RequestResponseChannelCache(this, sessionName, linkName, address, retryPolicy);
-                    channelCache = new ChannelCacheWrapper(cache);
-                } else {
-                    // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-                    final AmqpChannelProcessor<RequestResponseChannel> cache
-                        = createRequestResponseChannel(sessionName, linkName, address);
-                    channelCache = new ChannelCacheWrapper(cache);
-                }
+                final RequestResponseChannelCache cache
+                    = new RequestResponseChannelCache(this, sessionName, linkName, address, retryPolicy);
+                final ChannelCacheWrapper channelCache = new ChannelCacheWrapper(cache);
                 return new ManagementChannel(channelCache, getFullyQualifiedNamespace(), entityPath, tokenManager);
             }));
         });
@@ -329,73 +296,8 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
-        if (useSessionChannelCache) {
-            // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-            final ReactorSessionCache.Loader loader = this::createSession;
-            return sessionCache.getOrLoad(connectionMono, sessionName, loader).cast(AmqpSession.class);
-        }
-        // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-        return connectionMono.map(connection -> {
-            return sessionMap.computeIfAbsent(sessionName, key -> {
-                final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
-                    getFullyQualifiedNamespace(), key, connectionOptions.getRetry().getTryTimeout());
-                final Session session = connection.session();
-
-                BaseHandler.setHandler(session, sessionHandler);
-                final ProtonSessionWrapper sessionWrapper
-                    = new ProtonSessionWrapper(session, sessionHandler, reactorProvider);
-                final AmqpSession amqpSession = createSession(sessionWrapper);
-                final Disposable subscription = amqpSession.getEndpointStates().subscribe(state -> {
-                }, error -> {
-                    // If we were already disposing of the connection, the session would be removed.
-                    if (isDisposed.get()) {
-                        return;
-                    }
-
-                    logger.atInfo()
-                        .addKeyValue(SESSION_NAME_KEY, sessionName)
-                        .log("Error occurred. Removing and disposing session", error);
-                    removeSession(key);
-                }, () -> {
-                    // If we were already disposing of the connection, the session would be removed.
-                    if (isDisposed.get()) {
-                        return;
-                    }
-
-                    logger.atVerbose()
-                        .addKeyValue(SESSION_NAME_KEY, sessionName)
-                        .log("Complete. Removing and disposing session.");
-                    removeSession(key);
-                });
-
-                return new SessionSubscription(amqpSession, subscription);
-            });
-        }).flatMap(sessionSubscription -> {
-            final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession()
-                .getEndpointStates()
-                .filter(state -> state == AmqpEndpointState.ACTIVE)
-                .next()
-                .timeout(retryPolicy.getRetryOptions().getTryTimeout(),
-                    Mono.error(() -> new AmqpException(true, TIMEOUT_ERROR,
-                        String.format("connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
-                            connectionId, sessionName),
-                        handler.getErrorContext())))
-                .doOnError(error -> {
-                    // Clean up the subscription if there was an error waiting for the session to become active.
-
-                    if (!(error instanceof AmqpException)) {
-                        return;
-                    }
-
-                    final AmqpException amqpException = (AmqpException) error;
-                    if (amqpException.getErrorCondition() == TIMEOUT_ERROR) {
-                        final SessionSubscription removed = sessionMap.remove(sessionName);
-                        removed.dispose();
-                    }
-                });
-
-            return activeSession.thenReturn(sessionSubscription.getSession());
-        });
+        final ReactorSessionCache.Loader loader = this::createSession;
+        return sessionCache.getOrLoad(connectionMono, sessionName, loader).cast(AmqpSession.class);
     }
 
     /**
@@ -418,22 +320,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public boolean removeSession(String sessionName) {
-        if (useSessionChannelCache) {
-            // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-            return sessionCache.evict(sessionName);
-        }
-
-        // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-        if (sessionName == null) {
-            return false;
-        }
-
-        final SessionSubscription removed = sessionMap.remove(sessionName);
-        if (removed != null) {
-            removed.dispose();
-        }
-
-        return removed != null;
+        return sessionCache.evict(sessionName);
     }
 
     @Override
@@ -465,45 +352,6 @@ public class ReactorConnection implements AmqpConnection {
     }
 
     /**
-     * Creates a bidirectional link between the message broker and the client.
-     * <p>
-     *  TODO (anu): this method will be removed when dropping the v1 support. The libraries completely on
-     *   v2 stack will use {@link #newRequestResponseChannel(String, String, String)} API instead.
-     * </p>
-     * @param sessionName Name of the session.
-     * @param linkName Name of the link.
-     * @param entityPath Address to the message broker.
-     *
-     * @return A new {@link RequestResponseChannel} to communicate with the message broker.
-     */
-    protected AmqpChannelProcessor<RequestResponseChannel> createRequestResponseChannel(String sessionName,
-        String linkName, String entityPath) {
-        assert !isV2 || !useSessionChannelCache;
-        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-
-        final Flux<RequestResponseChannel> createChannel = createSession(sessionName).cast(ReactorSession.class)
-            .flatMap(reactorSession -> reactorSession.channel(linkName))
-            .map(channel -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), entityPath, channel,
-                connectionOptions.getRetry(), handlerProvider, reactorProvider, messageSerializer, senderSettleMode,
-                receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2))
-            .doOnNext(e -> {
-                logger.atInfo()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(LINK_NAME_KEY, linkName)
-                    .log("Emitting new response channel.");
-            })
-            // Create channel only when connection is active, to avoid repeatedly requesting and closing channels
-            // after connection emits the shutdown signal.
-            .repeat(() -> !this.isDisposed());
-
-        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
-        loggingContext.put(ENTITY_PATH_KEY, entityPath);
-
-        return createChannel.subscribeWith(new AmqpChannelProcessor<>(getFullyQualifiedNamespace(),
-            channel -> channel.getEndpointStates(), retryPolicy, loggingContext));
-    }
-
-    /**
      * Creates a bidirectional channel between the message broker and the client.
      *
      * @param sessionName the AMQP session to host the channel.
@@ -512,16 +360,14 @@ public class ReactorConnection implements AmqpConnection {
      *
      * @return A new {@link RequestResponseChannel} to communicate with the message broker.
      */
-    protected Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String name,
-        String entityPath) {
-        assert isV2 && useSessionChannelCache;
+    public Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String name, String entityPath) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
 
         return createSession(sessionName).cast(ReactorSession.class)
             .flatMap(reactorSession -> reactorSession.channel(name))
             .map(channel -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), entityPath, channel,
                 connectionOptions.getRetry(), handlerProvider, reactorProvider, messageSerializer, senderSettleMode,
-                receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2));
+                receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), true));
     }
 
     @Override
@@ -551,20 +397,10 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         final Mono<Void> cbsCloseOperation;
-        if (useSessionChannelCache) {
-            // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-            if (cbsChannelCache != null) {
-                cbsCloseOperation = cbsChannelCache.closeAsync();
-            } else {
-                cbsCloseOperation = Mono.empty();
-            }
+        if (cbsChannelCache != null) {
+            cbsCloseOperation = cbsChannelCache.closeAsync();
         } else {
-            // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-            if (cbsChannelProcessor != null) {
-                cbsCloseOperation = cbsChannelProcessor.flatMap(channel -> channel.closeAsync());
-            } else {
-                cbsCloseOperation = Mono.empty();
-            }
+            cbsCloseOperation = Mono.empty();
         }
 
         final Mono<Void> managementNodeCloseOperations
@@ -619,16 +455,7 @@ public class ReactorConnection implements AmqpConnection {
         connection.close();
         handler.close();
 
-        final Mono<Void> awaitSessionsClose;
-        if (useSessionChannelCache) {
-            // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-            awaitSessionsClose = sessionCache.awaitClose();
-        } else {
-            // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-            final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
-            sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
-            awaitSessionsClose = Mono.when(closingSessions);
-        }
+        final Mono<Void> awaitSessionsClose = sessionCache.awaitClose();
 
         // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
         // remaining work after OperationTimeout has elapsed and closes afterwards.
@@ -660,19 +487,10 @@ public class ReactorConnection implements AmqpConnection {
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
             logger.info("Setting CBS channel.");
-            if (useSessionChannelCache) {
-                // V2 with 'SessionCache,RequestResponseChannelCache' opted-in.
-                cbsChannelCache
-                    = new RequestResponseChannelCache(this, CBS_ADDRESS, CBS_SESSION_NAME, CBS_LINK_NAME, retryPolicy);
-                cbsChannel
-                    = new ClaimsBasedSecurityChannel(cbsChannelCache.get(), connectionOptions.getTokenCredential(),
-                        connectionOptions.getAuthorizationType(), connectionOptions.getRetry());
-            } else {
-                // V2 without 'SessionCache,RequestResponseChannelCache' opt-in or V1.
-                cbsChannelProcessor = createRequestResponseChannel(CBS_SESSION_NAME, CBS_LINK_NAME, CBS_ADDRESS);
-                cbsChannel = new ClaimsBasedSecurityChannel(cbsChannelProcessor, connectionOptions.getTokenCredential(),
-                    connectionOptions.getAuthorizationType(), connectionOptions.getRetry());
-            }
+            cbsChannelCache
+                = new RequestResponseChannelCache(this, CBS_ADDRESS, CBS_SESSION_NAME, CBS_LINK_NAME, retryPolicy);
+            cbsChannel = new ClaimsBasedSecurityChannel(cbsChannelCache.get(), connectionOptions.getTokenCredential(),
+                connectionOptions.getAuthorizationType(), connectionOptions.getRetry());
         }
         return cbsChannel;
     }

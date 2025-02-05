@@ -91,7 +91,7 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
         final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
         final PerfMessageSerializer messageSerializer = new PerfMessageSerializer();
         connection = new ReactorConnection(connectionId, connectionOptions, provider, handlerProvider, linkProvider,
-            tokenManagerProvider, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, false, false);
+            tokenManagerProvider, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, true, true);
 
         return Mono.empty();
     }

@@ -3,10 +3,15 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -74,6 +79,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -528,6 +534,8 @@ class ManagementChannelTests {
     @Mock
     private MessageSerializer messageSerializer;
     @Mock
+    private ReactorConnection connection;
+    @Mock
     private RequestResponseChannel requestResponseChannel;
     @Captor
     private ArgumentCaptor<Message> messageCaptor;
@@ -553,12 +561,17 @@ class ManagementChannelTests {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(results);
 
+        when(requestResponseChannel.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE));
         when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
         when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
 
-        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(Mono.just(requestResponseChannel));
-        managementChannel
-            = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager, messageSerializer, TIMEOUT);
+        when(connection.newRequestResponseChannel(anyString(), anyString(), anyString()))
+            .thenReturn(Mono.just(requestResponseChannel));
+
+        final RequestResponseChannelCache cache = new RequestResponseChannelCache(connection, ENTITY_PATH,
+            "cbs-session", "$cbs", new FixedAmqpRetryPolicy(new AmqpRetryOptions()));
+        managementChannel = new ManagementChannel(new ChannelCacheWrapper(cache), NAMESPACE, ENTITY_PATH, tokenManager,
+            messageSerializer, TIMEOUT);
     }
 
     @AfterEach
