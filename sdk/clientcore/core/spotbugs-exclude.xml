@@ -15,6 +15,7 @@
     <Or>
       <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.models.RequestOptions" />
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
       <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
       <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
@@ -91,13 +92,17 @@
   </Match>
   <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
-    <Class name="io.clientcore.core.util.TestUtils" />
+    <Or>
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests$SyncPolicy" />
+      <Class name="io.clientcore.core.util.TestUtils" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
       <Class name="io.clientcore.core.http.exception.HttpExceptionType" />
       <Class name="io.clientcore.core.http.models.HttpHeaderName" />
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
       <Class name="io.clientcore.core.util.ServerSentEventUtils" />
       <Class name="io.clientcore.core.util.auth.AuthUtils" />
     </Or>
@@ -108,6 +113,7 @@
       <Class name="io.clientcore.core.http.RestProxyTests" />
       <Class name="io.clientcore.core.http.client.DefaultHttpClientIT" />
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests$SyncPolicy" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />
       <Class name="io.clientcore.core.implementation.serializer.AdditionalPropertiesSerializerTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
@@ -340,6 +346,7 @@
   <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
+      <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineTests" />
       <Class name="io.clientcore.core.http.pipeline.RedirectPolicyTest" />
       <Class name="io.clientcore.core.http.pipeline.RetryPolicyTests" />
