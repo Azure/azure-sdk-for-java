@@ -14,7 +14,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class StartRecordingOptions {
     /**
-     * is a {@link GroupCallLocator} or {@link ServerCallLocator} or {@null} for locating the call.
+     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     private final CallLocator callLocator;
 
@@ -39,7 +39,7 @@ public final class StartRecordingOptions {
     /**
      * Constructor
      *
-     * @param callLocator is a {@link GroupCallLocator} or {@link ServerCallLocator} or {@null} for locating the call.
+     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
         this.callLocator = callLocator;
