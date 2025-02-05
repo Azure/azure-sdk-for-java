@@ -29,6 +29,8 @@ public final class FilePosixProperties {
     }
 
     /**
+     * Gets the file mode permissions.
+     *
      * @return the file mode permissions.
      */
     public String getFileMode() {
@@ -36,6 +38,8 @@ public final class FilePosixProperties {
     }
 
     /**
+     * Gets the owner user identifier (UID).
+     *
      * @return the owner user identifier (UID).
      */
     public String getOwner() {
@@ -43,6 +47,8 @@ public final class FilePosixProperties {
     }
 
     /**
+     * Gets the owner group identifier (GID).
+     *
      * @return the owner group identifier (GID).
      */
     public String getGroup() {
@@ -50,6 +56,8 @@ public final class FilePosixProperties {
     }
 
     /**
+     * Gets the file type.
+     *
      * @return the file type.
      */
     public NfsFileType getFileType() {
@@ -57,6 +65,8 @@ public final class FilePosixProperties {
     }
 
     /**
+     * Gets the link count of the file or directory.
+     *
      * @return the link count of the file or directory.
      */
     public Long getLinkCount() {

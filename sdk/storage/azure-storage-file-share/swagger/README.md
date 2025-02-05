@@ -114,6 +114,18 @@ directive:
         op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
+### /{shareName}/{directory}/{fileName}?restype=hardlink
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}/{directory}/{fileName}?restype=hardlink"];
+        op.put.responses["201"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["201"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
 ### /{shareName}/{directory}/{fileName}?comp=rename
 ``` yaml
 directive:

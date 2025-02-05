@@ -36,9 +36,6 @@ public class ShareStorageCustomization extends Customization {
 
         models.getClass("AccessRight").rename("ShareFileHandleAccessRights");
 
-        fixDateTimeConversion(customization.getPackage("com.azure.storage.file.share.implementation.models")
-            .getClass("FilesCreateHardLinkHeaders"));
-
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
     }
 
@@ -150,35 +147,5 @@ public class ShareStorageCustomization extends Customization {
         for (String className : Arrays.asList("FilesDownloadHeaders", "FilesGetPropertiesHeaders", "DirectoriesGetPropertiesHeaders", "SharesGetPropertiesHeaders")) {
             implementationModels.getClass(className).addImports("java.util.HashMap");
         }
-    }
-
-    //Fix datetime conversion in FilesCreateHardLinkHeaders
-    private static void fixDateTimeConversion(ClassCustomization classCustomization) {
-        String fileContent = classCustomization.getEditor().getFileContent(classCustomization.getFileName());
-        fileContent = fileContent.replace(
-            "if (xMsFileCreationTime != null) {\n" +
-            "            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);\n" +
-            "        }",
-            "if (xMsFileCreationTime != null) {\n" +
-                "            this.xMsFileCreationTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileCreationTime));\n" +
-                "        }");
-        fileContent = fileContent.replace(
-            "if (xMsFileChangeTime != null) {\n" +
-                "            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);\n" +
-                "        }",
-            "if (xMsFileChangeTime != null) {\n" +
-                "            this.xMsFileChangeTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileChangeTime));\n" +
-                "        }"
-        );
-        fileContent = fileContent.replace(
-            "if (xMsFileLastWriteTime != null) {\n" +
-                "            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);\n" +
-                "        }",
-            "if (xMsFileLastWriteTime != null) {\n" +
-                "            this.xMsFileLastWriteTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileLastWriteTime));\n" +
-                "        }"
-        );
-
-        classCustomization.getEditor().replaceFile(classCustomization.getFileName(), fileContent);
     }
 }
