@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.25 (2025-02-05)
+## 1.0.0 (2025-02-05)
 
 Initial GA of `azure-core-http-vertx`.
 
