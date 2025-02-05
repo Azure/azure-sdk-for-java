@@ -20,7 +20,6 @@ import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.models.EventHubConnectionStringProperties;
@@ -39,7 +38,7 @@ import java.util.Objects;
 
 /**
  * Receives a set of events using {@link ReactorReceiver} rather than {@link EventHubConsumerAsyncClient} which has an
- * additional level of abstraction {@link AmqpReceiveLinkProcessor}.
+ * additional level of abstraction {@link com.azure.core.amqp.implementation.MessageFlux}.
  */
 public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     private static final String PRODUCT_NAME = "azure-messaging-eventhubs-track2-perf";
