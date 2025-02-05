@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.util.StringUtils;
@@ -15,9 +14,9 @@ import com.azure.spring.cloud.appconfiguration.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
@@ -26,12 +25,10 @@ import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 
-@EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 class AzureAppConfigurationBootstrapRegistrar {
 
     static void register(ConfigDataLocationResolverContext context, Binder binder,
-        AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
-        ReplicaLookUp replicaLookup) {
+        AppConfigurationProperties properties, ReplicaLookUp replicaLookup) {
 
         AzureGlobalProperties globalProperties = binder
             .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
@@ -46,9 +43,9 @@ class AzureAppConfigurationBootstrapRegistrar {
         boolean isCredentialConfigured = isCredentialConfigured(loadedProperties);
 
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(context,
-            isCredentialConfigured, appProperties.getMaxRetryTime());
+            binder, isCredentialConfigured);
         AppConfigurationReplicaClientsBuilder replicaClientsBuilder = replicaClientBuilder(context, binder,
-            keyVaultClientFactory, loadedProperties, isCredentialConfigured, appProperties.getMaxRetries());
+            keyVaultClientFactory, loadedProperties, isCredentialConfigured, 10);
 
         context.getBootstrapContext().registerIfAbsent(AppConfigurationKeyVaultClientFactory.class,
             InstanceSupplier.from(() -> keyVaultClientFactory));
@@ -57,17 +54,23 @@ class AzureAppConfigurationBootstrapRegistrar {
     }
 
     private static AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(
-        ConfigDataLocationResolverContext context, boolean isCredentialConfigured, Integer maxRetryTime)
+        ConfigDataLocationResolverContext context, Binder binder, boolean isCredentialConfigured)
         throws IllegalArgumentException {
 
         SecretClientCustomizer customizer = context.getBootstrapContext().getOrElse(SecretClientCustomizer.class, null);
         KeyVaultSecretProvider secretProvider = context.getBootstrapContext().getOrElse(KeyVaultSecretProvider.class,
             null);
-        SecretClientBuilderFactory secretClientFactory = context.getBootstrapContext()
-            .getOrElse(SecretClientBuilderFactory.class, null);
 
-        return new AppConfigurationKeyVaultClientFactory(customizer, secretProvider, secretClientFactory,
-            isCredentialConfigured, maxRetryTime);
+        AzureKeyVaultSecretProperties secretClientProperties = binder
+            .bind(AzureKeyVaultSecretProperties.PREFIX, Bindable.of(AzureKeyVaultSecretProperties.class))
+            .orElseGet(AzureKeyVaultSecretProperties::new);
+        SecretClientBuilderFactory secretClientBuilderFactory = new SecretClientBuilderFactory(secretClientProperties);
+
+        context.getBootstrapContext().registerIfAbsent(SecretClientBuilderFactory.class,
+            InstanceSupplier.from(() -> secretClientBuilderFactory));
+
+        return new AppConfigurationKeyVaultClientFactory(customizer, secretProvider, secretClientBuilderFactory,
+            isCredentialConfigured);
     }
 
     private static AppConfigurationReplicaClientFactory buildClientFactory(

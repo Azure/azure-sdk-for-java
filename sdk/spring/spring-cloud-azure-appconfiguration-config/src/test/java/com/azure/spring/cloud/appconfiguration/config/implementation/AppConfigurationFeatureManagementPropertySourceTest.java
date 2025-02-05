@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,9 +26,9 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
     @Mock
     private FeatureFlagClient featureFlagLoaderMock;
-    
+
     private static final String FEATURE_FLAG_KEY = "feature_management.feature_flags";
-    
+
     private MockitoSession session;
 
     @BeforeEach
@@ -35,7 +36,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
@@ -46,21 +47,24 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     public void getPropertyNamesTest() {
         AppConfigurationFeatureManagementPropertySource featureManagementPropertySource = new AppConfigurationFeatureManagementPropertySource(
             featureFlagLoaderMock);
-        
+
         String[] names = featureManagementPropertySource.getPropertyNames();
-        assertTrue(names.length == 1);
+        assertTrue(names.length == 0);
+
+        when(featureFlagLoaderMock.getProperties()).thenReturn(Map.of("fake", new Feature()));
+        names = featureManagementPropertySource.getPropertyNames();
         assertEquals(FEATURE_FLAG_KEY, names[0]);
     }
-    
+
     @Test
     public void getPropertyTest() {
         AppConfigurationFeatureManagementPropertySource featureManagementPropertySource = new AppConfigurationFeatureManagementPropertySource(
             featureFlagLoaderMock);
-        
+
         assertNull(featureManagementPropertySource.getProperty("NotFeatureFlagProperty"));
         when(featureFlagLoaderMock.getProperties()).thenReturn(new HashMap<String, Feature>());
         assertNotNull(featureManagementPropertySource.getProperty(FEATURE_FLAG_KEY));
-        
+
     }
 
 }
