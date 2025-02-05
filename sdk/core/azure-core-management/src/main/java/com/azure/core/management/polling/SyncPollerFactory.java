@@ -17,9 +17,9 @@ import java.util.function.Supplier;
 /**
  * Factory to create SyncPoller for Azure Resource Manager (ARM) long-running-operation (LRO).
  */
-public class SyncPollerFactory {
+public final class SyncPollerFactory {
 
-    private SyncPollerFactory(){
+    private SyncPollerFactory() {
     }
 
     /**
