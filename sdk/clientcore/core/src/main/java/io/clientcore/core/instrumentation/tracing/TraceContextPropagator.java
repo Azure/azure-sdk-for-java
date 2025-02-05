@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation.tracing;
 
-import io.clientcore.core.util.Context;
+import io.clientcore.core.instrumentation.InstrumentationContext;
 
 /**
  * A {@link TraceContextPropagator} injects and extracts tracing context from a carrier,
@@ -19,7 +19,7 @@ public interface TraceContextPropagator {
      * @param setter The setter to use to inject the context into the carrier.
      * @param <C> The type of the carrier.
      */
-    <C> void inject(Context context, C carrier, TraceContextSetter<C> setter);
+    <C> void inject(InstrumentationContext context, C carrier, TraceContextSetter<C> setter);
 
     /**
      * Extracts the context from the carrier.
@@ -31,5 +31,5 @@ public interface TraceContextPropagator {
      *
      * @return The extracted context.
      */
-    <C> Context extract(Context context, C carrier, TraceContextGetter<C> getter);
+    <C> InstrumentationContext extract(InstrumentationContext context, C carrier, TraceContextGetter<C> getter);
 }

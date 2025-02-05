@@ -22,7 +22,7 @@ public final class ManagedPrivateEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"rkolawjm\",\"privateLinkResourceRegion\":\"mwrokcdxfzzzwyja\",\"groupId\":\"itlhguyn\",\"requestMessage\":\"hlgmltxdwhmoz\",\"provisioningState\":\"Moving\"},\"id\":\"vlnsnnjz\",\"name\":\"pafolp\",\"type\":\"mwamxqzragpgdph\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"cit\",\"privateLinkResourceRegion\":\"gsxcdgljplkeua\",\"groupId\":\"htomflrytswfp\",\"requestMessage\":\"dgycxnmskwhqjjy\",\"provisioningState\":\"Succeeded\"},\"id\":\"lpshhkvpedwqslsr\",\"name\":\"mpqvwwsk\",\"type\":\"ndcbrwi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ManagedPrivateEndpointsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ManagedPrivateEndpoint> response
-            = manager.managedPrivateEndpoints().list("lxrzvhqjwtr", "tgvgzp", com.azure.core.util.Context.NONE);
+            = manager.managedPrivateEndpoints().list("rfkspzhz", "tk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rkolawjm", response.iterator().next().privateLinkResourceId());
-        Assertions.assertEquals("mwrokcdxfzzzwyja", response.iterator().next().privateLinkResourceRegion());
-        Assertions.assertEquals("itlhguyn", response.iterator().next().groupId());
-        Assertions.assertEquals("hlgmltxdwhmoz", response.iterator().next().requestMessage());
+        Assertions.assertEquals("cit", response.iterator().next().privateLinkResourceId());
+        Assertions.assertEquals("gsxcdgljplkeua", response.iterator().next().privateLinkResourceRegion());
+        Assertions.assertEquals("htomflrytswfp", response.iterator().next().groupId());
+        Assertions.assertEquals("dgycxnmskwhqjjy", response.iterator().next().requestMessage());
     }
 }

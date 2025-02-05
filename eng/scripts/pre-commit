@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Fail on first error
+set -e
+
+# Get the list of changed files
+changed_files=$(git diff --cached --name-only)
+
+# Cred Scanner
+
+# Setting up Cred Scanner Pre-Commit Git Hook locally requires installing Guardian and running the
+# initialization first before the pre-commit hook can actually be used.
+# https://eng.ms/docs/products/credential-risk-exposure-defense/solutions/credentials_in_code/precommit-git-hook
+
+if [[ "${CredScanBinDirPosix}" ]]; then
+    echo "########### Running credential scanner ###########"
+    "${CredScanBinDirPosix}/CredScanGitHook" -r "${PWD}"
+else
+    echo "To enable credential scanner pre-commit hook, follow the instructions here - https://eng.ms/docs/products/credential-risk-exposure-defense/solutions/credentials_in_code/precommit-git-hook"
+fi
+
+# Spell Check
+echo "########### Running spell check ###########"
+exec echo $changed_files | npx cspell --no-summary --no-progress --no-must-find-files --file-list stdin
+echo "Spell check completed successfully"
+
+# Validate library versions
+echo "########### Validating package versions ###########"
+pwsh eng/versioning/pom_file_version_scanner.ps1
+echo "Package versions validation completed successfully"
+
+# Verify links
+echo "########### Validating links ###########"
+for file in $changed_files; do
+    pwsh eng/common/scripts/Verify-Links.ps1 $file
+done

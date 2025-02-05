@@ -391,7 +391,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
       'System.out' and 'System.err' is not allowed as well.
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck">
-      <property name="fullyQualifiedLoggerName" value="io.clientcore.core.util.ClientLogger" />
+      <property name="fullyQualifiedLoggerName" value="io.clientcore.core.instrumentation.logging.ClientLogger" />
     </module>
 
     <!-- CUSTOM CHECKS -->
