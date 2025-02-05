@@ -44,8 +44,8 @@ class AzureAppConfigurationBootstrapRegistrar {
 
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(context,
             binder, isCredentialConfigured);
-        AppConfigurationReplicaClientsBuilder replicaClientsBuilder = replicaClientBuilder(context, binder,
-            keyVaultClientFactory, loadedProperties, isCredentialConfigured, 10);
+        AppConfigurationReplicaClientsBuilder replicaClientsBuilder = replicaClientBuilder(context,
+            keyVaultClientFactory, loadedProperties, isCredentialConfigured);
 
         context.getBootstrapContext().registerIfAbsent(AppConfigurationKeyVaultClientFactory.class,
             InstanceSupplier.from(() -> keyVaultClientFactory));
@@ -81,8 +81,8 @@ class AzureAppConfigurationBootstrapRegistrar {
 
     @SuppressWarnings("unchecked")
     private static AppConfigurationReplicaClientsBuilder replicaClientBuilder(ConfigDataLocationResolverContext context,
-        Binder binder, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        AzureAppConfigurationProperties properties, boolean isCredentialConfigured, Integer maxRetries) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, AzureAppConfigurationProperties properties,
+        boolean isCredentialConfigured) {
 
         InstanceSupplier<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizer = context
             .getBootstrapContext()
@@ -111,8 +111,8 @@ class AzureAppConfigurationBootstrapRegistrar {
             clientCustomizer = configurationClientCustomizer.get(context.getBootstrapContext());
         }
 
-        return new AppConfigurationReplicaClientsBuilder(maxRetries, clientFactory, clientCustomizer,
-            isCredentialConfigured, keyVaultClientFactory.isConfigured());
+        return new AppConfigurationReplicaClientsBuilder(clientFactory, clientCustomizer, isCredentialConfigured,
+            keyVaultClientFactory.isConfigured());
     }
 
     private static boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {

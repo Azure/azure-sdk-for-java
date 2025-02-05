@@ -78,11 +78,10 @@ public class AppConfigurationReplicaClientsBuilder {
 
     private final boolean credentialConfigured;
 
-    private final int defaultMaxRetries;
+    private final int defaultMaxRetries = 2;
 
-    AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
+    AppConfigurationReplicaClientsBuilder(ConfigurationClientBuilderFactory clientFactory,
         ConfigurationClientCustomizer clientCustomizer, boolean credentialConfigured, boolean isKeyVaultConfigured) {
-        this.defaultMaxRetries = defaultMaxRetries;
         this.credentialConfigured = credentialConfigured;
         this.clientFactory = clientFactory;
         this.clientCustomizer = clientCustomizer;

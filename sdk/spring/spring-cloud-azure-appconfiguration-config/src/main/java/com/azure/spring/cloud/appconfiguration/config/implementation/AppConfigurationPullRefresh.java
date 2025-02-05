@@ -30,6 +30,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private final AtomicBoolean running = new AtomicBoolean(false);
 
     private ApplicationEventPublisher publisher;
+    
+    private final Long defaultMinBackoff = (long) 30;
 
     private final AppConfigurationReplicaClientFactory clientFactory;
 
@@ -38,8 +40,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private final ReplicaLookUp replicaLookUp;
     
     private final AppConfigurationRefreshUtil refreshUtils;
-    
-    private final Long defaultMinBackoff = (long) 30;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
