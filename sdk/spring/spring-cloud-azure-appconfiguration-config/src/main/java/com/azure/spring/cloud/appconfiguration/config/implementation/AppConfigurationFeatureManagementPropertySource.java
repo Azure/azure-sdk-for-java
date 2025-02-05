@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
- * <p>O
+ * <p>
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
@@ -33,18 +33,16 @@ class AppConfigurationFeatureManagementPropertySource extends EnumerableProperty
 
     @Override
     public String[] getPropertyNames() {
-        if (featureFlagLoader != null && featureFlagLoader.getProperties().size() > 0) {
-            String[] names = { FEATURE_FLAG_KEY };
-            return names;
+        if (featureFlagLoader != null && featureFlagLoader.getFeatureFlags().size() > 0) {
+            return new String[]{ FEATURE_FLAG_KEY };
         }
-        String[] names = { };
-        return names;
+        return new String[0];
     }
 
     @Override
     public Object getProperty(String name) {
         if (FEATURE_FLAG_KEY.equals(name)) {
-            return MAPPER.convertValue(featureFlagLoader.getProperties().values().toArray(), List.class);
+            return MAPPER.convertValue(featureFlagLoader.getFeatureFlags(), List.class);
         }
         return null;
     }

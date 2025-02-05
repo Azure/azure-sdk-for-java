@@ -8,8 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +50,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         String[] names = featureManagementPropertySource.getPropertyNames();
         assertTrue(names.length == 0);
 
-        when(featureFlagLoaderMock.getProperties()).thenReturn(Map.of("fake", new Feature()));
+        when(featureFlagLoaderMock.getFeatureFlags()).thenReturn(List.of(new Feature()));
         names = featureManagementPropertySource.getPropertyNames();
         assertEquals(FEATURE_FLAG_KEY, names[0]);
     }
@@ -62,7 +61,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
             featureFlagLoaderMock);
 
         assertNull(featureManagementPropertySource.getProperty("NotFeatureFlagProperty"));
-        when(featureFlagLoaderMock.getProperties()).thenReturn(new HashMap<String, Feature>());
+        when(featureFlagLoaderMock.getFeatureFlags()).thenReturn(List.of());
         assertNotNull(featureManagementPropertySource.getProperty(FEATURE_FLAG_KEY));
 
     }

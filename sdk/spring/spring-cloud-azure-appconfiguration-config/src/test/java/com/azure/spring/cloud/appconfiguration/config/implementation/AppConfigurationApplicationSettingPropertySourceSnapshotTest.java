@@ -145,7 +145,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
         assertThat(propertySource.getProperty(".bar.test_key_4")).isEqualTo("test_value_4");
-        assertEquals(1, featureFlagLoader.getProperties().size());
+        assertEquals(1, featureFlagLoader.getFeatureFlags().size());
     }
 
     @Test
