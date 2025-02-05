@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes the current state of an existing Private Link Service connection to the Azure Private Endpoint.
+ * Describes the current state of an existing Azure Private Link service connection to the private endpoint.
  */
 @Fluent
 public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState

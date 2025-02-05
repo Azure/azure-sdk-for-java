@@ -9,9 +9,8 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class SharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/GetSharedPrivateLinkResource.
-     * json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/
+     * GetSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceGet.

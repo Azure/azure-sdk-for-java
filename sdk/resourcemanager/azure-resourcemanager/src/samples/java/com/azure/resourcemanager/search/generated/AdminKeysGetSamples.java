@@ -10,7 +10,8 @@ package com.azure.resourcemanager.search.generated;
 public final class AdminKeysGetSamples {
     /*
      * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchGetAdminKeys.json
+     * specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/SearchGetAdminKeys.
+     * json
      */
     /**
      * Sample code: SearchGetAdminKeys.

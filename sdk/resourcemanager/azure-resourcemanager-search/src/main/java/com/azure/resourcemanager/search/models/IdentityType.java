@@ -4,53 +4,59 @@
 
 package com.azure.resourcemanager.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
- * The identity type.
+ * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an identity created
+ * by the system and a set of user assigned identities. The type 'None' will remove all identities from the service.
  */
-public enum IdentityType {
+public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /**
-     * Enum value None.
+     * Static value None for IdentityType.
      */
-    NONE("None"),
+    public static final IdentityType NONE = fromString("None");
 
     /**
-     * Enum value SystemAssigned.
+     * Static value SystemAssigned for IdentityType.
      */
-    SYSTEM_ASSIGNED("SystemAssigned");
+    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
-     * The actual serialized value for a IdentityType instance.
+     * Static value UserAssigned for IdentityType.
      */
-    private final String value;
-
-    IdentityType(String value) {
-        this.value = value;
-    }
+    public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
-     * Parses a serialized value to a IdentityType instance.
+     * Static value SystemAssigned, UserAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned, UserAssigned");
+
+    /**
+     * Creates a new instance of IdentityType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed IdentityType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static IdentityType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        IdentityType[] items = IdentityType.values();
-        for (IdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public IdentityType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a IdentityType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding IdentityType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static IdentityType fromString(String name) {
+        return fromString(name, IdentityType.class);
+    }
+
+    /**
+     * Gets known IdentityType values.
+     * 
+     * @return known IdentityType values.
+     */
+    public static Collection<IdentityType> values() {
+        return values(IdentityType.class);
     }
 }

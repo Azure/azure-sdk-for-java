@@ -13,15 +13,23 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Network-specific rules that determine how the search service can be reached.
+ * Network specific rules that determine how the Azure AI Search service may be reached.
  */
 @Fluent
 public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     /*
-     * A list of IP restriction rules used for an IP firewall. Any IPs that do not match the rules are blocked by the
-     * firewall. These rules are only applied when the 'publicNetworkAccess' of the search service is 'enabled'.
+     * A list of IP restriction rules that defines the inbound network(s) with allowing access to the search service
+     * endpoint. At the meantime, all other public IP networks are blocked by the firewall. These restriction rules are
+     * applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise, traffic over public
+     * interface is not allowed even with any public IP rules, and private endpoint connections would be the exclusive
+     * access method.
      */
     private List<IpRule> ipRules;
+
+    /*
+     * Possible origins of inbound traffic that can bypass the rules defined in the 'ipRules' section.
+     */
+    private SearchBypass bypass;
 
     /**
      * Creates an instance of NetworkRuleSet class.
@@ -30,9 +38,11 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     }
 
     /**
-     * Get the ipRules property: A list of IP restriction rules used for an IP firewall. Any IPs that do not match the
-     * rules are blocked by the firewall. These rules are only applied when the 'publicNetworkAccess' of the search
-     * service is 'enabled'.
+     * Get the ipRules property: A list of IP restriction rules that defines the inbound network(s) with allowing access
+     * to the search service endpoint. At the meantime, all other public IP networks are blocked by the firewall. These
+     * restriction rules are applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise,
+     * traffic over public interface is not allowed even with any public IP rules, and private endpoint connections
+     * would be the exclusive access method.
      * 
      * @return the ipRules value.
      */
@@ -41,15 +51,39 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     }
 
     /**
-     * Set the ipRules property: A list of IP restriction rules used for an IP firewall. Any IPs that do not match the
-     * rules are blocked by the firewall. These rules are only applied when the 'publicNetworkAccess' of the search
-     * service is 'enabled'.
+     * Set the ipRules property: A list of IP restriction rules that defines the inbound network(s) with allowing access
+     * to the search service endpoint. At the meantime, all other public IP networks are blocked by the firewall. These
+     * restriction rules are applied only when the 'publicNetworkAccess' of the search service is 'enabled'; otherwise,
+     * traffic over public interface is not allowed even with any public IP rules, and private endpoint connections
+     * would be the exclusive access method.
      * 
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
     public NetworkRuleSet withIpRules(List<IpRule> ipRules) {
         this.ipRules = ipRules;
+        return this;
+    }
+
+    /**
+     * Get the bypass property: Possible origins of inbound traffic that can bypass the rules defined in the 'ipRules'
+     * section.
+     * 
+     * @return the bypass value.
+     */
+    public SearchBypass bypass() {
+        return this.bypass;
+    }
+
+    /**
+     * Set the bypass property: Possible origins of inbound traffic that can bypass the rules defined in the 'ipRules'
+     * section.
+     * 
+     * @param bypass the bypass value to set.
+     * @return the NetworkRuleSet object itself.
+     */
+    public NetworkRuleSet withBypass(SearchBypass bypass) {
+        this.bypass = bypass;
         return this;
     }
 
@@ -71,6 +105,7 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("bypass", this.bypass == null ? null : this.bypass.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -92,6 +127,8 @@ public final class NetworkRuleSet implements JsonSerializable<NetworkRuleSet> {
                 if ("ipRules".equals(fieldName)) {
                     List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
                     deserializedNetworkRuleSet.ipRules = ipRules;
+                } else if ("bypass".equals(fieldName)) {
+                    deserializedNetworkRuleSet.bypass = SearchBypass.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

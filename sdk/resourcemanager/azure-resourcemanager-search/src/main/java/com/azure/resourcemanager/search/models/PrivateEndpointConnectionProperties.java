@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes the properties of an existing Private Endpoint connection to the search service.
+ * Describes the properties of an existing private endpoint connection to the search service.
  */
 @Fluent
 public final class PrivateEndpointConnectionProperties
@@ -23,18 +23,18 @@ public final class PrivateEndpointConnectionProperties
     private PrivateEndpointConnectionPropertiesPrivateEndpoint privateEndpoint;
 
     /*
-     * Describes the current state of an existing Private Link Service connection to the Azure Private Endpoint.
+     * Describes the current state of an existing Azure Private Link service connection to the private endpoint.
      */
     private PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
-     * The group id from the provider of resource the private link service connection is for.
+     * The group ID of the Azure resource for which the private link service is for.
      */
     private String groupId;
 
     /*
      * The provisioning state of the private link service connection. Valid values are Updating, Deleting, Failed,
-     * Succeeded, or Incomplete
+     * Succeeded, Incomplete, or Canceled.
      */
     private PrivateLinkServiceConnectionProvisioningState provisioningState;
 
@@ -66,8 +66,8 @@ public final class PrivateEndpointConnectionProperties
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: Describes the current state of an existing Private Link
-     * Service connection to the Azure Private Endpoint.
+     * Get the privateLinkServiceConnectionState property: Describes the current state of an existing Azure Private Link
+     * service connection to the private endpoint.
      * 
      * @return the privateLinkServiceConnectionState value.
      */
@@ -76,8 +76,8 @@ public final class PrivateEndpointConnectionProperties
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: Describes the current state of an existing Private Link
-     * Service connection to the Azure Private Endpoint.
+     * Set the privateLinkServiceConnectionState property: Describes the current state of an existing Azure Private Link
+     * service connection to the private endpoint.
      * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
@@ -89,7 +89,7 @@ public final class PrivateEndpointConnectionProperties
     }
 
     /**
-     * Get the groupId property: The group id from the provider of resource the private link service connection is for.
+     * Get the groupId property: The group ID of the Azure resource for which the private link service is for.
      * 
      * @return the groupId value.
      */
@@ -98,7 +98,7 @@ public final class PrivateEndpointConnectionProperties
     }
 
     /**
-     * Set the groupId property: The group id from the provider of resource the private link service connection is for.
+     * Set the groupId property: The group ID of the Azure resource for which the private link service is for.
      * 
      * @param groupId the groupId value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
@@ -110,7 +110,7 @@ public final class PrivateEndpointConnectionProperties
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service connection. Valid values
-     * are Updating, Deleting, Failed, Succeeded, or Incomplete.
+     * are Updating, Deleting, Failed, Succeeded, Incomplete, or Canceled.
      * 
      * @return the provisioningState value.
      */
@@ -120,7 +120,7 @@ public final class PrivateEndpointConnectionProperties
 
     /**
      * Set the provisioningState property: The provisioning state of the private link service connection. Valid values
-     * are Updating, Deleting, Failed, Succeeded, or Incomplete.
+     * are Updating, Deleting, Failed, Succeeded, Incomplete, or Canceled.
      * 
      * @param provisioningState the provisioningState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
