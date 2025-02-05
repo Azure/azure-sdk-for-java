@@ -211,7 +211,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .addMarkerAnnotation(Override.class)
             .setType(inferTypeNameFromReturnType(method.getMethodReturnType()));
 
-        System.out.println("method.getMethodReturnType(): " + method.getMethodReturnType());
         // add method parameters, with Context at the end
         for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
             if (parameter.getName().equals("endpoint") || parameter.getName().equals("apiVersion")) {
@@ -233,7 +232,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
             publicMethod.setBody(StaticJavaParser.parseBlock("{" + method.getMethodName() + "(" + params + ")}"));
         }
-        System.out.println("methodBuilder: " + publicMethod);
     }
 
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
@@ -522,8 +520,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
         builder.append('>');
 
-        String l = builder.toString();
-        System.out.println("ParameterizedTypeName: " + l);
-        return l;
+        return builder.toString();
     }
 }
