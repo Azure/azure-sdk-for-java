@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.util.Objects;
 
@@ -69,5 +70,10 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         setRequestIdHeader(httpRequest, requestIdHeaderName);
         return next.process();
+    }
+
+    @Override
+    public final HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.BEFORE_REDIRECT;
     }
 }

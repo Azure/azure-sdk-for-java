@@ -8,7 +8,7 @@ Azure Core V2 provides shared primitives, abstractions, and helpers for modern J
 
 ### Prerequisites
 
-- A [Java Development Kit (JDK)][jdk_link], version 17 or later.
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
 ### Include the package
 
@@ -21,8 +21,8 @@ add the direct dependency to your project as follows.
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-core</artifactId>
-    <version>1.54.1</version>
+    <artifactId>azure-core-v2</artifactId>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

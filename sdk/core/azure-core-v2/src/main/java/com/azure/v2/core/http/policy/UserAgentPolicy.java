@@ -3,6 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
+import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.util.configuration.Configuration;
 import com.azure.v2.core.util.CoreUtils;
 import com.azure.v2.core.util.ServiceVersion;
@@ -126,5 +127,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         httpRequest.getHeaders().add(HttpHeaderName.USER_AGENT, userAgentValue);
 
         return next.process();
+    }
+
+    @Override
+    public final HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.BEFORE_REDIRECT;
     }
 }

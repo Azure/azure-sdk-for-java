@@ -37,7 +37,7 @@ import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUE
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
-public class HttpRetryPolicy implements HttpPipelinePolicy {
+public final class HttpRetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);
     private final int maxRetries;
@@ -123,6 +123,11 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
+    }
+
+    @Override
+    public HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.RETRY;
     }
 
     /*
@@ -327,7 +332,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                     && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
                     && code != HttpURLConnection.HTTP_VERSION));
         } else {
-            return requestRetryCondition.getException() instanceof Exception;
+            return requestRetryCondition.getException() != null;
         }
     }
 

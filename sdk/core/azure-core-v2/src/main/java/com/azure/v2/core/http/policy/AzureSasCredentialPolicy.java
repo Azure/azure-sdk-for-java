@@ -4,6 +4,7 @@
 package com.azure.v2.core.http.policy;
 
 import com.azure.v2.core.credential.AzureSasCredential;
+import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -34,7 +35,7 @@ import java.util.Objects;
  * @see HttpRequest
  * @see Response
  */
-public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
+public final class AzureSasCredentialPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);
     private final AzureSasCredential credential;
     private final boolean requireHttps;

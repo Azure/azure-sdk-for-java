@@ -4,7 +4,7 @@
 /**
  * This module contains the core classes for Azure SDK.
  */
-module com.azure.core {
+module com.azure.v2.core {
     requires transitive io.clientcore.core;
 
     // public API surface area

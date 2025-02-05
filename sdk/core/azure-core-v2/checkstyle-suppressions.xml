@@ -7,8 +7,6 @@
   <suppress files="com.azure.v2.core.implementation.util.HttpUtils.java" checks="UnusedImportsCheck" />
   <suppress files="com.azure.v2.core.util.CoreUtils.java" checks="UnusedImportsCheck" />
   <suppress files="com.azure.v2.core.util.serializer.SerializerEncoding.java" checks="UnusedImportsCheck" />
-  <suppress files="com.azure.v2.core.implementation.http.policy.InstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" />
   <suppress files="com.azure.v2.core.http.policy.BearerTokenAuthenticationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.v2.core.implementation.AccessTokenCache.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.v2.core.implementation.http.policy.InstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -88,6 +89,8 @@ public class ClientMetricsTest extends BatchTestBase {
     private CosmosClientTelemetryConfig inputClientTelemetryConfig;
     private CosmosMicrometerMetricsOptions inputMetricsOptions;
     private Tag clientCorrelationTag;
+    private long diagnosticHandlerFailuresBaseline;
+    private DiagnosticsProvider diagnosticsProvider;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
@@ -113,7 +116,6 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(this.meterRegistry).isNull();
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
-
         this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry)
             .setMetricCategories(metricCategories)
@@ -136,6 +138,9 @@ public class ClientMetricsTest extends BatchTestBase {
         this.client = getClientBuilder()
             .clientTelemetryConfig(inputClientTelemetryConfig)
             .buildClient();
+
+        this.diagnosticsProvider = ReflectionUtils.getDiagnosticsProvider(client.asyncClient());
+        this.diagnosticHandlerFailuresBaseline = diagnosticsProvider.getDiagnosticHandlerFailuresSnapshot();
 
         assertThat(
             ImplementationBridgeHelpers
@@ -162,6 +167,10 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     public void afterTest() {
+        if (this.diagnosticsProvider != null) {
+            assertThat(this.diagnosticsProvider.getDiagnosticHandlerFailuresSnapshot())
+                .isEqualTo(this.diagnosticHandlerFailuresBaseline);
+        }
         this.container = null;
         CosmosClient clientSnapshot = this.client;
         if (clientSnapshot != null) {
@@ -397,6 +406,38 @@ public class ClientMetricsTest extends BatchTestBase {
                 0,
                 500
             );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Read"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                0,
+                500
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readNonExistingItem() throws Exception {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        try {
+
+            try {
+                container.readItem(
+                    UUID.randomUUID().toString(),
+                    new PartitionKey(UUID.randomUUID().toString()),
+                    new CosmosItemRequestOptions(),
+                    InternalObjectNode.class);
+            } catch (CosmosException expectedError) {
+                assertThat(expectedError.getStatusCode()).isEqualTo(404);
+                assertThat(expectedError.getSubStatusCode()).isEqualTo(0);
+            }
 
             this.validateMetrics(
                 Tag.of(

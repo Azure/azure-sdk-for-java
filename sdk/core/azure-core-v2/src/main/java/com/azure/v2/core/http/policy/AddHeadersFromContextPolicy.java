@@ -3,6 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
+import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -67,5 +68,10 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         addHeadersFromContext(httpRequest);
         return next.process();
+    }
+
+    @Override
+    public final HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION;
     }
 }

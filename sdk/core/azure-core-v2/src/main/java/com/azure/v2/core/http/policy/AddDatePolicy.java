@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.util.DateTimeRfc1123;
 
@@ -49,5 +50,10 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         setDate(httpRequest);
         return next.process();
+    }
+
+    @Override
+    public final HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION;
     }
 }
