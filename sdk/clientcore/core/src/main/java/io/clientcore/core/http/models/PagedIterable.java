@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -126,7 +126,7 @@ public final class PagedIterable<T> implements Iterable<T> {
     }
 
     private Iterable<T> iterableByItemInternal(PagingOptions pagingOptions) {
-        return () -> new PagedIterator<>(pageRetriever, pagingOptions) {
+        return () -> new PagedIterator<T, T>(pageRetriever, pagingOptions) {
 
             private Iterator<T> nextPage;
             private Iterator<T> currentPage;

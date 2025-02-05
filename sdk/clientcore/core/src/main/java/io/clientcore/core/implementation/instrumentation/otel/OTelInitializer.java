@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.otel;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 /**
  * This class is used to initialize OpenTelemetry.
@@ -21,6 +21,17 @@ public final class OTelInitializer {
     public static final Class<?> CONTEXT_PROPAGATORS_CLASS;
     public static final Class<?> OTEL_CLASS;
     public static final Class<?> GLOBAL_OTEL_CLASS;
+
+    public static final Class<?> DOUBLE_HISTOGRAM_CLASS;
+    public static final Class<?> DOUBLE_HISTOGRAM_BUILDER_CLASS;
+    public static final Class<?> LONG_COUNTER_CLASS;
+    public static final Class<?> LONG_COUNTER_BUILDER_CLASS;
+    public static final Class<?> LONG_UP_DOWN_COUNTER_CLASS;
+    public static final Class<?> LONG_UP_DOWN_COUNTER_BUILDER_CLASS;
+
+    public static final Class<?> METER_CLASS;
+    public static final Class<?> METER_BUILDER_CLASS;
+    public static final Class<?> METER_PROVIDER_CLASS;
 
     public static final Class<?> SCOPE_CLASS;
     public static final Class<?> SPAN_BUILDER_CLASS;
@@ -56,6 +67,17 @@ public final class OTelInitializer {
         Class<?> otelClass = null;
         Class<?> globalOtelClass = null;
 
+        Class<?> doubleHistogramClass = null;
+        Class<?> doubleHistogramBuilderClass = null;
+
+        Class<?> longCounterClass = null;
+        Class<?> longCounterBuilderClass = null;
+        Class<?> longUpDownCounterClass = null;
+        Class<?> longUpDownCounterBuilderClass = null;
+        Class<?> meterClass = null;
+        Class<?> meterBuilderClass = null;
+        Class<?> meterProviderClass = null;
+
         Class<?> scopeClass = null;
         Class<?> spanClass = null;
         Class<?> spanBuilderClass = null;
@@ -89,6 +111,22 @@ public final class OTelInitializer {
 
             otelClass = Class.forName("io.opentelemetry.api.OpenTelemetry", true, classLoader);
             globalOtelClass = Class.forName("io.opentelemetry.api.GlobalOpenTelemetry", true, classLoader);
+
+            doubleHistogramClass = Class.forName("io.opentelemetry.api.metrics.DoubleHistogram", true, classLoader);
+            doubleHistogramBuilderClass
+                = Class.forName("io.opentelemetry.api.metrics.DoubleHistogramBuilder", true, classLoader);
+
+            longCounterClass = Class.forName("io.opentelemetry.api.metrics.LongCounter", true, classLoader);
+            longCounterBuilderClass
+                = Class.forName("io.opentelemetry.api.metrics.LongCounterBuilder", true, classLoader);
+
+            longUpDownCounterClass = Class.forName("io.opentelemetry.api.metrics.LongUpDownCounter", true, classLoader);
+            longUpDownCounterBuilderClass
+                = Class.forName("io.opentelemetry.api.metrics.LongUpDownCounterBuilder", true, classLoader);
+
+            meterClass = Class.forName("io.opentelemetry.api.metrics.Meter", true, classLoader);
+            meterBuilderClass = Class.forName("io.opentelemetry.api.metrics.MeterBuilder", true, classLoader);
+            meterProviderClass = Class.forName("io.opentelemetry.api.metrics.MeterProvider", true, classLoader);
 
             scopeClass = Class.forName("io.opentelemetry.context.Scope", true, classLoader);
 
@@ -127,6 +165,19 @@ public final class OTelInitializer {
 
         OTEL_CLASS = otelClass;
         GLOBAL_OTEL_CLASS = globalOtelClass;
+
+        DOUBLE_HISTOGRAM_CLASS = doubleHistogramClass;
+        DOUBLE_HISTOGRAM_BUILDER_CLASS = doubleHistogramBuilderClass;
+
+        LONG_COUNTER_CLASS = longCounterClass;
+        LONG_COUNTER_BUILDER_CLASS = longCounterBuilderClass;
+
+        LONG_UP_DOWN_COUNTER_CLASS = longUpDownCounterClass;
+        LONG_UP_DOWN_COUNTER_BUILDER_CLASS = longUpDownCounterBuilderClass;
+
+        METER_CLASS = meterClass;
+        METER_BUILDER_CLASS = meterBuilderClass;
+        METER_PROVIDER_CLASS = meterProviderClass;
 
         SCOPE_CLASS = scopeClass;
         SPAN_CLASS = spanClass;
@@ -186,4 +237,5 @@ public final class OTelInitializer {
     public static boolean isInitialized() {
         return INSTANCE.initialized;
     }
+
 }

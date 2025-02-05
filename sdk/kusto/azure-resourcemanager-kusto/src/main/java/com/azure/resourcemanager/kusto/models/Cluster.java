@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.kusto.fluent.models.CalloutPolicyInner;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import java.util.List;
@@ -238,6 +239,13 @@ public interface Cluster {
     List<String> allowedFqdnList();
 
     /**
+     * Gets the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @return the calloutPolicies value.
+     */
+    List<CalloutPolicy> calloutPolicies();
+
+    /**
      * Gets the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
      * and IPv6).
      * 
@@ -265,6 +273,13 @@ public interface Cluster {
      * @return the migrationCluster value.
      */
     MigrationClusterProperties migrationCluster();
+
+    /**
+     * Gets the zoneStatus property: Indicates whether the cluster is zonal or non-zonal.
+     * 
+     * @return the zoneStatus value.
+     */
+    ZoneStatus zoneStatus();
 
     /**
      * Gets the region of the resource.
@@ -362,16 +377,16 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithZones, DefinitionStages.WithIdentity,
-            DefinitionStages.WithTrustedExternalTenants, DefinitionStages.WithOptimizedAutoscale,
-            DefinitionStages.WithEnableDiskEncryption, DefinitionStages.WithEnableStreamingIngest,
-            DefinitionStages.WithVirtualNetworkConfiguration, DefinitionStages.WithKeyVaultProperties,
-            DefinitionStages.WithEnablePurge, DefinitionStages.WithLanguageExtensions,
-            DefinitionStages.WithEnableDoubleEncryption, DefinitionStages.WithPublicNetworkAccess,
-            DefinitionStages.WithAllowedIpRangeList, DefinitionStages.WithEngineType,
-            DefinitionStages.WithAcceptedAudiences, DefinitionStages.WithEnableAutoStop,
-            DefinitionStages.WithRestrictOutboundNetworkAccess, DefinitionStages.WithAllowedFqdnList,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithZones,
+            DefinitionStages.WithIdentity, DefinitionStages.WithTrustedExternalTenants,
+            DefinitionStages.WithOptimizedAutoscale, DefinitionStages.WithEnableDiskEncryption,
+            DefinitionStages.WithEnableStreamingIngest, DefinitionStages.WithVirtualNetworkConfiguration,
+            DefinitionStages.WithKeyVaultProperties, DefinitionStages.WithEnablePurge,
+            DefinitionStages.WithLanguageExtensions, DefinitionStages.WithEnableDoubleEncryption,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithAllowedIpRangeList,
+            DefinitionStages.WithEngineType, DefinitionStages.WithAcceptedAudiences,
+            DefinitionStages.WithEnableAutoStop, DefinitionStages.WithRestrictOutboundNetworkAccess,
+            DefinitionStages.WithAllowedFqdnList, DefinitionStages.WithCalloutPolicies,
             DefinitionStages.WithPublicIpType, DefinitionStages.WithVirtualClusterGraduationProperties,
             DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
@@ -649,6 +664,19 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster definition allowing to specify calloutPolicies.
+         */
+        interface WithCalloutPolicies {
+            /**
+             * Specifies the calloutPolicies property: List of callout policies for egress from Cluster..
+             * 
+             * @param calloutPolicies List of callout policies for egress from Cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies);
+        }
+
+        /**
          * The stage of the Cluster definition allowing to specify publicIpType.
          */
         interface WithPublicIpType {
@@ -724,8 +752,8 @@ public interface Cluster {
         UpdateStages.WithLanguageExtensions, UpdateStages.WithEnableDoubleEncryption,
         UpdateStages.WithPublicNetworkAccess, UpdateStages.WithAllowedIpRangeList, UpdateStages.WithEngineType,
         UpdateStages.WithAcceptedAudiences, UpdateStages.WithEnableAutoStop,
-        UpdateStages.WithRestrictOutboundNetworkAccess, UpdateStages.WithAllowedFqdnList, UpdateStages.WithPublicIpType,
-        UpdateStages.WithIfMatch {
+        UpdateStages.WithRestrictOutboundNetworkAccess, UpdateStages.WithAllowedFqdnList,
+        UpdateStages.WithCalloutPolicies, UpdateStages.WithPublicIpType, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -1018,6 +1046,19 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster update allowing to specify calloutPolicies.
+         */
+        interface WithCalloutPolicies {
+            /**
+             * Specifies the calloutPolicies property: List of callout policies for egress from Cluster..
+             * 
+             * @param calloutPolicies List of callout policies for egress from Cluster.
+             * @return the next definition stage.
+             */
+            Update withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies);
+        }
+
+        /**
          * The stage of the Cluster update allowing to specify publicIpType.
          */
         interface WithPublicIpType {
@@ -1180,6 +1221,68 @@ public interface Cluster {
      * @return the response.
      */
     DiagnoseVirtualNetworkResult diagnoseVirtualNetwork(Context context);
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addCalloutPolicies(CalloutPoliciesList calloutPolicies);
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addCalloutPolicies(CalloutPoliciesList calloutPolicies, Context context);
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeCalloutPolicy(CalloutPolicyToRemove calloutPolicy);
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeCalloutPolicy(CalloutPolicyToRemove calloutPolicy, Context context);
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CalloutPolicy> listCalloutPolicies();
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CalloutPolicy> listCalloutPolicies(Context context);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.

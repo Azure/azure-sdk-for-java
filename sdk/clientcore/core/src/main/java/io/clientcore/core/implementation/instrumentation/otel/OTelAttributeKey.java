@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
 import static io.clientcore.core.implementation.instrumentation.otel.OTelInitializer.ATTRIBUTE_KEY_CLASS;
@@ -63,6 +63,10 @@ public class OTelAttributeKey {
                 return CREATE_LONG_KEY_INVOKER.invoke(key);
             } else if (value instanceof Double) {
                 return CREATE_DOUBLE_KEY_INVOKER.invoke(key);
+            } else if (value instanceof Float) {
+                return CREATE_DOUBLE_KEY_INVOKER.invoke(key);
+            } else if (value == null) {
+                return CREATE_STRING_KEY_INVOKER.invoke(key);
             } else {
                 LOGGER.atVerbose()
                     .addKeyValue("key", key)
@@ -84,6 +88,10 @@ public class OTelAttributeKey {
     public static Object castAttributeValue(Object value) {
         if (value instanceof Integer) {
             return ((Integer) value).longValue();
+        }
+
+        if (value instanceof Float) {
+            return ((Float) value).doubleValue();
         }
 
         return value;

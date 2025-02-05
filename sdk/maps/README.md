@@ -2,7 +2,7 @@
 
 Azure Maps SDK Client library for Java.
 
-Microsoft Azure Maps provides developers from all industries with powerful geospatial capabilities. Those geospatial capabilities are packed with the freshest mapping data. Azure Maps is available for both web and mobile applications. Azure Maps is an Azure One API compliant set of REST APIs. For more information please see [Azure Maps Overview](https://docs.microsoft.com/azure/azure-maps/)
+Microsoft Azure Maps provides developers from all industries with powerful geospatial capabilities. Those geospatial capabilities are packed with the freshest mapping data. Azure Maps is available for both web and mobile applications. Azure Maps is an Azure One API compliant set of REST APIs. For more information please see [Azure Maps Overview](https://learn.microsoft.com/azure/azure-maps/)
 
 ## Getting started
 
