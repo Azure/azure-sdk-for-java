@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -90,6 +91,25 @@ public class Utils {
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
         new AtomicReference<>(null);
+
+    public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
+        if (Strings.isNullOrEmpty(serializationInclusionMode)
+            || "Always".equalsIgnoreCase(serializationInclusionMode)) {
+
+            return simpleObjectMapper;
+        } else if ("NonNull".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        } else if ("NonEmpty".equalsIgnoreCase(serializationInclusionMode)) {
+        return createAndInitializeObjectMapper(false)
+            .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        } else if ("NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        }
+
+        return simpleObjectMapper;
+    }
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.

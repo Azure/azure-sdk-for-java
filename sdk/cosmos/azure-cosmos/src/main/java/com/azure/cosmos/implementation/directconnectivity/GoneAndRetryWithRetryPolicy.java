@@ -180,7 +180,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 } else if (exception instanceof PartitionKeyRangeGoneException) {
                     exceptionSubStatusCode = HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT;
                 } else {
-                    exceptionSubStatusCode = ((CosmosException) exception).getSubStatusCode();
+                    if (((CosmosException) exception).getSubStatusCode() == HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410) {
+
+                    } else {
+                        exceptionSubStatusCode = ((CosmosException) exception).getSubStatusCode();
+                    }
                 }
             }
             return exceptionSubStatusCode;

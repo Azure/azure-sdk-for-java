@@ -410,8 +410,8 @@ public class HttpConstants {
 
         public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
-        // SDK Codes - Java specific clinet-side substatus codes
-        // IMPORTANT - whenever possible rather use consistency substaus codes that .Net SDK also uses
+        // SDK Codes - Java specific client-side substatus codes
+        // IMPORTANT - whenever possible rather use consistency substatus codes that .Net SDK also uses
         // 20000-20999 - consistent client side sdk status codes
         // 21000-21999 - consistent service sdk status codes
 
@@ -435,6 +435,7 @@ public class HttpConstants {
         //SDK Codes(Client)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
         public static final int TRANSPORT_GENERATED_410 = 20001;
+        public static final int TRANSPORT_GENERATED_503 = 2003;
         public static final int TIMEOUT_GENERATED_410 = 20002;
         // Client generated operation timeout exception
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
