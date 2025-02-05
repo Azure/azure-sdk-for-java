@@ -1210,10 +1210,10 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(1024);
         ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
         destinationClient.create(1024);
-
+    
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
-
+    
         assertTrue(e.getStatusCode() == 401);
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
@@ -1465,12 +1465,12 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileClient.create(1024);
-
+    
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
             SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
             poller.waitForCompletion();
         });
-
+    
         assertTrue(e.getStatusCode() == 400);
         assertTrue(e.getServiceMessage().contains("InvalidUri"));
         assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
