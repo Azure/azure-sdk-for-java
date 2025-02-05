@@ -416,18 +416,18 @@ public class FileShareTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getHttpClient(interceptorManager);
     }
 
-    protected ShareClient getPremiumNFSShareClient() {
+    protected ShareClient getPremiumNFSShareClient(String shareName) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
         return premiumFileServiceClient
-            .createShareWithResponse(generateShareName(), new ShareCreateOptions().setProtocols(enabledProtocol), null,
-                null)
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol), null, null)
             .getValue();
     }
 
-    protected Mono<Response<ShareAsyncClient>> getPremiumNFSShareClient(String shareName) {
+    protected Mono<ShareAsyncClient> getPremiumNFSShareAsyncClient(String shareName) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
-        return premiumFileServiceAsyncClient.createShareWithResponse(shareName,
-            new ShareCreateOptions().setProtocols(enabledProtocol));
+        return premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(r -> Mono.just(r.getValue()));
     }
 
     protected String getPrimaryConnectionString() {

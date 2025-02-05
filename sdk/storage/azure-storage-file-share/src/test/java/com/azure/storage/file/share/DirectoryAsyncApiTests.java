@@ -1064,11 +1064,12 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
 
         String shareName = generateShareName();
-        Mono<Response<ShareDirectoryInfo>> create = getPremiumNFSShareClient(shareName).flatMap(premiumShareClient -> {
-            ShareDirectoryAsyncClient premiumDirectoryClient
-                = premiumShareClient.getValue().getDirectoryClient(generatePathName());
-            return premiumDirectoryClient.createWithResponse(options);
-        });
+        Mono<Response<ShareDirectoryInfo>> create
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+                ShareDirectoryAsyncClient premiumDirectoryClient
+                    = premiumShareClient.getDirectoryClient(generatePathName());
+                return premiumDirectoryClient.createWithResponse(options);
+            });
 
         StepVerifier.create(create).assertNext(r -> {
             ShareDirectoryInfo response = r.getValue();
@@ -1077,7 +1078,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertEquals("123", response.getPosixProperties().getGroup());
             assertEquals("7777", response.getPosixProperties().getFileMode());
 
-            FileShareTestHelper.assertSmbPropertiesNull(response);
+            FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
         }).verifyComplete();
 
         //cleanup
@@ -1091,11 +1092,12 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
 
         String shareName = generateShareName();
-        Mono<Response<ShareDirectoryInfo>> create = getPremiumNFSShareClient(shareName).flatMap(premiumShareClient -> {
-            ShareDirectoryAsyncClient premiumDirectoryClient
-                = premiumShareClient.getValue().getDirectoryClient(generatePathName());
-            return premiumDirectoryClient.create().then(premiumDirectoryClient.setPropertiesWithResponse(options));
-        });
+        Mono<Response<ShareDirectoryInfo>> create
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+                ShareDirectoryAsyncClient premiumDirectoryClient
+                    = premiumShareClient.getDirectoryClient(generatePathName());
+                return premiumDirectoryClient.create().then(premiumDirectoryClient.setPropertiesWithResponse(options));
+            });
 
         StepVerifier.create(create).assertNext(r -> {
             ShareDirectoryInfo response = r.getValue();
@@ -1103,7 +1105,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertEquals("123", response.getPosixProperties().getGroup());
             assertEquals("7777", response.getPosixProperties().getFileMode());
 
-            FileShareTestHelper.assertSmbPropertiesNull(response);
+            FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
         }).verifyComplete();
 
         //cleanup
@@ -1115,9 +1117,9 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     public void getPropertiesNFS() {
         String shareName = generateShareName();
         Mono<Response<ShareDirectoryProperties>> create
-            = getPremiumNFSShareClient(shareName).flatMap(premiumShareClient -> {
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
                 ShareDirectoryAsyncClient premiumDirectoryClient
-                    = premiumShareClient.getValue().getDirectoryClient(generatePathName());
+                    = premiumShareClient.getDirectoryClient(generatePathName());
                 return premiumDirectoryClient.create().then(premiumDirectoryClient.getPropertiesWithResponse());
             });
 
@@ -1129,7 +1131,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertEquals("0", response.getPosixProperties().getGroup());
             assertEquals("0755", response.getPosixProperties().getFileMode());
 
-            FileShareTestHelper.assertSmbPropertiesNull(response);
+            FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
         }).verifyComplete();
 
         //cleanup

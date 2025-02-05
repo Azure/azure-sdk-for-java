@@ -3056,7 +3056,7 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     @Test
     public void createNFS() {
-        ShareClient premiumShareClient = getPremiumNFSShareClient();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
         ShareFileClient premiumFileClient = premiumShareClient.getFileClient(generatePathName());
 
@@ -3069,7 +3069,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals("123", response.getPosixProperties().getGroup());
         assertEquals("7777", response.getPosixProperties().getFileMode());
 
-        FileShareTestHelper.assertSmbPropertiesNull(response);
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
 
         //cleanup
         premiumShareClient.delete();
@@ -3078,7 +3078,7 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     @Test
     public void setPropertiesNFS() {
-        ShareClient premiumShareClient = getPremiumNFSShareClient();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
         ShareFileClient premiumFileClient = premiumShareClient.getFileClient(generatePathName());
         premiumFileClient.create(1024);
@@ -3093,7 +3093,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals("7777", response.getPosixProperties().getFileMode());
         assertNotNull(response.getPosixProperties().getLinkCount());
 
-        FileShareTestHelper.assertSmbPropertiesNull(response);
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
 
         //cleanup
         premiumShareClient.delete();
@@ -3102,7 +3102,7 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     @Test
     public void getPropertiesNFS() {
-        ShareClient premiumShareClient = getPremiumNFSShareClient();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
         ShareFileClient premiumFileClient = premiumShareClient.getFileClient(generatePathName());
         premiumFileClient.create(1024);
@@ -3115,7 +3115,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals("0664", response.getPosixProperties().getFileMode());
         assertEquals(1, response.getPosixProperties().getLinkCount());
 
-        FileShareTestHelper.assertSmbPropertiesNull(response);
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
 
         //cleanup
         premiumShareClient.delete();
@@ -3130,7 +3130,7 @@ class FileApiTests extends FileShareTestBase {
     @ParameterizedTest
     @MethodSource("beginCopyNFSSupplier")
     public void beginCopyNFS(ModeCopyMode modeAndOwnerCopyMode) {
-        ShareClient premiumShareClient = getPremiumNFSShareClient();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
         String sourcePath = generatePathName() + "source";
         ShareFileClient premiumFileClientSource = premiumShareClient.getFileClient(sourcePath);
@@ -3185,7 +3185,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(owner, resultProperties.getPosixProperties().getOwner());
         assertEquals(group, resultProperties.getPosixProperties().getGroup());
         assertEquals(mode, resultProperties.getPosixProperties().getFileMode());
-        FileShareTestHelper.assertSmbPropertiesNull(resultProperties);
+        FileShareTestHelper.assertSmbPropertiesNull(resultProperties.getSmbProperties());
 
         //cleanup
         premiumShareClient.delete();
@@ -3194,7 +3194,7 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
     @Test
     public void createHardLink() {
-        ShareClient premiumShareClient = getPremiumNFSShareClient();
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
         ShareFileClient source = premiumShareClient.getFileClient(generatePathName());
         source.create(1024);
@@ -3221,7 +3221,7 @@ class FileApiTests extends FileShareTestBase {
         assertNotNull(response.getSmbProperties().getFileId());
         assertNotNull(response.getSmbProperties().getParentId());
 
-        FileShareTestHelper.assertSmbPropertiesNull(response);
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
 
         //cleanup
         leaseClient.releaseLease();
