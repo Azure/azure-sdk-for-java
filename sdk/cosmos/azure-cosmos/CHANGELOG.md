@@ -7,7 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixes an issue in change feed processor where records are skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
+* Fixed an issue in change feed processor where records are skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
+* Fixed small perf overhead due to NPE for readItem returning 404. - See [PR 44008](https://github.com/Azure/azure-sdk-for-java/pull/44008)
 * Perform cross-region retry for `Document` reads when enclosing address requests hit request timeouts (408:10002). - See [PR 43937](https://github.com/Azure/azure-sdk-for-java/pull/43937)
 
 #### Other Changes
