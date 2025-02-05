@@ -15,41 +15,26 @@ public final class NoopInstrumentationContext implements InstrumentationContext 
     private NoopInstrumentationContext() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTraceId() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSpanId() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTraceFlags() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isValid() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Span getSpan() {
         return Span.noop();

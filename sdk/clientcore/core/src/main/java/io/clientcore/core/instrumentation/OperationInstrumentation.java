@@ -14,6 +14,7 @@ import io.clientcore.core.instrumentation.tracing.TracingScope;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,12 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SE
  */
 public final class OperationInstrumentation {
 
-    private static final List<Double> DURATION_BOUNDARIES_ADVICE
-        = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
+    // Histogram boundaries are optimized for common latency ranges (in seconds). They are
+    // provided as advice at metric creation time and could be overriden by the user application via
+    // OTel configuration.
+    // TODO (limolkova): document client core metric conventions along with logical operation histogram boundaries.
+    private static final List<Double> DURATION_BOUNDARIES_ADVICE = Collections.unmodifiableList(
+        Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
     private final Tracer tracer;
     private final DoubleHistogram callDuration;
     private final String operationName;

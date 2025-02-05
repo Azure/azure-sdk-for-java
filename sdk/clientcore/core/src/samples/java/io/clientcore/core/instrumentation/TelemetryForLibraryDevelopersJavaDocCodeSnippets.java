@@ -79,8 +79,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.instrumentation.histogram
 
-        List<Double> bucketBoundariesAdvice = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d,
-            0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
+        List<Double> bucketBoundariesAdvice = Collections.unmodifiableList(Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d,
+            0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
         DoubleHistogram histogram = meter.createDoubleHistogram("contoso.sample.client.operation.duration",
             "s",
             "Contoso sample client operation duration", bucketBoundariesAdvice);

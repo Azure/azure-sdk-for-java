@@ -40,7 +40,6 @@ public class InstrumentedOperationDetails {
      * @return The updated {@link InstrumentedOperationDetails} object.
      */
     public InstrumentedOperationDetails endpoint(URI endpoint) {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.endpoint = endpoint;
         return this;
     }
@@ -52,7 +51,6 @@ public class InstrumentedOperationDetails {
      * @return The updated {@link InstrumentedOperationDetails} object.
      */
     public InstrumentedOperationDetails spanKind(SpanKind spanKind) {
-        Objects.requireNonNull(spanKind, "'spanKind' cannot be null");
         this.spanKind = spanKind;
         return this;
     }

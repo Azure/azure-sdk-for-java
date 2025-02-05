@@ -166,13 +166,16 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
+
     // HTTP request duration metric is formally defined in the OpenTelemetry Semantic Conventions:
     // https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-metrics.md#metric-httpclientrequestduration
     private static final String REQUEST_DURATION_METRIC_NAME = "http.client.request.duration";
     private static final String REQUEST_DURATION_METRIC_DESCRIPTION = "Duration of HTTP client requests";
     private static final String REQUEST_DURATION_METRIC_UNIT = "s";
-    private static final List<Double> REQUEST_DURATION_BOUNDARIES_ADVICE
-        = Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d);
+    // the histogram boundaries are optimized for typical HTTP request durations and could be customized by users on
+    // the OTel side. These are the defaults documented in the OpenTelemetry Semantic Conventions (link above).
+    private static final List<Double> REQUEST_DURATION_BOUNDARIES_ADVICE = Collections.unmodifiableList(
+        Arrays.asList(0.005d, 0.01d, 0.025d, 0.05d, 0.075d, 0.1d, 0.25d, 0.5d, 0.75d, 1d, 2.5d, 5d, 7.5d, 10d));
 
     // request log level is low (verbose) since almost all request details are also
     // captured on the response log.

@@ -26,15 +26,12 @@ class FallbackAttributes implements InstrumentationAttributes {
         this.attributes = Collections.unmodifiableMap(attributes);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public InstrumentationAttributes put(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
 
-        Map<String, Object> newAttributes = new HashMap<>(attributes.size() + 1);
+        Map<String, Object> newAttributes = new HashMap<>((int) ((attributes.size() + 1) * 1.5));
         newAttributes.putAll(attributes);
         newAttributes.put(key, value);
         return new FallbackAttributes(newAttributes);
