@@ -102,6 +102,22 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     /**
+     * This code snippet shows how to disable distributed tracing
+     * for a specific instance of client.
+     */
+    public void disableMetrics() {
+        // BEGIN: io.clientcore.core.telemetry.disablemetrics
+
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setMetricsEnabled(false);
+
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+        client.clientCall();
+
+        // END: io.clientcore.core.telemetry.disablemetrics
+    }
+
+    /**
      * This code snippet shows how to correlate spans from
      * client library with spans from application code
      * using current context.
@@ -154,7 +170,6 @@ public class TelemetryJavaDocCodeSnippets {
 
     static class SampleClientBuilder {
         private HttpInstrumentationOptions instrumentationOptions;
-        // TODO (limolkova): do we need InstrumentationTrait?
         public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
             this.instrumentationOptions = instrumentationOptions;
             return this;
@@ -174,7 +189,7 @@ public class TelemetryJavaDocCodeSnippets {
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).createTracer();
         }
 
         public void clientCall() {

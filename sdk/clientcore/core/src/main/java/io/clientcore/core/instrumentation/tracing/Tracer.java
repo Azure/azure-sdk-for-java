@@ -17,10 +17,11 @@ public interface Tracer {
      * </strong></p>
      *
      * <p><strong>Basic tracing instrumentation for a service method:</strong></p>
-     * <!-- src_embed io.clientcore.core.telemetry.tracing.tracecall -->
+     * <!-- src_embed io.clientcore.core.instrumentation.tracecall -->
      * <pre>
      *
-     * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, null&#41;
+     * InstrumentationContext context = requestOptions == null ? null : requestOptions.getInstrumentationContext&#40;&#41;;
+     * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, context&#41;
      *     .startSpan&#40;&#41;;
      *
      * &#47;&#47; we'll propagate context implicitly using span.makeCurrent&#40;&#41; as shown later.
@@ -36,7 +37,7 @@ public interface Tracer {
      *     clientCall&#40;requestOptions&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
-     *     span.end&#40;t&#41;;
+     *     span.end&#40;getCause&#40;t&#41;&#41;;
      *     throw t;
      * &#125; finally &#123;
      *     &#47;&#47; NOTE: closing the scope does not end the span, span should be ended explicitly.
@@ -44,10 +45,10 @@ public interface Tracer {
      * &#125;
      *
      * </pre>
-     * <!-- end io.clientcore.core.telemetry.tracing.tracecall -->
+     * <!-- end io.clientcore.core.instrumentation.tracecall -->
      *
      * <p><strong>Adding attributes to spans:</strong></p>
-     * <!-- src_embed io.clientcore.core.telemetry.tracing.tracewithattributes -->
+     * <!-- src_embed io.clientcore.core.instrumentation.tracewithattributes -->
      * <pre>
      *
      * Span sendSpan = tracer.spanBuilder&#40;&quot;send &#123;queue-name&#125;&quot;, SpanKind.PRODUCER, null&#41;
@@ -72,7 +73,7 @@ public interface Tracer {
      * &#125;
      *
      * </pre>
-     * <!-- end io.clientcore.core.telemetry.tracing.tracewithattributes -->
+     * <!-- end io.clientcore.core.instrumentation.tracewithattributes -->
      *
      * @param spanName The name of the span.
      * @param spanKind The kind of the span.

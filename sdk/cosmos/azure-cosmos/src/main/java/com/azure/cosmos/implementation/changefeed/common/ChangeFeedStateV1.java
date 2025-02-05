@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -36,6 +38,20 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         this.startFromSettings = startFromSettings;
         this.continuation = continuation;
         this.mode = mode;
+    }
+
+    public ChangeFeedStateV1(ChangeFeedStateV1 toBeCloned) {
+        this.containerRid = toBeCloned.containerRid;
+        this.feedRange = toBeCloned.feedRange;
+        this.startFromSettings = toBeCloned.startFromSettings;
+        if (toBeCloned.continuation != null) {
+            List<CompositeContinuationToken> compositeContinuationTokens = new ArrayList<>();
+           compositeContinuationTokens.addAll(toBeCloned.continuation.getCompositeContinuationTokens());
+            this.continuation = FeedRangeContinuation.create(toBeCloned.continuation.getContainerRid(), toBeCloned.continuation.getFeedRange(), compositeContinuationTokens);
+        } else {
+            this.continuation = null;
+        }
+        this.mode = toBeCloned.mode;
     }
 
     @Override

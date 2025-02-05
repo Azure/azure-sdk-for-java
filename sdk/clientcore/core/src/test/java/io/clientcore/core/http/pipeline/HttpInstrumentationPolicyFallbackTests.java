@@ -30,7 +30,7 @@ public class HttpInstrumentationPolicyFallbackTests {
                 .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS);
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
+            = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
                 .httpClient(request -> new MockHttpResponse(request, 200))
                 .build();
 
@@ -49,7 +49,7 @@ public class HttpInstrumentationPolicyFallbackTests {
             = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS);
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
+            = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
                 .httpClient(request -> new MockHttpResponse(request, statusCode))
                 .build();
 
