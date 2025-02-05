@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.53 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.53 (2025-02-05)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+- Upgraded OpenTelemetry from `1.43.0` to `1.46.0`.
 
 ## 1.0.0-beta.52 (2024-11-14)
 
