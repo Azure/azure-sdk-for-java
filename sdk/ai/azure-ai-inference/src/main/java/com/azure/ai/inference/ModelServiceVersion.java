@@ -13,7 +13,12 @@ public enum ModelServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-05-01-preview.
      */
-    V2024_05_01_PREVIEW("2024-05-01-preview");
+    V2024_05_01_PREVIEW("2024-05-01-preview"),
+
+    /**
+     * Enum value 2024-08-01-preview.
+     */
+    V2024_08_01_PREVIEW("2024-08-01-preview");
 
     private final String version;
 
@@ -31,10 +36,10 @@ public enum ModelServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     * 
+     *
      * @return The latest {@link ModelServiceVersion}.
      */
     public static ModelServiceVersion getLatest() {
-        return V2024_05_01_PREVIEW;
+        return V2024_08_01_PREVIEW;
     }
 }

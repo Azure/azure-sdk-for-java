@@ -15,6 +15,7 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Options for complete API.
@@ -364,6 +365,20 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     @Generated
     public ChatCompletionsOptions setResponseFormat(ChatCompletionsResponseFormat responseFormat) {
         this.responseFormat = responseFormat;
+        return this;
+    }
+
+    /**
+     * Set the responseFormat to a given JSON schema: The format that the model must output. Use this to enable JSON mode instead of
+     *
+     * @param name the name of the schema.
+     * @param jsonSchema the JSON schema value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    public ChatCompletionsOptions setJsonFormat(String name, Map<String, BinaryData> jsonSchema) {
+        this.responseFormat = new ChatCompletionsResponseFormatJsonSchema(
+            new ChatCompletionsResponseFormatJsonSchemaDefinition(name, jsonSchema)
+        );
         return this;
     }
 

@@ -51,7 +51,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Gets Service host.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -65,7 +65,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public ModelServiceVersion getServiceVersion() {
@@ -79,7 +79,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -93,7 +93,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -102,7 +102,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Initializes an instance of ChatCompletionsClient client.
-     * 
+     *
      * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
@@ -113,7 +113,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Initializes an instance of ChatCompletionsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Service host.
      * @param serviceVersion Service version.
@@ -124,7 +124,7 @@ public final class ChatCompletionsClientImpl {
 
     /**
      * Initializes an instance of ChatCompletionsClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Service host.
@@ -145,7 +145,7 @@ public final class ChatCompletionsClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChatCompletionsClien")
+    @ServiceInterface(name = "ChatCompletionsClient")
     public interface ChatCompletionsClientService {
         @Post("/chat/completions")
         @ExpectedResponses({ 200 })
@@ -206,7 +206,7 @@ public final class ChatCompletionsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -246,9 +246,9 @@ public final class ChatCompletionsClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -283,7 +283,7 @@ public final class ChatCompletionsClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param body request options to pass to the endpoint using complete path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -318,7 +318,7 @@ public final class ChatCompletionsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -358,9 +358,9 @@ public final class ChatCompletionsClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -395,7 +395,7 @@ public final class ChatCompletionsClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param body request options to pass to the endpoint using complete path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -418,7 +418,7 @@ public final class ChatCompletionsClientImpl {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -428,7 +428,7 @@ public final class ChatCompletionsClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -448,7 +448,7 @@ public final class ChatCompletionsClientImpl {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -458,7 +458,7 @@ public final class ChatCompletionsClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
