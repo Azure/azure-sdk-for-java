@@ -89,7 +89,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             // Ping, reply Pong
             loggerReference.get().atVerbose().log(() -> "Received PingWebSocketFrame");
             loggerReference.get().atVerbose().log(() -> "Send PongWebSocketFrame");
-            ch.writeAndFlush(new PongWebSocketFrame());
+            ch.writeAndFlush(new PongWebSocketFrame(frame.copy().content()));
         } else if (frame instanceof PongWebSocketFrame) {
             // Pong
             loggerReference.get().atVerbose().log(() -> "Received PongWebSocketFrame");
