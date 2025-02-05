@@ -29,19 +29,13 @@ public class ScopeUtilTests {
     }
 
     static Stream<String> validScopes() {
-        return Stream.of(
-            "https://vaults.azure.net/.default",
-            "https://management.core.windows.net//.default",
-            "https://graph.microsoft.com/User.Read",
-            "api://app-id-has-hyphens-and-1234567890s/user_impersonation"
-        );
+        return Stream.of("https://vaults.azure.net/.default", "https://management.core.windows.net//.default",
+            "https://graph.microsoft.com/User.Read", "api://app-id-has-hyphens-and-1234567890s/user_impersonation");
     }
 
     static Stream<String> invalidScopes() {
-        return Stream.of(
-            "api://app-id-has-hyphens-and-1234567890s/invalid scope",
+        return Stream.of("api://app-id-has-hyphens-and-1234567890s/invalid scope",
             "api://app-id-has-hyphens-and-1234567890s/invalid\"scope",
-            "api://app-id-has-hyphens-and-1234567890s/invalid\\scope"
-        );
+            "api://app-id-has-hyphens-and-1234567890s/invalid\\scope");
     }
 }
