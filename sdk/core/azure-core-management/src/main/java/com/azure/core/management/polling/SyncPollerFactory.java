@@ -19,6 +19,9 @@ import java.util.function.Supplier;
  */
 public class SyncPollerFactory {
 
+    private SyncPollerFactory(){
+    }
+
     /**
      * Creates a SyncPoller with ARM LRO init operation.
      *
