@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-02-05)
+## 1.0.0 (2025-02-06)
 
 Initial GA of `azure-core-http-jdk-httpclient`.
 

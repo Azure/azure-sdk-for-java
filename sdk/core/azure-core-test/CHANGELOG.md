@@ -1,6 +1,6 @@
 # Release History
 
-## 1.27.0-beta.5 (2025-02-05)
+## 1.27.0-beta.5 (2025-02-06)
 
 ### Other Changes
 
