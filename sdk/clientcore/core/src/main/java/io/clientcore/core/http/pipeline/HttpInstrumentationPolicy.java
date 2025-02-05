@@ -68,9 +68,9 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  * <p>
  * It propagates context to the downstream service following <a href="https://www.w3.org/TR/trace-context-1/">W3C Trace Context</a> specification.
  * <p>
- * The {@link HttpInstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added after
- * {@link HttpRetryPolicy} and {@link HttpRedirectPolicy} so that it's executed on each try or redirect and logging happens
- * in the scope of the span.
+ * The {@link HttpInstrumentationPolicy} should be added to the HTTP pipeline by client libraries. It should be added
+ * after {@link HttpRetryPolicy} and {@link HttpRedirectPolicy} so that it's executed on each try or redirect and
+ * logging happens in the scope of the span.
  * <p>
  * The policy supports basic customizations using {@link HttpInstrumentationOptions}.
  * <p>
@@ -643,5 +643,10 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             }
             originalBody.close();
         }
+    }
+
+    @Override
+    public HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.INSTRUMENTATION;
     }
 }
