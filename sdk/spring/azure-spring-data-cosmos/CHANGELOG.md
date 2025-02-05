@@ -1,16 +1,13 @@
 ## Release History
 
-### 5.20.0-beta.1 (Unreleased)
+### 5.20.0 (2025-02-05)
 
 #### Features Added
 * Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
 * Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
 #### Other Changes
+* Updated `azure-cosmos` to version `4.66.0`.
 
 ### 5.19.0 (2024-12-17)
 
