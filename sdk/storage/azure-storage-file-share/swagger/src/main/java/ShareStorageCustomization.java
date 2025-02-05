@@ -141,11 +141,4 @@ public class ShareStorageCustomization extends Customization {
         // Replace the last statement with the try-catch block.
         method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
     }
-
-    // Temporary fix to a bug in Autorest.
-    private static void addMissingHashMapImport(PackageCustomization implementationModels) {
-        for (String className : Arrays.asList("FilesDownloadHeaders", "FilesGetPropertiesHeaders", "DirectoriesGetPropertiesHeaders", "SharesGetPropertiesHeaders")) {
-            implementationModels.getClass(className).addImports("java.util.HashMap");
-        }
-    }
 }
