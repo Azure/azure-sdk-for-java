@@ -11,6 +11,11 @@ Set-StrictMode -Version 3
 
 . (Join-Path $PSScriptRoot common.ps1)
 
+# Set ChangeLogLocation for specific package
+if ($PackageName -eq 'io.clientcore:annotation-processor') {
+    $ChangeLogLocation = 'sdk/tools/annotation-processor/changelog'
+}
+
 $validChangeLog = $false
 if ($ChangeLogLocation -and $VersionString)
 {
