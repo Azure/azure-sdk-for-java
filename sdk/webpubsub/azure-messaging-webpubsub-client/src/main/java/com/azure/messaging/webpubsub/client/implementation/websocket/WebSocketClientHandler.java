@@ -3,8 +3,11 @@
 
 package com.azure.messaging.webpubsub.client.implementation.websocket;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
+import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,16 +15,20 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.ContinuationWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
-import io.netty.util.CharsetUtil;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Consumer;
 
 final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
@@ -31,10 +38,15 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageDecoder messageDecoder;
-    private final Consumer<Object> messageHandler;
+    private final Consumer<WebPubSubMessage> messageHandler;
+
+    private volatile OpenTextFrame wip;
+
+    private static final AtomicReferenceFieldUpdater<WebSocketClientHandler, OpenTextFrame> UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(WebSocketClientHandler.class, OpenTextFrame.class, "wip");
 
     WebSocketClientHandler(WebSocketClientHandshaker handshaker, AtomicReference<ClientLogger> loggerReference,
-        MessageDecoder messageDecoder, Consumer<Object> messageHandler) {
+        MessageDecoder messageDecoder, Consumer<WebPubSubMessage> messageHandler) {
         this.handshaker = handshaker;
         this.loggerReference = loggerReference;
         this.messageDecoder = messageDecoder;
@@ -68,31 +80,27 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             return;
         }
 
-        if (msg instanceof FullHttpResponse) {
-            FullHttpResponse response = (FullHttpResponse) msg;
-            throw loggerReference.get()
-                .logExceptionAsError(new IllegalStateException("Unexpected FullHttpResponse (getStatus="
-                    + response.status() + ", content=" + response.content().toString(CharsetUtil.UTF_8) + ')'));
+        if (msg instanceof WebSocketFrame) {
+            channelRead0(ctx, (WebSocketFrame) msg);
+        } else {
+            loggerReference.get().atWarning().addKeyValue("messageType", msg).log("Unknown message type. Skipping.");
         }
+    }
 
-        WebSocketFrame frame = (WebSocketFrame) msg;
-        if (frame instanceof TextWebSocketFrame) {
-            // Text
-            TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log("Received TextWebSocketFrame");
-            Object wpsMessage = messageDecoder.decode(textFrame.text());
-            messageHandler.accept(wpsMessage);
-        } else if (frame instanceof PingWebSocketFrame) {
+    private void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) {
+        Channel ch = ctx.channel();
+
+        if (msg instanceof PingWebSocketFrame) {
             // Ping, reply Pong
             loggerReference.get().atVerbose().log("Received PingWebSocketFrame");
             loggerReference.get().atVerbose().log("Send PongWebSocketFrame");
             ch.writeAndFlush(new PongWebSocketFrame());
-        } else if (frame instanceof PongWebSocketFrame) {
+        } else if (msg instanceof PongWebSocketFrame) {
             // Pong
             loggerReference.get().atVerbose().log("Received PongWebSocketFrame");
-        } else if (frame instanceof CloseWebSocketFrame) {
+        } else if (msg instanceof CloseWebSocketFrame) {
             // Close
-            CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) frame;
+            CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) msg;
             loggerReference.get()
                 .atVerbose()
                 .addKeyValue("statusCode", closeFrame.statusCode())
@@ -110,6 +118,50 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
                 // close initiated from client, client already sent CloseWebSocketFrame
                 ch.close();
             }
+        } else if (msg instanceof TextWebSocketFrame || msg instanceof ContinuationWebSocketFrame) {
+            processFrame(msg);
+        } else {
+            loggerReference.get().atWarning().addKeyValue("frameType", msg).log("Unknown WebSocketFrame type.");
+        }
+    }
+
+    private void processFrame(WebSocketFrame frame) {
+        updateOpenTextFrame(frame.content());
+
+        if (!frame.isFinalFragment()) {
+            return;
+        }
+
+        final OpenTextFrame existing = UPDATER.getAndSet(this, null);
+
+        if (existing == null) {
+            final WebPubSubMessage message = messageDecoder.decode(frame.content().toString());
+            messageHandler.accept(message);
+
+            return;
+        }
+
+        existing.close();
+
+        final BinaryData collectedFrame = existing.getCollectedData();
+
+        if (collectedFrame != null) {
+            final String collected = collectedFrame.toString();
+            final WebPubSubMessage deserialized = messageDecoder.decode(collected);
+
+            messageHandler.accept(deserialized);
+        }
+    }
+
+    private void updateOpenTextFrame(ByteBuf content) {
+        final OpenTextFrame frame = new OpenTextFrame();
+        frame.add(content);
+
+        if (!UPDATER.compareAndSet(this, null, frame)) {
+            UPDATER.getAndUpdate(this, existing -> {
+                existing.add(content);
+                return existing;
+            });
         }
     }
 
@@ -137,5 +189,36 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     CloseWebSocketFrame getServerCloseWebSocketFrame() {
         return this.serverCloseWebSocketFrame;
+    }
+
+    private static final class OpenTextFrame {
+        private final ArrayList<ByteBuffer> collected = new ArrayList<>();
+        private final AtomicBoolean isClosed = new AtomicBoolean(false);
+
+        private volatile BinaryData collectedData;
+
+        private void add(ByteBuf buffer) {
+            collected.add(buffer.nioBuffer());
+        }
+
+        private void close() {
+            if (isClosed.getAndSet(true)) {
+                collectedData = BinaryData.fromListByteBuffer(collected);
+            }
+        }
+
+        private BinaryData getCollectedData() {
+            if (!isClosed.get()) {
+                throw new IllegalStateException("Cannot get data when frame not closed.");
+            }
+            final BinaryData e = collectedData;
+
+            if (e == null) {
+                collectedData = BinaryData.fromListByteBuffer(collected);
+                return collectedData;
+            } else {
+                return e;
+            }
+        }
     }
 }
