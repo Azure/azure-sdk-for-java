@@ -180,8 +180,8 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
     }
 
     private SecretClientImpl getClientImpl() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
@@ -238,8 +238,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        builtPipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
             .tracer(tracer)

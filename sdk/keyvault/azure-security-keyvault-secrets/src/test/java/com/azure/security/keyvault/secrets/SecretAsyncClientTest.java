@@ -102,8 +102,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         createSecretAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(secretAsyncClient.setSecret("", "A value"))
-            .verifyErrorSatisfies(e -> assertRestException(e, HttpResponseException.class,
-                HttpURLConnection.HTTP_BAD_METHOD));
+            .verifyErrorSatisfies(
+                e -> assertRestException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     /**

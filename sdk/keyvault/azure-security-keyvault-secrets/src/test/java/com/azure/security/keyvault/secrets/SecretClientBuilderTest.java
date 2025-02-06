@@ -152,8 +152,7 @@ public class SecretClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        SecretClientBuilder secretClientBuilder = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretClientBuilder secretClientBuilder = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy());

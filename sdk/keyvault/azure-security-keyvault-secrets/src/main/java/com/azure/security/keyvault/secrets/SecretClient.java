@@ -207,10 +207,13 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(KeyVaultSecret secret) {
-        return callWithMappedException(() -> createKeyVaultSecret(implClient.setSecretWithResponse(secret.getName(),
-                BinaryData.fromObject(prepareSecretSetParameters(secret)), EMPTY_OPTIONS)
-            .getValue()
-            .toObject(SecretBundle.class)), SecretAsyncClient::mapSetSecretException);
+        return callWithMappedException(() -> createKeyVaultSecret(
+            implClient
+                .setSecretWithResponse(secret.getName(), BinaryData.fromObject(prepareSecretSetParameters(secret)),
+                    EMPTY_OPTIONS)
+                .getValue()
+                .toObject(SecretBundle.class)),
+            SecretAsyncClient::mapSetSecretException);
     }
 
     /**
@@ -238,7 +241,8 @@ public final class SecretClient {
         return callWithMappedException(() -> createKeyVaultSecret(
             implClient.setSecretWithResponse(name, BinaryData.fromObject(new SecretSetParameters(value)), EMPTY_OPTIONS)
                 .getValue()
-                .toObject(SecretBundle.class)), SecretAsyncClient::mapSetSecretException);
+                .toObject(SecretBundle.class)),
+            SecretAsyncClient::mapSetSecretException);
     }
 
     /**
@@ -315,7 +319,8 @@ public final class SecretClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
 
-        return callWithMappedException(() -> createKeyVaultSecret(
+        return callWithMappedException(
+            () -> createKeyVaultSecret(
                 implClient.getSecretWithResponse(name, "", EMPTY_OPTIONS).getValue().toObject(SecretBundle.class)),
             SecretAsyncClient::mapGetSecretException);
     }
@@ -350,7 +355,8 @@ public final class SecretClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
         }
 
-        return callWithMappedException(() -> createKeyVaultSecret(
+        return callWithMappedException(
+            () -> createKeyVaultSecret(
                 implClient.getSecretWithResponse(name, version, EMPTY_OPTIONS).getValue().toObject(SecretBundle.class)),
             SecretAsyncClient::mapGetSecretException);
     }
@@ -387,8 +393,8 @@ public final class SecretClient {
         }
 
         return callWithMappedException(() -> {
-            Response<BinaryData> response = implClient.getSecretWithResponse(name, version,
-                new RequestOptions().setContext(context));
+            Response<BinaryData> response
+                = implClient.getSecretWithResponse(name, version, new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(response,
                 createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
@@ -427,11 +433,11 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretProperties updateSecretProperties(SecretProperties secretProperties) {
-        return createSecretProperties(
-            implClient.updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
-                    BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)), EMPTY_OPTIONS)
-                .getValue()
-                .toObject(SecretBundle.class));
+        return createSecretProperties(implClient
+            .updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
+                BinaryData.fromObject(prepareUpdateSecretParameters(secretProperties)), EMPTY_OPTIONS)
+            .getValue()
+            .toObject(SecretBundle.class));
     }
 
     /**
@@ -528,8 +534,8 @@ public final class SecretClient {
             deletePollOperation(name), (context, response) -> null, context -> null);
     }
 
-    private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> deleteActivationOperation(
-        String name) {
+    private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>>
+        deleteActivationOperation(String name) {
         return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedSecret(
             implClient.deleteSecretWithResponse(name, EMPTY_OPTIONS).getValue().toObject(DeletedSecretBundle.class)));
     }
@@ -537,8 +543,8 @@ public final class SecretClient {
     private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> deletePollOperation(String name) {
         return pollingContext -> {
             try {
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createDeletedSecret(
-                    implClient.getDeletedSecretWithResponse(name, EMPTY_OPTIONS)
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    createDeletedSecret(implClient.getDeletedSecretWithResponse(name, EMPTY_OPTIONS)
                         .getValue()
                         .toObject(DeletedSecretBundle.class)));
             } catch (HttpResponseException e) {
@@ -612,8 +618,8 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, Context context) {
-        Response<BinaryData> response = implClient.getDeletedSecretWithResponse(name,
-            new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.getDeletedSecretWithResponse(name, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response,
             createDeletedSecret(response.getValue().toObject(DeletedSecretBundle.class)));
@@ -701,8 +707,8 @@ public final class SecretClient {
             recoverPollOperation(name), (context, response) -> null, context -> null);
     }
 
-    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>> recoverActivationOperation(
-        String name) {
+    private Function<PollingContext<KeyVaultSecret>, PollResponse<KeyVaultSecret>>
+        recoverActivationOperation(String name) {
 
         return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createKeyVaultSecret(
             implClient.recoverDeletedSecretWithResponse(name, EMPTY_OPTIONS).getValue().toObject(SecretBundle.class)));
@@ -783,8 +789,8 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
-        Response<BinaryData> response = implClient.backupSecretWithResponse(name,
-            new RequestOptions().setContext(context));
+        Response<BinaryData> response
+            = implClient.backupSecretWithResponse(name, new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, response.getValue().toBytes());
     }
@@ -814,9 +820,10 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
-        return callWithMappedException(() -> createKeyVaultSecret(
-            implClient.restoreSecretWithResponse(BinaryData.fromObject(new SecretRestoreParameters(backup)),
-                EMPTY_OPTIONS).getValue().toObject(SecretBundle.class)), SecretAsyncClient::mapRestoreSecretException);
+        return callWithMappedException(() -> createKeyVaultSecret(implClient
+            .restoreSecretWithResponse(BinaryData.fromObject(new SecretRestoreParameters(backup)), EMPTY_OPTIONS)
+            .getValue()
+            .toObject(SecretBundle.class)), SecretAsyncClient::mapRestoreSecretException);
     }
 
     /**

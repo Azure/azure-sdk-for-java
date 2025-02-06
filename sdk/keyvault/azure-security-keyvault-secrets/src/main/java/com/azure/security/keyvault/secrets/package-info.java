@@ -67,13 +67,12 @@
  * using the {@link com.azure.security.keyvault.secrets.SecretClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.SecretClient.instantiation -->
- *
  * <pre>
- * SecretClient secretClient = new SecretClientBuilder&#40;&#41;.credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- *
  * <!-- end com.azure.security.keyvault.SecretClient.instantiation -->
  *
  * <p><strong>Sample: Construct Asynchronous Secret Client</strong></p>
@@ -83,14 +82,12 @@
  * {@link com.azure.security.keyvault.secrets.SecretClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
- *
  * <pre>
- * SecretAsyncClient secretAsyncClient
- *     = new SecretClientBuilder&#40;&#41;.credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *         .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *         .buildAsyncClient&#40;&#41;;
+ * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
  * </pre>
- *
  * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  *
  * <hr/>
@@ -105,12 +102,10 @@
  * </p>
  *
  * <!-- src_embed com.azure.security.keyvault.SecretClient.setSecret#string-string -->
- *
  * <pre>
  * KeyVaultSecret secret = secretClient.setSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;;
  * System.out.printf&#40;&quot;Secret is created with name %s and value %s%n&quot;, secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
  * </pre>
- *
  * <!-- end com.azure.security.keyvault.SecretClient.setSecret#string-string -->
  *
  * <p><strong>Asynchronous Code Sample:</strong></p>
@@ -132,12 +127,11 @@
  * key vault, using the {@link com.azure.security.keyvault.secrets.SecretClient#getSecret(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.SecretClient.getSecret#string -->
- *
  * <pre>
  * KeyVaultSecret secret = secretClient.getSecret&#40;&quot;secretName&quot;&#41;;
- * System.out.printf&#40;&quot;Secret is returned with name %s and value %s%n&quot;, secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Secret is returned with name %s and value %s%n&quot;,
+ *     secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
  * </pre>
- *
  * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to
@@ -157,7 +151,6 @@
  * </p>
  *
  * <!-- src_embed com.azure.security.keyvault.SecretClient.deleteSecret#String -->
- *
  * <pre>
  * SyncPoller&lt;DeletedSecret, Void&gt; deleteSecretPoller = secretClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;;
  *
@@ -165,13 +158,14 @@
  * PollResponse&lt;DeletedSecret&gt; deleteSecretPollResponse = deleteSecretPoller.poll&#40;&#41;;
  *
  * &#47;&#47; Deletion date only works for a SoftDelete-enabled Key Vault.
- * System.out.println&#40;&quot;Deleted Date  %s&quot; + deleteSecretPollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;.toString&#40;&#41;&#41;;
- * System.out.printf&#40;&quot;Deleted Secret's Recovery Id %s&quot;, deleteSecretPollResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Deleted Date  %s&quot; + deleteSecretPollResponse.getValue&#40;&#41;
+ *     .getDeletedOn&#40;&#41;.toString&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Deleted Secret's Recovery Id %s&quot;, deleteSecretPollResponse.getValue&#40;&#41;
+ *     .getRecoveryId&#40;&#41;&#41;;
  *
  * &#47;&#47; Secret is being deleted on server.
  * deleteSecretPoller.waitForCompletion&#40;&#41;;
  * </pre>
- *
  * <!-- end com.azure.security.keyvault.SecretClient.deleteSecret#String -->
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to

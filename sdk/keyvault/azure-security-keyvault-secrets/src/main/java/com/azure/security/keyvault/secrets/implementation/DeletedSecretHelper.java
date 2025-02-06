@@ -11,14 +11,23 @@ public final class DeletedSecretHelper {
 
     public interface DeletedSecretAccessor {
         void setId(DeletedSecret properties, String id);
+
         void setVersion(DeletedSecret properties, String version);
+
         void setCreatedOn(DeletedSecret properties, OffsetDateTime createdOn);
+
         void setUpdatedOn(DeletedSecret properties, OffsetDateTime updatedOn);
+
         void setName(DeletedSecret properties, String name);
+
         void setRecoveryLevel(DeletedSecret properties, String recoveryLevel);
+
         void setKeyId(DeletedSecret properties, String keyId);
+
         void setManaged(DeletedSecret properties, Boolean managed);
+
         void setRecoverableDays(DeletedSecret properties, Integer recoverableDays);
+
         void setRecoveryId(DeletedSecret deletedSecret, String recoveryId);
 
         void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate);
