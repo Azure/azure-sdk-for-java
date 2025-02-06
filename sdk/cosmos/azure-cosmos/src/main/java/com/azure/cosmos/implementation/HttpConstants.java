@@ -435,7 +435,6 @@ public class HttpConstants {
         //SDK Codes(Client)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
         public static final int TRANSPORT_GENERATED_410 = 20001;
-        public static final int TRANSPORT_GENERATED_503 = 2003;
         public static final int TIMEOUT_GENERATED_410 = 20002;
         // Client generated operation timeout exception
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
