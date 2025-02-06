@@ -32,10 +32,10 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
   # need to be filtered by the ArtifactPackageNames otherwise there will be artifacts on
   # the maven command line, for a matrix, that don't belong to the matrx if the PR has
   # changes to multiple libraries that have different test matrices.
-  if ($ENV:ARTIFACTPACKAGENAMES) {
+  if (-not [string]::IsNullOrEmpty($ENV:ARTIFACTPACKAGENAMES)) {
     Write-Host "ArtifactPackageNames is set to: $($ENV:ARTIFACTPACKAGENAMES)"
     # The ArtifactPackageNames is a comma separated list
-    foreach ($artifactPackageName in $ENV:ArtifactPackageNames.Split(',')) {
+    foreach ($artifactPackageName in $ENV:ARTIFACTPACKAGENAMES.Split(',')) {
       [array]$packageInfoFiles = Get-ChildItem -Path $ENV:PACKAGEINFODIR "$($artifactPackageName).json"
       # there should only be 1 file
       if ($packageInfoFiles) {
