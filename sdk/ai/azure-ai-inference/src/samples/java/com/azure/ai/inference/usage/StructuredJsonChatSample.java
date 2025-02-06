@@ -6,68 +6,56 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.ModelServiceVersion;
 import com.azure.ai.inference.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 public final class StructuredJsonChatSample {
     /**
     * @param args Unused. Arguments to the program.
     */
     public static void main(String[] args) {
-        String jsonSchema = """
-        {
-            "ingredients": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "steps": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "ingredients": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        },
-                        "directions": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "prep_time": {
-                "type": "string"
-            },
-            "bake_time": {
-                "type": "string"
-            }
-        }""";
+        String jsonSchema = "{ \"ingredients\": {"
+            + "\"type\": \"array\","
+            + "\"items\": { \"type\": \"string\" } },"
+            + "\"steps\": { \"type\": \"array\", \"items\": {"
+            + "\"type\": \"object\", \"properties\": {"
+            +            "\"ingredients\": {"
+            +                "\"type\": \"array\","
+            +                "\"items\": {"
+            +                    "\"type\": \"string\""
+            +               "}"
+            +            "},"
+            +            "\"directions\": {"
+            +                "\"type\": \"string\""
+            +            "}"
+            +        "}"
+            +    "}"
+            + "},"
+            + "\"prep_time\": {"
+            +    "\"type\": \"string\""
+            + "},"
+            + "\"bake_time\": {"
+            +    "\"type\": \"string\""
+            + "} }";
 
-        Map<String, BinaryData> recipeSchema = Map.of(
-            "type", BinaryData.fromString("\"object\""),
-            "properties", BinaryData.fromString(jsonSchema),
-            "required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"),
-            "additionalProperties", BinaryData.fromString("false")
-        );
+        Map<String, BinaryData> recipeSchema = new HashMap<String, BinaryData>() {{
+            put("type", BinaryData.fromString("\"object\""));
+            put("properties", BinaryData.fromString(jsonSchema));
+            put("required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"));
+            put("additionalProperties", BinaryData.fromString("false"));
+        }};
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
 
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .credential(new AzureKeyCredential(key))
-            .serviceVersion(ModelServiceVersion.V2024_08_01_PREVIEW)
             .endpoint(endpoint)
             .buildClient();
 

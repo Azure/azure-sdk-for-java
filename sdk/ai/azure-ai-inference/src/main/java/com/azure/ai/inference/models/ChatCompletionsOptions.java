@@ -377,8 +377,7 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      */
     public ChatCompletionsOptions setJsonFormat(String name, Map<String, BinaryData> jsonSchema) {
         this.responseFormat = new ChatCompletionsResponseFormatJsonSchema(
-            new ChatCompletionsResponseFormatJsonSchemaDefinition(name, jsonSchema)
-        );
+            new ChatCompletionsResponseFormatJsonSchemaDefinition(name, jsonSchema));
         return this;
     }
 
