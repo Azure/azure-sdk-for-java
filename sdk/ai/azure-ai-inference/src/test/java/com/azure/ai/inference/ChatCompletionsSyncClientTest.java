@@ -32,10 +32,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.json.*;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -51,7 +48,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
@@ -206,6 +205,38 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
 
         ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+        assertCompletions(1, completions);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsWithStructuredJSON(HttpClient httpClient) {
+        String jsonSchema = "{ \"ingredients\": {" + "\"type\": \"array\"," + "\"items\": { \"type\": \"string\" } },"
+            + "\"steps\": { \"type\": \"array\", \"items\": {" + "\"type\": \"object\", \"properties\": {"
+            + "\"ingredients\": {" + "\"type\": \"array\"," + "\"items\": {" + "\"type\": \"string\"" + "}" + "},"
+            + "\"directions\": {" + "\"type\": \"string\"" + "}" + "}" + "}" + "}," + "\"prep_time\": {"
+            + "\"type\": \"string\"" + "}," + "\"bake_time\": {" + "\"type\": \"string\"" + "} }";
+
+        Map<String, BinaryData> recipeSchema = new HashMap<String, BinaryData>() {
+            {
+                put("type", BinaryData.fromString("\"object\""));
+                put("properties", BinaryData.fromString(jsonSchema));
+                put("required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"));
+                put("additionalProperties", BinaryData.fromString("false"));
+            }
+        };
+        client = getChatCompletionsClient(httpClient);
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages
+            .add(new ChatRequestUserMessage("Please give me directions and ingredients to bake a chocolate cake."));
+
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(chatMessages).setJsonFormat("cakeBakingDirections", recipeSchema);
+
+        ChatCompletions completions = client.complete(chatCompletionsOptions);
 
         assertCompletions(1, completions);
     }
