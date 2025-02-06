@@ -1,10 +1,13 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
-import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY;
@@ -13,22 +16,27 @@ public class RntbdTokenStreamTests {
     // Created this test for thin client testing
     @Test(groups = { "unit" })
     public void testThinClientSpecialCasing() {
-        RntbdContextRequest.Headers headers = new RntbdContextRequest.Headers(Unpooled.EMPTY_BUFFER);
+        RxDocumentServiceRequest mockRequest = Mockito.mock(RxDocumentServiceRequest.class);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(EFFECTIVE_PARTITION_KEY, "effectivePartitionKey");
+        headers.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "globalDatabaseAccountName");
+        Mockito.doReturn(headers).when(mockRequest).getHeaders();
+        RntbdRequestArgs mockRntbdRequestArgs = Mockito.mock(RntbdRequestArgs.class);
+        Mockito.doReturn(mockRequest).when(mockRntbdRequestArgs).serviceRequest();
+        Mockito.doReturn("").when(mockRntbdRequestArgs).replicaPath();
+        Mockito.doReturn(0L).when(mockRntbdRequestArgs).transportRequestId();
 
-        RntbdTokenStream<RntbdConstants.RntbdRequestHeader> rntbdTokenStream =
-            new TestRntbdTokenStream(
-                RntbdConstants.RntbdRequestHeader.set,
-                RntbdConstants.RntbdRequestHeader.map,
-                Unpooled.EMPTY_BUFFER,
-                RntbdConstants.RntbdRequestHeader.class);
+        RntbdRequestFrame mockRntbdRequestFrame = Mockito.mock(RntbdRequestFrame.class);
+        Mockito.doReturn(RntbdConstants.RntbdOperationType.Connection).when(mockRntbdRequestFrame).getOperationType();
+        RntbdRequestHeaders rntbdRequestHeaders = new RntbdRequestHeaders(mockRntbdRequestArgs, mockRntbdRequestFrame);
 
         final ByteBuf out = Unpooled.buffer();
-        headers.encode(out);
+        rntbdRequestHeaders.encode(out);
     }
 
-    final class TestRntbdTokenStream extends RntbdTokenStream<RntbdConstants.RntbdRequestHeader> {
+    /*final class TestRntbdTokenStream extends RntbdTokenStream<RntbdConstants.RntbdRequestHeader> {
         TestRntbdTokenStream(EnumSet<RntbdConstants.RntbdRequestHeader> headers, Map<Short, RntbdConstants.RntbdRequestHeader> ids, ByteBuf in, Class<RntbdConstants.RntbdRequestHeader> classType) {
             super(headers, ids, in, classType);
         }
-    }
+    }*/
 }

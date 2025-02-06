@@ -19,9 +19,9 @@ public class ThinClientTest {
     public void testThinclientHttp2() {
         try {
             //String thinclientEndpoint = "https://cdb-ms-stage-eastus2-fe2.eastus2.cloudapp.azure.com:10650";
-            String thinclientEndpoint = "https://chukangzhongstagesignoff.documents-staging.windows-ppe.net:443/";
+            //String thinclientEndpoint = "https://chukangzhongstagesignoff.documents-staging.windows-ppe.net:443/";
             System.setProperty(Configs.THINCLIENT_ENABLED, "true");
-            System.setProperty(Configs.THINCLIENT_ENDPOINT, thinclientEndpoint);
+            //System.setProperty(Configs.THINCLIENT_ENDPOINT, thinclientEndpoint);
             System.setProperty(Configs.HTTP2_ENABLED, "true");
 
             CosmosAsyncClient client  = new CosmosClientBuilder()
