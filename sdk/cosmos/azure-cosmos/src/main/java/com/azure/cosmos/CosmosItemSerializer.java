@@ -44,6 +44,9 @@ public abstract class CosmosItemSerializer {
     /**
      * Used to instantiate subclasses
      */
+    protected CosmosItemSerializer() {
+        this.shouldWrapSerializationExceptions = true;
+    }
 
     /**
      * Used to serialize a POJO into a json tree
