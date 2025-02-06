@@ -4,6 +4,8 @@ The Azure Identity library provides [Microsoft Entra ID](https://learn.microsoft
 
 [Source code][source] | [API reference documentation][javadoc] | [Microsoft Entra ID documentation][entraid_doc]
 
+JRS - THIS WILL NOT BE CHECKED IN.
+
 ## Getting started
 
 ### Include the package
