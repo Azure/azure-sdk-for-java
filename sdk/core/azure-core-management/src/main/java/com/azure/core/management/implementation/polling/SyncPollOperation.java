@@ -3,7 +3,6 @@
 
 package com.azure.core.management.implementation.polling;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -12,13 +11,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.lang.reflect.Type;
-import java.time.Duration;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -27,9 +24,6 @@ import java.util.function.Supplier;
  * Synchronous poll operation for Azure resource manager (ARM) long-running-operation (LRO).
  */
 public final class SyncPollOperation {
-    private static final LongRunningOperationStatus LRO_CANCELLED
-        = LongRunningOperationStatus.fromString("Cancelled", true);
-
     /**
      * Gets a Function that starts the Azure resource manager(ARM) long-running-operation(LRO).
      *
@@ -67,14 +61,14 @@ public final class SyncPollOperation {
         return pollingContext -> {
             PollingState state = PollingState.from(serializerAdapter, pollingContext);
             if (state.getOperationStatus().isComplete()) {
-                return pollResponseFromPollingState(serializerAdapter, pollResultType, state);
+                return PollOperation.pollResponseFromPollingState(serializerAdapter, pollResultType, state);
             } else {
                 try (HttpResponse response
                     = httpPipeline.sendSync(new HttpRequest(HttpMethod.GET, state.getPollUrl()), context)) {
                     String body = response.getBodyAsBinaryData().toString();
                     state.update(response.getStatusCode(), response.getHeaders(), body);
                     state.store(pollingContext);
-                    return pollResponseFromPollingState(serializerAdapter, pollResultType, state);
+                    return PollOperation.pollResponseFromPollingState(serializerAdapter, pollResultType, state);
                 }
             }
         };
@@ -125,46 +119,5 @@ public final class SyncPollOperation {
                 return result;
             }
         };
-    }
-
-    private static <T> PollResponse<PollResult<T>> pollResponseFromPollingState(SerializerAdapter serializer,
-        Class<T> pollResultType, PollingState state) {
-        if (state.getOperationStatus().isComplete()) {
-            if (state.getOperationStatus() == LongRunningOperationStatus.FAILED
-                || state.getOperationStatus() == LRO_CANCELLED) {
-                // Failed|Cancelled
-                Error lroInitError = state.getSynchronouslyFailedLroError();
-                if (lroInitError != null) {
-                    return errorPollResponse(state.getOperationStatus(), lroInitError);
-                }
-                Error pollError = state.getPollError();
-                if (pollError != null) {
-                    return errorPollResponse(state.getOperationStatus(), pollError);
-                }
-                throw new IllegalStateException(
-                    "Either LroError or PollError must" + "be set when OperationStatus is in Failed|Cancelled State.");
-            } else {
-                // Succeeded
-                return pollResponse(serializer, state.getOperationStatus(), state.getLastResponseBody(), pollResultType,
-                    state.getPollDelay());
-            }
-        } else {
-            // InProgress|NonTerminal-Status
-            return pollResponse(serializer, state.getOperationStatus(), state.getLastResponseBody(), pollResultType,
-                state.getPollDelay());
-        }
-    }
-
-    private static <T> PollResponse<PollResult<T>> pollResponse(SerializerAdapter serializer,
-        LongRunningOperationStatus operationStatus, String pollResponseBody, Class<T> pollResultType,
-        Duration pollDelay) {
-        T result = PollOperation.deserialize(serializer, pollResponseBody, pollResultType);
-        return new PollResponse<>(operationStatus, new PollResult<>(result), pollDelay);
-    }
-
-    private static <T> PollResponse<PollResult<T>> errorPollResponse(LongRunningOperationStatus operationStatus,
-        Error error) {
-        return new PollResponse<>(operationStatus, new PollResult<>(new PollResult.Error(error.getMessage(),
-            error.getResponseStatusCode(), new HttpHeaders(error.getResponseHeaders()), error.getResponseBody())));
     }
 }
