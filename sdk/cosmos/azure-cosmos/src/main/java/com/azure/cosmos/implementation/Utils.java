@@ -93,10 +93,11 @@ public class Utils {
         new AtomicReference<>(null);
 
     public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
-        if (Strings.isNullOrEmpty(serializationInclusionMode)
-            || "Always".equalsIgnoreCase(serializationInclusionMode)) {
-
+        if (Strings.isNullOrEmpty(serializationInclusionMode)) {
             return simpleObjectMapper;
+        } else if ("Always".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.ALWAYS);
         } else if ("NonNull".equalsIgnoreCase(serializationInclusionMode)) {
             return createAndInitializeObjectMapper(false)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -694,6 +695,7 @@ public class Utils {
         boolean isIdValidationEnabled) {
 
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
+
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
@@ -708,6 +710,7 @@ public class Utils {
                 onAfterSerialization.accept(jsonTreeMap);
             }
 
+            ObjectMapper mapper = ensureItemSerializerAccessor().getItemObjectMapper(serializer);
             JsonNode jsonNode;
 
             if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
@@ -715,10 +718,10 @@ public class Utils {
             } else if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
-                jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
+                jsonNode = mapper.convertValue(jsonTreeMap, JsonNode.class);
             }
 
-            simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
+            mapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere

@@ -39,6 +39,8 @@ public abstract class CosmosItemSerializer {
 
     private boolean shouldWrapSerializationExceptions;
 
+    private ObjectMapper mapper = Utils.getSimpleObjectMapper();
+
     /**
      * Used to instantiate subclasses
      */
@@ -75,6 +77,14 @@ public abstract class CosmosItemSerializer {
 
             throw exception;
         }
+    }
+
+    ObjectMapper getItemObjectMapper() {
+        return this.mapper;
+    }
+
+    void setItemObjectMapper(ObjectMapper newMapper) {
+        this.mapper = newMapper;
     }
 
     /**
@@ -137,6 +147,16 @@ public abstract class CosmosItemSerializer {
                 @Override
                 public void setShouldWrapSerializationExceptions(CosmosItemSerializer serializer, boolean shouldWrapSerializationExceptions) {
                     serializer.setShouldWrapSerializationExceptions(shouldWrapSerializationExceptions);
+                }
+
+                @Override
+                public void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper) {
+                    serializer.setItemObjectMapper(mapper);
+                }
+
+                @Override
+                public ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer) {
+                    return serializer.getItemObjectMapper();
                 }
             });
     }

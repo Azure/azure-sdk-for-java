@@ -12,31 +12,34 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class DefaultCosmosItemSerializer extends CosmosItemSerializer {
-    private final static ObjectMapper serializationInclusionModeAwarObjectMapper = Utils.getDocumentObjectMapper(
+    ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
+        ImplementationBridgeHelpers
+        .CosmosItemSerializerHelper
+        .getCosmosItemSerializerAccessor();
+    private final static ObjectMapper serializationInclusionModeAwareObjectMapper = Utils.getDocumentObjectMapper(
         Configs.getItemSerializationInclusionMode()
     );
-    private final static ObjectMapper alwaysObjectMapper = Utils.getSimpleObjectMapper();
+    private final static ObjectMapper defaultSerializationInclusionModeObjectMapper = Utils.getSimpleObjectMapper();
 
     /**
      * Gets the default Cosmos item serializer. This serializer is used by default when no custom serializer is
      * specified on request options or the {@link CosmosClientBuilder}
      */
     public final static CosmosItemSerializer DEFAULT_SERIALIZER =
-        new DefaultCosmosItemSerializer(serializationInclusionModeAwarObjectMapper);
+        new DefaultCosmosItemSerializer(serializationInclusionModeAwareObjectMapper);
 
     // guaranteed to sue serialization inclusion mode "Always"
     public final static CosmosItemSerializer INTERNAL_DEFAULT_SERIALIZER =
-        new DefaultCosmosItemSerializer(alwaysObjectMapper);
+        new DefaultCosmosItemSerializer(defaultSerializationInclusionModeObjectMapper);
 
     private final ObjectMapper mapper;
 
-    private DefaultCosmosItemSerializer(ObjectMapper mapper) {
+    public DefaultCosmosItemSerializer(ObjectMapper mapper) {
         checkNotNull("mapper", "Argument 'mapper' must not be null.");
+
         this.mapper = mapper;
-        ImplementationBridgeHelpers
-            .CosmosItemSerializerHelper
-            .getCosmosItemSerializerAccessor()
-            .setShouldWrapSerializationExceptions(this, true);
+        itemSerializerAccessor.setItemObjectMapper(this, mapper);
+        itemSerializerAccessor.setShouldWrapSerializationExceptions(this, true);
     }
 
     /**
