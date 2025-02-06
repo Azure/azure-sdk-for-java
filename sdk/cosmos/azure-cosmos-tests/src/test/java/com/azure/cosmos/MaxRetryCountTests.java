@@ -141,7 +141,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsTransitTimeoutGenerated503ForWrite =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_503);
         };
 
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsRequestRateTooLarge =
