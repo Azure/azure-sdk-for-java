@@ -11,7 +11,7 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ConsumerFactory;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
+import com.azure.core.amqp.implementation.ProtonSession;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.RetryUtil;
@@ -71,7 +71,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      * @param retryOptions Retry options.
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
      */
-    ServiceBusReactorSession(AmqpConnection amqpConnection, ProtonSessionWrapper session,
+    ServiceBusReactorSession(AmqpConnection amqpConnection, ProtonSession session,
         ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
