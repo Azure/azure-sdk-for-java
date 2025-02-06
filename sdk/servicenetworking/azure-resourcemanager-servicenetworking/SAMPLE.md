@@ -50,7 +50,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 public final class AssociationsInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * AssociationPut.json
      */
     /**
@@ -80,7 +80,7 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
 public final class AssociationsInterfaceDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * AssociationDelete.json
      */
     /**
@@ -103,7 +103,7 @@ public final class AssociationsInterfaceDeleteSamples {
 public final class AssociationsInterfaceGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * AssociationGet.json
      */
     /**
@@ -126,7 +126,7 @@ public final class AssociationsInterfaceGetSamples {
 public final class AssociationsInterfaceListByTrafficControllerSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * AssociationsGet.json
      */
     /**
@@ -154,7 +154,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationUpdatePrope
 public final class AssociationsInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * AssociationPatch.json
      */
     /**
@@ -186,7 +186,7 @@ import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * FrontendPut.json
      */
     /**
@@ -214,7 +214,7 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
 public final class FrontendsInterfaceDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * FrontendDelete.json
      */
     /**
@@ -237,7 +237,7 @@ public final class FrontendsInterfaceDeleteSamples {
 public final class FrontendsInterfaceGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * FrontendGet.json
      */
     /**
@@ -260,7 +260,7 @@ public final class FrontendsInterfaceGetSamples {
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * FrontendsGet.json
      */
     /**
@@ -285,7 +285,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
 public final class FrontendsInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * FrontendPatch.json
      */
     /**
@@ -311,7 +311,7 @@ public final class FrontendsInterfaceUpdateSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * OperationsList.json
      */
     /**
@@ -337,7 +337,7 @@ import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
 public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * SecurityPolicyPut.json
      */
     /**
@@ -366,7 +366,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
 public final class SecurityPoliciesInterfaceDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * SecurityPolicyDelete.json
      */
     /**
@@ -390,7 +390,7 @@ public final class SecurityPoliciesInterfaceDeleteSamples {
 public final class SecurityPoliciesInterfaceGetSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * SecurityPolicyGet.json
      */
     /**
@@ -413,7 +413,7 @@ public final class SecurityPoliciesInterfaceGetSamples {
 public final class SecurityPoliciesInterfaceListByTrafficControllerSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * SecurityPoliciesGetList.json
      */
     /**
@@ -441,7 +441,7 @@ import com.azure.resourcemanager.servicenetworking.models.WafPolicyUpdate;
 public final class SecurityPoliciesInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * SecurityPolicyPatch.json
      */
     /**
@@ -474,7 +474,7 @@ import java.util.Map;
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllerPut.json
      */
     /**
@@ -515,7 +515,7 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllerDelete.json
      */
     /**
@@ -539,7 +539,7 @@ public final class TrafficControllerInterfaceDeleteSamples {
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllerGet.json
      */
     /**
@@ -564,7 +564,7 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
 public final class TrafficControllerInterfaceListSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllersGetList.json
      */
     /**
@@ -588,7 +588,7 @@ public final class TrafficControllerInterfaceListSamples {
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllersGet.json
      */
     /**
@@ -616,7 +616,7 @@ import java.util.Map;
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllerPatch.json
      */
     /**
