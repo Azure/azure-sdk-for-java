@@ -14,6 +14,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
@@ -47,13 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link TableClient}.
@@ -227,7 +223,7 @@ public class TableClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-    
+
         SampleEntity tableEntity = new SampleEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setByteField(bytes);
         tableEntity.setBooleanField(b);
@@ -238,15 +234,15 @@ public class TableClientTest extends TableClientTestBase {
         tableEntity.setLongField(l);
         tableEntity.setStringField(s);
         tableEntity.setEnumField(color);
-    
+
         tableClient.createEntity(tableEntity);
-    
+
         // Act & Assert
         final Response<TableEntity> response =
             tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, null, null);
-    
+
         TableEntity entity = response.getValue();
-    
+
         assertArrayEquals((byte[]) entity.getProperties().get("ByteField"), bytes);
         assertEquals(entity.getProperties().get("BooleanField"), b);
         assertTrue(dateTime.isEqual((OffsetDateTime) entity.getProperties().get("DateTimeField")));
@@ -486,7 +482,7 @@ public class TableClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-    
+
         final Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
@@ -497,28 +493,28 @@ public class TableClientTest extends TableClientTestBase {
         props.put("LongField", l);
         props.put("StringField", s);
         props.put("EnumField", color);
-    
+
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setProperties(props);
-    
+
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity);
-    
+
         // Act & Assert
         final Response<TableEntity> response =
             tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, SampleEntity.class, null, null);
-    
+
         SampleEntity entity = response.getValue();
-    
+
         assertEquals(expectedStatusCode, response.getStatusCode());
-    
+
         assertNotNull(entity);
         assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
         assertEquals(tableEntity.getRowKey(), entity.getRowKey());
-    
+
         assertNotNull(entity.getTimestamp());
         assertNotNull(entity.getETag());
-    
+
         assertArrayEquals(bytes, entity.getByteField());
         assertEquals(b, entity.getBooleanField());
         assertTrue(dateTime.isEqual(entity.getDateTimeField()));
@@ -586,19 +582,19 @@ public class TableClientTest extends TableClientTestBase {
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
         int expectedStatusCode = 204;
-    
+
         SingleFieldEntity tableEntity = new SingleFieldEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setSubclassProperty("InitialValue");
         tableClient.createEntity(tableEntity);
-    
+
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
         assertEquals(expectedStatusCode,
             tableClient.updateEntityWithResponse(tableEntity, TableEntityUpdateMode.REPLACE, true, null, null)
                 .getStatusCode()));
-    
+
         TableEntity entity = tableClient.getEntity(partitionKeyValue, rowKeyValue);
-    
+
         final Map<String, Object> properties = entity.getProperties();
         assertTrue(properties.containsKey("SubclassProperty"));
         assertEquals("UpdatedValue", properties.get("SubclassProperty"));
@@ -714,18 +710,18 @@ public class TableClientTest extends TableClientTestBase {
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue));
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2));
-    
+
         // Act & Assert
         Iterator<PagedResponse<TableEntity>> iterator =
             tableClient.listEntities(SampleEntity.class).iterableByPage().iterator();
-    
+
         assertTrue(iterator.hasNext());
-    
+
         List<TableEntity> retrievedEntities = iterator.next().getValue();
-    
+
         TableEntity retrievedEntity = retrievedEntities.get(0);
         TableEntity retrievedEntity2 = retrievedEntities.get(1);
-    
+
         assertEquals(partitionKeyValue, retrievedEntity.getPartitionKey());
         assertEquals(rowKeyValue, retrievedEntity.getRowKey());
         assertEquals(partitionKeyValue, retrievedEntity2.getPartitionKey());
@@ -1337,5 +1333,14 @@ public class TableClientTest extends TableClientTestBase {
 
         tableClient.createEntity(entity);
         tableClient.deleteEntity(entity);
+    }
+
+    @Test
+    void NonRuntimeExceptionsDontGetCasted() {
+        assertThrows(Error.class, () -> {
+            TableUtils.callWithOptionalTimeout(() -> {
+                throw new NoClassDefFoundError("This is an error");
+            }, null, new ClientLogger(TableClientTest.class));
+        });
     }
 }
