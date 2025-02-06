@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * Synchronous poll operation for Azure resource manager (ARM) long-running-operation (LRO).
  */
-public class SyncPollOperation {
+public final class SyncPollOperation {
     private static final LongRunningOperationStatus LRO_CANCELLED
         = LongRunningOperationStatus.fromString("Cancelled", true);
 
@@ -35,15 +35,15 @@ public class SyncPollOperation {
      *
      * @param serializerAdapter the serializer for any encoding and decoding
      * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
-     * @param lroInitialResponse the activation operation to activate (start) the long-running operation
+     * @param lroInitialResponseSupplier the activation operation to activate (start) the long-running operation
      * @param <T> the type of poll result
      * @return the ARM LRO activation Function
      */
-    public static <T> Function<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>> syncActivationFunction(
+    public static <T> Function<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>> activationFunction(
         SerializerAdapter serializerAdapter, Class<T> pollResultType,
-        Supplier<Response<BinaryData>> lroInitialResponse) {
+        Supplier<Response<BinaryData>> lroInitialResponseSupplier) {
         return pollingContext -> {
-            Response<BinaryData> response = lroInitialResponse.get();
+            Response<BinaryData> response = lroInitialResponseSupplier.get();
             PollingState state = PollingState.create(serializerAdapter, response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue().toString());
             state.store(pollingContext);

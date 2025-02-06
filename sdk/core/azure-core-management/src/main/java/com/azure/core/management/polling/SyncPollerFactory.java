@@ -62,7 +62,7 @@ public final class SyncPollerFactory {
         HttpPipeline httpPipeline, Class<T> pollResultType, Class<U> finalResultType, Duration defaultPollDuration,
         Supplier<Response<BinaryData>> lroInitialResponse, Context context) {
         return SyncPoller.createPoller(defaultPollDuration,
-            SyncPollOperation.syncActivationFunction(serializerAdapter, pollResultType, lroInitialResponse),
+            SyncPollOperation.activationFunction(serializerAdapter, pollResultType, lroInitialResponse),
             SyncPollOperation.pollFunction(serializerAdapter, httpPipeline, pollResultType, context),
             SyncPollOperation.cancelFunction(context),
             SyncPollOperation.fetchResultFunction(serializerAdapter, httpPipeline, finalResultType, context));
