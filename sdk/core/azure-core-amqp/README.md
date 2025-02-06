@@ -1,5 +1,7 @@
 # Azure Core AMQP shared library for Java
 
+JRS-WILL NOT BE CHECKED IN
+
 Azure Core AMQP client library is a collection of classes common to the AMQP protocol. It help developers create their
 own AMQP client library that abstracts from the underlying transport library's implementation.
 
