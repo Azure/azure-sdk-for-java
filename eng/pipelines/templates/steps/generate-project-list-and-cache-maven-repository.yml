@@ -33,6 +33,15 @@ steps:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       ExcludePaths: ${{parameters.ExcludePaths}}
 
+  - pwsh: |
+    $temp = $(ArtifactPackageNames)
+    if ($temp) {
+      Write-Host "ArtifactPackageNames is set, value=$temp"
+    } else {
+      Write-Host "ArtifactPackageNames was not set"
+    }
+  displayName: Output ArtifactPackageNames if set
+
   # Create the ProjectList and ProjectListSha256 variables.
   # The ProjectList is used by subsequent steps and tasks to run CI.
   # The ProjectListSha256 is used by the cache key, previously the cache key was using ProjectList but it was found
