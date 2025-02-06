@@ -30,7 +30,7 @@ public final class SyncPollerFactory {
      * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
      * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
      * @param defaultPollDuration the default poll interval to use if service does not return retry-after
-     * @param lroInitialResponse the activation operation to activate (start) the long-running operation. This operation
+     * @param lroInitialResponseSupplier Supplier of the activation operation to activate (start) the long-running operation. This operation
      *        will be invoked at most once.
      * @param <T> the type of poll result
      * @param <U> the type of final result
@@ -38,9 +38,9 @@ public final class SyncPollerFactory {
      */
     public static <T, U> SyncPoller<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
         HttpPipeline httpPipeline, Class<T> pollResultType, Class<U> finalResultType, Duration defaultPollDuration,
-        Supplier<Response<BinaryData>> lroInitialResponse) {
+        Supplier<Response<BinaryData>> lroInitialResponseSupplier) {
         return create(serializerAdapter, httpPipeline, pollResultType, finalResultType, defaultPollDuration,
-            lroInitialResponse, Context.NONE);
+            lroInitialResponseSupplier, Context.NONE);
     }
 
     /**
@@ -51,7 +51,7 @@ public final class SyncPollerFactory {
      * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
      * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
      * @param defaultPollDuration the default poll interval to use if service does not return retry-after
-     * @param lroInitialResponse the activation operation to activate (start) the long-running operation. This operation
+     * @param lroInitialResponseSupplier Supplier of the activation operation to activate (start) the long-running operation. This operation
      *        will be invoked at most once.
      * @param context the context shared by all requests
      * @param <T> the type of poll result
@@ -60,9 +60,9 @@ public final class SyncPollerFactory {
      */
     public static <T, U> SyncPoller<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
         HttpPipeline httpPipeline, Class<T> pollResultType, Class<U> finalResultType, Duration defaultPollDuration,
-        Supplier<Response<BinaryData>> lroInitialResponse, Context context) {
+        Supplier<Response<BinaryData>> lroInitialResponseSupplier, Context context) {
         return SyncPoller.createPoller(defaultPollDuration,
-            SyncPollOperation.activationFunction(serializerAdapter, pollResultType, lroInitialResponse),
+            SyncPollOperation.activationFunction(serializerAdapter, pollResultType, lroInitialResponseSupplier),
             SyncPollOperation.pollFunction(serializerAdapter, httpPipeline, pollResultType, context),
             SyncPollOperation.cancelFunction(context),
             SyncPollOperation.fetchResultFunction(serializerAdapter, httpPipeline, finalResultType, context));

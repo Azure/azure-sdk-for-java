@@ -35,7 +35,7 @@ public final class SyncPollOperation {
      *
      * @param serializerAdapter the serializer for any encoding and decoding
      * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
-     * @param lroInitialResponseSupplier the activation operation to activate (start) the long-running operation
+     * @param lroInitialResponseSupplier Supplier of the activation operation to activate (start) the long-running operation
      * @param <T> the type of poll result
      * @return the ARM LRO activation Function
      */
