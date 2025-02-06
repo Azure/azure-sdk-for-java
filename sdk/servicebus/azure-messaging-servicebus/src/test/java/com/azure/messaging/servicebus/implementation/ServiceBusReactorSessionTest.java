@@ -12,6 +12,7 @@ import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ProtonSession;
 import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
@@ -26,6 +27,7 @@ import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Record;
@@ -48,17 +50,18 @@ import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -79,6 +82,7 @@ public class ServiceBusReactorSessionTest {
     private static final String VIA_ENTITY_PATH = "viaEntityPath";
     private static final String VIA_ENTITY_PATH_SENDER_LINK_NAME = "VIA-" + VIA_ENTITY_PATH;
     private static final String CLIENT_IDENTIFIER = "clientIdentifier";
+    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(ServiceBusReactorSessionTest.class);
 
     @Mock
     private Reactor reactor;
@@ -108,6 +112,8 @@ public class ServiceBusReactorSessionTest {
     private Sender senderViaEntity;
     @Mock
     private Record record;
+    @Mock
+    private Record sessionRecord;
     private SendLinkHandler sendEntityLinkHandler;
     @Captor
     private ArgumentCaptor<Runnable> dispatcherCaptor;
@@ -115,6 +121,8 @@ public class ServiceBusReactorSessionTest {
     private ReactorDispatcher dispatcher;
     @Mock
     private AmqpConnection connection;
+    @Mock
+    private Connection protonConnection;
 
     private ServiceBusReactorSession serviceBusReactorSession;
     private final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
@@ -133,11 +141,20 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(selectable).setReading(true);
         doNothing().when(reactor).update(selectable);
         when(reactor.selectable()).thenReturn(selectable);
-
+        try {
+            doAnswer(invocation -> {
+                final Runnable work = invocation.getArgument(0);
+                work.run();
+                return null;
+            }).when(dispatcher).invoke(any(Runnable.class));
+        } catch (IOException ioe) {
+            throw new UncheckedIOException(ioe);
+        }
         final Sinks.Many<EndpointState> endpointStates
             = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
         when(handler.getEndpointStates()).thenReturn(endpointStates.asFlux());
         endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+        when(handler.getId()).thenReturn("H123");
         when(handler.getSessionName()).thenReturn(SESSION_NAME);
         when(handler.getHostname()).thenReturn(HOSTNAME);
         when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
@@ -182,6 +199,8 @@ public class ServiceBusReactorSessionTest {
             VIA_ENTITY_PATH)).thenReturn(sendViaEntityLinkHandler);
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, ENTITY_PATH))
             .thenReturn(sendEntityLinkHandler);
+        when(handlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
+            .thenReturn(handler);
 
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);
@@ -190,8 +209,10 @@ public class ServiceBusReactorSessionTest {
         when(tokenManagerEntity.authorize()).thenReturn(Mono.just(1L));
         when(tokenManagerViaQueue.authorize()).thenReturn(Mono.just(1L));
 
+        when(protonConnection.session()).thenReturn(session);
         when(session.sender(VIA_ENTITY_PATH_SENDER_LINK_NAME)).thenReturn(senderViaEntity);
         when(session.sender(ENTITY_PATH)).thenReturn(senderEntity);
+        when(session.attachments()).thenReturn(sessionRecord);
         doNothing().when(session).open();
         doNothing().when(senderViaEntity).setSource(any(Source.class));
         doNothing().when(senderEntity).setSource(any(Source.class));
@@ -203,23 +224,22 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(senderEntity).setTarget(any(Target.class));
         when(senderEntity.attachments()).thenReturn(record);
         when(senderViaEntity.attachments()).thenReturn(record);
-
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
-        when(connection.getShutdownSignals()).thenReturn(Flux.empty());
-        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
-        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
+        final ProtonSession protonSession = new ProtonSession(CONNECTION_ID, HOSTNAME, protonConnection,
+            handlerProvider, reactorProvider, SESSION_NAME, Duration.ofSeconds(1), CLIENT_LOGGER);
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(protonSession);
 
         serviceBusReactorSession
             = new ServiceBusReactorSession(connection, sessionWrapper, handlerProvider, linkProvider, cbsNodeSupplier,
                 tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(false));
-        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+        serviceBusReactorSession.open().block();
     }
 
     @AfterEach
     void teardown(TestInfo testInfo) {
         LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
-
         Mockito.framework().clearInlineMock(this);
     }
 
@@ -227,10 +247,7 @@ public class ServiceBusReactorSessionTest {
      * Test for create Sender Link when via-queue is used.
      */
     @Test
-    void createViaSenderLink() throws IOException {
-        // Arrange
-        doNothing().when(dispatcher).invoke(any(Runnable.class));
-
+    void createViaSenderLink() {
         // Act
         serviceBusReactorSession
             .createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH, retryOptions.getTryTimeout(),
@@ -240,13 +257,6 @@ public class ServiceBusReactorSessionTest {
         // Assert
         verify(tokenManagerEntity).authorize();
         verify(tokenManagerViaQueue).authorize();
-
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
-        List<Runnable> invocations = dispatcherCaptor.getAllValues();
-
-        // Apply the invocation.
-        invocations.get(0).run();
-
         verify(senderViaEntity)
             .setProperties(argThat(linkProperties -> ((String) linkProperties.get(LINK_TRANSFER_DESTINATION_PROPERTY))
                 .equalsIgnoreCase(ENTITY_PATH)));
@@ -259,7 +269,6 @@ public class ServiceBusReactorSessionTest {
     void createViaSenderLinkDestinationEntityAuthorizeFails() throws IOException {
         // Arrange
         final Throwable authorizeError = new RuntimeException("Failed to Authorize EntityPath");
-        doNothing().when(dispatcher).invoke(any(Runnable.class));
         when(tokenManagerEntity.authorize()).thenReturn(Mono.error(authorizeError));
 
         // Act
@@ -272,17 +281,13 @@ public class ServiceBusReactorSessionTest {
         // Assert
         verify(tokenManagerEntity).authorize();
         verify(tokenManagerViaQueue).authorize();
-        verifyNoInteractions(dispatcher);
     }
 
     /**
      * Test for create Sender Link.
      */
     @Test
-    void createSenderLink() throws IOException {
-        // Arrange
-        doNothing().when(dispatcher).invoke(any(Runnable.class));
-
+    void createSenderLink() {
         // Act
         serviceBusReactorSession.createProducer(ENTITY_PATH, ENTITY_PATH, retryOptions.getTryTimeout(), retryPolicy)
             .subscribe();
@@ -290,13 +295,6 @@ public class ServiceBusReactorSessionTest {
         // Assert
         verify(tokenManagerEntity).authorize();
         verify(tokenManagerViaQueue, never()).authorize();
-
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
-        List<Runnable> invocations = dispatcherCaptor.getAllValues();
-
-        // Apply the invocation.
-        invocations.get(0).run();
-
         verify(senderViaEntity, never()).setProperties(anyMap());
     }
 
@@ -304,7 +302,7 @@ public class ServiceBusReactorSessionTest {
      * Test for create Sender Link.
      */
     @Test
-    void createCoordinatorLink() throws IOException {
+    void createCoordinatorLink() {
         // Arrange
         final String transactionLinkName = "coordinator";
         final Sender coordinatorSenderEntity = mock(Sender.class);
@@ -314,27 +312,22 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(coordinatorSenderEntity).setTarget(any(Target.class));
         when(coordinatorSenderEntity.attachments()).thenReturn(record);
         when(session.sender(transactionLinkName)).thenReturn(coordinatorSenderEntity);
-        // TODO (anu): use 'ProtonSession' instead of 'ProtonSessionWrapper' and update the test.
-        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(session, handler, reactorProvider);
+        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))
+            .thenReturn(sendEntityLinkHandler);
 
+        final ProtonSession protonSession = new ProtonSession(CONNECTION_ID, HOSTNAME, protonConnection,
+            handlerProvider, reactorProvider, SESSION_NAME, Duration.ofSeconds(1), CLIENT_LOGGER);
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(protonSession);
         final ServiceBusReactorSession serviceBusReactorSession
             = new ServiceBusReactorSession(connection, sessionWrapper, handlerProvider, linkProvider, cbsNodeSupplier,
                 tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(true));
 
-        when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))
-            .thenReturn(sendEntityLinkHandler);
-
         // Act
+        serviceBusReactorSession.open().block();
         serviceBusReactorSession.getOrCreateTransactionCoordinator().subscribe();
 
         // Assert
         verify(tokenManagerEntity, never()).authorize();
-
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
-        List<Runnable> invocations = dispatcherCaptor.getAllValues();
-
-        // Apply the invocation.
-        invocations.get(0).run();
 
         verify(coordinatorSenderEntity).open();
         verify(session).sender(transactionLinkName);
