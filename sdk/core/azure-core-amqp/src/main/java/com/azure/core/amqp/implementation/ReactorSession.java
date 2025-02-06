@@ -165,12 +165,6 @@ public class ReactorSession implements AmqpSession {
             .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
             .subscribe());
 
-        final boolean isV1OrV2WithoutSessionCache = !protonSession.isV2ClientOnSessionCache();
-        if (isV1OrV2WithoutSessionCache) {
-            // TODO (anu): delete openUnsafe() when removing v1 and 'SessionCache' (hence 'ProtonSession') is no longer
-            //  opt-in for v2.
-            protonSession.openUnsafe(logger);
-        }
         this.activeAwaiter = activeAwaiter(protonSession, retryOptions.getTryTimeout(), endpointStates);
     }
 
@@ -193,7 +187,7 @@ public class ReactorSession implements AmqpSession {
      *
      * @return the Mono that completes once the session is opened and active.
      */
-    final Mono<ReactorSession> open() {
+    public final Mono<ReactorSession> open() {
         return Mono.when(protonSession.open(), activeAwaiter).thenReturn(this);
     }
 

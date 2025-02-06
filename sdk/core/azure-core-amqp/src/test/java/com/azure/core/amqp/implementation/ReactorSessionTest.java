@@ -19,9 +19,11 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Receiver;
@@ -52,7 +54,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -64,10 +68,13 @@ public class ReactorSessionTest {
     private static final String ENTITY_PATH = "test-entity-path";
     private static final String NAME = "test-session-name";
     private static final Duration TIMEOUT = Duration.ofSeconds(45);
+    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(ReactorSessionTest.class);
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
 
+    @Mock
+    private Record sessionRecord;
     @Mock
     private Session session;
     @Mock
@@ -87,13 +94,15 @@ public class ReactorSessionTest {
     @Mock
     private ReactorProvider reactorProvider;
     @Mock
-    private ReactorHandlerProvider reactorHandlerProvider;
+    private ReactorHandlerProvider handlerProvider;
     @Mock
     private ReactorDispatcher reactorDispatcher;
     @Mock
     private TokenManagerProvider tokenManagerProvider;
     @Mock
     private AmqpConnection amqpConnection;
+    @Mock
+    private Connection protonConnection;
 
     private Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private AutoCloseable mocksCloseable;
@@ -110,22 +119,28 @@ public class ReactorSessionTest {
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
+        when(handlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
+            .thenReturn(handler);
 
+        when(protonConnection.session()).thenReturn(session);
         when(event.getSession()).thenReturn(session);
-
+        when(session.attachments()).thenReturn(sessionRecord);
+        doNothing().when(session).open();
         when(sender.attachments()).thenReturn(record);
         when(receiver.attachments()).thenReturn(record);
-
         doAnswer(invocation -> {
             final Runnable runnable = invocation.getArgument(0);
             runnable.run();
             return null;
         }).when(reactorDispatcher).invoke(any());
-
         when(amqpConnection.getShutdownSignals()).thenReturn(connectionShutdown.flux());
+
+        final ProtonSession protonSession = new ProtonSession(ID, HOST, protonConnection, handlerProvider,
+            reactorProvider, NAME, Duration.ofSeconds(1), CLIENT_LOGGER);
+
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
-        final ProtonSessionWrapper protonSession = new ProtonSessionWrapper(session, handler, reactorProvider);
-        this.reactorSession = new ReactorSession(amqpConnection, protonSession, reactorHandlerProvider,
+        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(protonSession);
+        this.reactorSession = new ReactorSession(amqpConnection, sessionWrapper, handlerProvider,
             new AmqpLinkProvider(), cbsNodeSupplier, tokenManagerProvider, serializer, options);
     }
 
@@ -140,6 +155,9 @@ public class ReactorSessionTest {
 
     @Test
     public void verifyConstructor() {
+        // Act
+        open(reactorSession, event, handler);
+
         // Assert
         verify(session, times(1)).open();
 
@@ -164,6 +182,7 @@ public class ReactorSessionTest {
 
     @Test
     public void verifyDispose() {
+        open(reactorSession, event, handler);
         reactorSession.dispose();
         assertTrue(reactorSession.isDisposed());
     }
@@ -194,7 +213,8 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+        when(handlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+        open(reactorSession, event, handler);
 
         StepVerifier
             .create(reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties))
@@ -242,9 +262,8 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
-
-        handler.onSessionRemoteOpen(event);
+        when(handlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+        open(reactorSession, event, handler);
 
         final AmqpLink sendLink
             = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
@@ -276,7 +295,8 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+        when(handlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+        open(reactorSession, event, handler);
 
         StepVerifier.create(reactorSession.getOrCreateTransactionCoordinator())
             .then(() -> handler.onSessionRemoteOpen(event))
@@ -295,14 +315,6 @@ public class ReactorSessionTest {
             = reactorSession.getOrCreateTransactionCoordinator().block(TIMEOUT);
 
         assertSame(coordinator1, coordinator2);
-    }
-
-    @Test
-    void createConsumer() {
-        // Arrange
-        final String linkName = "test-link-name";
-        final String entityPath = "test-entity-path";
-        final AmqpRetryPolicy amqpRetryPolicy = mock(AmqpRetryPolicy.class);
     }
 
     /**
@@ -353,5 +365,10 @@ public class ReactorSessionTest {
         List<TestMeasurement<Long>> errors
             = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
         assertEquals(0, errors.size());
+    }
+
+    private static void open(ReactorSession reactorSession, Event event, SessionHandler sessionHandler) {
+        sessionHandler.onSessionRemoteOpen(event);
+        reactorSession.open().block();
     }
 }
