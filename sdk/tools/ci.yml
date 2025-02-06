@@ -49,3 +49,8 @@ extends:
         safeName: azuresdkbuildtool
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
+      - name: annotation-processor
+        groupId: io.clientcore
+        safeName: annotationprocessor
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
