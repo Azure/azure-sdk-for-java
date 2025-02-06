@@ -22,6 +22,11 @@ public final class CleanupPolicyRetentionDescription extends ExpandableStringEnu
     public static final CleanupPolicyRetentionDescription COMPACT = fromString("Compact");
 
     /**
+     * Static value DeleteOrCompact for CleanupPolicyRetentionDescription.
+     */
+    public static final CleanupPolicyRetentionDescription DELETE_OR_COMPACT = fromString("DeleteOrCompact");
+
+    /**
      * Creates a new instance of CleanupPolicyRetentionDescription value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

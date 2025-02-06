@@ -318,7 +318,7 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-01-01";
+        this.apiVersion = "2024-05-01-preview";
         this.clusters = new ClustersClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
