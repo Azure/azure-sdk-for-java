@@ -1,7 +1,8 @@
 param(
   [Parameter(Mandatory=$true)][string]$SourceDirectory,
   [Parameter(Mandatory=$true)][string]$TargetDirectory,
-  [Parameter(Mandatory=$true)][array]$Artifacts
+  [Parameter(Mandatory=$false)][array]$Artifacts,
+  [Parameter(Mandatory=$false)][string] $PackageInfoDir = $null
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,6 +11,28 @@ Write-Host "Source Directory is: $SourceDirectory"
 Write-host "Target Directory is: $TargetDirectory"
 
 . $PSScriptRoot\MavenPackaging.ps1
+
+if ($Artifacts -eq $null) {
+  $Artifacts = @()
+}
+
+if ($Artifacts.Count -eq 0) {
+  if (-not $PackageInfoDir -or (-not (Test-Path -Path $PackageInfoDir))) {
+    LogError "Artifacts list was empty and PackageInfoDir was null or incorrect."
+    exit(1)
+  }
+  Write-Host "Artifacts List was empty, getting Artifacts from PackageInfoDir=$PackageInfoDir"
+  [array]$packageInfoFiles = Get-ChildItem -Path $PackageInfoDir "*.json"
+  foreach($packageInfoFile in $packageInfoFiles) {
+    $packageInfoJson = Get-Content $packageInfoFile -Raw
+    $packageInfo = ConvertFrom-Json $packageInfoJson
+    $Artifacts += New-Object PSObject -Property @{
+                          groupId = $packageInfo.Group
+                          name    = $packageInfo.ArtifactName
+                      }
+
+  }
+}
 
 Write-Host "Searching for packages in: $SourceDirectory"
 $packageDetails = Get-MavenPackageDetails -ArtifactDirectory $SourceDirectory

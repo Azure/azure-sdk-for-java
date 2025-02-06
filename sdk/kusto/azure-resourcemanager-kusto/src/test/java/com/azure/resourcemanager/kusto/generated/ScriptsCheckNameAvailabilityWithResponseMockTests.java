@@ -23,7 +23,7 @@ public final class ScriptsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":false,\"name\":\"vqvwzkjopwbe\",\"message\":\"r\",\"reason\":\"AlreadyExists\"}";
+            = "{\"nameAvailable\":true,\"name\":\"pucygvoavyunss\",\"message\":\"ghiee\",\"reason\":\"AlreadyExists\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ScriptsCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.scripts()
-            .checkNameAvailabilityWithResponse("d", "opedbwdpyqyybxub", "dnafcbqwre",
-                new ScriptCheckNameRequest().withName("jelaqacigele"), com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("zfrgqhaohcm", "uocnjrohmbpyr", "xameblydyvkfkm",
+                new ScriptCheckNameRequest().withName("ocxnehvsmtodl"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("vqvwzkjopwbe", response.name());
-        Assertions.assertEquals("r", response.message());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("pucygvoavyunss", response.name());
+        Assertions.assertEquals("ghiee", response.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
     }
 }

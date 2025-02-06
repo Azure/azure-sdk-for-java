@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -58,6 +59,8 @@ public class TelemetryJavaDocCodeSnippets {
         AutoConfiguredOpenTelemetrySdk.initialize();
 
         SampleClient client = new SampleClientBuilder().build();
+
+        // this call will be traced using OpenTelemetry SDK initialized globally
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useglobalopentelemetry
@@ -70,11 +73,13 @@ public class TelemetryJavaDocCodeSnippets {
     public void useExplicitOpenTelemetry() {
         // BEGIN: io.clientcore.core.telemetry.useexplicitopentelemetry
 
-        OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
-        InstrumentationOptions<OpenTelemetry> instrumentationOptions = new InstrumentationOptions<OpenTelemetry>()
-            .setProvider(openTelemetry);
+        OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setTelemetryProvider(openTelemetry);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+
+        // this call will be traced using OpenTelemetry SDK provided explicitly
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useexplicitopentelemetry
@@ -87,13 +92,29 @@ public class TelemetryJavaDocCodeSnippets {
     public void disableDistributedTracing() {
         // BEGIN: io.clientcore.core.telemetry.disabledistributedtracing
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>()
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
             .setTracingEnabled(false);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.disabledistributedtracing
+    }
+
+    /**
+     * This code snippet shows how to disable distributed tracing
+     * for a specific instance of client.
+     */
+    public void disableMetrics() {
+        // BEGIN: io.clientcore.core.telemetry.disablemetrics
+
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setMetricsEnabled(false);
+
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+        client.clientCall();
+
+        // END: io.clientcore.core.telemetry.disablemetrics
     }
 
     /**
@@ -148,16 +169,15 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClientBuilder {
-        private InstrumentationOptions<?> instrumentationOptions;
-        // TODO (limolkova): do we need InstrumentationTrait?
-        public SampleClientBuilder instrumentationOptions(InstrumentationOptions<?> instrumentationOptions) {
+        private HttpInstrumentationOptions instrumentationOptions;
+        public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
             this.instrumentationOptions = instrumentationOptions;
             return this;
         }
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new HttpInstrumentationPolicy(instrumentationOptions, null))
+                .policies(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }
@@ -167,9 +187,9 @@ public class TelemetryJavaDocCodeSnippets {
         private final HttpPipeline httpPipeline;
         private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
 
-        SampleClient(InstrumentationOptions<?> instrumentationOptions, HttpPipeline httpPipeline) {
+        SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).createTracer();
         }
 
         public void clientCall() {

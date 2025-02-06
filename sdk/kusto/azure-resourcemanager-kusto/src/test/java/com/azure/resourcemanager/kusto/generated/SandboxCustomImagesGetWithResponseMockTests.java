@@ -22,7 +22,7 @@ public final class SandboxCustomImagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"tzuuvb\",\"requirementsFileContent\":\"grebwggahttzlsw\",\"provisioningState\":\"Failed\"},\"id\":\"qfutlxjo\",\"name\":\"zasunwqrjzfrgq\",\"type\":\"aohcmbuocn\"}";
+            = "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"lbijpzgsksrfhfvo\",\"baseImageName\":\"knbnxwcdommpvfq\",\"requirementsFileContent\":\"zfgbrttuiaclkie\",\"provisioningState\":\"Canceled\"},\"id\":\"jlfnthiq\",\"name\":\"yuttdiygbpvnwswm\",\"type\":\"xkyctwwgzwx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,12 @@ public final class SandboxCustomImagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SandboxCustomImage response = manager.sandboxCustomImages()
-            .getWithResponse("mzwcjjncqt", "z", "izvg", com.azure.core.util.Context.NONE)
+            .getWithResponse("wwexymzvlazipbh", "wvqsgny", "uuzivensrpmeyyvp", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(Language.PYTHON, response.language());
-        Assertions.assertEquals("tzuuvb", response.languageVersion());
-        Assertions.assertEquals("grebwggahttzlsw", response.requirementsFileContent());
+        Assertions.assertEquals("lbijpzgsksrfhfvo", response.languageVersion());
+        Assertions.assertEquals("knbnxwcdommpvfq", response.baseImageName());
+        Assertions.assertEquals("zfgbrttuiaclkie", response.requirementsFileContent());
     }
 }

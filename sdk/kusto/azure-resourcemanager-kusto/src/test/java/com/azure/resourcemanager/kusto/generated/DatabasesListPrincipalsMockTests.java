@@ -24,7 +24,7 @@ public final class DatabasesListPrincipalsMockTests {
     @Test
     public void testListPrincipals() throws Exception {
         String responseStr
-            = "{\"value\":[{\"role\":\"UnrestrictedViewer\",\"name\":\"pfpubcpzgpx\",\"type\":\"User\",\"fqn\":\"hjknidibg\",\"email\":\"xgpnr\",\"appId\":\"ov\",\"tenantName\":\"pikqmh\"}]}";
+            = "{\"value\":[{\"role\":\"Ingestor\",\"name\":\"erngbtcjuahokqto\",\"type\":\"App\",\"fqn\":\"uxofshfphwpnulai\",\"email\":\"zejywhslw\",\"appId\":\"jpllndnpdwrpq\",\"tenantName\":\"gfugsnnfhyet\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class DatabasesListPrincipalsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatabasePrincipal> response = manager.databases()
-            .listPrincipals("vxlx", "aglqivbgkcvkh", "zvuqdflvon", com.azure.core.util.Context.NONE);
+            .listPrincipals("hsycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, response.iterator().next().role());
-        Assertions.assertEquals("pfpubcpzgpx", response.iterator().next().name());
-        Assertions.assertEquals(DatabasePrincipalType.USER, response.iterator().next().type());
-        Assertions.assertEquals("hjknidibg", response.iterator().next().fqn());
-        Assertions.assertEquals("xgpnr", response.iterator().next().email());
-        Assertions.assertEquals("ov", response.iterator().next().appId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.iterator().next().role());
+        Assertions.assertEquals("erngbtcjuahokqto", response.iterator().next().name());
+        Assertions.assertEquals(DatabasePrincipalType.APP, response.iterator().next().type());
+        Assertions.assertEquals("uxofshfphwpnulai", response.iterator().next().fqn());
+        Assertions.assertEquals("zejywhslw", response.iterator().next().email());
+        Assertions.assertEquals("jpllndnpdwrpq", response.iterator().next().appId());
     }
 }

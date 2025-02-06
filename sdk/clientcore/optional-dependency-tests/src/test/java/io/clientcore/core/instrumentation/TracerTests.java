@@ -36,7 +36,8 @@ public class TracerTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions otelOptions;
+    private OpenTelemetry openTelemetry;
     private Tracer tracer;
 
     @BeforeEach
@@ -44,9 +45,9 @@ public class TracerTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+        otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
+        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
     }
 
     @AfterEach
@@ -152,7 +153,7 @@ public class TracerTests {
     @SuppressWarnings("try")
     @Test
     public void implicitParent() throws Exception {
-        io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
+        io.opentelemetry.api.trace.Tracer otelTracer = openTelemetry.getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
         try (AutoCloseable scope = parent.makeCurrent()) {
             Span child = tracer.spanBuilder("child", INTERNAL, null).startSpan();
@@ -171,8 +172,8 @@ public class TracerTests {
     }
 
     @Test
-    public void explicitParent() throws Exception {
-        io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
+    public void explicitParent() {
+        io.opentelemetry.api.trace.Tracer otelTracer = openTelemetry.getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
 
         Span child = tracer.spanBuilder("child", INTERNAL, OTelSpanContext.fromOTelContext(Context.root().with(parent)))

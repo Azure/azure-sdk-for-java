@@ -5,37 +5,22 @@
 package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.quota.models.AdditionalAttributesPatch;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntityBasePatch;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
 import org.junit.jupiter.api.Assertions;
 
 public final class GroupQuotasEntityBasePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupQuotasEntityBasePatch model = BinaryData.fromString(
-            "{\"displayName\":\"s\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"ServiceTreeId\",\"value\":\"wnw\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"Succeeded\"}")
-            .toObject(GroupQuotasEntityBasePatch.class);
-        Assertions.assertEquals("s", model.displayName());
-        Assertions.assertEquals(GroupingIdType.SERVICE_TREE_ID,
-            model.additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("wnw", model.additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION, model.additionalAttributes().environment());
+        GroupQuotasEntityBasePatch model
+            = BinaryData.fromString("{\"displayName\":\"f\",\"provisioningState\":\"Failed\"}")
+                .toObject(GroupQuotasEntityBasePatch.class);
+        Assertions.assertEquals("f", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotasEntityBasePatch model = new GroupQuotasEntityBasePatch().withDisplayName("s")
-            .withAdditionalAttributes(new AdditionalAttributesPatch()
-                .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.SERVICE_TREE_ID).withValue("wnw"))
-                .withEnvironment(EnvironmentType.NON_PRODUCTION));
+        GroupQuotasEntityBasePatch model = new GroupQuotasEntityBasePatch().withDisplayName("f");
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityBasePatch.class);
-        Assertions.assertEquals("s", model.displayName());
-        Assertions.assertEquals(GroupingIdType.SERVICE_TREE_ID,
-            model.additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("wnw", model.additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION, model.additionalAttributes().environment());
+        Assertions.assertEquals("f", model.displayName());
     }
 }
