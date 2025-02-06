@@ -33,15 +33,6 @@ steps:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       ExcludePaths: ${{parameters.ExcludePaths}}
 
-  - pwsh: |
-      $temp = '$(ArtifactPackageNames)'
-      if ($temp) {
-        Write-Host "ArtifactPackageNames is set, value=$temp"
-      } else {
-        Write-Host "ArtifactPackageNames was not set"
-      }
-    displayName: Output ArtifactPackageNames if set
-
   # Create the ProjectList and ProjectListSha256 variables.
   # The ProjectList is used by subsequent steps and tasks to run CI.
   # The ProjectListSha256 is used by the cache key, previously the cache key was using ProjectList but it was found
@@ -55,6 +46,7 @@ steps:
     ARTIFACTSJSON: $(ArtifactsJson)
     ADDITIONALMODULESJSON: $(AdditionalModulesJson)
     PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
+    ARTIFACTPACKAGENAMES: $(ArtifactPackageNames)
 
 # The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
 # Post-Job Cache will fail because there's no .m2/repository
