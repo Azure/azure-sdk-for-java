@@ -188,7 +188,7 @@ public final class PollOperation {
      */
     static <T> PollResponse<PollResult<T>> pollResponse(SerializerAdapter serializerAdapter,
         LongRunningOperationStatus operationStatus, String pollResponseBody, Type pollResultType, Duration pollDelay) {
-        T result = PollOperation.deserialize(serializerAdapter, pollResponseBody, pollResultType);
+        T result = deserialize(serializerAdapter, pollResponseBody, pollResultType);
         return new PollResponse<>(operationStatus, new PollResult<>(result), pollDelay);
     }
 
