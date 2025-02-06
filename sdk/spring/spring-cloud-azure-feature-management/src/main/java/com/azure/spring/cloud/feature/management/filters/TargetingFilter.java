@@ -52,7 +52,7 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
      * Audience that always returns false
      */
     private static final String EXCLUSION_CAMEL = "Exclusion";
-    protected static final String EXCLUSION = "Exclusion";
+
     /**
      * Error message for when the total Audience value is greater than 100 percent.
      */
@@ -111,7 +111,6 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         }
 
         TargetingContext targetingContext = new TargetingFilterContext();
-
         if (appContext != null && appContext instanceof TargetingContext) {
             // Use this if, there is an appContext + the contextualAccessor, or there is no contextAccessor.
             targetingContext = (TargetingContext) appContext;
@@ -151,10 +150,10 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
             if (exclusionMap == null) {
                 exclusionMap = new HashMap<>();
             }
-            
+
             Object users = exclusionMap.get(exclusionUserValue);
             Object groups = exclusionMap.get(exclusionGroupsValue);
-            
+
             Map<String, Object> exclusion = new HashMap<>();
 
             if (users instanceof Map) {

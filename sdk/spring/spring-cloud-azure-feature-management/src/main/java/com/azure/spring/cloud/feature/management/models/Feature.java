@@ -35,6 +35,7 @@ public class Feature {
 
     /**
      * @param id the id to set
+     * @return Feature
      */
     public Feature setId(String id) {
         this.id = id;
@@ -50,6 +51,7 @@ public class Feature {
 
     /**
      * @param enabled the enabled to set
+     * @return Feature
      */
     public Feature setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -58,14 +60,15 @@ public class Feature {
 
     /**
      * @return the description
-     * */
+     */
     public String getDescription() {
         return description;
     }
 
     /**
      * @param description the description to set
-     * */
+     * @return Feature
+     */
     public Feature setDescription(String description) {
         this.description = description;
         return this;
@@ -73,17 +76,17 @@ public class Feature {
 
     /**
      * @return the conditions
-     * */
+     */
     public Conditions getConditions() {
         return conditions;
     }
 
     /**
      * @param conditions the conditions to set
-     * */
+     * @return Feature
+     */
     public Feature setConditions(Conditions conditions) {
         this.conditions = conditions;
         return this;
     }
-
 }

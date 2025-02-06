@@ -23,6 +23,7 @@ import com.azure.spring.cloud.feature.management.filters.FeatureFilterAsync;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.models.Conditions;
+import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
 import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
@@ -42,8 +43,8 @@ public class FeatureManager {
     private final FeatureManagementProperties featureManagementConfigurations;
 
     private transient FeatureManagementConfigProperties properties;
-    
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(100);
+
+    private static final Duration DEFAULT_BLOCK_TIMEOUT = Duration.ofSeconds(100);
 
     /**
      * Can be called to check if a feature is enabled or disabled.
@@ -69,7 +70,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Mono<Boolean> isEnabledAsync(String feature) {
-        return checkFeature(feature, null);
+        return checkFeature(feature, null).map(event -> event.isEnabled());
     }
 
     /**
@@ -82,7 +83,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature) throws FilterNotFoundException {
-        return checkFeature(feature, null).block(DEFAULT_REQUEST_TIMEOUT);
+        return checkFeature(feature, null).map(event -> event.isEnabled()).block(DEFAULT_BLOCK_TIMEOUT);
     }
 
     /**
@@ -96,7 +97,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Mono<Boolean> isEnabledAsync(String feature, Object featureContext) {
-        return checkFeature(feature, featureContext);
+        return checkFeature(feature, featureContext).map(event -> event.isEnabled());
     }
 
     /**
@@ -110,30 +111,40 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature, Object featureContext) throws FilterNotFoundException {
-        return checkFeature(feature, featureContext).block(DEFAULT_REQUEST_TIMEOUT);
+        return checkFeature(feature, featureContext).map(event -> event.isEnabled()).block(DEFAULT_BLOCK_TIMEOUT);
     }
 
-    private Mono<Boolean> checkFeature(String featureName, Object featureContext) throws FilterNotFoundException {
+    private Mono<EvaluationEvent> checkFeature(String featureName, Object featureContext)
+        throws FilterNotFoundException {
         Feature featureFlag = featureManagementConfigurations.getFeatureFlags().stream()
             .filter(feature -> feature.getId().equals(featureName)).findAny().orElse(null);
 
+        EvaluationEvent event = new EvaluationEvent(featureFlag);
+
         if (featureFlag == null) {
-            return Mono.just(false);
+            LOGGER.warn("Feature flag %s not found", featureName);
+            return Mono.just(event);
         }
 
-        if (featureFlag.getConditions().getClientFilters().size() == 0) {
-            return Mono.just(featureFlag.isEnabled());
+        if (!featureFlag.isEnabled()) {
+            // If a feature flag is disabled and override can't enable it
+            return Mono.just(event.setEnabled(false));
         }
 
-        return checkFeatureFilters(featureFlag, featureContext);
+        Mono<EvaluationEvent> result = this.checkFeatureFilters(event, featureContext);
+
+        return result;
     }
 
-    private Mono<Boolean> checkFeatureFilters(Feature featureFlag, Object featureContext) {
+    private Mono<EvaluationEvent> checkFeatureFilters(EvaluationEvent event, Object featureContext) {
+        Feature featureFlag = event.getFeature();
         Conditions conditions = featureFlag.getConditions();
         List<FeatureFilterEvaluationContext> featureFilters = conditions.getClientFilters();
 
         if (featureFilters.size() == 0) {
-            return Mono.just(true);
+            return Mono.just(event.setEnabled(true));
+        } else {
+            event.setEnabled(conditions.getRequirementType().equals(ALL_REQUIREMENT_TYPE));
         }
 
         List<Mono<Boolean>> filterResults = new ArrayList<Mono<Boolean>>();
@@ -165,10 +176,14 @@ public class FeatureManager {
         }
 
         if (ALL_REQUIREMENT_TYPE.equals(featureFlag.getConditions().getRequirementType())) {
-            return Flux.merge(filterResults).reduce((a, b) -> a && b).single();
+            return Flux.merge(filterResults).reduce((a, b) -> {
+                return a && b;
+            }).single().map(result -> {
+                return event.setEnabled(result);
+            });
         }
         // Any Filter must be true
-        return Flux.merge(filterResults).reduce((a, b) -> a || b).single();
+        return Flux.merge(filterResults).reduce((a, b) -> a || b).single().map(result -> event.setEnabled(result));
     }
 
     /**
