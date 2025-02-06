@@ -3,22 +3,34 @@
 
 package io.clientcore.core.implementation.http.rest;
 
+import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.annotation.ServiceInterface;
+import io.clientcore.core.annotation.TypeConditions;
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotation.BodyParam;
 import io.clientcore.core.http.annotation.HeaderParam;
+import io.clientcore.core.http.annotation.HostParam;
 import io.clientcore.core.http.annotation.HttpRequestInformation;
+import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.util.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,6 +43,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.util.TestUtils.assertArraysEqual;
@@ -56,6 +69,83 @@ public class RestProxyImplTests {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         void testVoidMethod(Context context);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/type/model", expectedStatusCodes = { 200 })
+        @UnexpectedResponseExceptionDetail
+        Response<Model> testModelResponseBody(RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/type/array/model", expectedStatusCodes = { 200 })
+        @UnexpectedResponseExceptionDetail
+        Response<List<Model>> testArrayResponseBody(RequestOptions requestOptions);
+    }
+
+    @Metadata(conditions = { TypeConditions.IMMUTABLE })
+    public static final class Model implements JsonSerializable<Model> {
+        private final String property;
+
+        public Model(String property) {
+            this.property = property;
+        }
+
+        public String getProperty() {
+            return this.property;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("property", this.property);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static Model fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String property = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("property".equals(fieldName)) {
+                        property = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                Model deserializedModel = new Model(property);
+
+                return deserializedModel;
+            });
+        }
+    }
+
+    @Test
+    public void modelResponseBody() {
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+        HttpClient client
+            = request -> new MockHttpResponse(new HttpRequest(HttpMethod.GET, "").setRequestOptions(requestOptions),
+                200, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                BinaryData.fromString("{\"property\":\"value1\"}"));
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
+
+        Response<Model> response = testInterface.testModelResponseBody(requestOptions);
+
+        Assertions.assertEquals("value1", response.getValue().getProperty());
+    }
+
+    @Test
+    public void arrayResponseBody() {
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+        HttpClient client
+            = request -> new MockHttpResponse(new HttpRequest(HttpMethod.GET, "").setRequestOptions(requestOptions),
+                200, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                BinaryData.fromString("[{\"property\":\"value1\"},{\"property\":\"value2\"}]"));
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
+
+        Response<List<Model>> response = testInterface.testArrayResponseBody(requestOptions);
+
+        Assertions.assertEquals("value1", response.getValue().get(0).getProperty());
     }
 
     @Test
