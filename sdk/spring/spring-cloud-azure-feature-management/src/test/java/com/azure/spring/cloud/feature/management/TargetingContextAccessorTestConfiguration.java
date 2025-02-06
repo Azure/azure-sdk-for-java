@@ -24,7 +24,6 @@ public class TargetingContextAccessorTestConfiguration {
 
         @Override
         public void configureTargetingContext(TargetingContext context) {
-            return;
         }
         
     }
