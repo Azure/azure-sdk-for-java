@@ -171,6 +171,13 @@ extends:
       - name: perf-test-core
         groupId: com.azure
 
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
+
     # Run separate version override tests using a different artifacts list
     # This matrix config overrides the ArtifactsJson variable
     AdditionalMatrixConfigs:

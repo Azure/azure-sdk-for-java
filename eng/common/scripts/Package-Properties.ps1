@@ -90,14 +90,20 @@ class PackageProps {
                 $result = [PSCustomObject]@{
                     ArtifactConfig = [HashTable]$artifactForCurrentPackage
                     MatrixConfigs  = @()
+                    AdditionalMatrixConfigs = @()
                 }
 
                 # if we know this is the matrix for our file, we should now see if there is a custom matrix config for the package
                 $matrixConfigList = GetValueSafelyFrom-Yaml $content @("extends", "parameters", "MatrixConfigs")
-                # JRS - it's unclear if this is the place add AdditionalMatrixConfigs, it seems
-                # that if this is set, it'll replace the basic test matrix
+
                 if ($matrixConfigList) {
-                    $result.MatrixConfigs = $matrixConfigList
+                    $result.MatrixConfigs += $matrixConfigList
+                }
+
+                $additionalMatrixConfigList = GetValueSafelyFrom-Yaml $content @("extends", "parameters", "AdditionalMatrixConfigs")
+
+                if ($additionalMatrixConfigList) {
+                    $result.AdditionalMatrixConfigs += $additionalMatrixConfigList
                 }
 
                 return $result
@@ -126,7 +132,8 @@ class PackageProps {
                     # treat this CI file as the source of the Matrix for this package
                     # JRS - This change will have to be made in azure-sdk-tools
                     # but right now it's being done for testing
-                    if ($ciArtifactResult.AdditionalMatrixConfigs) {
+
+                    if ($ciArtifactResult.PSObject.Properties.Name -contains "AdditionalMatrixConfigs" -and $ciArtifactResult.AdditionalMatrixConfigs) {
                         LogWarning "JRS-adding AdditionalMatrixConfigs from $($ciFile.FullName)"
                         $this.CIMatrixConfigs += $ciArtifactResult.AdditionalMatrixConfigs
                     }
