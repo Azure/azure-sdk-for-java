@@ -10,6 +10,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.weather.implementation.models.LatLongPair;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.azure.core.models.GeoPosition;
 
@@ -22,7 +24,7 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     /*
      * Datetime the forecast is valid, displayed in ISO8601 format.
      */
-    private String timestamp;
+    private OffsetDateTime timestamp;
 
     /*
      * Coordinates of the storm
@@ -65,7 +67,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     private Boolean hasTropicalPotential;
 
     /*
-     * True when the storm is weakening away, and will no longer become a tropical system.
+     * True when the storm is weakening away, and will no longer become a tropical
+     * system.
      */
     private Boolean isPostTropical;
 
@@ -81,11 +84,12 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the timestamp property: Datetime the forecast is valid, displayed in ISO8601 format.
+     * Get the timestamp property: Datetime the forecast is valid, displayed in
+     * ISO8601 format.
      *
      * @return the timestamp value.
      */
-    public String getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
 
@@ -99,7 +103,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the maxWindGust property: Maximum wind gust speed associated with the storm. May be NULL.
+     * Get the maxWindGust property: Maximum wind gust speed associated with the
+     * storm. May be NULL.
      *
      * @return the maxWindGust value.
      */
@@ -108,7 +113,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the sustainedWind property: Maximum sustained wind speed associated with the storm. May be NULL.
+     * Get the sustainedWind property: Maximum sustained wind speed associated with
+     * the storm. May be NULL.
      *
      * @return the sustainedWind value.
      */
@@ -117,7 +123,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the minimumPressure property: Minimum pressure associated with the storm. May be NULL.
+     * Get the minimumPressure property: Minimum pressure associated with the storm.
+     * May be NULL.
      *
      * @return the minimumPressure value.
      */
@@ -144,7 +151,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the isSubtropical property: True when the depression is classified as a subtropical cyclone.
+     * Get the isSubtropical property: True when the depression is classified as a
+     * subtropical cyclone.
      *
      * @return the isSubtropical value.
      */
@@ -153,7 +161,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the hasTropicalPotential property: True when storm may develop into a Tropical System.
+     * Get the hasTropicalPotential property: True when storm may develop into a
+     * Tropical System.
      *
      * @return the hasTropicalPotential value.
      */
@@ -162,7 +171,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the isPostTropical property: True when the storm is weakening away, and will no longer become a tropical
+     * Get the isPostTropical property: True when the storm is weakening away, and
+     * will no longer become a tropical
      * system.
      *
      * @return the isPostTropical value.
@@ -172,7 +182,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     }
 
     /**
-     * Get the windRadiiSummary property: Displayed when details=true or radiiGeometry=true in the request.
+     * Get the windRadiiSummary property: Displayed when details=true or
+     * radiiGeometry=true in the request.
      *
      * @return the windRadiiSummary value.
      */
@@ -186,7 +197,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dateTime", this.timestamp);
+        jsonWriter.writeStringField("dateTime",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeJsonField("location", this.coordinates);
         jsonWriter.writeJsonField("maxWindGust", this.maxWindGust);
         jsonWriter.writeJsonField("sustainedWind", this.sustainedWind);
@@ -205,8 +217,9 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
      * Reads an instance of StormLocation from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StormLocation if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of StormLocation if the JsonReader was pointing to an
+     *         instance of it, or null if it was
+     *         pointing to JSON null.
      * @throws IOException If an error occurs while reading the StormLocation.
      */
     public static StormLocation fromJson(JsonReader jsonReader) throws IOException {
@@ -216,7 +229,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dateTime".equals(fieldName)) {
-                    deserializedStormLocation.timestamp = reader.getString();
+                    deserializedStormLocation.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("location".equals(fieldName)) {
                     deserializedStormLocation.coordinates = LatLongPair.fromJson(reader);
                 } else if ("maxWindGust".equals(fieldName)) {

@@ -94,7 +94,8 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
     }
 
     /**
-     * Get the isRetired property: True if the storm name has been permanently retired in the source basin.
+     * Get the isRetired property: True if the storm name has been permanently
+     * retired in the source basin.
      *
      * @return the isRetired value.
      */
@@ -103,7 +104,8 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
     }
 
     /**
-     * Get the isSubtropical property: True when the depression is classified as a subtropical cyclone.
+     * Get the isSubtropical property: True when the depression is classified as a
+     * subtropical cyclone.
      *
      * @return the isSubtropical value.
      */
@@ -112,11 +114,12 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
     }
 
     /**
-     * Get the govId property: Government storm ID. This will match the depression number.
+     * Get the govId property: Government storm ID. This will match the depression
+     * number.
      *
      * @return the govId value.
      */
-    public Integer getGovId() {
+    public Integer getGovernmentId() {
         return this.govId;
     }
 
@@ -140,9 +143,11 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      * Reads an instance of StormSearchResultItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StormSearchResultItem if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StormSearchResultItem.
+     * @return An instance of StormSearchResultItem if the JsonReader was pointing
+     *         to an instance of it, or null if it
+     *         was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     *                     StormSearchResultItem.
      */
     public static StormSearchResultItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

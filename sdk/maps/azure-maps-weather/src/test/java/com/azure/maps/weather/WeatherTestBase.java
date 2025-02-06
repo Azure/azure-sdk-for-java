@@ -284,7 +284,7 @@ public class WeatherTestBase extends TestProxyTestBase {
         validateGetCurrentAirQuality(expected, response.getValue());
     }
 
-    static void validateGetAirQualityDailyForecasts(DailyAirQualityForecastResult expected,
+    static void validateGetDailyAirQualityForecast(DailyAirQualityForecastResult expected,
         DailyAirQualityForecastResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
@@ -293,14 +293,14 @@ public class WeatherTestBase extends TestProxyTestBase {
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
 
-    static void validateGetAirQualityDailyForecastsWithResponse(DailyAirQualityForecastResult expected,
+    static void validateGetDailyAirQualityForecastWithResponse(DailyAirQualityForecastResult expected,
         Response<DailyAirQualityForecastResult> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetAirQualityDailyForecasts(expected, response.getValue());
+        validateGetDailyAirQualityForecast(expected, response.getValue());
     }
 
-    static void validateGetAirQualityHourlyForecasts(AirQualityResult expected, AirQualityResult actual) {
+    static void validateGetHourlyAirQualityForecast(AirQualityResult expected, AirQualityResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.getNextLink(), actual.getNextLink());
@@ -308,11 +308,11 @@ public class WeatherTestBase extends TestProxyTestBase {
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
 
-    static void validateGetAirQualityHourlyForecastsWithResponse(AirQualityResult expected,
+    static void validateGetHourlyAirQualityForecastWithResponse(AirQualityResult expected,
         Response<AirQualityResult> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetAirQualityHourlyForecasts(expected, response.getValue());
+        validateGetHourlyAirQualityForecast(expected, response.getValue());
     }
 
     static void validateGetDailyHistoricalRecords(DailyHistoricalRecordsResult expected,

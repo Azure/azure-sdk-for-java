@@ -134,7 +134,7 @@ Get Tropical Storm Search
 ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
-    client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+    client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
 }
 ```
 
@@ -144,7 +144,7 @@ ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
     TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
-        storm.getBasinId(), storm.getGovId())
+        storm.getBasinId(), storm.getGovernmentId())
         .setIncludeWindowGeometry(true);
     client.getTropicalStormForecast(forecastOptions);
 }
@@ -156,7 +156,7 @@ ActiveStormResult result = client.getTropicalStormActive();
 if (result.getActiveStorms().size() > 0) {
     ActiveStorm storm = result.getActiveStorms().get(0);
     TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
-        storm.getBasinId(), storm.getGovId());
+        storm.getBasinId(), storm.getGovernmentId());
     client.getTropicalStormLocations(locationOptions);
 }
 ```
@@ -169,13 +169,13 @@ client.getCurrentAirQuality(
 
 Get Air Quality Daily Forecasts
 ```java com.azure.maps.weather.sync.get_air_quality_daily_forecasts
-client.getAirQualityDailyForecasts(
+client.getDailyAirQualityForecast(
     new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
 ```
 
 Get Air Quality Hourly Forecasts
 ```java com.azure.maps.weather.sync.get_air_quality_daily_forecasts
-client.getAirQualityDailyForecasts(
+client.getDailyAirQualityForecast(
     new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
 ```
 

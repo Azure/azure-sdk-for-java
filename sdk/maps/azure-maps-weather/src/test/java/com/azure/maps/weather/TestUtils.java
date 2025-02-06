@@ -37,7 +37,8 @@ public class TestUtils {
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * Returns a stream of arguments that includes all combinations of eligible
+     * {@link HttpClient HttpClients} and
      * service versions that should be tested.
      *
      * @return A stream of HttpClient and service version combinations to test.
@@ -101,11 +102,11 @@ public class TestUtils {
     }
 
     static DailyAirQualityForecastResult getExpectedAirQualityDailyForecasts() {
-        return deserialize("getairqualitydailyforecasts.json", DailyAirQualityForecastResult::fromJson);
+        return deserialize("getdailyairqualityforecast.json", DailyAirQualityForecastResult::fromJson);
     }
 
     static AirQualityResult getExpectedAirQualityHourlyForecasts() {
-        return deserialize("getairqualityhourlyforecasts.json", AirQualityResult::fromJson);
+        return deserialize("gethourlyairqualityforecast.json", AirQualityResult::fromJson);
     }
 
     static DailyHistoricalRecordsResult getExpectedDailyHistoricalRecords() {
