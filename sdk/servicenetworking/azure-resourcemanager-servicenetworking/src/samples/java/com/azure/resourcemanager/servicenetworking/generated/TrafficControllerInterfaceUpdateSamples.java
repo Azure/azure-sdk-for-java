@@ -14,7 +14,7 @@ import java.util.Map;
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * TrafficControllerPatch.json
      */
     /**

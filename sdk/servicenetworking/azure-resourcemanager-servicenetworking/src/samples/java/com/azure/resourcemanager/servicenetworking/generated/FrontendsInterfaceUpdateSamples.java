@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
 public final class FrontendsInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * FrontendPatch.json
      */
     /**

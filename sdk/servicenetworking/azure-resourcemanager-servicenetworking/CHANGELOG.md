@@ -1,14 +1,134 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0 (2025-02-06)
+
+- Azure Resource Manager TrafficController client library for Java. This package contains Microsoft Azure SDK for TrafficController Management SDK. Traffic Controller Provider management API. Package tag package-2025-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.WafSecurityPolicy` was added
 
-### Bugs Fixed
+* `models.SecurityPolicyConfigurationsUpdate` was added
 
-### Other Changes
+* `models.SecurityPolicy$Update` was added
+
+* `models.SecurityPoliciesInterfaces` was added
+
+* `models.SecurityPolicyListResult` was added
+
+* `models.SecurityPolicy$UpdateStages` was added
+
+* `models.SecurityPolicy$DefinitionStages` was added
+
+* `models.TrafficControllerUpdateProperties` was added
+
+* `models.SecurityPolicyProperties` was added
+
+* `models.SecurityPolicyConfigurations` was added
+
+* `models.SecurityPolicyUpdate` was added
+
+* `models.SecurityPolicy` was added
+
+* `models.SecurityPolicy$Definition` was added
+
+* `models.SecurityPolicyUpdateProperties` was added
+
+* `models.WafPolicy` was added
+
+* `models.WafSecurityPolicyUpdate` was added
+
+* `models.WafPolicyUpdate` was added
+
+* `models.PolicyType` was added
+
+#### `models.FrontendListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TrafficControllerUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `properties()` was added
+* `withProperties(models.TrafficControllerUpdateProperties)` was added
+
+#### `TrafficControllerManager` was modified
+
+* `securityPoliciesInterfaces()` was added
+
+#### `models.AssociationUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AssociationSubnet` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AssociationSubnetUpdate` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TrafficControllerProperties` was modified
+
+* `securityPolicyConfigurations()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withSecurityPolicyConfigurations(models.SecurityPolicyConfigurations)` was added
+* `securityPolicies()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FrontendUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AssociationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AssociationProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResourceId` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TrafficController$Update` was modified
+
+* `withProperties(models.TrafficControllerUpdateProperties)` was added
+
+#### `models.TrafficControllerListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AssociationUpdateProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FrontendProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.1.0-beta.1 (2024-09-30)
 

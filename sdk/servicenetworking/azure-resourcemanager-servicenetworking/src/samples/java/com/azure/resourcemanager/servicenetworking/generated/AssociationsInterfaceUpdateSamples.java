@@ -15,7 +15,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationUpdatePrope
 public final class AssociationsInterfaceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2025-01-01/examples/
      * AssociationPatch.json
      */
     /**
