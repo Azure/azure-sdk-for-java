@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains the implementation of the OpenTelemetry telemetry provider.
+ * This package contains OpenTelemetry-based implementation of {@link java.lang.instrument.Instrumentation}
  */
 package io.clientcore.core.implementation.instrumentation.otel;

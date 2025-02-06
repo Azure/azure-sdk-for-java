@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rweft\"},\"privateLinkServiceConnectionState\":{\"status\":\"qejpmvssehaepwa\",\"description\":\"xtczhupeuknijd\",\"actionsRequired\":\"yespydjfbocyv\"},\"groupId\":\"ulrtywikdmh\",\"provisioningState\":\"Succeeded\"},\"id\":\"uacdixmxuf\",\"name\":\"sryjqgdkfno\",\"type\":\"oeoq\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"gxyivpinbmh\"},\"privateLinkServiceConnectionState\":{\"status\":\"jijkgqxnhmbke\",\"description\":\"jauj\",\"actionsRequired\":\"annggiy\"},\"groupId\":\"kdtaaw\",\"provisioningState\":\"Succeeded\"},\"id\":\"umrrqmbzm\",\"name\":\"kratbnxwbj\",\"type\":\"idbirkfpkso\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("ecmslclbl")
-            .withExistingCluster("uovmaonurjt", "mghihp")
+            .define("ukkutvl")
+            .withExistingCluster("yskbruff", "l")
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionStateProperty().withStatus("gctmgxuupbezq").withDescription("ydrtc"))
+                new PrivateLinkServiceConnectionStateProperty().withStatus("hbcdsziry").withDescription("ndo"))
             .create();
 
-        Assertions.assertEquals("qejpmvssehaepwa", response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xtczhupeuknijd", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jijkgqxnhmbke", response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jauj", response.privateLinkServiceConnectionState().description());
     }
 }

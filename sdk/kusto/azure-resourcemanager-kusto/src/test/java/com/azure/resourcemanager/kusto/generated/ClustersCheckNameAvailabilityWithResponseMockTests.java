@@ -22,8 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ClustersCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr
-            = "{\"nameAvailable\":false,\"name\":\"bxhugcmjkavlgorb\",\"message\":\"tp\",\"reason\":\"Invalid\"}";
+        String responseStr = "{\"nameAvailable\":true,\"name\":\"mcjn\",\"message\":\"qdqx\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +32,13 @@ public final class ClustersCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.clusters()
-            .checkNameAvailabilityWithResponse("xhcmavmqfoudo", new ClusterCheckNameRequest().withName("hcgyyprotwyp"),
+            .checkNameAvailabilityWithResponse("dsdaultxijjumf", new ClusterCheckNameRequest().withName("waz"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("bxhugcmjkavlgorb", response.name());
-        Assertions.assertEquals("tp", response.message());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("mcjn", response.name());
+        Assertions.assertEquals("qdqx", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

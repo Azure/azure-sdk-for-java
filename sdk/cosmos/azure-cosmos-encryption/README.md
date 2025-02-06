@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>2.16.0</version>
+  <version>2.17.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -209,8 +209,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 <!-- LINKS -->
 [encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/src
 [cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
-[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
-[encryption_api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos-encryption/latest/index.html
+[api_documentation]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-cosmos/latest/index.html
+[encryption_api_documentation]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-cosmos-encryption/latest/index.html
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
@@ -227,3 +227,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)
+

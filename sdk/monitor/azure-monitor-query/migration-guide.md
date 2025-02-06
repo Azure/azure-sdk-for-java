@@ -176,9 +176,9 @@ queryResultsMono.subscribe(queryResult -> {
 More examples can be found at [Azure Monitor Query samples][README-Samples].
 
 <!-- Links -->
-[LogsQueryClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-monitor-query/latest/com/azure/monitor/query/LogsQueryClientBuilder.html
-[LogsQueryClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-monitor-query/latest/com/azure/monitor/query/LogsQueryClient.html
-[LogsQueryAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-monitor-query/latest/com/azure/monitor/query/LogsQueryAsyncClient.html
+[LogsQueryClientBuilder]: https://learn.microsoft.com/java/api/com.azure.monitor.query.logsqueryclientbuilder?view=azure-java-stable
+[LogsQueryClient]: https://learn.microsoft.com/java/api/com.azure.monitor.query.logsqueryclient?view=azure-java-stable
+[LogsQueryAsyncClient]: https://learn.microsoft.com/java/api/com.azure.monitor.query.logsqueryasyncclient?view=azure-java-stable
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces

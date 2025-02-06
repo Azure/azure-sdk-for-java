@@ -5,7 +5,9 @@ package io.clientcore.core.implementation.util;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.util.DateTimeRfc1123;
+import io.clientcore.core.util.UriBuilder;
 import io.clientcore.core.util.configuration.Configuration;
 
 import java.io.FileOutputStream;
@@ -101,7 +103,7 @@ public final class ImplUtils {
      * @return True if the character sequence is null or empty, false otherwise.
      */
     public static boolean isNullOrEmpty(CharSequence charSequence) {
-        return charSequence == null || charSequence.isEmpty();
+        return charSequence == null || charSequence.length() == 0;
     }
 
     /**
