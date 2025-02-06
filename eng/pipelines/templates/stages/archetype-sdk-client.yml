@@ -14,9 +14,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: not-specified
-  - name: TargetDocRepoName
-    type: string
-    default: azure-docs-sdk-java
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: MatrixConfigs
     type: object
     default:
@@ -46,9 +46,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: JavadocSafeJavaBuildVersion
-    type: string
-    default: $(JavadocSafeJavaBuildVersion)
   - name: LiveTestStages
     type: stageList
     default: []
@@ -91,6 +88,7 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               SDKType: ${{ parameters.SDKType }}
               Artifacts: ${{ parameters.Artifacts }}
+              ExcludePaths: ${{parameters.ExcludePaths}}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               IgnoreVerifyTypeSpecCodeGenerationError: ${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
               ReleaseArtifacts:
@@ -159,7 +157,6 @@ extends:
                         - ${{ artifact }}
               TestPipeline: ${{ parameters.TestPipeline }}
               ArtifactName: packages
-              TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
               # This where the MavenBreakGlassApprovers is set for the release tasks.
               ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                 Environment: 'MavenBreakGlassApprovers'

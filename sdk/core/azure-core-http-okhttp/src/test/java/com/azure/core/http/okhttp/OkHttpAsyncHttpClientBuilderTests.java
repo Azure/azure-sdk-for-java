@@ -8,7 +8,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.test.utils.TestConfigurationSource;
+import com.azure.core.util.SharedExecutorService;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
@@ -33,9 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -302,13 +302,10 @@ public class OkHttpAsyncHttpClientBuilderTests {
          * result in the request we are about to send to be cancelled since the server will wait 5 seconds before
          * returning a response.
          */
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                assertEquals(1, dispatcher.runningCallsCount());
-                dispatcher.cancelAll();
-            }
-        }, 1000);
+        SharedExecutorService.getInstance().schedule(() -> {
+            assertEquals(1, dispatcher.runningCallsCount());
+            dispatcher.cancelAll();
+        }, 1000, TimeUnit.MILLISECONDS);
 
         StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, SERVER_HTTP_URI + DISPATCHER_PATH)))
             .verifyError();

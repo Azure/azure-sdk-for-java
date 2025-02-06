@@ -2,27 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.core.http.okhttp.implementation;
 
+import com.azure.core.util.SharedExecutorService;
 import okhttp3.Call;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Implementation of {@link Call} which applies a per-call response timeout to the call.
  */
+@SuppressWarnings("rawtypes")
 public final class PerCallTimeoutCall {
-    // Singleton timer to schedule timeout tasks.
-    // TODO (alzimmer): Make sure one thread is sufficient for all timeout tasks.
-    private static final Timer TIMER = new Timer("azure-okhttp-response-timeout-tracker", true);
-
     private final long perCallTimeout;
 
     private volatile boolean timedOut;
 
-    private static final AtomicReferenceFieldUpdater<PerCallTimeoutCall, TimerTask> CURRENT_TIMEOUT_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(PerCallTimeoutCall.class, TimerTask.class, "currentTimeout");
-    private volatile TimerTask currentTimeout;
+    private static final AtomicReferenceFieldUpdater<PerCallTimeoutCall, ScheduledFuture> CURRENT_TIMEOUT_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(PerCallTimeoutCall.class, ScheduledFuture.class, "currentTimeout");
+    private volatile ScheduledFuture currentTimeout;
 
     /**
      * Creates a new instance of PerCallTimeoutCall.
@@ -42,12 +40,13 @@ public final class PerCallTimeoutCall {
      */
     public void beginPerCallTimeout(Call call) {
         if (perCallTimeout > 0) {
-            TimerTask currentTimeout = new PerCallTimerTask(this, call);
-
-            TIMER.schedule(currentTimeout, perCallTimeout);
-            TimerTask existing = CURRENT_TIMEOUT_UPDATER.getAndSet(this, currentTimeout);
+            ScheduledFuture<?> future = SharedExecutorService.getInstance().schedule(() -> {
+                this.timedOut = true;
+                call.cancel();
+            }, perCallTimeout, TimeUnit.MILLISECONDS);
+            ScheduledFuture<?> existing = CURRENT_TIMEOUT_UPDATER.getAndSet(this, future);
             if (existing != null) {
-                existing.cancel();
+                existing.cancel(false);
             }
         }
     }
@@ -58,9 +57,9 @@ public final class PerCallTimeoutCall {
      * Cancellations happen if the response returned before the timeout or if the call was cancelled externally.
      */
     public void endPerCallTimeout() {
-        TimerTask currentTimeout = CURRENT_TIMEOUT_UPDATER.getAndSet(this, null);
+        ScheduledFuture<?> currentTimeout = CURRENT_TIMEOUT_UPDATER.getAndSet(this, null);
         if (currentTimeout != null) {
-            currentTimeout.cancel();
+            currentTimeout.cancel(false);
         }
     }
 
@@ -71,22 +70,5 @@ public final class PerCallTimeoutCall {
      */
     public boolean isTimedOut() {
         return timedOut;
-    }
-
-    private static final class PerCallTimerTask extends TimerTask {
-        private final PerCallTimeoutCall perCallTimeoutCall;
-        private final Call call;
-
-        PerCallTimerTask(PerCallTimeoutCall perCallTimeoutCall, Call call) {
-            this.perCallTimeoutCall = perCallTimeoutCall;
-            this.call = call;
-        }
-
-        @Override
-        public void run() {
-            // Set timeout first.
-            perCallTimeoutCall.timedOut = true;
-            call.cancel();
-        }
     }
 }

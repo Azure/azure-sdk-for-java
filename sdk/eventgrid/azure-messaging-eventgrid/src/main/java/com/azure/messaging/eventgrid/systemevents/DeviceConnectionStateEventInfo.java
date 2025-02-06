@@ -30,9 +30,9 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
     }
 
     /**
-     * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string
-     * compare can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If
-     * you are converting the string to hex, then the number is a 256 bit number.
+     * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
+     * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
+     * converting the string to hex, then the number is a 256 bit number.
      * 
      * @return the sequenceNumber value.
      */
@@ -41,9 +41,9 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
     }
 
     /**
-     * Set the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string
-     * compare can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If
-     * you are converting the string to hex, then the number is a 256 bit number.
+     * Set the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
+     * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
+     * converting the string to hex, then the number is a 256 bit number.
      * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the DeviceConnectionStateEventInfo object itself.
@@ -53,6 +53,9 @@ public final class DeviceConnectionStateEventInfo implements JsonSerializable<De
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

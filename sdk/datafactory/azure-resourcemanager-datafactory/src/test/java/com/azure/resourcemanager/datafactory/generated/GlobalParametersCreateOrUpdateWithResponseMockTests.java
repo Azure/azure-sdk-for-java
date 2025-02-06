@@ -25,7 +25,7 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"rzmkte\":{\"type\":\"Object\",\"value\":\"datatgv\"}},\"name\":\"euxxtslhjcwlfz\",\"type\":\"pwexcktgpcccg\",\"etag\":\"knjjskzuh\",\"id\":\"yavfeyybyduy\"}";
+            = "{\"properties\":{\"glcktraeraql\":{\"type\":\"Object\",\"value\":\"datathfas\"}},\"name\":\"yhwdogchdqtlbnkr\",\"type\":\"oxlwpeksrhkmzs\",\"etag\":\"p\",\"id\":\"sbp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,14 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GlobalParameterResource response = manager.globalParameters()
-            .define("z")
-            .withExistingFactory("zhprlx", "bm")
-            .withProperties(mapOf("wv",
-                new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("datajehsv"), "lcstu",
-                new GlobalParameterSpecification().withType(GlobalParameterType.BOOL)
-                    .withValue("datancifdxtibvqrhzpf")))
+            .define("aqlbdez")
+            .withExistingFactory("javpmokaqnuycd", "ymbefvuutlirz")
+            .withProperties(mapOf("ycdryjgxwd",
+                new GlobalParameterSpecification().withType(GlobalParameterType.INT).withValue("datauhearhkchyugj")))
             .create();
 
-        Assertions.assertEquals("yavfeyybyduy", response.id());
-        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("rzmkte").type());
+        Assertions.assertEquals("sbp", response.id());
+        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("glcktraeraql").type());
     }
 
     // Use "Map.of" if available

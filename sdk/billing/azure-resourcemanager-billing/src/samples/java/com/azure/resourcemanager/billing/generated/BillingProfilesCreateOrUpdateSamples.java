@@ -5,41 +5,62 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
-import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.AzurePlan;
+import com.azure.resourcemanager.billing.models.BillingProfileProperties;
+import com.azure.resourcemanager.billing.models.BillingProfilePropertiesBillTo;
+import com.azure.resourcemanager.billing.models.BillingProfilePropertiesShipTo;
 import java.util.Arrays;
 
-/** Samples for BillingProfiles CreateOrUpdate. */
+/**
+ * Samples for BillingProfiles CreateOrUpdate.
+ */
 public final class BillingProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/PutBillingProfile.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingProfilesCreateOrUpdate
+     * .json
      */
     /**
-     * Sample code: CreateBillingProfile.
-     *
+     * Sample code: BillingProfilesCreateOrUpdate.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void createBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingProfiles()
-            .createOrUpdate(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                new BillingProfileInner()
-                    .withDisplayName("Finance")
-                    .withPoNumber("ABC12345")
-                    .withBillTo(
-                        new AddressDetails()
-                            .withFirstName("Test")
-                            .withLastName("User")
-                            .withAddressLine1("Test Address 1")
-                            .withCity("Redmond")
-                            .withRegion("WA")
-                            .withCountry("US")
-                            .withPostalCode("fakeTokenPlaceholder"))
-                    .withInvoiceEmailOptIn(true)
+    public static void billingProfilesCreateOrUpdate(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingProfiles()
+            .createOrUpdate("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                "xxxx-xxxx-xxx-xxx",
+                new BillingProfileInner().withProperties(new BillingProfileProperties()
+                    .withBillTo(new BillingProfilePropertiesBillTo().withAddressLine1("Test Address1")
+                        .withAddressLine2("Test Address2")
+                        .withAddressLine3("Test Address3")
+                        .withCity("City")
+                        .withCompanyName("Contoso")
+                        .withCountry("US")
+                        .withEmail("abc@contoso.com")
+                        .withFirstName("Test")
+                        .withLastName("User")
+                        .withPhoneNumber("000-000-0000")
+                        .withPostalCode("fakeTokenPlaceholder")
+                        .withRegion("WA")
+                        .withIsValidAddress(true))
+                    .withDisplayName("Billing Profile 1")
                     .withEnabledAzurePlans(
-                        Arrays.asList(new AzurePlan().withSkuId("0001"), new AzurePlan().withSkuId("0002"))),
+                        Arrays.asList(new AzurePlan().withSkuId("0001"), new AzurePlan().withSkuId("0002")))
+                    .withInvoiceEmailOptIn(true)
+                    .withPoNumber("ABC12345")
+                    .withShipTo(new BillingProfilePropertiesShipTo().withAddressLine1("Test Address1")
+                        .withAddressLine2("Test Address2")
+                        .withAddressLine3("Test Address3")
+                        .withCity("City")
+                        .withCompanyName("Contoso")
+                        .withCountry("US")
+                        .withEmail("abc@contoso.com")
+                        .withFirstName("Test")
+                        .withLastName("User")
+                        .withPhoneNumber("000-000-0000")
+                        .withPostalCode("fakeTokenPlaceholder")
+                        .withRegion("WA")
+                        .withIsValidAddress(true))),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -108,4 +108,11 @@ public interface BatchManagementClient {
      * @return the PoolsClient object.
      */
     PoolsClient getPools();
+
+    /**
+     * Gets the NetworkSecurityPerimetersClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimetersClient object.
+     */
+    NetworkSecurityPerimetersClient getNetworkSecurityPerimeters();
 }

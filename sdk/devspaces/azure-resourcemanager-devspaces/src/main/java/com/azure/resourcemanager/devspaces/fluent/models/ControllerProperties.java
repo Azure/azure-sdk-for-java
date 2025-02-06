@@ -6,55 +6,57 @@ package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The ControllerProperties model. */
+/**
+ * The ControllerProperties model.
+ */
 @Fluent
-public final class ControllerProperties {
+public final class ControllerProperties implements JsonSerializable<ControllerProperties> {
     /*
      * Provisioning state of the Azure Dev Spaces Controller.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * DNS suffix for public endpoints running in the Azure Dev Spaces Controller.
      */
-    @JsonProperty(value = "hostSuffix", access = JsonProperty.Access.WRITE_ONLY)
     private String hostSuffix;
 
     /*
      * DNS name for accessing DataPlane services
      */
-    @JsonProperty(value = "dataPlaneFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String dataPlaneFqdn;
 
     /*
      * DNS of the target container host's API server
      */
-    @JsonProperty(value = "targetContainerHostApiServerFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String targetContainerHostApiServerFqdn;
 
     /*
      * Resource ID of the target container host
      */
-    @JsonProperty(value = "targetContainerHostResourceId", required = true)
     private String targetContainerHostResourceId;
 
     /*
      * Credentials of the target container host (base64).
      */
-    @JsonProperty(value = "targetContainerHostCredentialsBase64", required = true)
     private String targetContainerHostCredentialsBase64;
 
-    /** Creates an instance of ControllerProperties class. */
+    /**
+     * Creates an instance of ControllerProperties class.
+     */
     public ControllerProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Azure Dev Spaces Controller.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -63,7 +65,7 @@ public final class ControllerProperties {
 
     /**
      * Get the hostSuffix property: DNS suffix for public endpoints running in the Azure Dev Spaces Controller.
-     *
+     * 
      * @return the hostSuffix value.
      */
     public String hostSuffix() {
@@ -72,7 +74,7 @@ public final class ControllerProperties {
 
     /**
      * Get the dataPlaneFqdn property: DNS name for accessing DataPlane services.
-     *
+     * 
      * @return the dataPlaneFqdn value.
      */
     public String dataPlaneFqdn() {
@@ -81,7 +83,7 @@ public final class ControllerProperties {
 
     /**
      * Get the targetContainerHostApiServerFqdn property: DNS of the target container host's API server.
-     *
+     * 
      * @return the targetContainerHostApiServerFqdn value.
      */
     public String targetContainerHostApiServerFqdn() {
@@ -90,7 +92,7 @@ public final class ControllerProperties {
 
     /**
      * Get the targetContainerHostResourceId property: Resource ID of the target container host.
-     *
+     * 
      * @return the targetContainerHostResourceId value.
      */
     public String targetContainerHostResourceId() {
@@ -99,7 +101,7 @@ public final class ControllerProperties {
 
     /**
      * Set the targetContainerHostResourceId property: Resource ID of the target container host.
-     *
+     * 
      * @param targetContainerHostResourceId the targetContainerHostResourceId value to set.
      * @return the ControllerProperties object itself.
      */
@@ -110,7 +112,7 @@ public final class ControllerProperties {
 
     /**
      * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @return the targetContainerHostCredentialsBase64 value.
      */
     public String targetContainerHostCredentialsBase64() {
@@ -119,7 +121,7 @@ public final class ControllerProperties {
 
     /**
      * Set the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @param targetContainerHostCredentialsBase64 the targetContainerHostCredentialsBase64 value to set.
      * @return the ControllerProperties object itself.
      */
@@ -130,24 +132,70 @@ public final class ControllerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetContainerHostResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetContainerHostResourceId in model ControllerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetContainerHostResourceId in model ControllerProperties"));
         }
         if (targetContainerHostCredentialsBase64() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetContainerHostCredentialsBase64 in model"
-                            + " ControllerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetContainerHostCredentialsBase64 in model ControllerProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ControllerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetContainerHostResourceId", this.targetContainerHostResourceId);
+        jsonWriter.writeStringField("targetContainerHostCredentialsBase64", this.targetContainerHostCredentialsBase64);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ControllerProperties.
+     */
+    public static ControllerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerProperties deserializedControllerProperties = new ControllerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetContainerHostResourceId".equals(fieldName)) {
+                    deserializedControllerProperties.targetContainerHostResourceId = reader.getString();
+                } else if ("targetContainerHostCredentialsBase64".equals(fieldName)) {
+                    deserializedControllerProperties.targetContainerHostCredentialsBase64 = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedControllerProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("hostSuffix".equals(fieldName)) {
+                    deserializedControllerProperties.hostSuffix = reader.getString();
+                } else if ("dataPlaneFqdn".equals(fieldName)) {
+                    deserializedControllerProperties.dataPlaneFqdn = reader.getString();
+                } else if ("targetContainerHostApiServerFqdn".equals(fieldName)) {
+                    deserializedControllerProperties.targetContainerHostApiServerFqdn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerProperties;
+        });
+    }
 }

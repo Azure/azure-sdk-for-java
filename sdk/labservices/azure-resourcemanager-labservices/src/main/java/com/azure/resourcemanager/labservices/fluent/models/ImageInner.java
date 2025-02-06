@@ -8,31 +8,55 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.EnableState;
 import com.azure.resourcemanager.labservices.models.OsState;
 import com.azure.resourcemanager.labservices.models.OsType;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Lab services virtual machine image. */
+/**
+ * Lab services virtual machine image.
+ */
 @Fluent
 public final class ImageInner extends ProxyResource {
     /*
      * Metadata pertaining to creation and last modification of the image.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Image resource properties
      */
-    @JsonProperty(value = "properties", required = true)
     private ImageProperties innerProperties = new ImageProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ImageInner class.
+     */
+    public ImageInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the image.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -41,7 +65,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Image resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageProperties innerProperties() {
@@ -49,8 +73,38 @@ public final class ImageInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the image.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +113,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the displayName property: The image display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -68,7 +122,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the description property: A description of the image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -77,7 +131,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the iconUrl property: URL of the image icon.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -86,7 +140,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the author property: The image author.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -95,7 +149,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the osType property: The OS Type of the image.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -104,7 +158,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the plan property: The ID of marketplace plan associated with the image (optional).
-     *
+     * 
      * @return the plan value.
      */
     public String plan() {
@@ -113,7 +167,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the termsStatus property: The status of image terms of use (enabled = accepted, disabled = not accepted).
-     *
+     * 
      * @return the termsStatus value.
      */
     public EnableState termsStatus() {
@@ -122,7 +176,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the offer property: The ID of an offer associated with the image.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -131,7 +185,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the publisher property: The ID of the publisher of the image.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -140,7 +194,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the sku property: The image SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -149,7 +203,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the version property: The image version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -158,7 +212,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the sharedGalleryId property: The ID for the image in the shared gallery.
-     *
+     * 
      * @return the sharedGalleryId value.
      */
     public String sharedGalleryId() {
@@ -167,7 +221,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the availableRegions property: The available regions of the image in the shared gallery.
-     *
+     * 
      * @return the availableRegions value.
      */
     public List<String> availableRegions() {
@@ -176,7 +230,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Set the availableRegions property: The available regions of the image in the shared gallery.
-     *
+     * 
      * @param availableRegions the availableRegions value to set.
      * @return the ImageInner object itself.
      */
@@ -190,7 +244,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the osState property: The OS State of the image.
-     *
+     * 
      * @return the osState value.
      */
     public OsState osState() {
@@ -199,7 +253,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Get the enabledState property: Is the image enabled.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnableState enabledState() {
@@ -208,7 +262,7 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Set the enabledState property: Is the image enabled.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ImageInner object itself.
      */
@@ -222,18 +276,62 @@ public final class ImageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ImageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model ImageInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageInner.
+     */
+    public static ImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageInner deserializedImageInner = new ImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImageInner.innerProperties = ImageProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedImageInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageInner;
+        });
+    }
 }

@@ -5,92 +5,145 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the resource that is being reserved. */
+/**
+ * The type of the resource that is being reserved.
+ */
 public final class ReservedResourceType extends ExpandableStringEnum<ReservedResourceType> {
-    /** Static value VirtualMachines for ReservedResourceType. */
+    /**
+     * Static value VirtualMachines for ReservedResourceType.
+     */
     public static final ReservedResourceType VIRTUAL_MACHINES = fromString("VirtualMachines");
 
-    /** Static value SqlDatabases for ReservedResourceType. */
+    /**
+     * Static value SqlDatabases for ReservedResourceType.
+     */
     public static final ReservedResourceType SQL_DATABASES = fromString("SqlDatabases");
 
-    /** Static value SuseLinux for ReservedResourceType. */
+    /**
+     * Static value SuseLinux for ReservedResourceType.
+     */
     public static final ReservedResourceType SUSE_LINUX = fromString("SuseLinux");
 
-    /** Static value CosmosDb for ReservedResourceType. */
+    /**
+     * Static value CosmosDb for ReservedResourceType.
+     */
     public static final ReservedResourceType COSMOS_DB = fromString("CosmosDb");
 
-    /** Static value RedHat for ReservedResourceType. */
+    /**
+     * Static value RedHat for ReservedResourceType.
+     */
     public static final ReservedResourceType RED_HAT = fromString("RedHat");
 
-    /** Static value SqlDataWarehouse for ReservedResourceType. */
+    /**
+     * Static value SqlDataWarehouse for ReservedResourceType.
+     */
     public static final ReservedResourceType SQL_DATA_WAREHOUSE = fromString("SqlDataWarehouse");
 
-    /** Static value VMwareCloudSimple for ReservedResourceType. */
+    /**
+     * Static value VMwareCloudSimple for ReservedResourceType.
+     */
     public static final ReservedResourceType VMWARE_CLOUD_SIMPLE = fromString("VMwareCloudSimple");
 
-    /** Static value RedHatOsa for ReservedResourceType. */
+    /**
+     * Static value RedHatOsa for ReservedResourceType.
+     */
     public static final ReservedResourceType RED_HAT_OSA = fromString("RedHatOsa");
 
-    /** Static value Databricks for ReservedResourceType. */
+    /**
+     * Static value Databricks for ReservedResourceType.
+     */
     public static final ReservedResourceType DATABRICKS = fromString("Databricks");
 
-    /** Static value AppService for ReservedResourceType. */
+    /**
+     * Static value AppService for ReservedResourceType.
+     */
     public static final ReservedResourceType APP_SERVICE = fromString("AppService");
 
-    /** Static value ManagedDisk for ReservedResourceType. */
+    /**
+     * Static value ManagedDisk for ReservedResourceType.
+     */
     public static final ReservedResourceType MANAGED_DISK = fromString("ManagedDisk");
 
-    /** Static value BlockBlob for ReservedResourceType. */
+    /**
+     * Static value BlockBlob for ReservedResourceType.
+     */
     public static final ReservedResourceType BLOCK_BLOB = fromString("BlockBlob");
 
-    /** Static value RedisCache for ReservedResourceType. */
+    /**
+     * Static value RedisCache for ReservedResourceType.
+     */
     public static final ReservedResourceType REDIS_CACHE = fromString("RedisCache");
 
-    /** Static value AzureDataExplorer for ReservedResourceType. */
+    /**
+     * Static value AzureDataExplorer for ReservedResourceType.
+     */
     public static final ReservedResourceType AZURE_DATA_EXPLORER = fromString("AzureDataExplorer");
 
-    /** Static value MySql for ReservedResourceType. */
+    /**
+     * Static value MySql for ReservedResourceType.
+     */
     public static final ReservedResourceType MY_SQL = fromString("MySql");
 
-    /** Static value MariaDb for ReservedResourceType. */
+    /**
+     * Static value MariaDb for ReservedResourceType.
+     */
     public static final ReservedResourceType MARIA_DB = fromString("MariaDb");
 
-    /** Static value PostgreSql for ReservedResourceType. */
+    /**
+     * Static value PostgreSql for ReservedResourceType.
+     */
     public static final ReservedResourceType POSTGRE_SQL = fromString("PostgreSql");
 
-    /** Static value DedicatedHost for ReservedResourceType. */
+    /**
+     * Static value DedicatedHost for ReservedResourceType.
+     */
     public static final ReservedResourceType DEDICATED_HOST = fromString("DedicatedHost");
 
-    /** Static value SapHana for ReservedResourceType. */
+    /**
+     * Static value SapHana for ReservedResourceType.
+     */
     public static final ReservedResourceType SAP_HANA = fromString("SapHana");
 
-    /** Static value SqlAzureHybridBenefit for ReservedResourceType. */
+    /**
+     * Static value SqlAzureHybridBenefit for ReservedResourceType.
+     */
     public static final ReservedResourceType SQL_AZURE_HYBRID_BENEFIT = fromString("SqlAzureHybridBenefit");
 
-    /** Static value AVS for ReservedResourceType. */
+    /**
+     * Static value AVS for ReservedResourceType.
+     */
     public static final ReservedResourceType AVS = fromString("AVS");
 
-    /** Static value DataFactory for ReservedResourceType. */
+    /**
+     * Static value DataFactory for ReservedResourceType.
+     */
     public static final ReservedResourceType DATA_FACTORY = fromString("DataFactory");
 
-    /** Static value NetAppStorage for ReservedResourceType. */
+    /**
+     * Static value NetAppStorage for ReservedResourceType.
+     */
     public static final ReservedResourceType NET_APP_STORAGE = fromString("NetAppStorage");
 
-    /** Static value AzureFiles for ReservedResourceType. */
+    /**
+     * Static value AzureFiles for ReservedResourceType.
+     */
     public static final ReservedResourceType AZURE_FILES = fromString("AzureFiles");
 
-    /** Static value SqlEdge for ReservedResourceType. */
+    /**
+     * Static value SqlEdge for ReservedResourceType.
+     */
     public static final ReservedResourceType SQL_EDGE = fromString("SqlEdge");
 
-    /** Static value VirtualMachineSoftware for ReservedResourceType. */
+    /**
+     * Static value VirtualMachineSoftware for ReservedResourceType.
+     */
     public static final ReservedResourceType VIRTUAL_MACHINE_SOFTWARE = fromString("VirtualMachineSoftware");
 
     /**
      * Creates a new instance of ReservedResourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -99,18 +152,17 @@ public final class ReservedResourceType extends ExpandableStringEnum<ReservedRes
 
     /**
      * Creates or finds a ReservedResourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReservedResourceType.
      */
-    @JsonCreator
     public static ReservedResourceType fromString(String name) {
         return fromString(name, ReservedResourceType.class);
     }
 
     /**
      * Gets known ReservedResourceType values.
-     *
+     * 
      * @return known ReservedResourceType values.
      */
     public static Collection<ReservedResourceType> values() {

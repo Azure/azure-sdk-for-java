@@ -5,79 +5,78 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Single Host fabric provider specific VM settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = HyperVVirtualMachineDetails.class)
-@JsonTypeName("HyperVVirtualMachine")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "VmmVirtualMachine", value = VmmVirtualMachineDetails.class) })
 @Fluent
 public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "HyperVVirtualMachine";
+
+    /*
      * The source id of the object.
      */
-    @JsonProperty(value = "sourceItemId")
     private String sourceItemId;
 
     /*
      * The id of the object in fabric.
      */
-    @JsonProperty(value = "generation")
     private String generation;
 
     /*
      * The Last replication time.
      */
-    @JsonProperty(value = "osDetails")
     private OSDetails osDetails;
 
     /*
      * The Last successful failover time.
      */
-    @JsonProperty(value = "diskDetails")
     private List<DiskDetails> diskDetails;
 
     /*
      * A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus
      * enum.
      */
-    @JsonProperty(value = "hasPhysicalDisk")
     private PresenceStatus hasPhysicalDisk;
 
     /*
      * A value indicating whether the VM has a fibre channel adapter attached. String value of
      * SrsDataContract.PresenceStatus enum.
      */
-    @JsonProperty(value = "hasFibreChannelAdapter")
     private PresenceStatus hasFibreChannelAdapter;
 
     /*
-     * A value indicating whether the VM has a shared VHD attached. String value of SrsDataContract.PresenceStatus
-     * enum.
+     * A value indicating whether the VM has a shared VHD attached. String value of SrsDataContract.PresenceStatus enum.
      */
-    @JsonProperty(value = "hasSharedVhd")
     private PresenceStatus hasSharedVhd;
 
     /*
      * The Id of the hyper-v host in fabric.
      */
-    @JsonProperty(value = "hyperVHostId")
     private String hyperVHostId;
 
     /**
      * Creates an instance of HyperVVirtualMachineDetails class.
      */
     public HyperVVirtualMachineDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -161,8 +160,8 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     }
 
     /**
-     * Get the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value
-     * of SrsDataContract.PresenceStatus enum.
+     * Get the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value of
+     * SrsDataContract.PresenceStatus enum.
      * 
      * @return the hasPhysicalDisk value.
      */
@@ -171,8 +170,8 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     }
 
     /**
-     * Set the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value
-     * of SrsDataContract.PresenceStatus enum.
+     * Set the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value of
+     * SrsDataContract.PresenceStatus enum.
      * 
      * @param hasPhysicalDisk the hasPhysicalDisk value to set.
      * @return the HyperVVirtualMachineDetails object itself.
@@ -253,12 +252,102 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
      */
     @Override
     public void validate() {
-        super.validate();
         if (osDetails() != null) {
             osDetails().validate();
         }
         if (diskDetails() != null) {
             diskDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("sourceItemId", this.sourceItemId);
+        jsonWriter.writeStringField("generation", this.generation);
+        jsonWriter.writeJsonField("osDetails", this.osDetails);
+        jsonWriter.writeArrayField("diskDetails", this.diskDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("hasPhysicalDisk",
+            this.hasPhysicalDisk == null ? null : this.hasPhysicalDisk.toString());
+        jsonWriter.writeStringField("hasFibreChannelAdapter",
+            this.hasFibreChannelAdapter == null ? null : this.hasFibreChannelAdapter.toString());
+        jsonWriter.writeStringField("hasSharedVhd", this.hasSharedVhd == null ? null : this.hasSharedVhd.toString());
+        jsonWriter.writeStringField("hyperVHostId", this.hyperVHostId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVVirtualMachineDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVVirtualMachineDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVVirtualMachineDetails.
+     */
+    public static HyperVVirtualMachineDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("VmmVirtualMachine".equals(discriminatorValue)) {
+                    return VmmVirtualMachineDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static HyperVVirtualMachineDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVVirtualMachineDetails deserializedHyperVVirtualMachineDetails = new HyperVVirtualMachineDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.instanceType = reader.getString();
+                } else if ("sourceItemId".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.sourceItemId = reader.getString();
+                } else if ("generation".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.generation = reader.getString();
+                } else if ("osDetails".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.osDetails = OSDetails.fromJson(reader);
+                } else if ("diskDetails".equals(fieldName)) {
+                    List<DiskDetails> diskDetails = reader.readArray(reader1 -> DiskDetails.fromJson(reader1));
+                    deserializedHyperVVirtualMachineDetails.diskDetails = diskDetails;
+                } else if ("hasPhysicalDisk".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.hasPhysicalDisk
+                        = PresenceStatus.fromString(reader.getString());
+                } else if ("hasFibreChannelAdapter".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.hasFibreChannelAdapter
+                        = PresenceStatus.fromString(reader.getString());
+                } else if ("hasSharedVhd".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.hasSharedVhd
+                        = PresenceStatus.fromString(reader.getString());
+                } else if ("hyperVHostId".equals(fieldName)) {
+                    deserializedHyperVVirtualMachineDetails.hyperVHostId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVVirtualMachineDetails;
+        });
     }
 }

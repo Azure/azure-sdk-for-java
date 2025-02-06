@@ -6,32 +6,38 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.VirtualMachineInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of VirtualMachineInstances. */
+/**
+ * List of VirtualMachineInstances.
+ */
 @Fluent
-public final class VirtualMachineInstancesList {
+public final class VirtualMachineInstancesList implements JsonSerializable<VirtualMachineInstancesList> {
     /*
      * Url to follow for getting next page of VirtualMachines.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of VirtualMachines
      */
-    @JsonProperty(value = "value", required = true)
     private List<VirtualMachineInstanceInner> value;
 
-    /** Creates an instance of VirtualMachineInstancesList class. */
+    /**
+     * Creates an instance of VirtualMachineInstancesList class.
+     */
     public VirtualMachineInstancesList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of VirtualMachines.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +46,7 @@ public final class VirtualMachineInstancesList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of VirtualMachines.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineInstancesList object itself.
      */
@@ -51,7 +57,7 @@ public final class VirtualMachineInstancesList {
 
     /**
      * Get the value property: Array of VirtualMachines.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineInstanceInner> value() {
@@ -60,7 +66,7 @@ public final class VirtualMachineInstancesList {
 
     /**
      * Set the value property: Array of VirtualMachines.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineInstancesList object itself.
      */
@@ -71,19 +77,60 @@ public final class VirtualMachineInstancesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineInstancesList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineInstancesList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineInstancesList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInstancesList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInstancesList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInstancesList.
+     */
+    public static VirtualMachineInstancesList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInstancesList deserializedVirtualMachineInstancesList = new VirtualMachineInstancesList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineInstanceInner> value
+                        = reader.readArray(reader1 -> VirtualMachineInstanceInner.fromJson(reader1));
+                    deserializedVirtualMachineInstancesList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineInstancesList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInstancesList;
+        });
+    }
 }

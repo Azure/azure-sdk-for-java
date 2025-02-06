@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.models.TrustedIdProviderListResul
 public final class TrustedIdProviderListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrustedIdProviderListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"idProvider\":\"nfnbacfionlebxe\"},\"name\":\"gtzxdpn\",\"type\":\"qqwx\",\"id\":\"feallnwsu\"}],\"nextLink\":\"snjampmng\"}")
-                .toObject(TrustedIdProviderListResult.class);
+        TrustedIdProviderListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"idProvider\":\"irsoodqxhcrmnohj\"},\"name\":\"kwh\",\"type\":\"oifiyipjxsqwpgr\",\"id\":\"znorcj\"},{\"properties\":{\"idProvider\":\"nb\"},\"name\":\"qabnmoc\",\"type\":\"ysh\",\"id\":\"zafb\"},{\"properties\":{\"idProvider\":\"gpbtoqcjmklj\"},\"name\":\"bqidtqaj\",\"type\":\"ulpkudjkrl\",\"id\":\"bzhfepgzgqexz\"}],\"nextLink\":\"c\"}")
+            .toObject(TrustedIdProviderListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine endpoint authentication mode. */
+/**
+ * Enum to determine endpoint authentication mode.
+ */
 public final class EndpointAuthMode extends ExpandableStringEnum<EndpointAuthMode> {
-    /** Static value AMLToken for EndpointAuthMode. */
+    /**
+     * Static value AMLToken for EndpointAuthMode.
+     */
     public static final EndpointAuthMode AMLTOKEN = fromString("AMLToken");
 
-    /** Static value Key for EndpointAuthMode. */
+    /**
+     * Static value Key for EndpointAuthMode.
+     */
     public static final EndpointAuthMode KEY = fromString("Key");
 
-    /** Static value AADToken for EndpointAuthMode. */
+    /**
+     * Static value AADToken for EndpointAuthMode.
+     */
     public static final EndpointAuthMode AADTOKEN = fromString("AADToken");
 
     /**
      * Creates a new instance of EndpointAuthMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class EndpointAuthMode extends ExpandableStringEnum<EndpointAuthMod
 
     /**
      * Creates or finds a EndpointAuthMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointAuthMode.
      */
-    @JsonCreator
     public static EndpointAuthMode fromString(String name) {
         return fromString(name, EndpointAuthMode.class);
     }
 
     /**
      * Gets known EndpointAuthMode values.
-     *
+     * 
      * @return known EndpointAuthMode values.
      */
     public static Collection<EndpointAuthMode> values() {

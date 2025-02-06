@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of rack configuration for the cluster. */
+/**
+ * The type of rack configuration for the cluster.
+ */
 public final class ClusterType extends ExpandableStringEnum<ClusterType> {
-    /** Static value SingleRack for ClusterType. */
+    /**
+     * Static value SingleRack for ClusterType.
+     */
     public static final ClusterType SINGLE_RACK = fromString("SingleRack");
 
-    /** Static value MultiRack for ClusterType. */
+    /**
+     * Static value MultiRack for ClusterType.
+     */
     public static final ClusterType MULTI_RACK = fromString("MultiRack");
 
     /**
      * Creates a new instance of ClusterType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ClusterType extends ExpandableStringEnum<ClusterType> {
 
     /**
      * Creates or finds a ClusterType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterType.
      */
-    @JsonCreator
     public static ClusterType fromString(String name) {
         return fromString(name, ClusterType.class);
     }
 
     /**
      * Gets known ClusterType values.
-     *
+     * 
      * @return known ClusterType values.
      */
     public static Collection<ClusterType> values() {

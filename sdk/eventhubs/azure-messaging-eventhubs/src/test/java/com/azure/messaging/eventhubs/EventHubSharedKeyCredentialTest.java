@@ -33,8 +33,8 @@ public class EventHubSharedKeyCredentialTest {
     private static final String KEY_NAME = "some-key-name";
     private static final String KEY_VALUE = "some-random-key=";
     private static final Duration TOKEN_DURATION = Duration.ofMinutes(10);
-    private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
-        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final String ENDPOINT_SUFFIX
+        = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
 
     @Test
     public void constructorNullDuration() {
@@ -43,12 +43,14 @@ public class EventHubSharedKeyCredentialTest {
 
     @Test
     public void constructorNullKey() {
-        assertThrows(NullPointerException.class, () -> new EventHubSharedKeyCredential(null, KEY_VALUE, TOKEN_DURATION));
+        assertThrows(NullPointerException.class,
+            () -> new EventHubSharedKeyCredential(null, KEY_VALUE, TOKEN_DURATION));
     }
 
     @Test
     public void constructorEmptyKey() {
-        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedKeyCredential("", KEY_VALUE, TOKEN_DURATION));
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubSharedKeyCredential("", KEY_VALUE, TOKEN_DURATION));
 
     }
 
@@ -59,15 +61,16 @@ public class EventHubSharedKeyCredentialTest {
 
     @Test
     public void constructorEmptyValue() {
-        assertThrows(IllegalArgumentException.class, () -> new EventHubSharedKeyCredential(KEY_NAME, "", TOKEN_DURATION));
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubSharedKeyCredential(KEY_NAME, "", TOKEN_DURATION));
     }
 
     @Test
     public void constructsToken() throws UnsupportedEncodingException {
         // Arrange
         final String signatureExpires = "se";
-        final EventHubSharedKeyCredential credential =
-            new EventHubSharedKeyCredential(KEY_NAME, KEY_VALUE, TOKEN_DURATION);
+        final EventHubSharedKeyCredential credential
+            = new EventHubSharedKeyCredential(KEY_NAME, KEY_VALUE, TOKEN_DURATION);
         final String resource = "some resource name";
         final String resourceUriEncode = URLEncoder.encode(resource, StandardCharsets.UTF_8.toString());
         final Map<String, String> expected = new HashMap<>();
@@ -115,8 +118,9 @@ public class EventHubSharedKeyCredentialTest {
     @MethodSource("getSas")
     public void testSharedAccessSignatureCredential(String sas, OffsetDateTime expectedExpirationTime) {
         EventHubSharedKeyCredential eventHubSharedKeyCredential = new EventHubSharedKeyCredential(sas);
-        StepVerifier.create(eventHubSharedKeyCredential.getToken(new TokenRequestContext().addScopes(
-            String.format("sb://test-entity%s/.default", ENDPOINT_SUFFIX))))
+        StepVerifier
+            .create(eventHubSharedKeyCredential.getToken(
+                new TokenRequestContext().addScopes(String.format("sb://test-entity%s/.default", ENDPOINT_SUFFIX))))
             .assertNext(token -> {
                 assertNotNull(token.getToken());
                 assertEquals(sas, token.getToken());
@@ -126,26 +130,17 @@ public class EventHubSharedKeyCredentialTest {
     }
 
     private static Stream<Arguments> getSas() {
-        String validSas = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
-            + "&sig=encodedsignature%3D"
-            + "&se=1599537084"
-            + "&skn=test-sas-key";
-        String validSasWithNoExpirationTime = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
-            + "&sig=encodedsignature%3D"
-            + "&skn=test-sas-key";
-        String validSasInvalidExpirationTimeFormat = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
-            + "&sig=encodedsignature%3D"
-            + "&se=se=2020-12-31T13:37:45Z"
-            + "&skn=test-sas-key";
+        String validSas = "SharedAccessSignature " + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
+            + "&sig=encodedsignature%3D" + "&se=1599537084" + "&skn=test-sas-key";
+        String validSasWithNoExpirationTime = "SharedAccessSignature " + "sr=https%3A%2F%2Fentity-name"
+            + ENDPOINT_SUFFIX + "%2F" + "&sig=encodedsignature%3D" + "&skn=test-sas-key";
+        String validSasInvalidExpirationTimeFormat
+            = "SharedAccessSignature " + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
+                + "&sig=encodedsignature%3D" + "&se=se=2020-12-31T13:37:45Z" + "&skn=test-sas-key";
 
-        return Stream.of(
-            Arguments.of(validSas, OffsetDateTime.parse("2020-09-08T03:51:24Z")),
+        return Stream.of(Arguments.of(validSas, OffsetDateTime.parse("2020-09-08T03:51:24Z")),
             Arguments.of(validSasWithNoExpirationTime, OffsetDateTime.MAX),
-            Arguments.of(validSasInvalidExpirationTimeFormat, OffsetDateTime.MAX)
-        );
+            Arguments.of(validSasInvalidExpirationTimeFormat, OffsetDateTime.MAX));
     }
 
 }

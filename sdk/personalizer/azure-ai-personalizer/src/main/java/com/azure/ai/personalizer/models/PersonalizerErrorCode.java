@@ -5,152 +5,246 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PersonalizerErrorCode. */
+/**
+ * Error Codes returned by Personalizer.
+ */
 public final class PersonalizerErrorCode extends ExpandableStringEnum<PersonalizerErrorCode> {
-    /** Static value BadRequest for PersonalizerErrorCode. */
+    /**
+     * Request could not be understood by the server.
+     */
     public static final PersonalizerErrorCode BAD_REQUEST = fromString("BadRequest");
 
-    /** Static value InvalidServiceConfiguration for PersonalizerErrorCode. */
+    /**
+     * Invalid service configuration.
+     */
     public static final PersonalizerErrorCode INVALID_SERVICE_CONFIGURATION = fromString("InvalidServiceConfiguration");
 
-    /** Static value InvalidLearningModeServiceConfiguration for PersonalizerErrorCode. */
-    public static final PersonalizerErrorCode INVALID_LEARNING_MODE_SERVICE_CONFIGURATION =
-            fromString("InvalidLearningModeServiceConfiguration");
+    /**
+     * Updating defaultReward, rewardWaitTime and rewardAggregation when changing learning mode from Online to
+     * Apprentice mode and vice versa is not allowed. Make the mode change and then change the additional settings with
+     * an additional API call.
+     */
+    public static final PersonalizerErrorCode INVALID_LEARNING_MODE_SERVICE_CONFIGURATION
+        = fromString("InvalidLearningModeServiceConfiguration");
 
-    /** Static value InvalidPolicyConfiguration for PersonalizerErrorCode. */
+    /**
+     * Invalid policy configuration.
+     */
     public static final PersonalizerErrorCode INVALID_POLICY_CONFIGURATION = fromString("InvalidPolicyConfiguration");
 
-    /** Static value InvalidPolicyContract for PersonalizerErrorCode. */
+    /**
+     * Invalid policy contract.
+     */
     public static final PersonalizerErrorCode INVALID_POLICY_CONTRACT = fromString("InvalidPolicyContract");
 
-    /** Static value InvalidEvaluationContract for PersonalizerErrorCode. */
+    /**
+     * Invalid evaluation contract.
+     */
     public static final PersonalizerErrorCode INVALID_EVALUATION_CONTRACT = fromString("InvalidEvaluationContract");
 
-    /** Static value DuplicateCustomPolicyNames for PersonalizerErrorCode. */
+    /**
+     * Custom policy names should be unique.
+     */
     public static final PersonalizerErrorCode DUPLICATE_CUSTOM_POLICY_NAMES = fromString("DuplicateCustomPolicyNames");
 
-    /** Static value NoLogsExistInDateRange for PersonalizerErrorCode. */
+    /**
+     * No logs exist in date range.
+     */
     public static final PersonalizerErrorCode NO_LOGS_EXIST_IN_DATE_RANGE = fromString("NoLogsExistInDateRange");
 
-    /** Static value LogsSizeExceedAllowedLimit for PersonalizerErrorCode. */
+    /**
+     * Total size of logs exceed allowed limit.
+     */
     public static final PersonalizerErrorCode LOGS_SIZE_EXCEED_ALLOWED_LIMIT = fromString("LogsSizeExceedAllowedLimit");
 
-    /** Static value InvalidRewardRequest for PersonalizerErrorCode. */
+    /**
+     * Invalid reward request.
+     */
     public static final PersonalizerErrorCode INVALID_REWARD_REQUEST = fromString("InvalidRewardRequest");
 
-    /** Static value InvalidEventIdToActivate for PersonalizerErrorCode. */
+    /**
+     * Invalid activate event request.
+     */
     public static final PersonalizerErrorCode INVALID_EVENT_ID_TO_ACTIVATE = fromString("InvalidEventIdToActivate");
 
-    /** Static value InvalidRankRequest for PersonalizerErrorCode. */
+    /**
+     * Invalid request.
+     */
     public static final PersonalizerErrorCode INVALID_RANK_REQUEST = fromString("InvalidRankRequest");
 
-    /** Static value InvalidExportLogsRequest for PersonalizerErrorCode. */
+    /**
+     * Invalid request.
+     */
     public static final PersonalizerErrorCode INVALID_EXPORT_LOGS_REQUEST = fromString("InvalidExportLogsRequest");
 
-    /** Static value InvalidRequest for PersonalizerErrorCode. */
+    /**
+     * Invalid request.
+     */
     public static final PersonalizerErrorCode INVALID_REQUEST = fromString("InvalidRequest");
 
-    /** Static value InvalidContainer for PersonalizerErrorCode. */
+    /**
+     * SAS Uri must be the Uri to a container that has write permissions.
+     */
     public static final PersonalizerErrorCode INVALID_CONTAINER = fromString("InvalidContainer");
 
-    /** Static value InvalidModelMetadata for PersonalizerErrorCode. */
+    /**
+     * Invalid model metadata.
+     */
     public static final PersonalizerErrorCode INVALID_MODEL_METADATA = fromString("InvalidModelMetadata");
 
-    /** Static value ApprenticeModeNeverTurnedOn for PersonalizerErrorCode. */
-    public static final PersonalizerErrorCode APPRENTICE_MODE_NEVER_TURNED_ON =
-            fromString("ApprenticeModeNeverTurnedOn");
+    /**
+     * Apprentice mode never turned on.
+     */
+    public static final PersonalizerErrorCode APPRENTICE_MODE_NEVER_TURNED_ON
+        = fromString("ApprenticeModeNeverTurnedOn");
 
-    /** Static value MissingAppId for PersonalizerErrorCode. */
+    /**
+     * AppId is missing in the header.
+     */
     public static final PersonalizerErrorCode MISSING_APP_ID = fromString("MissingAppId");
 
-    /** Static value InvalidRewardWaitTime for PersonalizerErrorCode. */
+    /**
+     * Reward wait time should be either 10 minutes or 4 hours or 12 hours or 24 hours.
+     */
     public static final PersonalizerErrorCode INVALID_REWARD_WAIT_TIME = fromString("InvalidRewardWaitTime");
 
-    /** Static value InvalidLogRetentionDays for PersonalizerErrorCode. */
+    /**
+     * Log Retention Days must be -1 to store indefinitely or must be at least reward wait time plus 1 day (rounded up).
+     */
     public static final PersonalizerErrorCode INVALID_LOG_RETENTION_DAYS = fromString("InvalidLogRetentionDays");
 
-    /** Static value InvalidMultiSlotApiAccess for PersonalizerErrorCode. */
+    /**
+     * Multi-slot feature is currently disabled. Please follow multi-slot Personalizer documentation to update your loop
+     * settings to enable multi-slot functionality.
+     */
     public static final PersonalizerErrorCode INVALID_MULTI_SLOT_API_ACCESS = fromString("InvalidMultiSlotApiAccess");
 
-    /** Static value PayloadSizeExceeded for PersonalizerErrorCode. */
+    /**
+     * Exceeds maximum allowed payload size.
+     */
     public static final PersonalizerErrorCode PAYLOAD_SIZE_EXCEEDED = fromString("PayloadSizeExceeded");
 
-    /** Static value InvalidModelImportSignature for PersonalizerErrorCode. */
-    public static final PersonalizerErrorCode INVALID_MODEL_IMPORT_SIGNATURE =
-            fromString("InvalidModelImportSignature");
+    /**
+     * Given model file is not signed or does not have a valid signature.
+     */
+    public static final PersonalizerErrorCode INVALID_MODEL_IMPORT_SIGNATURE
+        = fromString("InvalidModelImportSignature");
 
-    /** Static value InvalidModelImportFormat for PersonalizerErrorCode. */
+    /**
+     * Given model file format is invalid.
+     */
     public static final PersonalizerErrorCode INVALID_MODEL_IMPORT_FORMAT = fromString("InvalidModelImportFormat");
 
-    /** Static value InvalidApiAccess for PersonalizerErrorCode. */
+    /**
+     * Api is currently disabled for the instance.
+     */
     public static final PersonalizerErrorCode INVALID_API_ACCESS = fromString("InvalidApiAccess");
 
-    /** Static value ModelFileAccessDenied for PersonalizerErrorCode. */
+    /**
+     * Key vault Key used for customer managed key cannot be accessed.
+     */
     public static final PersonalizerErrorCode MODEL_FILE_ACCESS_DENIED = fromString("ModelFileAccessDenied");
 
-    /** Static value ProblemTypeIncompatibleWithAutoOptimization for PersonalizerErrorCode. */
-    public static final PersonalizerErrorCode PROBLEM_TYPE_INCOMPATIBLE_WITH_AUTO_OPTIMIZATION =
-            fromString("ProblemTypeIncompatibleWithAutoOptimization");
+    /**
+     * Auto-optimization is not compatible with multi-slot personalization.
+     */
+    public static final PersonalizerErrorCode PROBLEM_TYPE_INCOMPATIBLE_WITH_AUTO_OPTIMIZATION
+        = fromString("ProblemTypeIncompatibleWithAutoOptimization");
 
-    /** Static value ResourceNotFound for PersonalizerErrorCode. */
+    /**
+     * Requested resource does not exist on the server.
+     */
     public static final PersonalizerErrorCode RESOURCE_NOT_FOUND = fromString("ResourceNotFound");
 
-    /** Static value FrontEndNotFound for PersonalizerErrorCode. */
+    /**
+     * Front end not found.
+     */
     public static final PersonalizerErrorCode FRONT_END_NOT_FOUND = fromString("FrontEndNotFound");
 
-    /** Static value EvaluationNotFound for PersonalizerErrorCode. */
+    /**
+     * Offline Evaluation not found.
+     */
     public static final PersonalizerErrorCode EVALUATION_NOT_FOUND = fromString("EvaluationNotFound");
 
-    /** Static value LearningSettingsNotFound for PersonalizerErrorCode. */
+    /**
+     * Learning Settings not found in evaluation.
+     */
     public static final PersonalizerErrorCode LEARNING_SETTINGS_NOT_FOUND = fromString("LearningSettingsNotFound");
 
-    /** Static value EvaluationModelNotFound for PersonalizerErrorCode. */
+    /**
+     * Model not found in evaluation.
+     */
     public static final PersonalizerErrorCode EVALUATION_MODEL_NOT_FOUND = fromString("EvaluationModelNotFound");
 
-    /** Static value LogsPropertiesNotFound for PersonalizerErrorCode. */
+    /**
+     * Log properties not found.
+     */
     public static final PersonalizerErrorCode LOGS_PROPERTIES_NOT_FOUND = fromString("LogsPropertiesNotFound");
 
-    /** Static value ModelRankingError for PersonalizerErrorCode. */
+    /**
+     * Error while ranking actions using model. Please verify the learning settings are valid.
+     */
     public static final PersonalizerErrorCode MODEL_RANKING_ERROR = fromString("ModelRankingError");
 
-    /** Static value InternalServerError for PersonalizerErrorCode. */
+    /**
+     * A generic error has occurred on the server.
+     */
     public static final PersonalizerErrorCode INTERNAL_SERVER_ERROR = fromString("InternalServerError");
 
-    /** Static value RankNullResponse for PersonalizerErrorCode. */
+    /**
+     * Rank call returned null response.
+     */
     public static final PersonalizerErrorCode RANK_NULL_RESPONSE = fromString("RankNullResponse");
 
-    /** Static value UpdateConfigurationFailed for PersonalizerErrorCode. */
+    /**
+     * Failed to update configuration.
+     */
     public static final PersonalizerErrorCode UPDATE_CONFIGURATION_FAILED = fromString("UpdateConfigurationFailed");
 
-    /** Static value ModelResetFailed for PersonalizerErrorCode. */
+    /**
+     * Model reset failed.
+     */
     public static final PersonalizerErrorCode MODEL_RESET_FAILED = fromString("ModelResetFailed");
 
-    /** Static value ModelPublishFailed for PersonalizerErrorCode. */
+    /**
+     * Model publish failed.
+     */
     public static final PersonalizerErrorCode MODEL_PUBLISH_FAILED = fromString("ModelPublishFailed");
 
-    /** Static value ModelMetadataUpdateFailed for PersonalizerErrorCode. */
+    /**
+     * Model metadata update failed.
+     */
     public static final PersonalizerErrorCode MODEL_METADATA_UPDATE_FAILED = fromString("ModelMetadataUpdateFailed");
 
-    /** Static value OperationNotAllowed for PersonalizerErrorCode. */
+    /**
+     * This operation is not allowed at this time.
+     */
     public static final PersonalizerErrorCode OPERATION_NOT_ALLOWED = fromString("OperationNotAllowed");
 
     /**
+     * Creates a new instance of PersonalizerErrorCode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PersonalizerErrorCode() {
+    }
+
+    /**
      * Creates or finds a PersonalizerErrorCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PersonalizerErrorCode.
      */
-    @JsonCreator
     public static PersonalizerErrorCode fromString(String name) {
         return fromString(name, PersonalizerErrorCode.class);
     }
 
     /**
      * Gets known PersonalizerErrorCode values.
-     *
+     * 
      * @return known PersonalizerErrorCode values.
      */
     public static Collection<PersonalizerErrorCode> values() {

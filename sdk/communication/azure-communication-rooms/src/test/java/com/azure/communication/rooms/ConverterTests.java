@@ -14,21 +14,23 @@ import com.azure.communication.rooms.implementation.converters.ParticipantRoleCo
 import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
 
 public class ConverterTests {
-    
+
     @Test
     void testConvertRoomModel() {
-        com.azure.communication.rooms.implementation.models.RoomModel room = new com.azure.communication.rooms.implementation.models.RoomModel();
+        com.azure.communication.rooms.implementation.models.RoomModel room
+            = new com.azure.communication.rooms.implementation.models.RoomModel();
         room.setId("12345");
         room.setValidFrom(OffsetDateTime.now());
         room.setValidUntil(OffsetDateTime.now().plusMonths(2));
         assertNotNull(RoomModelConverter.convert(room));
         room = null;
         assertNull(RoomModelConverter.convert(room));
-    } 
+    }
 
     @Test
     void testConvertRoomParticipantRole() {
-        com.azure.communication.rooms.implementation.models.ParticipantRole role = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
+        com.azure.communication.rooms.implementation.models.ParticipantRole role
+            = com.azure.communication.rooms.implementation.models.ParticipantRole.ATTENDEE;
         assertNotNull(ParticipantRoleConverter.convert(role));
         role = null;
         assertNull(ParticipantRoleConverter.convert(role));

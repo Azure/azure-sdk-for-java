@@ -11,25 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class SapSystemIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSystemId model =
-            BinaryData
-                .fromString(
-                    "{\"gid\":\"bquxigjy\",\"memoryAllocation\":\"zjaoyfhrtxil\",\"sid\":\"rkujy\",\"username\":\"l\",\"uid\":\"uvfqawrlyxwj\"}")
-                .toObject(SapSystemId.class);
-        Assertions.assertEquals("bquxigjy", model.gid());
-        Assertions.assertEquals("rkujy", model.sid());
-        Assertions.assertEquals("l", model.username());
-        Assertions.assertEquals("uvfqawrlyxwj", model.uid());
+        SapSystemId model = BinaryData.fromString(
+            "{\"gid\":\"h\",\"memoryAllocation\":\"osfln\",\"sid\":\"sfqpteehz\",\"username\":\"ypyqrimzinp\",\"uid\":\"wjdk\"}")
+            .toObject(SapSystemId.class);
+        Assertions.assertEquals("h", model.gid());
+        Assertions.assertEquals("sfqpteehz", model.sid());
+        Assertions.assertEquals("ypyqrimzinp", model.username());
+        Assertions.assertEquals("wjdk", model.uid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSystemId model =
-            new SapSystemId().withGid("bquxigjy").withSid("rkujy").withUsername("l").withUid("uvfqawrlyxwj");
+        SapSystemId model
+            = new SapSystemId().withGid("h").withSid("sfqpteehz").withUsername("ypyqrimzinp").withUid("wjdk");
         model = BinaryData.fromObject(model).toObject(SapSystemId.class);
-        Assertions.assertEquals("bquxigjy", model.gid());
-        Assertions.assertEquals("rkujy", model.sid());
-        Assertions.assertEquals("l", model.username());
-        Assertions.assertEquals("uvfqawrlyxwj", model.uid());
+        Assertions.assertEquals("h", model.gid());
+        Assertions.assertEquals("sfqpteehz", model.sid());
+        Assertions.assertEquals("ypyqrimzinp", model.username());
+        Assertions.assertEquals("wjdk", model.uid());
     }
 }

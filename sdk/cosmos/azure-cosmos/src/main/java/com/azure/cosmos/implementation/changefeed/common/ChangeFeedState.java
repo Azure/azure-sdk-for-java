@@ -48,7 +48,8 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request);
+        RxDocumentServiceRequest request,
+        boolean shouldMoveToNextTokenOnETagReplace);
 
     public abstract String getContainerRid();
 

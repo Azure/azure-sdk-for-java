@@ -139,25 +139,21 @@ public final class ConnectedClusterImpl
     }
 
     public ConnectedCluster create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedClusters()
-                .create(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedClusters()
+            .create(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectedCluster create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedClusters()
-                .create(resourceGroupName, clusterName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedClusters()
+            .create(resourceGroupName, clusterName, this.innerModel(), context);
         return this;
     }
 
-    ConnectedClusterImpl(
-        String name, com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
+    ConnectedClusterImpl(String name,
+        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = new ConnectedClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -169,58 +165,48 @@ public final class ConnectedClusterImpl
     }
 
     public ConnectedCluster apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedClusters()
-                .updateWithResponse(resourceGroupName, clusterName, updateConnectedClusterPatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedClusters()
+            .updateWithResponse(resourceGroupName, clusterName, updateConnectedClusterPatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedCluster apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedClusters()
-                .updateWithResponse(resourceGroupName, clusterName, updateConnectedClusterPatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedClusters()
+            .updateWithResponse(resourceGroupName, clusterName, updateConnectedClusterPatch, context)
+            .getValue();
         return this;
     }
 
-    ConnectedClusterImpl(
-        ConnectedClusterInner innerObject,
+    ConnectedClusterImpl(ConnectedClusterInner innerObject,
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "connectedClusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectedClusters");
     }
 
     public ConnectedCluster refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedCluster refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectedClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectedClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
+            .getValue();
         return this;
     }
 
-    public Response<CredentialResults> listClusterUserCredentialWithResponse(
-        ListClusterUserCredentialProperties properties, Context context) {
-        return serviceManager
-            .connectedClusters()
+    public Response<CredentialResults>
+        listClusterUserCredentialWithResponse(ListClusterUserCredentialProperties properties, Context context) {
+        return serviceManager.connectedClusters()
             .listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, context);
     }
 

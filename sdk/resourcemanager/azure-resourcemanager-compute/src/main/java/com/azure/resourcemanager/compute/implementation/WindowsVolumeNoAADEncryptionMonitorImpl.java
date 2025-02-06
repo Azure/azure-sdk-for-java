@@ -139,12 +139,10 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
     public Mono<DiskVolumeEncryptionMonitor> refreshAsync() {
         final WindowsVolumeNoAADEncryptionMonitorImpl self = this;
         // Refreshes the cached virtual machine and installed encryption extension
-        return retrieveVirtualMachineAsync()
-            .map(
-                virtualMachine -> {
-                    self.virtualMachine = virtualMachine;
-                    return self;
-                });
+        return retrieveVirtualMachineAsync().map(virtualMachine -> {
+            self.virtualMachine = virtualMachine;
+            return self;
+        });
     }
 
     /**
@@ -153,7 +151,8 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return this.computeManager.serviceClient().getVirtualMachines()
+        return this.computeManager.serviceClient()
+            .getVirtualMachines()
             .getByResourceGroupWithResponseAsync(rgName, vmName, InstanceViewTypes.INSTANCE_VIEW)
             .map(Response::getValue);
         // Exception if vm not found

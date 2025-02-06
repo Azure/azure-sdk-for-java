@@ -6,32 +6,34 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.resourcemanager.peering.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: The name of the operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The information related to the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplayInfo display();
 
     /**
      * Gets the isDataAction property: The flag that indicates whether the operation applies to data plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

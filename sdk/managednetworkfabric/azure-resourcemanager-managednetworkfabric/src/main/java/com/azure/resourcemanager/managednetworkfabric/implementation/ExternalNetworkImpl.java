@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.managednetworkfabric.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkInner;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
@@ -37,8 +38,8 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         return this.innerModel().type();
     }
 
-    public String networkToNetworkInterconnectId() {
-        return this.innerModel().networkToNetworkInterconnectId();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public PeeringOption peeringOption() {
@@ -63,6 +64,10 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
 
     public AdministrativeState administrativeState() {
         return this.innerModel().administrativeState();
+    }
+
+    public String networkToNetworkInterconnectId() {
+        return this.innerModel().networkToNetworkInterconnectId();
     }
 
     public String importRoutePolicyId() {
@@ -112,25 +117,21 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExternalNetworks()
-                .create(resourceGroupName, l3IsolationDomainName, externalNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getExternalNetworks()
+            .create(resourceGroupName, l3IsolationDomainName, externalNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ExternalNetwork create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExternalNetworks()
-                .create(resourceGroupName, l3IsolationDomainName, externalNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getExternalNetworks()
+            .create(resourceGroupName, l3IsolationDomainName, externalNetworkName, this.innerModel(), context);
         return this;
     }
 
-    ExternalNetworkImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    ExternalNetworkImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new ExternalNetworkInner();
         this.serviceManager = serviceManager;
         this.externalNetworkName = name;
@@ -142,80 +143,67 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     }
 
     public ExternalNetwork apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExternalNetworks()
-                .update(resourceGroupName, l3IsolationDomainName, externalNetworkName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getExternalNetworks()
+            .update(resourceGroupName, l3IsolationDomainName, externalNetworkName, updateBody, Context.NONE);
         return this;
     }
 
     public ExternalNetwork apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExternalNetworks()
-                .update(resourceGroupName, l3IsolationDomainName, externalNetworkName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getExternalNetworks()
+            .update(resourceGroupName, l3IsolationDomainName, externalNetworkName, updateBody, context);
         return this;
     }
 
-    ExternalNetworkImpl(
-        ExternalNetworkInner innerObject,
+    ExternalNetworkImpl(ExternalNetworkInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l3IsolationDomainName = Utils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
-        this.externalNetworkName = Utils.getValueFromIdByName(innerObject.id(), "externalNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l3IsolationDomains");
+        this.externalNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "externalNetworks");
     }
 
     public ExternalNetwork refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExternalNetworks()
-                .getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExternalNetworks()
+            .getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ExternalNetwork refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getExternalNetworks()
-                .getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getExternalNetworks()
+            .getWithResponse(resourceGroupName, l3IsolationDomainName, externalNetworkName, context)
+            .getValue();
         return this;
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .externalNetworks()
+        return serviceManager.externalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .externalNetworks()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.externalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
     }
 
-    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body) {
-        return serviceManager
-            .externalNetworks()
-            .updateStaticRouteBfdAdministrativeState(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body);
+    public CommonPostActionResponseForStateUpdate
+        updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager.externalNetworks()
+            .updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName,
+                body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .externalNetworks()
-            .updateStaticRouteBfdAdministrativeState(
-                resourceGroupName, l3IsolationDomainName, externalNetworkName, body, context);
+    public CommonPostActionResponseForStateUpdate
+        updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body, Context context) {
+        return serviceManager.externalNetworks()
+            .updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, externalNetworkName,
+                body, context);
     }
 
     public ExternalNetworkImpl withPeeringOption(PeeringOption peeringOption) {
@@ -241,6 +229,16 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
     public ExternalNetworkImpl withOptionAProperties(ExternalNetworkPropertiesOptionAProperties optionAProperties) {
         this.innerModel().withOptionAProperties(optionAProperties);
         return this;
+    }
+
+    public ExternalNetworkImpl withNetworkToNetworkInterconnectId(String networkToNetworkInterconnectId) {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkToNetworkInterconnectId(networkToNetworkInterconnectId);
+            return this;
+        } else {
+            this.updateBody.withNetworkToNetworkInterconnectId(networkToNetworkInterconnectId);
+            return this;
+        }
     }
 
     public ExternalNetworkImpl withImportRoutePolicyId(String importRoutePolicyId) {
@@ -293,8 +291,8 @@ public final class ExternalNetworkImpl implements ExternalNetwork, ExternalNetwo
         }
     }
 
-    public ExternalNetworkImpl withOptionAProperties(
-        ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
+    public ExternalNetworkImpl
+        withOptionAProperties(ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
         this.updateBody.withOptionAProperties(optionAProperties);
         return this;
     }

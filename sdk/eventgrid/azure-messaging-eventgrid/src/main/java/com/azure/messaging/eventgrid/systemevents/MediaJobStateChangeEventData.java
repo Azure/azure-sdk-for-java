@@ -98,6 +98,9 @@ public class MediaJobStateChangeEventData implements JsonSerializable<MediaJobSt
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -96,8 +96,7 @@ public final class DataFeedRollupSettings {
      *
      * @return the DataFeedRollupSettings object itself.
      */
-    public DataFeedRollupSettings setAutoRollup(DataFeedAutoRollUpMethod rollUpMethod,
-        List<String> groupByColumnNames,
+    public DataFeedRollupSettings setAutoRollup(DataFeedAutoRollUpMethod rollUpMethod, List<String> groupByColumnNames,
         String rollupIdentificationValue) {
         this.autoRollupGroupByColumnNames = groupByColumnNames;
         this.rollupIdentificationValue = rollupIdentificationValue;

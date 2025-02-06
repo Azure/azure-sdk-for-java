@@ -21,8 +21,8 @@ public interface ArtifactSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an artifact source along with {@link Response}.
      */
-    Response<ArtifactSource> getByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context);
+    Response<ArtifactSource> getByResourceGroupWithResponse(String resourceGroupName, String artifactSourceName,
+        Context context);
 
     /**
      * Gets an artifact source.
@@ -47,8 +47,8 @@ public interface ArtifactSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String artifactSourceName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String artifactSourceName,
+        Context context);
 
     /**
      * Deletes an artifact source.

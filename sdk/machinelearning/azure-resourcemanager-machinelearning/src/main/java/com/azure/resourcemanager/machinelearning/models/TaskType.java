@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** AutoMLJob Task type. */
+/**
+ * AutoMLJob Task type.
+ */
 public final class TaskType extends ExpandableStringEnum<TaskType> {
-    /** Static value Classification for TaskType. */
+    /**
+     * Static value Classification for TaskType.
+     */
     public static final TaskType CLASSIFICATION = fromString("Classification");
 
-    /** Static value Regression for TaskType. */
+    /**
+     * Static value Regression for TaskType.
+     */
     public static final TaskType REGRESSION = fromString("Regression");
 
-    /** Static value Forecasting for TaskType. */
+    /**
+     * Static value Forecasting for TaskType.
+     */
     public static final TaskType FORECASTING = fromString("Forecasting");
 
-    /** Static value ImageClassification for TaskType. */
+    /**
+     * Static value ImageClassification for TaskType.
+     */
     public static final TaskType IMAGE_CLASSIFICATION = fromString("ImageClassification");
 
-    /** Static value ImageClassificationMultilabel for TaskType. */
+    /**
+     * Static value ImageClassificationMultilabel for TaskType.
+     */
     public static final TaskType IMAGE_CLASSIFICATION_MULTILABEL = fromString("ImageClassificationMultilabel");
 
-    /** Static value ImageObjectDetection for TaskType. */
+    /**
+     * Static value ImageObjectDetection for TaskType.
+     */
     public static final TaskType IMAGE_OBJECT_DETECTION = fromString("ImageObjectDetection");
 
-    /** Static value ImageInstanceSegmentation for TaskType. */
+    /**
+     * Static value ImageInstanceSegmentation for TaskType.
+     */
     public static final TaskType IMAGE_INSTANCE_SEGMENTATION = fromString("ImageInstanceSegmentation");
 
-    /** Static value TextClassification for TaskType. */
+    /**
+     * Static value TextClassification for TaskType.
+     */
     public static final TaskType TEXT_CLASSIFICATION = fromString("TextClassification");
 
-    /** Static value TextClassificationMultilabel for TaskType. */
+    /**
+     * Static value TextClassificationMultilabel for TaskType.
+     */
     public static final TaskType TEXT_CLASSIFICATION_MULTILABEL = fromString("TextClassificationMultilabel");
 
-    /** Static value TextNER for TaskType. */
+    /**
+     * Static value TextNER for TaskType.
+     */
     public static final TaskType TEXT_NER = fromString("TextNER");
 
     /**
      * Creates a new instance of TaskType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +72,17 @@ public final class TaskType extends ExpandableStringEnum<TaskType> {
 
     /**
      * Creates or finds a TaskType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TaskType.
      */
-    @JsonCreator
     public static TaskType fromString(String name) {
         return fromString(name, TaskType.class);
     }
 
     /**
      * Gets known TaskType values.
-     *
+     * 
      * @return known TaskType values.
      */
     public static Collection<TaskType> values() {

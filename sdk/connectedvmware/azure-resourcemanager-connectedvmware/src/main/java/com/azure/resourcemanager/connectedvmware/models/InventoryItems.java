@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of InventoryItems. */
+/**
+ * Resource collection API of InventoryItems.
+ */
 public interface InventoryItems {
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -24,14 +26,14 @@ public interface InventoryItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the inventory item along with {@link Response}.
      */
-    Response<InventoryItem> getWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<InventoryItem> getWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -44,9 +46,9 @@ public interface InventoryItems {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -56,14 +58,14 @@ public interface InventoryItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -75,9 +77,9 @@ public interface InventoryItems {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,9 +91,9 @@ public interface InventoryItems {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
@@ -104,9 +106,9 @@ public interface InventoryItems {
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,9 +119,9 @@ public interface InventoryItems {
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,9 +133,9 @@ public interface InventoryItems {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,9 +145,9 @@ public interface InventoryItems {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +159,7 @@ public interface InventoryItems {
 
     /**
      * Begins definition for a new InventoryItem resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InventoryItem definition.
      */

@@ -14,60 +14,50 @@ import org.junit.jupiter.api.Assertions;
 public final class MaintenanceWindowOptionsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MaintenanceWindowOptionsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"isEnabled\":false,\"maintenanceWindowCycles\":[{\"dayOfWeek\":\"Saturday\",\"startTime\":\"lpmutwuoegrpkhj\",\"duration\":\"iyq\"},{\"dayOfWeek\":\"Tuesday\",\"startTime\":\"cpdggkzzlvmbmp\",\"duration\":\"modfvuefywsbpfvm\"},{\"dayOfWeek\":\"Saturday\",\"startTime\":\"fouyf\",\"duration\":\"akcp\"},{\"dayOfWeek\":\"Wednesday\",\"startTime\":\"vqtmnub\",\"duration\":\"kpzksmondjmq\"}],\"minDurationInMinutes\":1083170526,\"defaultDurationInMinutes\":1371154692,\"minCycles\":326974416,\"timeGranularityInMinutes\":1838860649,\"allowMultipleMaintenanceWindowsPerCycle\":true}")
-                .toObject(MaintenanceWindowOptionsProperties.class);
+        MaintenanceWindowOptionsProperties model = BinaryData.fromString(
+            "{\"isEnabled\":false,\"maintenanceWindowCycles\":[{\"dayOfWeek\":\"Monday\",\"startTime\":\"hya\",\"duration\":\"vjlboxqvk\"},{\"dayOfWeek\":\"Thursday\",\"startTime\":\"ho\",\"duration\":\"ynhdwdigum\"},{\"dayOfWeek\":\"Tuesday\",\"startTime\":\"auzzptjazysd\",\"duration\":\"ezwwv\"},{\"dayOfWeek\":\"Friday\",\"startTime\":\"uvvfonkp\",\"duration\":\"qyikvy\"}],\"minDurationInMinutes\":1053518025,\"defaultDurationInMinutes\":239621224,\"minCycles\":2048419194,\"timeGranularityInMinutes\":712290061,\"allowMultipleMaintenanceWindowsPerCycle\":false}")
+            .toObject(MaintenanceWindowOptionsProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.maintenanceWindowCycles().get(0).dayOfWeek());
-        Assertions.assertEquals("lpmutwuoegrpkhj", model.maintenanceWindowCycles().get(0).startTime());
-        Assertions.assertEquals("iyq", model.maintenanceWindowCycles().get(0).duration());
-        Assertions.assertEquals(1083170526, model.minDurationInMinutes());
-        Assertions.assertEquals(1371154692, model.defaultDurationInMinutes());
-        Assertions.assertEquals(326974416, model.minCycles());
-        Assertions.assertEquals(1838860649, model.timeGranularityInMinutes());
-        Assertions.assertEquals(true, model.allowMultipleMaintenanceWindowsPerCycle());
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.maintenanceWindowCycles().get(0).dayOfWeek());
+        Assertions.assertEquals("hya", model.maintenanceWindowCycles().get(0).startTime());
+        Assertions.assertEquals("vjlboxqvk", model.maintenanceWindowCycles().get(0).duration());
+        Assertions.assertEquals(1053518025, model.minDurationInMinutes());
+        Assertions.assertEquals(239621224, model.defaultDurationInMinutes());
+        Assertions.assertEquals(2048419194, model.minCycles());
+        Assertions.assertEquals(712290061, model.timeGranularityInMinutes());
+        Assertions.assertEquals(false, model.allowMultipleMaintenanceWindowsPerCycle());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindowOptionsProperties model =
-            new MaintenanceWindowOptionsProperties()
-                .withIsEnabled(false)
-                .withMaintenanceWindowCycles(
-                    Arrays
-                        .asList(
-                            new MaintenanceWindowTimeRange()
-                                .withDayOfWeek(DayOfWeek.SATURDAY)
-                                .withStartTime("lpmutwuoegrpkhj")
-                                .withDuration("iyq"),
-                            new MaintenanceWindowTimeRange()
-                                .withDayOfWeek(DayOfWeek.TUESDAY)
-                                .withStartTime("cpdggkzzlvmbmp")
-                                .withDuration("modfvuefywsbpfvm"),
-                            new MaintenanceWindowTimeRange()
-                                .withDayOfWeek(DayOfWeek.SATURDAY)
-                                .withStartTime("fouyf")
-                                .withDuration("akcp"),
-                            new MaintenanceWindowTimeRange()
-                                .withDayOfWeek(DayOfWeek.WEDNESDAY)
-                                .withStartTime("vqtmnub")
-                                .withDuration("kpzksmondjmq")))
-                .withMinDurationInMinutes(1083170526)
-                .withDefaultDurationInMinutes(1371154692)
-                .withMinCycles(326974416)
-                .withTimeGranularityInMinutes(1838860649)
-                .withAllowMultipleMaintenanceWindowsPerCycle(true);
+        MaintenanceWindowOptionsProperties model = new MaintenanceWindowOptionsProperties().withIsEnabled(false)
+            .withMaintenanceWindowCycles(Arrays.asList(
+                new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.MONDAY)
+                    .withStartTime("hya")
+                    .withDuration("vjlboxqvk"),
+                new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.THURSDAY)
+                    .withStartTime("ho")
+                    .withDuration("ynhdwdigum"),
+                new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.TUESDAY)
+                    .withStartTime("auzzptjazysd")
+                    .withDuration("ezwwv"),
+                new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.FRIDAY)
+                    .withStartTime("uvvfonkp")
+                    .withDuration("qyikvy")))
+            .withMinDurationInMinutes(1053518025)
+            .withDefaultDurationInMinutes(239621224)
+            .withMinCycles(2048419194)
+            .withTimeGranularityInMinutes(712290061)
+            .withAllowMultipleMaintenanceWindowsPerCycle(false);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindowOptionsProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.maintenanceWindowCycles().get(0).dayOfWeek());
-        Assertions.assertEquals("lpmutwuoegrpkhj", model.maintenanceWindowCycles().get(0).startTime());
-        Assertions.assertEquals("iyq", model.maintenanceWindowCycles().get(0).duration());
-        Assertions.assertEquals(1083170526, model.minDurationInMinutes());
-        Assertions.assertEquals(1371154692, model.defaultDurationInMinutes());
-        Assertions.assertEquals(326974416, model.minCycles());
-        Assertions.assertEquals(1838860649, model.timeGranularityInMinutes());
-        Assertions.assertEquals(true, model.allowMultipleMaintenanceWindowsPerCycle());
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.maintenanceWindowCycles().get(0).dayOfWeek());
+        Assertions.assertEquals("hya", model.maintenanceWindowCycles().get(0).startTime());
+        Assertions.assertEquals("vjlboxqvk", model.maintenanceWindowCycles().get(0).duration());
+        Assertions.assertEquals(1053518025, model.minDurationInMinutes());
+        Assertions.assertEquals(239621224, model.defaultDurationInMinutes());
+        Assertions.assertEquals(2048419194, model.minCycles());
+        Assertions.assertEquals(712290061, model.timeGranularityInMinutes());
+        Assertions.assertEquals(false, model.allowMultipleMaintenanceWindowsPerCycle());
     }
 }

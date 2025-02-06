@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -28,23 +29,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Approvals. */
+/**
+ * An instance of this class provides access to all the operations defined in Approvals.
+ */
 public final class ApprovalsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApprovalsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of ApprovalsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApprovalsImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(ApprovalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApprovalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -55,101 +71,62 @@ public final class ApprovalsImpl {
     @ServiceInterface(name = "PurviewWorkflowAppro")
     public interface ApprovalsService {
         @Post("/workflowtasks/{taskId}/approve-approval")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> approve(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData approvalResponseComment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> approve(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData approvalResponseComment, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/workflowtasks/{taskId}/approve-approval")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> approveSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData approvalResponseComment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> approveSync(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData approvalResponseComment, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/workflowtasks/{taskId}/reject-approval")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> reject(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData approvalResponseComment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> reject(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData approvalResponseComment, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/workflowtasks/{taskId}/reject-approval")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> rejectSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("taskId") String taskId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData approvalResponseComment,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> rejectSync(@HostParam("endpoint") String endpoint, @PathParam("taskId") String taskId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData approvalResponseComment, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
      * Approve an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of approving an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -160,32 +137,25 @@ public final class ApprovalsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> approveWithResponseAsync(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Mono<Response<Void>> approveWithResponseAsync(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.approve(
-                                this.client.getEndpoint(),
-                                taskId,
-                                this.client.getServiceVersion().getVersion(),
-                                approvalResponseComment,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.approve(this.client.getEndpoint(), taskId,
+            this.client.getServiceVersion().getVersion(), approvalResponseComment, accept, requestOptions, context));
     }
 
     /**
      * Approve an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of approving an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -196,30 +166,25 @@ public final class ApprovalsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> approveWithResponse(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Response<Void> approveWithResponse(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.approveSync(
-                this.client.getEndpoint(),
-                taskId,
-                this.client.getServiceVersion().getVersion(),
-                approvalResponseComment,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.approveSync(this.client.getEndpoint(), taskId, this.client.getServiceVersion().getVersion(),
+            approvalResponseComment, accept, requestOptions, Context.NONE);
     }
 
     /**
      * Reject an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of rejecting an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -230,32 +195,25 @@ public final class ApprovalsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectWithResponseAsync(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Mono<Response<Void>> rejectWithResponseAsync(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.reject(
-                                this.client.getEndpoint(),
-                                taskId,
-                                this.client.getServiceVersion().getVersion(),
-                                approvalResponseComment,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.reject(this.client.getEndpoint(), taskId,
+            this.client.getServiceVersion().getVersion(), approvalResponseComment, accept, requestOptions, context));
     }
 
     /**
      * Reject an approval.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param approvalResponseComment The request body of rejecting an approval type of workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -266,16 +224,10 @@ public final class ApprovalsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectWithResponse(
-            String taskId, BinaryData approvalResponseComment, RequestOptions requestOptions) {
+    public Response<Void> rejectWithResponse(String taskId, BinaryData approvalResponseComment,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.rejectSync(
-                this.client.getEndpoint(),
-                taskId,
-                this.client.getServiceVersion().getVersion(),
-                approvalResponseComment,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.rejectSync(this.client.getEndpoint(), taskId, this.client.getServiceVersion().getVersion(),
+            approvalResponseComment, accept, requestOptions, Context.NONE);
     }
 }

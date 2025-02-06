@@ -13,24 +13,16 @@ import java.util.Arrays;
 public final class CreateResourceSupportedResponseListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateResourceSupportedResponseList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"wlokjyem\",\"creationSupported\":false}},{\"properties\":{\"name\":\"pjoxzjnch\",\"creationSupported\":true}}]}")
-                .toObject(CreateResourceSupportedResponseList.class);
+        CreateResourceSupportedResponseList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"name\":\"wlokjyem\",\"creationSupported\":false}},{\"properties\":{\"name\":\"pjoxzjnch\",\"creationSupported\":true}}]}")
+            .toObject(CreateResourceSupportedResponseList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateResourceSupportedResponseList model =
-            new CreateResourceSupportedResponseList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CreateResourceSupportedResponseInner()
-                                .withProperties(new CreateResourceSupportedProperties()),
-                            new CreateResourceSupportedResponseInner()
-                                .withProperties(new CreateResourceSupportedProperties())));
+        CreateResourceSupportedResponseList model = new CreateResourceSupportedResponseList().withValue(Arrays.asList(
+            new CreateResourceSupportedResponseInner().withProperties(new CreateResourceSupportedProperties()),
+            new CreateResourceSupportedResponseInner().withProperties(new CreateResourceSupportedProperties())));
         model = BinaryData.fromObject(model).toObject(CreateResourceSupportedResponseList.class);
     }
 }

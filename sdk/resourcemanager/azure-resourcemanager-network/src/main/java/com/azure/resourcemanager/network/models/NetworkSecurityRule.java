@@ -16,64 +16,115 @@ import java.util.Set;
 @Fluent
 public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, ChildResource<NetworkSecurityGroup> {
 
-    /** @return the direction of the network traffic that the network security rule applies to. */
+    /**
+     * Gets the direction of the network traffic that the network security rule applies to.
+     *
+     * @return the direction of the network traffic that the network security rule applies to.
+     */
     SecurityRuleDirection direction();
 
-    /** @return the network protocol the rule applies to */
+    /**
+     * Gets the network protocol the rule applies to.
+     *
+     * @return the network protocol the rule applies to
+     */
     SecurityRuleProtocol protocol();
 
-    /** @return the user-defined description of the security rule */
+    /**
+     * Gets the user-defined description of the security rule.
+     *
+     * @return the user-defined description of the security rule
+     */
     String description();
 
-    /** @return the type of access the rule enforces */
+    /**
+     * Gets the type of access the rule enforces.
+     *
+     * @return the type of access the rule enforces
+     */
     SecurityRuleAccess access();
 
     /**
+     * Gets the source address prefix the rule applies to.
+     *
      * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any"
      */
     String sourceAddressPrefix();
 
     /**
+     * Gets the list of source address prefixes the rule applies to.
+     *
      * @return the list of source address prefixes the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any", or IP addresses
      */
     List<String> sourceAddressPrefixes();
 
-    /** @return the source port range that the rule applies to, in the format "##-##", where "*" means "any" */
+    /**
+     * Gets the source port range that the rule applies to.
+     *
+     * @return the source port range that the rule applies to, in the format "##-##", where "*" means "any"
+     */
     String sourcePortRange();
 
-    /** @return the source port ranges that the rule applies to, in the format "##-##", where "*" means "any" */
+    /**
+     * Gets the source port ranges that the rule applies to.
+     *
+     * @return the source port ranges that the rule applies to, in the format "##-##", where "*" means "any"
+     */
     List<String> sourcePortRanges();
 
     /**
+     * Gets the destination address prefix the rule applies to.
+     *
      * @return the destination address prefix the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any"
      */
     String destinationAddressPrefix();
 
     /**
+     * Gets the list of destination address prefixes the rule applies to.
+     *
      * @return the list of destination address prefixes the rule applies to, expressed using the CIDR notation in the
      *     format: "###.###.###.###/##", and "*" means "any", or IP addresses
      */
     List<String> destinationAddressPrefixes();
 
-    /** @return the destination port range that the rule applies to, in the format "##-##", where "*" means any */
+    /**
+     * Gets the destination port range that the rule applies to.
+     *
+     * @return the destination port range that the rule applies to, in the format "##-##", where "*" means any
+     */
     String destinationPortRange();
 
-    /** @return the destination port ranges that the rule applies to, in the format "##-##", where "*" means any */
+    /**
+     * Gets the destination port ranges that the rule applies to.
+     *
+     * @return the destination port ranges that the rule applies to, in the format "##-##", where "*" means any
+     */
     List<String> destinationPortRanges();
 
     /**
+     * Gets the priority number of this rule based on which this rule will be applied relative to the priority
+     *     numbers of any other rules specified for this network security group.
+     *
      * @return the priority number of this rule based on which this rule will be applied relative to the priority
      *     numbers of any other rules specified for this network security group
      */
     int priority();
 
-    /** @return list of application security group ids specified as source */
+    /**
+     * Gets list of application security group ids specified as source.
+     *
+     * @return list of application security group ids specified as source
+     */
     Set<String> sourceApplicationSecurityGroupIds();
 
-    /** @return list of application security group ids specified as destination */
+    /**
+     * Gets list of application security group ids specified as destination.
+     *
+     * @return list of application security group ids specified as destination
+     */
     Set<String> destinationApplicationSecurityGroupIds();
 
     /**
@@ -81,15 +132,10 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithDirectionAccess<ParentT>,
-            DefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
-            DefinitionStages.WithSourcePort<ParentT>,
-            DefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
-            DefinitionStages.WithDestinationPort<ParentT>,
-            DefinitionStages.WithProtocol<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithDirectionAccess<ParentT>, DefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
+        DefinitionStages.WithSourcePort<ParentT>, DefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
+        DefinitionStages.WithDestinationPort<ParentT>, DefinitionStages.WithProtocol<ParentT> {
     }
 
     /** Grouping of security rule definition stages applicable as part of a network security group creation. */
@@ -384,14 +430,12 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithDirectionAccess<ParentT>,
-            UpdateDefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
-            UpdateDefinitionStages.WithSourcePort<ParentT>,
-            UpdateDefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
-            UpdateDefinitionStages.WithDestinationPort<ParentT>,
-            UpdateDefinitionStages.WithProtocol<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithDirectionAccess<ParentT>,
+        UpdateDefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
+        UpdateDefinitionStages.WithSourcePort<ParentT>,
+        UpdateDefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
+        UpdateDefinitionStages.WithDestinationPort<ParentT>, UpdateDefinitionStages.WithProtocol<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of security rule definition stages applicable as part of a network security group update. */
@@ -666,14 +710,9 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
     }
 
     /** The entirety of a security rule update as part of a network security group update. */
-    interface Update
-        extends UpdateStages.WithDirectionAccess,
-            UpdateStages.WithSourceAddressOrSecurityGroup,
-            UpdateStages.WithSourcePort,
-            UpdateStages.WithDestinationAddressOrSecurityGroup,
-            UpdateStages.WithDestinationPort,
-            UpdateStages.WithProtocol,
-            Settable<NetworkSecurityGroup.Update> {
+    interface Update extends UpdateStages.WithDirectionAccess, UpdateStages.WithSourceAddressOrSecurityGroup,
+        UpdateStages.WithSourcePort, UpdateStages.WithDestinationAddressOrSecurityGroup,
+        UpdateStages.WithDestinationPort, UpdateStages.WithProtocol, Settable<NetworkSecurityGroup.Update> {
 
         /**
          * Specifies the priority to assign to this security rule.

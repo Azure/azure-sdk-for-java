@@ -5,42 +5,26 @@
 package com.azure.analytics.purview.sharing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Blob Sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storeKind")
-@JsonTypeName("BlobAccount")
-@JsonFlatten
 @Fluent
-public class BlobAccountSink extends Sink {
+public final class BlobAccountSink extends Sink {
     /*
-     * Blob Container Name
+     * The types of asset.
      */
-    @JsonProperty(value = "properties.containerName", required = true)
-    private String containerName;
+    private StoreKind storeKind = StoreKind.BLOB_STORAGE_ACCOUNT_STORE_KIND;
 
     /*
-     * Blob Folder
+     * Properties for blob storage account
      */
-    @JsonProperty(value = "properties.folder", required = true)
-    private String folder;
-
-    /*
-     * Blob Location
-     */
-    @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
-
-    /*
-     * Blob Mount Path
-     */
-    @JsonProperty(value = "properties.mountPath")
-    private String mountPath;
+    private BlobAccountSinkProperties properties;
 
     /**
      * Creates an instance of BlobAccountSink class.
@@ -49,71 +33,32 @@ public class BlobAccountSink extends Sink {
     }
 
     /**
-     * Get the containerName property: Blob Container Name.
-     * 
-     * @return the containerName value.
+     * Get the storeKind property: The types of asset.
+     *
+     * @return the storeKind value.
      */
-    public String getContainerName() {
-        return this.containerName;
+    @Override
+    public StoreKind getStoreKind() {
+        return this.storeKind;
     }
 
     /**
-     * Set the containerName property: Blob Container Name.
-     * 
-     * @param containerName the containerName value to set.
+     * Get the properties property: Properties for blob storage account.
+     *
+     * @return the properties value.
+     */
+    public BlobAccountSinkProperties getProperties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties for blob storage account.
+     *
+     * @param properties the properties value to set.
      * @return the BlobAccountSink object itself.
      */
-    public BlobAccountSink setContainerName(String containerName) {
-        this.containerName = containerName;
-        return this;
-    }
-
-    /**
-     * Get the folder property: Blob Folder.
-     * 
-     * @return the folder value.
-     */
-    public String getFolder() {
-        return this.folder;
-    }
-
-    /**
-     * Set the folder property: Blob Folder.
-     * 
-     * @param folder the folder value to set.
-     * @return the BlobAccountSink object itself.
-     */
-    public BlobAccountSink setFolder(String folder) {
-        this.folder = folder;
-        return this;
-    }
-
-    /**
-     * Get the location property: Blob Location.
-     * 
-     * @return the location value.
-     */
-    public String getLocation() {
-        return this.location;
-    }
-
-    /**
-     * Get the mountPath property: Blob Mount Path.
-     * 
-     * @return the mountPath value.
-     */
-    public String getMountPath() {
-        return this.mountPath;
-    }
-
-    /**
-     * Set the mountPath property: Blob Mount Path.
-     * 
-     * @param mountPath the mountPath value to set.
-     * @return the BlobAccountSink object itself.
-     */
-    public BlobAccountSink setMountPath(String mountPath) {
-        this.mountPath = mountPath;
+    public BlobAccountSink setProperties(BlobAccountSinkProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -124,5 +69,48 @@ public class BlobAccountSink extends Sink {
     public BlobAccountSink setStoreReference(StoreReference storeReference) {
         super.setStoreReference(storeReference);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storeReference", getStoreReference());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("storeKind", this.storeKind == null ? null : this.storeKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobAccountSink from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobAccountSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobAccountSink.
+     */
+    public static BlobAccountSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobAccountSink deserializedBlobAccountSink = new BlobAccountSink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storeReference".equals(fieldName)) {
+                    deserializedBlobAccountSink.setStoreReference(StoreReference.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBlobAccountSink.properties = BlobAccountSinkProperties.fromJson(reader);
+                } else if ("storeKind".equals(fieldName)) {
+                    deserializedBlobAccountSink.storeKind = StoreKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobAccountSink;
+        });
     }
 }

@@ -134,7 +134,6 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -12,7 +12,8 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 public final class ExtractKeyPhrasesActionResultPropertiesHelper {
     private static ExtractKeyPhrasesActionResultAccessor accessor;
 
-    private ExtractKeyPhrasesActionResultPropertiesHelper() { }
+    private ExtractKeyPhrasesActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ExtractKeyPhrasesActionResult}

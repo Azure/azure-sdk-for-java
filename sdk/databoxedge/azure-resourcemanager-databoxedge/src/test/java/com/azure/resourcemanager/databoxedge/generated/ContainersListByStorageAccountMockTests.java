@@ -6,66 +6,35 @@ package com.azure.resourcemanager.databoxedge.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databoxedge.DataBoxEdgeManager;
 import com.azure.resourcemanager.databoxedge.models.AzureContainerDataFormat;
 import com.azure.resourcemanager.databoxedge.models.Container;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContainersListByStorageAccountMockTests {
     @Test
     public void testListByStorageAccount() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"containerStatus\":\"Unknown\",\"dataFormat\":\"BlockBlob\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"pmyyefrpmpdnqq\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-04-07T23:14:44Z\",\"errorManifestFile\":\"ao\",\"lastJob\":\"mmbnpqfrtql\"},\"createdDateTime\":\"2021-08-01T20:31:37Z\"},\"id\":\"egnitg\",\"name\":\"kxlzyqdrfeg\",\"type\":\"ealzxwhcansymoyq\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"containerStatus\":\"Offline\",\"dataFormat\":\"AzureFile\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"vpo\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-04-28T20:02:30Z\",\"errorManifestFile\":\"gsgbdhuzq\",\"lastJob\":\"j\"},\"createdDateTime\":\"2021-08-01T19:03:10Z\"},\"id\":\"ynscl\",\"name\":\"qhzvhxnkomt\",\"type\":\"u\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataBoxEdgeManager manager = DataBoxEdgeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Container> response = manager.containers()
+            .listByStorageAccount("oyzunbixxr", "ikvcpwp", "clrcivtsox", com.azure.core.util.Context.NONE);
 
-        DataBoxEdgeManager manager =
-            DataBoxEdgeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Container> response =
-            manager
-                .containers()
-                .listByStorageAccount("kphhq", "ikvylauya", "luwmncst", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(AzureContainerDataFormat.AZURE_FILE, response.iterator().next().dataFormat());
+        Assertions.assertEquals(AzureContainerDataFormat.BLOCK_BLOB, response.iterator().next().dataFormat());
     }
 }

@@ -221,10 +221,12 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
         jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
         jsonWriter.writeJsonField("truncation_strategy", this.truncationStrategy);
         if (this.toolChoice != null) {
-            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
         }
         if (this.responseFormat != null) {
-            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+            jsonWriter.writeFieldName("response_format");
+            this.responseFormat.writeTo(jsonWriter);
         }
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();

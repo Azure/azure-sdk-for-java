@@ -53,8 +53,8 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
          * array of header values for each name. With the new approach we also use Generic Core's Headers.add() method.
          * Overall, this is much better performing as almost all headers will have a single value.
          */
-        okHttpHeaders.forEach(nameValuePair ->
-            httpHeaders.add(HttpHeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
+        okHttpHeaders.forEach(nameValuePair -> httpHeaders.add(HttpHeaderName.fromString(nameValuePair.getFirst()),
+            nameValuePair.getSecond()));
 
         return httpHeaders;
     }

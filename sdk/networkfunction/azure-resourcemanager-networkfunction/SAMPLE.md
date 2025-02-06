@@ -33,27 +33,31 @@
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AzureTrafficCollectors CreateOrUpdate. */
+/**
+ * Samples for AzureTrafficCollectors CreateOrUpdate.
+ */
 public final class AzureTrafficCollectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorCreate.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorCreate.json
      */
     /**
      * Sample code: Create a traffic collector.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void createATrafficCollector(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager
-            .azureTrafficCollectors()
+    public static void
+        createATrafficCollector(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.azureTrafficCollectors()
             .define("atc")
             .withRegion("West US")
             .withExistingResourceGroup("rg1")
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -70,21 +74,23 @@ public final class AzureTrafficCollectorsCreateOrUpdateSamples {
 ### AzureTrafficCollectors_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AzureTrafficCollectors Delete. */
+/**
+ * Samples for AzureTrafficCollectors Delete.
+ */
 public final class AzureTrafficCollectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorDelete.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorDelete.json
      */
     /**
      * Sample code: Delete Traffic Collector.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void deleteTrafficCollector(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.azureTrafficCollectors().delete("rg1", "atc", Context.NONE);
+    public static void
+        deleteTrafficCollector(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.azureTrafficCollectors().delete("rg1", "atc", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -92,21 +98,23 @@ public final class AzureTrafficCollectorsDeleteSamples {
 ### AzureTrafficCollectors_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AzureTrafficCollectors GetByResourceGroup. */
+/**
+ * Samples for AzureTrafficCollectors GetByResourceGroup.
+ */
 public final class AzureTrafficCollectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorGet.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorGet.json
      */
     /**
      * Sample code: Get Traffic Collector.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void getTrafficCollector(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.azureTrafficCollectors().getByResourceGroupWithResponse("rg1", "atc", Context.NONE);
+    public static void
+        getTrafficCollector(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.azureTrafficCollectors().getByResourceGroupWithResponse("rg1", "atc", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -114,28 +122,33 @@ public final class AzureTrafficCollectorsGetByResourceGroupSamples {
 ### AzureTrafficCollectors_UpdateTags
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkfunction.models.AzureTrafficCollector;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AzureTrafficCollectors UpdateTags. */
+/**
+ * Samples for AzureTrafficCollectors UpdateTags.
+ */
 public final class AzureTrafficCollectorsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorUpdateTags.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorUpdateTags.json
      */
     /**
      * Sample code: Update Traffic Collector tags.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void updateTrafficCollectorTags(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        AzureTrafficCollector resource =
-            manager.azureTrafficCollectors().getByResourceGroupWithResponse("rg1", "atc", Context.NONE).getValue();
-        resource.update().withTags(mapOf("key1", "value1", "key2", "value2")).apply();
+    public static void
+        updateTrafficCollectorTags(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        AzureTrafficCollector resource = manager.azureTrafficCollectors()
+            .getByResourceGroupWithResponse("rg1", "atc", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -152,21 +165,23 @@ public final class AzureTrafficCollectorsUpdateTagsSamples {
 ### AzureTrafficCollectorsByResourceGroup_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AzureTrafficCollectorsByResourceGroup ListByResourceGroup. */
+/**
+ * Samples for AzureTrafficCollectorsByResourceGroup ListByResourceGroup.
+ */
 public final class AzureTrafficCollectorsByResourceGroupListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorsByResourceGroupList.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorsByResourceGroupList.json
      */
     /**
      * Sample code: List of Traffic Collectors by ResourceGroup.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
     public static void listOfTrafficCollectorsByResourceGroup(
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.azureTrafficCollectorsByResourceGroups().listByResourceGroup("rg1", Context.NONE);
+        manager.azureTrafficCollectorsByResourceGroups().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -174,21 +189,23 @@ public final class AzureTrafficCollectorsByResourceGroupListByResourceGroupSampl
 ### AzureTrafficCollectorsBySubscription_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AzureTrafficCollectorsBySubscription List. */
+/**
+ * Samples for AzureTrafficCollectorsBySubscription List.
+ */
 public final class AzureTrafficCollectorsBySubscriptionListSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorsBySubscriptionList.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * AzureTrafficCollectorsBySubscriptionList.json
      */
     /**
      * Sample code: List of Traffic Collectors by Subscription.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
     public static void listOfTrafficCollectorsBySubscription(
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.azureTrafficCollectorsBySubscriptions().list(Context.NONE);
+        manager.azureTrafficCollectorsBySubscriptions().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -206,43 +223,35 @@ import com.azure.resourcemanager.networkfunction.models.IngestionType;
 import com.azure.resourcemanager.networkfunction.models.SourceType;
 import java.util.Arrays;
 
-/** Samples for CollectorPolicies CreateOrUpdate. */
+/**
+ * Samples for CollectorPolicies CreateOrUpdate.
+ */
 public final class CollectorPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyCreate.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPolicyCreate.json
      */
     /**
      * Sample code: Create a collection policy.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void createACollectionPolicy(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager
-            .collectorPolicies()
+    public static void
+        createACollectionPolicy(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.collectorPolicies()
             .define("cp1")
             .withRegion("West US")
             .withExistingAzureTrafficCollector("rg1", "atc")
-            .withIngestionPolicy(
-                new IngestionPolicyPropertiesFormat()
-                    .withIngestionType(IngestionType.IPFIX)
-                    .withIngestionSources(
-                        Arrays
-                            .asList(
-                                new IngestionSourcesPropertiesFormat()
-                                    .withSourceType(SourceType.RESOURCE)
-                                    .withResourceId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"))))
+            .withIngestionPolicy(new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                .withIngestionSources(Arrays.asList(new IngestionSourcesPropertiesFormat()
+                    .withSourceType(SourceType.RESOURCE)
+                    .withResourceId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"))))
             .withEmissionPolicies(
-                Arrays
-                    .asList(
-                        new EmissionPoliciesPropertiesFormat()
-                            .withEmissionType(EmissionType.IPFIX)
-                            .withEmissionDestinations(
-                                Arrays
-                                    .asList(
-                                        new EmissionPolicyDestination()
-                                            .withDestinationType(DestinationType.AZURE_MONITOR)))))
+                Arrays.asList(new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                    .withEmissionDestinations(Arrays
+                        .asList(new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR)))))
             .create();
     }
 }
@@ -251,21 +260,23 @@ public final class CollectorPoliciesCreateOrUpdateSamples {
 ### CollectorPolicies_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for CollectorPolicies Delete. */
+/**
+ * Samples for CollectorPolicies Delete.
+ */
 public final class CollectorPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyDelete.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPolicyDelete.json
      */
     /**
      * Sample code: Delete Collection Policy.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void deleteCollectionPolicy(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.collectorPolicies().delete("rg1", "atc", "cp1", Context.NONE);
+    public static void
+        deleteCollectionPolicy(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.collectorPolicies().delete("rg1", "atc", "cp1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -273,21 +284,23 @@ public final class CollectorPoliciesDeleteSamples {
 ### CollectorPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for CollectorPolicies Get. */
+/**
+ * Samples for CollectorPolicies Get.
+ */
 public final class CollectorPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyGet.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPolicyGet.json
      */
     /**
      * Sample code: Get Collection Policy.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void getCollectionPolicy(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.collectorPolicies().getWithResponse("rg1", "atc", "cp1", Context.NONE);
+    public static void
+        getCollectionPolicy(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.collectorPolicies().getWithResponse("rg1", "atc", "cp1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -295,21 +308,23 @@ public final class CollectorPoliciesGetSamples {
 ### CollectorPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for CollectorPolicies List. */
+/**
+ * Samples for CollectorPolicies List.
+ */
 public final class CollectorPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPoliciesList.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPoliciesList.json
      */
     /**
      * Sample code: List of Collection Policies.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void listOfCollectionPolicies(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.collectorPolicies().list("rg1", "atc", Context.NONE);
+    public static void
+        listOfCollectionPolicies(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.collectorPolicies().list("rg1", "atc", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -317,28 +332,33 @@ public final class CollectorPoliciesListSamples {
 ### CollectorPolicies_UpdateTags
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkfunction.models.CollectorPolicy;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CollectorPolicies UpdateTags. */
+/**
+ * Samples for CollectorPolicies UpdateTags.
+ */
 public final class CollectorPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyUpdateTags.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPolicyUpdateTags.json
      */
     /**
      * Sample code: Update Collector Policy tags.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void updateCollectorPolicyTags(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        CollectorPolicy resource =
-            manager.collectorPolicies().getWithResponse("rg1", "atc", "cp1", Context.NONE).getValue();
-        resource.update().withTags(mapOf("key1", "value1", "key2", "value2")).apply();
+    public static void
+        updateCollectorPolicyTags(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        CollectorPolicy resource = manager.collectorPolicies()
+            .getWithResponse("rg1", "atc", "cp1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -355,20 +375,22 @@ public final class CollectorPoliciesUpdateTagsSamples {
 ### NetworkFunction_ListOperations
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for NetworkFunction ListOperations. */
+/**
+ * Samples for NetworkFunction ListOperations.
+ */
 public final class NetworkFunctionListOperationsSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * OperationsList.json
      */
     /**
      * Sample code: OperationsList.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
     public static void operationsList(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager.networkFunctions().listOperations(Context.NONE);
+        manager.networkFunctions().listOperations(com.azure.core.util.Context.NONE);
     }
 }
 ```

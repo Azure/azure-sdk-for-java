@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.UnresolvedDependencyInner;
 import com.azure.resourcemanager.resourcemover.models.DependencyLevel;
 
-/** An instance of this class provides access to all the operations defined in UnresolvedDependenciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UnresolvedDependenciesClient.
+ */
 public interface UnresolvedDependenciesClient {
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface UnresolvedDependenciesClient {
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -41,11 +43,6 @@ public interface UnresolvedDependenciesClient {
      * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UnresolvedDependencyInner> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context);
+    PagedIterable<UnresolvedDependencyInner> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context);
 }

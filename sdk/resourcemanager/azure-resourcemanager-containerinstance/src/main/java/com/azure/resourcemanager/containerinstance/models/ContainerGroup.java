@@ -11,6 +11,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -20,97 +21,193 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Container Group. */
 @Fluent
-public interface ContainerGroup
-    extends GroupableResource<ContainerInstanceManager, ContainerGroupInner>,
-        Refreshable<ContainerGroup>,
-        Updatable<ContainerGroup.Update> {
+public interface ContainerGroup extends GroupableResource<ContainerInstanceManager, ContainerGroupInner>,
+    Refreshable<ContainerGroup>, Updatable<ContainerGroup.Update> {
 
     /***********************************************************
      * Getters
      ***********************************************************/
 
-    /** @return the container instances in this container group */
+    /**
+     * Gets the container instances in this container group.
+     *
+     * @return the container instances in this container group
+     */
     Map<String, Container> containers();
 
-    /** @return all the ports publicly exposed for this container group */
+    /**
+     * Gets all the ports publicly exposed for this container group.
+     *
+     * @return all the ports publicly exposed for this container group
+     */
     Set<Port> externalPorts();
 
-    /** @return the TCP ports publicly exposed for this container group */
+    /**
+     * Gets the TCP ports publicly exposed for this container group.
+     *
+     * @return the TCP ports publicly exposed for this container group
+     */
     int[] externalTcpPorts();
 
-    /** @return the UDP ports publicly exposed for this container group */
+    /**
+     * Gets the UDP ports publicly exposed for this container group.
+     *
+     * @return the UDP ports publicly exposed for this container group
+     */
     int[] externalUdpPorts();
 
-    /** @return the volumes for this container group */
+    /**
+     * Gets the volumes for this container group.
+     *
+     * @return the volumes for this container group
+     */
     Map<String, Volume> volumes();
 
-    /** @return the Docker image registry servers by which the container group is created from */
+    /**
+     * Gets the Docker image registry servers by which the container group is created from.
+     *
+     * @return the Docker image registry servers by which the container group is created from
+     */
     Collection<String> imageRegistryServers();
 
-    /** @return the container group restart policy */
+    /**
+     * Gets the container group restart policy.
+     *
+     * @return the container group restart policy
+     */
     ContainerGroupRestartPolicy restartPolicy();
 
-    /** @return the DNS prefix which was specified at creation time */
+    /**
+     * Gets the DNS prefix which was specified at creation time.
+     *
+     * @return the DNS prefix which was specified at creation time
+     */
     String dnsPrefix();
 
-    /** @return the FQDN for the container group */
+    /**
+     * Gets the FQDN for the container group.
+     *
+     * @return the FQDN for the container group
+     */
     String fqdn();
 
-    /** @return the IP address */
+    /**
+     * Gets the IP address.
+     *
+     * @return the IP address
+     */
     String ipAddress();
 
-    /** @return true if IP address is public */
+    /**
+     * Checks whether IP address is public.
+     *
+     * @return true if IP address is public
+     */
     boolean isIPAddressPublic();
 
-    /** @return true if IP address is private */
+    /**
+     * Checks whether IP address is private.
+     *
+     * @return true if IP address is private
+     */
     boolean isIPAddressPrivate();
 
-    /** @return the base level OS type required by the containers in the group */
+    /**
+     * Gets the base level OS type required by the containers in the group.
+     *
+     * @return the base level OS type required by the containers in the group
+     */
     OperatingSystemTypes osType();
 
-    /** @return the state of the container group; only valid in response */
+    /**
+     * Gets the state of the container group; only valid in response.
+     *
+     * @return the state of the container group; only valid in response
+     */
     String state();
 
-    /** @return the provisioningState of the container group */
+    /**
+     * Gets the provisioningState of the container group.
+     *
+     * @return the provisioningState of the container group
+     */
     String provisioningState();
 
-    /** @return the container group events */
+    /**
+     * Gets the container group events.
+     *
+     * @return the container group events
+     */
     Set<Event> events();
 
-    /** @return the DNS configuration for the container group */
+    /**
+     * Gets the DNS configuration for the container group.
+     *
+     * @return the DNS configuration for the container group
+     */
     DnsConfiguration dnsConfig();
 
     /**
+     * Gets the reuse policy of DNS name label for the container group.
+     *
+     * @return the reuse policy
+     */
+    DnsNameLabelReusePolicy autoGeneratedDomainNameLabelScope();
+
+    /**
+     * Gets the id of the subnets..
+     *
      * @return the id of the subnets.
      */
     List<ContainerGroupSubnetId> subnetIds();
 
-    /** @return whether managed service identity is enabled for the container group */
+    /**
+     * Checks whether managed service identity is enabled for the container group.
+     *
+     * @return whether managed service identity is enabled for the container group
+     */
     boolean isManagedServiceIdentityEnabled();
 
     /**
+     * Gets the tenant id of the system assigned managed service identity.
+     *
      * @return the tenant id of the system assigned managed service identity. Null if managed service identity is not
      *     configured.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the principal id of the system assigned managed service identity.
+     *
      * @return the principal id of the system assigned managed service identity. Null if managed service identity is not
      *     configured.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return whether managed service identity is system assigned, user assigned, both, or neither */
+    /**
+     * Checks whether managed service identity is system assigned, user assigned, both, or neither.
+     *
+     * @return whether managed service identity is system assigned, user assigned, both, or neither
+     */
     ResourceIdentityType managedServiceIdentityType();
 
-    /** @return the ids of the user assigned managed service identities. Returns an empty set if no MSIs are set. */
+    /**
+     * Gets the ids of the user assigned managed service identities.
+     *
+     * @return the ids of the user assigned managed service identities. Returns an empty set if no MSIs are set.
+     */
     Set<String> userAssignedManagedServiceIdentityIds();
 
-    /** @return the log analytics information of the container group. */
+    /**
+     * Gets the log analytics information of the container group.
+     *
+     * @return the log analytics information of the container group.
+     */
     LogAnalytics logAnalytics();
 
     /***********************************************************
@@ -237,19 +334,12 @@ public interface ContainerGroup
     Mono<ContainerAttachResult> attachOutputStreamAsync(Container container);
 
     /** Starts the exec command for a specific container instance within the current group asynchronously. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithOsType,
-            DefinitionStages.WithPublicOrPrivateImageRegistry,
-            DefinitionStages.WithPrivateImageRegistryOrVolume,
-            DefinitionStages.WithVolume,
-            DefinitionStages.WithFirstContainerInstance,
-            DefinitionStages.WithSystemAssignedManagedServiceIdentity,
-            DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate,
-            DefinitionStages.WithNextContainerInstance,
-            DefinitionStages.DnsConfigFork,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithOsType,
+        DefinitionStages.WithPublicOrPrivateImageRegistry, DefinitionStages.WithPrivateImageRegistryOrVolume,
+        DefinitionStages.WithVolume, DefinitionStages.WithFirstContainerInstance,
+        DefinitionStages.WithSystemAssignedManagedServiceIdentity,
+        DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate, DefinitionStages.WithNextContainerInstance,
+        DefinitionStages.DnsConfigFork, DefinitionStages.WithCreate {
     }
 
     /** Grouping of the container group definition stages. */
@@ -507,17 +597,15 @@ public interface ContainerGroup
             interface WithVolumeAttach<ParentT> extends Attachable.InDefinition<ParentT> {
             }
 
-            /** Grouping of the container group's volume definition stages. */
+            /**
+             * Grouping of the container group's volume definition stages.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
             interface VolumeDefinition<ParentT>
-                extends VolumeDefinitionBlank<ParentT>,
-                    WithAzureFileShare<ParentT>,
-                    WithStorageAccountName<ParentT>,
-                    WithStorageAccountKey<ParentT>,
-                    WithSecretsMap<ParentT>,
-                    WithGitUrl<ParentT>,
-                    WithGitDirectoryName<ParentT>,
-                    WithGitRevision<ParentT>,
-                    WithVolumeAttach<ParentT> {
+                extends VolumeDefinitionBlank<ParentT>, WithAzureFileShare<ParentT>, WithStorageAccountName<ParentT>,
+                WithStorageAccountKey<ParentT>, WithSecretsMap<ParentT>, WithGitUrl<ParentT>,
+                WithGitDirectoryName<ParentT>, WithGitRevision<ParentT>, WithVolumeAttach<ParentT> {
             }
         }
 
@@ -835,8 +923,8 @@ public interface ContainerGroup
                  *     container gets initialized
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(
-                    Map<String, String> environmentVariables);
+                WithContainerInstanceAttach<ParentT>
+                    withEnvironmentVariableWithSecuredValue(Map<String, String> environmentVariables);
 
                 /**
                  * Specifies the environment variable that has a secured value.
@@ -845,8 +933,8 @@ public interface ContainerGroup
                  * @param securedValue the environment variable secured value
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(
-                    String envName, String securedValue);
+                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(String envName,
+                    String securedValue);
             }
 
             /**
@@ -901,8 +989,8 @@ public interface ContainerGroup
                  * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container
                  *     group definition stage.
                  */
-                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(
-                    String volumeName, String mountPath);
+                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(String volumeName,
+                    String mountPath);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount
@@ -918,8 +1006,8 @@ public interface ContainerGroup
                  * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container
                  *     group definition stage.
                  */
-                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(
-                    Map<String, String> volumeMountSetting);
+                WithContainerInstanceAttach<ParentT>
+                    withReadOnlyVolumeMountSetting(Map<String, String> volumeMountSetting);
             }
 
             /**
@@ -941,7 +1029,8 @@ public interface ContainerGroup
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withLivenessProbeExecutionCommand(List<String> command,
+                    int probePeriodSeconds);
 
                 /**
                  * Specifies the container's liveness probe to execute a given command at a given interval.
@@ -955,7 +1044,8 @@ public interface ContainerGroup
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold);
+                WithContainerInstanceAttach<ParentT> withLivenessProbeExecutionCommand(List<String> command,
+                    int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's liveness probe to perform an Http Get at a given interval.
@@ -968,7 +1058,8 @@ public interface ContainerGroup
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port,
+                    int probePeriodSeconds);
 
                 /**
                  * Specifies the container's liveness probe to perform an Http Get at a given interval.
@@ -982,7 +1073,8 @@ public interface ContainerGroup
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
+                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port,
+                    int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's liveness probe.
@@ -1012,7 +1104,8 @@ public interface ContainerGroup
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withReadinessProbeExecutionCommand(List<String> command,
+                    int probePeriodSeconds);
 
                 /**
                  * Specifies the container's readiness probe to execute a given command at a given interval.
@@ -1025,7 +1118,8 @@ public interface ContainerGroup
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold);
+                WithContainerInstanceAttach<ParentT> withReadinessProbeExecutionCommand(List<String> command,
+                    int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's readiness probe to perform an Http Get at a given interval.
@@ -1037,7 +1131,8 @@ public interface ContainerGroup
                  * @param probePeriodSeconds the interval at which the Http Get performs
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port,
+                    int probePeriodSeconds);
 
                 /**
                  * Specifies the container's readiness probe to perform an Http Get at a given interval.
@@ -1050,7 +1145,8 @@ public interface ContainerGroup
                  * @param failureThreshold the consecutive probe failure count before the container becomes inaccessible
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
+                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port,
+                    int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's readiness probe.
@@ -1070,24 +1166,19 @@ public interface ContainerGroup
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithContainerInstanceAttach<ParentT>
-                extends WithCpuCoreCount<ParentT>,
-                    WithGpuResource<ParentT>,
-                    WithMemorySize<ParentT>,
-                    WithStartingCommandLine<ParentT>,
-                    WithEnvironmentVariables<ParentT>,
-                    WithVolumeMountSetting<ParentT>,
-                    WithLivenessProbe<ParentT>,
-                    WithReadinessProbe<ParentT>,
-                    Attachable.InDefinition<ParentT> {
+                extends WithCpuCoreCount<ParentT>, WithGpuResource<ParentT>, WithMemorySize<ParentT>,
+                WithStartingCommandLine<ParentT>, WithEnvironmentVariables<ParentT>, WithVolumeMountSetting<ParentT>,
+                WithLivenessProbe<ParentT>, WithReadinessProbe<ParentT>, Attachable.InDefinition<ParentT> {
             }
 
-            /** Grouping of the container group's volume definition stages. */
+            /**
+             * Grouping of the container group's volume definition stages.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
             interface ContainerInstanceDefinition<ParentT>
-                extends ContainerInstanceDefinitionBlank<ParentT>,
-                    WithImage<ParentT>,
-                    WithOrWithoutPorts<ParentT>,
-                    WithPortsOrContainerInstanceAttach<ParentT>,
-                    WithContainerInstanceAttach<ParentT> {
+                extends ContainerInstanceDefinitionBlank<ParentT>, WithImage<ParentT>, WithOrWithoutPorts<ParentT>,
+                WithPortsOrContainerInstanceAttach<ParentT>, WithContainerInstanceAttach<ParentT> {
             }
         }
 
@@ -1117,8 +1208,8 @@ public interface ContainerGroup
              * @param role access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
-                String resourceId, BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId,
+                BuiltInRole role);
 
             /**
              * Specifies a system assigned managed service identity with access to the current resource group and with
@@ -1127,8 +1218,8 @@ public interface ContainerGroup
              * @param role access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
              * Specifies a system assigned managed service identity with access to a specific resource with a specified
@@ -1138,8 +1229,8 @@ public interface ContainerGroup
              * @param roleDefinitionId id of the access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
-                String resourceId, String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId,
+                String roleDefinitionId);
 
             /**
              * Specifies a system assigned managed service identity with access to the current resource group and with
@@ -1148,8 +1239,8 @@ public interface ContainerGroup
              * @param roleDefinitionId id of the access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
         }
 
         /**
@@ -1194,6 +1285,17 @@ public interface ContainerGroup
              * @return the next stage of the definition
              */
             WithCreate withDnsPrefix(String dnsPrefix);
+        }
+
+        /** The stage of the container group definition allowing to specify the reuse policy of DNS name label. */
+        interface WithAutoGeneratedDomainNameLabelScope {
+            /**
+             * Specifies the reuse policy of DNS name label for container group.
+             *
+             * @param reusePolicy the reuse policy of DNS name label
+             * @return the next stage of the definition
+             */
+            WithCreate withAutoGeneratedDomainNameLabelScope(DnsNameLabelReusePolicy reusePolicy);
         }
 
         /** The stage of the container group definition allowing to specify the network profile id. */
@@ -1292,23 +1394,24 @@ public interface ContainerGroup
              * @param metadata the metadata for log analytics
              * @return the next stage of the definition
              */
-            WithCreate withLogAnalytics(
-                String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata);
+            WithCreate withLogAnalytics(String workspaceId, String workspaceKey, LogAnalyticsLogType logType,
+                Map<String, String> metadata);
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends WithRestartPolicy,
-                WithSystemAssignedManagedServiceIdentity,
-                WithUserAssignedManagedServiceIdentity,
-                WithDnsPrefix,
-                WithNetworkProfile,
-                WithLogAnalytics,
-                Creatable<ContainerGroup>,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends WithRestartPolicy, WithSystemAssignedManagedServiceIdentity,
+            WithUserAssignedManagedServiceIdentity, WithDnsPrefix, WithNetworkProfile, WithLogAnalytics,
+            WithAutoGeneratedDomainNameLabelScope, Creatable<ContainerGroup>, Resource.DefinitionWithTags<WithCreate> {
+
+            /**
+             * Begins creating the deployment resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<ContainerGroup> beginCreate();
         }
     }
 

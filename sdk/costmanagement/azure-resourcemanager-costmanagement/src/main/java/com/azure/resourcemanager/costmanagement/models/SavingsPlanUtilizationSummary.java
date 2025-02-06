@@ -5,36 +5,98 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.fluent.models.BenefitUtilizationSummaryInner;
 import com.azure.resourcemanager.costmanagement.fluent.models.SavingsPlanUtilizationSummaryProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-/** Savings plan utilization summary resource. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("SavingsPlan")
+/**
+ * Savings plan utilization summary resource.
+ */
 @Fluent
 public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSummaryInner {
     /*
+     * Supported values: 'SavingsPlan'.
+     */
+    private BenefitKind kind = BenefitKind.SAVINGS_PLAN;
+
+    /*
      * Savings plan utilization summary properties.
      */
-    @JsonProperty(value = "properties")
     private SavingsPlanUtilizationSummaryProperties innerProperties;
 
-    /** Creates an instance of SavingsPlanUtilizationSummary class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SavingsPlanUtilizationSummary class.
+     */
     public SavingsPlanUtilizationSummary() {
     }
 
     /**
+     * Get the kind property: Supported values: 'SavingsPlan'.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public BenefitKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Savings plan utilization summary properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SavingsPlanUtilizationSummaryProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -43,7 +105,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
      * &lt; 2022-10-31 at a daily granularity. There will be one record per benefit id for each day. For a single day,
      * the avgUtilizationPercentage value will be equal to the average of the set of values where the set contains 24
      * utilization percentage entries one for each hour in a specific day.
-     *
+     * 
      * @return the avgUtilizationPercentage value.
      */
     public BigDecimal avgUtilizationPercentage() {
@@ -58,7 +120,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
      * utilization percentage entries one for each hour in a specific day. If on the day 2022-10-18, the lowest
      * utilization percentage was 10% at hour 4, then the value for the minUtilizationPercentage in the response will be
      * 10%.
-     *
+     * 
      * @return the minUtilizationPercentage value.
      */
     public BigDecimal minUtilizationPercentage() {
@@ -73,7 +135,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
      * utilization percentage entries one for each hour in a specific day. If on the day 2022-10-18, the largest
      * utilization percentage was 90% at hour 5, then the value for the maxUtilizationPercentage in the response will be
      * 90%.
-     *
+     * 
      * @return the maxUtilizationPercentage value.
      */
     public BigDecimal maxUtilizationPercentage() {
@@ -82,7 +144,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
 
     /**
      * Get the armSkuName property: ARM SKU name. For example, 'Compute_Savings_Plan' for savings plan.
-     *
+     * 
      * @return the armSkuName value.
      */
     public String armSkuName() {
@@ -91,7 +153,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
 
     /**
      * Get the benefitId property: The benefit ID is the identifier of the benefit.
-     *
+     * 
      * @return the benefitId value.
      */
     public String benefitId() {
@@ -100,7 +162,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
 
     /**
      * Get the benefitOrderId property: The benefit order ID is the identifier for a benefit purchase.
-     *
+     * 
      * @return the benefitOrderId value.
      */
     public String benefitOrderId() {
@@ -109,7 +171,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
 
     /**
      * Get the benefitType property: The benefit type. Supported values: 'SavingsPlan'.
-     *
+     * 
      * @return the benefitType value.
      */
     public BenefitKind benefitType() {
@@ -118,7 +180,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
 
     /**
      * Set the benefitType property: The benefit type. Supported values: 'SavingsPlan'.
-     *
+     * 
      * @param benefitType the benefitType value to set.
      * @return the SavingsPlanUtilizationSummary object itself.
      */
@@ -133,7 +195,7 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
     /**
      * Get the usageDate property: Date corresponding to the utilization summary record. If the grain of data is
      * monthly, value for this field will be first day of the month.
-     *
+     * 
      * @return the usageDate value.
      */
     public OffsetDateTime usageDate() {
@@ -142,14 +204,61 @@ public final class SavingsPlanUtilizationSummary extends BenefitUtilizationSumma
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanUtilizationSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanUtilizationSummary if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SavingsPlanUtilizationSummary.
+     */
+    public static SavingsPlanUtilizationSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanUtilizationSummary deserializedSavingsPlanUtilizationSummary
+                = new SavingsPlanUtilizationSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSavingsPlanUtilizationSummary.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSavingsPlanUtilizationSummary.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSavingsPlanUtilizationSummary.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSavingsPlanUtilizationSummary.kind = BenefitKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSavingsPlanUtilizationSummary.innerProperties
+                        = SavingsPlanUtilizationSummaryProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanUtilizationSummary;
+        });
     }
 }

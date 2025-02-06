@@ -31,18 +31,6 @@ public final class ContentFilterDetailedResults implements JsonSerializable<Cont
     private final List<ContentFilterBlocklistIdResult> details;
 
     /**
-     * Creates an instance of ContentFilterDetailedResults class.
-     *
-     * @param filtered the filtered value to set.
-     * @param details the details value to set.
-     */
-    @Generated
-    private ContentFilterDetailedResults(boolean filtered, List<ContentFilterBlocklistIdResult> details) {
-        this.filtered = filtered;
-        this.details = details;
-    }
-
-    /**
      * Get the filtered property: A value indicating whether or not the content has been filtered.
      *
      * @return the filtered value.
@@ -101,5 +89,17 @@ public final class ContentFilterDetailedResults implements JsonSerializable<Cont
             }
             return new ContentFilterDetailedResults(filtered, details);
         });
+    }
+
+    /**
+     * Creates an instance of ContentFilterDetailedResults class.
+     *
+     * @param filtered the filtered value to set.
+     * @param details the details value to set.
+     */
+    @Generated
+    private ContentFilterDetailedResults(boolean filtered, List<ContentFilterBlocklistIdResult> details) {
+        this.filtered = filtered;
+        this.details = details;
     }
 }

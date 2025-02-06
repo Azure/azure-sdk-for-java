@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.ContainerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of all the containers on the Data Box Edge/Gateway device. */
+/**
+ * Collection of all the containers on the Data Box Edge/Gateway device.
+ */
 @Immutable
-public final class ContainerList {
+public final class ContainerList implements JsonSerializable<ContainerList> {
     /*
      * The list of containers.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ContainerInner> value;
 
     /*
      * Link to the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ContainerList class. */
+    /**
+     * Creates an instance of ContainerList class.
+     */
     public ContainerList() {
     }
 
     /**
      * Get the value property: The list of containers.
-     *
+     * 
      * @return the value value.
      */
     public List<ContainerInner> value() {
@@ -39,7 +45,7 @@ public final class ContainerList {
 
     /**
      * Get the nextLink property: Link to the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class ContainerList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerList.
+     */
+    public static ContainerList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerList deserializedContainerList = new ContainerList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ContainerInner> value = reader.readArray(reader1 -> ContainerInner.fromJson(reader1));
+                    deserializedContainerList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedContainerList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerList;
+        });
     }
 }

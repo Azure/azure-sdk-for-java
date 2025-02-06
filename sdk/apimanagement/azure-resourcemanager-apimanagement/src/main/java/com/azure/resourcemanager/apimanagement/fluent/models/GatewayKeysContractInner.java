@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gateway authentication keys. */
+/**
+ * Gateway authentication keys.
+ */
 @Fluent
-public final class GatewayKeysContractInner {
+public final class GatewayKeysContractInner implements JsonSerializable<GatewayKeysContractInner> {
     /*
      * Primary gateway key.
      */
-    @JsonProperty(value = "primary")
     private String primary;
 
     /*
      * Secondary gateway key.
      */
-    @JsonProperty(value = "secondary")
     private String secondary;
 
-    /** Creates an instance of GatewayKeysContractInner class. */
+    /**
+     * Creates an instance of GatewayKeysContractInner class.
+     */
     public GatewayKeysContractInner() {
     }
 
     /**
      * Get the primary property: Primary gateway key.
-     *
+     * 
      * @return the primary value.
      */
     public String primary() {
@@ -37,7 +43,7 @@ public final class GatewayKeysContractInner {
 
     /**
      * Set the primary property: Primary gateway key.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the GatewayKeysContractInner object itself.
      */
@@ -48,7 +54,7 @@ public final class GatewayKeysContractInner {
 
     /**
      * Get the secondary property: Secondary gateway key.
-     *
+     * 
      * @return the secondary value.
      */
     public String secondary() {
@@ -57,7 +63,7 @@ public final class GatewayKeysContractInner {
 
     /**
      * Set the secondary property: Secondary gateway key.
-     *
+     * 
      * @param secondary the secondary value to set.
      * @return the GatewayKeysContractInner object itself.
      */
@@ -68,9 +74,48 @@ public final class GatewayKeysContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primary", this.primary);
+        jsonWriter.writeStringField("secondary", this.secondary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayKeysContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayKeysContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayKeysContractInner.
+     */
+    public static GatewayKeysContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayKeysContractInner deserializedGatewayKeysContractInner = new GatewayKeysContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primary".equals(fieldName)) {
+                    deserializedGatewayKeysContractInner.primary = reader.getString();
+                } else if ("secondary".equals(fieldName)) {
+                    deserializedGatewayKeysContractInner.secondary = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayKeysContractInner;
+        });
     }
 }

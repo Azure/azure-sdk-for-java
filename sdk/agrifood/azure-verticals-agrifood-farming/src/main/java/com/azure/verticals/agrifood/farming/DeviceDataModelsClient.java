@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = DeviceDataModelsClientBuilder.class)
 public final class DeviceDataModelsClient {
-    @Generated private final DeviceDataModelsAsyncClient client;
+    @Generated
+    private final DeviceDataModelsAsyncClient client;
 
     /**
      * Initializes an instance of DeviceDataModelsClient class.
@@ -173,14 +174,11 @@ public final class DeviceDataModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String sensorPartnerId,
-            String deviceDataModelId,
-            BinaryData deviceDataModelObject,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String sensorPartnerId, String deviceDataModelId,
+        BinaryData deviceDataModelObject, RequestOptions requestOptions) {
         return this.client
-                .createOrUpdateWithResponse(sensorPartnerId, deviceDataModelId, deviceDataModelObject, requestOptions)
-                .block();
+            .createOrUpdateWithResponse(sensorPartnerId, deviceDataModelId, deviceDataModelObject, requestOptions)
+            .block();
     }
 
     /**
@@ -226,8 +224,8 @@ public final class DeviceDataModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String sensorPartnerId, String deviceDataModelId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String sensorPartnerId, String deviceDataModelId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(sensorPartnerId, deviceDataModelId, requestOptions).block();
     }
 
@@ -245,8 +243,8 @@ public final class DeviceDataModelsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String sensorPartnerId, String deviceDataModelId, RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String sensorPartnerId, String deviceDataModelId,
+        RequestOptions requestOptions) {
         return this.client.deleteWithResponse(sensorPartnerId, deviceDataModelId, requestOptions).block();
     }
 }

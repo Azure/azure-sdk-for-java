@@ -13,35 +13,31 @@ import org.junit.jupiter.api.Assertions;
 public final class SystemMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SystemMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"createdBy\":\"zloc\",\"createdByType\":\"User\",\"createdAt\":\"2021-11-18T07:05:01Z\",\"lastModifiedBy\":\"erhhbcsglumm\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-08-25T02:16:19Z\"}")
-                .toObject(SystemMetadata.class);
-        Assertions.assertEquals("zloc", model.createdBy());
-        Assertions.assertEquals(CreatedByType.USER, model.createdByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T07:05:01Z"), model.createdAt());
-        Assertions.assertEquals("erhhbcsglumm", model.lastModifiedBy());
-        Assertions.assertEquals(CreatedByType.MANAGED_IDENTITY, model.lastModifiedByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T02:16:19Z"), model.lastModifiedAt());
+        SystemMetadata model = BinaryData.fromString(
+            "{\"createdBy\":\"kexxppof\",\"createdByType\":\"Key\",\"createdAt\":\"2021-11-01T06:54:57Z\",\"lastModifiedBy\":\"jpgd\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-05-05T12:18:06Z\"}")
+            .toObject(SystemMetadata.class);
+        Assertions.assertEquals("kexxppof", model.createdBy());
+        Assertions.assertEquals(CreatedByType.KEY, model.createdByType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T06:54:57Z"), model.createdAt());
+        Assertions.assertEquals("jpgd", model.lastModifiedBy());
+        Assertions.assertEquals(CreatedByType.KEY, model.lastModifiedByType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T12:18:06Z"), model.lastModifiedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SystemMetadata model =
-            new SystemMetadata()
-                .withCreatedBy("zloc")
-                .withCreatedByType(CreatedByType.USER)
-                .withCreatedAt(OffsetDateTime.parse("2021-11-18T07:05:01Z"))
-                .withLastModifiedBy("erhhbcsglumm")
-                .withLastModifiedByType(CreatedByType.MANAGED_IDENTITY)
-                .withLastModifiedAt(OffsetDateTime.parse("2021-08-25T02:16:19Z"));
+        SystemMetadata model = new SystemMetadata().withCreatedBy("kexxppof")
+            .withCreatedByType(CreatedByType.KEY)
+            .withCreatedAt(OffsetDateTime.parse("2021-11-01T06:54:57Z"))
+            .withLastModifiedBy("jpgd")
+            .withLastModifiedByType(CreatedByType.KEY)
+            .withLastModifiedAt(OffsetDateTime.parse("2021-05-05T12:18:06Z"));
         model = BinaryData.fromObject(model).toObject(SystemMetadata.class);
-        Assertions.assertEquals("zloc", model.createdBy());
-        Assertions.assertEquals(CreatedByType.USER, model.createdByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T07:05:01Z"), model.createdAt());
-        Assertions.assertEquals("erhhbcsglumm", model.lastModifiedBy());
-        Assertions.assertEquals(CreatedByType.MANAGED_IDENTITY, model.lastModifiedByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T02:16:19Z"), model.lastModifiedAt());
+        Assertions.assertEquals("kexxppof", model.createdBy());
+        Assertions.assertEquals(CreatedByType.KEY, model.createdByType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T06:54:57Z"), model.createdAt());
+        Assertions.assertEquals("jpgd", model.lastModifiedBy());
+        Assertions.assertEquals(CreatedByType.KEY, model.lastModifiedByType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T12:18:06Z"), model.lastModifiedAt());
     }
 }

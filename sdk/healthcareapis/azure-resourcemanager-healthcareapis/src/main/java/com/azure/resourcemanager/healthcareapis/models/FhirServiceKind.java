@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class FhirServiceKind extends ExpandableStringEnum<FhirServiceKind>
      * @param name a name to look for.
      * @return the corresponding FhirServiceKind.
      */
-    @JsonCreator
     public static FhirServiceKind fromString(String name) {
         return fromString(name, FhirServiceKind.class);
     }

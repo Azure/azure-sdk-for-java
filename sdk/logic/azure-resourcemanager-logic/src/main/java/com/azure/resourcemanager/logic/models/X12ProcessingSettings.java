@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The X12 processing settings. */
+/**
+ * The X12 processing settings.
+ */
 @Fluent
-public final class X12ProcessingSettings {
+public final class X12ProcessingSettings implements JsonSerializable<X12ProcessingSettings> {
     /*
      * The value indicating whether to mask security information.
      */
-    @JsonProperty(value = "maskSecurityInfo", required = true)
     private boolean maskSecurityInfo;
 
     /*
      * The value indicating whether to convert numerical type to implied decimal.
      */
-    @JsonProperty(value = "convertImpliedDecimal", required = true)
     private boolean convertImpliedDecimal;
 
     /*
      * The value indicating whether to preserve interchange.
      */
-    @JsonProperty(value = "preserveInterchange", required = true)
     private boolean preserveInterchange;
 
     /*
      * The value indicating whether to suspend interchange on error.
      */
-    @JsonProperty(value = "suspendInterchangeOnError", required = true)
     private boolean suspendInterchangeOnError;
 
     /*
      * The value indicating whether to create empty xml tags for trailing separators.
      */
-    @JsonProperty(value = "createEmptyXmlTagsForTrailingSeparators", required = true)
     private boolean createEmptyXmlTagsForTrailingSeparators;
 
     /*
      * The value indicating whether to use dot as decimal separator.
      */
-    @JsonProperty(value = "useDotAsDecimalSeparator", required = true)
     private boolean useDotAsDecimalSeparator;
 
-    /** Creates an instance of X12ProcessingSettings class. */
+    /**
+     * Creates an instance of X12ProcessingSettings class.
+     */
     public X12ProcessingSettings() {
     }
 
     /**
      * Get the maskSecurityInfo property: The value indicating whether to mask security information.
-     *
+     * 
      * @return the maskSecurityInfo value.
      */
     public boolean maskSecurityInfo() {
@@ -61,7 +63,7 @@ public final class X12ProcessingSettings {
 
     /**
      * Set the maskSecurityInfo property: The value indicating whether to mask security information.
-     *
+     * 
      * @param maskSecurityInfo the maskSecurityInfo value to set.
      * @return the X12ProcessingSettings object itself.
      */
@@ -73,7 +75,7 @@ public final class X12ProcessingSettings {
     /**
      * Get the convertImpliedDecimal property: The value indicating whether to convert numerical type to implied
      * decimal.
-     *
+     * 
      * @return the convertImpliedDecimal value.
      */
     public boolean convertImpliedDecimal() {
@@ -83,7 +85,7 @@ public final class X12ProcessingSettings {
     /**
      * Set the convertImpliedDecimal property: The value indicating whether to convert numerical type to implied
      * decimal.
-     *
+     * 
      * @param convertImpliedDecimal the convertImpliedDecimal value to set.
      * @return the X12ProcessingSettings object itself.
      */
@@ -94,7 +96,7 @@ public final class X12ProcessingSettings {
 
     /**
      * Get the preserveInterchange property: The value indicating whether to preserve interchange.
-     *
+     * 
      * @return the preserveInterchange value.
      */
     public boolean preserveInterchange() {
@@ -103,7 +105,7 @@ public final class X12ProcessingSettings {
 
     /**
      * Set the preserveInterchange property: The value indicating whether to preserve interchange.
-     *
+     * 
      * @param preserveInterchange the preserveInterchange value to set.
      * @return the X12ProcessingSettings object itself.
      */
@@ -114,7 +116,7 @@ public final class X12ProcessingSettings {
 
     /**
      * Get the suspendInterchangeOnError property: The value indicating whether to suspend interchange on error.
-     *
+     * 
      * @return the suspendInterchangeOnError value.
      */
     public boolean suspendInterchangeOnError() {
@@ -123,7 +125,7 @@ public final class X12ProcessingSettings {
 
     /**
      * Set the suspendInterchangeOnError property: The value indicating whether to suspend interchange on error.
-     *
+     * 
      * @param suspendInterchangeOnError the suspendInterchangeOnError value to set.
      * @return the X12ProcessingSettings object itself.
      */
@@ -135,7 +137,7 @@ public final class X12ProcessingSettings {
     /**
      * Get the createEmptyXmlTagsForTrailingSeparators property: The value indicating whether to create empty xml tags
      * for trailing separators.
-     *
+     * 
      * @return the createEmptyXmlTagsForTrailingSeparators value.
      */
     public boolean createEmptyXmlTagsForTrailingSeparators() {
@@ -145,19 +147,19 @@ public final class X12ProcessingSettings {
     /**
      * Set the createEmptyXmlTagsForTrailingSeparators property: The value indicating whether to create empty xml tags
      * for trailing separators.
-     *
+     * 
      * @param createEmptyXmlTagsForTrailingSeparators the createEmptyXmlTagsForTrailingSeparators value to set.
      * @return the X12ProcessingSettings object itself.
      */
-    public X12ProcessingSettings withCreateEmptyXmlTagsForTrailingSeparators(
-        boolean createEmptyXmlTagsForTrailingSeparators) {
+    public X12ProcessingSettings
+        withCreateEmptyXmlTagsForTrailingSeparators(boolean createEmptyXmlTagsForTrailingSeparators) {
         this.createEmptyXmlTagsForTrailingSeparators = createEmptyXmlTagsForTrailingSeparators;
         return this;
     }
 
     /**
      * Get the useDotAsDecimalSeparator property: The value indicating whether to use dot as decimal separator.
-     *
+     * 
      * @return the useDotAsDecimalSeparator value.
      */
     public boolean useDotAsDecimalSeparator() {
@@ -166,7 +168,7 @@ public final class X12ProcessingSettings {
 
     /**
      * Set the useDotAsDecimalSeparator property: The value indicating whether to use dot as decimal separator.
-     *
+     * 
      * @param useDotAsDecimalSeparator the useDotAsDecimalSeparator value to set.
      * @return the X12ProcessingSettings object itself.
      */
@@ -177,9 +179,62 @@ public final class X12ProcessingSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("maskSecurityInfo", this.maskSecurityInfo);
+        jsonWriter.writeBooleanField("convertImpliedDecimal", this.convertImpliedDecimal);
+        jsonWriter.writeBooleanField("preserveInterchange", this.preserveInterchange);
+        jsonWriter.writeBooleanField("suspendInterchangeOnError", this.suspendInterchangeOnError);
+        jsonWriter.writeBooleanField("createEmptyXmlTagsForTrailingSeparators",
+            this.createEmptyXmlTagsForTrailingSeparators);
+        jsonWriter.writeBooleanField("useDotAsDecimalSeparator", this.useDotAsDecimalSeparator);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of X12ProcessingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of X12ProcessingSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the X12ProcessingSettings.
+     */
+    public static X12ProcessingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            X12ProcessingSettings deserializedX12ProcessingSettings = new X12ProcessingSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maskSecurityInfo".equals(fieldName)) {
+                    deserializedX12ProcessingSettings.maskSecurityInfo = reader.getBoolean();
+                } else if ("convertImpliedDecimal".equals(fieldName)) {
+                    deserializedX12ProcessingSettings.convertImpliedDecimal = reader.getBoolean();
+                } else if ("preserveInterchange".equals(fieldName)) {
+                    deserializedX12ProcessingSettings.preserveInterchange = reader.getBoolean();
+                } else if ("suspendInterchangeOnError".equals(fieldName)) {
+                    deserializedX12ProcessingSettings.suspendInterchangeOnError = reader.getBoolean();
+                } else if ("createEmptyXmlTagsForTrailingSeparators".equals(fieldName)) {
+                    deserializedX12ProcessingSettings.createEmptyXmlTagsForTrailingSeparators = reader.getBoolean();
+                } else if ("useDotAsDecimalSeparator".equals(fieldName)) {
+                    deserializedX12ProcessingSettings.useDotAsDecimalSeparator = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedX12ProcessingSettings;
+        });
     }
 }

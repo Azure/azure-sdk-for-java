@@ -24,9 +24,12 @@ public final class CertificateObjectGlobalRulestackResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateObjectGlobalRulestackResourceInner model = new CertificateObjectGlobalRulestackResourceInner()
-            .withCertificateSignerResourceId("azjdyggd").withCertificateSelfSigned(BooleanEnum.TRUE)
-            .withAuditComment("xhbkuofq").withDescription("yk").withEtag("enevfyexfwhybci");
+        CertificateObjectGlobalRulestackResourceInner model
+            = new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("azjdyggd")
+                .withCertificateSelfSigned(BooleanEnum.TRUE)
+                .withAuditComment("xhbkuofq")
+                .withDescription("yk")
+                .withEtag("enevfyexfwhybci");
         model = BinaryData.fromObject(model).toObject(CertificateObjectGlobalRulestackResourceInner.class);
         Assertions.assertEquals("azjdyggd", model.certificateSignerResourceId());
         Assertions.assertEquals(BooleanEnum.TRUE, model.certificateSelfSigned());

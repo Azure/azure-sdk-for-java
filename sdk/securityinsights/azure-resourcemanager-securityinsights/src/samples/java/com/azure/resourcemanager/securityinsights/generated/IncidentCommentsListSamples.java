@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IncidentComments List. */
+/**
+ * Samples for IncidentComments List.
+ */
 public final class IncidentCommentsListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/comments/GetAllIncidentComments.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/incidents/
+     * comments/GetAllIncidentComments.json
      */
     /**
      * Sample code: Get all incident comments.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void getAllIncidentComments(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .incidentComments()
-            .list("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", null, null, null, null, Context.NONE);
+    public static void
+        getAllIncidentComments(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.incidentComments()
+            .list("myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

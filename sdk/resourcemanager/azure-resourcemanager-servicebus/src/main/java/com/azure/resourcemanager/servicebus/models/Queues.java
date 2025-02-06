@@ -11,15 +11,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 
-
 /**
  * Entry point to service bus queue management API in Azure.
  */
 @Fluent
-public interface Queues extends
-    SupportsCreating<Queue.DefinitionStages.Blank>,
-    SupportsListing<Queue>,
-    SupportsGettingByName<Queue>,
-    SupportsDeletingByName,
-    HasManager<ServiceBusManager> {
+public interface Queues extends SupportsCreating<Queue.DefinitionStages.Blank>, SupportsListing<Queue>,
+    SupportsGettingByName<Queue>, SupportsDeletingByName, HasManager<ServiceBusManager> {
 }

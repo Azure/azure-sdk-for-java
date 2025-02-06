@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datadog.fluent.models.CreateResourceSupportedResponseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The CreateResourceSupportedResponseList model. */
+/**
+ * The CreateResourceSupportedResponseList model.
+ */
 @Fluent
-public final class CreateResourceSupportedResponseList {
+public final class CreateResourceSupportedResponseList
+    implements JsonSerializable<CreateResourceSupportedResponseList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<CreateResourceSupportedResponseInner> value;
 
-    /** Creates an instance of CreateResourceSupportedResponseList class. */
+    /**
+     * Creates an instance of CreateResourceSupportedResponseList class.
+     */
     public CreateResourceSupportedResponseList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<CreateResourceSupportedResponseInner> value() {
@@ -33,7 +41,7 @@ public final class CreateResourceSupportedResponseList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the CreateResourceSupportedResponseList object itself.
      */
@@ -44,12 +52,51 @@ public final class CreateResourceSupportedResponseList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateResourceSupportedResponseList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateResourceSupportedResponseList if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateResourceSupportedResponseList.
+     */
+    public static CreateResourceSupportedResponseList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateResourceSupportedResponseList deserializedCreateResourceSupportedResponseList
+                = new CreateResourceSupportedResponseList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CreateResourceSupportedResponseInner> value
+                        = reader.readArray(reader1 -> CreateResourceSupportedResponseInner.fromJson(reader1));
+                    deserializedCreateResourceSupportedResponseList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateResourceSupportedResponseList;
+        });
     }
 }

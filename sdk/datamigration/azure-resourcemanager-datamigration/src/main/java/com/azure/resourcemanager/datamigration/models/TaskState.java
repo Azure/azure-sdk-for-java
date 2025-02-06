@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the task. This is ignored if submitted. */
+/**
+ * The state of the task. This is ignored if submitted.
+ */
 public final class TaskState extends ExpandableStringEnum<TaskState> {
-    /** Static value Unknown for TaskState. */
+    /**
+     * Static value Unknown for TaskState.
+     */
     public static final TaskState UNKNOWN = fromString("Unknown");
 
-    /** Static value Queued for TaskState. */
+    /**
+     * Static value Queued for TaskState.
+     */
     public static final TaskState QUEUED = fromString("Queued");
 
-    /** Static value Running for TaskState. */
+    /**
+     * Static value Running for TaskState.
+     */
     public static final TaskState RUNNING = fromString("Running");
 
-    /** Static value Canceled for TaskState. */
+    /**
+     * Static value Canceled for TaskState.
+     */
     public static final TaskState CANCELED = fromString("Canceled");
 
-    /** Static value Succeeded for TaskState. */
+    /**
+     * Static value Succeeded for TaskState.
+     */
     public static final TaskState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for TaskState. */
+    /**
+     * Static value Failed for TaskState.
+     */
     public static final TaskState FAILED = fromString("Failed");
 
-    /** Static value FailedInputValidation for TaskState. */
+    /**
+     * Static value FailedInputValidation for TaskState.
+     */
     public static final TaskState FAILED_INPUT_VALIDATION = fromString("FailedInputValidation");
 
-    /** Static value Faulted for TaskState. */
+    /**
+     * Static value Faulted for TaskState.
+     */
     public static final TaskState FAULTED = fromString("Faulted");
 
     /**
      * Creates a new instance of TaskState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class TaskState extends ExpandableStringEnum<TaskState> {
 
     /**
      * Creates or finds a TaskState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TaskState.
      */
-    @JsonCreator
     public static TaskState fromString(String name) {
         return fromString(name, TaskState.class);
     }
 
     /**
      * Gets known TaskState values.
-     *
+     * 
      * @return known TaskState values.
      */
     public static Collection<TaskState> values() {

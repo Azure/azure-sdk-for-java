@@ -9,7 +9,8 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2023-06-01-preview/examples/FirewallRulesListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * FirewallRulesListByServer.json
      */
     /**
      * Sample code: List all firewall rules in a server.

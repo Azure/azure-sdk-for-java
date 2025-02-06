@@ -16,57 +16,81 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure Private DNS Zone. */
 @Fluent
-public interface PrivateDnsZone
-    extends GroupableResource<PrivateDnsZoneManager, PrivateZoneInner>,
-        Refreshable<PrivateDnsZone>,
-        Updatable<PrivateDnsZone.Update> {
+public interface PrivateDnsZone extends GroupableResource<PrivateDnsZoneManager, PrivateZoneInner>,
+    Refreshable<PrivateDnsZone>, Updatable<PrivateDnsZone.Update> {
 
     /**
+     * Gets the ETag of the zone.
+     *
      * @return the ETag of the zone.
      */
     String etag();
 
     /**
+     * Gets the maximum number of record sets that can be created in this Private DNS zone.
+     *
      * @return the maximum number of record sets that can be created in this Private DNS zone.
      */
     long maxNumberOfRecordSets();
 
     /**
+     * Gets the numberOfRecordSets property.
+     *
      * @return the numberOfRecordSets property: The current number of record sets in this Private DNS zone.
      */
     long numberOfRecordSets();
 
     /**
+     * Gets the maximum number of virtual networks that can be linked to this Private DNS zone.
+     *
      * @return the maximum number of virtual networks that can be linked to this Private DNS zone.
      */
     long maxNumberOfVirtualNetworkLinks();
 
     /**
+     * Gets the current number of virtual networks that are linked to this Private DNS zone.
+     *
      * @return the current number of virtual networks that are linked to this Private DNS zone.
      */
     long numberOfVirtualNetworkLinks();
 
     /**
+     * Gets the maximum number of virtual networks that can be linked to this Private DNS zone
+     * with registration enabled.
+     *
      * @return the maximum number of virtual networks that can be linked to this Private DNS zone
      * with registration enabled.
      */
     long maxNumberOfVirtualNetworkLinksWithRegistration();
 
     /**
+     * Gets the current number of virtual networks that are linked to this Private DNS zone
+     * with registration enabled.
+     *
      * @return the current number of virtual networks that are linked to this Private DNS zone
      * with registration enabled.
      */
     long numberOfVirtualNetworkLinksWithRegistration();
 
     /**
+     * Gets the provisioning state of the resource.
+     *
      * @return the provisioning state of the resource.
      */
     ProvisioningState provisioningState();
 
-    /** @return the record sets in this zone. */
+    /**
+     * Gets the record sets in this zone.
+     *
+     * @return the record sets in this zone.
+     */
     PagedIterable<PrivateDnsRecordSet> listRecordSets();
 
-    /** @return the record sets in this zone asynchronously. */
+    /**
+     * Gets the record sets in this zone asynchronously.
+     *
+     * @return the record sets in this zone asynchronously.
+     */
     PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync();
 
     /**
@@ -121,31 +145,67 @@ public interface PrivateDnsZone
      */
     PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync(String recordSetNameSuffix, int pageSize);
 
-    /** @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing AAAA (IPv6 address) records.
+     *
+     * @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records
+     */
     AaaaRecordSets aaaaRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing A (IPv4 address) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing A (IPv4 address) records.
+     *
+     * @return entry point to manage record sets in this zone containing A (IPv4 address) records
+     */
     ARecordSets aRecordSets();
 
-    /** @return the CNAME (canonical name) record set */
+    /**
+     * Gets the CNAME (canonical name) record set.
+     *
+     * @return the CNAME (canonical name) record set
+     */
     CnameRecordSets cnameRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing MX (mail exchange) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing MX (mail exchange) records.
+     *
+     * @return entry point to manage record sets in this zone containing MX (mail exchange) records
+     */
     MxRecordSets mxRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing PTR (pointer) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing PTR (pointer) records.
+     *
+     * @return entry point to manage record sets in this zone containing PTR (pointer) records
+     */
     PtrRecordSets ptrRecordSets();
 
-    /** @return the record set containing SOA (start of authority) record associated with this DNS zone */
+    /**
+     * Gets the record set containing SOA (start of authority) record associated with this DNS zone.
+     *
+     * @return the record set containing SOA (start of authority) record associated with this DNS zone
+     */
     SoaRecordSet getSoaRecordSet();
 
-    /** @return entry point to manage record sets in this zone containing SRV (service) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing SRV (service) records.
+     *
+     * @return entry point to manage record sets in this zone containing SRV (service) records
+     */
     SrvRecordSets srvRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing TXT (text) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing TXT (text) records.
+     *
+     * @return entry point to manage record sets in this zone containing TXT (text) records
+     */
     TxtRecordSets txtRecordSets();
 
-    /** @return entry point to manage virtual network links in this zone */
+    /**
+     * Gets entry point to manage virtual network links in this zone.
+     *
+     * @return entry point to manage virtual network links in this zone
+     */
     VirtualNetworkLinks virtualNetworkLinks();
 
     /** The entirety of the private DNS zone definition. */
@@ -259,11 +319,8 @@ public interface PrivateDnsZone
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<PrivateDnsZone>,
-                DefinitionStages.WithRecordSet,
-                DefinitionStages.WithVirtualNetworkLink,
-                DefinitionStages.WithETagCheck,
-                Resource.DefinitionWithTags<WithCreate> {
+            extends Creatable<PrivateDnsZone>, DefinitionStages.WithRecordSet, DefinitionStages.WithVirtualNetworkLink,
+            DefinitionStages.WithETagCheck, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -586,11 +643,7 @@ public interface PrivateDnsZone
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<PrivateDnsZone>,
-            UpdateStages.WithRecordSet,
-            UpdateStages.WithVirtualNetworkLink,
-            UpdateStages.WithETagCheck,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<PrivateDnsZone>, UpdateStages.WithRecordSet, UpdateStages.WithVirtualNetworkLink,
+        UpdateStages.WithETagCheck, Resource.UpdateWithTags<Update> {
     }
 }

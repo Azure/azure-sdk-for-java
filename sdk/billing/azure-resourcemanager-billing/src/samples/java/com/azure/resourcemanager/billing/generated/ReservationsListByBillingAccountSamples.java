@@ -4,25 +4,23 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for Reservations ListByBillingAccount. */
+/**
+ * Samples for Reservations ListByBillingAccount.
+ */
 public final class ReservationsListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/ReservationsListByBillingAccount.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * reservationsListByBillingAccount.json
      */
     /**
-     * Sample code: ReservationsListByBillingAccount.
-     *
+     * Sample code: reservationsListByBillingAccount.
+     * 
      * @param manager Entry point to BillingManager.
      */
     public static void reservationsListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .reservations()
+        manager.reservations()
             .listByBillingAccount(
-                "{billingAccountName}",
-                "properties/reservedResourceType eq 'VirtualMachines'",
-                "properties/userFriendlyAppliedScopeType asc",
-                "true",
-                "Succeeded",
-                com.azure.core.util.Context.NONE);
+                "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", null, null,
+                null, "true", "Succeeded", null, com.azure.core.util.Context.NONE);
     }
 }

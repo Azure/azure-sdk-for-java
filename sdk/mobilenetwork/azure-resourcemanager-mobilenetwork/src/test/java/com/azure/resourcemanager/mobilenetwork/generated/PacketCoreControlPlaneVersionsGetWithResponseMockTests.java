@@ -25,7 +25,7 @@ public final class PacketCoreControlPlaneVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Unknown\",\"minimumPlatformSoftwareVersion\":\"fehuwaoaguhi\",\"maximumPlatformSoftwareVersion\":\"llizs\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"rweft\",\"wqejpmvsse\"]},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"mcxtczhu\",\"maximumPlatformSoftwareVersion\":\"uknijduyye\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"ocyvhhulrtywikdm\",\"lakuflgbhgauacd\",\"xmxufrsryjqgdk\"]},{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"oqbvjhvefgwbmqj\",\"maximumPlatformSoftwareVersion\":\"ntasfaymxbu\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"mqkyojwyvfkmbts\"]}]},\"id\":\"hxsgxj\",\"name\":\"mmzrrscub\",\"type\":\"wsdrnpxqwodif\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"platforms\":[{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Active\",\"minimumPlatformSoftwareVersion\":\"nlejjjkxybwf\",\"maximumPlatformSoftwareVersion\":\"kjbztensvkzykj\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"wushcdp\",\"upnqrmgjfb\",\"kuwxeoiojfizfavk\"]},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"yay\",\"maximumPlatformSoftwareVersion\":\"mfzsbf\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"ewsrsxkrplbjaze\"]},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"oypsuhbrnnhj\",\"maximumPlatformSoftwareVersion\":\"qwjhqkbiwetpozyc\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"fsetz\",\"e\",\"bsfledynojpziu\",\"fbzkk\"]}]},\"id\":\"nhqs\",\"name\":\"cljse\",\"type\":\"pkpbafvafhlbylcc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,15 @@ public final class PacketCoreControlPlaneVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PacketCoreControlPlaneVersion response = manager.packetCoreControlPlaneVersions()
-            .getWithResponse("hztgeqmgqzgwld", com.azure.core.util.Context.NONE)
+            .getWithResponse("xeslkhhustcpoqm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PlatformType.AKS_HCI, response.platforms().get(0).platformType());
-        Assertions.assertEquals(VersionState.UNKNOWN, response.platforms().get(0).versionState());
-        Assertions.assertEquals("fehuwaoaguhi", response.platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("llizs", response.platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED, response.platforms().get(0).recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.OBSOLETE, response.platforms().get(0).obsoleteVersion());
-        Assertions.assertEquals("rweft", response.platforms().get(0).haUpgradesAvailable().get(0));
+        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, response.platforms().get(0).platformType());
+        Assertions.assertEquals(VersionState.ACTIVE, response.platforms().get(0).versionState());
+        Assertions.assertEquals("nlejjjkxybwf", response.platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("kjbztensvkzykj", response.platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.RECOMMENDED, response.platforms().get(0).recommendedVersion());
+        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE, response.platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals("wushcdp", response.platforms().get(0).haUpgradesAvailable().get(0));
     }
 }

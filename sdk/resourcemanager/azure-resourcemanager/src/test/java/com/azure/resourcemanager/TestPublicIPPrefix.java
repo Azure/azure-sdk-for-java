@@ -36,10 +36,7 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
 
     @Override
     public PublicIpPrefix updateResource(PublicIpPrefix resource) throws Exception {
-        resource = resource.update()
-            .withTag("tag1", "value1")
-            .withTag("tag2", "value2")
-            .apply();
+        resource = resource.update().withTag("tag1", "value1").withTag("tag2", "value2").apply();
         Assertions.assertEquals("value1", resource.tags().get("tag1"));
         Assertions.assertEquals("value2", resource.tags().get("tag2"));
 
@@ -52,15 +49,24 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
     }
 
     public static void printPIP(PublicIpPrefix resource) {
-        StringBuilder info = new StringBuilder().append("Public IP Address: ").append(resource.id())
-            .append("\n\tName: ").append(resource.name())
-            .append("\n\tResource group: ").append(resource.resourceGroupName())
-            .append("\n\tRegion: ").append(resource.region())
-            .append("\n\tTags: ").append(resource.tags())
-            .append("\n\tAvailability Zones: ").append(resource.availabilityZones())
-            .append("\n\tLeaf domain label: ").append(resource.sku())
-            .append("\n\tFQDN: ").append(resource.publicIpAddresses())
-            .append("\n\tReverse FQDN: ").append(resource.publicIpAddressVersion());
+        StringBuilder info = new StringBuilder().append("Public IP Address: ")
+            .append(resource.id())
+            .append("\n\tName: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tAvailability Zones: ")
+            .append(resource.availabilityZones())
+            .append("\n\tLeaf domain label: ")
+            .append(resource.sku())
+            .append("\n\tFQDN: ")
+            .append(resource.publicIpAddresses())
+            .append("\n\tReverse FQDN: ")
+            .append(resource.publicIpAddressVersion());
 
         // Show the associated load balancer if any
         info.append("\n\tLoad balancer association: ");

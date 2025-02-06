@@ -14,37 +14,82 @@ import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL ElasticPool's Activity. */
 @Fluent
-public interface ElasticPoolActivity extends HasInnerModel<ElasticPoolOperationInner>, HasResourceGroup, HasName, HasId {
-    /** @return the time the operation finished (ISO8601 format) */
+public interface ElasticPoolActivity
+    extends HasInnerModel<ElasticPoolOperationInner>, HasResourceGroup, HasName, HasId {
+    /**
+     * Gets the time the operation finished.
+     *
+     * @return the time the operation finished (ISO8601 format)
+     */
     OffsetDateTime endTime();
 
-    /** @return the error code if available */
+    /**
+     * Gets the error code if available.
+     *
+     * @return the error code if available
+     */
     int errorCode();
 
-    /** @return the error message if available */
+    /**
+     * Gets the error message if available.
+     *
+     * @return the error message if available
+     */
     String errorMessage();
 
-    /** @return the error severity if available */
+    /**
+     * Gets the error severity if available.
+     *
+     * @return the error severity if available
+     */
     int errorSeverity();
 
-    /** @return the operation name */
+    /**
+     * Gets the operation name.
+     *
+     * @return the operation name
+     */
     String operation();
 
-    /** @return the unique operation ID */
+    /**
+     * Gets the unique operation ID.
+     *
+     * @return the unique operation ID
+     */
     String operationId();
 
-    /** @return the percentage complete if available */
+    /**
+     * Gets the percentage complete if available.
+     *
+     * @return the percentage complete if available
+     */
     int percentComplete();
 
-    /** @return the name of the Elastic Pool */
+    /**
+     * Gets the name of the Elastic Pool.
+     *
+     * @return the name of the Elastic Pool
+     */
     String elasticPoolName();
 
-    /** @return the name of the Azure SQL Server the Elastic Pool is in */
+    /**
+     * Gets the name of the Azure SQL Server the Elastic Pool is in.
+     *
+     * @return the name of the Azure SQL Server the Elastic Pool is in
+     */
     String serverName();
 
-    /** @return the time the operation started (ISO8601 format) */
+    /**
+     * Gets the time the operation started.
+     *
+     * @return the time the operation started (ISO8601 format)
+     */
     OffsetDateTime startTime();
 
-    /** @return the current state of the operation */
+    /**
+     * Gets the current state of the operation.
+     *
+     * @return the current state of the operation
+     */
     String state();
 }

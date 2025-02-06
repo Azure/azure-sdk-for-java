@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The properties that can be updated for a server. */
 @Fluent
 public final class ServerUpdateParametersProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdateParametersProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerUpdateParametersProperties.class);
 
     /*
      * Storage profile of a server.

@@ -6,62 +6,58 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.models.Unit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result data of a query.
  */
 @Fluent
-public final class MetricInner {
+public final class MetricInner implements JsonSerializable<MetricInner> {
     /*
      * the metric Id.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * the resource type of the metric resource.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * the name and the display name of the metric, i.e. it is localizable string.
      */
-    @JsonProperty(value = "name", required = true)
     private LocalizableStringInner name;
 
     /*
      * Detailed description of this metric.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * 'Success' or the error details on query failures for this metric.
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Error message encountered querying this specific metric.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit", required = true)
     private Unit unit;
 
     /*
      * the time series returned when a data query is performed.
      */
-    @JsonProperty(value = "timeseries", required = true)
     private List<TimeSeriesElement> timeseries;
 
     /**
@@ -237,30 +233,90 @@ public final class MetricInner {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model MetricInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model MetricInner"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model MetricInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model MetricInner"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model MetricInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model MetricInner"));
         } else {
             name().validate();
         }
         if (unit() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property unit in model MetricInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property unit in model MetricInner"));
         }
         if (timeseries() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property timeseries in model MetricInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timeseries in model MetricInner"));
         } else {
             timeseries().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeArrayField("timeseries", this.timeseries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricInner.
+     */
+    public static MetricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricInner deserializedMetricInner = new MetricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMetricInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMetricInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetricInner.name = LocalizableStringInner.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricInner.unit = Unit.fromString(reader.getString());
+                } else if ("timeseries".equals(fieldName)) {
+                    List<TimeSeriesElement> timeseries
+                        = reader.readArray(reader1 -> TimeSeriesElement.fromJson(reader1));
+                    deserializedMetricInner.timeseries = timeseries;
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricInner.displayDescription = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedMetricInner.errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedMetricInner.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricInner;
+        });
+    }
 }

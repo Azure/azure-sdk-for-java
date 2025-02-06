@@ -14,7 +14,7 @@ Various documentation is available to help you get started
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+- [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
 - You must have an [Azure subscription][azure_sub] to use this package.
 - An existing Communication Services resource. If you need to create the resource, you can use the [Azure Portal][azure_portal], the [Azure PowerShell][azure_powershell], or the [Azure CLI][azure_cli].
@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-messages</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -194,12 +194,13 @@ private void sendTextMessage() {
 }
 ```
 
-```java readme-sample-sendMediaMessage
+```java readme-sample-sendImageMessage
 /*
- * This sample shows how to send simple media (image, video, document) message with below details
+ * This sample shows how to send image message with below details.
+ * Supported image - image/jpeg (.jpeg), image/png (.png)
  * Note: Business cannot initiate conversation with media message.
  * */
-public void sendMediaMessage() {
+public void sendImageMessage() {
     //Update the Media URL
     String mediaUrl = "https://wallpapercave.com/wp/wp2163723.jpg";
     List<String> recipients = new ArrayList<>();
@@ -208,7 +209,67 @@ public void sendMediaMessage() {
         .connectionString("<CONNECTION_STRING>")
         .buildClient();
     SendMessageResult result = client.send(
-        new MediaNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+        new ImageNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+```java readme-sample-sendVideoMessage
+/*
+ * This sample shows how to send video message with below details
+ * Supported video - video/3gp (.3gp), video/mp4 (.mp4)
+ * Note: Business cannot initiate conversation with media message.
+ * */
+public void sendVideoMessage() {
+    //Update the Media URL
+    String mediaUrl = "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4";
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new VideoNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+```java readme-sample-sendAudioMessage
+/*
+ * This sample shows how to send audio message with below details
+ * Supported audio - audio/aac (.aac), audio/amr (.amr), audio/mpeg (.mp3), audio/a4a (.mp4), audio/ogg (.ogg )
+ * Note: Business cannot initiate conversation with media message.
+ * */
+public void sendAudioMessage() {
+    //Update the Media URL
+    String mediaUrl = "https://sample-videos.com/audio/mp3/wave.mp3";
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new AudioNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
+
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
+}
+```
+```java readme-sample-sendDocumentMessage
+/*
+ * This sample shows how to send document message with below details
+ * Supported Document type - Plain Text (.txt), PDF (.pdf), Microsoft Excel, Word, PowerPoint
+ * Note: Business cannot initiate conversation with media message.
+ * */
+public void sendDocumentMessage() {
+    //Update the Media URL
+    String mediaUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    List<String> recipients = new ArrayList<>();
+    recipients.add("<RECIPIENT_IDENTIFIER e.g. PhoneNumber>");
+    NotificationMessagesClient client = new NotificationMessagesClientBuilder()
+        .connectionString("<CONNECTION_STRING>")
+        .buildClient();
+    SendMessageResult result = client.send(
+        new DocumentNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
     result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
 }
@@ -256,7 +317,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-communication-messages
 [api_documentation]: https://aka.ms/java-docs
 [azure_communication_messaging_qs]: https://learn.microsoft.com/azure/communication-services/concepts/advanced-messaging/whatsapp/whatsapp-overview
@@ -265,9 +326,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [create-manage-whatsapp-template]: https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [defaultazurecredential]: https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#defaultazurecredential
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_portal]: https://portal.azure.com
-[azure_powershell]: https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
+[azure_powershell]: https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-messages%2FREADME.png)

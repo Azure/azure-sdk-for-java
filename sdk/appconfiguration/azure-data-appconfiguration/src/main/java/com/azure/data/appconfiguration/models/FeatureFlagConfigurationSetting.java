@@ -62,8 +62,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private final List<String> requiredJsonProperties = Arrays.asList(ID, ENABLED, CONDITIONS);
 
     // Swagger schema defined properties at first level of FeatureFlagConfigurationSetting.
-    private final List<String> requiredOrOptionalJsonProperties =
-        Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
+    private final List<String> requiredOrOptionalJsonProperties
+        = Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
 
     /**
      * The constructor for a feature flag configuration setting.
@@ -119,8 +119,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Can't parse Feature Flag configuration setting value.", exception));
+            LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Can't parse Feature Flag configuration setting value.", exception));
         }
 
         super.setValue(newValue);
@@ -255,7 +255,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Set the boolean indicator to show if the setting is turn on or off.
      *
      * @param isEnabled the boolean indicator to show if the setting is turn on or off.
-
+    
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
@@ -369,27 +369,32 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
 
     // Try to write the known property. If it is a known property, return true. Otherwise, return false.
     private boolean tryWriteKnownProperty(String propertyName, Object propertyValue, JsonWriter writer,
-                                          boolean includeOptionalWhenNull) throws IOException {
+        boolean includeOptionalWhenNull) throws IOException {
         switch (propertyName) {
             case ID:
                 writer.writeStringField(ID, featureId);
                 break;
+
             case DESCRIPTION:
                 if (includeOptionalWhenNull || description != null) {
                     writer.writeStringField(DESCRIPTION, description);
                 }
                 break;
+
             case DISPLAY_NAME:
                 if (includeOptionalWhenNull || displayName != null) {
                     writer.writeStringField(DISPLAY_NAME, displayName);
                 }
                 break;
+
             case ENABLED:
                 writer.writeBooleanField(ENABLED, isEnabled);
                 break;
+
             case CONDITIONS:
                 tryWriteConditions(propertyValue, writer);
                 break;
+
             default:
                 return false;
         }

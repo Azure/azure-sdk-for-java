@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineStopModeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineStopMode model =
-            BinaryData.fromString("{\"mode\":\"suspend\"}").toObject(VirtualMachineStopMode.class);
-        Assertions.assertEquals(StopMode.SUSPEND, model.mode());
+        VirtualMachineStopMode model
+            = BinaryData.fromString("{\"mode\":\"shutdown\"}").toObject(VirtualMachineStopMode.class);
+        Assertions.assertEquals(StopMode.SHUTDOWN, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineStopMode model = new VirtualMachineStopMode().withMode(StopMode.SUSPEND);
+        VirtualMachineStopMode model = new VirtualMachineStopMode().withMode(StopMode.SHUTDOWN);
         model = BinaryData.fromObject(model).toObject(VirtualMachineStopMode.class);
-        Assertions.assertEquals(StopMode.SUSPEND, model.mode());
+        Assertions.assertEquals(StopMode.SHUTDOWN, model.mode());
     }
 }

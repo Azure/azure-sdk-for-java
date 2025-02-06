@@ -6,68 +6,39 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.GatewayType;
 import com.azure.resourcemanager.managednetworkfabric.models.InternetGateway;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class InternetGatewaysListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"ipv4Address\":\"oxl\",\"port\":397632568,\"type\":\"Workload\",\"networkFabricControllerId\":\"yf\",\"provisioningState\":\"Succeeded\",\"internetGatewayRuleId\":\"ifbwbl\",\"annotation\":\"hpxukxgoyxon\"},\"location\":\"wdqrxros\",\"tags\":{\"atktwjrppifeyrq\":\"rldxfuaefew\",\"ojklwjpzw\":\"elrmdcizhvks\"},\"id\":\"ncw\",\"name\":\"smpyeyzolbfnfly\",\"type\":\"fxudui\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"ipv4Address\":\"rlb\",\"port\":1053159639,\"type\":\"Workload\",\"networkFabricControllerId\":\"yolacbibtkeie\",\"provisioningState\":\"Accepted\",\"internetGatewayRuleId\":\"wxdsokrlnr\",\"annotation\":\"y\"},\"location\":\"iiul\",\"tags\":{\"xwwwvunknsgvxhx\":\"iqlnh\"},\"id\":\"meatrtcqyfjvifb\",\"name\":\"ojtehqyo\",\"type\":\"trcoufk\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<InternetGateway> response = manager.internetGateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iiul", response.iterator().next().location());
-        Assertions.assertEquals("iqlnh", response.iterator().next().tags().get("xwwwvunknsgvxhx"));
+        Assertions.assertEquals("wdqrxros", response.iterator().next().location());
+        Assertions.assertEquals("rldxfuaefew", response.iterator().next().tags().get("atktwjrppifeyrq"));
         Assertions.assertEquals(GatewayType.WORKLOAD, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("yolacbibtkeie", response.iterator().next().networkFabricControllerId());
-        Assertions.assertEquals("wxdsokrlnr", response.iterator().next().internetGatewayRuleId());
-        Assertions.assertEquals("y", response.iterator().next().annotation());
+        Assertions.assertEquals("yf", response.iterator().next().networkFabricControllerId());
+        Assertions.assertEquals("ifbwbl", response.iterator().next().internetGatewayRuleId());
+        Assertions.assertEquals("hpxukxgoyxon", response.iterator().next().annotation());
     }
 }

@@ -6,32 +6,34 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.SkuResourceInner;
 
-/** An immutable client-side representation of SkuResource. */
+/**
+ * An immutable client-side representation of SkuResource.
+ */
 public interface SkuResource {
     /**
-     * Gets the capacity property: Gets or sets the Sku Capacity.
-     *
-     * @return the capacity value.
-     */
-    SkuCapacity capacity();
-
-    /**
      * Gets the resourceType property: The resource type name.
-     *
+     * 
      * @return the resourceType value.
      */
     String resourceType();
 
     /**
      * Gets the sku property: Gets or sets the Sku.
-     *
+     * 
      * @return the sku value.
      */
     SkuSetting sku();
 
     /**
+     * Gets the capacity property: Gets or sets the Sku Capacity.
+     * 
+     * @return the capacity value.
+     */
+    SkuCapacity capacity();
+
+    /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.SkuResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SkuResourceInner innerModel();

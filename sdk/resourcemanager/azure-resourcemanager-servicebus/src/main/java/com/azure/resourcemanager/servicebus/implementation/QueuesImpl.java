@@ -18,14 +18,8 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for Queues.
  */
-class QueuesImpl
-    extends ServiceBusChildResourcesImpl<
-        Queue,
-        QueueImpl,
-        SBQueueInner,
-        QueuesClient,
-        ServiceBusManager,
-        ServiceBusNamespace>
+class QueuesImpl extends
+    ServiceBusChildResourcesImpl<Queue, QueueImpl, SBQueueInner, QueuesClient, ServiceBusManager, ServiceBusNamespace>
     implements Queues {
     private final String resourceGroupName;
     private final String namespaceName;
@@ -47,9 +41,7 @@ class QueuesImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.innerModel().deleteAsync(this.resourceGroupName,
-                this.namespaceName,
-                name);
+        return this.innerModel().deleteAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
@@ -69,12 +61,8 @@ class QueuesImpl
 
     @Override
     protected QueueImpl wrapModel(String name) {
-        return new QueueImpl(this.resourceGroupName,
-                this.namespaceName,
-                name,
-                this.region,
-                new SBQueueInner(),
-                this.manager());
+        return new QueueImpl(this.resourceGroupName, this.namespaceName, name, this.region, new SBQueueInner(),
+            this.manager());
     }
 
     @Override
@@ -82,12 +70,8 @@ class QueuesImpl
         if (inner == null) {
             return null;
         }
-        return new QueueImpl(this.resourceGroupName,
-                this.namespaceName,
-                inner.name(),
-                this.region,
-                inner,
-                this.manager());
+        return new QueueImpl(this.resourceGroupName, this.namespaceName, inner.name(), this.region, inner,
+            this.manager());
     }
 
     @Override

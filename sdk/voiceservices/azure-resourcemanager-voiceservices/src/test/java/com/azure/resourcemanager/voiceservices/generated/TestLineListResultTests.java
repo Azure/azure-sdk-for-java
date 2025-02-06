@@ -16,51 +16,38 @@ import org.junit.jupiter.api.Assertions;
 public final class TestLineListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestLineListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"phoneNumber\":\"gbwjzrnf\",\"purpose\":\"Manual\"},\"location\":\"gispemvtzfkufubl\",\"tags\":{\"v\":\"xqeofjaeqjhqjba\",\"zgcwrw\":\"smjqulngsntnbyb\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"phoneNumber\":\"sainqpjwnzl\",\"purpose\":\"Manual\"},\"location\":\"mppeebvmgxs\",\"tags\":{\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\",\"xhocdgeablgphuti\":\"eltmrldhugjzzdat\"},\"id\":\"ndv\",\"name\":\"aozwyiftyhxhu\",\"type\":\"okftyxolniwpwcuk\"}],\"nextLink\":\"kgiawxklryplwck\"}")
-                .toObject(TestLineListResult.class);
-        Assertions.assertEquals("gispemvtzfkufubl", model.value().get(0).location());
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.value().get(0).tags().get("v"));
-        Assertions.assertEquals("gbwjzrnf", model.value().get(0).phoneNumber());
+        TestLineListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"phoneNumber\":\"smodmgloug\",\"purpose\":\"Manual\"},\"location\":\"wtmutduq\",\"tags\":{\"kdosvqw\":\"pspwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"phoneNumber\":\"ppbhtqqrolfp\",\"purpose\":\"Automated\"},\"location\":\"algbquxigjyjg\",\"tags\":{\"fhrtxilnerkujysv\":\"o\",\"fqawrlyxw\":\"eju\",\"xgjvtbv\":\"kcprbnw\",\"uouq\":\"ysszdnrujqguh\"},\"id\":\"prwzwbnguitnwui\",\"name\":\"gazxuf\",\"type\":\"zuckyfi\"}],\"nextLink\":\"fidfvzw\"}")
+            .toObject(TestLineListResult.class);
+        Assertions.assertEquals("wtmutduq", model.value().get(0).location());
+        Assertions.assertEquals("pspwgcuertu", model.value().get(0).tags().get("kdosvqw"));
+        Assertions.assertEquals("smodmgloug", model.value().get(0).phoneNumber());
         Assertions.assertEquals(TestLinePurpose.MANUAL, model.value().get(0).purpose());
-        Assertions.assertEquals("kgiawxklryplwck", model.nextLink());
+        Assertions.assertEquals("fidfvzw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestLineListResult model =
-            new TestLineListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TestLineInner()
-                                .withLocation("gispemvtzfkufubl")
-                                .withTags(mapOf("v", "xqeofjaeqjhqjba", "zgcwrw", "smjqulngsntnbyb"))
-                                .withPhoneNumber("gbwjzrnf")
-                                .withPurpose(TestLinePurpose.MANUAL),
-                            new TestLineInner()
-                                .withLocation("mppeebvmgxs")
-                                .withTags(
-                                    mapOf(
-                                        "jczdzevndh",
-                                        "yqduujit",
-                                        "feusnhut",
-                                        "rwpdappdsbdkvwrw",
-                                        "xhocdgeablgphuti",
-                                        "eltmrldhugjzzdat"))
-                                .withPhoneNumber("sainqpjwnzl")
-                                .withPurpose(TestLinePurpose.MANUAL)))
-                .withNextLink("kgiawxklryplwck");
+        TestLineListResult model = new TestLineListResult().withValue(Arrays.asList(
+            new TestLineInner().withLocation("wtmutduq")
+                .withTags(mapOf("kdosvqw", "pspwgcuertu"))
+                .withPhoneNumber("smodmgloug")
+                .withPurpose(TestLinePurpose.MANUAL),
+            new TestLineInner().withLocation("algbquxigjyjg")
+                .withTags(
+                    mapOf("fhrtxilnerkujysv", "o", "fqawrlyxw", "eju", "xgjvtbv", "kcprbnw", "uouq", "ysszdnrujqguh"))
+                .withPhoneNumber("ppbhtqqrolfp")
+                .withPurpose(TestLinePurpose.AUTOMATED)))
+            .withNextLink("fidfvzw");
         model = BinaryData.fromObject(model).toObject(TestLineListResult.class);
-        Assertions.assertEquals("gispemvtzfkufubl", model.value().get(0).location());
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.value().get(0).tags().get("v"));
-        Assertions.assertEquals("gbwjzrnf", model.value().get(0).phoneNumber());
+        Assertions.assertEquals("wtmutduq", model.value().get(0).location());
+        Assertions.assertEquals("pspwgcuertu", model.value().get(0).tags().get("kdosvqw"));
+        Assertions.assertEquals("smodmgloug", model.value().get(0).phoneNumber());
         Assertions.assertEquals(TestLinePurpose.MANUAL, model.value().get(0).purpose());
-        Assertions.assertEquals("kgiawxklryplwck", model.nextLink());
+        Assertions.assertEquals("fidfvzw", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -34,28 +34,26 @@ import com.azure.resourcemanager.subscription.models.PutAliasRequest;
 import com.azure.resourcemanager.subscription.models.PutAliasRequestProperties;
 import com.azure.resourcemanager.subscription.models.Workload;
 
-/** Samples for Alias Create. */
+/**
+ * Samples for Alias Create.
+ */
 public final class AliasCreateSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/createAlias.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/createAlias.json
      */
     /**
      * Sample code: CreateAlias.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void createAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager
-            .alias()
-            .create(
-                "aliasForNewSub",
-                new PutAliasRequest()
-                    .withProperties(
-                        new PutAliasRequestProperties()
-                            .withDisplayName("Contoso MCA subscription")
-                            .withWorkload(Workload.PRODUCTION)
-                            .withBillingScope(
-                                "/providers/Microsoft.Billing/billingAccounts/e879cf0f-2b4d-5431-109a-f72fc9868693:024cabf4-7321-4cf9-be59-df0c77ca51de_2019-05-31/billingProfiles/PE2Q-NOIT-BG7-TGB/invoiceSections/MTT4-OBS7-PJA-TGB")),
+        manager.alias()
+            .create("aliasForNewSub", new PutAliasRequest().withProperties(new PutAliasRequestProperties()
+                .withDisplayName("Contoso MCA subscription")
+                .withWorkload(Workload.PRODUCTION)
+                .withBillingScope(
+                    "/providers/Microsoft.Billing/billingAccounts/e879cf0f-2b4d-5431-109a-f72fc9868693:024cabf4-7321-4cf9-be59-df0c77ca51de_2019-05-31/billingProfiles/PE2Q-NOIT-BG7-TGB/invoiceSections/MTT4-OBS7-PJA-TGB")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -64,14 +62,17 @@ public final class AliasCreateSamples {
 ### Alias_Delete
 
 ```java
-/** Samples for Alias Delete. */
+/**
+ * Samples for Alias Delete.
+ */
 public final class AliasDeleteSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/deleteAlias.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/deleteAlias.json
      */
     /**
      * Sample code: DeleteAlias.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void deleteAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
@@ -83,14 +84,17 @@ public final class AliasDeleteSamples {
 ### Alias_Get
 
 ```java
-/** Samples for Alias Get. */
+/**
+ * Samples for Alias Get.
+ */
 public final class AliasGetSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/getAlias.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/getAlias.json
      */
     /**
      * Sample code: GetAlias.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void getAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
@@ -102,14 +106,17 @@ public final class AliasGetSamples {
 ### Alias_List
 
 ```java
-/** Samples for Alias List. */
+/**
+ * Samples for Alias List.
+ */
 public final class AliasListSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/listAlias.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/listAlias.json
      */
     /**
      * Sample code: GetAlias.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void getAlias(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
@@ -121,14 +128,17 @@ public final class AliasListSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/getOperations.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/getOperations.json
      */
     /**
      * Sample code: getOperations.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void getOperations(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
@@ -140,19 +150,22 @@ public final class OperationsListSamples {
 ### SubscriptionOperation_Cancel
 
 ```java
-/** Samples for SubscriptionOperation Cancel. */
+/**
+ * Samples for SubscriptionOperation Cancel.
+ */
 public final class SubscriptionOperationCancelSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/cancelSubscription.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/cancelSubscription.
+     * json
      */
     /**
      * Sample code: cancelSubscription.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void cancelSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager
-            .subscriptionOperations()
+        manager.subscriptionOperations()
             .cancelWithResponse("83aa47df-e3e9-49ff-877b-94304bf3d3ad", com.azure.core.util.Context.NONE);
     }
 }
@@ -161,19 +174,22 @@ public final class SubscriptionOperationCancelSamples {
 ### SubscriptionOperation_Enable
 
 ```java
-/** Samples for SubscriptionOperation Enable. */
+/**
+ * Samples for SubscriptionOperation Enable.
+ */
 public final class SubscriptionOperationEnableSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/enableSubscription.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/enableSubscription.
+     * json
      */
     /**
      * Sample code: enableSubscription.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void enableSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager
-            .subscriptionOperations()
+        manager.subscriptionOperations()
             .enableWithResponse("7948bcee-488c-47ce-941c-38e20ede803d", com.azure.core.util.Context.NONE);
     }
 }
@@ -184,23 +200,24 @@ public final class SubscriptionOperationEnableSamples {
 ```java
 import com.azure.resourcemanager.subscription.models.SubscriptionName;
 
-/** Samples for SubscriptionOperation Rename. */
+/**
+ * Samples for SubscriptionOperation Rename.
+ */
 public final class SubscriptionOperationRenameSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/renameSubscription.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/renameSubscription.
+     * json
      */
     /**
      * Sample code: renameSubscription.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void renameSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager
-            .subscriptionOperations()
-            .renameWithResponse(
-                "83aa47df-e3e9-49ff-877b-94304bf3d3ad",
-                new SubscriptionName().withSubscriptionName("Test Sub"),
-                com.azure.core.util.Context.NONE);
+        manager.subscriptionOperations()
+            .renameWithResponse("83aa47df-e3e9-49ff-877b-94304bf3d3ad",
+                new SubscriptionName().withSubscriptionName("Test Sub"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -208,19 +225,22 @@ public final class SubscriptionOperationRenameSamples {
 ### Subscriptions_Get
 
 ```java
-/** Samples for Subscriptions Get. */
+/**
+ * Samples for Subscriptions Get.
+ */
 public final class SubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/getSubscription.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/getSubscription.
+     * json
      */
     /**
      * Sample code: getSubscription.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void getSubscription(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
-        manager
-            .subscriptions()
+        manager.subscriptions()
             .getWithResponse("83aa47df-e3e9-49ff-877b-94304bf3d3ad", com.azure.core.util.Context.NONE);
     }
 }
@@ -229,14 +249,18 @@ public final class SubscriptionsGetSamples {
 ### Subscriptions_List
 
 ```java
-/** Samples for Subscriptions List. */
+/**
+ * Samples for Subscriptions List.
+ */
 public final class SubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listSubscriptions.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listSubscriptions.
+     * json
      */
     /**
      * Sample code: listSubscriptions.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void listSubscriptions(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
@@ -248,14 +272,17 @@ public final class SubscriptionsListSamples {
 ### Subscriptions_ListLocations
 
 ```java
-/** Samples for Subscriptions ListLocations. */
+/**
+ * Samples for Subscriptions ListLocations.
+ */
 public final class SubscriptionsListLocationsSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listLocations.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listLocations.json
      */
     /**
      * Sample code: listLocations.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void listLocations(com.azure.resourcemanager.subscription.SubscriptionManager manager) {
@@ -267,14 +294,17 @@ public final class SubscriptionsListLocationsSamples {
 ### Tenants_List
 
 ```java
-/** Samples for Tenants List. */
+/**
+ * Samples for Tenants List.
+ */
 public final class TenantsListSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listTenants.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listTenants.json
      */
     /**
      * Sample code: listTenants.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void listTenants(com.azure.resourcemanager.subscription.SubscriptionManager manager) {

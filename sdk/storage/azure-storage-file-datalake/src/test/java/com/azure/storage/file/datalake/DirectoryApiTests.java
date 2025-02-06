@@ -96,16 +96,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
         .setOwner(new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
         .setGroup(new RolePermissions().setReadPermission(true).setExecutePermission(true))
         .setOther(new RolePermissions().setReadPermission(true));
-    private static final List<PathAccessControlEntry> PATH_ACCESS_CONTROL_ENTRIES =
-        PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
-    private static final List<PathAccessControlEntry> EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES =
-        PathAccessControlEntry.parseList("user::--x,group::--x,other::--x");
-    private static final List<PathRemoveAccessControlEntry> REMOVE_ACCESS_CONTROL_ENTRIES =
-        PathRemoveAccessControlEntry.parseList(
-            "mask,default:user,default:group,user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
-                + "group:ec3595d6-2c17-4696-8caa-7e139758d24a,"
-                + "default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
-                + "default:group:ec3595d6-2c17-4696-8caa-7e139758d24a");
+    private static final List<PathAccessControlEntry> PATH_ACCESS_CONTROL_ENTRIES
+        = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
+    private static final List<PathAccessControlEntry> EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES
+        = PathAccessControlEntry.parseList("user::--x,group::--x,other::--x");
+    private static final List<PathRemoveAccessControlEntry> REMOVE_ACCESS_CONTROL_ENTRIES = PathRemoveAccessControlEntry
+        .parseList("mask,default:user,default:group,user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
+            + "group:ec3595d6-2c17-4696-8caa-7e139758d24a," + "default:user:ec3595d6-2c17-4696-8caa-7e139758d24a,"
+            + "default:group:ec3595d6-2c17-4696-8caa-7e139758d24a");
     private static final String GROUP = null;
     private static final String OWNER = null;
 
@@ -136,9 +134,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
     @Test
     public void createDefaultsWithOptions() {
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setMetadata(Collections.singletonMap("foo", "bar"))
-            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+        DataLakePathCreateOptions options
+            = new DataLakePathCreateOptions().setMetadata(Collections.singletonMap("foo", "bar"))
+                .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
 
         dc = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
         Response<?> createResponse = dc.createWithResponse(options, null, null);
@@ -150,8 +148,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void createDefaultsWithNullOptions() {
-        Response<?> createResponse = dataLakeFileSystemClient.getDirectoryClient(generatePathName())
-            .createWithResponse(null, null, null);
+        Response<?> createResponse
+            = dataLakeFileSystemClient.getDirectoryClient(generatePathName()).createWithResponse(null, null, null);
 
         assertEquals(201, createResponse.getStatusCode());
         validateBasicHeaders(createResponse.getHeaders());
@@ -159,8 +157,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void createError() {
-        assertThrows(DataLakeStorageException.class, () ->
-            dataLakeFileSystemClient.getDirectoryClient(generatePathName())
+        assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.getDirectoryClient(generatePathName())
                 .createWithResponse(null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
                     Context.NONE));
     }
@@ -212,12 +210,11 @@ public class DirectoryApiTests extends DataLakeTestBase {
         return Stream.of(
             // cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType
             Arguments.of(null, null, null, null, null),
-            Arguments.of("control", "disposition", "encoding", "language", "type")
-        );
+            Arguments.of("control", "disposition", "encoding", "language", "type"));
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -241,8 +238,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -254,13 +250,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
     private static Stream<Arguments> modifiedMatchAndLeaseIdSupplier() {
         return Stream.of(
             // modified, unmodified, match, noneMatch, leaseID
-            Arguments.of(null, null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, null, null), Arguments.of(OLD_DATE, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null), Arguments.of(null, null, RECEIVED_ETAG, null, null),
             Arguments.of(null, null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID)
-        );
+            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID));
     }
 
     @ParameterizedTest
@@ -268,8 +261,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -282,12 +274,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
     private static Stream<Arguments> invalidModifiedMatchAndLeaseIdSupplier() {
         return Stream.of(
             // modified, unmodified, match, noneMatch, leaseID
-            Arguments.of(NEW_DATE, null, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID)
-        );
+            Arguments.of(NEW_DATE, null, null, null, null), Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null), Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID));
     }
 
     @Test
@@ -297,9 +286,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void createEncryptionScope() {
-        FileSystemEncryptionScopeOptions encryptionScope = new FileSystemEncryptionScopeOptions()
-            .setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
-            .setEncryptionScopeOverridePrevented(true);
+        FileSystemEncryptionScopeOptions encryptionScope
+            = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
+                .setEncryptionScopeOverridePrevented(true);
 
         dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
         DataLakeFileSystemClient client = getFileSystemClientBuilder(dataLakeFileSystemClient.getFileSystemUrl())
@@ -309,8 +298,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         client.create();
 
-        PathProperties properties = client.createDirectory(generatePathName())
-            .getProperties();
+        PathProperties properties = client.createDirectory(generatePathName()).getProperties();
 
         assertEquals(ENCRYPTION_SCOPE_STRING, properties.getEncryptionScope());
     }
@@ -318,19 +306,19 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createEncryptionScopeSas() {
-        PathSasPermission permissions = new PathSasPermission()
-            .setReadPermission(true)
+        PathSasPermission permissions = new PathSasPermission().setReadPermission(true)
             .setMovePermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setAddPermission(true)
             .setDeletePermission(true);
 
-        String sas = dataLakeFileSystemClient.generateSas(new DataLakeServiceSasSignatureValues(
-            testResourceNamer.now().plusDays(1), permissions).setEncryptionScope(ENCRYPTION_SCOPE_STRING));
+        String sas = dataLakeFileSystemClient
+            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions)
+                .setEncryptionScope(ENCRYPTION_SCOPE_STRING));
 
-        DataLakeDirectoryClient client = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(),
-            generatePathName());
+        DataLakeDirectoryClient client
+            = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), generatePathName());
         client.create();
 
         assertEquals(ENCRYPTION_SCOPE_STRING, client.getProperties().getEncryptionScope());
@@ -340,23 +328,19 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void createEncryptionScopeAccountSas() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions = new AccountSasPermission().setReadPermission(true).setWritePermission(true);
 
-        String sas = getServiceClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount()
-            .getDataLakeEndpoint())
-            .encryptionScope(ENCRYPTION_SCOPE_STRING)
-            .buildClient()
-            .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service,
-                resourceType));
+        String sas
+            = getServiceClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .encryptionScope(ENCRYPTION_SCOPE_STRING)
+                .buildClient()
+                .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions,
+                    service, resourceType));
 
-        DataLakeDirectoryClient client = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(),
-            generatePathName());
+        DataLakeDirectoryClient client
+            = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), generatePathName());
         client.create();
 
         assertEquals(ENCRYPTION_SCOPE_STRING, client.getProperties().getEncryptionScope());
@@ -365,13 +349,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createEncryptionScopeIdentitySas() {
-        UserDelegationKey key = getOAuthServiceClient()
-            .getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
+        UserDelegationKey key
+            = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
         key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
         key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
 
-        PathSasPermission permissions = new PathSasPermission()
-            .setReadPermission(true)
+        PathSasPermission permissions = new PathSasPermission().setReadPermission(true)
             .setMovePermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
@@ -380,10 +363,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         String sas = dataLakeFileSystemClient.generateUserDelegationSas(
             new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions)
-                .setEncryptionScope(ENCRYPTION_SCOPE_STRING).setAgentObjectId(OWNER), key);
+                .setEncryptionScope(ENCRYPTION_SCOPE_STRING)
+                .setAgentObjectId(OWNER),
+            key);
 
-        DataLakeDirectoryClient client = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(),
-            generatePathName());
+        DataLakeDirectoryClient client
+            = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), generatePathName());
         client.create();
 
         assertEquals(ENCRYPTION_SCOPE_STRING, client.getProperties().getEncryptionScope());
@@ -423,13 +408,15 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null,application/octet-stream", "control,disposition,encoding,language,null,type"},
-               nullValues = "null")
+    @CsvSource(
+        value = {
+            "null,null,null,null,null,application/octet-stream",
+            "control,disposition,encoding,language,null,type" },
+        nullValues = "null")
     public void createOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, byte[] contentMD5, String contentType) {
         dc = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
-        PathHttpHeaders putHeaders = new PathHttpHeaders()
-            .setCacheControl(cacheControl)
+        PathHttpHeaders putHeaders = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -443,7 +430,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,201", "foo,bar,fizz,buzz,201"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null,201", "foo,bar,fizz,buzz,201" }, nullValues = "null")
     public void createOptionsWithMetadata(String key1, String value1, String key2, String value2, int statusCode) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -478,8 +465,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void createOptionsWithError(String leaseId, Integer leaseDuration,
         DataLakePathScheduleDeletionOptions deletionOptions) {
         dc = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setScheduleDeletionOptions(deletionOptions)
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
             .setProposedLeaseId(leaseId)
             .setLeaseDuration(leaseDuration);
 
@@ -492,9 +478,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             // leaseId, leaseDuration, deletionOptions
             Arguments.of(CoreUtils.randomUuid().toString(), null, null),
             Arguments.of(CoreUtils.randomUuid().toString(), 15, null),
-            Arguments.of(CoreUtils.randomUuid().toString(), null, new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())),
-            Arguments.of(CoreUtils.randomUuid().toString(), null, new DataLakePathScheduleDeletionOptions(Duration.ofDays(6)))
-        );
+            Arguments.of(CoreUtils.randomUuid().toString(), null,
+                new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())),
+            Arguments.of(CoreUtils.randomUuid().toString(), null,
+                new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))));
     }
 
     @Test
@@ -554,7 +541,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createIfNotExistsMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -578,8 +565,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void createIfNotExistsPermissionsAndUmask() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
 
-        assertEquals(201, dataLakeFileSystemClient.getDirectoryClient(generatePathName())
-            .createIfNotExistsWithResponse(options, null, Context.NONE).getStatusCode());
+        assertEquals(201,
+            dataLakeFileSystemClient.getDirectoryClient(generatePathName())
+                .createIfNotExistsWithResponse(options, null, Context.NONE)
+                .getStatusCode());
     }
 
     @Test
@@ -621,8 +610,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void deleteDirDoesNotExistAnymore() {
         dc.deleteWithResponse(false, null, null, null);
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> dc.getPropertiesWithResponse(null, null, null));
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> dc.getPropertiesWithResponse(null, null, null));
         assertEquals(404, e.getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
     }
@@ -634,8 +623,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String entityId = "68bff720-253b-428c-b124-603700654ea9";
         DataLakeFileSystemClient fsClient = getFileSystemClientBuilder(dataLakeFileSystemClient.getFileSystemUrl())
             .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
-            .clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress("localhost", 8888))))
+            .clientOptions(new HttpClientOptions()
+                .setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildClient();
 
         DataLakeDirectoryClient directoryClient = fsClient.getDirectoryClient(generatePathName());
@@ -647,21 +636,20 @@ public class DirectoryApiTests extends DataLakeTestBase {
         }
         DataLakeDirectoryClient rootDirectory = fsClient.getDirectoryClient("/");
         PathAccessControl acl = rootDirectory.getAccessControl();
-        acl.getAccessControlList().add(new PathAccessControlEntry()
-            .setPermissions(new RolePermissions()
-                .setReadPermission(true)
-                .setWritePermission(true)
-                .setExecutePermission(true))
-            .setAccessControlType(AccessControlType.USER)
-            .setEntityId(entityId));
+        acl.getAccessControlList()
+            .add(new PathAccessControlEntry()
+                .setPermissions(
+                    new RolePermissions().setReadPermission(true).setWritePermission(true).setExecutePermission(true))
+                .setAccessControlType(AccessControlType.USER)
+                .setEntityId(entityId));
 
         rootDirectory.setAccessControlRecursive(acl.getAccessControlList());
 
         DataLakeServiceClient oAuthServiceClient = getOAuthServiceClient();
-        DataLakeFileSystemClient oAuthFileSystemClient = oAuthServiceClient
-            .getFileSystemClient(fsClient.getFileSystemName());
-        DataLakeDirectoryClient oAuthDirectoryClient = oAuthFileSystemClient
-            .getDirectoryClient(directoryClient.getDirectoryPath());
+        DataLakeFileSystemClient oAuthFileSystemClient
+            = oAuthServiceClient.getFileSystemClient(fsClient.getFileSystemName());
+        DataLakeDirectoryClient oAuthDirectoryClient
+            = oAuthFileSystemClient.getDirectoryClient(directoryClient.getDirectoryPath());
 
         Response<Void> response = oAuthDirectoryClient.deleteWithResponse(true, null, null, Context.NONE);
         assertEquals(response.getStatusCode(), 200);
@@ -672,8 +660,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -687,8 +674,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -709,9 +695,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void deleteIfExistsRecursive() {
-        assertEquals(200, dc.deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(true), null,
-                null)
-            .getStatusCode());
+        assertEquals(200,
+            dc.deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(true), null, null)
+                .getStatusCode());
     }
 
     @Test
@@ -732,14 +718,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
-        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-            .setIsRecursive(false);
+        DataLakePathDeleteOptions options
+            = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false);
 
         assertEquals(200, dc.deleteIfExistsWithResponse(options, null, null).getStatusCode());
     }
@@ -749,14 +734,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
-        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-            .setIsRecursive(false);
+        DataLakePathDeleteOptions options
+            = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false);
 
         assertThrows(DataLakeStorageException.class, () -> dc.deleteIfExistsWithResponse(options, null, null));
     }
@@ -771,23 +755,22 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void setPermissionsWithResponse() {
-        assertEquals(200, dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, null, null, Context.NONE)
-            .getStatusCode());
+        assertEquals(200,
+            dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, null, null, Context.NONE).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc, null, Context.NONE)
-            .getStatusCode());
+        assertEquals(200,
+            dc.setPermissionsWithResponse(PERMISSIONS, GROUP, OWNER, drc, null, Context.NONE).getStatusCode());
     }
 
     @ParameterizedTest
@@ -795,8 +778,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void setPermissionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -824,23 +806,24 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void setACLWithResponse() {
-        assertEquals(200, dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, null, null,
-            Context.NONE).getStatusCode());
+        assertEquals(200,
+            dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, null, null, Context.NONE)
+                .getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(200, dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null,
-            Context.NONE).getStatusCode());
+        assertEquals(200,
+            dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE)
+                .getStatusCode());
     }
 
     @ParameterizedTest
@@ -848,15 +831,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void setAclACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () ->
-            dc.setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE));
+        assertThrows(DataLakeStorageException.class, () -> dc
+            .setAccessControlListWithResponse(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER, drc, null, Context.NONE));
     }
 
     @Test
@@ -884,8 +866,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void setACLRecursiveBatches() {
         setupStandardRecursiveAclTest();
-        PathSetAccessControlRecursiveOptions options =
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
+        PathSetAccessControlRecursiveOptions options
+            = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
         AccessControlChangeResult result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
@@ -899,16 +881,16 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void setACLRecursiveBatchesResume() {
         setupStandardRecursiveAclTest();
-        PathSetAccessControlRecursiveOptions options =
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
+        PathSetAccessControlRecursiveOptions options
+            = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
 
         AccessControlChangeResult result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         options.setMaxBatches(null).setContinuationToken(result.getContinuationToken());
         AccessControlChangeResult result2 = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue();
 
-
-        assertEquals(3L, result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()); // Including the top level
+        assertEquals(3L,
+            result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(4L, result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount());
         assertEquals(0L, result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount());
         assertNull(result2.getContinuationToken());
@@ -920,8 +902,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void setACLRecursiveBatchesProgress() {
         setupStandardRecursiveAclTest();
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
-        PathSetAccessControlRecursiveOptions options = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setProgressHandler(progress);
+        PathSetAccessControlRecursiveOptions options
+            = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setProgressHandler(progress);
 
         AccessControlChangeResult result = dc.setAccessControlRecursiveWithResponse(options, null, null).getValue();
 
@@ -931,23 +914,31 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertNull(result.getContinuationToken());
         assertNull(result.getBatchFailures());
         assertEquals(4, progress.batchCounters.size());
-        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount() + progress.batchCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount() + progress.batchCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount() + progress.batchCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount() + progress.batchCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount()
+            + progress.batchCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount()
+            + progress.batchCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount()
+            + progress.batchCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount()
+            + progress.batchCounters.get(3).getChangedDirectoriesCount());
         assertEquals(4, progress.cumulativeCounters.size());
-        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount() + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount() + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount() + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount() + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount()
+            + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount()
+            + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount()
+            + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount()
+            + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatchesFollowToken() {
         setupStandardRecursiveAclTest();
-        PathSetAccessControlRecursiveOptions options = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setMaxBatches(2);
+        PathSetAccessControlRecursiveOptions options
+            = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(2);
 
         String continuation = "null";
         int failedChanges = 0;
@@ -974,11 +965,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     private DataLakeDirectoryClient getSasDirectoryClient(DataLakeDirectoryClient directoryClient, String owner) {
-        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
+        UserDelegationKey key
+            = getOAuthServiceClient().getUserDelegationKey(null, testResourceNamer.now().plusHours(1));
         key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
         key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
-        String sas = directoryClient.generateUserDelegationSas(new DataLakeServiceSasSignatureValues(
-            testResourceNamer.now().plusHours(1), PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key);
+        String sas = directoryClient
+            .generateUserDelegationSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
+                PathSasPermission.parse("racwdlmeop")).setAgentObjectId(owner), key);
         return getDirectoryClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath());
     }
 
@@ -990,9 +983,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient =
-            getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1020,9 +1013,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
 
-        AccessControlChangeResult result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setProgressHandler(progress), null, null)
-            .getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient
+                .setAccessControlRecursiveWithResponse(
+                    new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setProgressHandler(progress),
+                    null, null)
+                .getValue();
 
         assertEquals(1, result.getCounters().getFailedChangesCount());
         assertEquals(1, progress.failures.size());
@@ -1041,9 +1037,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1078,12 +1074,15 @@ public class DirectoryApiTests extends DataLakeTestBase {
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
-        AccessControlChangeResult result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-                .setContinueOnFailure(true), null, null).getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient
+                .setAccessControlRecursiveWithResponse(
+                    new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true),
+                    null, null)
+                .getValue();
 
-        List<String> batchFailures = result.getBatchFailures().stream()
-            .map(AccessControlChangeFailure::getName).collect(Collectors.toList());
+        List<String> batchFailures
+            = result.getBatchFailures().stream().map(AccessControlChangeFailure::getName).collect(Collectors.toList());
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(3L, result.getCounters().getChangedFilesCount());
@@ -1105,9 +1104,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1126,25 +1125,34 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as super user (using shared key)
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
 
-        AccessControlChangeResult result = subOwnerDirClient.setAccessControlRecursiveWithResponse(
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true)
-                .setBatchSize(2).setProgressHandler(progress), null, null).getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient
+                .setAccessControlRecursiveWithResponse(
+                    new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true)
+                        .setBatchSize(2)
+                        .setProgressHandler(progress),
+                    null, null)
+                .getValue();
 
-        List<String> batchFailures = result.getBatchFailures().stream()
-            .map(AccessControlChangeFailure::getName).collect(Collectors.toList());
+        List<String> batchFailures
+            = result.getBatchFailures().stream().map(AccessControlChangeFailure::getName).collect(Collectors.toList());
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(3L, result.getCounters().getChangedFilesCount());
@@ -1164,9 +1172,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1185,13 +1193,17 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as super user (using shared key)
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create more files as app
@@ -1209,23 +1221,26 @@ public class DirectoryApiTests extends DataLakeTestBase {
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
-        PathSetAccessControlRecursiveOptions options =
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1);
+        PathSetAccessControlRecursiveOptions options
+            = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setContinueOnFailure(true)
+                .setMaxBatches(1);
 
-        AccessControlChangeResult intermediateResult = subOwnerDirClient
-            .setAccessControlRecursiveWithResponse(options, null, null)
-            .getValue();
+        AccessControlChangeResult intermediateResult
+            = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         assertNotNull(intermediateResult.getContinuationToken());
 
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getContinuationToken());
-        AccessControlChangeResult result = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null)
-            .getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient.setAccessControlRecursiveWithResponse(options, null, null).getValue();
 
-        assertEquals(4, result.getCounters().getChangedDirectoriesCount() + intermediateResult.getCounters().getChangedDirectoriesCount());
-        assertEquals(6, result.getCounters().getChangedFilesCount() + intermediateResult.getCounters().getChangedFilesCount());
-        assertEquals(4, result.getCounters().getFailedChangesCount() + intermediateResult.getCounters().getFailedChangesCount());
+        assertEquals(4, result.getCounters().getChangedDirectoriesCount()
+            + intermediateResult.getCounters().getChangedDirectoriesCount());
+        assertEquals(6,
+            result.getCounters().getChangedFilesCount() + intermediateResult.getCounters().getChangedFilesCount());
+        assertEquals(4,
+            result.getCounters().getFailedChangesCount() + intermediateResult.getCounters().getFailedChangesCount());
         assertNull(result.getContinuationToken());
     }
 
@@ -1234,9 +1249,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dataLakeFileSystemClient.getRootDirectoryClient()
             .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null);
 
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .getDirectoryClient(generatePathName());
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .getDirectoryClient(generatePathName());
 
         DataLakeAclChangeFailedException e = assertThrows(DataLakeAclChangeFailedException.class,
             () -> topDirOauthClient.setAccessControlRecursiveWithResponse(
@@ -1249,12 +1264,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("setACLRecursiveErrorSupplier")
     public void setACLRecursiveErrorMiddleOfBatches(Throwable error) {
         setupStandardRecursiveAclTest();
-        PathSetAccessControlRecursiveOptions options =
-            new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
+        PathSetAccessControlRecursiveOptions options
+            = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = (context, next) ->
-            context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
+        HttpPipelinePolicy mockPolicy
+            = (context, next) -> context.getHttpRequest().getUrl().toString().contains("continuation")
+                ? Mono.error(error)
+                : next.process();
 
         dc = getDirectoryClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
@@ -1265,9 +1282,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     private static Stream<Throwable> setACLRecursiveErrorSupplier() {
-        return Stream.of(new IllegalArgumentException(),
-            new DataLakeStorageException("error",
-                getStubResponse(500, new HttpRequest(HttpMethod.PUT, "https://www.fake.com")), null));
+        return Stream.of(new IllegalArgumentException(), new DataLakeStorageException("error",
+            getStubResponse(500, new HttpRequest(HttpMethod.PUT, "https://www.fake.com")), null));
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
@@ -1286,8 +1302,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void updateACLRecursiveBatches() {
         setupStandardRecursiveAclTest();
-        PathUpdateAccessControlRecursiveOptions options =
-            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
+        PathUpdateAccessControlRecursiveOptions options
+            = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
         AccessControlChangeResult result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
 
@@ -1302,15 +1318,16 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void updateACLRecursiveBatchesResume() {
         setupStandardRecursiveAclTest();
-        PathUpdateAccessControlRecursiveOptions options =
-            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
+        PathUpdateAccessControlRecursiveOptions options
+            = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
 
         AccessControlChangeResult result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         options.setMaxBatches(null).setContinuationToken(result.getContinuationToken());
         AccessControlChangeResult result2 = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
 
-        assertEquals(3L, result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()); // Including the top level
+        assertEquals(3L,
+            result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(4L, result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount());
         assertEquals(0L, result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount());
         assertNull(result2.getContinuationToken());
@@ -1322,8 +1339,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void updateACLRecursiveBatchesProgress() {
         setupStandardRecursiveAclTest();
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
-        PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setProgressHandler(progress);
+        PathUpdateAccessControlRecursiveOptions options
+            = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setProgressHandler(progress);
 
         AccessControlChangeResult result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
 
@@ -1333,23 +1351,31 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertNull(result.getContinuationToken());
         assertNull(result.getBatchFailures());
         assertEquals(4, progress.batchCounters.size());
-        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount() + progress.batchCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount() + progress.batchCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount() + progress.batchCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount() + progress.batchCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount()
+            + progress.batchCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount()
+            + progress.batchCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount()
+            + progress.batchCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount()
+            + progress.batchCounters.get(3).getChangedDirectoriesCount());
         assertEquals(4, progress.cumulativeCounters.size());
-        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount() + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount() + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount() + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount() + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount()
+            + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount()
+            + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount()
+            + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount()
+            + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatchesFollowToken() {
         setupStandardRecursiveAclTest();
-        PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setMaxBatches(2);
+        PathUpdateAccessControlRecursiveOptions options
+            = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(2);
 
         String continuation = "null";
         int failedChanges = 0;
@@ -1361,7 +1387,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
                 continuation = null; // do while not supported in Groovy
             }
             options.setContinuationToken(continuation);
-            AccessControlChangeResult result = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
+            AccessControlChangeResult result
+                = dc.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
             failedChanges += result.getCounters().getFailedChangesCount();
             directoriesChanged += result.getCounters().getChangedDirectoriesCount();
             filesChanged += result.getCounters().getChangedFilesCount();
@@ -1383,9 +1410,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1413,8 +1440,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
         AccessControlChangeResult result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
-            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setProgressHandler(progress),
-            null, null).getValue();
+            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setProgressHandler(progress), null,
+            null).getValue();
 
         assertEquals(1, result.getCounters().getFailedChangesCount());
         assertEquals(1, progress.failures.size());
@@ -1433,9 +1460,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1470,13 +1497,15 @@ public class DirectoryApiTests extends DataLakeTestBase {
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
-        AccessControlChangeResult result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
-            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-                .setContinueOnFailure(true), null, null)
-            .getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient
+                .updateAccessControlRecursiveWithResponse(
+                    new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true),
+                    null, null)
+                .getValue();
 
-        List<String> batchFailures = result.getBatchFailures().stream()
-            .map(AccessControlChangeFailure::getName).collect(Collectors.toList());
+        List<String> batchFailures
+            = result.getBatchFailures().stream().map(AccessControlChangeFailure::getName).collect(Collectors.toList());
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(3L, result.getCounters().getChangedFilesCount());
@@ -1497,9 +1526,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1518,26 +1547,34 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as super user (using shared key)
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
 
-        AccessControlChangeResult result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(
-            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true)
-                .setBatchSize(2).setProgressHandler(progress), null, null)
-            .getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient
+                .updateAccessControlRecursiveWithResponse(
+                    new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true)
+                        .setBatchSize(2)
+                        .setProgressHandler(progress),
+                    null, null)
+                .getValue();
 
-        List<String> batchFailures = result.getBatchFailures().stream()
-            .map(AccessControlChangeFailure::getName).collect(Collectors.toList());
+        List<String> batchFailures
+            = result.getBatchFailures().stream().map(AccessControlChangeFailure::getName).collect(Collectors.toList());
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(3L, result.getCounters().getChangedFilesCount());
@@ -1557,9 +1594,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1578,13 +1615,17 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as super user (using shared key)
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create more files as app
@@ -1599,24 +1640,29 @@ public class DirectoryApiTests extends DataLakeTestBase {
         subdir4.setPermissions(pathPermissions, null, subowner);
         file9.setPermissions(pathPermissions, null, subowner);
 
-        PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setContinueOnFailure(true).setMaxBatches(1);
+        PathUpdateAccessControlRecursiveOptions options
+            = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setContinueOnFailure(true)
+                .setMaxBatches(1);
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
-        AccessControlChangeResult intermediateResult = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
-            .getValue();
+        AccessControlChangeResult intermediateResult
+            = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         assertNotNull(intermediateResult.getContinuationToken());
 
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getContinuationToken());
-        AccessControlChangeResult result = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null)
-            .getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient.updateAccessControlRecursiveWithResponse(options, null, null).getValue();
 
-        assertEquals(4, result.getCounters().getChangedDirectoriesCount() + intermediateResult.getCounters().getChangedDirectoriesCount());
-        assertEquals(6, result.getCounters().getChangedFilesCount() + intermediateResult.getCounters().getChangedFilesCount());
-        assertEquals(4, result.getCounters().getFailedChangesCount() + intermediateResult.getCounters().getFailedChangesCount());
+        assertEquals(4, result.getCounters().getChangedDirectoriesCount()
+            + intermediateResult.getCounters().getChangedDirectoriesCount());
+        assertEquals(6,
+            result.getCounters().getChangedFilesCount() + intermediateResult.getCounters().getChangedFilesCount());
+        assertEquals(4,
+            result.getCounters().getFailedChangesCount() + intermediateResult.getCounters().getFailedChangesCount());
         assertNull(result.getContinuationToken());
     }
 
@@ -1624,12 +1670,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void updateACLRecursiveError() {
         dataLakeFileSystemClient.getRootDirectoryClient()
             .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null);
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .getDirectoryClient(generatePathName());
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .getDirectoryClient(generatePathName());
 
-        DataLakeAclChangeFailedException e = assertThrows(DataLakeAclChangeFailedException.class, () ->
-            topDirOauthClient.updateAccessControlRecursiveWithResponse(
+        DataLakeAclChangeFailedException e = assertThrows(DataLakeAclChangeFailedException.class,
+            () -> topDirOauthClient.updateAccessControlRecursiveWithResponse(
                 new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES), null, null));
         assertInstanceOf(DataLakeStorageException.class, e.getCause());
     }
@@ -1639,12 +1685,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("setACLRecursiveErrorSupplier")
     public void updateACLRecursiveErrorMiddleOfBatches(Throwable error) {
         setupStandardRecursiveAclTest();
-        PathUpdateAccessControlRecursiveOptions options =
-            new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
+        PathUpdateAccessControlRecursiveOptions options
+            = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = (context, next) ->
-            context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
+        HttpPipelinePolicy mockPolicy
+            = (context, next) -> context.getHttpRequest().getUrl().toString().contains("continuation")
+                ? Mono.error(error)
+                : next.process();
         dc = getDirectoryClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
         DataLakeAclChangeFailedException e = assertThrows(DataLakeAclChangeFailedException.class,
@@ -1667,8 +1715,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void removeACLRecursiveBatches() {
         setupStandardRecursiveAclTest();
-        PathRemoveAccessControlRecursiveOptions options =
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
+        PathRemoveAccessControlRecursiveOptions options
+            = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
         AccessControlChangeResult result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
 
@@ -1683,15 +1731,17 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void removeACLRecursiveBatchesResume() {
         setupStandardRecursiveAclTest();
-        PathRemoveAccessControlRecursiveOptions options = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setMaxBatches(1);
+        PathRemoveAccessControlRecursiveOptions options
+            = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setMaxBatches(1);
 
         AccessControlChangeResult result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         options.setMaxBatches(null).setContinuationToken(result.getContinuationToken());
         AccessControlChangeResult result2 = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
 
-        assertEquals(3L, result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()); // Including the top level
+        assertEquals(3L,
+            result.getCounters().getChangedDirectoriesCount() + result2.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(4L, result.getCounters().getChangedFilesCount() + result2.getCounters().getChangedFilesCount());
         assertEquals(0L, result.getCounters().getFailedChangesCount() + result2.getCounters().getFailedChangesCount());
         assertNull(result2.getContinuationToken());
@@ -1703,8 +1753,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void removeACLRecursiveBatchesProgress() {
         setupStandardRecursiveAclTest();
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
-        PathRemoveAccessControlRecursiveOptions options = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
-            .setBatchSize(2).setProgressHandler(progress);
+        PathRemoveAccessControlRecursiveOptions options
+            = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setProgressHandler(progress);
 
         AccessControlChangeResult result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
 
@@ -1714,23 +1765,32 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertNull(result.getContinuationToken());
         assertNull(result.getBatchFailures());
         assertEquals(4, progress.batchCounters.size());
-        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount() + progress.batchCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount() + progress.batchCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount() + progress.batchCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount() + progress.batchCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(0).getChangedFilesCount()
+            + progress.batchCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(1).getChangedFilesCount()
+            + progress.batchCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(2, progress.batchCounters.get(2).getChangedFilesCount()
+            + progress.batchCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(1, progress.batchCounters.get(3).getChangedFilesCount()
+            + progress.batchCounters.get(3).getChangedDirectoriesCount());
         assertEquals(4, progress.cumulativeCounters.size());
-        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount() + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
-        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount() + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
-        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount() + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
-        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount() + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
+        assertEquals(2, progress.cumulativeCounters.get(0).getChangedFilesCount()
+            + progress.cumulativeCounters.get(0).getChangedDirectoriesCount());
+        assertEquals(4, progress.cumulativeCounters.get(1).getChangedFilesCount()
+            + progress.cumulativeCounters.get(1).getChangedDirectoriesCount());
+        assertEquals(6, progress.cumulativeCounters.get(2).getChangedFilesCount()
+            + progress.cumulativeCounters.get(2).getChangedDirectoriesCount());
+        assertEquals(7, progress.cumulativeCounters.get(3).getChangedFilesCount()
+            + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatchesFollowToken() {
         setupStandardRecursiveAclTest();
-        PathRemoveAccessControlRecursiveOptions options =
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(2);
+        PathRemoveAccessControlRecursiveOptions options
+            = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
+                .setMaxBatches(2);
 
         String continuation = "null";
         int failedChanges = 0;
@@ -1742,7 +1802,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
                 continuation = null; // do while not supported in Groovy
             }
             options.setContinuationToken(continuation);
-            AccessControlChangeResult result = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
+            AccessControlChangeResult result
+                = dc.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
             failedChanges += result.getCounters().getFailedChangesCount();
             directoriesChanged += result.getCounters().getChangedDirectoriesCount();
             filesChanged += result.getCounters().getChangedFilesCount();
@@ -1764,9 +1825,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1785,7 +1846,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create file4 as super user (using shared key)
-        DataLakeFileClient file4 = dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        DataLakeFileClient file4 = dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
 
         // Create a user delegation sas that delegates an owner when creating files
@@ -1793,8 +1855,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
 
         AccessControlChangeResult result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setProgressHandler(progress), null, null)
-            .getValue();
+            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setProgressHandler(progress),
+            null, null).getValue();
 
         assertEquals(1, result.getCounters().getFailedChangesCount());
         assertEquals(1, progress.failures.size());
@@ -1813,9 +1875,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1834,24 +1896,28 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as superuser (using shared key)
-        DataLakeFileClient file4 = dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        DataLakeFileClient file4 = dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        DataLakeFileClient file5 = dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        DataLakeFileClient file5 = dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        DataLakeFileClient file6 = dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        DataLakeFileClient file6 = dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        DataLakeDirectoryClient subdir3 = dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        DataLakeDirectoryClient subdir3 = dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
         AccessControlChangeResult result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true), null, null)
-            .getValue();
+            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true), null,
+            null).getValue();
 
-        List<String> batchFailures = result.getBatchFailures().stream()
-            .map(AccessControlChangeFailure::getName).collect(Collectors.toList());
+        List<String> batchFailures
+            = result.getBatchFailures().stream().map(AccessControlChangeFailure::getName).collect(Collectors.toList());
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(3L, result.getCounters().getChangedFilesCount());
@@ -1872,9 +1938,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1893,27 +1959,31 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as super user (using shared key)
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
         InMemoryAccessControlRecursiveChangeProgress progress = new InMemoryAccessControlRecursiveChangeProgress();
 
-
         AccessControlChangeResult result = subOwnerDirClient.removeAccessControlRecursiveWithResponse(
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
-                .setContinueOnFailure(true).setBatchSize(2)
-                .setProgressHandler(progress), null, null).getValue();
+            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setContinueOnFailure(true)
+                .setBatchSize(2)
+                .setProgressHandler(progress),
+            null, null).getValue();
 
-        List<String> batchFailures = result.getBatchFailures().stream()
-            .map(AccessControlChangeFailure::getName).collect(Collectors.toList());
+        List<String> batchFailures
+            = result.getBatchFailures().stream().map(AccessControlChangeFailure::getName).collect(Collectors.toList());
 
         assertEquals(3L, result.getCounters().getChangedDirectoriesCount()); // Including the top level
         assertEquals(3L, result.getCounters().getChangedFilesCount());
@@ -1933,9 +2003,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String topDirName = generatePathName();
 
         // Create tree using AAD creds
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .createDirectory(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .createDirectory(topDirName);
         DataLakeDirectoryClient subdir1 = topDirOauthClient.createSubdirectory(generatePathName());
         DataLakeFileClient file1 = subdir1.createFile(generatePathName());
         DataLakeFileClient file2 = subdir1.createFile(generatePathName());
@@ -1954,13 +2024,17 @@ public class DirectoryApiTests extends DataLakeTestBase {
         file3.setPermissions(pathPermissions, null, subowner);
 
         // Create resources as super user (using shared key)
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createFile(generatePathName());
-        dataLakeFileSystemClient.getDirectoryClient(topDirName).getSubdirectoryClient(subdir2.getObjectName())
+        dataLakeFileSystemClient.getDirectoryClient(topDirName)
+            .getSubdirectoryClient(subdir2.getObjectName())
             .createSubdirectory(generatePathName());
 
         // Create more files as app
@@ -1978,24 +2052,26 @@ public class DirectoryApiTests extends DataLakeTestBase {
         // Create a user delegation sas that delegates an owner when creating files
         DataLakeDirectoryClient subOwnerDirClient = getSasDirectoryClient(topDirOauthClient, subowner);
 
-        PathRemoveAccessControlRecursiveOptions options =
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
-                .setBatchSize(2)
+        PathRemoveAccessControlRecursiveOptions options
+            = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2)
                 .setContinueOnFailure(true)
                 .setMaxBatches(1);
 
-        AccessControlChangeResult intermediateResult =
-            subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
+        AccessControlChangeResult intermediateResult
+            = subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
 
         assertNotNull(intermediateResult.getContinuationToken());
 
         options.setMaxBatches(null).setContinuationToken(intermediateResult.getContinuationToken());
-        AccessControlChangeResult result =
-            subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
+        AccessControlChangeResult result
+            = subOwnerDirClient.removeAccessControlRecursiveWithResponse(options, null, null).getValue();
 
-        assertEquals(4, result.getCounters().getChangedDirectoriesCount() + intermediateResult.getCounters().getChangedDirectoriesCount());
-        assertEquals(6, result.getCounters().getChangedFilesCount() + intermediateResult.getCounters().getChangedFilesCount());
-        assertEquals(4, result.getCounters().getFailedChangesCount() + intermediateResult.getCounters().getFailedChangesCount());
+        assertEquals(4, result.getCounters().getChangedDirectoriesCount()
+            + intermediateResult.getCounters().getChangedDirectoriesCount());
+        assertEquals(6,
+            result.getCounters().getChangedFilesCount() + intermediateResult.getCounters().getChangedFilesCount());
+        assertEquals(4,
+            result.getCounters().getFailedChangesCount() + intermediateResult.getCounters().getFailedChangesCount());
         assertNull(result.getContinuationToken());
     }
 
@@ -2004,9 +2080,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dataLakeFileSystemClient.getRootDirectoryClient()
             .setAccessControlList(EXECUTE_ONLY_ACCESS_CONTROL_ENTRIES, null, null);
         String topDirName = generatePathName();
-        DataLakeDirectoryClient topDirOauthClient = getOAuthServiceClient()
-            .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
-            .getDirectoryClient(topDirName);
+        DataLakeDirectoryClient topDirOauthClient
+            = getOAuthServiceClient().getFileSystemClient(dataLakeFileSystemClient.getFileSystemName())
+                .getDirectoryClient(topDirName);
 
         DataLakeAclChangeFailedException e = assertThrows(DataLakeAclChangeFailedException.class,
             () -> topDirOauthClient.removeAccessControlRecursiveWithResponse(
@@ -2019,12 +2095,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("setACLRecursiveErrorSupplier")
     public void removeACLRecursiveErrorMiddleOfBatches(Throwable error) {
         setupStandardRecursiveAclTest();
-        PathRemoveAccessControlRecursiveOptions options =
-            new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
+        PathRemoveAccessControlRecursiveOptions options
+            = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2);
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = (context, next) ->
-            context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process();
+        HttpPipelinePolicy mockPolicy
+            = (context, next) -> context.getHttpRequest().getUrl().toString().contains("continuation")
+                ? Mono.error(error)
+                : next.process();
         dc = getDirectoryClient(getDataLakeCredential(), dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy);
 
         DataLakeAclChangeFailedException e = assertThrows(DataLakeAclChangeFailedException.class,
@@ -2086,8 +2164,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -2105,8 +2182,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         }
 
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -2122,7 +2198,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void renameWithResponse() {
-        Response<DataLakeDirectoryClient> resp = dc.renameWithResponse(null, generatePathName(), null, null, null, null);
+        Response<DataLakeDirectoryClient> resp
+            = dc.renameWithResponse(null, generatePathName(), null, null, null, null);
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
         assertDoesNotThrow(() -> renamedClient.getProperties());
@@ -2131,9 +2208,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void renameFilesystemWithResponse() {
-        DataLakeFileSystemClient newFileSystem = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
-        Response<DataLakeDirectoryClient> resp = dc.renameWithResponse(newFileSystem.getFileSystemName(),
-            generatePathName(), null, null, null, null);
+        DataLakeFileSystemClient newFileSystem
+            = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName());
+        Response<DataLakeDirectoryClient> resp
+            = dc.renameWithResponse(newFileSystem.getFileSystemName(), generatePathName(), null, null, null, null);
 
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
@@ -2143,16 +2221,16 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void renameError() {
-        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.getDirectoryClient(generatePathName())
-            .renameWithResponse(null, generatePathName(), null, null, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> dataLakeFileSystemClient.getDirectoryClient(generatePathName())
+                .renameWithResponse(null, generatePathName(), null, null, null, null));
     }
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -2166,8 +2244,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void renameSourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -2183,12 +2260,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String leaseID) {
         String pathName = generatePathName();
         DataLakeDirectoryClient destDir = dataLakeFileSystemClient.createDirectory(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(destDir, leaseID))
-            .setIfMatch(setupPathMatchCondition(destDir, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(destDir, leaseID))
+                .setIfMatch(setupPathMatchCondition(destDir, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
 
         assertEquals(201, dc.renameWithResponse(null, pathName, null, drc, null, null).getStatusCode());
     }
@@ -2200,31 +2277,48 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeDirectoryClient destDir = dataLakeFileSystemClient.createDirectory(pathName);
         setupPathLeaseCondition(destDir, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(destDir, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> dc.renameWithResponse(null, pathName, null, drc, null, null));
+        assertThrows(DataLakeStorageException.class,
+            () -> dc.renameWithResponse(null, pathName, null, drc, null, null));
     }
 
     @Test
     public void renameSasToken() {
-        FileSystemSasPermission permissions = new FileSystemSasPermission()
-            .setReadPermission(true)
+        FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true)
             .setMovePermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setAddPermission(true)
             .setDeletePermission(true);
-        String sas = dataLakeFileSystemClient.generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
-        DataLakeDirectoryClient client = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryPath());
+        String sas = dataLakeFileSystemClient
+            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        DataLakeDirectoryClient client
+            = getDirectoryClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryPath());
 
-        DataLakeDirectoryClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
+        DataLakeDirectoryClient destClient
+            = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
 
         assertNotNull(destClient.getProperties());
+    }
+
+    @Test
+    public void getNonEncodedPathName() {
+        String pathName = "foo/bar";
+        String urlEncodedPathName = Utility.encodeUrlPath(pathName);
+
+        DataLakeDirectoryClient client
+            = getPathClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .fileSystemName(generateFileSystemName())
+                .pathName(urlEncodedPathName)
+                .buildDirectoryClient();
+
+        assertEquals(pathName, client.getDirectoryPath());
+        assertTrue(client.getDirectoryUrl().contains(Utility.urlEncode(pathName)));
     }
 
     @Test
@@ -2283,8 +2377,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -2297,8 +2390,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -2326,8 +2418,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void setHTTPHeadersMin() {
         PathProperties properties = dc.getProperties();
-        PathHttpHeaders headers = new PathHttpHeaders()
-            .setContentEncoding(properties.getContentEncoding())
+        PathHttpHeaders headers = new PathHttpHeaders().setContentEncoding(properties.getContentEncoding())
             .setContentDisposition(properties.getContentDisposition())
             .setContentType("type")
             .setCacheControl(properties.getCacheControl())
@@ -2339,12 +2430,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,null,null", "control,disposition,encoding,language,null,type"},
-               nullValues = "null")
+    @CsvSource(
+        value = { "null,null,null,null,null,null", "control,disposition,encoding,language,null,type" },
+        nullValues = "null")
     public void setHTTPHeadersHeaders(String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, byte[] contentMD5, String contentType) {
-        PathHttpHeaders putHeaders = new PathHttpHeaders()
-            .setCacheControl(cacheControl)
+        PathHttpHeaders putHeaders = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -2361,8 +2452,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -2376,8 +2466,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -2417,7 +2506,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null,200", "foo,bar,fizz,buzz,200"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null,200", "foo,bar,fizz,buzz,200" }, nullValues = "null")
     public void setMetadataMetadata(String key1, String value1, String key2, String value2, int statusCode) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null && value1 != null) {
@@ -2441,8 +2530,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(dc, leaseID))
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(dc, leaseID))
             .setIfMatch(setupPathMatchCondition(dc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
@@ -2456,8 +2544,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID) {
         setupPathLeaseCondition(dc, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(dc, noneMatch))
             .setIfModifiedSince(modified)
@@ -2478,7 +2565,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void createFileOverwrite(boolean overwrite) {
         String pathName = generatePathName();
         dc.createFile(pathName);
@@ -2507,8 +2594,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setContentLanguage(contentLanguage)
             .setContentType(contentType);
 
-        Response<PathProperties> response = dc.createFileWithResponse(generatePathName(), null, null, headers, null,
-            null, null, null).getValue().getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response
+            = dc.createFileWithResponse(generatePathName(), null, null, headers, null, null, null, null)
+                .getValue()
+                .getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2518,7 +2607,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createFileMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -2528,8 +2617,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             metadata.put(key2, value2);
         }
 
-        PathProperties response = dc.createFileWithResponse(generatePathName(), null, null, null, metadata, null, null,
-            null).getValue().getProperties();
+        PathProperties response
+            = dc.createFileWithResponse(generatePathName(), null, null, null, metadata, null, null, null)
+                .getValue()
+                .getProperties();
 
         assertEquals(metadata, response.getMetadata());
     }
@@ -2540,12 +2631,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String leaseID) {
         String pathName = generatePathName();
         DataLakeFileClient client = dc.createFile(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(client, leaseID))
-            .setIfMatch(setupPathMatchCondition(client, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(client, leaseID))
+                .setIfMatch(setupPathMatchCondition(client, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
 
         assertEquals(201, dc.createFileWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode());
     }
@@ -2557,8 +2648,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeFileClient client = dc.createFile(pathName);
         setupPathLeaseCondition(client, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
@@ -2570,8 +2660,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void createFilePermissionsAndUmask() {
-        assertEquals(201, dc.createFileWithResponse(generatePathName(), "0777", "0057", null, null, null, null,
-            Context.NONE).getStatusCode());
+        assertEquals(201,
+            dc.createFileWithResponse(generatePathName(), "0777", "0057", null, null, null, null, Context.NONE)
+                .getStatusCode());
     }
 
     @Test
@@ -2591,7 +2682,6 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void createIfNotExistsFileDefaults() {
         Response<?> createResponse = dc.createFileIfNotExistsWithResponse(generatePathName(), null, null, null);
 
-
         assertEquals(201, createResponse.getStatusCode());
         validateBasicHeaders(createResponse.getHeaders());
     }
@@ -2608,8 +2698,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setContentType(contentType);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers);
 
-        Response<PathProperties> response = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
-            .getValue().getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response
+            = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+                .getValue()
+                .getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2619,7 +2711,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createIfNotExistsFileMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -2630,8 +2722,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         }
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setMetadata(metadata);
 
-        DataLakeFileClient client = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null,
-            Context.NONE).getValue();
+        DataLakeFileClient client
+            = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getValue();
         PathProperties response = client.getProperties();
 
         assertTrue(client.exists());
@@ -2643,8 +2735,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
 
-        assertEquals(201, client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE)
-            .getStatusCode());
+        assertEquals(201,
+            client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode());
     }
 
     @Test
@@ -2660,8 +2752,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeFileClient client = dc.createFile(pathName);
         dc.deleteFileWithResponse(pathName, null, null, null);
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> client.getPropertiesWithResponse(null, null, null));
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> client.getPropertiesWithResponse(null, null, null));
 
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
@@ -2673,12 +2765,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String leaseID) {
         String pathName = generatePathName();
         DataLakeFileClient client = dc.createFile(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(client, leaseID))
-            .setIfMatch(setupPathMatchCondition(client, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(client, leaseID))
+                .setIfMatch(setupPathMatchCondition(client, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
 
         assertEquals(200, dc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode());
     }
@@ -2690,8 +2782,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeFileClient client = dc.createFile(pathName);
         setupPathLeaseCondition(client, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
@@ -2742,12 +2833,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String leaseID) {
         String pathName = generatePathName();
         DataLakeFileClient client = dc.createFile(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(client, leaseID))
-            .setIfMatch(setupPathMatchCondition(client, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(client, leaseID))
+                .setIfMatch(setupPathMatchCondition(client, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc);
 
         assertEquals(200, dc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode());
@@ -2760,8 +2851,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeFileClient client = dc.createFile(pathName);
         setupPathLeaseCondition(client, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
@@ -2777,7 +2867,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void createSubDirOverwrite(boolean overwrite) {
         String pathName = generatePathName();
         dc.createSubdirectory(pathName);
@@ -2791,8 +2881,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void createSubDirDefaults() {
-        Response<?> createResponse = dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, null, null,
-            null, null);
+        Response<?> createResponse
+            = dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, null, null, null, null);
 
         assertEquals(201, createResponse.getStatusCode());
         validateBasicHeaders(createResponse.getHeaders());
@@ -2801,7 +2891,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void createSubDirError() {
         assertThrows(DataLakeStorageException.class, () -> dc.createSubdirectoryWithResponse(generatePathName(), null,
-                null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null, Context.NONE));
+            null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null, Context.NONE));
     }
 
     @ParameterizedTest
@@ -2815,9 +2905,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setContentLanguage(contentLanguage)
             .setContentType(contentType);
 
-        Response<PathProperties> response = dc.createSubdirectoryWithResponse(generatePathName(), null, null, headers,
-            null, null, null, null).getValue()
-            .getPropertiesWithResponse(null, null, null);
+        Response<PathProperties> response
+            = dc.createSubdirectoryWithResponse(generatePathName(), null, null, headers, null, null, null, null)
+                .getValue()
+                .getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -2827,7 +2918,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createSubDirMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -2837,9 +2928,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             metadata.put(key2, value2);
         }
 
-        PathProperties response = dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, metadata,
-            null, null, null).getValue().getProperties();
-
+        PathProperties response
+            = dc.createSubdirectoryWithResponse(generatePathName(), null, null, null, metadata, null, null, null)
+                .getValue()
+                .getProperties();
 
         // Directory adds a directory metadata value
         for (String k : metadata.keySet()) {
@@ -2854,15 +2946,15 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String leaseID) {
         String pathName = generatePathName();
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(client, leaseID))
-            .setIfMatch(setupPathMatchCondition(client, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(client, leaseID))
+                .setIfMatch(setupPathMatchCondition(client, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
 
-        assertEquals(201, dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc, null, null)
-            .getStatusCode());
+        assertEquals(201,
+            dc.createSubdirectoryWithResponse(pathName, null, null, null, null, drc, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -2872,8 +2964,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
         setupPathLeaseCondition(client, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
@@ -2885,8 +2976,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void createSubDirPermissionsAndUmask() {
-        assertEquals(201, dc.createSubdirectoryWithResponse(generatePathName(), "0777", "0057", null, null, null, null,
-            Context.NONE).getStatusCode());
+        assertEquals(201,
+            dc.createSubdirectoryWithResponse(generatePathName(), "0777", "0057", null, null, null, null, Context.NONE)
+                .getStatusCode());
     }
 
     @Test
@@ -2933,8 +3025,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
             .setContentLanguage(contentLanguage)
             .setContentType(contentType);
 
-        Response<PathProperties> response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(),
-            new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null).getValue()
+        Response<PathProperties> response = dc
+            .createSubdirectoryIfNotExistsWithResponse(generatePathName(),
+                new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null)
+            .getValue()
             .getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
@@ -2945,7 +3039,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    @CsvSource(value = { "null,null,null,null", "foo,bar,fizz,buzz" }, nullValues = "null")
     public void createIfNotExistsSubDirMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
@@ -2956,8 +3050,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         }
 
         PathProperties response = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(),
-            new DataLakePathCreateOptions().setMetadata(metadata), null, Context.NONE).getValue()
-            .getProperties();
+            new DataLakePathCreateOptions().setMetadata(metadata), null, Context.NONE).getValue().getProperties();
 
         // Directory adds a directory metadata value
         for (String k : metadata.keySet()) {
@@ -2969,12 +3062,11 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @Test
     public void createIfNotExistsSubDirPermissionsAndUmask() {
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setPermissions("0777")
-            .setUmask("0057");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057");
 
-        assertEquals(201, client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null,
-            Context.NONE).getStatusCode());
+        assertEquals(201,
+            client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE)
+                .getStatusCode());
     }
 
     @Test
@@ -2999,8 +3091,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
         dc.deleteSubdirectoryWithResponse(pathName, false, null, null, null);
 
-        DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> client.getPropertiesWithResponse(null, null, null));
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> client.getPropertiesWithResponse(null, null, null));
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
     }
@@ -3011,12 +3103,12 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String leaseID) {
         String pathName = generatePathName();
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(client, leaseID))
-            .setIfMatch(setupPathMatchCondition(client, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(client, leaseID))
+                .setIfMatch(setupPathMatchCondition(client, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
 
         assertEquals(200, dc.deleteSubdirectoryWithResponse(pathName, false, drc, null, null).getStatusCode());
     }
@@ -3028,15 +3120,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
         setupPathLeaseCondition(client, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(DataLakeStorageException.class, () -> dc.deleteSubdirectoryWithResponse(pathName, false, drc, null,
-            null));
+        assertThrows(DataLakeStorageException.class,
+            () -> dc.deleteSubdirectoryWithResponse(pathName, false, drc, null, null));
     }
 
     @Test
@@ -3057,8 +3148,11 @@ public class DirectoryApiTests extends DataLakeTestBase {
     public void deleteIfExistsSubDirRecursive() {
         String pathName = generatePathName();
         dc.createSubdirectory(pathName);
-        assertEquals(200, dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions()
-            .setIsRecursive(true), null, null).getStatusCode());
+        assertEquals(
+            200, dc
+                .deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setIsRecursive(true),
+                    null, null)
+                .getStatusCode());
     }
 
     @Test
@@ -3076,14 +3170,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String noneMatch, String leaseID) {
         String pathName = generatePathName();
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(setupPathLeaseCondition(client, leaseID))
-            .setIfMatch(setupPathMatchCondition(client, match))
-            .setIfNoneMatch(noneMatch)
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified);
-        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-            .setIsRecursive(false);
+        DataLakeRequestConditions drc
+            = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(client, leaseID))
+                .setIfMatch(setupPathMatchCondition(client, match))
+                .setIfNoneMatch(noneMatch)
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified);
+        DataLakePathDeleteOptions options
+            = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false);
 
         assertEquals(200, dc.deleteSubdirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode());
     }
@@ -3095,14 +3189,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
         DataLakeDirectoryClient client = dc.createSubdirectory(pathName);
         setupPathLeaseCondition(client, leaseID);
-        DataLakeRequestConditions drc = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupPathMatchCondition(client, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
-        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(drc)
-            .setIsRecursive(false);
+        DataLakePathDeleteOptions options
+            = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false);
 
         assertThrows(DataLakeStorageException.class,
             () -> dc.deleteSubdirectoryIfExistsWithResponse(pathName, options, null, null));
@@ -3145,13 +3238,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String dirName = generatePathName();
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(dirName);
 
-        Response<DataLakeDirectoryClient> resp = client.createSubdirectoryWithResponse(originalDirectoryName, null,
-            null, null, null, null, null, null);
+        Response<DataLakeDirectoryClient> resp
+            = client.createSubdirectoryWithResponse(originalDirectoryName, null, null, null, null, null, null, null);
 
         assertEquals(201, resp.getStatusCode());
         assertEquals(dirName + "/" + originalDirectoryName, resp.getValue().getDirectoryPath());
 
-        assertEquals(200, client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null, null, null).getStatusCode());
+        assertEquals(200,
+            client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -3160,8 +3254,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String fileName = generatePathName();
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(fileName);
 
-        Response<DataLakeFileClient> resp = client.createFileWithResponse(originalFileName, null, null, null, null,
-            null, null, null);
+        Response<DataLakeFileClient> resp
+            = client.createFileWithResponse(originalFileName, null, null, null, null, null, null, null);
 
         assertEquals(201, resp.getStatusCode());
         assertEquals(fileName + "/" + originalFileName, resp.getValue().getFilePath());
@@ -3170,21 +3264,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     private static Stream<Arguments> fileEncodingSupplier() {
-        return Stream.of(
-            Arguments.of("file"),
-            Arguments.of("test%test"),
-            Arguments.of("test%25test"),
-            Arguments.of("path%2Fto%5Da%20file"),
-            Arguments.of("path/to]a file"),
-            Arguments.of("斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E")
-        );
+        return Stream.of(Arguments.of("file"), Arguments.of("test%test"), Arguments.of("test%25test"),
+            Arguments.of("path%2Fto%5Da%20file"), Arguments.of("path/to]a file"), Arguments.of("斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E"));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "dir/file"
-//        "dir%2Ffile" // no longer supported
+    @ValueSource(strings = { "dir/file"
+    //        "dir%2Ffile" // no longer supported
     })
     public void createFileWithPathStructure(String pathName) {
         DataLakeFileClient fileClient = dataLakeFileSystemClient.createFile(pathName);
@@ -3206,10 +3293,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
         // fails
         String endpoint = BlobUrlParts.parse(dc.getDirectoryUrl()).setScheme("http").toUrl().toString();
 
-        assertThrows(IllegalArgumentException.class, () -> new DataLakePathClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildDirectoryClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new DataLakePathClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(endpoint)
+                .buildDirectoryClient());
     }
 
     @Test
@@ -3225,9 +3312,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
     @EnabledIf("environmentServiceVersion")
     @Test
     public void perCallPolicy() {
-        DataLakeDirectoryClient directoryClient = getPathClientBuilder(getDataLakeCredential(), getFileSystemUrl(),
-            dc.getObjectPath()).addPolicy(getPerCallVersionPolicy())
-            .buildDirectoryClient();
+        DataLakeDirectoryClient directoryClient
+            = getPathClientBuilder(getDataLakeCredential(), getFileSystemUrl(), dc.getObjectPath())
+                .addPolicy(getPerCallVersionPolicy())
+                .buildDirectoryClient();
 
         // blob endpoint
         Response<?> response = directoryClient.getPropertiesWithResponse(null, null, null);
@@ -3359,8 +3447,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
     private static Stream<Arguments> getFileAndSubdirectoryClientSupplier() {
         return Stream.of(
             // resourcePrefix | subResourcePrefix
-            Arguments.of("", ""),
-            Arguments.of("%", "%"), // Resource has special character
+            Arguments.of("", ""), Arguments.of("%", "%"), // Resource has special character
             Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%")) // Sub resource has special character
         );
     }
@@ -3373,8 +3460,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeFileClient renamedFile = dc.createFile(generatePathName()).rename(null, renamedName);
 
         assertEquals(renamedName, renamedFile.getObjectPath());
-        assertEquals(renamedFile.getProperties().getETag(), renamedFile.setAccessControlList(
-            PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER).getETag());
+        assertEquals(renamedFile.getProperties().getETag(),
+            renamedFile.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER).getETag());
     }
 
     @Test
@@ -3385,25 +3472,24 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient renamedDir = dc.createSubdirectory(generatePathName()).rename(null, renamedName);
 
         assertEquals(renamedName, renamedDir.getObjectPath());
-        assertEquals(renamedDir.getProperties().getETag(), renamedDir.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES,
-            GROUP, OWNER).getETag());
+        assertEquals(renamedDir.getProperties().getETag(),
+            renamedDir.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER).getETag());
     }
 
     @Test
     public void createFileSystemWithSmallTimeoutsFailForServiceClient() {
-        HttpClientOptions clientOptions = new HttpClientOptions()
-            .setApplicationId("client-options-id")
+        HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
             .setResponseTimeout(Duration.ofNanos(1))
             .setReadTimeout(Duration.ofNanos(1))
             .setWriteTimeout(Duration.ofNanos(1))
             .setConnectTimeout(Duration.ofNanos(1));
 
-        DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder()
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .retryOptions(new RequestRetryOptions(null, 1, (Duration) null, null, null, null))
-            .clientOptions(clientOptions)
-            .buildClient();
+        DataLakeServiceClient serviceClient
+            = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .retryOptions(new RequestRetryOptions(null, 1, (Duration) null, null, null, null))
+                .clientOptions(clientOptions)
+                .buildClient();
 
         // Loop five times as this is a timing test and it may pass by accident.
         for (int i = 0; i < 5; i++) {
@@ -3420,22 +3506,24 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @Test
     public void defaultAudience() {
-        DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            dataLakeFileSystemClient.getFileSystemUrl(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(null) // should default to "https://storage.azure.com/"
-            .buildDirectoryClient();
+        DataLakeDirectoryClient aadDirClient
+            = getPathClientBuilderWithTokenCredential(dataLakeFileSystemClient.getFileSystemUrl(),
+                dc.getDirectoryPath()).fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(null) // should default to "https://storage.azure.com/"
+                    .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
     }
 
     @Test
     public void storageAccountAudience() {
-        DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
-            .buildDirectoryClient();
+        DataLakeDirectoryClient aadDirClient
+            = getPathClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+                dc.getDirectoryPath())
+                    .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(DataLakeAudience
+                        .createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
+                    .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
     }
@@ -3447,11 +3535,11 @@ public class DirectoryApiTests extends DataLakeTestBase {
     the default audience, and the request gets retried with this default audience, making the call function as expected.
      */
     public void audienceErrorBearerChallengeRetry() {
-        DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
-            .buildDirectoryClient();
+        DataLakeDirectoryClient aadDirClient
+            = getPathClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+                dc.getDirectoryPath()).fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+                    .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
     }
@@ -3461,11 +3549,11 @@ public class DirectoryApiTests extends DataLakeTestBase {
         String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
         DataLakeAudience audience = DataLakeAudience.fromString(url);
 
-        DataLakeDirectoryClient aadDirClient = getPathClientBuilderWithTokenCredential(
-            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
-            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
-            .audience(audience)
-            .buildDirectoryClient();
+        DataLakeDirectoryClient aadDirClient
+            = getPathClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+                dc.getDirectoryPath()).fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+                    .audience(audience)
+                    .buildDirectoryClient();
 
         assertTrue(aadDirClient.exists());
     }

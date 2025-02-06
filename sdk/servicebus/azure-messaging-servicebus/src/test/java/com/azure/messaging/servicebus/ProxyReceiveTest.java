@@ -79,37 +79,34 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final String messageTracking = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .sender()
-            .queueName(queueName)
-            .buildAsyncClient();
+        final ServiceBusSenderAsyncClient sender
+            = getAuthenticatedBuilder().transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+                .sender()
+                .queueName(queueName)
+                .buildAsyncClient();
 
         toClose(sender);
 
-        final ServiceBusReceiverAsyncClient receiver = getAuthenticatedBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .receiver()
-            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-            .queueName(queueName)
-            .buildAsyncClient();
+        final ServiceBusReceiverAsyncClient receiver
+            = getAuthenticatedBuilder().transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+                .receiver()
+                .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+                .queueName(queueName)
+                .buildAsyncClient();
 
         toClose(receiver);
 
         // Act & Assert
         try {
-            StepVerifier.create(sender.createMessageBatch()
-                .flatMap(batch -> {
-                    for (int i = 0; i < messages.size(); i++) {
-                        Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
-                    }
+            StepVerifier.create(sender.createMessageBatch().flatMap(batch -> {
+                for (int i = 0; i < messages.size(); i++) {
+                    Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
+                }
 
-                    return sender.sendMessages(batch);
-                }))
-                .expectComplete()
-                .verify(Duration.ofSeconds(30));
+                return sender.sendMessages(batch);
+            })).expectComplete().verify(Duration.ofSeconds(30));
 
             StepVerifier.create(receiver.receiveMessages().take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)

@@ -6,7 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A name-value pair associated with a Batch service resource.
@@ -14,17 +18,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The Batch service does not assign any meaning to this metadata; it is solely for the use of user code.
  */
 @Fluent
-public final class MetadataItem {
+public final class MetadataItem implements JsonSerializable<MetadataItem> {
     /*
      * The name of the metadata item.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The value of the metadata item.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -80,14 +82,54 @@ public final class MetadataItem {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model MetadataItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model MetadataItem"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model MetadataItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model MetadataItem"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetadataItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataItem.
+     */
+    public static MetadataItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataItem deserializedMetadataItem = new MetadataItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetadataItem.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedMetadataItem.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataItem;
+        });
+    }
 }

@@ -23,23 +23,19 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public PrivateEndpointConnectionsImpl(
-        PrivateEndpointConnectionsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    public PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsClient innerClient,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<List<PrivateEndpointConnection>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<List<PrivateEndpointConnectionInner>> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
+    public Response<List<PrivateEndpointConnection>> listWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<List<PrivateEndpointConnectionInner>> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -51,38 +47,30 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public List<PrivateEndpointConnection> list(String resourceGroupName, String resourceName) {
         List<PrivateEndpointConnectionInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        Response<PrivateEndpointConnectionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, context);
+    public Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context) {
+        Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PrivateEndpointConnection get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, privateEndpointConnectionName);
+    public PrivateEndpointConnection get(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, privateEndpointConnectionName);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -90,15 +78,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateEndpointConnection update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
-        PrivateEndpointConnectionInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection);
+    public PrivateEndpointConnection update(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        PrivateEndpointConnectionInner inner = this.serviceClient()
+            .update(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -106,17 +89,11 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateEndpointConnection update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+    public PrivateEndpointConnection update(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        PrivateEndpointConnectionInner inner =
-            this
-                .serviceClient()
-                .update(
-                    resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, context);
+        PrivateEndpointConnectionInner inner = this.serviceClient()
+            .update(resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, context);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -124,10 +101,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateEndpointConnection delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, privateEndpointConnectionName);
+    public PrivateEndpointConnection delete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner
+            = this.serviceClient().delete(resourceGroupName, resourceName, privateEndpointConnectionName);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -135,10 +112,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public PrivateEndpointConnection delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, privateEndpointConnectionName, context);
+    public PrivateEndpointConnection delete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context) {
+        PrivateEndpointConnectionInner inner
+            = this.serviceClient().delete(resourceGroupName, resourceName, privateEndpointConnectionName, context);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {

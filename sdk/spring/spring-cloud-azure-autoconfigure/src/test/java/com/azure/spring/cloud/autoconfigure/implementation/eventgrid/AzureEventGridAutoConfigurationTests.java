@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventgrid;
 import com.azure.core.util.BinaryData;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
@@ -22,9 +21,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
     EventGridPublisherClientBuilderFactory, AzureEventGridProperties> {
@@ -154,14 +151,9 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(context).hasSingleBean(EventGridPublisherClientBuilder.class);
                 assertThat(context).hasSingleBean(EventGridPublisherClient.class);
                 assertThat(context).hasSingleBean(EventGridPublisherAsyncClient.class);
-
                 assertThat(context).hasBean("myCustomClient");
-
-                EventGridEvent eventGridEvent = new EventGridEvent("test", "Example.EventType",
-                    BinaryData.fromObject(String.class), "0.1");
-                assertDoesNotThrow(() -> context.getBean(EventGridPublisherAsyncClient.class).sendEvent(eventGridEvent));
-                assertThrows(ClassCastException.class,
-                    () -> context.getBean(EventGridPublisherClient.class).sendEvent(eventGridEvent));
+                assertThat(context.getBean("myCustomClient")).isSameAs(myCustomClient);
+                assertThat(context.getBean(EventGridPublisherClient.class)).isSameAs(myCustomClient);
             });
     }
 

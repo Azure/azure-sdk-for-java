@@ -5,12 +5,12 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingAudioChannelTypeInternal. */
 public final class MediaStreamingAudioChannelTypeInternal
-        extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
+    extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
     /** Static value mixed for MediaStreamingAudioChannelTypeInternal. */
     public static final MediaStreamingAudioChannelTypeInternal MIXED = fromString("mixed");
 
@@ -18,12 +18,21 @@ public final class MediaStreamingAudioChannelTypeInternal
     public static final MediaStreamingAudioChannelTypeInternal UNMIXED = fromString("unmixed");
 
     /**
+     * Creates an instance of {@link MediaStreamingAudioChannelTypeInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of
+     * {@link MediaStreamingAudioChannelTypeInternal} instead.
+     */
+    @Deprecated
+    public MediaStreamingAudioChannelTypeInternal() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingAudioChannelTypeInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding MediaStreamingAudioChannelTypeInternal.
      */
-    @JsonCreator
     public static MediaStreamingAudioChannelTypeInternal fromString(String name) {
         return fromString(name, MediaStreamingAudioChannelTypeInternal.class);
     }

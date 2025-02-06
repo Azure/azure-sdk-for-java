@@ -6,18 +6,15 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.Kind;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbook;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbookManagedIdentity;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbookManagedIdentityType;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbookUserAssignedIdentities;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,87 +22,58 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MyWorkbooksCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"kind\":\"user\",\"properties\":{\"displayName\":\"inuqtljq\",\"serializedData\":\"bbpihehcecy\",\"version\":\"rqbrjbbmpxdlvyk\",\"timeModified\":\"e\",\"category\":\"crse\",\"tags\":[\"ksghudgzhxogjgg\",\"voujkxibdafhrk\"],\"userId\":\"yomkxfbvfbhdy\",\"sourceId\":\"hpwpgddeimawzovg\",\"storageUri\":\"um\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"jcazt\",\"tenantId\":\"snsqowxwcoml\"},\"type\":\"None\"},\"id\":\"ukklelss\",\"name\":\"blycsxzujksr\",\"type\":\"smdesqplpvmjcd\",\"etag\":{\"nkcoeqswankltyt\":\"mnaoy\"},\"location\":\"hdroznnh\",\"tags\":{\"sggux\":\"ktgj\",\"ywaeeczgf\":\"eml\"}}";
 
-        String responseStr =
-            "{\"kind\":\"user\",\"properties\":{\"displayName\":\"urrxxgewpktv\",\"serializedData\":\"ylkmqp\",\"version\":\"yhlfb\",\"timeModified\":\"wgcloxoebqinji\",\"category\":\"nwjfu\",\"tags\":[\"afcba\",\"hpzpo\"],\"userId\":\"iyjwpfilkmkkho\",\"sourceId\":\"dndviauogp\",\"storageUri\":\"artvti\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"chnmna\",\"tenantId\":\"nxhkxjqi\"},\"type\":\"None\"},\"id\":\"llndnpd\",\"name\":\"rpqaf\",\"type\":\"fugsnnfhyetefy\",\"etag\":{\"vmfqhppubo\":\"boi\"},\"location\":\"sepdfgk\",\"tags\":{\"c\":\"herngb\",\"obkauxofsh\":\"uahokq\",\"whslwkoj\":\"phwpnulaiywzej\"}}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MyWorkbook response = manager.myWorkbooks()
+            .define("rrkolawjmjs")
+            .withRegion("zhzmtksjci")
+            .withExistingResourceGroup("tgvgzp")
+            .withTags(mapOf("htomflrytswfp", "gsxcdgljplkeua", "skw", "mdgycxn", "shhkvpedw", "qjjyslurl"))
+            .withIdentity(
+                new MyWorkbookManagedIdentity().withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
+                    .withType(MyWorkbookManagedIdentityType.NONE))
+            .withName("wwsko")
+            .withType("dcbrwimuvq")
+            .withEtag(mapOf("afiqgeaarbgjekg", "pxy", "mzegjon", "klbyulidwcw", "rwgdnqzbrfks", "hj"))
+            .withKind(Kind.SHARED)
+            .withDisplayName("kcdxfzzzw")
+            .withSerializedData("jafi")
+            .withVersion("hguynuchlgmltxdw")
+            .withCategory("ln")
+            .withTagsPropertiesTags(Arrays.asList("jzfpafolpymwamx"))
+            .withSourceId("dphtv")
+            .withStorageUri("lajv")
+            .withSourceIdParameter("josovyrrl")
+            .create();
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MyWorkbook response =
-            manager
-                .myWorkbooks()
-                .define("j")
-                .withRegion("qwm")
-                .withExistingResourceGroup("xtiv")
-                .withTags(mapOf("ynpdkvgfab", "njmxmcuqudtcvcl", "uzphdugnei", "iyji"))
-                .withIdentity(
-                    new MyWorkbookManagedIdentity()
-                        .withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
-                        .withType(MyWorkbookManagedIdentityType.NONE))
-                .withName("gox")
-                .withType("jiuqhibtozi")
-                .withEtag(mapOf("nykzcugswvxwlm", "ucfotangcf"))
-                .withKind(Kind.SHARED)
-                .withDisplayName("ibg")
-                .withSerializedData("jxgpnrhgovfg")
-                .withVersion("kqmhhaowjr")
-                .withCategory("fvxcnqmxqpswo")
-                .withTagsPropertiesTags(Arrays.asList("khlg", "dhbemzqkzszu", "iwtglxxhljfpg"))
-                .withSourceId("pqcbfrmbodthsq")
-                .withStorageUri("vriibakclacjfr")
-                .withSourceIdParameter("qw")
-                .create();
-
-        Assertions.assertEquals("sepdfgk", response.location());
-        Assertions.assertEquals("herngb", response.tags().get("c"));
+        Assertions.assertEquals("hdroznnh", response.location());
+        Assertions.assertEquals("ktgj", response.tags().get("sggux"));
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("llndnpd", response.id());
-        Assertions.assertEquals("rpqaf", response.name());
-        Assertions.assertEquals("fugsnnfhyetefy", response.type());
-        Assertions.assertEquals("boi", response.etag().get("vmfqhppubo"));
+        Assertions.assertEquals("ukklelss", response.id());
+        Assertions.assertEquals("blycsxzujksr", response.name());
+        Assertions.assertEquals("smdesqplpvmjcd", response.type());
+        Assertions.assertEquals("mnaoy", response.etag().get("nkcoeqswankltyt"));
         Assertions.assertEquals(Kind.USER, response.kind());
-        Assertions.assertEquals("urrxxgewpktv", response.displayName());
-        Assertions.assertEquals("ylkmqp", response.serializedData());
-        Assertions.assertEquals("yhlfb", response.version());
-        Assertions.assertEquals("nwjfu", response.category());
-        Assertions.assertEquals("afcba", response.tagsPropertiesTags().get(0));
-        Assertions.assertEquals("dndviauogp", response.sourceId());
-        Assertions.assertEquals("artvti", response.storageUri());
+        Assertions.assertEquals("inuqtljq", response.displayName());
+        Assertions.assertEquals("bbpihehcecy", response.serializedData());
+        Assertions.assertEquals("rqbrjbbmpxdlvyk", response.version());
+        Assertions.assertEquals("crse", response.category());
+        Assertions.assertEquals("ksghudgzhxogjgg", response.tagsPropertiesTags().get(0));
+        Assertions.assertEquals("hpwpgddeimawzovg", response.sourceId());
+        Assertions.assertEquals("um", response.storageUri());
     }
 
     // Use "Map.of" if available

@@ -23,8 +23,8 @@ public final class AliasImpl implements Alias {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    public AliasImpl(
-        AliasClient innerClient, com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
+    public AliasImpl(AliasClient innerClient,
+        com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -50,10 +50,7 @@ public final class AliasImpl implements Alias {
     public Response<PutAliasResponse> getWithResponse(String aliasName, Context context) {
         Response<PutAliasResponseInner> inner = this.serviceClient().getWithResponse(aliasName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PutAliasResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -80,10 +77,7 @@ public final class AliasImpl implements Alias {
     public Response<PutAliasListResult> listWithResponse(Context context) {
         Response<PutAliasListResultInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PutAliasListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

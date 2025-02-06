@@ -15,6 +15,7 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.io.File;
 import java.util.Arrays;
 
@@ -34,21 +35,21 @@ public class ImageAnalysisSyncJavaDocCodeSnippets {
             System.exit(1);
         }
 
-        analysisFromFile();
+        analysisFromFileUsingApiKeyAuth();
 
-        analysisFromUrl();
+        analysisFromUrlUsingEntraIdAuth();
     }
 
-    private static void analysisFromFile() {
-        // BEGIN: com.azure.ai.vision.imageanalysis.sync-client
+    private static void analysisFromFileUsingApiKeyAuth() {
+        // BEGIN: com.azure.ai.vision.imageanalysis.sync-client-api-key-auth
         //
-        // Create a synchronous Image Analysis client.
+        // Create a synchronous Image Analysis client with API key authentication.
         //
         ImageAnalysisClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(key))
             .buildClient();
-        // END: com.azure.ai.vision.imageanalysis.sync-client
+        // END: com.azure.ai.vision.imageanalysis.sync-client-api-key-auth
 
         // BEGIN: com.azure.ai.vision.imageanalysis.sync-analysis-from-file
         //
@@ -78,12 +79,16 @@ public class ImageAnalysisSyncJavaDocCodeSnippets {
         printAnalysisResults(result);
     }
 
-    private static void analysisFromUrl() {
-
+    private static void analysisFromUrlUsingEntraIdAuth() {
+        // BEGIN: com.azure.ai.vision.imageanalysis.sync-client-entra-id-auth
+        //
+        // Create a synchronous Image Analysis client with Entra ID authentication.
+        //
         ImageAnalysisClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
-            .credential(new KeyCredential(key))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
+        // END: com.azure.ai.vision.imageanalysis.sync-client-entra-id-auth
 
         // BEGIN: com.azure.ai.vision.imageanalysis.sync-analysis-from-url
         //

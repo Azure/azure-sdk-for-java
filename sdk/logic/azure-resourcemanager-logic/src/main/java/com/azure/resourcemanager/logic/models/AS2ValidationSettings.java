@@ -6,79 +6,77 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement validation settings. */
+/**
+ * The AS2 agreement validation settings.
+ */
 @Fluent
-public final class AS2ValidationSettings {
+public final class AS2ValidationSettings implements JsonSerializable<AS2ValidationSettings> {
     /*
      * The value indicating whether to override incoming message properties with those in agreement.
      */
-    @JsonProperty(value = "overrideMessageProperties", required = true)
     private boolean overrideMessageProperties;
 
     /*
      * The value indicating whether the message has to be encrypted.
      */
-    @JsonProperty(value = "encryptMessage", required = true)
     private boolean encryptMessage;
 
     /*
      * The value indicating whether the message has to be signed.
      */
-    @JsonProperty(value = "signMessage", required = true)
     private boolean signMessage;
 
     /*
      * The value indicating whether the message has to be compressed.
      */
-    @JsonProperty(value = "compressMessage", required = true)
     private boolean compressMessage;
 
     /*
      * The value indicating whether to check for duplicate message.
      */
-    @JsonProperty(value = "checkDuplicateMessage", required = true)
     private boolean checkDuplicateMessage;
 
     /*
      * The number of days to look back for duplicate interchange.
      */
-    @JsonProperty(value = "interchangeDuplicatesValidityDays", required = true)
     private int interchangeDuplicatesValidityDays;
 
     /*
      * The value indicating whether to check for certificate revocation list on send.
      */
-    @JsonProperty(value = "checkCertificateRevocationListOnSend", required = true)
     private boolean checkCertificateRevocationListOnSend;
 
     /*
      * The value indicating whether to check for certificate revocation list on receive.
      */
-    @JsonProperty(value = "checkCertificateRevocationListOnReceive", required = true)
     private boolean checkCertificateRevocationListOnReceive;
 
     /*
      * The encryption algorithm.
      */
-    @JsonProperty(value = "encryptionAlgorithm", required = true)
     private EncryptionAlgorithm encryptionAlgorithm;
 
     /*
      * The signing algorithm.
      */
-    @JsonProperty(value = "signingAlgorithm")
     private SigningAlgorithm signingAlgorithm;
 
-    /** Creates an instance of AS2ValidationSettings class. */
+    /**
+     * Creates an instance of AS2ValidationSettings class.
+     */
     public AS2ValidationSettings() {
     }
 
     /**
      * Get the overrideMessageProperties property: The value indicating whether to override incoming message properties
      * with those in agreement.
-     *
+     * 
      * @return the overrideMessageProperties value.
      */
     public boolean overrideMessageProperties() {
@@ -88,7 +86,7 @@ public final class AS2ValidationSettings {
     /**
      * Set the overrideMessageProperties property: The value indicating whether to override incoming message properties
      * with those in agreement.
-     *
+     * 
      * @param overrideMessageProperties the overrideMessageProperties value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -99,7 +97,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Get the encryptMessage property: The value indicating whether the message has to be encrypted.
-     *
+     * 
      * @return the encryptMessage value.
      */
     public boolean encryptMessage() {
@@ -108,7 +106,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the encryptMessage property: The value indicating whether the message has to be encrypted.
-     *
+     * 
      * @param encryptMessage the encryptMessage value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -119,7 +117,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Get the signMessage property: The value indicating whether the message has to be signed.
-     *
+     * 
      * @return the signMessage value.
      */
     public boolean signMessage() {
@@ -128,7 +126,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the signMessage property: The value indicating whether the message has to be signed.
-     *
+     * 
      * @param signMessage the signMessage value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -139,7 +137,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Get the compressMessage property: The value indicating whether the message has to be compressed.
-     *
+     * 
      * @return the compressMessage value.
      */
     public boolean compressMessage() {
@@ -148,7 +146,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the compressMessage property: The value indicating whether the message has to be compressed.
-     *
+     * 
      * @param compressMessage the compressMessage value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -159,7 +157,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Get the checkDuplicateMessage property: The value indicating whether to check for duplicate message.
-     *
+     * 
      * @return the checkDuplicateMessage value.
      */
     public boolean checkDuplicateMessage() {
@@ -168,7 +166,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the checkDuplicateMessage property: The value indicating whether to check for duplicate message.
-     *
+     * 
      * @param checkDuplicateMessage the checkDuplicateMessage value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -179,7 +177,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Get the interchangeDuplicatesValidityDays property: The number of days to look back for duplicate interchange.
-     *
+     * 
      * @return the interchangeDuplicatesValidityDays value.
      */
     public int interchangeDuplicatesValidityDays() {
@@ -188,7 +186,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the interchangeDuplicatesValidityDays property: The number of days to look back for duplicate interchange.
-     *
+     * 
      * @param interchangeDuplicatesValidityDays the interchangeDuplicatesValidityDays value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -200,7 +198,7 @@ public final class AS2ValidationSettings {
     /**
      * Get the checkCertificateRevocationListOnSend property: The value indicating whether to check for certificate
      * revocation list on send.
-     *
+     * 
      * @return the checkCertificateRevocationListOnSend value.
      */
     public boolean checkCertificateRevocationListOnSend() {
@@ -210,12 +208,12 @@ public final class AS2ValidationSettings {
     /**
      * Set the checkCertificateRevocationListOnSend property: The value indicating whether to check for certificate
      * revocation list on send.
-     *
+     * 
      * @param checkCertificateRevocationListOnSend the checkCertificateRevocationListOnSend value to set.
      * @return the AS2ValidationSettings object itself.
      */
-    public AS2ValidationSettings withCheckCertificateRevocationListOnSend(
-        boolean checkCertificateRevocationListOnSend) {
+    public AS2ValidationSettings
+        withCheckCertificateRevocationListOnSend(boolean checkCertificateRevocationListOnSend) {
         this.checkCertificateRevocationListOnSend = checkCertificateRevocationListOnSend;
         return this;
     }
@@ -223,7 +221,7 @@ public final class AS2ValidationSettings {
     /**
      * Get the checkCertificateRevocationListOnReceive property: The value indicating whether to check for certificate
      * revocation list on receive.
-     *
+     * 
      * @return the checkCertificateRevocationListOnReceive value.
      */
     public boolean checkCertificateRevocationListOnReceive() {
@@ -233,19 +231,19 @@ public final class AS2ValidationSettings {
     /**
      * Set the checkCertificateRevocationListOnReceive property: The value indicating whether to check for certificate
      * revocation list on receive.
-     *
+     * 
      * @param checkCertificateRevocationListOnReceive the checkCertificateRevocationListOnReceive value to set.
      * @return the AS2ValidationSettings object itself.
      */
-    public AS2ValidationSettings withCheckCertificateRevocationListOnReceive(
-        boolean checkCertificateRevocationListOnReceive) {
+    public AS2ValidationSettings
+        withCheckCertificateRevocationListOnReceive(boolean checkCertificateRevocationListOnReceive) {
         this.checkCertificateRevocationListOnReceive = checkCertificateRevocationListOnReceive;
         return this;
     }
 
     /**
      * Get the encryptionAlgorithm property: The encryption algorithm.
-     *
+     * 
      * @return the encryptionAlgorithm value.
      */
     public EncryptionAlgorithm encryptionAlgorithm() {
@@ -254,7 +252,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the encryptionAlgorithm property: The encryption algorithm.
-     *
+     * 
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -265,7 +263,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Get the signingAlgorithm property: The signing algorithm.
-     *
+     * 
      * @return the signingAlgorithm value.
      */
     public SigningAlgorithm signingAlgorithm() {
@@ -274,7 +272,7 @@ public final class AS2ValidationSettings {
 
     /**
      * Set the signingAlgorithm property: The signing algorithm.
-     *
+     * 
      * @param signingAlgorithm the signingAlgorithm value to set.
      * @return the AS2ValidationSettings object itself.
      */
@@ -285,17 +283,85 @@ public final class AS2ValidationSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (encryptionAlgorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encryptionAlgorithm in model AS2ValidationSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptionAlgorithm in model AS2ValidationSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AS2ValidationSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("overrideMessageProperties", this.overrideMessageProperties);
+        jsonWriter.writeBooleanField("encryptMessage", this.encryptMessage);
+        jsonWriter.writeBooleanField("signMessage", this.signMessage);
+        jsonWriter.writeBooleanField("compressMessage", this.compressMessage);
+        jsonWriter.writeBooleanField("checkDuplicateMessage", this.checkDuplicateMessage);
+        jsonWriter.writeIntField("interchangeDuplicatesValidityDays", this.interchangeDuplicatesValidityDays);
+        jsonWriter.writeBooleanField("checkCertificateRevocationListOnSend", this.checkCertificateRevocationListOnSend);
+        jsonWriter.writeBooleanField("checkCertificateRevocationListOnReceive",
+            this.checkCertificateRevocationListOnReceive);
+        jsonWriter.writeStringField("encryptionAlgorithm",
+            this.encryptionAlgorithm == null ? null : this.encryptionAlgorithm.toString());
+        jsonWriter.writeStringField("signingAlgorithm",
+            this.signingAlgorithm == null ? null : this.signingAlgorithm.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2ValidationSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2ValidationSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2ValidationSettings.
+     */
+    public static AS2ValidationSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2ValidationSettings deserializedAS2ValidationSettings = new AS2ValidationSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("overrideMessageProperties".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.overrideMessageProperties = reader.getBoolean();
+                } else if ("encryptMessage".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.encryptMessage = reader.getBoolean();
+                } else if ("signMessage".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.signMessage = reader.getBoolean();
+                } else if ("compressMessage".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.compressMessage = reader.getBoolean();
+                } else if ("checkDuplicateMessage".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.checkDuplicateMessage = reader.getBoolean();
+                } else if ("interchangeDuplicatesValidityDays".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.interchangeDuplicatesValidityDays = reader.getInt();
+                } else if ("checkCertificateRevocationListOnSend".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.checkCertificateRevocationListOnSend = reader.getBoolean();
+                } else if ("checkCertificateRevocationListOnReceive".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.checkCertificateRevocationListOnReceive = reader.getBoolean();
+                } else if ("encryptionAlgorithm".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.encryptionAlgorithm
+                        = EncryptionAlgorithm.fromString(reader.getString());
+                } else if ("signingAlgorithm".equals(fieldName)) {
+                    deserializedAS2ValidationSettings.signingAlgorithm
+                        = SigningAlgorithm.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2ValidationSettings;
+        });
+    }
 }

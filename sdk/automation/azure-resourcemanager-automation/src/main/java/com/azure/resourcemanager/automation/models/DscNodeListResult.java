@@ -5,34 +5,43 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.DscNodeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response model for the list dsc nodes operation. */
+/**
+ * The response model for the list dsc nodes operation.
+ */
 @Fluent
-public final class DscNodeListResult {
+public final class DscNodeListResult implements JsonSerializable<DscNodeListResult> {
     /*
      * Gets or sets a list of dsc nodes.
      */
-    @JsonProperty(value = "value")
     private List<DscNodeInner> value;
 
     /*
      * Gets or sets the next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets the total number of nodes matching filter criteria.
      */
-    @JsonProperty(value = "totalCount")
     private Integer totalCount;
 
     /**
+     * Creates an instance of DscNodeListResult class.
+     */
+    public DscNodeListResult() {
+    }
+
+    /**
      * Get the value property: Gets or sets a list of dsc nodes.
-     *
+     * 
      * @return the value value.
      */
     public List<DscNodeInner> value() {
@@ -41,7 +50,7 @@ public final class DscNodeListResult {
 
     /**
      * Set the value property: Gets or sets a list of dsc nodes.
-     *
+     * 
      * @param value the value value to set.
      * @return the DscNodeListResult object itself.
      */
@@ -52,7 +61,7 @@ public final class DscNodeListResult {
 
     /**
      * Get the nextLink property: Gets or sets the next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +70,7 @@ public final class DscNodeListResult {
 
     /**
      * Set the nextLink property: Gets or sets the next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DscNodeListResult object itself.
      */
@@ -72,7 +81,7 @@ public final class DscNodeListResult {
 
     /**
      * Get the totalCount property: Gets the total number of nodes matching filter criteria.
-     *
+     * 
      * @return the totalCount value.
      */
     public Integer totalCount() {
@@ -81,7 +90,7 @@ public final class DscNodeListResult {
 
     /**
      * Set the totalCount property: Gets the total number of nodes matching filter criteria.
-     *
+     * 
      * @param totalCount the totalCount value to set.
      * @return the DscNodeListResult object itself.
      */
@@ -92,12 +101,55 @@ public final class DscNodeListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeNumberField("totalCount", this.totalCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DscNodeListResult.
+     */
+    public static DscNodeListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeListResult deserializedDscNodeListResult = new DscNodeListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DscNodeInner> value = reader.readArray(reader1 -> DscNodeInner.fromJson(reader1));
+                    deserializedDscNodeListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDscNodeListResult.nextLink = reader.getString();
+                } else if ("totalCount".equals(fieldName)) {
+                    deserializedDscNodeListResult.totalCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeListResult;
+        });
     }
 }

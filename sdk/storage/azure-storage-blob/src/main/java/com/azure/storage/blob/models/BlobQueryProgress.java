@@ -7,7 +7,6 @@ package com.azure.storage.blob.models;
  * Defines a blob query error that can be returned on parsing a blob query request.
  */
 public class BlobQueryProgress {
-
     private final long bytesScanned;
     private final long totalBytes;
 
@@ -22,6 +21,8 @@ public class BlobQueryProgress {
     }
 
     /**
+     * Gets the number of bytes scanned so far.
+     *
      * @return The number of bytes scanned so far.
      */
     public long getBytesScanned() {
@@ -29,6 +30,8 @@ public class BlobQueryProgress {
     }
 
     /**
+     * Gets the total number of bytes in the blob.
+     *
      * @return The total number of bytes in the blob.
      */
     public long getTotalBytes() {

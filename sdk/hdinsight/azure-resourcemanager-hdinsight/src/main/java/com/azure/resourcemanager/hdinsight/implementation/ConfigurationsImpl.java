@@ -22,21 +22,18 @@ public final class ConfigurationsImpl implements Configurations {
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ConfigurationsImpl(
-        ConfigurationsClient innerClient, com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
+    public ConfigurationsImpl(ConfigurationsClient innerClient,
+        com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ClusterConfigurations> listWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
-        Response<ClusterConfigurationsInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, clusterName, context);
+    public Response<ClusterConfigurations> listWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
+        Response<ClusterConfigurationsInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, clusterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterConfigurationsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,22 +49,18 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public void update(
-        String resourceGroupName, String clusterName, String configurationName, Map<String, String> parameters) {
+    public void update(String resourceGroupName, String clusterName, String configurationName,
+        Map<String, String> parameters) {
         this.serviceClient().update(resourceGroupName, clusterName, configurationName, parameters);
     }
 
-    public void update(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        Map<String, String> parameters,
-        Context context) {
+    public void update(String resourceGroupName, String clusterName, String configurationName,
+        Map<String, String> parameters, Context context) {
         this.serviceClient().update(resourceGroupName, clusterName, configurationName, parameters, context);
     }
 
-    public Response<Map<String, String>> getWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context) {
+    public Response<Map<String, String>> getWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context) {
         return this.serviceClient().getWithResponse(resourceGroupName, clusterName, configurationName, context);
     }
 

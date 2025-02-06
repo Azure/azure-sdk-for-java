@@ -9,6 +9,12 @@ import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
  */
 public class TestModularization {
     /**
+     * Creates a new instance of {@link TestModularization}.
+     */
+    public TestModularization() {
+    }
+
+    /**
      * Simply test compiling ok.
      */
     void testCompile() {

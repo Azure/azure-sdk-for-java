@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleListViewType. */
+/**
+ * Defines values for ScheduleListViewType.
+ */
 public final class ScheduleListViewType extends ExpandableStringEnum<ScheduleListViewType> {
-    /** Static value EnabledOnly for ScheduleListViewType. */
+    /**
+     * Static value EnabledOnly for ScheduleListViewType.
+     */
     public static final ScheduleListViewType ENABLED_ONLY = fromString("EnabledOnly");
 
-    /** Static value DisabledOnly for ScheduleListViewType. */
+    /**
+     * Static value DisabledOnly for ScheduleListViewType.
+     */
     public static final ScheduleListViewType DISABLED_ONLY = fromString("DisabledOnly");
 
-    /** Static value All for ScheduleListViewType. */
+    /**
+     * Static value All for ScheduleListViewType.
+     */
     public static final ScheduleListViewType ALL = fromString("All");
 
     /**
      * Creates a new instance of ScheduleListViewType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ScheduleListViewType extends ExpandableStringEnum<ScheduleLis
 
     /**
      * Creates or finds a ScheduleListViewType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleListViewType.
      */
-    @JsonCreator
     public static ScheduleListViewType fromString(String name) {
         return fromString(name, ScheduleListViewType.class);
     }
 
     /**
      * Gets known ScheduleListViewType values.
-     *
+     * 
      * @return known ScheduleListViewType values.
      */
     public static Collection<ScheduleListViewType> values() {

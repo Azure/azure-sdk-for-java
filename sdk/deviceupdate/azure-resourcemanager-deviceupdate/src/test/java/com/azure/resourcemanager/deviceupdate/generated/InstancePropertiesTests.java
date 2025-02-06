@@ -29,9 +29,11 @@ public final class InstancePropertiesTests {
     public void testSerialize() throws Exception {
         InstanceProperties model
             = new InstanceProperties().withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("dcuf")))
-                .withEnableDiagnostics(false).withDiagnosticStorageProperties(
+                .withEnableDiagnostics(false)
+                .withDiagnosticStorageProperties(
                     new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
-                        .withConnectionString("mzidnsezcxtb").withResourceId("sgfyccsnew"));
+                        .withConnectionString("mzidnsezcxtb")
+                        .withResourceId("sgfyccsnew"));
         model = BinaryData.fromObject(model).toObject(InstanceProperties.class);
         Assertions.assertEquals("dcuf", model.iotHubs().get(0).resourceId());
         Assertions.assertEquals(false, model.enableDiagnostics());

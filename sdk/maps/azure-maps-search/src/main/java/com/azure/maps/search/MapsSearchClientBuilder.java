@@ -9,7 +9,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -27,6 +29,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -59,8 +62,9 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.maps.search.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {MapsSearchClient.class, MapsSearchAsyncClient.class})
-public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<MapsSearchClientBuilder>,
+@ServiceClientBuilder(serviceClients = { MapsSearchClient.class, MapsSearchAsyncClient.class })
+public final class MapsSearchClientBuilder
+    implements AzureKeyCredentialTrait<MapsSearchClientBuilder>, AzureSasCredentialTrait<MapsSearchClientBuilder>,
     TokenCredentialTrait<MapsSearchClientBuilder>, HttpTrait<MapsSearchClientBuilder>,
     ConfigurationTrait<MapsSearchClientBuilder>, EndpointTrait<MapsSearchClientBuilder> {
 
@@ -74,7 +78,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     //subscription-key
     static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     // instance fields
 
@@ -94,6 +98,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     // credentials
     private AzureKeyCredential keyCredential;
     private TokenCredential tokenCredential;
+    private AzureSasCredential sasCredential;
 
     /**
      * Default constructor for the builder class.
@@ -101,6 +106,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     public MapsSearchClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
+
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.
@@ -256,8 +262,21 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public MapsSearchClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public MapsSearchClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authenticate HTTP requests.
+     *
+     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP requests.
+     * @return The updated {@link MapsSearchClientBuilder} object.
+     * @throws NullPointerException If {@code sasCredential} is null.
+     */
+    @Override
+    public MapsSearchClientBuilder credential(AzureSasCredential sasCredential) {
+        this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
         return this;
     }
 
@@ -300,8 +319,8 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -325,8 +344,8 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
         // Authentications
         if (tokenCredential != null) {
             if (this.mapsClientId == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication"));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Missing 'mapsClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -337,6 +356,8 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         } else if (keyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy(MAPS_SUBSCRIPTION_KEY, keyCredential));
+        } else if (sasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(sasCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
@@ -352,8 +373,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
@@ -364,7 +384,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
      * @return an instance of SearchAsyncClient.
      */
     public MapsSearchAsyncClient buildAsyncClient() {
-        return new MapsSearchAsyncClient(buildInnerClient().getSearches(), this.pipeline);
+        return new MapsSearchAsyncClient(buildInnerClient().getSearches());
     }
 
     /**
@@ -373,6 +393,6 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
      * @return an instance of SearchClient.
      */
     public MapsSearchClient buildClient() {
-        return new MapsSearchClient(buildAsyncClient());
+        return new MapsSearchClient(buildInnerClient().getSearches());
     }
 }

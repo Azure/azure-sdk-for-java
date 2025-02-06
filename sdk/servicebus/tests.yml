@@ -3,17 +3,9 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
-    UseFederatedAuth: true
     ServiceDirectory: servicebus
     TestResourceDirectories:
       - servicebus
-    SupportedClouds: 'Public'
-    CloudConfig:
-      Public:
-        ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePublicMsft.json
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
     EnvVars:
       AZURE_LOG_LEVEL: 1
     AdditionalMatrixConfigs:

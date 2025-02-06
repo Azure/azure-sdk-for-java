@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ListEdgePoliciesInput model. */
+/**
+ * The ListEdgePoliciesInput model.
+ */
 @Fluent
-public final class ListEdgePoliciesInput {
+public final class ListEdgePoliciesInput implements JsonSerializable<ListEdgePoliciesInput> {
     /*
      * Unique identifier of the edge device.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
-    /** Creates an instance of ListEdgePoliciesInput class. */
+    /**
+     * Creates an instance of ListEdgePoliciesInput class.
+     */
     public ListEdgePoliciesInput() {
     }
 
     /**
      * Get the deviceId property: Unique identifier of the edge device.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -31,7 +38,7 @@ public final class ListEdgePoliciesInput {
 
     /**
      * Set the deviceId property: Unique identifier of the edge device.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the ListEdgePoliciesInput object itself.
      */
@@ -42,9 +49,45 @@ public final class ListEdgePoliciesInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListEdgePoliciesInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListEdgePoliciesInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListEdgePoliciesInput.
+     */
+    public static ListEdgePoliciesInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListEdgePoliciesInput deserializedListEdgePoliciesInput = new ListEdgePoliciesInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedListEdgePoliciesInput.deviceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListEdgePoliciesInput;
+        });
     }
 }

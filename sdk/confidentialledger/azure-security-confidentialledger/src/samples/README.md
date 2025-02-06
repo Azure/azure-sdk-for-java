@@ -26,16 +26,15 @@ ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbu
     .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpClient(HttpClient.createDefault());
-        
+
 ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient = confidentialLedgerCertificateClientbuilder.buildClient();
 
 String ledgerId = "java-tests";
 Response<BinaryData> ledgerCertificateWithResponse = confidentialLedgerCertificateClient
     .getLedgerIdentityWithResponse(ledgerId, null);
 BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
-ObjectMapper mapper = new ObjectMapper();
-JsonNode jsonNode = mapper.readTree(certificateResponse.toBytes());
-String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+JsonObject jsonObject = certificateResponse.toObject(JsonObject.class);
+String ledgerTlsCertificate = ((JsonString) jsonObject.getProperty("ledgerTlsCertificate")).getValue();
 
 
 SslContext sslContext = SslContextBuilder.forClient()

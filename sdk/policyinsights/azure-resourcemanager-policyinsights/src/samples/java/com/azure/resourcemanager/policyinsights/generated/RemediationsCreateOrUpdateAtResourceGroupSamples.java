@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.policyinsights.generated;
 
-/** Samples for Remediations CreateOrUpdateAtResourceGroup. */
+/**
+ * Samples for Remediations CreateOrUpdateAtResourceGroup.
+ */
 public final class RemediationsCreateOrUpdateAtResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_CreateResourceGroupScope.json
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * Remediations_CreateResourceGroupScope.json
      */
     /**
      * Sample code: Create remediation at resource group scope.
-     *
+     * 
      * @param manager Entry point to PolicyInsightsManager.
      */
-    public static void createRemediationAtResourceGroupScope(
-        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager
-            .remediations()
+    public static void
+        createRemediationAtResourceGroupScope(com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.remediations()
             .define("storageRemediation")
             .withExistingResourceGroup("myResourceGroup")
             .withPolicyAssignmentId(

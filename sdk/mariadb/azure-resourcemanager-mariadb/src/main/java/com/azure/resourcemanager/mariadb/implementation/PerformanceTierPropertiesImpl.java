@@ -15,8 +15,8 @@ public final class PerformanceTierPropertiesImpl implements PerformanceTierPrope
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    PerformanceTierPropertiesImpl(
-        PerformanceTierPropertiesInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    PerformanceTierPropertiesImpl(PerformanceTierPropertiesInner innerObject,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

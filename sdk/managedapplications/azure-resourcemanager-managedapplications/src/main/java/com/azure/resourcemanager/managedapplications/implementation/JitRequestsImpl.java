@@ -22,22 +22,18 @@ public final class JitRequestsImpl implements JitRequests {
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    public JitRequestsImpl(
-        JitRequestsClient innerClient,
+    public JitRequestsImpl(JitRequestsClient innerClient,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<JitRequestDefinition> getByResourceGroupWithResponse(
-        String resourceGroupName, String jitRequestName, Context context) {
-        Response<JitRequestDefinitionInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, jitRequestName, context);
+    public Response<JitRequestDefinition> getByResourceGroupWithResponse(String resourceGroupName,
+        String jitRequestName, Context context) {
+        Response<JitRequestDefinitionInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, jitRequestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JitRequestDefinitionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,8 +49,8 @@ public final class JitRequestsImpl implements JitRequests {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String jitRequestName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String jitRequestName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, jitRequestName, context);
     }
 
@@ -63,13 +59,10 @@ public final class JitRequestsImpl implements JitRequests {
     }
 
     public Response<JitRequestDefinitionListResult> listBySubscriptionWithResponse(Context context) {
-        Response<JitRequestDefinitionListResultInner> inner =
-            this.serviceClient().listBySubscriptionWithResponse(context);
+        Response<JitRequestDefinitionListResultInner> inner
+            = this.serviceClient().listBySubscriptionWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JitRequestDefinitionListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -85,15 +78,12 @@ public final class JitRequestsImpl implements JitRequests {
         }
     }
 
-    public Response<JitRequestDefinitionListResult> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context) {
-        Response<JitRequestDefinitionListResultInner> inner =
-            this.serviceClient().listByResourceGroupWithResponse(resourceGroupName, context);
+    public Response<JitRequestDefinitionListResult> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context) {
+        Response<JitRequestDefinitionListResultInner> inner
+            = this.serviceClient().listByResourceGroupWithResponse(resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JitRequestDefinitionListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -110,77 +100,57 @@ public final class JitRequestsImpl implements JitRequests {
     }
 
     public JitRequestDefinition getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, jitRequestName, Context.NONE).getValue();
     }
 
     public Response<JitRequestDefinition> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, jitRequestName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, jitRequestName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String jitRequestName = Utils.getValueFromIdByName(id, "jitRequests");
+        String jitRequestName = ResourceManagerUtils.getValueFromIdByName(id, "jitRequests");
         if (jitRequestName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jitRequests'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, jitRequestName, context);
     }

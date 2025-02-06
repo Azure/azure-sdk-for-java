@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The NotebookPreparationError model. */
+/**
+ * The NotebookPreparationError model.
+ */
 @Fluent
-public final class NotebookPreparationError {
+public final class NotebookPreparationError implements JsonSerializable<NotebookPreparationError> {
     /*
      * The errorMessage property.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * The statusCode property.
      */
-    @JsonProperty(value = "statusCode")
     private Integer statusCode;
 
-    /** Creates an instance of NotebookPreparationError class. */
+    /**
+     * Creates an instance of NotebookPreparationError class.
+     */
     public NotebookPreparationError() {
     }
 
     /**
      * Get the errorMessage property: The errorMessage property.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -37,7 +43,7 @@ public final class NotebookPreparationError {
 
     /**
      * Set the errorMessage property: The errorMessage property.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the NotebookPreparationError object itself.
      */
@@ -48,7 +54,7 @@ public final class NotebookPreparationError {
 
     /**
      * Get the statusCode property: The statusCode property.
-     *
+     * 
      * @return the statusCode value.
      */
     public Integer statusCode() {
@@ -57,7 +63,7 @@ public final class NotebookPreparationError {
 
     /**
      * Set the statusCode property: The statusCode property.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the NotebookPreparationError object itself.
      */
@@ -68,9 +74,48 @@ public final class NotebookPreparationError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeNumberField("statusCode", this.statusCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookPreparationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookPreparationError if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotebookPreparationError.
+     */
+    public static NotebookPreparationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookPreparationError deserializedNotebookPreparationError = new NotebookPreparationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorMessage".equals(fieldName)) {
+                    deserializedNotebookPreparationError.errorMessage = reader.getString();
+                } else if ("statusCode".equals(fieldName)) {
+                    deserializedNotebookPreparationError.statusCode = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotebookPreparationError;
+        });
     }
 }

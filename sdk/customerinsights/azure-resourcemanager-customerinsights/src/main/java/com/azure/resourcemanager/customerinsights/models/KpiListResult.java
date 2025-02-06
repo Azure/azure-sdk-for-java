@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.fluent.models.KpiResourceFormatInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of list KPI operation. */
+/**
+ * The response of list KPI operation.
+ */
 @Fluent
-public final class KpiListResult {
+public final class KpiListResult implements JsonSerializable<KpiListResult> {
     /*
      * Results of the list operation.
      */
-    @JsonProperty(value = "value")
     private List<KpiResourceFormatInner> value;
 
     /*
      * Link to the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of KpiListResult class. */
+    /**
+     * Creates an instance of KpiListResult class.
+     */
     public KpiListResult() {
     }
 
     /**
      * Get the value property: Results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<KpiResourceFormatInner> value() {
@@ -39,7 +45,7 @@ public final class KpiListResult {
 
     /**
      * Set the value property: Results of the list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the KpiListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class KpiListResult {
 
     /**
      * Get the nextLink property: Link to the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class KpiListResult {
 
     /**
      * Set the nextLink property: Link to the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the KpiListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class KpiListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KpiListResult.
+     */
+    public static KpiListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiListResult deserializedKpiListResult = new KpiListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<KpiResourceFormatInner> value
+                        = reader.readArray(reader1 -> KpiResourceFormatInner.fromJson(reader1));
+                    deserializedKpiListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedKpiListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiListResult;
+        });
     }
 }

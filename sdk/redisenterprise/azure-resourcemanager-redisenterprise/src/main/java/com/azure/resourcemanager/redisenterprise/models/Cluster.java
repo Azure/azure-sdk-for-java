@@ -71,7 +71,17 @@ public interface Cluster {
     ManagedServiceIdentity identity();
 
     /**
-     * Gets the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     * Gets the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
+     * replicated. This affects the availability SLA, and increases the risk of data loss.
+     * 
+     * @return the highAvailability value.
+     */
+    HighAvailability highAvailability();
+
+    /**
+     * Gets the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'. Newer
+     * versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+     * them. They are mentioned only for the sake of consistency with old API versions.
      * 
      * @return the minimumTlsVersion value.
      */
@@ -99,6 +109,14 @@ public interface Cluster {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the redundancyMode property: Explains the current redundancy strategy of the cluster, which affects the
+     * expected SLA.
+     * 
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
+
+    /**
      * Gets the resourceState property: Current resource status of the cluster.
      * 
      * @return the resourceState value.
@@ -114,7 +132,7 @@ public interface Cluster {
 
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connections associated with the specified
-     * RedisEnterprise cluster.
+     * Redis Enterprise cluster.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -217,7 +235,8 @@ public interface Cluster {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithZones,
-            DefinitionStages.WithIdentity, DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithEncryption {
+            DefinitionStages.WithIdentity, DefinitionStages.WithHighAvailability,
+            DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              * 
@@ -274,13 +293,32 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster definition allowing to specify highAvailability.
+         */
+        interface WithHighAvailability {
+            /**
+             * Specifies the highAvailability property: Enabled by default. If highAvailability is disabled, the data
+             * set is not replicated. This affects the availability SLA, and increases the risk of data loss..
+             * 
+             * @param highAvailability Enabled by default. If highAvailability is disabled, the data set is not
+             * replicated. This affects the availability SLA, and increases the risk of data loss.
+             * @return the next definition stage.
+             */
+            WithCreate withHighAvailability(HighAvailability highAvailability);
+        }
+
+        /**
          * The stage of the Cluster definition allowing to specify minimumTlsVersion.
          */
         interface WithMinimumTlsVersion {
             /**
              * Specifies the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * Newer versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete --
+             * you cannot use them. They are mentioned only for the sake of consistency with old API versions..
              * 
-             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions
+             * can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+             * them. They are mentioned only for the sake of consistency with old API versions.
              * @return the next definition stage.
              */
             WithCreate withMinimumTlsVersion(TlsVersion minimumTlsVersion);
@@ -311,7 +349,7 @@ public interface Cluster {
      * The template for Cluster update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
-        UpdateStages.WithMinimumTlsVersion, UpdateStages.WithEncryption {
+        UpdateStages.WithHighAvailability, UpdateStages.WithMinimumTlsVersion, UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          * 
@@ -372,13 +410,32 @@ public interface Cluster {
         }
 
         /**
+         * The stage of the Cluster update allowing to specify highAvailability.
+         */
+        interface WithHighAvailability {
+            /**
+             * Specifies the highAvailability property: Enabled by default. If highAvailability is disabled, the data
+             * set is not replicated. This affects the availability SLA, and increases the risk of data loss..
+             * 
+             * @param highAvailability Enabled by default. If highAvailability is disabled, the data set is not
+             * replicated. This affects the availability SLA, and increases the risk of data loss.
+             * @return the next definition stage.
+             */
+            Update withHighAvailability(HighAvailability highAvailability);
+        }
+
+        /**
          * The stage of the Cluster update allowing to specify minimumTlsVersion.
          */
         interface WithMinimumTlsVersion {
             /**
              * Specifies the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * Newer versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete --
+             * you cannot use them. They are mentioned only for the sake of consistency with old API versions..
              * 
-             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'.
+             * @param minimumTlsVersion The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions
+             * can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+             * them. They are mentioned only for the sake of consistency with old API versions.
              * @return the next definition stage.
              */
             Update withMinimumTlsVersion(TlsVersion minimumTlsVersion);

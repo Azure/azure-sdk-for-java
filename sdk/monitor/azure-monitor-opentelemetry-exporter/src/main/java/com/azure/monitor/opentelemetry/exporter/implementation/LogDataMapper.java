@@ -4,7 +4,9 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.*;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -127,17 +129,7 @@ public class LogDataMapper {
         Attributes attributes = log.getAttributes();
         MAPPINGS.map(attributes, telemetryBuilder);
 
-        List<ExceptionDetailBuilder> builders = Exceptions.minimalParse(stack);
-        ExceptionDetailBuilder exceptionDetailBuilder = builders.get(0);
-        String type = log.getAttributes().get(SemanticAttributes.EXCEPTION_TYPE);
-        if (type != null && !type.isEmpty()) {
-            exceptionDetailBuilder.setTypeName(type);
-        }
-        String message = log.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE);
-        if (message != null && !message.isEmpty()) {
-            exceptionDetailBuilder.setMessage(message);
-        }
-        telemetryBuilder.setExceptions(builders);
+        SpanDataMapper.setExceptions(stack, log.getAttributes(), telemetryBuilder);
         telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
 
         // set exception-specific properties

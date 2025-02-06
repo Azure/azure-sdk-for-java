@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.CustomizationPolicyInner;
 
-/** An instance of this class provides access to all the operations defined in CustomizationPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomizationPoliciesClient.
+ */
 public interface CustomizationPoliciesClient {
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,13 +32,13 @@ public interface CustomizationPoliciesClient {
 
     /**
      * Implements get of customization policies list
-     *
-     * <p>Returns list of customization policies in region for private cloud.
-     *
+     * 
+     * Returns list of customization policies in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param filter The filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
-     *     eq 'xxxx'.
+     * eq 'xxxx'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,9 +50,9 @@ public interface CustomizationPoliciesClient {
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.
@@ -61,14 +63,14 @@ public interface CustomizationPoliciesClient {
      * @return the virtual machine customization policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomizationPolicyInner> getWithResponse(
-        String regionId, String pcName, String customizationPolicyName, Context context);
+    Response<CustomizationPolicyInner> getWithResponse(String regionId, String pcName, String customizationPolicyName,
+        Context context);
 
     /**
      * Implements get of customization policy
-     *
-     * <p>Returns customization policy by its name.
-     *
+     * 
+     * Returns customization policy by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param customizationPolicyName customization policy name.

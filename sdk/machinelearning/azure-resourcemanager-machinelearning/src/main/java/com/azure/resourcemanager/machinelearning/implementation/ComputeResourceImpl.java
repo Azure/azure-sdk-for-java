@@ -102,20 +102,16 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputes()
-                .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ComputeResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputes()
-                .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), context);
         return this;
     }
 
@@ -131,50 +127,41 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputes()
-                .update(resourceGroupName, workspaceName, computeName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .update(resourceGroupName, workspaceName, computeName, updateParameters, Context.NONE);
         return this;
     }
 
     public ComputeResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputes()
-                .update(resourceGroupName, workspaceName, computeName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .update(resourceGroupName, workspaceName, computeName, updateParameters, context);
         return this;
     }
 
-    ComputeResourceImpl(
-        ComputeResourceInner innerObject,
+    ComputeResourceImpl(ComputeResourceInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.computeName = Utils.getValueFromIdByName(innerObject.id(), "computes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.computeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "computes");
     }
 
     public ComputeResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputes()
-                .getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ComputeResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getComputes()
-                .getWithResponse(resourceGroupName, workspaceName, computeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .getWithResponse(resourceGroupName, workspaceName, computeName, context)
+            .getValue();
         return this;
     }
 

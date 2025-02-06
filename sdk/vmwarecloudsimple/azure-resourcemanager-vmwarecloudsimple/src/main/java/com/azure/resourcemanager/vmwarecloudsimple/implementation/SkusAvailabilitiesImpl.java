@@ -19,8 +19,7 @@ public final class SkusAvailabilitiesImpl implements SkusAvailabilities {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public SkusAvailabilitiesImpl(
-        SkusAvailabilitiesClient innerClient,
+    public SkusAvailabilitiesImpl(SkusAvailabilitiesClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class SkusAvailabilitiesImpl implements SkusAvailabilities {
 
     public PagedIterable<SkuAvailability> list(String regionId) {
         PagedIterable<SkuAvailabilityInner> inner = this.serviceClient().list(regionId);
-        return Utils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuAvailability> list(String regionId, String skuId, Context context) {
         PagedIterable<SkuAvailabilityInner> inner = this.serviceClient().list(regionId, skuId, context);
-        return Utils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
     }
 
     private SkusAvailabilitiesClient serviceClient() {

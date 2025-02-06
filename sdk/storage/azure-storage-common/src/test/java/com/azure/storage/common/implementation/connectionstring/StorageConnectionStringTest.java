@@ -112,14 +112,14 @@ public class StorageConnectionStringTest {
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
         assertNotNull(blobEndpoint);
         assertNotNull(blobEndpoint.getPrimaryUri());
-        assertTrue(blobEndpoint.getPrimaryUri()
-            .equalsIgnoreCase("https://" + ACCOUNT_NAME_VALUE + ".blob.core.windows.net"));
+        assertTrue(
+            blobEndpoint.getPrimaryUri().equalsIgnoreCase("https://" + ACCOUNT_NAME_VALUE + ".blob.core.windows.net"));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
         assertNotNull(fileEndpoint);
         assertNotNull(fileEndpoint.getPrimaryUri());
-        assertTrue(fileEndpoint.getPrimaryUri()
-            .equalsIgnoreCase("https://" + ACCOUNT_NAME_VALUE + ".file.core.windows.net"));
+        assertTrue(
+            fileEndpoint.getPrimaryUri().equalsIgnoreCase("https://" + ACCOUNT_NAME_VALUE + ".file.core.windows.net"));
 
         StorageEndpoint queueEndpoint = storageConnectionString.getQueueEndpoint();
         assertNotNull(queueEndpoint);
@@ -145,9 +145,9 @@ public class StorageConnectionStringTest {
 
     @Test
     public void customEndpointSuffix() {
-        final String connectionString = String.format(
-            "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=%s", ACCOUNT_NAME_VALUE,
-            WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=%s",
+                ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         assertNotNull(storageConnectionString);
@@ -155,26 +155,26 @@ public class StorageConnectionStringTest {
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
         assertNotNull(blobEndpoint);
         assertNotNull(blobEndpoint.getPrimaryUri());
-        assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(String.format("https://%s.blob.%s", ACCOUNT_NAME_VALUE,
-            CHINA_CLOUD_ENDPOINT_SUFFIX)));
+        assertTrue(blobEndpoint.getPrimaryUri()
+            .equalsIgnoreCase(String.format("https://%s.blob.%s", ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
         assertNotNull(fileEndpoint);
         assertNotNull(fileEndpoint.getPrimaryUri());
-        assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(String.format("https://%s.file.%s",
-            ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
+        assertTrue(fileEndpoint.getPrimaryUri()
+            .equalsIgnoreCase(String.format("https://%s.file.%s", ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageEndpoint queueEndpoint = storageConnectionString.getQueueEndpoint();
         assertNotNull(queueEndpoint);
         assertNotNull(queueEndpoint.getPrimaryUri());
-        assertTrue(queueEndpoint.getPrimaryUri().equalsIgnoreCase(String.format("https://%s.queue.%s",
-            ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
+        assertTrue(queueEndpoint.getPrimaryUri()
+            .equalsIgnoreCase(String.format("https://%s.queue.%s", ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageEndpoint tableEndpoint = storageConnectionString.getTableEndpoint();
         assertNotNull(tableEndpoint);
         assertNotNull(tableEndpoint.getPrimaryUri());
-        assertTrue(tableEndpoint.getPrimaryUri().equalsIgnoreCase(String.format("https://%s.table.%s",
-            ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
+        assertTrue(tableEndpoint.getPrimaryUri()
+            .equalsIgnoreCase(String.format("https://%s.table.%s", ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
 
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         assertNotNull(authSettings);
@@ -262,9 +262,9 @@ public class StorageConnectionStringTest {
     @Test
     public void skipEmptyEntries() {
         // connection string with empty entries (;; after protocol)
-        final String connectionString = String.format(
-            "DefaultEndpointsProtocol=https;;;AccountName=%s;AccountKey=%s; EndpointSuffix=%s", ACCOUNT_NAME_VALUE,
-            WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;;;AccountName=%s;AccountKey=%s; EndpointSuffix=%s",
+                ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
 
         StorageConnectionString.create(connectionString, LOGGER);
     }
@@ -280,8 +280,8 @@ public class StorageConnectionStringTest {
     @Test
     public void missingEqualDelimiter() {
         // A connection string with missing equal symbol between AccountKey and it's value
-        final String connectionString =
-            String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey%s;EndpointSuffix=%s",
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey%s;EndpointSuffix=%s",
                 ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
         assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, LOGGER));
     }
@@ -289,17 +289,17 @@ public class StorageConnectionStringTest {
     @Test
     public void missingKey() {
         // A connection string with missing 'AccountName' key for it's value
-        final String connectionString =
-            String.format("DefaultEndpointsProtocol=https;=%s;AccountKey=%s;EndpointSuffix=%s",
-                ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;=%s;AccountKey=%s;EndpointSuffix=%s", ACCOUNT_NAME_VALUE,
+                WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
         assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, LOGGER));
     }
 
     @Test
     public void missingValue() {
         // A connection string with missing value for 'AccountName' key
-        final String connectionString =
-            String.format("DefaultEndpointsProtocol=https;AccountName=;AccountKey%s;EndpointSuffix=%s",
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;AccountName=;AccountKey%s;EndpointSuffix=%s",
                 WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
         assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, LOGGER));
     }
@@ -307,17 +307,17 @@ public class StorageConnectionStringTest {
     @Test
     public void missingKeyValue() {
         // a connection string with key and value missing for equal (=) delimiter
-        final String connectionString =
-            String.format("DefaultEndpointsProtocol=https;=;AccountName=%s;AccountKey%s;EndpointSuffix=%s",
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;=;AccountName=%s;AccountKey%s;EndpointSuffix=%s",
                 ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
         assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, LOGGER));
     }
 
     @Test
     public void missingAccountKey() {
-        final String connectionString =
-            String.format("DefaultEndpointsProtocol=https;AccountName=%s;%s;EndpointSuffix=%s",
-                ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=https;AccountName=%s;%s;EndpointSuffix=%s", ACCOUNT_NAME_VALUE,
+                WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
         assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, LOGGER));
     }
 
@@ -326,9 +326,9 @@ public class StorageConnectionStringTest {
         final String blobEndpointStr = "https://storagesample.blob.core.windows.net";
         final String fileEndpointStr = "https://storagesample.file.core.windows.net";
 
-        final String connectionString = String.format(
-            "BlobEndpoint=%s;FileEndpoint=%s;SharedAccessSignature=%s;AccountName=%s;AccountKey=%s;", blobEndpointStr,
-            fileEndpointStr, SAS_TOKEN, ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE);
+        final String connectionString
+            = String.format("BlobEndpoint=%s;FileEndpoint=%s;SharedAccessSignature=%s;AccountName=%s;AccountKey=%s;",
+                blobEndpointStr, fileEndpointStr, SAS_TOKEN, ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE);
         assertThrows(IllegalArgumentException.class, () -> StorageConnectionString.create(connectionString, LOGGER));
     }
 
@@ -337,17 +337,17 @@ public class StorageConnectionStringTest {
         final String blobEndpointStr = "https://storagesample.blob.core.windows.net";
         final String fileEndpointStr = "https://storagesample.file.core.windows.net";
 
-        final String connectionString = String.format(
-            "BlobEndpoint=%s;FileEndpoint=%s;SharedAccessSignature=%s;AccountName=%s;", blobEndpointStr,
-            fileEndpointStr, SAS_TOKEN, ACCOUNT_NAME_VALUE);
+        final String connectionString
+            = String.format("BlobEndpoint=%s;FileEndpoint=%s;SharedAccessSignature=%s;AccountName=%s;", blobEndpointStr,
+                fileEndpointStr, SAS_TOKEN, ACCOUNT_NAME_VALUE);
         StorageConnectionString.create(connectionString, LOGGER);
     }
 
     @Test
     public void overrideDefaultProtocolToHttp() {
-        final String connectionString = String.format(
-            "DefaultEndpointsProtocol=http;AccountName=%s;AccountKey=%s;EndpointSuffix=%s", ACCOUNT_NAME_VALUE,
-            WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
+        final String connectionString
+            = String.format("DefaultEndpointsProtocol=http;AccountName=%s;AccountKey=%s;EndpointSuffix=%s",
+                ACCOUNT_NAME_VALUE, WELL_KNOWN_ACCOUNT_KEY_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX);
 
         StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         assertNotNull(storageConnectionString);
@@ -355,7 +355,8 @@ public class StorageConnectionStringTest {
         StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
         assertNotNull(blobEndpoint);
         assertNotNull(blobEndpoint.getPrimaryUri());
-        assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(String.format("http://%s.blob.%s", // http protocol
-            ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
+        assertTrue(blobEndpoint.getPrimaryUri()
+            .equalsIgnoreCase(String.format("http://%s.blob.%s", // http protocol
+                ACCOUNT_NAME_VALUE, CHINA_CLOUD_ENDPOINT_SUFFIX)));
     }
 }

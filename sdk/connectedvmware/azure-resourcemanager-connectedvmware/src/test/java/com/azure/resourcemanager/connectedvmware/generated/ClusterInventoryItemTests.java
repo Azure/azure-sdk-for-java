@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"Cluster\",\"managedResourceId\":\"fidltug\",\"moRefId\":\"esmkssjhoiftxfkf\",\"moName\":\"gpr\",\"provisioningState\":\"Deleting\"}")
-                .toObject(ClusterInventoryItem.class);
+        ClusterInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"Cluster\",\"managedResourceId\":\"fidltug\",\"moRefId\":\"esmkssjhoiftxfkf\",\"moName\":\"gpr\",\"provisioningState\":\"Deleting\"}")
+            .toObject(ClusterInventoryItem.class);
         Assertions.assertEquals("fidltug", model.managedResourceId());
         Assertions.assertEquals("esmkssjhoiftxfkf", model.moRefId());
         Assertions.assertEquals("gpr", model.moName());
@@ -23,11 +21,9 @@ public final class ClusterInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInventoryItem model =
-            new ClusterInventoryItem()
-                .withManagedResourceId("fidltug")
-                .withMoRefId("esmkssjhoiftxfkf")
-                .withMoName("gpr");
+        ClusterInventoryItem model = new ClusterInventoryItem().withManagedResourceId("fidltug")
+            .withMoRefId("esmkssjhoiftxfkf")
+            .withMoName("gpr");
         model = BinaryData.fromObject(model).toObject(ClusterInventoryItem.class);
         Assertions.assertEquals("fidltug", model.managedResourceId());
         Assertions.assertEquals("esmkssjhoiftxfkf", model.moRefId());

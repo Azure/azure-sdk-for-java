@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The swagger custom dynamic properties. */
+/**
+ * The swagger custom dynamic properties.
+ */
 @Fluent
-public final class SwaggerCustomDynamicProperties {
+public final class SwaggerCustomDynamicProperties implements JsonSerializable<SwaggerCustomDynamicProperties> {
     /*
      * The operation id to fetch dynamic schema.
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
      * Json pointer to the dynamic schema on the response body.
      */
-    @JsonProperty(value = "valuePath")
     private String valuePath;
 
     /*
      * The operation parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SwaggerCustomDynamicProperties> parameters;
 
-    /** Creates an instance of SwaggerCustomDynamicProperties class. */
+    /**
+     * Creates an instance of SwaggerCustomDynamicProperties class.
+     */
     public SwaggerCustomDynamicProperties() {
     }
 
     /**
      * Get the operationId property: The operation id to fetch dynamic schema.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -46,7 +49,7 @@ public final class SwaggerCustomDynamicProperties {
 
     /**
      * Set the operationId property: The operation id to fetch dynamic schema.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the SwaggerCustomDynamicProperties object itself.
      */
@@ -57,7 +60,7 @@ public final class SwaggerCustomDynamicProperties {
 
     /**
      * Get the valuePath property: Json pointer to the dynamic schema on the response body.
-     *
+     * 
      * @return the valuePath value.
      */
     public String valuePath() {
@@ -66,7 +69,7 @@ public final class SwaggerCustomDynamicProperties {
 
     /**
      * Set the valuePath property: Json pointer to the dynamic schema on the response body.
-     *
+     * 
      * @param valuePath the valuePath value to set.
      * @return the SwaggerCustomDynamicProperties object itself.
      */
@@ -77,7 +80,7 @@ public final class SwaggerCustomDynamicProperties {
 
     /**
      * Get the parameters property: The operation parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, SwaggerCustomDynamicProperties> parameters() {
@@ -86,7 +89,7 @@ public final class SwaggerCustomDynamicProperties {
 
     /**
      * Set the parameters property: The operation parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SwaggerCustomDynamicProperties object itself.
      */
@@ -97,19 +100,61 @@ public final class SwaggerCustomDynamicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("valuePath", this.valuePath);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerCustomDynamicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerCustomDynamicProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerCustomDynamicProperties.
+     */
+    public static SwaggerCustomDynamicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerCustomDynamicProperties deserializedSwaggerCustomDynamicProperties
+                = new SwaggerCustomDynamicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicProperties.operationId = reader.getString();
+                } else if ("valuePath".equals(fieldName)) {
+                    deserializedSwaggerCustomDynamicProperties.valuePath = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, SwaggerCustomDynamicProperties> parameters
+                        = reader.readMap(reader1 -> SwaggerCustomDynamicProperties.fromJson(reader1));
+                    deserializedSwaggerCustomDynamicProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerCustomDynamicProperties;
+        });
     }
 }

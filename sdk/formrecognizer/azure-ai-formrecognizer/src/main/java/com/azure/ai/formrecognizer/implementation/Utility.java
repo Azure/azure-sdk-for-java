@@ -6,9 +6,16 @@ package com.azure.ai.formrecognizer.implementation;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -33,9 +40,12 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,6 +67,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    // Please see https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
+    // for more information on Azure resource provider namespaces.
+    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
 
     private static final String DEFAULT_SCOPE = "/.default";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
@@ -92,8 +105,8 @@ public final class Utility {
      */
     public static Mono<ContentType> detectContentType(Flux<ByteBuffer> buffer) {
         byte[] header = new byte[4];
-        int[] written = new int[]{0};
-        ContentType[] contentType = {ContentType.fromString("none")};
+        int[] written = new int[] { 0 };
+        ContentType[] contentType = { ContentType.fromString("none") };
         return buffer.map(chunk -> {
             final int len = chunk.remaining();
             for (int i = 0; i < len; i++) {
@@ -119,16 +132,14 @@ public final class Utility {
             }
             // current chunk don't have enough bytes so return true to get next Chunk if there is one.
             return true;
-        })
-            .takeWhile(doContinue -> doContinue)
-            .then(Mono.defer(() -> {
-                if (contentType[0] != null) {
-                    return Mono.just(contentType[0]);
-                } else {
-                    return Mono.error(new RuntimeException("Content type could not be detected. "
-                        + "Should use other overload API that takes content type."));
-                }
-            }));
+        }).takeWhile(doContinue -> doContinue).then(Mono.defer(() -> {
+            if (contentType[0] != null) {
+                return Mono.just(contentType[0]);
+            } else {
+                return Mono.error(new RuntimeException(
+                    "Content type could not be detected. " + "Should use other overload API that takes content type."));
+            }
+        }));
     }
 
     private static boolean isJpeg(byte[] header) {
@@ -156,9 +167,9 @@ public final class Utility {
             && header[3] == (byte) 0x0)
             // big-endian
             || (header[0] == (byte) 0x4d
-            && header[1] == (byte) 0x4d
-            && header[2] == (byte) 0x0
-            && header[3] == (byte) 0x2a);
+                && header[1] == (byte) 0x4d
+                && header[2] == (byte) 0x0
+                && header[3] == (byte) 0x2a);
     }
 
     private static boolean isBmp(byte[] header) {
@@ -176,10 +187,7 @@ public final class Utility {
      */
     public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
         Objects.requireNonNull(inputStream, "'inputStream' is required and cannot be null.");
-        return FluxUtil
-            .toFluxByteBuffer(inputStream)
-            .cache()
-            .map(ByteBuffer::duplicate);
+        return FluxUtil.toFluxByteBuffer(inputStream).cache().map(ByteBuffer::duplicate);
     }
 
     /**
@@ -201,6 +209,33 @@ public final class Utility {
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
 
+    public static RecognizeCustomFormsOptions
+        getRecognizeCustomFormOptions(RecognizeCustomFormsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeCustomFormsOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeContentOptions getRecognizeContentOptions(RecognizeContentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeContentOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeReceiptsOptions getRecognizeReceiptOptions(RecognizeReceiptsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeReceiptsOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeBusinessCardsOptions
+        getRecognizeBusinessCardsOptions(RecognizeBusinessCardsOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeBusinessCardsOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeInvoicesOptions getRecognizeInvoicesOptions(RecognizeInvoicesOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeInvoicesOptions() : userProvidedOptions;
+    }
+
+    public static RecognizeIdentityDocumentOptions
+        getRecognizeIdentityDocumentOptions(RecognizeIdentityDocumentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeIdentityDocumentOptions() : userProvidedOptions;
+    }
+
     /**
      * Given an iterable will apply the indexing function to it and return the index and each item of the iterable.
      *
@@ -209,7 +244,7 @@ public final class Utility {
      * @param <T> the type of items being returned.
      */
     public static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
-        int[] index = new int[]{0};
+        int[] index = new int[] { 0 };
         iterable.forEach(element -> biConsumer.accept(index[0]++, element));
     }
 
@@ -222,28 +257,28 @@ public final class Utility {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            FormRecognizerErrorInformation formRecognizerErrorInformation = null;
-            if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-                ErrorInformation errorInformation = errorResponseException.getValue().getError();
-                formRecognizerErrorInformation =
-                    new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
-            }
-            return new HttpResponseException(
-                errorResponseException.getMessage(),
-                errorResponseException.getResponse(),
-                formRecognizerErrorInformation
-            );
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
+        ErrorResponseException errorResponseException = throwable;
+        FormRecognizerErrorInformation formRecognizerErrorInformation = null;
+        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+            ErrorInformation errorInformation = errorResponseException.getValue().getError();
+            formRecognizerErrorInformation
+                = new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
+        }
+        return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
+            formRecognizerErrorInformation);
     }
 
     /*
      * Poller's ACTIVATION operation that takes URL as input.
      */
     public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
-        urlActivationOperation(
-        Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
+        urlActivationOperation(Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
         return pollingContext -> {
             try {
                 return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -254,15 +289,12 @@ public final class Utility {
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy,
-                                                 RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
-                                                 TokenCredential tokenCredential, FormRecognizerAudience audience,
-                                                 List<HttpPipelinePolicy> perCallPolicies,
-                                                 List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
+        Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, FormRecognizerAudience audience,
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
@@ -287,11 +319,9 @@ public final class Utility {
             if (audience == null) {
                 audience = FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
             }
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience + DEFAULT_SCOPE));
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience + DEFAULT_SCOPE));
         } else if (azureKeyCredential != null) {
-            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
-                azureKeyCredential));
+            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, azureKeyCredential));
         } else {
             // Throw exception that azureKeyCredential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
@@ -308,10 +338,19 @@ public final class Utility {
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 
-        return new HttpPipelineBuilder()
-            .clientOptions(buildClientOptions)
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
+
+        return new HttpPipelineBuilder().clientOptions(buildClientOptions)
             .httpClient(httpClient)
+            .tracer(tracer)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
+    }
+
+    public static CreateComposedModelOptions
+        getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new CreateComposedModelOptions() : userProvidedOptions;
     }
 }

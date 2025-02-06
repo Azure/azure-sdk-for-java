@@ -8,42 +8,45 @@ import com.azure.resourcemanager.hanaonazure.models.HanaInstance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for HanaInstances Update. */
+/**
+ * Samples for HanaInstances Update.
+ */
 public final class HanaInstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/HanaInstances_PatchTags_Delete.json
+     * x-ms-original-file:
+     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
+     * HanaInstances_PatchTags_Delete.json
      */
     /**
      * Sample code: Delete Tags field of a HANA instance.
-     *
+     * 
      * @param manager Entry point to HanaManager.
      */
     public static void deleteTagsFieldOfAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        HanaInstance resource =
-            manager
-                .hanaInstances()
-                .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE)
-                .getValue();
+        HanaInstance resource = manager.hanaInstances()
+            .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf()).apply();
     }
 
     /*
-     * x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/HanaInstances_PatchTags.json
+     * x-ms-original-file:
+     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
+     * HanaInstances_PatchTags.json
      */
     /**
      * Sample code: Update Tags field of a HANA instance.
-     *
+     * 
      * @param manager Entry point to HanaManager.
      */
     public static void updateTagsFieldOfAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        HanaInstance resource =
-            manager
-                .hanaInstances()
-                .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("testkey", "testvalue")).apply();
+        HanaInstance resource = manager.hanaInstances()
+            .getByResourceGroupWithResponse("myResourceGroup", "myHanaInstance", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("testkey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

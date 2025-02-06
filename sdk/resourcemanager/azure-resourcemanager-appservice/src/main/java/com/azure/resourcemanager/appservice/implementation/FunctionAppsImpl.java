@@ -45,29 +45,25 @@ public class FunctionAppsImpl
     @Override
     public Mono<FunctionApp> getByResourceGroupAsync(final String resourceGroupName, final String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
-        return this
-            .getInnerAsync(resourceGroupName, name)
-            .flatMap(
-                siteInner -> {
-                    if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
-                        // Function App on ACA only supports Application Insights as log option.
-                        return this.inner().getConfigurationAsync(resourceGroupName, name)
-                            .map(siteConfigResourceInner -> wrapModel(siteInner, siteConfigResourceInner, null));
-                    } else {
-                        return Mono.zip(
-                            this.inner().getConfigurationAsync(resourceGroupName, name),
-                            this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
-                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
-                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
-                    }
-                });
+        return this.getInnerAsync(resourceGroupName, name).flatMap(siteInner -> {
+            if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
+                // Function App on ACA only supports Application Insights as log option.
+                return this.inner()
+                    .getConfigurationAsync(resourceGroupName, name)
+                    .map(siteConfigResourceInner -> wrapModel(siteInner, siteConfigResourceInner, null));
+            } else {
+                return Mono.zip(this.inner().getConfigurationAsync(resourceGroupName, name),
+                    this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
+                    (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) -> wrapModel(
+                        siteInner, siteConfigResourceInner, logsConfigInner));
+            }
+        });
     }
 
     @Override
@@ -77,11 +73,8 @@ public class FunctionAppsImpl
 
     @Override
     public PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name) {
-        return PagedConverter.mapPage(this
-            .manager()
-            .serviceClient()
-            .getWebApps()
-            .listFunctions(resourceGroupName, name),
+        return PagedConverter.mapPage(
+            this.manager().serviceClient().getWebApps().listFunctions(resourceGroupName, name),
             FunctionEnvelopeImpl::new);
     }
 
@@ -103,8 +96,8 @@ public class FunctionAppsImpl
         return wrapModel(inner, null, null);
     }
 
-    private FunctionAppImpl wrapModel(
-        SiteInner inner, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig) {
+    private FunctionAppImpl wrapModel(SiteInner inner, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig) {
         if (inner == null) {
             return null;
         }
@@ -119,12 +112,11 @@ public class FunctionAppsImpl
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         return this.inner().deleteAsync(resourceGroupName, name);
     }
@@ -159,8 +151,8 @@ public class FunctionAppsImpl
     @Override
     public PagedFlux<FunctionAppBasic> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return PagedConverter.flatMapPage(inner().listByResourceGroupAsync(resourceGroupName),
             inner -> isFunctionApp(inner) ? Mono.just(new FunctionAppBasicImpl(inner, this.manager())) : Mono.empty());

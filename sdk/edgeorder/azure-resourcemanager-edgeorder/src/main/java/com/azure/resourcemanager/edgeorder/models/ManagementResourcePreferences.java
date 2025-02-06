@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Management resource preference to link device. */
+/**
+ * Management resource preference to link device.
+ */
 @Fluent
-public final class ManagementResourcePreferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementResourcePreferences.class);
-
+public final class ManagementResourcePreferences implements JsonSerializable<ManagementResourcePreferences> {
     /*
      * Customer preferred Management resource ARM ID
      */
-    @JsonProperty(value = "preferredManagementResourceId")
     private String preferredManagementResourceId;
 
     /**
+     * Creates an instance of ManagementResourcePreferences class.
+     */
+    public ManagementResourcePreferences() {
+    }
+
+    /**
      * Get the preferredManagementResourceId property: Customer preferred Management resource ARM ID.
-     *
+     * 
      * @return the preferredManagementResourceId value.
      */
     public String preferredManagementResourceId() {
@@ -31,7 +38,7 @@ public final class ManagementResourcePreferences {
 
     /**
      * Set the preferredManagementResourceId property: Customer preferred Management resource ARM ID.
-     *
+     * 
      * @param preferredManagementResourceId the preferredManagementResourceId value to set.
      * @return the ManagementResourcePreferences object itself.
      */
@@ -42,9 +49,46 @@ public final class ManagementResourcePreferences {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("preferredManagementResourceId", this.preferredManagementResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementResourcePreferences from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementResourcePreferences if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementResourcePreferences.
+     */
+    public static ManagementResourcePreferences fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementResourcePreferences deserializedManagementResourcePreferences
+                = new ManagementResourcePreferences();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preferredManagementResourceId".equals(fieldName)) {
+                    deserializedManagementResourcePreferences.preferredManagementResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementResourcePreferences;
+        });
     }
 }

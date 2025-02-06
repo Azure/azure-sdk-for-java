@@ -100,12 +100,6 @@ import com.azure.messaging.eventgrid.systemevents.WebSlotSwapFailedEventData;
 import com.azure.messaging.eventgrid.systemevents.WebSlotSwapStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewCancelledEventData;
 import com.azure.messaging.eventgrid.systemevents.WebSlotSwapWithPreviewStartedEventData;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -124,6 +118,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -134,6 +129,7 @@ public class DeserializationTests {
     static <T> Object toSystemEventData(EventGridEvent event) {
         return getSystemEventData(event.getData(), event.getEventType());
     }
+
     static <T> Object toSystemEventData(CloudEvent event) {
         return getSystemEventData(event.getData(), event.getType());
     }
@@ -149,8 +145,7 @@ public class DeserializationTests {
     @ParameterizedTest
     @MethodSource("getObjectsForRoundTrip")
     public void testEventGridRoundTripStreamSerialization(BinaryData payload) {
-        EventGridEvent eventGridEvent = new EventGridEvent("subject", "eventType", payload,
-            "dataVersion");
+        EventGridEvent eventGridEvent = new EventGridEvent("subject", "eventType", payload, "dataVersion");
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             JsonWriter writer = JsonProviders.createWriter(stream);
@@ -169,34 +164,8 @@ public class DeserializationTests {
     }
 
     private static Stream<Arguments> getObjectsForRoundTrip() {
-        return Stream.of(
-            Arguments.of(BinaryData.fromObject(1)),
-            Arguments.of(BinaryData.fromObject("data")),
-            Arguments.of(BinaryData.fromString("{\"data\":\"data\"}")),
-            Arguments.of(BinaryData.fromObject(null)),
-            Arguments.of(BinaryData.fromObject(true))
-        );
-    }
-
-    // just test to see if these events can be deserialized
-    @Test
-    public void testDeserializeEventGridEvents() throws JsonProcessingException {
-        String storageEventJson = "{\"topic\": \"/subscriptions/subscriptionID/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount\",\"subject\": \"/blobServices/default/containers/testcontainer/blobs/testfile.txt\",   \"eventType\": \"Microsoft.Storage.BlobCreated\",  \"eventTime\": \"2017-06-26T18:41:00.9584103Z\",  \"id\": \"831e1650-001e-001b-66ab-eeb76e069631\",  \"data\": {    \"api\": \"PutBlockList\",    \"clientRequestId\": \"6d79dbfb-0e37-4fc4-981f-442c9ca65760\",    \"requestId\": \"831e1650-001e-001b-66ab-eeb76e000000\",    \"eTag\": \"0x8D4BCC2E4835CD0\",    \"contentType\": \"text/plain\",    \"contentLength\": 524288,    \"blobType\": \"BlockBlob\",    \"url\": \"https://example.blob.core.windows.net/testcontainer/testfile.txt\",    \"sequencer\": \"00000000000004420000000000028963\",    \"storageDiagnostics\": {      \"batchId\": \"b68529f3-68cd-4744-baa4-3c0498ec19f0\" }},  \"dataVersion\": \"\",  \"metadataVersion\": \"1\"}";
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new SimpleModule()
-            .addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
-                @Override
-                public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-                    return OffsetDateTime.parse(jsonParser.getValueAsString());
-                }
-            }));
-
-        com.azure.messaging.eventgrid.implementation.models.EventGridEvent eventGridEvent =
-            mapper.readValue(storageEventJson, com.azure.messaging.eventgrid.implementation.models.EventGridEvent.class);
-
-        assertNotNull(eventGridEvent);
-        assertEquals("Microsoft.Storage.BlobCreated", eventGridEvent.getEventType(), "Event types do not match");
+        return Stream.of(Arguments.of(BinaryData.fromObject(1)), Arguments.of(BinaryData.fromObject("data")),
+            Arguments.of(BinaryData.fromString("{\"data\":\"data\"}")), Arguments.of(BinaryData.fromObject(true)));
     }
 
     @Test
@@ -204,12 +173,11 @@ public class DeserializationTests {
         String jsonData = getTestPayloadFromFile("StorageBlobDeletedEventWithExtraProperty.json");
         //
 
-
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobDeletedEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[0]);
+        StorageBlobDeletedEventData eventData
+            = assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
@@ -223,8 +191,8 @@ public class DeserializationTests {
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobDeletedEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[0]);
+        StorageBlobDeletedEventData eventData
+            = assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
@@ -242,13 +210,13 @@ public class DeserializationTests {
     public void consumeCustomEvents() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEvents.json");
 
-
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
         assertNotNull(events[0].getData().toObject(TypeReference.createInstance(ContosoItemReceivedEventData.class)));
-        ContosoItemReceivedEventData eventData = events[0].getData().toObject(TypeReference.createInstance(ContosoItemReceivedEventData.class));
+        ContosoItemReceivedEventData eventData
+            = events[0].getData().toObject(TypeReference.createInstance(ContosoItemReceivedEventData.class));
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getItemSku());
     }
 
@@ -257,21 +225,21 @@ public class DeserializationTests {
         String jsonData = getTestPayloadFromFile("CustomEventWithArrayData.json");
         //
 
-
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(1, events.length);
-        ContosoItemReceivedEventData[] eventData = events[0].getData().toObject(TypeReference.createInstance(ContosoItemReceivedEventData[].class));
+        List<ContosoItemReceivedEventData> eventData
+            = events[0].getData().toObject(new TypeReference<List<ContosoItemReceivedEventData>>() {
+            });
         assertNotNull(eventData);
 
-        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData[0]).getItemSku());
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData.get(0)).getItemSku());
     }
 
     @Test
     public void consumeCustomEventWithBooleanData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithBooleanData.json");
-
 
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
@@ -289,7 +257,6 @@ public class DeserializationTests {
         String jsonData = getTestPayloadFromFile("CustomEventWithStringData.json");
         //
 
-
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
@@ -305,23 +272,21 @@ public class DeserializationTests {
     public void consumeCustomEventWithPolymorphicData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithPolymorphicData.json");
 
-
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
         assertEquals(2, events.length);
 
-        ContosoItemSentEventData eventData0 = events[0].getData().toObject(TypeReference.createInstance(ContosoItemSentEventData.class));
-        ContosoItemSentEventData eventData1 = events[1].getData().toObject(TypeReference.createInstance(ContosoItemSentEventData.class));
+        ContosoItemSentEventData eventData0 = events[0].getData().toObject(ContosoItemSentEventData.class);
+        ContosoItemSentEventData eventData1 = events[1].getData().toObject(ContosoItemSentEventData.class);
 
         assertNotNull(eventData0);
         assertNotNull(eventData1);
 
-        assertTrue(eventData0.getShippingInfo() instanceof DroneShippingInfo);
+        assertInstanceOf(DroneShippingInfo.class, eventData0.getShippingInfo());
 
-        assertTrue(eventData1.getShippingInfo() instanceof RocketShippingInfo);
+        assertInstanceOf(RocketShippingInfo.class, eventData1.getShippingInfo());
     }
-
 
     @Test
     public void consumeMultipleEventsInSameBatch() throws IOException {
@@ -332,11 +297,12 @@ public class DeserializationTests {
 
         assertNotNull(events);
         assertEquals(4, events.length);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobCreatedEventData);
-        assertTrue(toSystemEventData(events[1]) instanceof StorageBlobDeletedEventData);
-        assertTrue(toSystemEventData(events[2]) instanceof StorageBlobDeletedEventData);
-        assertTrue(toSystemEventData(events[3]) instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[2]);
+        assertInstanceOf(StorageBlobCreatedEventData.class, toSystemEventData(events[0]));
+        assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[1]));
+        StorageBlobDeletedEventData eventData
+            = assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[2]));
+        assertInstanceOf(ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class,
+            toSystemEventData(events[3]));
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
@@ -349,8 +315,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof AppConfigurationKeyValueDeletedEventData);
-        AppConfigurationKeyValueDeletedEventData eventData = (AppConfigurationKeyValueDeletedEventData) toSystemEventData(events[0]);
+        AppConfigurationKeyValueDeletedEventData eventData
+            = assertInstanceOf(AppConfigurationKeyValueDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("key1", eventData.getKey());
     }
 
@@ -362,8 +328,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof AppConfigurationKeyValueModifiedEventData);
-        AppConfigurationKeyValueModifiedEventData eventData = (AppConfigurationKeyValueModifiedEventData) toSystemEventData(events[0]);
+        AppConfigurationKeyValueModifiedEventData eventData
+            = assertInstanceOf(AppConfigurationKeyValueModifiedEventData.class, toSystemEventData(events[0]));
         assertEquals("key1", eventData.getKey());
     }
 
@@ -376,8 +342,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryImagePushedEventData);
-        ContainerRegistryImagePushedEventData eventData = (ContainerRegistryImagePushedEventData) toSystemEventData(events[0]);
+        ContainerRegistryImagePushedEventData eventData
+            = assertInstanceOf(ContainerRegistryImagePushedEventData.class, toSystemEventData(events[0]));
         assertEquals("127.0.0.1", eventData.getRequest().getAddr());
     }
 
@@ -389,8 +355,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryImageDeletedEventData);
-        ContainerRegistryImageDeletedEventData eventData = (ContainerRegistryImageDeletedEventData) toSystemEventData(events[0]);
+        ContainerRegistryImageDeletedEventData eventData
+            = assertInstanceOf(ContainerRegistryImageDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("testactor", eventData.getActor().getName());
     }
 
@@ -402,8 +368,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryChartDeletedEventData);
-        ContainerRegistryChartDeletedEventData eventData = (ContainerRegistryChartDeletedEventData) toSystemEventData(events[0]);
+        ContainerRegistryChartDeletedEventData eventData
+            = assertInstanceOf(ContainerRegistryChartDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("mediatype1", eventData.getTarget().getMediaType());
     }
 
@@ -415,8 +381,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ContainerRegistryChartPushedEventData);
-        ContainerRegistryChartPushedEventData eventData = (ContainerRegistryChartPushedEventData) toSystemEventData(events[0]);
+        ContainerRegistryChartPushedEventData eventData
+            = assertInstanceOf(ContainerRegistryChartPushedEventData.class, toSystemEventData(events[0]));
         assertEquals("mediatype1", eventData.getTarget().getMediaType());
     }
 
@@ -429,8 +395,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceCreatedEventData);
-        IotHubDeviceCreatedEventData eventData = (IotHubDeviceCreatedEventData) toSystemEventData(events[0]);
+        IotHubDeviceCreatedEventData eventData
+            = assertInstanceOf(IotHubDeviceCreatedEventData.class, toSystemEventData(events[0]));
         assertEquals("enabled", eventData.getTwin().getStatus());
     }
 
@@ -442,8 +408,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceDeletedEventData);
-        IotHubDeviceDeletedEventData eventData = (IotHubDeviceDeletedEventData) toSystemEventData(events[0]);
+        IotHubDeviceDeletedEventData eventData
+            = assertInstanceOf(IotHubDeviceDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("AAAAAAAAAAE=", eventData.getTwin().getEtag());
     }
 
@@ -455,8 +421,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceConnectedEventData);
-        IotHubDeviceConnectedEventData eventData = (IotHubDeviceConnectedEventData) toSystemEventData(events[0]);
+        IotHubDeviceConnectedEventData eventData
+            = assertInstanceOf(IotHubDeviceConnectedEventData.class, toSystemEventData(events[0]));
         assertEquals("EGTESTHUB1", eventData.getHubName());
     }
 
@@ -468,9 +434,10 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceDisconnectedEventData);
-        IotHubDeviceDisconnectedEventData eventData = (IotHubDeviceDisconnectedEventData) toSystemEventData(events[0]);
-        assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.getDeviceConnectionStateEventInfo().getSequenceNumber());
+        IotHubDeviceDisconnectedEventData eventData
+            = assertInstanceOf(IotHubDeviceDisconnectedEventData.class, toSystemEventData(events[0]));
+        assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002",
+            eventData.getDeviceConnectionStateEventInfo().getSequenceNumber());
     }
 
     @Test
@@ -481,8 +448,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof IotHubDeviceTelemetryEventData);
-        IotHubDeviceTelemetryEventData eventData = (IotHubDeviceTelemetryEventData) toSystemEventData(events[0]);
+        IotHubDeviceTelemetryEventData eventData
+            = assertInstanceOf(IotHubDeviceTelemetryEventData.class, toSystemEventData(events[0]));
         assertEquals("Active", eventData.getProperties().get("Status"));
     }
 
@@ -495,8 +462,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof SubscriptionValidationEventData);
-        SubscriptionValidationEventData eventData = (SubscriptionValidationEventData) toSystemEventData(events[0]);
+        SubscriptionValidationEventData eventData
+            = assertInstanceOf(SubscriptionValidationEventData.class, toSystemEventData(events[0]));
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getValidationCode());
     }
 
@@ -508,9 +475,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof SubscriptionDeletedEventData);
-        SubscriptionDeletedEventData eventData = (SubscriptionDeletedEventData) toSystemEventData(events[0]);
-        assertEquals("/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1", eventData.getEventSubscriptionId());
+        SubscriptionDeletedEventData eventData
+            = assertInstanceOf(SubscriptionDeletedEventData.class, toSystemEventData(events[0]));
+        assertEquals(
+            "/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1",
+            eventData.getEventSubscriptionId());
     }
 
     // Event Hub Events
@@ -522,8 +491,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof EventHubCaptureFileCreatedEventData);
-        EventHubCaptureFileCreatedEventData eventData = (EventHubCaptureFileCreatedEventData) toSystemEventData(events[0]);
+        EventHubCaptureFileCreatedEventData eventData
+            = assertInstanceOf(EventHubCaptureFileCreatedEventData.class, toSystemEventData(events[0]));
         assertEquals("AzureBlockBlob", eventData.getFileType());
     }
 
@@ -536,8 +505,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MapsGeofenceEnteredEventData);
-        MapsGeofenceEnteredEventData eventData = (MapsGeofenceEnteredEventData) toSystemEventData(events[0]);
+        MapsGeofenceEnteredEventData eventData
+            = assertInstanceOf(MapsGeofenceEnteredEventData.class, toSystemEventData(events[0]));
         assertEquals(true, eventData.isEventPublished());
     }
 
@@ -549,8 +518,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MapsGeofenceExitedEventData);
-        MapsGeofenceExitedEventData eventData = (MapsGeofenceExitedEventData) toSystemEventData(events[0]);
+        MapsGeofenceExitedEventData eventData
+            = assertInstanceOf(MapsGeofenceExitedEventData.class, toSystemEventData(events[0]));
         assertEquals(true, eventData.isEventPublished());
     }
 
@@ -562,8 +531,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MapsGeofenceResultEventData);
-        MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData) toSystemEventData(events[0]);
+        MapsGeofenceResultEventData eventData
+            = assertInstanceOf(MapsGeofenceResultEventData.class, toSystemEventData(events[0]));
         assertEquals(true, eventData.isEventPublished());
     }
 
@@ -576,14 +545,12 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobCanceledEventData);
-        MediaJobCanceledEventData eventData = (MediaJobCanceledEventData) toSystemEventData(events[0]);
+        MediaJobCanceledEventData eventData
+            = assertInstanceOf(MediaJobCanceledEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELED, eventData.getState());
         assertEquals(1, eventData.getOutputs().size());
-        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
-
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutputs().get(0);
+        MediaJobOutputAsset outputAsset = assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutputs().get(0));
 
         assertEquals(MediaJobState.CANCELED, outputAsset.getState());
         assertNull(outputAsset.getError());
@@ -599,8 +566,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobCancelingEventData);
-        MediaJobCancelingEventData eventData = (MediaJobCancelingEventData) toSystemEventData(events[0]);
+        MediaJobCancelingEventData eventData
+            = assertInstanceOf(MediaJobCancelingEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELING, eventData.getState());
     }
@@ -613,8 +580,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobProcessingEventData);
-        MediaJobProcessingEventData eventData = (MediaJobProcessingEventData) toSystemEventData(events[0]);
+        MediaJobProcessingEventData eventData
+            = assertInstanceOf(MediaJobProcessingEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getState());
     }
@@ -626,13 +593,12 @@ public class DeserializationTests {
 
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobFinishedEventData);
-        MediaJobFinishedEventData eventData = (MediaJobFinishedEventData) toSystemEventData(events[0]);
+        MediaJobFinishedEventData eventData
+            = assertInstanceOf(MediaJobFinishedEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.FINISHED, eventData.getState());
         assertEquals(1, eventData.getOutputs().size());
-        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutputs().get(0);
+        MediaJobOutputAsset outputAsset = assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutputs().get(0));
 
         assertEquals(MediaJobState.FINISHED, outputAsset.getState());
         assertNull(outputAsset.getError());
@@ -648,12 +614,12 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobErroredEventData);
-        MediaJobErroredEventData eventData = (MediaJobErroredEventData) toSystemEventData(events[0]);
+        MediaJobErroredEventData eventData
+            = assertInstanceOf(MediaJobErroredEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.ERROR, eventData.getState());
         assertEquals(1, eventData.getOutputs().size());
-        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutputs().get(0));
 
         assertEquals(MediaJobState.ERROR, eventData.getOutputs().get(0).getState());
         assertNotNull(eventData.getOutputs().get(0).getError());
@@ -669,12 +635,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputStateChangeEventData);
-        MediaJobOutputStateChangeEventData eventData = (MediaJobOutputStateChangeEventData) toSystemEventData(events[0]);
+        MediaJobOutputStateChangeEventData eventData
+            = assertInstanceOf(MediaJobOutputStateChangeEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
-        MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutput();
+        MediaJobOutputAsset outputAsset = assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
         assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.getAssetName());
     }
 
@@ -686,8 +651,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobScheduledEventData);
-        MediaJobScheduledEventData eventData = (MediaJobScheduledEventData) toSystemEventData(events[0]);
+        MediaJobScheduledEventData eventData
+            = assertInstanceOf(MediaJobScheduledEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
         assertEquals(MediaJobState.SCHEDULED, eventData.getState());
     }
@@ -700,11 +665,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputCanceledEventData);
-        MediaJobOutputCanceledEventData eventData = (MediaJobOutputCanceledEventData) toSystemEventData(events[0]);
+        MediaJobOutputCanceledEventData eventData
+            = assertInstanceOf(MediaJobOutputCanceledEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELED, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -715,11 +680,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputCancelingEventData);
-        MediaJobOutputCancelingEventData eventData = (MediaJobOutputCancelingEventData) toSystemEventData(events[0]);
+        MediaJobOutputCancelingEventData eventData
+            = assertInstanceOf(MediaJobOutputCancelingEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.CANCELING, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -730,11 +695,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputErroredEventData);
-        MediaJobOutputErroredEventData eventData = (MediaJobOutputErroredEventData) toSystemEventData(events[0]);
+        MediaJobOutputErroredEventData eventData
+            = assertInstanceOf(MediaJobOutputErroredEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.ERROR, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
         assertNotNull(eventData.getOutput().getError());
         assertEquals(MediaJobErrorCategory.SERVICE, eventData.getOutput().getError().getCategory());
         assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.getOutput().getError().getCode());
@@ -748,11 +713,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputFinishedEventData);
-        MediaJobOutputFinishedEventData eventData = (MediaJobOutputFinishedEventData) toSystemEventData(events[0]);
+        MediaJobOutputFinishedEventData eventData
+            = assertInstanceOf(MediaJobOutputFinishedEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
         assertEquals(MediaJobState.FINISHED, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
         assertEquals(100, eventData.getOutput().getProgress());
 
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutput();
@@ -767,11 +732,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputProcessingEventData);
-        MediaJobOutputProcessingEventData eventData = (MediaJobOutputProcessingEventData) toSystemEventData(events[0]);
+        MediaJobOutputProcessingEventData eventData
+            = assertInstanceOf(MediaJobOutputProcessingEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -782,11 +747,11 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputScheduledEventData);
-        MediaJobOutputScheduledEventData eventData = (MediaJobOutputScheduledEventData) toSystemEventData(events[0]);
+        MediaJobOutputScheduledEventData eventData
+            = assertInstanceOf(MediaJobOutputScheduledEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
         assertEquals(MediaJobState.SCHEDULED, eventData.getOutput().getState());
-        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertInstanceOf(MediaJobOutputAsset.class, eventData.getOutput());
     }
 
     @Test
@@ -797,8 +762,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobOutputProgressEventData);
-        MediaJobOutputProgressEventData eventData = (MediaJobOutputProgressEventData) toSystemEventData(events[0]);
+        MediaJobOutputProgressEventData eventData
+            = assertInstanceOf(MediaJobOutputProgressEventData.class, toSystemEventData(events[0]));
         assertEquals("TestLabel", eventData.getLabel());
         assertTrue(eventData.getJobCorrelationData().containsKey("Field1"));
         assertEquals("test1", eventData.getJobCorrelationData().get("Field1"));
@@ -814,8 +779,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaJobStateChangeEventData);
-        MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData) toSystemEventData(events[0]);
+        MediaJobStateChangeEventData eventData
+            = assertInstanceOf(MediaJobStateChangeEventData.class, toSystemEventData(events[0]));
         assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
         assertEquals(MediaJobState.PROCESSING, eventData.getState());
     }
@@ -828,9 +793,10 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventEncoderConnectedEventData);
-        MediaLiveEventEncoderConnectedEventData eventData = (MediaLiveEventEncoderConnectedEventData) toSystemEventData(events[0]);
-        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
+        MediaLiveEventEncoderConnectedEventData eventData
+            = assertInstanceOf(MediaLiveEventEncoderConnectedEventData.class, toSystemEventData(events[0]));
+        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59",
+            eventData.getIngestUrl());
         assertEquals("Mystream1", eventData.getStreamId());
         assertEquals("<ip address>", eventData.getEncoderIp());
         assertEquals("3557", eventData.getEncoderPort());
@@ -844,8 +810,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventConnectionRejectedEventData);
-        MediaLiveEventConnectionRejectedEventData eventData = (MediaLiveEventConnectionRejectedEventData) toSystemEventData(events[0]);
+        MediaLiveEventConnectionRejectedEventData eventData
+            = assertInstanceOf(MediaLiveEventConnectionRejectedEventData.class, toSystemEventData(events[0]));
         assertEquals("Mystream1", eventData.getStreamId());
     }
 
@@ -857,9 +823,10 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventEncoderDisconnectedEventData);
-        MediaLiveEventEncoderDisconnectedEventData eventData = (MediaLiveEventEncoderDisconnectedEventData) toSystemEventData(events[0]);
-        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
+        MediaLiveEventEncoderDisconnectedEventData eventData
+            = assertInstanceOf(MediaLiveEventEncoderDisconnectedEventData.class, toSystemEventData(events[0]));
+        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59",
+            eventData.getIngestUrl());
         assertEquals("Mystream1", eventData.getStreamId());
         assertEquals("<ip address>", eventData.getEncoderIp());
         assertEquals("3557", eventData.getEncoderPort());
@@ -873,9 +840,10 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingStreamReceivedEventData);
-        MediaLiveEventIncomingStreamReceivedEventData eventData = (MediaLiveEventIncomingStreamReceivedEventData) toSystemEventData(events[0]);
-        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
+        MediaLiveEventIncomingStreamReceivedEventData eventData
+            = assertInstanceOf(MediaLiveEventIncomingStreamReceivedEventData.class, toSystemEventData(events[0]));
+        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59",
+            eventData.getIngestUrl());
         assertEquals("<ip address>", eventData.getEncoderIp());
         assertEquals("3557", eventData.getEncoderPort());
 
@@ -894,8 +862,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
-        MediaLiveEventIncomingStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingStreamsOutOfSyncEventData) toSystemEventData(events[0]);
+        MediaLiveEventIncomingStreamsOutOfSyncEventData eventData
+            = assertInstanceOf(MediaLiveEventIncomingStreamsOutOfSyncEventData.class, toSystemEventData(events[0]));
         assertEquals("10999", eventData.getMinLastTimestamp());
         assertEquals("video", eventData.getTypeOfStreamWithMinLastTimestamp());
         assertEquals("100999", eventData.getMaxLastTimestamp());
@@ -912,8 +880,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
-        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingVideoStreamsOutOfSyncEventData) toSystemEventData(events[0]);
+        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = assertInstanceOf(
+            MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class, toSystemEventData(events[0]));
         assertEquals("10999", eventData.getFirstTimestamp());
         assertEquals("2000", eventData.getFirstDuration());
         assertEquals("100999", eventData.getSecondTimestamp());
@@ -929,8 +897,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
-        MediaLiveEventIncomingDataChunkDroppedEventData eventData = (MediaLiveEventIncomingDataChunkDroppedEventData) toSystemEventData(events[0]);
+        MediaLiveEventIncomingDataChunkDroppedEventData eventData
+            = assertInstanceOf(MediaLiveEventIncomingDataChunkDroppedEventData.class, toSystemEventData(events[0]));
         assertEquals("8999", eventData.getTimestamp());
         assertEquals("video", eventData.getTrackType());
         assertEquals("video1", eventData.getTrackName());
@@ -946,8 +914,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIngestHeartbeatEventData);
-        MediaLiveEventIngestHeartbeatEventData eventData = (MediaLiveEventIngestHeartbeatEventData) toSystemEventData(events[0]);
+        MediaLiveEventIngestHeartbeatEventData eventData
+            = assertInstanceOf(MediaLiveEventIngestHeartbeatEventData.class, toSystemEventData(events[0]));
         assertEquals("video", eventData.getTrackType());
         assertEquals("video", eventData.getTrackName());
         assertEquals("11999", eventData.getLastTimestamp());
@@ -958,14 +926,14 @@ public class DeserializationTests {
         assertEquals(0, eventData.getIngestDriftValue());
         assertEquals(OffsetDateTime.parse("2021-05-14T23:50:00.00Z"), eventData.getLastFragmentArrivalTime());
 
-
-        jsonData = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/liveevent-ec9d26a8\",  \"eventType\": \"Microsoft.Media.LiveEventIngestHeartbeat\",  \"eventTime\": \"2018-10-12T15:52:37.3710102\",  \"id\": \"d84727e2-d9c0-4a21-a66b-8d23f06b3e06\",  \"data\": {    \"trackType\": \"video\",    \"trackName\": \"video\",    \"bitrate\": 2500000,    \"incomingBitrate\": 500726,    \"lastTimestamp\": \"11999\",    \"timescale\": \"1000\",    \"overlapCount\": 0,    \"discontinuityCount\": 0,    \"nonincreasingCount\": 0,    \"unexpectedBitrate\": true,    \"state\": \"Running\",    \"healthy\": false,  \"lastFragmentArrivalTime\": \"2021-05-14T23:50:00.00\", \"ingestDriftValue\": \"n/a\"  },  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
+        jsonData
+            = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/liveevent-ec9d26a8\",  \"eventType\": \"Microsoft.Media.LiveEventIngestHeartbeat\",  \"eventTime\": \"2018-10-12T15:52:37.3710102\",  \"id\": \"d84727e2-d9c0-4a21-a66b-8d23f06b3e06\",  \"data\": {    \"trackType\": \"video\",    \"trackName\": \"video\",    \"bitrate\": 2500000,    \"incomingBitrate\": 500726,    \"lastTimestamp\": \"11999\",    \"timescale\": \"1000\",    \"overlapCount\": 0,    \"discontinuityCount\": 0,    \"nonincreasingCount\": 0,    \"unexpectedBitrate\": true,    \"state\": \"Running\",    \"healthy\": false,  \"lastFragmentArrivalTime\": \"2021-05-14T23:50:00.00\", \"ingestDriftValue\": \"n/a\"  },  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
 
         events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
 
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIngestHeartbeatEventData);
+        assertInstanceOf(MediaLiveEventIngestHeartbeatEventData.class, toSystemEventData(events[0]));
         eventData = (MediaLiveEventIngestHeartbeatEventData) toSystemEventData(events[0]);
         // n/a should be translated to null IngestDriftValue
         assertNull(eventData.getIngestDriftValue());
@@ -979,8 +947,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
-        MediaLiveEventTrackDiscontinuityDetectedEventData eventData = (MediaLiveEventTrackDiscontinuityDetectedEventData) toSystemEventData(events[0]);
+        MediaLiveEventTrackDiscontinuityDetectedEventData eventData
+            = assertInstanceOf(MediaLiveEventTrackDiscontinuityDetectedEventData.class, toSystemEventData(events[0]));
         assertEquals("video", eventData.getTrackType());
         assertEquals("video", eventData.getTrackName());
         assertEquals("10999", eventData.getPreviousTimestamp());
@@ -991,28 +959,31 @@ public class DeserializationTests {
 
     @Test
     public void consumeMediaLiveEventChannelArchiveHeartbeatEvent() throws IOException {
-        String jsonData = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/mle1\",  \"eventType\": \"Microsoft.Media.LiveEventChannelArchiveHeartbeat\",  \"eventTime\": \"2021-05-14T23:50:00.324\", \"id\": \"7f450938-491f-41e1-b06f-c6cd3965d786\",  \"data\": {    \"channelLatencyMs\": \"10\",    \"latencyResultCode\": \"S_OK\"},  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
+        String jsonData
+            = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/mle1\",  \"eventType\": \"Microsoft.Media.LiveEventChannelArchiveHeartbeat\",  \"eventTime\": \"2021-05-14T23:50:00.324\", \"id\": \"7f450938-491f-41e1-b06f-c6cd3965d786\",  \"data\": {    \"channelLatencyMs\": \"10\",    \"latencyResultCode\": \"S_OK\"},  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventChannelArchiveHeartbeatEventData);
-        MediaLiveEventChannelArchiveHeartbeatEventData eventData = (MediaLiveEventChannelArchiveHeartbeatEventData) toSystemEventData(events[0]);
+        MediaLiveEventChannelArchiveHeartbeatEventData eventData
+            = assertInstanceOf(MediaLiveEventChannelArchiveHeartbeatEventData.class, toSystemEventData(events[0]));
 
         assertEquals(Duration.ofMillis(10), eventData.getChannelLatency());
         assertEquals("S_OK", eventData.getLatencyResultCode());
 
-        jsonData = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/mle1\",  \"eventType\": \"Microsoft.Media.LiveEventChannelArchiveHeartbeat\",  \"eventTime\": \"2021-05-14T23:50:00.324\", \"id\": \"7f450938-491f-41e1-b06f-c6cd3965d786\",  \"data\": {    \"channelLatencyMs\": \"n/a\",    \"latencyResultCode\": \"S_OK\"},  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
+        jsonData
+            = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/mle1\",  \"eventType\": \"Microsoft.Media.LiveEventChannelArchiveHeartbeat\",  \"eventTime\": \"2021-05-14T23:50:00.324\", \"id\": \"7f450938-491f-41e1-b06f-c6cd3965d786\",  \"data\": {    \"channelLatencyMs\": \"n/a\",    \"latencyResultCode\": \"S_OK\"},  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
 
         events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventChannelArchiveHeartbeatEventData);
+        assertInstanceOf(MediaLiveEventChannelArchiveHeartbeatEventData.class, toSystemEventData(events[0]));
         eventData = (MediaLiveEventChannelArchiveHeartbeatEventData) toSystemEventData(events[0]);
 
         // n/a should be translated to null ChannelLatency
         assertNull(eventData.getChannelLatency());
         assertEquals("S_OK", eventData.getLatencyResultCode());
     }
+
     // Resource Manager (Azure Subscription/Resource Group) events
     @Test
     public void consumeResourceWriteFailureEvent() throws IOException {
@@ -1022,8 +993,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceWriteFailureEventData);
-        ResourceWriteFailureEventData eventData = (ResourceWriteFailureEventData) toSystemEventData(events[0]);
+        ResourceWriteFailureEventData eventData
+            = assertInstanceOf(ResourceWriteFailureEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1035,8 +1006,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceWriteCancelEventData);
-        ResourceWriteCancelEventData eventData = (ResourceWriteCancelEventData) toSystemEventData(events[0]);
+        ResourceWriteCancelEventData eventData
+            = assertInstanceOf(ResourceWriteCancelEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1048,8 +1019,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceDeleteSuccessEventData);
-        ResourceDeleteSuccessEventData eventData = (ResourceDeleteSuccessEventData) toSystemEventData(events[0]);
+        ResourceDeleteSuccessEventData eventData
+            = assertInstanceOf(ResourceDeleteSuccessEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1061,8 +1032,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceDeleteFailureEventData);
-        ResourceDeleteFailureEventData eventData = (ResourceDeleteFailureEventData) toSystemEventData(events[0]);
+        ResourceDeleteFailureEventData eventData
+            = assertInstanceOf(ResourceDeleteFailureEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1074,8 +1045,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceDeleteCancelEventData);
-        ResourceDeleteCancelEventData eventData = (ResourceDeleteCancelEventData) toSystemEventData(events[0]);
+        ResourceDeleteCancelEventData eventData
+            = assertInstanceOf(ResourceDeleteCancelEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1087,8 +1058,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceActionSuccessEventData);
-        ResourceActionSuccessEventData eventData = (ResourceActionSuccessEventData) toSystemEventData(events[0]);
+        ResourceActionSuccessEventData eventData
+            = assertInstanceOf(ResourceActionSuccessEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1100,8 +1071,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceActionFailureEventData);
-        ResourceActionFailureEventData eventData = (ResourceActionFailureEventData) toSystemEventData(events[0]);
+        ResourceActionFailureEventData eventData
+            = assertInstanceOf(ResourceActionFailureEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1113,8 +1084,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceActionCancelEventData);
-        ResourceActionCancelEventData eventData = (ResourceActionCancelEventData) toSystemEventData(events[0]);
+        ResourceActionCancelEventData eventData
+            = assertInstanceOf(ResourceActionCancelEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
@@ -1127,8 +1098,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ServiceBusActiveMessagesAvailableWithNoListenersEventData);
-        ServiceBusActiveMessagesAvailableWithNoListenersEventData eventData = (ServiceBusActiveMessagesAvailableWithNoListenersEventData) toSystemEventData(events[0]);
+        ServiceBusActiveMessagesAvailableWithNoListenersEventData eventData = assertInstanceOf(
+            ServiceBusActiveMessagesAvailableWithNoListenersEventData.class, toSystemEventData(events[0]));
         assertEquals("testns1", eventData.getNamespaceName());
     }
 
@@ -1140,8 +1111,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
-        ServiceBusDeadletterMessagesAvailableWithNoListenersEventData eventData = (ServiceBusDeadletterMessagesAvailableWithNoListenersEventData) toSystemEventData(events[0]);
+        ServiceBusDeadletterMessagesAvailableWithNoListenersEventData eventData = assertInstanceOf(
+            ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class, toSystemEventData(events[0]));
         assertEquals("testns1", eventData.getNamespaceName());
     }
 
@@ -1154,8 +1125,8 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobCreatedEventData);
-        StorageBlobCreatedEventData eventData = (StorageBlobCreatedEventData) toSystemEventData(events[0]);
+        StorageBlobCreatedEventData eventData
+            = assertInstanceOf(StorageBlobCreatedEventData.class, toSystemEventData(events[0]));
         assertEquals("https://myaccount.blob.core.windows.net/testcontainer/file1.txt", eventData.getUrl());
     }
 
@@ -1167,51 +1138,59 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobDeletedEventData);
-        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) toSystemEventData(events[0]);
+        StorageBlobDeletedEventData eventData
+            = assertInstanceOf(StorageBlobDeletedEventData.class, toSystemEventData(events[0]));
         assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
     @Test
     public void consumeCloudEventStorageBlobRenamedEvent() {
-        String jsonData = "[ {  \"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/myaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testfile.txt\",  \"type\": \"Microsoft.Storage.BlobRenamed\",  \"time\": \"2017-08-16T01:57:26.005121Z\",  \"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",  \"data\": {    \"api\": \"RenameFile\",    \"clientRequestId\": \"799304a4-bbc5-45b6-9849-ec2c66be800a\",    \"requestId\": \"602a88ef-0001-00e6-1233-164607000000\",    \"eTag\": \"0x8D4E44A24ABE7F1\",    \"destinationUrl\": \"https://myaccount.blob.core.windows.net/testcontainer/testfile.txt\",    \"sequencer\": \"00000000000000EB000000000000C65A\"  },  \"specversion\": \"1.0\"}]";
+        String jsonData
+            = "[ {  \"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/myaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testfile.txt\",  \"type\": \"Microsoft.Storage.BlobRenamed\",  \"time\": \"2017-08-16T01:57:26.005121Z\",  \"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",  \"data\": {    \"api\": \"RenameFile\",    \"clientRequestId\": \"799304a4-bbc5-45b6-9849-ec2c66be800a\",    \"requestId\": \"602a88ef-0001-00e6-1233-164607000000\",    \"eTag\": \"0x8D4E44A24ABE7F1\",    \"destinationUrl\": \"https://myaccount.blob.core.windows.net/testcontainer/testfile.txt\",    \"sequencer\": \"00000000000000EB000000000000C65A\"  },  \"specversion\": \"1.0\"}]";
 
         CloudEvent[] events = CloudEvent.fromString(jsonData).toArray(new CloudEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof StorageBlobRenamedEventData);
-        StorageBlobRenamedEventData eventData = (StorageBlobRenamedEventData) toSystemEventData(events[0]);
-        assertEquals("https://myaccount.blob.core.windows.net/testcontainer/testfile.txt", eventData.getDestinationUrl());
+        StorageBlobRenamedEventData eventData
+            = assertInstanceOf(StorageBlobRenamedEventData.class, toSystemEventData(events[0]));
+        assertEquals("https://myaccount.blob.core.windows.net/testcontainer/testfile.txt",
+            eventData.getDestinationUrl());
     }
 
     @Test
     public void consumeStorageDirectoryCreatedEvent() {
-        String requestContent = "[ {  \"topic\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/myaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testDir\",  \"eventType\": \"Microsoft.Storage.DirectoryCreated\",  \"eventTime\": \"2017-08-16T01:57:26.005121Z\",  \"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",  \"data\": {    \"api\": \"CreateDirectory\",    \"clientRequestId\": \"799304a4-bbc5-45b6-9849-ec2c66be800a\",    \"requestId\": \"602a88ef-0001-00e6-1233-164607000000\",    \"eTag\": \"0x8D4E44A24ABE7F1\",    \"url\": \"https://myaccount.blob.core.windows.net/testcontainer/testDir\",    \"sequencer\": \"00000000000000EB000000000000C65A\"  },  \"dataVersion\": \"2\",  \"metadataVersion\": \"1\"}]";
+        String requestContent
+            = "[ {  \"topic\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/myaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testDir\",  \"eventType\": \"Microsoft.Storage.DirectoryCreated\",  \"eventTime\": \"2017-08-16T01:57:26.005121Z\",  \"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",  \"data\": {    \"api\": \"CreateDirectory\",    \"clientRequestId\": \"799304a4-bbc5-45b6-9849-ec2c66be800a\",    \"requestId\": \"602a88ef-0001-00e6-1233-164607000000\",    \"eTag\": \"0x8D4E44A24ABE7F1\",    \"url\": \"https://myaccount.blob.core.windows.net/testcontainer/testDir\",    \"sequencer\": \"00000000000000EB000000000000C65A\"  },  \"dataVersion\": \"2\",  \"metadataVersion\": \"1\"}]";
 
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
 
         assertNotNull(events);
-        StorageDirectoryCreatedEventData eventData = (StorageDirectoryCreatedEventData) toSystemEventData(events.get(0));
+        StorageDirectoryCreatedEventData eventData
+            = (StorageDirectoryCreatedEventData) toSystemEventData(events.get(0));
         assertEquals("https://myaccount.blob.core.windows.net/testcontainer/testDir", eventData.getUrl());
     }
 
     @Test
     public void consumeStorageDirectoryDeletedEvent() {
-        String requestContent = "[{   \"topic\": \"/subscriptions/id/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testDir\",  \"eventType\": \"Microsoft.Storage.DirectoryDeleted\",  \"eventTime\": \"2017-11-07T20:09:22.5674003Z\",  \"id\": \"4c2359fe-001e-00ba-0e04-58586806d298\",  \"data\": {    \"api\": \"DeleteDirectory\",    \"requestId\": \"4c2359fe-001e-00ba-0e04-585868000000\",    \"url\": \"https://example.blob.core.windows.net/testcontainer/testDir\",    \"sequencer\": \"0000000000000281000000000002F5CA\",    \"storageDiagnostics\": {      \"batchId\": \"b68529f3-68cd-4744-baa4-3c0498ec19f0\"    }  },  \"dataVersion\": \"1\",  \"metadataVersion\": \"1\"}]";
+        String requestContent
+            = "[{   \"topic\": \"/subscriptions/id/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testDir\",  \"eventType\": \"Microsoft.Storage.DirectoryDeleted\",  \"eventTime\": \"2017-11-07T20:09:22.5674003Z\",  \"id\": \"4c2359fe-001e-00ba-0e04-58586806d298\",  \"data\": {    \"api\": \"DeleteDirectory\",    \"requestId\": \"4c2359fe-001e-00ba-0e04-585868000000\",    \"url\": \"https://example.blob.core.windows.net/testcontainer/testDir\",    \"sequencer\": \"0000000000000281000000000002F5CA\",    \"storageDiagnostics\": {      \"batchId\": \"b68529f3-68cd-4744-baa4-3c0498ec19f0\"    }  },  \"dataVersion\": \"1\",  \"metadataVersion\": \"1\"}]";
 
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
-        StorageDirectoryDeletedEventData eventData = (StorageDirectoryDeletedEventData) toSystemEventData(events.get(0));
+        StorageDirectoryDeletedEventData eventData
+            = (StorageDirectoryDeletedEventData) toSystemEventData(events.get(0));
         assertEquals("https://example.blob.core.windows.net/testcontainer/testDir", eventData.getUrl());
     }
 
     @Test
     public void consumeStorageDirectoryRenamedEvent() {
-        String requestContent = "[{   \"topic\": \"/subscriptions/id/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testDir\",  \"eventType\": \"Microsoft.Storage.DirectoryRenamed\",  \"eventTime\": \"2017-11-07T20:09:22.5674003Z\",  \"id\": \"4c2359fe-001e-00ba-0e04-58586806d298\",  \"data\": {    \"api\": \"RenameDirectory\",    \"requestId\": \"4c2359fe-001e-00ba-0e04-585868000000\",    \"destinationUrl\": \"https://example.blob.core.windows.net/testcontainer/testDir\",    \"sequencer\": \"0000000000000281000000000002F5CA\",    \"storageDiagnostics\": {      \"batchId\": \"b68529f3-68cd-4744-baa4-3c0498ec19f0\"    }  },  \"dataVersion\": \"1\",  \"metadataVersion\": \"1\"}]";
+        String requestContent
+            = "[{   \"topic\": \"/subscriptions/id/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount\",  \"subject\": \"/blobServices/default/containers/testcontainer/blobs/testDir\",  \"eventType\": \"Microsoft.Storage.DirectoryRenamed\",  \"eventTime\": \"2017-11-07T20:09:22.5674003Z\",  \"id\": \"4c2359fe-001e-00ba-0e04-58586806d298\",  \"data\": {    \"api\": \"RenameDirectory\",    \"requestId\": \"4c2359fe-001e-00ba-0e04-585868000000\",    \"destinationUrl\": \"https://example.blob.core.windows.net/testcontainer/testDir\",    \"sequencer\": \"0000000000000281000000000002F5CA\",    \"storageDiagnostics\": {      \"batchId\": \"b68529f3-68cd-4744-baa4-3c0498ec19f0\"    }  },  \"dataVersion\": \"1\",  \"metadataVersion\": \"1\"}]";
 
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
-        StorageDirectoryRenamedEventData eventData = (StorageDirectoryRenamedEventData) toSystemEventData(events.get(0));
+        StorageDirectoryRenamedEventData eventData
+            = (StorageDirectoryRenamedEventData) toSystemEventData(events.get(0));
         assertEquals("https://example.blob.core.windows.net/testcontainer/testDir", eventData.getDestinationUrl());
     }
 
@@ -1224,35 +1203,38 @@ public class DeserializationTests {
         EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
 
         assertNotNull(events);
-        assertTrue(toSystemEventData(events[0]) instanceof ResourceWriteSuccessEventData);
-        ResourceWriteSuccessEventData eventData = (ResourceWriteSuccessEventData) toSystemEventData(events[0]);
+        ResourceWriteSuccessEventData eventData
+            = assertInstanceOf(ResourceWriteSuccessEventData.class, toSystemEventData(events[0]));
         assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     // Machine Learning Tests
     @Test
     public void consumeMachineLearningServicesModelRegisteredEvent() {
-        String requestContent = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.ModelRegistered\",\"subject\":\"models/sklearn_regression_model:3\",\"eventTime\":\"2019-10-17T22:23:57.5350054+00:00\",\"id\":\"3b73ee51-bbf4-480d-9112-cfc23b41bfdb\",\"data\":{\"modelName\":\"sklearn_regression_model\",\"modelVersion\":\"3\",\"modelTags\":{\"area\":\"diabetes\",\"type\":\"regression\"},\"modelProperties\":{\"area\":\"test\"}},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
+        String requestContent
+            = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.ModelRegistered\",\"subject\":\"models/sklearn_regression_model:3\",\"eventTime\":\"2019-10-17T22:23:57.5350054+00:00\",\"id\":\"3b73ee51-bbf4-480d-9112-cfc23b41bfdb\",\"data\":{\"modelName\":\"sklearn_regression_model\",\"modelVersion\":\"3\",\"modelTags\":{\"area\":\"diabetes\",\"type\":\"regression\"},\"modelProperties\":{\"area\":\"test\"}},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
 
         assertNotNull(events);
-        MachineLearningServicesModelRegisteredEventData eventData = (MachineLearningServicesModelRegisteredEventData)
-            toSystemEventData(events.get(0));
+        MachineLearningServicesModelRegisteredEventData eventData
+            = (MachineLearningServicesModelRegisteredEventData) toSystemEventData(events.get(0));
         assertEquals("sklearn_regression_model", eventData.getModelName());
         assertEquals("3", eventData.getModelVersion());
 
-        assertTrue(eventData.getModelTags() instanceof Map);
+        assertInstanceOf(Map.class, eventData.getModelTags());
         assertEquals("regression", ((Map<?, ?>) eventData.getModelTags()).get("type"));
 
-        assertTrue(eventData.getModelProperties() instanceof Map);
+        assertInstanceOf(Map.class, eventData.getModelProperties());
         assertEquals("test", ((Map<?, ?>) eventData.getModelProperties()).get("area"));
     }
 
     @Test
     public void consumeMachineLearningServicesModelDeployedEvent() {
-        String requestContent = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.ModelDeployed\",\"subject\":\"endpoints/aciservice1\",\"eventTime\":\"2019-10-23T18:20:08.8824474+00:00\",\"id\":\"40d0b167-be44-477b-9d23-a2befba7cde0\",\"data\":{\"serviceName\":\"aciservice1\",\"serviceComputeType\":\"ACI\",\"serviceTags\":{\"mytag\":\"test tag\"},\"serviceProperties\":{\"myprop\":\"test property\"},\"modelIds\":\"my_first_model:1,my_second_model:1\"},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
+        String requestContent
+            = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.ModelDeployed\",\"subject\":\"endpoints/aciservice1\",\"eventTime\":\"2019-10-23T18:20:08.8824474+00:00\",\"id\":\"40d0b167-be44-477b-9d23-a2befba7cde0\",\"data\":{\"serviceName\":\"aciservice1\",\"serviceComputeType\":\"ACI\",\"serviceTags\":{\"mytag\":\"test tag\"},\"serviceProperties\":{\"myprop\":\"test property\"},\"modelIds\":\"my_first_model:1,my_second_model:1\"},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
-        MachineLearningServicesModelDeployedEventData eventData = (MachineLearningServicesModelDeployedEventData) toSystemEventData(events.get(0));
+        MachineLearningServicesModelDeployedEventData eventData
+            = (MachineLearningServicesModelDeployedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals("aciservice1", eventData.getServiceName());
         assertEquals(2, eventData.getModelIds().split(",").length);
@@ -1260,9 +1242,11 @@ public class DeserializationTests {
 
     @Test
     public void consumeMachineLearningServicesRunCompletedEvent() {
-        String requestContent = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.RunCompleted\",\"subject\":\"experiments/0fa9dfaa-cba3-4fa7-b590-23e48548f5c1/runs/AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"eventTime\":\"2019-10-18T19:29:55.8856038+00:00\",\"id\":\"044ac44d-462c-4043-99eb-d9e01dc760ab\",\"data\":{\"experimentId\":\"0fa9dfaa-cba3-4fa7-b590-23e48548f5c1\",\"experimentName\":\"automl-local-regression\",\"runId\":\"AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"runType\":\"automl\",\"RunTags\":{\"experiment_status\":\"ModelSelection\",\"experiment_status_descr\":\"Beginning model selection.\"},\"runProperties\":{\"num_iterations\":\"10\",\"target\":\"local\"}},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
+        String requestContent
+            = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.RunCompleted\",\"subject\":\"experiments/0fa9dfaa-cba3-4fa7-b590-23e48548f5c1/runs/AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"eventTime\":\"2019-10-18T19:29:55.8856038+00:00\",\"id\":\"044ac44d-462c-4043-99eb-d9e01dc760ab\",\"data\":{\"experimentId\":\"0fa9dfaa-cba3-4fa7-b590-23e48548f5c1\",\"experimentName\":\"automl-local-regression\",\"runId\":\"AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"runType\":\"automl\",\"RunTags\":{\"experiment_status\":\"ModelSelection\",\"experiment_status_descr\":\"Beginning model selection.\"},\"runProperties\":{\"num_iterations\":\"10\",\"target\":\"local\"}},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
-        MachineLearningServicesRunCompletedEventData eventData = (MachineLearningServicesRunCompletedEventData) toSystemEventData(events.get(0));
+        MachineLearningServicesRunCompletedEventData eventData
+            = (MachineLearningServicesRunCompletedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals("AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc", eventData.getRunId());
         assertEquals("automl-local-regression", eventData.getExperimentName());
@@ -1270,9 +1254,11 @@ public class DeserializationTests {
 
     @Test
     public void consumeMachineLearningServicesRunStatusChangedEvent() {
-        String requestContent = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.RunStatusChanged\",\"subject\":\"experiments/0fa9dfaa-cba3-4fa7-b590-23e48548f5c1/runs/AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"eventTime\":\"2020-03-09T23:53:04.4579724Z\",\"id\":\"aa8cd7df-fe28-5d5d-9b40-3342dbc2a887\",\"data\":{\"runStatus\": \"Running\",\"experimentId\":\"0fa9dfaa-cba3-4fa7-b590-23e48548f5c1\",\"experimentName\":\"automl-local-regression\",\"runId\":\"AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"runType\":\"automl\",\"runTags\":{\"experiment_status\":\"ModelSelection\",\"experiment_status_descr\":\"Beginning model selection.\"},\"runProperties\":{\"num_iterations\":\"10\",\"target\":\"local\"}},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
+        String requestContent
+            = "[{\"topic\":\"/subscriptions/a5fe3bc5-98f0-4c84-affc-a589f54d9b23/resourceGroups/jenns/providers/Microsoft.MachineLearningServices/workspaces/jenns-canary\",\"eventType\":\"Microsoft.MachineLearningServices.RunStatusChanged\",\"subject\":\"experiments/0fa9dfaa-cba3-4fa7-b590-23e48548f5c1/runs/AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"eventTime\":\"2020-03-09T23:53:04.4579724Z\",\"id\":\"aa8cd7df-fe28-5d5d-9b40-3342dbc2a887\",\"data\":{\"runStatus\": \"Running\",\"experimentId\":\"0fa9dfaa-cba3-4fa7-b590-23e48548f5c1\",\"experimentName\":\"automl-local-regression\",\"runId\":\"AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc\",\"runType\":\"automl\",\"runTags\":{\"experiment_status\":\"ModelSelection\",\"experiment_status_descr\":\"Beginning model selection.\"},\"runProperties\":{\"num_iterations\":\"10\",\"target\":\"local\"}},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
-        MachineLearningServicesRunStatusChangedEventData eventData = (MachineLearningServicesRunStatusChangedEventData) toSystemEventData(events.get(0));
+        MachineLearningServicesRunStatusChangedEventData eventData
+            = (MachineLearningServicesRunStatusChangedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals("AutoML_ad912b2d-6467-4f32-a616-dbe4af6dd8fc", eventData.getRunId());
         assertEquals("automl-local-regression", eventData.getExperimentName());
@@ -1282,10 +1268,12 @@ public class DeserializationTests {
 
     @Test
     public void consumeMachineLearningServicesDatasetDriftDetectedEvent() {
-        String requestContent = "[{\"topic\":\"/subscriptions/60582a10-b9fd-49f1-a546-c4194134bba8/resourceGroups/copetersRG/providers/Microsoft.MachineLearningServices/workspaces/driftDemoWS\",\"eventType\":\"Microsoft.MachineLearningServices.DatasetDriftDetected\",\"subject\":\"datadrift/01d29aa4-e6a4-470a-9ef3-66660d21f8ef/run/01d29aa4-e6a4-470a-9ef3-66660d21f8ef_1571590300380\",\"eventTime\":\"2019-10-20T17:08:08.467191+00:00\",\"id\":\"2684de79-b145-4dcf-ad2e-6a1db798585f\",\"data\":{\"dataDriftId\":\"01d29aa4-e6a4-470a-9ef3-66660d21f8ef\",\"dataDriftName\":\"copetersDriftMonitor3\",\"runId\":\"01d29aa4-e6a4-470a-9ef3-66660d21f8ef_1571590300380\",\"baseDatasetId\":\"3c56d136-0f64-4657-a0e8-5162089a88a3\",\"tarAsSystemEventDatasetId\":\"d7e74d2e-c972-4266-b5fb-6c9c182d2a74\",\"driftCoefficient\":0.8350349068479208,\"startTime\":\"2019-07-04T00:00:00+00:00\",\"endTime\":\"2019-07-05T00:00:00+00:00\"},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
+        String requestContent
+            = "[{\"topic\":\"/subscriptions/60582a10-b9fd-49f1-a546-c4194134bba8/resourceGroups/copetersRG/providers/Microsoft.MachineLearningServices/workspaces/driftDemoWS\",\"eventType\":\"Microsoft.MachineLearningServices.DatasetDriftDetected\",\"subject\":\"datadrift/01d29aa4-e6a4-470a-9ef3-66660d21f8ef/run/01d29aa4-e6a4-470a-9ef3-66660d21f8ef_1571590300380\",\"eventTime\":\"2019-10-20T17:08:08.467191+00:00\",\"id\":\"2684de79-b145-4dcf-ad2e-6a1db798585f\",\"data\":{\"dataDriftId\":\"01d29aa4-e6a4-470a-9ef3-66660d21f8ef\",\"dataDriftName\":\"copetersDriftMonitor3\",\"runId\":\"01d29aa4-e6a4-470a-9ef3-66660d21f8ef_1571590300380\",\"baseDatasetId\":\"3c56d136-0f64-4657-a0e8-5162089a88a3\",\"tarAsSystemEventDatasetId\":\"d7e74d2e-c972-4266-b5fb-6c9c182d2a74\",\"driftCoefficient\":0.8350349068479208,\"startTime\":\"2019-07-04T00:00:00+00:00\",\"endTime\":\"2019-07-05T00:00:00+00:00\"},\"dataVersion\":\"2\",\"metadataVersion\":\"1\"}]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
-        MachineLearningServicesDatasetDriftDetectedEventData eventData = (MachineLearningServicesDatasetDriftDetectedEventData) toSystemEventData(events.get(0));
+        MachineLearningServicesDatasetDriftDetectedEventData eventData
+            = (MachineLearningServicesDatasetDriftDetectedEventData) toSystemEventData(events.get(0));
         assertEquals("copetersDriftMonitor3", eventData.getDataDriftName());
     }
     // End of machine learning tests
@@ -1294,7 +1282,8 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebAppUpdatedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.AppUpdated\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.AppUpdated\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
         WebAppUpdatedEventData eventData = (WebAppUpdatedEventData) toSystemEventData(events.get(0));
 
@@ -1305,9 +1294,11 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebBackupOperationStartedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.BackupOperationStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.BackupOperationStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebBackupOperationStartedEventData eventData = (WebBackupOperationStartedEventData) toSystemEventData(events.get(0));
+        WebBackupOperationStartedEventData eventData
+            = (WebBackupOperationStartedEventData) toSystemEventData(events.get(0));
 
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
@@ -1316,9 +1307,11 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebBackupOperationCompletedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.BackupOperationCompleted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.BackupOperationCompleted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebBackupOperationCompletedEventData eventData = (WebBackupOperationCompletedEventData) toSystemEventData(events.get(0));
+        WebBackupOperationCompletedEventData eventData
+            = (WebBackupOperationCompletedEventData) toSystemEventData(events.get(0));
 
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
@@ -1328,9 +1321,11 @@ public class DeserializationTests {
     public void consumeCloudEventWebBackupOperationFailedEvent() {
 
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.BackupOperationFailed\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.BackupOperationFailed\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebBackupOperationFailedEventData eventData = (WebBackupOperationFailedEventData) toSystemEventData(events.get(0));
+        WebBackupOperationFailedEventData eventData
+            = (WebBackupOperationFailedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
     }
@@ -1338,9 +1333,11 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebRestoreOperationStartedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.RestoreOperationStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.RestoreOperationStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebRestoreOperationStartedEventData eventData = (WebRestoreOperationStartedEventData) toSystemEventData(events.get(0));
+        WebRestoreOperationStartedEventData eventData
+            = (WebRestoreOperationStartedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
     }
@@ -1348,9 +1345,11 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebRestoreOperationCompletedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.RestoreOperationCompleted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.RestoreOperationCompleted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebRestoreOperationCompletedEventData eventData = (WebRestoreOperationCompletedEventData) toSystemEventData(events.get(0));
+        WebRestoreOperationCompletedEventData eventData
+            = (WebRestoreOperationCompletedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
     }
@@ -1358,10 +1357,12 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebRestoreOperationFailedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.RestoreOperationFailed\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.RestoreOperationFailed\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebRestoreOperationFailedEventData eventData = (WebRestoreOperationFailedEventData) toSystemEventData(events.get(0));
+        WebRestoreOperationFailedEventData eventData
+            = (WebRestoreOperationFailedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
     }
@@ -1369,7 +1370,8 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebSlotSwapStartedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\"}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent, false);
         WebSlotSwapStartedEventData eventData = (WebSlotSwapStartedEventData) toSystemEventData(events.get(0));
@@ -1380,7 +1382,8 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebSlotSwapCompletedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"specversion\": \"1.0\", \"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapCompleted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"}}]";
+        String requestContent
+            = "[{\"specversion\": \"1.0\", \"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapCompleted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"}}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
         WebSlotSwapCompletedEventData eventData = (WebSlotSwapCompletedEventData) toSystemEventData(events.get(0));
@@ -1391,7 +1394,8 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebSlotSwapFailedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapFailed\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},   \"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapFailed\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},   \"specversion\": \"1.0\"}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
         WebSlotSwapFailedEventData eventData = (WebSlotSwapFailedEventData) toSystemEventData(events.get(0));
@@ -1402,10 +1406,12 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebSlotSwapWithPreviewStartedEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapWithPreviewStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},  \"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapWithPreviewStarted\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},  \"specversion\": \"1.0\"}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebSlotSwapWithPreviewStartedEventData eventData = (WebSlotSwapWithPreviewStartedEventData) toSystemEventData(events.get(0));
+        WebSlotSwapWithPreviewStartedEventData eventData
+            = (WebSlotSwapWithPreviewStartedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
     }
@@ -1413,10 +1419,12 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebSlotSwapWithPreviewCancelledEvent() {
         String siteName = "testSite01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapWithPreviewCancelled\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},   \"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/sites/testSite01\", \"subject\": \"/Microsoft.Web/sites/testSite01\",\"type\": \"Microsoft.Web.SlotSwapWithPreviewCancelled\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appEventTypeDetail\": { \"action\": \"Restarted\"},\"name\": \"testSite01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},   \"specversion\": \"1.0\"}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebSlotSwapWithPreviewCancelledEventData eventData = (WebSlotSwapWithPreviewCancelledEventData) toSystemEventData(events.get(0));
+        WebSlotSwapWithPreviewCancelledEventData eventData
+            = (WebSlotSwapWithPreviewCancelledEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(siteName, eventData.getName());
     }
@@ -1424,10 +1432,12 @@ public class DeserializationTests {
     @Test
     public void consumeCloudEventWebAppServicePlanUpdatedEvent() {
         String planName = "testPlan01";
-        String requestContent = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/serverfarms/testPlan01\", \"subject\": \"/Microsoft.Web/serverfarms/testPlan01\",\"type\": \"Microsoft.Web.AppServicePlanUpdated\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appServicePlanEventTypeDetail\": { \"stampKind\": \"Public\",\"action\": \"Updated\",\"status\": \"Started\" },\"name\": \"testPlan01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\",\"specversion\": \"1.0\"}]";
+        String requestContent
+            = "[{\"source\": \"/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Web/serverfarms/testPlan01\", \"subject\": \"/Microsoft.Web/serverfarms/testPlan01\",\"type\": \"Microsoft.Web.AppServicePlanUpdated\", \"time\": \"2017-08-16T01:57:26.005121Z\",\"id\": \"602a88ef-0001-00e6-1233-1646070610ea\",\"data\": { \"appServicePlanEventTypeDetail\": { \"stampKind\": \"Public\",\"action\": \"Updated\",\"status\": \"Started\" },\"name\": \"testPlan01\",\"clientRequestId\": \"ce636635-2b81-4981-a9d4-cec28fb5b014\",\"correlationRequestId\": \"61baa426-c91f-4e58-b9c6-d3852c4d88d\",\"requestId\": \"0a4d5b5e-7147-482f-8e21-4219aaacf62a\",\"address\": \"/subscriptions/ef90e930-9d7f-4a60-8a99-748e0eea69de/resourcegroups/egcanarytest/providers/Microsoft.Web/sites/egtestapp/restart?api-version=2016-03-01\",\"verb\": \"POST\"},\"specversion\": \"1.0\",\"specversion\": \"1.0\"}]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        WebAppServicePlanUpdatedEventData eventData = (WebAppServicePlanUpdatedEventData) toSystemEventData(events.get(0));
+        WebAppServicePlanUpdatedEventData eventData
+            = (WebAppServicePlanUpdatedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(planName, eventData.getName());
     }
@@ -1436,10 +1446,12 @@ public class DeserializationTests {
     // Healthcare FHIR
     @Test
     public void consumeFhirResourceCreatedEvent() {
-        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        String requestContent
+            = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
-        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        HealthcareFhirResourceCreatedEventData eventData
+            = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
         assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
         assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
         assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
@@ -1448,10 +1460,12 @@ public class DeserializationTests {
 
     @Test
     public void consumeFhirResourceUpdatedEvent() {
-        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        String requestContent
+            = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
-        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        HealthcareFhirResourceUpdatedEventData eventData
+            = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
         assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
         assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
         assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
@@ -1460,10 +1474,12 @@ public class DeserializationTests {
 
     @Test
     public void consumeFhirResourceDeletedEvent() {
-        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        String requestContent
+            = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
         List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
         assertNotNull(events);
-        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        HealthcareFhirResourceDeletedEventData eventData
+            = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
         assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
         assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
         assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
@@ -1472,10 +1488,12 @@ public class DeserializationTests {
 
     @Test
     public void consumeCloudEventFhirResourceCreatedEvent() {
-        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+        String requestContent
+            = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        HealthcareFhirResourceCreatedEventData eventData
+            = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
         assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
@@ -1485,10 +1503,12 @@ public class DeserializationTests {
 
     @Test
     public void consumeCloudEventFhirResourceUpdatedEvent() {
-        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+        String requestContent
+            = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        HealthcareFhirResourceUpdatedEventData eventData
+            = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
         assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
@@ -1498,10 +1518,12 @@ public class DeserializationTests {
 
     @Test
     public void consumeCloudEventFhirResourceDeletedEvent() {
-        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+        String requestContent
+            = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
 
         List<CloudEvent> events = CloudEvent.fromString(requestContent);
-        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        HealthcareFhirResourceDeletedEventData eventData
+            = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
         assertNotNull(events);
         assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
         assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
@@ -1521,7 +1543,6 @@ public class DeserializationTests {
         assertEquals("InvalidRequest", errors.get(0).getCode());
         assertEquals("The request is invalid", errors.get(0).getMessage());
     }
-
 
     // TODO: When new event types are introduced, add one test here for each event type
     private String getTestPayloadFromFile(String fileName) throws IOException {

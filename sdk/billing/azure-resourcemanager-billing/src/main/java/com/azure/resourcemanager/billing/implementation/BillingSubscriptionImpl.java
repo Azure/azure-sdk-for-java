@@ -4,22 +4,33 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
 import com.azure.resourcemanager.billing.models.Amount;
+import com.azure.resourcemanager.billing.models.AutoRenew;
+import com.azure.resourcemanager.billing.models.Beneficiary;
 import com.azure.resourcemanager.billing.models.BillingSubscription;
-import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionOperationStatus;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionStatus;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusDetails;
+import com.azure.resourcemanager.billing.models.NextBillingCycleDetails;
+import com.azure.resourcemanager.billing.models.ProvisioningState;
+import com.azure.resourcemanager.billing.models.RenewalTermDetails;
 import com.azure.resourcemanager.billing.models.Reseller;
+import com.azure.resourcemanager.billing.models.SubscriptionEnrollmentAccountStatus;
+import com.azure.resourcemanager.billing.models.SystemOverrides;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 public final class BillingSubscriptionImpl implements BillingSubscription {
     private BillingSubscriptionInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    BillingSubscriptionImpl(
-        BillingSubscriptionInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    BillingSubscriptionImpl(BillingSubscriptionInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -36,36 +47,58 @@ public final class BillingSubscriptionImpl implements BillingSubscription {
         return this.innerModel().type();
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
-    public UUID subscriptionId() {
-        return this.innerModel().subscriptionId();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public BillingSubscriptionStatusType subscriptionBillingStatus() {
-        return this.innerModel().subscriptionBillingStatus();
+    public AutoRenew autoRenew() {
+        return this.innerModel().autoRenew();
     }
 
-    public Amount lastMonthCharges() {
-        return this.innerModel().lastMonthCharges();
+    public String beneficiaryTenantId() {
+        return this.innerModel().beneficiaryTenantId();
     }
 
-    public Amount monthToDateCharges() {
-        return this.innerModel().monthToDateCharges();
+    public Beneficiary beneficiary() {
+        return this.innerModel().beneficiary();
+    }
+
+    public String billingFrequency() {
+        return this.innerModel().billingFrequency();
     }
 
     public String billingProfileId() {
         return this.innerModel().billingProfileId();
     }
 
+    public Map<String, String> billingPolicies() {
+        Map<String, String> inner = this.innerModel().billingPolicies();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String billingProfileDisplayName() {
         return this.innerModel().billingProfileDisplayName();
     }
 
-    public String costCenter() {
-        return this.innerModel().costCenter();
+    public String billingProfileName() {
+        return this.innerModel().billingProfileName();
+    }
+
+    public String consumptionCostCenter() {
+        return this.innerModel().consumptionCostCenter();
     }
 
     public String customerId() {
@@ -76,6 +109,22 @@ public final class BillingSubscriptionImpl implements BillingSubscription {
         return this.innerModel().customerDisplayName();
     }
 
+    public String customerName() {
+        return this.innerModel().customerName();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String enrollmentAccountId() {
+        return this.innerModel().enrollmentAccountId();
+    }
+
+    public String enrollmentAccountDisplayName() {
+        return this.innerModel().enrollmentAccountDisplayName();
+    }
+
     public String invoiceSectionId() {
         return this.innerModel().invoiceSectionId();
     }
@@ -84,8 +133,52 @@ public final class BillingSubscriptionImpl implements BillingSubscription {
         return this.innerModel().invoiceSectionDisplayName();
     }
 
+    public String invoiceSectionName() {
+        return this.innerModel().invoiceSectionName();
+    }
+
+    public Amount lastMonthCharges() {
+        return this.innerModel().lastMonthCharges();
+    }
+
+    public Amount monthToDateCharges() {
+        return this.innerModel().monthToDateCharges();
+    }
+
+    public NextBillingCycleDetails nextBillingCycleDetails() {
+        return this.innerModel().nextBillingCycleDetails();
+    }
+
+    public String offerId() {
+        return this.innerModel().offerId();
+    }
+
+    public String productCategory() {
+        return this.innerModel().productCategory();
+    }
+
+    public String productType() {
+        return this.innerModel().productType();
+    }
+
+    public String productTypeId() {
+        return this.innerModel().productTypeId();
+    }
+
+    public OffsetDateTime purchaseDate() {
+        return this.innerModel().purchaseDate();
+    }
+
+    public Long quantity() {
+        return this.innerModel().quantity();
+    }
+
     public Reseller reseller() {
         return this.innerModel().reseller();
+    }
+
+    public RenewalTermDetails renewalTermDetails() {
+        return this.innerModel().renewalTermDetails();
     }
 
     public String skuId() {
@@ -96,6 +189,46 @@ public final class BillingSubscriptionImpl implements BillingSubscription {
         return this.innerModel().skuDescription();
     }
 
+    public SystemOverrides systemOverrides() {
+        return this.innerModel().systemOverrides();
+    }
+
+    public String resourceUri() {
+        return this.innerModel().resourceUri();
+    }
+
+    public String termDuration() {
+        return this.innerModel().termDuration();
+    }
+
+    public OffsetDateTime termStartDate() {
+        return this.innerModel().termStartDate();
+    }
+
+    public OffsetDateTime termEndDate() {
+        return this.innerModel().termEndDate();
+    }
+
+    public String provisioningTenantId() {
+        return this.innerModel().provisioningTenantId();
+    }
+
+    public BillingSubscriptionStatus status() {
+        return this.innerModel().status();
+    }
+
+    public BillingSubscriptionOperationStatus operationStatus() {
+        return this.innerModel().operationStatus();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
+    }
+
     public List<String> suspensionReasons() {
         List<String> inner = this.innerModel().suspensionReasons();
         if (inner != null) {
@@ -103,6 +236,23 @@ public final class BillingSubscriptionImpl implements BillingSubscription {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public List<BillingSubscriptionStatusDetails> suspensionReasonDetails() {
+        List<BillingSubscriptionStatusDetails> inner = this.innerModel().suspensionReasonDetails();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public OffsetDateTime enrollmentAccountStartDate() {
+        return this.innerModel().enrollmentAccountStartDate();
+    }
+
+    public SubscriptionEnrollmentAccountStatus subscriptionEnrollmentAccountStatus() {
+        return this.innerModel().subscriptionEnrollmentAccountStatus();
     }
 
     public BillingSubscriptionInner innerModel() {

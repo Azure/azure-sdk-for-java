@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Network Adapter configuration of a DataBox. */
+/**
+ * The Network Adapter configuration of a DataBox.
+ */
 @Immutable
-public final class ApplianceNetworkConfiguration {
+public final class ApplianceNetworkConfiguration implements JsonSerializable<ApplianceNetworkConfiguration> {
     /*
      * Name of the network.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Mac Address.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
-    /** Creates an instance of ApplianceNetworkConfiguration class. */
+    /**
+     * Creates an instance of ApplianceNetworkConfiguration class.
+     */
     public ApplianceNetworkConfiguration() {
     }
 
     /**
      * Get the name property: Name of the network.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ApplianceNetworkConfiguration {
 
     /**
      * Get the macAddress property: Mac Address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -46,9 +52,47 @@ public final class ApplianceNetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceNetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceNetworkConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceNetworkConfiguration.
+     */
+    public static ApplianceNetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceNetworkConfiguration deserializedApplianceNetworkConfiguration
+                = new ApplianceNetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplianceNetworkConfiguration.name = reader.getString();
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedApplianceNetworkConfiguration.macAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceNetworkConfiguration;
+        });
     }
 }

@@ -13,8 +13,7 @@ public final class CheckNameResultImpl implements CheckNameResult {
 
     private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    CheckNameResultImpl(
-        CheckNameResultInner innerObject,
+    CheckNameResultImpl(CheckNameResultInner innerObject,
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

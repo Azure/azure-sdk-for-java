@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.orbital.fluent.models.ContactProfileInner;
 import com.azure.resourcemanager.orbital.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in ContactProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContactProfilesClient.
+ */
 public interface ContactProfilesClient {
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -28,12 +30,12 @@ public interface ContactProfilesClient {
      * @return the specified contact Profile in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContactProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String contactProfileName, Context context);
+    Response<ContactProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String contactProfileName,
+        Context context);
 
     /**
      * Gets the specified contact Profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface ContactProfilesClient {
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -54,15 +56,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(String resourceGroupName,
+        String contactProfileName, ContactProfileInner parameters);
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -71,15 +73,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(String resourceGroupName,
+        String contactProfileName, ContactProfileInner parameters, Context context);
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -87,15 +89,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner createOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters);
+    ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters);
 
     /**
      * Creates or updates a contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters The parameters to provide for the created Contact Profile.
@@ -104,15 +106,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner createOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context);
+    ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters, Context context);
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +127,7 @@ public interface ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -135,12 +137,12 @@ public interface ContactProfilesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String contactProfileName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contactProfileName,
+        Context context);
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +154,7 @@ public interface ContactProfilesClient {
 
     /**
      * Deletes a specified contact profile resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param context The context to associate with this operation.
@@ -165,7 +167,7 @@ public interface ContactProfilesClient {
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -173,15 +175,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
+        String contactProfileName, TagsObject parameters);
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -190,15 +192,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of customer creates a Contact Profile Resource, which will contain all
-     *     of the configurations required for scheduling a contact.
+     * of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
+        String contactProfileName, TagsObject parameters, Context context);
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -206,14 +208,14 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ContactProfileInner updateTags(String resourceGroupName, String contactProfileName, TagsObject parameters);
 
     /**
      * Updates the specified contact profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param contactProfileName Contact Profile name.
      * @param parameters Parameters supplied to update contact profile tags.
@@ -222,15 +224,15 @@ public interface ContactProfilesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a Contact Profile Resource, which will contain all of the configurations required for
-     *     scheduling a contact.
+     * scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner updateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context);
+    ContactProfileInner updateTags(String resourceGroupName, String contactProfileName, TagsObject parameters,
+        Context context);
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContactProfiles API service call as paginated response with {@link PagedIterable}.
@@ -240,11 +242,11 @@ public interface ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -256,7 +258,7 @@ public interface ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -268,12 +270,12 @@ public interface ContactProfilesClient {
 
     /**
      * Returns list of contact profiles by Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

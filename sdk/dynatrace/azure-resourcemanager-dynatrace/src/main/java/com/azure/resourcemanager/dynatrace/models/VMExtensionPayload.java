@@ -6,25 +6,27 @@ package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner;
 
-/** An immutable client-side representation of VMExtensionPayload. */
+/**
+ * An immutable client-side representation of VMExtensionPayload.
+ */
 public interface VMExtensionPayload {
     /**
      * Gets the ingestionKey property: Ingestion key of the environment.
-     *
+     * 
      * @return the ingestionKey value.
      */
     String ingestionKey();
 
     /**
      * Gets the environmentId property: Id of the environment created.
-     *
+     * 
      * @return the environmentId value.
      */
     String environmentId();
 
     /**
      * Gets the inner com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner object.
-     *
+     * 
      * @return the inner object.
      */
     VMExtensionPayloadInner innerModel();

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for VCenters Delete. */
+/**
+ * Samples for VCenters Delete.
+ */
 public final class VCentersDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteVCenter.json
      */
     /**
      * Sample code: DeleteVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {

@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = Region.US_WEST2;
     private final String vmName = "javavm";
 
     @Override
@@ -43,22 +43,20 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         // and "test timing out after latest test proxy update"
         // Create a virtual machine with just MSI enabled without role and scope.
         //
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withSystemAssignedManagedServiceIdentity()
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
 
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertNotNull(virtualMachine.innerModel());
@@ -68,23 +66,22 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure NO role assigned for resource group
         //
-        ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
-        PagedIterable<RoleAssignment> rgRoleAssignments1 =
-            authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
+        PagedIterable<RoleAssignment> rgRoleAssignments1
+            = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments1) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
+                && roleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions
-            .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
+        Assertions.assertFalse(found,
+            "Resource group should not have a role assignment with virtual machine MSI principal");
 
         virtualMachine = virtualMachine.update().withSystemAssignedManagedServiceIdentity().apply();
 
@@ -101,36 +98,33 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments1) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
+                && roleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions
-            .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
+        Assertions.assertFalse(found,
+            "Resource group should not have a role assignment with virtual machine MSI principal");
     }
 
     @Test
     public void canSetMSIOnNewVMWithRoleAssignedToCurrentResourceGroup() throws Exception {
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .create();
 
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertNotNull(virtualMachine.innerModel());
@@ -149,14 +143,14 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure role assigned
         //
-        ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
-        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
+        PagedIterable<RoleAssignment> rgRoleAssignments
+            = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         boolean found = false;
         for (RoleAssignment rgRoleAssignment : rgRoleAssignments) {
             if (rgRoleAssignment.principalId() != null
-                && rgRoleAssignment
-                    .principalId()
+                && rgRoleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
@@ -170,35 +164,31 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     public void canSetMSIOnNewVMWithMultipleRoleAssignments() throws Exception {
         String storageAccountName = generateRandomResourceName("javacsrg", 15);
 
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(storageAccountName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .create();
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(storageAccountName)
+            .withRegion(Region.US_EAST2)
+            .withNewResourceGroup(rgName)
+            .create();
 
-        ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().getByName(storageAccount.resourceGroupName());
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().getByName(storageAccount.resourceGroupName());
 
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
-                .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
+            .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+            .create();
 
         // Validate service created service principal
         //
@@ -214,13 +204,13 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments
+            = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
+                && roleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
@@ -230,21 +220,20 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure role assigned for storage account
         //
-        PagedIterable<RoleAssignment> stgRoleAssignments =
-            authorizationManager.roleAssignments().listByScope(storageAccount.id());
+        PagedIterable<RoleAssignment> stgRoleAssignments
+            = authorizationManager.roleAssignments().listByScope(storageAccount.id());
         Assertions.assertNotNull(stgRoleAssignments);
         found = false;
         for (RoleAssignment roleAssignment : stgRoleAssignments) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
+                && roleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions
-            .assertTrue(found, "Storage account should have a role assignment with virtual machine MSI principal");
+        Assertions.assertTrue(found,
+            "Storage account should have a role assignment with virtual machine MSI principal");
     }
 
     @Test
@@ -252,22 +241,20 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
         // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         // and "test timing out after latest test proxy update"
-        VirtualMachine virtualMachine =
-            computeManager
-                .virtualMachines()
-                .define(vmName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("Foo12")
-                .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .withOSDiskCaching(CachingTypes.READ_WRITE)
-                .withSystemAssignedManagedServiceIdentity()
-                .create();
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
 
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertNotNull(virtualMachine.innerModel());
@@ -280,38 +267,36 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure NO role assigned for resource group
         //
-        ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
-        PagedIterable<RoleAssignment> rgRoleAssignments1 =
-            authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
+        PagedIterable<RoleAssignment> rgRoleAssignments1
+            = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments1) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
+                && roleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions
-            .assertFalse(found, "Resource group should not have a role assignment with virtual machine MSI principal");
+        Assertions.assertFalse(found,
+            "Resource group should not have a role assignment with virtual machine MSI principal");
 
-        virtualMachine
-            .update()
+        virtualMachine.update()
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
             .apply();
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> roleAssignments2 = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> roleAssignments2
+            = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(roleAssignments2);
         for (RoleAssignment roleAssignment : roleAssignments2) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                    .principalId()
+                && roleAssignment.principalId()
                     .equalsIgnoreCase(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;

@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The artifact properties definition. */
+/**
+ * The artifact properties definition.
+ */
 @Fluent
-public class ArtifactProperties {
+public class ArtifactProperties implements JsonSerializable<ArtifactProperties> {
     /*
      * The artifact creation time.
      */
-    @JsonProperty(value = "createdTime")
     private OffsetDateTime createdTime;
 
     /*
      * The artifact changed time.
      */
-    @JsonProperty(value = "changedTime")
     private OffsetDateTime changedTime;
 
     /*
      * Anything
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
-    /** Creates an instance of ArtifactProperties class. */
+    /**
+     * Creates an instance of ArtifactProperties class.
+     */
     public ArtifactProperties() {
     }
 
     /**
      * Get the createdTime property: The artifact creation time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -44,7 +51,7 @@ public class ArtifactProperties {
 
     /**
      * Set the createdTime property: The artifact creation time.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the ArtifactProperties object itself.
      */
@@ -55,7 +62,7 @@ public class ArtifactProperties {
 
     /**
      * Get the changedTime property: The artifact changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -64,7 +71,7 @@ public class ArtifactProperties {
 
     /**
      * Set the changedTime property: The artifact changed time.
-     *
+     * 
      * @param changedTime the changedTime value to set.
      * @return the ArtifactProperties object itself.
      */
@@ -75,7 +82,7 @@ public class ArtifactProperties {
 
     /**
      * Get the metadata property: Anything.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -84,7 +91,7 @@ public class ArtifactProperties {
 
     /**
      * Set the metadata property: Anything.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ArtifactProperties object itself.
      */
@@ -95,9 +102,55 @@ public class ArtifactProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdTime",
+            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
+        jsonWriter.writeStringField("changedTime",
+            this.changedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.changedTime));
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactProperties.
+     */
+    public static ArtifactProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactProperties deserializedArtifactProperties = new ArtifactProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedArtifactProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedArtifactProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedArtifactProperties.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactProperties;
+        });
     }
 }

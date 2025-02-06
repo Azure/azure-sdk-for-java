@@ -24,7 +24,8 @@ public class DeleteActivity extends ExecutionActivity {
     private String type = "Delete";
 
     /*
-     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or Expression with resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     private Object recursive;
 
@@ -34,7 +35,8 @@ public class DeleteActivity extends ExecutionActivity {
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     private Object enableLogging;
 

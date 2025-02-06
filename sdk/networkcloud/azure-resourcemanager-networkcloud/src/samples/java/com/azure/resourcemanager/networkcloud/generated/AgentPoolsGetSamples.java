@@ -4,21 +4,24 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for AgentPools Get. */
+/**
+ * Samples for AgentPools Get.
+ */
 public final class AgentPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/AgentPools_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * AgentPools_Get.json
      */
     /**
      * Sample code: Get Kubernetes cluster agent pool.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void getKubernetesClusterAgentPool(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .agentPools()
-            .getWithResponse(
-                "resourceGroupName", "kubernetesClusterName", "agentPoolName", com.azure.core.util.Context.NONE);
+    public static void
+        getKubernetesClusterAgentPool(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.agentPools()
+            .getWithResponse("resourceGroupName", "kubernetesClusterName", "agentPoolName",
+                com.azure.core.util.Context.NONE);
     }
 }

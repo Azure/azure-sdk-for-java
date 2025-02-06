@@ -13,26 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DesktopListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DesktopList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"objectId\":\"frvtpuqu\",\"description\":\"qlgkfbtn\",\"friendlyName\":\"aongbj\",\"iconHash\":\"tujitcjedft\"},\"id\":\"ae\",\"name\":\"kojvd\",\"type\":\"pzfoqoui\"},{\"properties\":{\"objectId\":\"arz\",\"description\":\"zuf\",\"friendlyName\":\"ciqopidoa\",\"iconHash\":\"iodhkhazxkhnz\"},\"id\":\"nlwntoe\",\"name\":\"okdwb\",\"type\":\"hksz\"}],\"nextLink\":\"mrv\"}")
-                .toObject(DesktopList.class);
-        Assertions.assertEquals("qlgkfbtn", model.value().get(0).description());
-        Assertions.assertEquals("aongbj", model.value().get(0).friendlyName());
+        DesktopList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"objectId\":\"bt\",\"description\":\"sfraoyzko\",\"friendlyName\":\"tlmngu\",\"iconHash\":\"wqaldsyu\"},\"id\":\"merqfobwyznkb\",\"name\":\"kutwpf\",\"type\":\"pagmhrskdsnf\"},{\"properties\":{\"objectId\":\"oakgtdlmkkzev\",\"description\":\"hewpusdsttwv\",\"friendlyName\":\"vbbejdcng\",\"iconHash\":\"m\"},\"id\":\"ufgmjzrwrdg\",\"name\":\"twaenuuzko\",\"type\":\"bminrfdwoyuhhzi\"},{\"properties\":{\"objectId\":\"fozbhdmsmlmzqhof\",\"description\":\"maequiahxicslfa\",\"friendlyName\":\"z\",\"iconHash\":\"yylhalnswhccsp\"},\"id\":\"ivwitqscywugg\",\"name\":\"oluhczbwemh\",\"type\":\"i\"}],\"nextLink\":\"brgz\"}")
+            .toObject(DesktopList.class);
+        Assertions.assertEquals("sfraoyzko", model.value().get(0).description());
+        Assertions.assertEquals("tlmngu", model.value().get(0).friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DesktopList model =
-            new DesktopList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DesktopInner().withDescription("qlgkfbtn").withFriendlyName("aongbj"),
-                            new DesktopInner().withDescription("zuf").withFriendlyName("ciqopidoa")));
+        DesktopList model = new DesktopList()
+            .withValue(Arrays.asList(new DesktopInner().withDescription("sfraoyzko").withFriendlyName("tlmngu"),
+                new DesktopInner().withDescription("hewpusdsttwv").withFriendlyName("vbbejdcng"),
+                new DesktopInner().withDescription("maequiahxicslfa").withFriendlyName("z")));
         model = BinaryData.fromObject(model).toObject(DesktopList.class);
-        Assertions.assertEquals("qlgkfbtn", model.value().get(0).description());
-        Assertions.assertEquals("aongbj", model.value().get(0).friendlyName());
+        Assertions.assertEquals("sfraoyzko", model.value().get(0).description());
+        Assertions.assertEquals("tlmngu", model.value().get(0).friendlyName());
     }
 }

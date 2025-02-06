@@ -64,20 +64,16 @@ public final class IpFirewallRuleInfoImpl
     }
 
     public IpFirewallRuleInfo create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpFirewallRules()
-                .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpFirewallRules()
+            .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IpFirewallRuleInfo create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpFirewallRules()
-                .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpFirewallRules()
+            .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), context);
         return this;
     }
 
@@ -92,49 +88,41 @@ public final class IpFirewallRuleInfoImpl
     }
 
     public IpFirewallRuleInfo apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpFirewallRules()
-                .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpFirewallRules()
+            .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IpFirewallRuleInfo apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpFirewallRules()
-                .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpFirewallRules()
+            .createOrUpdate(resourceGroupName, workspaceName, ruleName, this.innerModel(), context);
         return this;
     }
 
-    IpFirewallRuleInfoImpl(
-        IpFirewallRuleInfoInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    IpFirewallRuleInfoImpl(IpFirewallRuleInfoInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.ruleName = Utils.getValueFromIdByName(innerObject.id(), "firewallRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.ruleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
     }
 
     public IpFirewallRuleInfo refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpFirewallRules()
-                .getWithResponse(resourceGroupName, workspaceName, ruleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpFirewallRules()
+            .getWithResponse(resourceGroupName, workspaceName, ruleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IpFirewallRuleInfo refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpFirewallRules()
-                .getWithResponse(resourceGroupName, workspaceName, ruleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpFirewallRules()
+            .getWithResponse(resourceGroupName, workspaceName, ruleName, context)
+            .getValue();
         return this;
     }
 

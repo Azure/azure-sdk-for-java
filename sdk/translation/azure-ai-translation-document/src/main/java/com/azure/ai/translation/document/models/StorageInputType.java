@@ -5,7 +5,6 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class StorageInputType extends ExpandableStringEnum<StorageInputTyp
      * @return the corresponding StorageInputType.
      */
     @Generated
-    @JsonCreator
     public static StorageInputType fromString(String name) {
         return fromString(name, StorageInputType.class);
     }

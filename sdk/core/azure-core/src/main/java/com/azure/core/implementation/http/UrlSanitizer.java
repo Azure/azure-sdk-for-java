@@ -9,10 +9,9 @@ import com.azure.core.util.UrlBuilder;
 
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.logging.LoggingKeys.REDACTED_PLACEHOLDER;
@@ -21,9 +20,7 @@ import static com.azure.core.implementation.logging.LoggingKeys.REDACTED_PLACEHO
  * Sanitizes URLs by redacting query parameters based on a configured allowlist.
  */
 public final class UrlSanitizer {
-    static final Set<String> DEFAULT_QUERY_PARAMS_ALLOWLIST
-        = Collections.unmodifiableSet(new HashSet<>(Collections.singletonList("api-version")));
-    private final Set<String> allowedQueryParamNames;
+    private final Predicate<String> canLogQueryParam;
 
     /**
      * Creates a new instance of UrlSanitizer with the default allowlist.
@@ -31,13 +28,15 @@ public final class UrlSanitizer {
      * @param allowedQueryParamNames A collection of query parameter names that should not be redacted.
      */
     public UrlSanitizer(Collection<String> allowedQueryParamNames) {
-        if (allowedQueryParamNames == null) {
-            this.allowedQueryParamNames = DEFAULT_QUERY_PARAMS_ALLOWLIST;
+        if (CoreUtils.isNullOrEmpty(allowedQueryParamNames)) {
+            this.canLogQueryParam = "api-version"::equalsIgnoreCase;
         } else {
-            this.allowedQueryParamNames = allowedQueryParamNames.stream()
+            Set<String> lowercasedAllowedQueryParamNames = allowedQueryParamNames.stream()
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
-            this.allowedQueryParamNames.addAll(DEFAULT_QUERY_PARAMS_ALLOWLIST);
+            lowercasedAllowedQueryParamNames.add("api-version");
+            this.canLogQueryParam
+                = paramName -> lowercasedAllowedQueryParamNames.contains(paramName.toLowerCase(Locale.ROOT));
         }
     }
 
@@ -59,7 +58,7 @@ public final class UrlSanitizer {
         UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
         CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
-            if (allowedQueryParamNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
+            if (canLogQueryParam.test(queryParam.getKey())) {
                 urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
             } else {
                 urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);

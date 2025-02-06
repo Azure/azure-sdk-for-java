@@ -30,22 +30,28 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInner;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplateList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ArmTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ArmTemplatesClient.
+ */
 public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ArmTemplatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of ArmTemplatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ArmTemplatesClientImpl(DevTestLabsClientImpl client) {
-        this.service =
-            RestProxy.create(ArmTemplatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ArmTemplatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,56 +62,40 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientArm")
     public interface ArmTemplatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{artifactSourceName}/armtemplates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{artifactSourceName}/armtemplates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmTemplateList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ArmTemplateList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("artifactSourceName") String artifactSourceName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("artifactSourceName") String artifactSourceName, @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{artifactSourceName}/armtemplates/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{artifactSourceName}/armtemplates/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmTemplateInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ArmTemplateInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("artifactSourceName") String artifactSourceName,
-            @PathParam("name") String name,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("artifactSourceName") String artifactSourceName, @PathParam("name") String name,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ArmTemplateList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ArmTemplateList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -116,29 +106,19 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ArmTemplateInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private Mono<PagedResponse<ArmTemplateInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String artifactSourceName, String expand, String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -153,37 +133,17 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            artifactSourceName,
-                            expand,
-                            filter,
-                            top,
-                            orderby,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ArmTemplateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ArmTemplateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -195,30 +155,19 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ArmTemplateInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ArmTemplateInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String artifactSourceName, String expand, String filter, Integer top, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -234,33 +183,15 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                artifactSourceName,
-                expand,
-                filter,
-                top,
-                orderby,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+                artifactSourceName, expand, filter, top, orderby, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -274,14 +205,8 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ArmTemplateInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private PagedFlux<ArmTemplateInner> listAsync(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -289,7 +214,7 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -311,7 +236,7 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -326,25 +251,15 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ArmTemplateInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<ArmTemplateInner> listAsync(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, labName, artifactSourceName, expand, filter,
+            top, orderby, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -365,7 +280,7 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
 
     /**
      * List azure resource manager templates in a given artifact source.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -380,22 +295,15 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArmTemplateInner> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    public PagedIterable<ArmTemplateInner> list(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context));
     }
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -407,19 +315,15 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return azure resource manager template along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArmTemplateInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String artifactSourceName, String name, String expand) {
+    private Mono<Response<ArmTemplateInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String artifactSourceName, String name, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -438,25 +342,14 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            artifactSourceName,
-                            name,
-                            expand,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, artifactSourceName, name, expand, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -469,24 +362,15 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return azure resource manager template along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ArmTemplateInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context) {
+    private Mono<Response<ArmTemplateInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String artifactSourceName, String name, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -504,23 +388,13 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                artifactSourceName,
-                name,
-                expand,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            artifactSourceName, name, expand, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -531,8 +405,8 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return azure resource manager template on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ArmTemplateInner> getAsync(
-        String resourceGroupName, String labName, String artifactSourceName, String name) {
+    private Mono<ArmTemplateInner> getAsync(String resourceGroupName, String labName, String artifactSourceName,
+        String name) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, labName, artifactSourceName, name, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -540,7 +414,7 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -553,19 +427,14 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
      * @return azure resource manager template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArmTemplateInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context) {
+    public Response<ArmTemplateInner> getWithResponse(String resourceGroupName, String labName,
+        String artifactSourceName, String name, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, labName, artifactSourceName, name, expand, context).block();
     }
 
     /**
      * Get azure resource manager template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
@@ -583,14 +452,13 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmTemplateInner>> listNextSinglePageAsync(String nextLink) {
@@ -598,37 +466,26 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ArmTemplateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ArmTemplateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ArmTemplateInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -636,23 +493,13 @@ public final class ArmTemplatesClientImpl implements ArmTemplatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

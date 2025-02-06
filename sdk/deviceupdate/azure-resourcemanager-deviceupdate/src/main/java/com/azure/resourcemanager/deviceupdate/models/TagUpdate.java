@@ -5,20 +5,21 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Request payload used to update an existing resource's tags.
  */
 @Fluent
-public class TagUpdate {
+public class TagUpdate implements JsonSerializable<TagUpdate> {
     /*
      * List of key value pairs that describe the resource. This will overwrite the existing tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -28,8 +29,7 @@ public class TagUpdate {
     }
 
     /**
-     * Get the tags property: List of key value pairs that describe the resource. This will overwrite the existing
-     * tags.
+     * Get the tags property: List of key value pairs that describe the resource. This will overwrite the existing tags.
      * 
      * @return the tags value.
      */
@@ -38,8 +38,7 @@ public class TagUpdate {
     }
 
     /**
-     * Set the tags property: List of key value pairs that describe the resource. This will overwrite the existing
-     * tags.
+     * Set the tags property: List of key value pairs that describe the resource. This will overwrite the existing tags.
      * 
      * @param tags the tags value to set.
      * @return the TagUpdate object itself.
@@ -55,5 +54,42 @@ public class TagUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagUpdate if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TagUpdate.
+     */
+    public static TagUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagUpdate deserializedTagUpdate = new TagUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTagUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagUpdate;
+        });
     }
 }

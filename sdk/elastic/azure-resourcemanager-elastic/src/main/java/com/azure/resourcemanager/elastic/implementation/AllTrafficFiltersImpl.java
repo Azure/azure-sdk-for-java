@@ -20,21 +20,18 @@ public final class AllTrafficFiltersImpl implements AllTrafficFilters {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public AllTrafficFiltersImpl(
-        AllTrafficFiltersClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public AllTrafficFiltersImpl(AllTrafficFiltersClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ElasticTrafficFilterResponse> listWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<ElasticTrafficFilterResponseInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
+    public Response<ElasticTrafficFilterResponse> listWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<ElasticTrafficFilterResponseInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ElasticTrafficFilterResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

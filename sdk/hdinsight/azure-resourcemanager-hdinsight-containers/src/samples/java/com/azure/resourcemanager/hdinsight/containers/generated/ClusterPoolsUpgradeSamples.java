@@ -14,7 +14,7 @@ import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolUpgrade;
 public final class ClusterPoolsUpgradeSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * UpgradeNodeOsForClusterPool.json
      */
     /**
@@ -24,14 +24,15 @@ public final class ClusterPoolsUpgradeSamples {
      */
     public static void
         clusterPoolsUpgradeNodeOs(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusterPools().upgrade("hiloResourcegroup", "clusterpool1",
-            new ClusterPoolUpgrade().withProperties(new ClusterPoolNodeOsImageUpdateProperties()),
-            com.azure.core.util.Context.NONE);
+        manager.clusterPools()
+            .upgrade("hiloResourcegroup", "clusterpool1",
+                new ClusterPoolUpgrade().withProperties(new ClusterPoolNodeOsImageUpdateProperties()),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2024-05-01-preview/examples/
      * UpgradeAKSPatchVersionForClusterPool.json
      */
     /**
@@ -41,9 +42,11 @@ public final class ClusterPoolsUpgradeSamples {
      */
     public static void clusterPoolsUpgradeAKSPatchVersion(
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
-        manager.clusterPools().upgrade("hiloResourcegroup", "clusterpool1",
-            new ClusterPoolUpgrade().withProperties(new ClusterPoolAksPatchVersionUpgradeProperties()
-                .withUpgradeClusterPool(true).withUpgradeAllClusterNodes(false)),
-            com.azure.core.util.Context.NONE);
+        manager.clusterPools()
+            .upgrade("hiloResourcegroup", "clusterpool1",
+                new ClusterPoolUpgrade()
+                    .withProperties(new ClusterPoolAksPatchVersionUpgradeProperties().withUpgradeClusterPool(true)
+                        .withUpgradeAllClusterNodes(false)),
+                com.azure.core.util.Context.NONE);
     }
 }

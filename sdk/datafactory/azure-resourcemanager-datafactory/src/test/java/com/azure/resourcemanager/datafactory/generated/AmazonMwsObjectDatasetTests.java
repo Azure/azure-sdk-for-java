@@ -19,32 +19,33 @@ public final class AmazonMwsObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonMwsObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"AmazonMWSObject\",\"typeProperties\":{\"tableName\":\"dataclz\"},\"description\":\"rdpuyytbpkrp\",\"structure\":\"dataqetp\",\"schema\":\"datanefnoafp\",\"linkedServiceName\":{\"referenceName\":\"nrxiyrxow\",\"parameters\":{\"frfa\":\"datafcmuajwblxphto\",\"ihtibufgz\":\"datatnnsvrfajy\",\"ctblfehb\":\"datazhl\"}},\"parameters\":{\"jxdumhycxonebld\":{\"type\":\"Int\",\"defaultValue\":\"datahrcmeq\"}},\"annotations\":[\"datamdfjwcngkwxjsj\",\"datauvohufzdtsrp\"],\"folder\":{\"name\":\"gzacrzhns\"},\"\":{\"uanbfulvc\":\"datagmgbhuqcz\"}}")
+            "{\"type\":\"AmazonMWSObject\",\"typeProperties\":{\"tableName\":\"datasfqqhcmecagsbf\"},\"description\":\"irpnj\",\"structure\":\"datallfkchhgs\",\"schema\":\"datazzcajl\",\"linkedServiceName\":{\"referenceName\":\"mqcycabaamkkhd\",\"parameters\":{\"ws\":\"datakxdujkxpuqzdyoq\",\"ezxiz\":\"dataarpzhry\",\"azccouhwivkd\":\"datasyxbfjilb\"}},\"parameters\":{\"dqbvx\":{\"type\":\"SecureString\",\"defaultValue\":\"datanrbxzepirtvcpi\"}},\"annotations\":[\"datalpwbopvhcbt\"],\"folder\":{\"name\":\"rjxcon\"},\"\":{\"h\":\"datakfki\",\"gvuqzgbjwvrudmp\":\"dataeoc\",\"esgyzwph\":\"dataewpmioleaja\"}}")
             .toObject(AmazonMwsObjectDataset.class);
-        Assertions.assertEquals("rdpuyytbpkrp", model.description());
-        Assertions.assertEquals("nrxiyrxow", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("jxdumhycxonebld").type());
-        Assertions.assertEquals("gzacrzhns", model.folder().name());
+        Assertions.assertEquals("irpnj", model.description());
+        Assertions.assertEquals("mqcycabaamkkhd", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("dqbvx").type());
+        Assertions.assertEquals("rjxcon", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonMwsObjectDataset model = new AmazonMwsObjectDataset().withDescription("rdpuyytbpkrp")
-            .withStructure("dataqetp")
-            .withSchema("datanefnoafp")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("nrxiyrxow")
+        AmazonMwsObjectDataset model = new AmazonMwsObjectDataset().withDescription("irpnj")
+            .withStructure("datallfkchhgs")
+            .withSchema("datazzcajl")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("mqcycabaamkkhd")
                 .withParameters(
-                    mapOf("frfa", "datafcmuajwblxphto", "ihtibufgz", "datatnnsvrfajy", "ctblfehb", "datazhl")))
-            .withParameters(mapOf("jxdumhycxonebld",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datahrcmeq")))
-            .withAnnotations(Arrays.asList("datamdfjwcngkwxjsj", "datauvohufzdtsrp"))
-            .withFolder(new DatasetFolder().withName("gzacrzhns"))
-            .withTableName("dataclz");
+                    mapOf("ws", "datakxdujkxpuqzdyoq", "ezxiz", "dataarpzhry", "azccouhwivkd", "datasyxbfjilb")))
+            .withParameters(mapOf("dqbvx",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("datanrbxzepirtvcpi")))
+            .withAnnotations(Arrays.asList("datalpwbopvhcbt"))
+            .withFolder(new DatasetFolder().withName("rjxcon"))
+            .withTableName("datasfqqhcmecagsbf");
         model = BinaryData.fromObject(model).toObject(AmazonMwsObjectDataset.class);
-        Assertions.assertEquals("rdpuyytbpkrp", model.description());
-        Assertions.assertEquals("nrxiyrxow", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("jxdumhycxonebld").type());
-        Assertions.assertEquals("gzacrzhns", model.folder().name());
+        Assertions.assertEquals("irpnj", model.description());
+        Assertions.assertEquals("mqcycabaamkkhd", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("dqbvx").type());
+        Assertions.assertEquals("rjxcon", model.folder().name());
     }
 
     // Use "Map.of" if available

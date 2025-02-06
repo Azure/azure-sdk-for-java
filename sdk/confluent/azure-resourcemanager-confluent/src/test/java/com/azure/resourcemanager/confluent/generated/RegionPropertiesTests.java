@@ -31,9 +31,14 @@ public final class RegionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegionProperties model = new RegionProperties()
-            .withMetadata(new SCMetadataEntity().withSelf("uyovw").withResourceName("bkfezzxscyhwzdgi")
-                .withCreatedTimestamp("jbzbomvzzbtdcq").withUpdatedTimestamp("niyujv").withDeletedTimestamp("l"))
-            .withSpec(new RegionSpecEntity().withName("hfssnrb").withCloud("efr").withRegionName("sgaojfmwncot")
+            .withMetadata(new SCMetadataEntity().withSelf("uyovw")
+                .withResourceName("bkfezzxscyhwzdgi")
+                .withCreatedTimestamp("jbzbomvzzbtdcq")
+                .withUpdatedTimestamp("niyujv")
+                .withDeletedTimestamp("l"))
+            .withSpec(new RegionSpecEntity().withName("hfssnrb")
+                .withCloud("efr")
+                .withRegionName("sgaojfmwncot")
                 .withPackages(Arrays.asList("hirctymoxoftpipi")));
         model = BinaryData.fromObject(model).toObject(RegionProperties.class);
         Assertions.assertEquals("uyovw", model.metadata().self());

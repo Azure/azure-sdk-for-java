@@ -4,7 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,20 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The CreateCallFailed event.
+ * The create call failed event.
  */
-@Immutable
+@Fluent
 public final class CreateCallFailed implements JsonSerializable<CreateCallFailed> {
-    /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
-     */
-    private String operationContext;
-
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
     /*
      * Call connection ID.
      */
@@ -41,29 +31,20 @@ public final class CreateCallFailed implements JsonSerializable<CreateCallFailed
      */
     private String correlationId;
 
+    /*
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     */
+    private String operationContext;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    private ResultInformation resultInformation;
+
     /**
      * Creates an instance of CreateCallFailed class.
      */
     public CreateCallFailed() {
-    }
-
-    /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
-     * 
-     * @return the operationContext value.
-     */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     * 
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**
@@ -76,12 +57,34 @@ public final class CreateCallFailed implements JsonSerializable<CreateCallFailed
     }
 
     /**
+     * Set the callConnectionId property: Call connection ID.
+     * 
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the CreateCallFailed object itself.
+     */
+    public CreateCallFailed setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
      * Get the serverCallId property: Server call ID.
      * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
         return this.serverCallId;
+    }
+
+    /**
+     * Set the serverCallId property: Server call ID.
+     * 
+     * @param serverCallId the serverCallId value to set.
+     * @return the CreateCallFailed object itself.
+     */
+    public CreateCallFailed setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
     }
 
     /**
@@ -95,11 +98,70 @@ public final class CreateCallFailed implements JsonSerializable<CreateCallFailed
     }
 
     /**
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
+     * 
+     * @param correlationId the correlationId value to set.
+     * @return the CreateCallFailed object itself.
+     */
+    public CreateCallFailed setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the CreateCallFailed object itself.
+     */
+    public CreateCallFailed setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @param resultInformation the resultInformation value to set.
+     * @return the CreateCallFailed object itself.
+     */
+    public CreateCallFailed setResultInformation(ResultInformation resultInformation) {
+        this.resultInformation = resultInformation;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
+        jsonWriter.writeStringField("serverCallId", this.serverCallId);
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeJsonField("resultInformation", this.resultInformation);
         return jsonWriter.writeEndObject();
     }
 
@@ -118,16 +180,16 @@ public final class CreateCallFailed implements JsonSerializable<CreateCallFailed
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("operationContext".equals(fieldName)) {
-                    deserializedCreateCallFailed.operationContext = reader.getString();
-                } else if ("resultInformation".equals(fieldName)) {
-                    deserializedCreateCallFailed.resultInformation = ResultInformation.fromJson(reader);
-                } else if ("callConnectionId".equals(fieldName)) {
+                if ("callConnectionId".equals(fieldName)) {
                     deserializedCreateCallFailed.callConnectionId = reader.getString();
                 } else if ("serverCallId".equals(fieldName)) {
                     deserializedCreateCallFailed.serverCallId = reader.getString();
                 } else if ("correlationId".equals(fieldName)) {
                     deserializedCreateCallFailed.correlationId = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedCreateCallFailed.operationContext = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    deserializedCreateCallFailed.resultInformation = ResultInformation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

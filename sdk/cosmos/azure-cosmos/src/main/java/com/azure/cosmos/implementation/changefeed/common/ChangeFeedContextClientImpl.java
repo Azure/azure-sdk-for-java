@@ -7,12 +7,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ChangeFeedOperationState;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -42,7 +38,6 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -149,49 +144,10 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         if (isSplitHandlingDisabled) {
             ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
         }
-        CosmosAsyncDatabase database = collectionLink.getDatabase();
-        AsyncDocumentClient clientWrapper =
-            CosmosBridgeInternal.getAsyncDocumentClient(database);
-        Flux<FeedResponse<T>> feedResponseFlux =
-            clientWrapper
-                .getCollectionCache()
-                .resolveByNameAsync(
-                    null,
-                    BridgeInternal.extractContainerSelfLink(collectionLink),
-                    null)
-                .flatMapMany((collection) -> {
-                    if (collection == null) {
-                        throw new IllegalStateException("Collection cannot be null");
-                    }
-
-                    ChangeFeedOperationState state = new ChangeFeedOperationState(
-                        cosmosAsyncDatabaseAccessor.getCosmosAsyncClient(database),
-                        "queryChangeFeed." + collection.getId(),
-                        database.getId(),
-                        collection.getId(),
-                        ResourceType.Document,
-                        OperationType.ReadFeed,
-                        null,
-                        changeFeedRequestOptions,
-                        null);
-
-                    return clientWrapper
-                        .queryDocumentChangeFeedFromPagedFlux(collection, state, Document.class)
-                        .map(response -> {
-                            List<T> results = response.getResults()
-                                                             .stream()
-                                                             .map(document -> document.toObject(klass))
-                                                             .collect(Collectors.toList());
-                            return BridgeInternal.toFeedResponsePage(
-                                results,
-                                response.getResponseHeaders(),
-                                ImplementationBridgeHelpers
-                                    .FeedResponseHelper
-                                    .getFeedResponseAccessor().getNoChanges(response),
-                                response.getCosmosDiagnostics());
-                        });
-                });
-        return feedResponseFlux.publishOn(this.scheduler);
+        return collectionLink
+            .queryChangeFeed(changeFeedRequestOptions, klass)
+            .byPage().take(1, true)
+            .publishOn(this.scheduler);
     }
 
     @Override

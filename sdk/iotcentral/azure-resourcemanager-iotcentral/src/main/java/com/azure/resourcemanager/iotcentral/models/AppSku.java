@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppSku. */
+/**
+ * The name of the SKU.
+ */
 public final class AppSku extends ExpandableStringEnum<AppSku> {
-    /** Static value ST0 for AppSku. */
+    /**
+     * Static value ST0 for AppSku.
+     */
     public static final AppSku ST0 = fromString("ST0");
 
-    /** Static value ST1 for AppSku. */
+    /**
+     * Static value ST1 for AppSku.
+     */
     public static final AppSku ST1 = fromString("ST1");
 
-    /** Static value ST2 for AppSku. */
+    /**
+     * Static value ST2 for AppSku.
+     */
     public static final AppSku ST2 = fromString("ST2");
 
     /**
+     * Creates a new instance of AppSku value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppSku() {
+    }
+
+    /**
      * Creates or finds a AppSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppSku.
      */
-    @JsonCreator
     public static AppSku fromString(String name) {
         return fromString(name, AppSku.class);
     }
 
-    /** @return known AppSku values. */
+    /**
+     * Gets known AppSku values.
+     * 
+     * @return known AppSku values.
+     */
     public static Collection<AppSku> values() {
         return values(AppSku.class);
     }

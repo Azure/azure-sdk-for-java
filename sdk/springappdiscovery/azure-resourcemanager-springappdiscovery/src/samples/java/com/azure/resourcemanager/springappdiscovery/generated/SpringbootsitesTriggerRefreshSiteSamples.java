@@ -20,8 +20,8 @@ public final class SpringbootsitesTriggerRefreshSiteSamples {
      */
     public static void springbootsitesTriggerRefreshSiteMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu",
-            com.azure.core.util.Context.NONE);
+        manager.springbootsites()
+            .triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class SpringbootsitesTriggerRefreshSiteSamples {
      */
     public static void springbootsitesTriggerRefreshSiteMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu",
-            com.azure.core.util.Context.NONE);
+        manager.springbootsites()
+            .triggerRefreshSite("rgspringbootsites", "czarpuxwoafaqsuptutcwyu", com.azure.core.util.Context.NONE);
     }
 }

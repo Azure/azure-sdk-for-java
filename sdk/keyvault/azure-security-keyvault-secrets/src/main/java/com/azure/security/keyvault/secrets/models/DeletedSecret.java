@@ -103,7 +103,7 @@ public final class DeletedSecret extends KeyVaultSecret {
     private OffsetDateTime deletedOn;
 
     /**
-     * Creates an instance of DeletedSecret.
+     * Creates a new instance of {@link DeletedSecret}.
      */
     public DeletedSecret() {
         super();
@@ -183,7 +183,7 @@ public final class DeletedSecret extends KeyVaultSecret {
                     deletedSecret.scheduledPurgeDate = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
                 } else if ("deletedDate".equals(fieldName)) {
                     deletedSecret.deletedOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
-                } else  {
+                } else {
                     reader.skipChildren();
                 }
             }

@@ -19,8 +19,8 @@ public final class ResourceTypeSkuImpl implements ResourceTypeSku {
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    ResourceTypeSkuImpl(
-        ResourceTypeSkuInner innerObject, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
+    ResourceTypeSkuImpl(ResourceTypeSkuInner innerObject,
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

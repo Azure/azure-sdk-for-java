@@ -46,13 +46,13 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     private String resourceId;
 
     /*
-     * The start time of the operation.
+     * The start time of the operation, in RFC3339 format.
      */
     @Generated
     private OffsetDateTime startTime;
 
     /*
-     * The end time of the operation.
+     * The end time of the operation, in RFC3339 format.
      */
     @Generated
     private OffsetDateTime endTime;
@@ -126,7 +126,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     }
 
     /**
-     * Get the startTime property: The start time of the operation.
+     * Get the startTime property: The start time of the operation, in RFC3339 format.
      *
      * @return the startTime value.
      */
@@ -136,7 +136,7 @@ public final class DevCenterOperationDetails implements JsonSerializable<DevCent
     }
 
     /**
-     * Get the endTime property: The end time of the operation.
+     * Get the endTime property: The end time of the operation, in RFC3339 format.
      *
      * @return the endTime value.
      */

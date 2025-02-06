@@ -137,20 +137,16 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVCenters()
-                .create(resourceGroupName, vcenterName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVCenters()
+            .create(resourceGroupName, vcenterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VCenter create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVCenters()
-                .create(resourceGroupName, vcenterName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVCenters()
+            .create(resourceGroupName, vcenterName, this.innerModel(), context);
         return this;
     }
 
@@ -166,50 +162,42 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVCenters()
-                .updateWithResponse(resourceGroupName, vcenterName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVCenters()
+            .updateWithResponse(resourceGroupName, vcenterName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VCenter apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVCenters()
-                .updateWithResponse(resourceGroupName, vcenterName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVCenters()
+            .updateWithResponse(resourceGroupName, vcenterName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    VCenterImpl(
-        VCenterInner innerObject, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    VCenterImpl(VCenterInner innerObject,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vcenterName = Utils.getValueFromIdByName(innerObject.id(), "vcenters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vcenterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vcenters");
     }
 
     public VCenter refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVCenters()
-                .getByResourceGroupWithResponse(resourceGroupName, vcenterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVCenters()
+            .getByResourceGroupWithResponse(resourceGroupName, vcenterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VCenter refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVCenters()
-                .getByResourceGroupWithResponse(resourceGroupName, vcenterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVCenters()
+            .getByResourceGroupWithResponse(resourceGroupName, vcenterName, context)
+            .getValue();
         return this;
     }
 

@@ -20,20 +20,17 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public ResourceProviderCommonsImpl(
-        ResourceProviderCommonsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    public ResourceProviderCommonsImpl(ResourceProviderCommonsClient innerClient,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<UserSubscriptionQuotaListResult> getSubscriptionQuotaWithResponse(Context context) {
-        Response<UserSubscriptionQuotaListResultInner> inner =
-            this.serviceClient().getSubscriptionQuotaWithResponse(context);
+        Response<UserSubscriptionQuotaListResultInner> inner
+            = this.serviceClient().getSubscriptionQuotaWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UserSubscriptionQuotaListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

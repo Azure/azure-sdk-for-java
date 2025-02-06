@@ -8,9 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.models.*;
-
-import java.time.Instant;
+import com.azure.health.deidentification.models.DeidentificationJob;
 
 public class AsyncListJobs {
     public static void main(String[] args) {

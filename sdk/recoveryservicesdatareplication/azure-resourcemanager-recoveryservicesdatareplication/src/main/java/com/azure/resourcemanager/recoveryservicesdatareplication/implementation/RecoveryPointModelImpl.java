@@ -12,13 +12,10 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.Recovery
 public final class RecoveryPointModelImpl implements RecoveryPointModel {
     private RecoveryPointModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    RecoveryPointModelImpl(
-        RecoveryPointModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    RecoveryPointModelImpl(RecoveryPointModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -18,7 +18,10 @@ public final class EndpointsListByProfileSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void endpointsListByProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getEndpoints().listByProfile("RG", "profile1",
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .listByProfile("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mariadb.fluent.models.ServerInner;
+import com.azure.resourcemanager.mariadb.models.GeoRedundantBackup;
 import com.azure.resourcemanager.mariadb.models.MinimalTlsVersionEnum;
 import com.azure.resourcemanager.mariadb.models.PublicNetworkAccessEnum;
 import com.azure.resourcemanager.mariadb.models.ServerListResult;
@@ -14,6 +15,8 @@ import com.azure.resourcemanager.mariadb.models.ServerVersion;
 import com.azure.resourcemanager.mariadb.models.Sku;
 import com.azure.resourcemanager.mariadb.models.SkuTier;
 import com.azure.resourcemanager.mariadb.models.SslEnforcementEnum;
+import com.azure.resourcemanager.mariadb.models.StorageAutogrow;
+import com.azure.resourcemanager.mariadb.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,153 +26,112 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"zoxxjtf\",\"tier\":\"MemoryOptimized\",\"capacity\":1480100872,\"size\":\"zitonpeqfpjkjl\",\"family\":\"fpdvhpfxxypi\"},\"properties\":{\"administratorLogin\":\"mayhuybbkpodepoo\",\"version\":\"10.3\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_0\",\"userVisibleState\":\"Ready\",\"fullyQualifiedDomainName\":\"ognarxzxtheotus\",\"earliestRestoreDate\":\"2021-05-22T18:50:21Z\",\"replicationRole\":\"cciqihnhungbwjz\",\"masterServerId\":\"fygxgispemvtzfk\",\"replicaCapacity\":77118274,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[]},\"location\":\"ofx\",\"tags\":{\"hqjbasvmsmj\":\"fjaeq\",\"ybkzgcwr\":\"ulngsntn\",\"skcqvkocrcjd\":\"clxxwrljdo\"},\"id\":\"wtnhxbnjbiksqr\",\"name\":\"lssai\",\"type\":\"qpjwnzlljfm\"},{\"sku\":{\"name\":\"eebvmgxsab\",\"tier\":\"MemoryOptimized\",\"capacity\":1982194402,\"size\":\"jitcjczdzevn\",\"family\":\"krwpdap\"},\"properties\":{\"administratorLogin\":\"bdkvwrwjf\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_1\",\"userVisibleState\":\"Disabled\",\"fullyQualifiedDomainName\":\"tmrldhugjzzdatq\",\"earliestRestoreDate\":\"2021-11-19T10:20:29Z\",\"replicationRole\":\"geablgphuticndvk\",\"masterServerId\":\"zwyiftyhxhur\",\"replicaCapacity\":233179905,\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[]},\"location\":\"olniwpwcukjf\",\"tags\":{\"plwckbas\":\"awxklr\",\"cph\":\"ypnddhsgcb\"},\"id\":\"jkot\",\"name\":\"nqgoulzndli\",\"type\":\"wyqkgfgibm\"},{\"sku\":{\"name\":\"gakeqsr\",\"tier\":\"GeneralPurpose\",\"capacity\":1518868702,\"size\":\"e\",\"family\":\"ytb\"},\"properties\":{\"administratorLogin\":\"fouflmmnkzsmo\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_2\",\"userVisibleState\":\"Ready\",\"fullyQualifiedDomainName\":\"wtmutduq\",\"earliestRestoreDate\":\"2021-08-27T18:55:51Z\",\"replicationRole\":\"pwgcuertu\",\"masterServerId\":\"dosvqwhbmdgbbjf\",\"replicaCapacity\":763703494,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[]},\"location\":\"bexppb\",\"tags\":{\"s\":\"qrolfpf\"},\"id\":\"lgbquxig\",\"name\":\"yjgzjaoyfhrtxiln\",\"type\":\"rkujy\"},{\"sku\":{\"name\":\"l\",\"tier\":\"GeneralPurpose\",\"capacity\":140485038,\"size\":\"awrlyx\",\"family\":\"kcprbnw\"},\"properties\":{\"administratorLogin\":\"jvtbvpyss\",\"version\":\"10.2\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLS1_1\",\"userVisibleState\":\"Disabled\",\"fullyQualifiedDomainName\":\"muouqfp\",\"earliestRestoreDate\":\"2021-01-23T13:08:48Z\",\"replicationRole\":\"nguitnwuizgazxu\",\"masterServerId\":\"zuckyfi\",\"replicaCapacity\":1778385162,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[]},\"location\":\"vzwdzuhtymwis\",\"tags\":{\"jcmmxdcufufsrp\":\"thwxmnteiwaopvkm\",\"sgfyccsnew\":\"mzidnsezcxtb\",\"oosflnr\":\"dwzjeiach\"},\"id\":\"sfqpteehz\",\"name\":\"vypyqrimzinpv\",\"type\":\"wjdk\"}]}")
-                .toObject(ServerListResult.class);
-        Assertions.assertEquals("ofx", model.value().get(0).location());
-        Assertions.assertEquals("fjaeq", model.value().get(0).tags().get("hqjbasvmsmj"));
-        Assertions.assertEquals("zoxxjtf", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1480100872, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.value().get(0).sku().size());
-        Assertions.assertEquals("fpdvhpfxxypi", model.value().get(0).sku().family());
-        Assertions.assertEquals("mayhuybbkpodepoo", model.value().get(0).administratorLogin());
+        ServerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"qeof\",\"tier\":\"GeneralPurpose\",\"capacity\":1722437661,\"size\":\"qjbasvms\",\"family\":\"qulngsntnbybkzgc\"},\"properties\":{\"administratorLogin\":\"clxxwrljdo\",\"version\":\"10.3\",\"sslEnforcement\":\"Enabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"userVisibleState\":\"Ready\",\"fullyQualifiedDomainName\":\"cjdkwtnhxbnjbi\",\"earliestRestoreDate\":\"2021-06-26T03:50:20Z\",\"storageProfile\":{\"backupRetentionDays\":1218196264,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":280192097,\"storageAutogrow\":\"Disabled\"},\"replicationRole\":\"jwnzlljfmp\",\"masterServerId\":\"ebvmgxsabkyqd\",\"replicaCapacity\":922988316,\"publicNetworkAccess\":\"Enabled\",\"privateEndpointConnections\":[{\"id\":\"zdzevndh\",\"properties\":{}},{\"id\":\"pdappds\",\"properties\":{}},{\"id\":\"vwrwj\",\"properties\":{}}]},\"location\":\"usnhutje\",\"tags\":{\"hugjzzdatqxhoc\":\"rl\",\"ozwyiftyhxhuro\":\"geablgphuticndvk\"},\"id\":\"ftyxolniw\",\"name\":\"wcukjfkgiawxk\",\"type\":\"ryplwckbasyypn\"},{\"sku\":{\"name\":\"hsgcbacphejkot\",\"tier\":\"Basic\",\"capacity\":813482060,\"size\":\"l\",\"family\":\"dlikwyqkgfgibma\"},\"properties\":{\"administratorLogin\":\"keqsrxybzqqedq\",\"version\":\"10.3\",\"sslEnforcement\":\"Disabled\",\"minimalTlsVersion\":\"TLSEnforcementDisabled\",\"userVisibleState\":\"Ready\",\"fullyQualifiedDomainName\":\"lmmnkzsmodmglo\",\"earliestRestoreDate\":\"2021-09-06T12:10:22Z\",\"storageProfile\":{\"backupRetentionDays\":1951665736,\"geoRedundantBackup\":\"Disabled\",\"storageMB\":2110455897,\"storageAutogrow\":\"Enabled\"},\"replicationRole\":\"ktapspwgcuertu\",\"masterServerId\":\"dosvqwhbmdgbbjf\",\"replicaCapacity\":763703494,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"id\":\"xppbhtqqro\",\"properties\":{}},{\"id\":\"fpsalgbqu\",\"properties\":{}}]},\"location\":\"gjyjgzjaoyfhrtxi\",\"tags\":{\"vlejuvfqa\":\"rkujy\",\"xgjvtbv\":\"rlyxwjkcprbnw\"},\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"}]}")
+            .toObject(ServerListResult.class);
+        Assertions.assertEquals("usnhutje", model.value().get(0).location());
+        Assertions.assertEquals("rl", model.value().get(0).tags().get("hugjzzdatqxhoc"));
+        Assertions.assertEquals("qeof", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.value().get(0).sku().tier());
+        Assertions.assertEquals(1722437661, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("qjbasvms", model.value().get(0).sku().size());
+        Assertions.assertEquals("qulngsntnbybkzgc", model.value().get(0).sku().family());
+        Assertions.assertEquals("clxxwrljdo", model.value().get(0).administratorLogin());
         Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.value().get(0).version());
         Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.value().get(0).sslEnforcement());
-        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, model.value().get(0).minimalTlsVersion());
+        Assertions.assertEquals(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED,
+            model.value().get(0).minimalTlsVersion());
         Assertions.assertEquals(ServerState.READY, model.value().get(0).userVisibleState());
-        Assertions.assertEquals("ognarxzxtheotus", model.value().get(0).fullyQualifiedDomainName());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-05-22T18:50:21Z"), model.value().get(0).earliestRestoreDate());
-        Assertions.assertEquals("cciqihnhungbwjz", model.value().get(0).replicationRole());
-        Assertions.assertEquals("fygxgispemvtzfk", model.value().get(0).masterServerId());
-        Assertions.assertEquals(77118274, model.value().get(0).replicaCapacity());
-        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.value().get(0).publicNetworkAccess());
+        Assertions.assertEquals("cjdkwtnhxbnjbi", model.value().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T03:50:20Z"),
+            model.value().get(0).earliestRestoreDate());
+        Assertions.assertEquals(1218196264, model.value().get(0).storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.DISABLED,
+            model.value().get(0).storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(280192097, model.value().get(0).storageProfile().storageMB());
+        Assertions.assertEquals(StorageAutogrow.DISABLED, model.value().get(0).storageProfile().storageAutogrow());
+        Assertions.assertEquals("jwnzlljfmp", model.value().get(0).replicationRole());
+        Assertions.assertEquals("ebvmgxsabkyqd", model.value().get(0).masterServerId());
+        Assertions.assertEquals(922988316, model.value().get(0).replicaCapacity());
+        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.value().get(0).publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerListResult model =
-            new ServerListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServerInner()
-                                .withLocation("ofx")
-                                .withTags(
-                                    mapOf("hqjbasvmsmj", "fjaeq", "ybkzgcwr", "ulngsntn", "skcqvkocrcjd", "clxxwrljdo"))
-                                .withSku(
-                                    new Sku()
-                                        .withName("zoxxjtf")
-                                        .withTier(SkuTier.MEMORY_OPTIMIZED)
-                                        .withCapacity(1480100872)
-                                        .withSize("zitonpeqfpjkjl")
-                                        .withFamily("fpdvhpfxxypi"))
-                                .withAdministratorLogin("mayhuybbkpodepoo")
-                                .withVersion(ServerVersion.ONE_ZERO_THREE)
-                                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_0)
-                                .withUserVisibleState(ServerState.READY)
-                                .withFullyQualifiedDomainName("ognarxzxtheotus")
-                                .withEarliestRestoreDate(OffsetDateTime.parse("2021-05-22T18:50:21Z"))
-                                .withReplicationRole("cciqihnhungbwjz")
-                                .withMasterServerId("fygxgispemvtzfk")
-                                .withReplicaCapacity(77118274)
-                                .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED),
-                            new ServerInner()
-                                .withLocation("olniwpwcukjf")
-                                .withTags(mapOf("plwckbas", "awxklr", "cph", "ypnddhsgcb"))
-                                .withSku(
-                                    new Sku()
-                                        .withName("eebvmgxsab")
-                                        .withTier(SkuTier.MEMORY_OPTIMIZED)
-                                        .withCapacity(1982194402)
-                                        .withSize("jitcjczdzevn")
-                                        .withFamily("krwpdap"))
-                                .withAdministratorLogin("bdkvwrwjf")
-                                .withVersion(ServerVersion.ONE_ZERO_TWO)
-                                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_1)
-                                .withUserVisibleState(ServerState.DISABLED)
-                                .withFullyQualifiedDomainName("tmrldhugjzzdatq")
-                                .withEarliestRestoreDate(OffsetDateTime.parse("2021-11-19T10:20:29Z"))
-                                .withReplicationRole("geablgphuticndvk")
-                                .withMasterServerId("zwyiftyhxhur")
-                                .withReplicaCapacity(233179905)
-                                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED),
-                            new ServerInner()
-                                .withLocation("bexppb")
-                                .withTags(mapOf("s", "qrolfpf"))
-                                .withSku(
-                                    new Sku()
-                                        .withName("gakeqsr")
-                                        .withTier(SkuTier.GENERAL_PURPOSE)
-                                        .withCapacity(1518868702)
-                                        .withSize("e")
-                                        .withFamily("ytb"))
-                                .withAdministratorLogin("fouflmmnkzsmo")
-                                .withVersion(ServerVersion.ONE_ZERO_TWO)
-                                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_2)
-                                .withUserVisibleState(ServerState.READY)
-                                .withFullyQualifiedDomainName("wtmutduq")
-                                .withEarliestRestoreDate(OffsetDateTime.parse("2021-08-27T18:55:51Z"))
-                                .withReplicationRole("pwgcuertu")
-                                .withMasterServerId("dosvqwhbmdgbbjf")
-                                .withReplicaCapacity(763703494)
-                                .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED),
-                            new ServerInner()
-                                .withLocation("vzwdzuhtymwis")
-                                .withTags(
-                                    mapOf(
-                                        "jcmmxdcufufsrp",
-                                        "thwxmnteiwaopvkm",
-                                        "sgfyccsnew",
-                                        "mzidnsezcxtb",
-                                        "oosflnr",
-                                        "dwzjeiach"))
-                                .withSku(
-                                    new Sku()
-                                        .withName("l")
-                                        .withTier(SkuTier.GENERAL_PURPOSE)
-                                        .withCapacity(140485038)
-                                        .withSize("awrlyx")
-                                        .withFamily("kcprbnw"))
-                                .withAdministratorLogin("jvtbvpyss")
-                                .withVersion(ServerVersion.ONE_ZERO_TWO)
-                                .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLS1_1)
-                                .withUserVisibleState(ServerState.DISABLED)
-                                .withFullyQualifiedDomainName("muouqfp")
-                                .withEarliestRestoreDate(OffsetDateTime.parse("2021-01-23T13:08:48Z"))
-                                .withReplicationRole("nguitnwuizgazxu")
-                                .withMasterServerId("zuckyfi")
-                                .withReplicaCapacity(1778385162)
-                                .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED)));
+        ServerListResult model = new ServerListResult().withValue(Arrays.asList(
+            new ServerInner().withLocation("usnhutje")
+                .withTags(mapOf("hugjzzdatqxhoc", "rl", "ozwyiftyhxhuro", "geablgphuticndvk"))
+                .withSku(new Sku().withName("qeof")
+                    .withTier(SkuTier.GENERAL_PURPOSE)
+                    .withCapacity(1722437661)
+                    .withSize("qjbasvms")
+                    .withFamily("qulngsntnbybkzgc"))
+                .withAdministratorLogin("clxxwrljdo")
+                .withVersion(ServerVersion.ONE_ZERO_THREE)
+                .withSslEnforcement(SslEnforcementEnum.ENABLED)
+                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
+                .withUserVisibleState(ServerState.READY)
+                .withFullyQualifiedDomainName("cjdkwtnhxbnjbi")
+                .withEarliestRestoreDate(OffsetDateTime.parse("2021-06-26T03:50:20Z"))
+                .withStorageProfile(new StorageProfile().withBackupRetentionDays(1218196264)
+                    .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                    .withStorageMB(280192097)
+                    .withStorageAutogrow(StorageAutogrow.DISABLED))
+                .withReplicationRole("jwnzlljfmp")
+                .withMasterServerId("ebvmgxsabkyqd")
+                .withReplicaCapacity(922988316)
+                .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED),
+            new ServerInner().withLocation("gjyjgzjaoyfhrtxi")
+                .withTags(mapOf("vlejuvfqa", "rkujy", "xgjvtbv", "rlyxwjkcprbnw"))
+                .withSku(new Sku().withName("hsgcbacphejkot")
+                    .withTier(SkuTier.BASIC)
+                    .withCapacity(813482060)
+                    .withSize("l")
+                    .withFamily("dlikwyqkgfgibma"))
+                .withAdministratorLogin("keqsrxybzqqedq")
+                .withVersion(ServerVersion.ONE_ZERO_THREE)
+                .withSslEnforcement(SslEnforcementEnum.DISABLED)
+                .withMinimalTlsVersion(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED)
+                .withUserVisibleState(ServerState.READY)
+                .withFullyQualifiedDomainName("lmmnkzsmodmglo")
+                .withEarliestRestoreDate(OffsetDateTime.parse("2021-09-06T12:10:22Z"))
+                .withStorageProfile(new StorageProfile().withBackupRetentionDays(1951665736)
+                    .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                    .withStorageMB(2110455897)
+                    .withStorageAutogrow(StorageAutogrow.ENABLED))
+                .withReplicationRole("ktapspwgcuertu")
+                .withMasterServerId("dosvqwhbmdgbbjf")
+                .withReplicaCapacity(763703494)
+                .withPublicNetworkAccess(PublicNetworkAccessEnum.DISABLED)));
         model = BinaryData.fromObject(model).toObject(ServerListResult.class);
-        Assertions.assertEquals("ofx", model.value().get(0).location());
-        Assertions.assertEquals("fjaeq", model.value().get(0).tags().get("hqjbasvmsmj"));
-        Assertions.assertEquals("zoxxjtf", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1480100872, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("zitonpeqfpjkjl", model.value().get(0).sku().size());
-        Assertions.assertEquals("fpdvhpfxxypi", model.value().get(0).sku().family());
-        Assertions.assertEquals("mayhuybbkpodepoo", model.value().get(0).administratorLogin());
+        Assertions.assertEquals("usnhutje", model.value().get(0).location());
+        Assertions.assertEquals("rl", model.value().get(0).tags().get("hugjzzdatqxhoc"));
+        Assertions.assertEquals("qeof", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.value().get(0).sku().tier());
+        Assertions.assertEquals(1722437661, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("qjbasvms", model.value().get(0).sku().size());
+        Assertions.assertEquals("qulngsntnbybkzgc", model.value().get(0).sku().family());
+        Assertions.assertEquals("clxxwrljdo", model.value().get(0).administratorLogin());
         Assertions.assertEquals(ServerVersion.ONE_ZERO_THREE, model.value().get(0).version());
         Assertions.assertEquals(SslEnforcementEnum.ENABLED, model.value().get(0).sslEnforcement());
-        Assertions.assertEquals(MinimalTlsVersionEnum.TLS1_0, model.value().get(0).minimalTlsVersion());
+        Assertions.assertEquals(MinimalTlsVersionEnum.TLSENFORCEMENT_DISABLED,
+            model.value().get(0).minimalTlsVersion());
         Assertions.assertEquals(ServerState.READY, model.value().get(0).userVisibleState());
-        Assertions.assertEquals("ognarxzxtheotus", model.value().get(0).fullyQualifiedDomainName());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-05-22T18:50:21Z"), model.value().get(0).earliestRestoreDate());
-        Assertions.assertEquals("cciqihnhungbwjz", model.value().get(0).replicationRole());
-        Assertions.assertEquals("fygxgispemvtzfk", model.value().get(0).masterServerId());
-        Assertions.assertEquals(77118274, model.value().get(0).replicaCapacity());
-        Assertions.assertEquals(PublicNetworkAccessEnum.DISABLED, model.value().get(0).publicNetworkAccess());
+        Assertions.assertEquals("cjdkwtnhxbnjbi", model.value().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T03:50:20Z"),
+            model.value().get(0).earliestRestoreDate());
+        Assertions.assertEquals(1218196264, model.value().get(0).storageProfile().backupRetentionDays());
+        Assertions.assertEquals(GeoRedundantBackup.DISABLED,
+            model.value().get(0).storageProfile().geoRedundantBackup());
+        Assertions.assertEquals(280192097, model.value().get(0).storageProfile().storageMB());
+        Assertions.assertEquals(StorageAutogrow.DISABLED, model.value().get(0).storageProfile().storageAutogrow());
+        Assertions.assertEquals("jwnzlljfmp", model.value().get(0).replicationRole());
+        Assertions.assertEquals("ebvmgxsabkyqd", model.value().get(0).masterServerId());
+        Assertions.assertEquals(922988316, model.value().get(0).replicaCapacity());
+        Assertions.assertEquals(PublicNetworkAccessEnum.ENABLED, model.value().get(0).publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

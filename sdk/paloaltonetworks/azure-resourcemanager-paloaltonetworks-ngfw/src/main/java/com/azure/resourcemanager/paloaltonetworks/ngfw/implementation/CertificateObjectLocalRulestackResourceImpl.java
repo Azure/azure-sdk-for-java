@@ -83,13 +83,15 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CertificateObjectLocalRulestackResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
@@ -106,13 +108,15 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CertificateObjectLocalRulestackResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
@@ -121,20 +125,24 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = Utils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
     }
 
     public CertificateObjectLocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateObjectLocalRulestackResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, context)
+            .getValue();
         return this;
     }
 

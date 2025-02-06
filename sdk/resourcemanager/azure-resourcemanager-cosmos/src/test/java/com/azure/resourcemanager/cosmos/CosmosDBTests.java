@@ -43,21 +43,10 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     protected NetworkManager networkManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -78,19 +67,17 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     public void canCreateCosmosDbSqlAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelSql()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
-                .withMultipleWriteLocationsEnabled(true)
-                .withTag("tag1", "value1")
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelSql()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST2)
+            .withMultipleWriteLocationsEnabled(true)
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
@@ -111,48 +98,45 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
 
         cosmosManager.resourceManager().resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            networkManager
-                .networks()
-                .define(networkName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withAddressSpace("10.0.0.0/16")
-                .defineSubnet(subnetName)
-                    .withAddressPrefix("10.0.0.0/24")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
-                    .disableNetworkPoliciesOnPrivateEndpoint()
-                    .attach()
-                .create();
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/16")
+            .defineSubnet(subnetName)
+            .withAddressPrefix("10.0.0.0/24")
+            .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
+            .disableNetworkPoliciesOnPrivateEndpoint()
+            .attach()
+            .create();
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withDataModelSql()
-                .withStrongConsistency()
-                .withDisableKeyBaseMetadataWriteAccess(true)
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withDataModelSql()
+            .withStrongConsistency()
+            .withDisableKeyBaseMetadataWriteAccess(true)
+            .create();
 
         Assertions.assertTrue(cosmosDBAccount.keyBasedMetadataWriteAccessDisabled());
 
         // create network private endpoint.
-        PrivateEndpoint privateEndpoint = networkManager.privateEndpoints().define(pedName)
+        PrivateEndpoint privateEndpoint = networkManager.privateEndpoints()
+            .define(pedName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
             .definePrivateLinkServiceConnection(plsConnectionName)
-                .withResource(cosmosDBAccount)
-                .withSubResource(PrivateLinkSubResourceName.COSMOS_SQL)
-                .attach()
+            .withResource(cosmosDBAccount)
+            .withSubResource(PrivateLinkSubResourceName.COSMOS_SQL)
+            .attach()
             .create();
 
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(plsConnectionName).state().status());
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(plsConnectionName).state().status());
 
-        cosmosDBAccount
-            .update()
+        cosmosDBAccount.update()
             .defineNewPrivateEndpointConnection(pedName)
             .withStatus("Rejected")
             .withDescription("Rej")
@@ -165,37 +149,29 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
 
         Assertions.assertEquals(1, cosmosDBAccount.listPrivateLinkResources().size());
 
-        cosmosDBAccount
-            .update()
+        cosmosDBAccount.update()
             .updatePrivateEndpointConnection(pedName)
             .withDescription("Test Update")
             .parent()
             .apply();
-        Assertions
-            .assertEquals(
-                "Test Update",
-                cosmosDBAccount
-                    .getPrivateEndpointConnection(pedName)
-                    .privateLinkServiceConnectionState()
-                    .description());
+        Assertions.assertEquals("Test Update",
+            cosmosDBAccount.getPrivateEndpointConnection(pedName).privateLinkServiceConnectionState().description());
     }
 
     @Test
     public void canCreateCosmosDbMongoDBAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelMongoDB()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
-                .withTag("tag1", "value1")
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelMongoDB()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST2)
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.MONGO_DB);
@@ -208,18 +184,16 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     public void canCreateCosmosDbCassandraAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelCassandra()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST)
-                .withTag("tag1", "value1")
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelCassandra()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST)
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
@@ -235,17 +209,15 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
         // CassandraConnector could only be used in West US and South Central US.
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withDataModelCassandra()
-                .withStrongConsistency()
-                .withCassandraConnector(ConnectorOffer.SMALL)
-                .withTag("tag1", "value1")
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withDataModelCassandra()
+            .withStrongConsistency()
+            .withCassandraConnector(ConnectorOffer.SMALL)
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertEquals("value1", cosmosDBAccount.tags().get("tag1"));
         Assertions.assertTrue(cosmosDBAccount.cassandraConnectorEnabled());
@@ -260,18 +232,16 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     public void canCreateCosmosDbAzureTableAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelAzureTable()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST)
-                .withTag("tag1", "value1")
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelAzureTable()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST)
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
@@ -285,19 +255,17 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     public void canCreateCosmosDBAccountWithDisablePublicNetworkAccess() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelAzureTable()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST)
-                .withTag("tag1", "value1")
-                .disablePublicNetworkAccess()
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelAzureTable()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST)
+            .withTag("tag1", "value1")
+            .disablePublicNetworkAccess()
+            .create();
 
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());
     }
@@ -306,18 +274,16 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     public void canUpdatePublicNetworkAccess() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelAzureTable()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST)
-                .withTag("tag1", "value1")
-                .create();
+        CosmosDBAccount cosmosDBAccount = cosmosManager.databaseAccounts()
+            .define(cosmosDbAccountName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withDataModelAzureTable()
+            .withEventualConsistency()
+            .withWriteReplication(Region.US_EAST2)
+            .withReadReplication(Region.US_WEST)
+            .withTag("tag1", "value1")
+            .create();
 
         cosmosDBAccount.update().disablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());

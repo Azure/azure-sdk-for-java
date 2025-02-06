@@ -77,7 +77,8 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -132,14 +133,16 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account create() {
-        this.innerObject = serviceManager.serviceClient().getAccounts().create(resourceGroupName, accountName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Account create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAccounts().create(resourceGroupName, accountName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
@@ -155,33 +158,39 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account apply() {
-        this.innerObject = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName,
-            updateAccountUpdatePayload, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateAccountUpdatePayload, Context.NONE);
         return this;
     }
 
     public Account apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName,
-            updateAccountUpdatePayload, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateAccountUpdatePayload, context);
         return this;
     }
 
     AccountImpl(AccountInner innerObject, com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public Account refresh() {
-        this.innerObject = serviceManager.serviceClient().getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Account refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 

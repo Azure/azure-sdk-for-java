@@ -10,10 +10,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.logging.Diagnosti
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
-import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.NonessentialStatsbeat;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatTelemetryPipelineListener;
-import reactor.util.annotation.NonNull;
 
 import java.io.File;
 

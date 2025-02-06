@@ -22,6 +22,16 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
      */
     private List<MediaJobOutput> outputs;
 
+    /*
+     * The new state of the Job.
+     */
+    private MediaJobState state;
+
+    /*
+     * The previous state of the Job.
+     */
+    private MediaJobState previousState;
+
     /**
      * Creates an instance of MediaJobCanceledEventData class.
      */
@@ -49,6 +59,26 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
     }
 
     /**
+     * Get the state property: The new state of the Job.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public MediaJobState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the previousState property: The previous state of the Job.
+     * 
+     * @return the previousState value.
+     */
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -57,6 +87,9 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,10 +115,9 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
                 reader.nextToken();
 
                 if ("previousState".equals(fieldName)) {
-                    deserializedMediaJobCanceledEventData
-                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobCanceledEventData.previousState = MediaJobState.fromString(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedMediaJobCanceledEventData.setState(MediaJobState.fromString(reader.getString()));
+                    deserializedMediaJobCanceledEventData.state = MediaJobState.fromString(reader.getString());
                 } else if ("correlationData".equals(fieldName)) {
                     Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
                     deserializedMediaJobCanceledEventData.setCorrelationData(correlationData);

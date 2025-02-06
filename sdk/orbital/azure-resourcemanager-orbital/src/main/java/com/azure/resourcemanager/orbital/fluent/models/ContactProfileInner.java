@@ -8,12 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfileLink;
 import com.azure.resourcemanager.orbital.models.ContactProfileThirdPartyConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesNetworkConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,22 +29,37 @@ public final class ContactProfileInner extends Resource {
     /*
      * Properties of the contact profile resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private ContactProfileProperties innerProperties = new ContactProfileProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ContactProfileInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ContactProfileInner class.
+     */
     public ContactProfileInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the contact profile resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContactProfileProperties innerProperties() {
@@ -50,21 +68,55 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContactProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +125,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Get the provisioningState property: The current state of the resource's creation, deletion, or modification.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContactProfilesPropertiesProvisioningState provisioningState() {
@@ -82,7 +134,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Set the provisioningState property: The current state of the resource's creation, deletion, or modification.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ContactProfileInner object itself.
      */
@@ -97,7 +149,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Get the minimumViableContactDuration property: Minimum viable contact duration in ISO 8601 format. Used for
      * listing the available contacts with a spacecraft at a given ground station.
-     *
+     * 
      * @return the minimumViableContactDuration value.
      */
     public String minimumViableContactDuration() {
@@ -107,7 +159,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Set the minimumViableContactDuration property: Minimum viable contact duration in ISO 8601 format. Used for
      * listing the available contacts with a spacecraft at a given ground station.
-     *
+     * 
      * @param minimumViableContactDuration the minimumViableContactDuration value to set.
      * @return the ContactProfileInner object itself.
      */
@@ -122,7 +174,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Get the minimumElevationDegrees property: Minimum viable elevation for the contact in decimal degrees. Used for
      * listing the available contacts with a spacecraft at a given ground station.
-     *
+     * 
      * @return the minimumElevationDegrees value.
      */
     public Float minimumElevationDegrees() {
@@ -132,7 +184,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Set the minimumElevationDegrees property: Minimum viable elevation for the contact in decimal degrees. Used for
      * listing the available contacts with a spacecraft at a given ground station.
-     *
+     * 
      * @param minimumElevationDegrees the minimumElevationDegrees value to set.
      * @return the ContactProfileInner object itself.
      */
@@ -146,7 +198,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Get the autoTrackingConfiguration property: Auto-tracking configuration.
-     *
+     * 
      * @return the autoTrackingConfiguration value.
      */
     public AutoTrackingConfiguration autoTrackingConfiguration() {
@@ -155,7 +207,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Set the autoTrackingConfiguration property: Auto-tracking configuration.
-     *
+     * 
      * @param autoTrackingConfiguration the autoTrackingConfiguration value to set.
      * @return the ContactProfileInner object itself.
      */
@@ -170,7 +222,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Get the eventHubUri property: ARM resource identifier of the Event Hub used for telemetry. Requires granting
      * Orbital Resource Provider the rights to send telemetry into the hub.
-     *
+     * 
      * @return the eventHubUri value.
      */
     public String eventHubUri() {
@@ -180,7 +232,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Set the eventHubUri property: ARM resource identifier of the Event Hub used for telemetry. Requires granting
      * Orbital Resource Provider the rights to send telemetry into the hub.
-     *
+     * 
      * @param eventHubUri the eventHubUri value to set.
      * @return the ContactProfileInner object itself.
      */
@@ -194,7 +246,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Get the networkConfiguration property: Network configuration of customer virtual network.
-     *
+     * 
      * @return the networkConfiguration value.
      */
     public ContactProfilesPropertiesNetworkConfiguration networkConfiguration() {
@@ -203,12 +255,12 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Set the networkConfiguration property: Network configuration of customer virtual network.
-     *
+     * 
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the ContactProfileInner object itself.
      */
-    public ContactProfileInner withNetworkConfiguration(
-        ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+    public ContactProfileInner
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContactProfileProperties();
         }
@@ -219,7 +271,7 @@ public final class ContactProfileInner extends Resource {
     /**
      * Get the thirdPartyConfigurations property: Third-party mission configuration of the Contact Profile. Describes RF
      * links, modem processing, and IP endpoints.
-     *
+     * 
      * @return the thirdPartyConfigurations value.
      */
     public List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations() {
@@ -229,12 +281,12 @@ public final class ContactProfileInner extends Resource {
     /**
      * Set the thirdPartyConfigurations property: Third-party mission configuration of the Contact Profile. Describes RF
      * links, modem processing, and IP endpoints.
-     *
+     * 
      * @param thirdPartyConfigurations the thirdPartyConfigurations value to set.
      * @return the ContactProfileInner object itself.
      */
-    public ContactProfileInner withThirdPartyConfigurations(
-        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+    public ContactProfileInner
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContactProfileProperties();
         }
@@ -244,7 +296,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Get the links property: Links of the Contact Profile. Describes RF links, modem processing, and IP endpoints.
-     *
+     * 
      * @return the links value.
      */
     public List<ContactProfileLink> links() {
@@ -253,7 +305,7 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Set the links property: Links of the Contact Profile. Describes RF links, modem processing, and IP endpoints.
-     *
+     * 
      * @param links the links value to set.
      * @return the ContactProfileInner object itself.
      */
@@ -267,19 +319,70 @@ public final class ContactProfileInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ContactProfileInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ContactProfileInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContactProfileInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactProfileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactProfileInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContactProfileInner.
+     */
+    public static ContactProfileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactProfileInner deserializedContactProfileInner = new ContactProfileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContactProfileInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContactProfileInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContactProfileInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedContactProfileInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedContactProfileInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedContactProfileInner.innerProperties = ContactProfileProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedContactProfileInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactProfileInner;
+        });
+    }
 }

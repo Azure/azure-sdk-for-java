@@ -5,53 +5,53 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Database specific information for PostgreSQL to Azure Database for PostgreSQL migration task inputs. */
+/**
+ * Database specific information for PostgreSQL to Azure Database for PostgreSQL migration task inputs.
+ */
 @Fluent
-public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
+public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
+    implements JsonSerializable<MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput> {
     /*
      * Name of the database
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Name of target database. Note: Target database will be truncated before starting migration.
      */
-    @JsonProperty(value = "targetDatabaseName")
     private String targetDatabaseName;
 
     /*
      * Migration settings which tune the migration behavior
      */
-    @JsonProperty(value = "migrationSetting")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> migrationSetting;
 
     /*
      * Source settings to tune source endpoint migration behavior
      */
-    @JsonProperty(value = "sourceSetting")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceSetting;
 
     /*
      * Target settings to tune target endpoint migration behavior
      */
-    @JsonProperty(value = "targetSetting")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetSetting;
 
-    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput class. */
+    /**
+     * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput class.
+     */
     public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput() {
     }
 
     /**
      * Get the name property: Name of the database.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +60,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Set the name property: Name of the database.
-     *
+     * 
      * @param name the name value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
@@ -72,7 +72,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
     /**
      * Get the targetDatabaseName property: Name of target database. Note: Target database will be truncated before
      * starting migration.
-     *
+     * 
      * @return the targetDatabaseName value.
      */
     public String targetDatabaseName() {
@@ -82,7 +82,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
     /**
      * Set the targetDatabaseName property: Name of target database. Note: Target database will be truncated before
      * starting migration.
-     *
+     * 
      * @param targetDatabaseName the targetDatabaseName value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
@@ -93,7 +93,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Get the migrationSetting property: Migration settings which tune the migration behavior.
-     *
+     * 
      * @return the migrationSetting value.
      */
     public Map<String, String> migrationSetting() {
@@ -102,19 +102,19 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Set the migrationSetting property: Migration settings which tune the migration behavior.
-     *
+     * 
      * @param migrationSetting the migrationSetting value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
-    public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput withMigrationSetting(
-        Map<String, String> migrationSetting) {
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
+        withMigrationSetting(Map<String, String> migrationSetting) {
         this.migrationSetting = migrationSetting;
         return this;
     }
 
     /**
      * Get the sourceSetting property: Source settings to tune source endpoint migration behavior.
-     *
+     * 
      * @return the sourceSetting value.
      */
     public Map<String, String> sourceSetting() {
@@ -123,7 +123,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Set the sourceSetting property: Source settings to tune source endpoint migration behavior.
-     *
+     * 
      * @param sourceSetting the sourceSetting value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
@@ -134,7 +134,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Get the targetSetting property: Target settings to tune target endpoint migration behavior.
-     *
+     * 
      * @return the targetSetting value.
      */
     public Map<String, String> targetSetting() {
@@ -143,7 +143,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Set the targetSetting property: Target settings to tune target endpoint migration behavior.
-     *
+     * 
      * @param targetSetting the targetSetting value to set.
      * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput object itself.
      */
@@ -154,9 +154,65 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("targetDatabaseName", this.targetDatabaseName);
+        jsonWriter.writeMapField("migrationSetting", this.migrationSetting,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("sourceSetting", this.sourceSetting, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetSetting", this.targetSetting, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.
+     */
+    public static MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput
+                = new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.name = reader.getString();
+                } else if ("targetDatabaseName".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.targetDatabaseName
+                        = reader.getString();
+                } else if ("migrationSetting".equals(fieldName)) {
+                    Map<String, String> migrationSetting = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.migrationSetting
+                        = migrationSetting;
+                } else if ("sourceSetting".equals(fieldName)) {
+                    Map<String, String> sourceSetting = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.sourceSetting = sourceSetting;
+                } else if ("targetSetting".equals(fieldName)) {
+                    Map<String, String> targetSetting = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.targetSetting = targetSetting;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput;
+        });
     }
 }

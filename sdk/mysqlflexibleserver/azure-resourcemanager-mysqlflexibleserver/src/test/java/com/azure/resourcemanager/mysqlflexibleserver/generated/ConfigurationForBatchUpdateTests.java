@@ -12,20 +12,22 @@ public final class ConfigurationForBatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationForBatchUpdate model = BinaryData
-            .fromString("{\"name\":\"uxig\",\"properties\":{\"value\":\"gzjaoyfhrtxilne\",\"source\":\"ujysvle\"}}")
+            .fromString(
+                "{\"name\":\"hurzafblj\",\"properties\":{\"value\":\"btoqcjmkljavbqid\",\"source\":\"ajzyul\"}}")
             .toObject(ConfigurationForBatchUpdate.class);
-        Assertions.assertEquals("uxig", model.name());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.value());
-        Assertions.assertEquals("ujysvle", model.source());
+        Assertions.assertEquals("hurzafblj", model.name());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.value());
+        Assertions.assertEquals("ajzyul", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationForBatchUpdate model
-            = new ConfigurationForBatchUpdate().withName("uxig").withValue("gzjaoyfhrtxilne").withSource("ujysvle");
+        ConfigurationForBatchUpdate model = new ConfigurationForBatchUpdate().withName("hurzafblj")
+            .withValue("btoqcjmkljavbqid")
+            .withSource("ajzyul");
         model = BinaryData.fromObject(model).toObject(ConfigurationForBatchUpdate.class);
-        Assertions.assertEquals("uxig", model.name());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.value());
-        Assertions.assertEquals("ujysvle", model.source());
+        Assertions.assertEquals("hurzafblj", model.name());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.value());
+        Assertions.assertEquals("ajzyul", model.source());
     }
 }

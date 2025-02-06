@@ -15,11 +15,12 @@ import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -55,7 +56,6 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final URL proxyUrl;
     private String xRecordingId;
     private String xRecordingFileLocation;
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
@@ -90,8 +90,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
             request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/start")
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
-                    SerializerEncoding.JSON))
+                .setBody(new RecordFilePayload(recordFile.toString(), assetJsonPath).toJsonString())
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
             HttpResponse response = sendRequestWithRetries(request);
@@ -109,21 +108,23 @@ public class TestProxyPlaybackClient implements HttpClient {
             // the key. See TestProxyRecordPolicy.serializeVariables.
             // This deserializes the map returned from the test proxy and creates an ordered list
             // based on the key.
-            Map<String, String> variables = SERIALIZER.deserialize(body, Map.class, SerializerEncoding.JSON);
-            List<Map.Entry<String, String>> toSort;
-            if (variables == null) {
-                toSort = new ArrayList<>();
-            } else {
-                toSort = new ArrayList<>(variables.entrySet());
-                toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
-            }
+            try (JsonReader jsonReader = JsonProviders.createReader(body)) {
+                Map<String, String> variables = jsonReader.readMap(JsonReader::getString);
+                List<Map.Entry<String, String>> toSort;
+                if (variables == null) {
+                    toSort = new ArrayList<>();
+                } else {
+                    toSort = new ArrayList<>(variables.entrySet());
+                    toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+                }
 
-            LinkedList<String> strings = new LinkedList<>();
-            for (Map.Entry<String, String> stringStringEntry : toSort) {
-                String value = stringStringEntry.getValue();
-                strings.add(value);
+                LinkedList<String> strings = new LinkedList<>();
+                for (Map.Entry<String, String> stringStringEntry : toSort) {
+                    String value = stringStringEntry.getValue();
+                    strings.add(value);
+                }
+                return strings;
             }
-            return strings;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -240,8 +241,10 @@ public class TestProxyPlaybackClient implements HttpClient {
             data.put("Sanitizers", sanitizers);
 
             HttpRequest request;
-            try {
-                request = getRemoveSanitizerRequest().setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
+                request = getRemoveSanitizerRequest().setBody(outputStream.toByteArray())
                     .setHeader(X_RECORDING_ID, xRecordingId);
             } catch (IOException e) {
                 throw new RuntimeException(e);

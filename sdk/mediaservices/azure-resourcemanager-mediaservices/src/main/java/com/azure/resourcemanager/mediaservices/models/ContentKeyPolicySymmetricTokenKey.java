@@ -7,28 +7,45 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies a symmetric key for token validation. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicySymmetricTokenKey")
+/**
+ * Specifies a symmetric key for token validation.
+ */
 @Fluent
 public final class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicySymmetricTokenKey";
+
+    /*
      * The key value of the key
      */
-    @JsonProperty(value = "keyValue", required = true)
     private byte[] keyValue;
 
-    /** Creates an instance of ContentKeyPolicySymmetricTokenKey class. */
+    /**
+     * Creates an instance of ContentKeyPolicySymmetricTokenKey class.
+     */
     public ContentKeyPolicySymmetricTokenKey() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the keyValue property: The key value of the key.
-     *
+     * 
      * @return the keyValue value.
      */
     public byte[] keyValue() {
@@ -37,7 +54,7 @@ public final class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRes
 
     /**
      * Set the keyValue property: The key value of the key.
-     *
+     * 
      * @param keyValue the keyValue value to set.
      * @return the ContentKeyPolicySymmetricTokenKey object itself.
      */
@@ -48,19 +65,58 @@ public final class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRes
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (keyValue() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyValue in model ContentKeyPolicySymmetricTokenKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyValue in model ContentKeyPolicySymmetricTokenKey"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicySymmetricTokenKey.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("keyValue", this.keyValue);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicySymmetricTokenKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicySymmetricTokenKey if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicySymmetricTokenKey.
+     */
+    public static ContentKeyPolicySymmetricTokenKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicySymmetricTokenKey deserializedContentKeyPolicySymmetricTokenKey
+                = new ContentKeyPolicySymmetricTokenKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyValue".equals(fieldName)) {
+                    deserializedContentKeyPolicySymmetricTokenKey.keyValue = reader.getBinary();
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicySymmetricTokenKey.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicySymmetricTokenKey;
+        });
+    }
 }

@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkDevicePatchParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkDevicePatchParametersProperties model =
-            BinaryData
-                .fromString(
-                    "{\"hostName\":\"qqzjkoxdu\",\"serialNumber\":\"amglrouig\",\"annotation\":\"fivjqterdqqigdy\"}")
+        NetworkDevicePatchParametersProperties model
+            = BinaryData.fromString("{\"hostName\":\"iutg\",\"serialNumber\":\"mkahpqha\",\"annotation\":\"ntacih\"}")
                 .toObject(NetworkDevicePatchParametersProperties.class);
-        Assertions.assertEquals("fivjqterdqqigdy", model.annotation());
-        Assertions.assertEquals("qqzjkoxdu", model.hostname());
-        Assertions.assertEquals("amglrouig", model.serialNumber());
+        Assertions.assertEquals("ntacih", model.annotation());
+        Assertions.assertEquals("iutg", model.hostname());
+        Assertions.assertEquals("mkahpqha", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDevicePatchParametersProperties model =
-            new NetworkDevicePatchParametersProperties()
-                .withAnnotation("fivjqterdqqigdy")
-                .withHostname("qqzjkoxdu")
-                .withSerialNumber("amglrouig");
+        NetworkDevicePatchParametersProperties model
+            = new NetworkDevicePatchParametersProperties().withAnnotation("ntacih")
+                .withHostname("iutg")
+                .withSerialNumber("mkahpqha");
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchParametersProperties.class);
-        Assertions.assertEquals("fivjqterdqqigdy", model.annotation());
-        Assertions.assertEquals("qqzjkoxdu", model.hostname());
-        Assertions.assertEquals("amglrouig", model.serialNumber());
+        Assertions.assertEquals("ntacih", model.annotation());
+        Assertions.assertEquals("iutg", model.hostname());
+        Assertions.assertEquals("mkahpqha", model.serialNumber());
     }
 }

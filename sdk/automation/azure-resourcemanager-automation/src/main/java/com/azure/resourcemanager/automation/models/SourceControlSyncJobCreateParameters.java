@@ -6,21 +6,33 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.SourceControlSyncJobCreateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create source control sync job operation. */
+/**
+ * The parameters supplied to the create source control sync job operation.
+ */
 @Fluent
-public final class SourceControlSyncJobCreateParameters {
+public final class SourceControlSyncJobCreateParameters
+    implements JsonSerializable<SourceControlSyncJobCreateParameters> {
     /*
      * The properties of the source control sync job.
      */
-    @JsonProperty(value = "properties", required = true)
     private SourceControlSyncJobCreateProperties innerProperties = new SourceControlSyncJobCreateProperties();
 
     /**
+     * Creates an instance of SourceControlSyncJobCreateParameters class.
+     */
+    public SourceControlSyncJobCreateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: The properties of the source control sync job.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SourceControlSyncJobCreateProperties innerProperties() {
@@ -30,7 +42,7 @@ public final class SourceControlSyncJobCreateParameters {
     /**
      * Get the commitId property: The commit id of the source control sync job. If not syncing to a commitId, enter an
      * empty string.
-     *
+     * 
      * @return the commitId value.
      */
     public String commitId() {
@@ -40,7 +52,7 @@ public final class SourceControlSyncJobCreateParameters {
     /**
      * Set the commitId property: The commit id of the source control sync job. If not syncing to a commitId, enter an
      * empty string.
-     *
+     * 
      * @param commitId the commitId value to set.
      * @return the SourceControlSyncJobCreateParameters object itself.
      */
@@ -54,19 +66,57 @@ public final class SourceControlSyncJobCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SourceControlSyncJobCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SourceControlSyncJobCreateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SourceControlSyncJobCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlSyncJobCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlSyncJobCreateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceControlSyncJobCreateParameters.
+     */
+    public static SourceControlSyncJobCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlSyncJobCreateParameters deserializedSourceControlSyncJobCreateParameters
+                = new SourceControlSyncJobCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSourceControlSyncJobCreateParameters.innerProperties
+                        = SourceControlSyncJobCreateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlSyncJobCreateParameters;
+        });
+    }
 }

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeIsolationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeIsolationProperties model =
-            BinaryData
-                .fromString("{\"enableComputeIsolation\":false,\"hostSku\":\"nrjawgqwg\"}")
+        ComputeIsolationProperties model
+            = BinaryData.fromString("{\"enableComputeIsolation\":true,\"hostSku\":\"dhxujznbmpo\"}")
                 .toObject(ComputeIsolationProperties.class);
-        Assertions.assertEquals(false, model.enableComputeIsolation());
-        Assertions.assertEquals("nrjawgqwg", model.hostSku());
+        Assertions.assertEquals(true, model.enableComputeIsolation());
+        Assertions.assertEquals("dhxujznbmpo", model.hostSku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeIsolationProperties model =
-            new ComputeIsolationProperties().withEnableComputeIsolation(false).withHostSku("nrjawgqwg");
+        ComputeIsolationProperties model
+            = new ComputeIsolationProperties().withEnableComputeIsolation(true).withHostSku("dhxujznbmpo");
         model = BinaryData.fromObject(model).toObject(ComputeIsolationProperties.class);
-        Assertions.assertEquals(false, model.enableComputeIsolation());
-        Assertions.assertEquals("nrjawgqwg", model.hostSku());
+        Assertions.assertEquals(true, model.enableComputeIsolation());
+        Assertions.assertEquals("dhxujznbmpo", model.hostSku());
     }
 }

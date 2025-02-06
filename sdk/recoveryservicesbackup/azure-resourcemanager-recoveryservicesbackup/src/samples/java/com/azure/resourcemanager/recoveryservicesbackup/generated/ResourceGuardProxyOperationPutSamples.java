@@ -11,7 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
  */
 public final class ResourceGuardProxyOperationPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.

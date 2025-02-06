@@ -10,17 +10,17 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.util.UriBuilder;
 import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -71,16 +71,16 @@ class ResponseConstructorsCacheBenchMarkTestData {
         FooSimpleResponse getFooSimpleResponse();
     }
 
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
-    private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUri());
     private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
     private static final int RESPONSE_STATUS_CODE = 200;
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     // MOCK RESPONSES
-    private static final Response<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
-        RESPONSE_HEADERS, null);
+    private static final Response<?> VOID_RESPONSE
+        = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null);
     private static final Response<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, BinaryData.fromBytes(FOO_BYTE_ARRAY));
 
@@ -97,10 +97,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
         return this.inputs;
     }
 
-    private static URL createUrl() {
+    private static URI createUri() {
         try {
-            return UrlBuilder.parse("http://localhost").toUrl();
-        } catch (MalformedURLException e) {
+            return UriBuilder.parse("http://localhost").toUri();
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }

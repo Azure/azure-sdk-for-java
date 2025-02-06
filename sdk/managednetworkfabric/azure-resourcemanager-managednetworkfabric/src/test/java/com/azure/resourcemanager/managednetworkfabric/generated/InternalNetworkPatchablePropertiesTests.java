@@ -16,71 +16,59 @@ import org.junit.jupiter.api.Assertions;
 public final class InternalNetworkPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternalNetworkPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":1826528390,\"connectedIPv4Subnets\":[{\"prefix\":\"cayer\",\"annotation\":\"ransyby\"},{\"prefix\":\"polwzrghsrlei\",\"annotation\":\"fscjfn\"},{\"prefix\":\"jwvuag\",\"annotation\":\"wtltngvmreuptrk\"},{\"prefix\":\"zmijajwo\",\"annotation\":\"fsvagh\"}],\"connectedIPv6Subnets\":[{\"prefix\":\"nwlslrcigtzjcvbx\",\"annotation\":\"a\"},{\"prefix\":\"snsso\",\"annotation\":\"xpavid\"},{\"prefix\":\"ievw\",\"annotation\":\"cvvy\"},{\"prefix\":\"zslp\",\"annotation\":\"gcbdsvalpnptw\"}],\"importRoutePolicyId\":\"kx\",\"exportRoutePolicyId\":\"azwu\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"qvn\",\"importIpv6RoutePolicyId\":\"bfe\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"diuhzzgql\",\"exportIpv6RoutePolicyId\":\"aewzgiudjp\"},\"ingressAclId\":\"qhttqhnmhkre\",\"egressAclId\":\"dsuxheqdgcrux\",\"isMonitoringEnabled\":\"False\"}")
-                .toObject(InternalNetworkPatchableProperties.class);
-        Assertions.assertEquals(1826528390, model.mtu());
-        Assertions.assertEquals("ransyby", model.connectedIPv4Subnets().get(0).annotation());
-        Assertions.assertEquals("cayer", model.connectedIPv4Subnets().get(0).prefix());
-        Assertions.assertEquals("a", model.connectedIPv6Subnets().get(0).annotation());
-        Assertions.assertEquals("nwlslrcigtzjcvbx", model.connectedIPv6Subnets().get(0).prefix());
-        Assertions.assertEquals("kx", model.importRoutePolicyId());
-        Assertions.assertEquals("azwu", model.exportRoutePolicyId());
-        Assertions.assertEquals("qvn", model.importRoutePolicy().importIpv4RoutePolicyId());
-        Assertions.assertEquals("bfe", model.importRoutePolicy().importIpv6RoutePolicyId());
-        Assertions.assertEquals("diuhzzgql", model.exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("aewzgiudjp", model.exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals("qhttqhnmhkre", model.ingressAclId());
-        Assertions.assertEquals("dsuxheqdgcrux", model.egressAclId());
+        InternalNetworkPatchableProperties model = BinaryData.fromString(
+            "{\"mtu\":1321268747,\"connectedIPv4Subnets\":[{\"prefix\":\"ailfemjjzak\",\"annotation\":\"jiqul\"},{\"prefix\":\"qx\",\"annotation\":\"mvrscmqerndbrny\"},{\"prefix\":\"ofltfnnxrkadjfy\",\"annotation\":\"fmu\"}],\"connectedIPv6Subnets\":[{\"prefix\":\"ri\",\"annotation\":\"ohykfkxbbcbrw\"},{\"prefix\":\"iutgnjizbeewoiy\",\"annotation\":\"vzbjuyrsrzi\"},{\"prefix\":\"c\",\"annotation\":\"xgbdsuifrevka\"}],\"importRoutePolicyId\":\"ezkiswqjmdghsypa\",\"exportRoutePolicyId\":\"bjufptbjczjnciu\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"vldaswv\",\"importIpv6RoutePolicyId\":\"i\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"zlgcndhzxrrf\",\"exportIpv6RoutePolicyId\":\"srhkhgsnxuwwkpph\"},\"ingressAclId\":\"sbzxl\",\"egressAclId\":\"xomeikjclwzacn\",\"isMonitoringEnabled\":\"False\"}")
+            .toObject(InternalNetworkPatchableProperties.class);
+        Assertions.assertEquals(1321268747, model.mtu());
+        Assertions.assertEquals("jiqul", model.connectedIPv4Subnets().get(0).annotation());
+        Assertions.assertEquals("ailfemjjzak", model.connectedIPv4Subnets().get(0).prefix());
+        Assertions.assertEquals("ohykfkxbbcbrw", model.connectedIPv6Subnets().get(0).annotation());
+        Assertions.assertEquals("ri", model.connectedIPv6Subnets().get(0).prefix());
+        Assertions.assertEquals("ezkiswqjmdghsypa", model.importRoutePolicyId());
+        Assertions.assertEquals("bjufptbjczjnciu", model.exportRoutePolicyId());
+        Assertions.assertEquals("vldaswv", model.importRoutePolicy().importIpv4RoutePolicyId());
+        Assertions.assertEquals("i", model.importRoutePolicy().importIpv6RoutePolicyId());
+        Assertions.assertEquals("zlgcndhzxrrf", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("srhkhgsnxuwwkpph", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("sbzxl", model.ingressAclId());
+        Assertions.assertEquals("xomeikjclwzacn", model.egressAclId());
         Assertions.assertEquals(IsMonitoringEnabled.FALSE, model.isMonitoringEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternalNetworkPatchableProperties model =
-            new InternalNetworkPatchableProperties()
-                .withMtu(1826528390)
-                .withConnectedIPv4Subnets(
-                    Arrays
-                        .asList(
-                            new ConnectedSubnet().withAnnotation("ransyby").withPrefix("cayer"),
-                            new ConnectedSubnet().withAnnotation("fscjfn").withPrefix("polwzrghsrlei"),
-                            new ConnectedSubnet().withAnnotation("wtltngvmreuptrk").withPrefix("jwvuag"),
-                            new ConnectedSubnet().withAnnotation("fsvagh").withPrefix("zmijajwo")))
-                .withConnectedIPv6Subnets(
-                    Arrays
-                        .asList(
-                            new ConnectedSubnet().withAnnotation("a").withPrefix("nwlslrcigtzjcvbx"),
-                            new ConnectedSubnet().withAnnotation("xpavid").withPrefix("snsso"),
-                            new ConnectedSubnet().withAnnotation("cvvy").withPrefix("ievw"),
-                            new ConnectedSubnet().withAnnotation("gcbdsvalpnptw").withPrefix("zslp")))
-                .withImportRoutePolicyId("kx")
-                .withExportRoutePolicyId("azwu")
-                .withImportRoutePolicy(
-                    new ImportRoutePolicy().withImportIpv4RoutePolicyId("qvn").withImportIpv6RoutePolicyId("bfe"))
-                .withExportRoutePolicy(
-                    new ExportRoutePolicy()
-                        .withExportIpv4RoutePolicyId("diuhzzgql")
-                        .withExportIpv6RoutePolicyId("aewzgiudjp"))
-                .withIngressAclId("qhttqhnmhkre")
-                .withEgressAclId("dsuxheqdgcrux")
-                .withIsMonitoringEnabled(IsMonitoringEnabled.FALSE);
+        InternalNetworkPatchableProperties model = new InternalNetworkPatchableProperties().withMtu(1321268747)
+            .withConnectedIPv4Subnets(
+                Arrays.asList(new ConnectedSubnet().withAnnotation("jiqul").withPrefix("ailfemjjzak"),
+                    new ConnectedSubnet().withAnnotation("mvrscmqerndbrny").withPrefix("qx"),
+                    new ConnectedSubnet().withAnnotation("fmu").withPrefix("ofltfnnxrkadjfy")))
+            .withConnectedIPv6Subnets(
+                Arrays.asList(new ConnectedSubnet().withAnnotation("ohykfkxbbcbrw").withPrefix("ri"),
+                    new ConnectedSubnet().withAnnotation("vzbjuyrsrzi").withPrefix("iutgnjizbeewoiy"),
+                    new ConnectedSubnet().withAnnotation("xgbdsuifrevka").withPrefix("c")))
+            .withImportRoutePolicyId("ezkiswqjmdghsypa")
+            .withExportRoutePolicyId("bjufptbjczjnciu")
+            .withImportRoutePolicy(
+                new ImportRoutePolicy().withImportIpv4RoutePolicyId("vldaswv").withImportIpv6RoutePolicyId("i"))
+            .withExportRoutePolicy(new ExportRoutePolicy().withExportIpv4RoutePolicyId("zlgcndhzxrrf")
+                .withExportIpv6RoutePolicyId("srhkhgsnxuwwkpph"))
+            .withIngressAclId("sbzxl")
+            .withEgressAclId("xomeikjclwzacn")
+            .withIsMonitoringEnabled(IsMonitoringEnabled.FALSE);
         model = BinaryData.fromObject(model).toObject(InternalNetworkPatchableProperties.class);
-        Assertions.assertEquals(1826528390, model.mtu());
-        Assertions.assertEquals("ransyby", model.connectedIPv4Subnets().get(0).annotation());
-        Assertions.assertEquals("cayer", model.connectedIPv4Subnets().get(0).prefix());
-        Assertions.assertEquals("a", model.connectedIPv6Subnets().get(0).annotation());
-        Assertions.assertEquals("nwlslrcigtzjcvbx", model.connectedIPv6Subnets().get(0).prefix());
-        Assertions.assertEquals("kx", model.importRoutePolicyId());
-        Assertions.assertEquals("azwu", model.exportRoutePolicyId());
-        Assertions.assertEquals("qvn", model.importRoutePolicy().importIpv4RoutePolicyId());
-        Assertions.assertEquals("bfe", model.importRoutePolicy().importIpv6RoutePolicyId());
-        Assertions.assertEquals("diuhzzgql", model.exportRoutePolicy().exportIpv4RoutePolicyId());
-        Assertions.assertEquals("aewzgiudjp", model.exportRoutePolicy().exportIpv6RoutePolicyId());
-        Assertions.assertEquals("qhttqhnmhkre", model.ingressAclId());
-        Assertions.assertEquals("dsuxheqdgcrux", model.egressAclId());
+        Assertions.assertEquals(1321268747, model.mtu());
+        Assertions.assertEquals("jiqul", model.connectedIPv4Subnets().get(0).annotation());
+        Assertions.assertEquals("ailfemjjzak", model.connectedIPv4Subnets().get(0).prefix());
+        Assertions.assertEquals("ohykfkxbbcbrw", model.connectedIPv6Subnets().get(0).annotation());
+        Assertions.assertEquals("ri", model.connectedIPv6Subnets().get(0).prefix());
+        Assertions.assertEquals("ezkiswqjmdghsypa", model.importRoutePolicyId());
+        Assertions.assertEquals("bjufptbjczjnciu", model.exportRoutePolicyId());
+        Assertions.assertEquals("vldaswv", model.importRoutePolicy().importIpv4RoutePolicyId());
+        Assertions.assertEquals("i", model.importRoutePolicy().importIpv6RoutePolicyId());
+        Assertions.assertEquals("zlgcndhzxrrf", model.exportRoutePolicy().exportIpv4RoutePolicyId());
+        Assertions.assertEquals("srhkhgsnxuwwkpph", model.exportRoutePolicy().exportIpv6RoutePolicyId());
+        Assertions.assertEquals("sbzxl", model.ingressAclId());
+        Assertions.assertEquals("xomeikjclwzacn", model.egressAclId());
         Assertions.assertEquals(IsMonitoringEnabled.FALSE, model.isMonitoringEnabled());
     }
 }

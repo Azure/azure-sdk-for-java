@@ -4,7 +4,7 @@
 package com.azure.ai.vision.face.tests.commands.liveness;
 
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.ai.vision.face.tests.function.FunctionUtils;
@@ -18,8 +18,8 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
         this.mAsyncClient = asyncClient;
     }
 
-    public Mono<CreateLivenessWithVerifySessionResult> createLivenessWithVerifySession(
-        CreateLivenessSessionContent content, BinaryData verifyImage) {
+    public Mono<CreateLivenessWithVerifySessionResult>
+        createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
         return mAsyncClient.createLivenessWithVerifySession(content, verifyImage);
     }
 
@@ -31,16 +31,15 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
         return mAsyncClient.deleteLivenessWithVerifySession(sessionId);
     }
 
-
     @Override
-    public CreateLivenessWithVerifySessionResult createLivenessWithVerifySessionSync(
-        CreateLivenessSessionContent content, BinaryData verifyImage) {
-        return  FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
+    public CreateLivenessWithVerifySessionResult
+        createLivenessWithVerifySessionSync(CreateLivenessWithVerifySessionContent content, BinaryData verifyImage) {
+        return FunctionUtils.callAndAwait(() -> createLivenessWithVerifySession(content, verifyImage));
     }
 
     @Override
     public LivenessWithVerifySession getLivenessWithVerifySessionResultSync(String sessionId) {
-        return  FunctionUtils.callAndAwait(() -> getLivenessWithVerifySessionResult(sessionId));
+        return FunctionUtils.callAndAwait(() -> getLivenessWithVerifySessionResult(sessionId));
     }
 
     @Override

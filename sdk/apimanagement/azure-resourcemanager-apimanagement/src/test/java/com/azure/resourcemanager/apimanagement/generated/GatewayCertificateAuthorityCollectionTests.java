@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorit
 public final class GatewayCertificateAuthorityCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayCertificateAuthorityCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"isTrusted\":false},\"id\":\"fgxkydpmypgf\",\"name\":\"vmtywhlakxp\",\"type\":\"jpewpyjlfx\"},{\"properties\":{\"isTrusted\":true},\"id\":\"crzge\",\"name\":\"qxbpiatwfauje\",\"type\":\"qdtadrakgdd\"},{\"properties\":{\"isTrusted\":true},\"id\":\"ukizyhgsqtnqs\",\"name\":\"txqfpjbq\",\"type\":\"gweeiwd\"}],\"nextLink\":\"mnc\"}")
-                .toObject(GatewayCertificateAuthorityCollection.class);
+        GatewayCertificateAuthorityCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"isTrusted\":false},\"id\":\"fgxkydpmypgf\",\"name\":\"vmtywhlakxp\",\"type\":\"jpewpyjlfx\"},{\"properties\":{\"isTrusted\":true},\"id\":\"crzge\",\"name\":\"qxbpiatwfauje\",\"type\":\"qdtadrakgdd\"},{\"properties\":{\"isTrusted\":true},\"id\":\"ukizyhgsqtnqs\",\"name\":\"txqfpjbq\",\"type\":\"gweeiwd\"}],\"nextLink\":\"mnc\"}")
+            .toObject(GatewayCertificateAuthorityCollection.class);
     }
 
     @org.junit.jupiter.api.Test

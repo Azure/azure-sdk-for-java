@@ -92,20 +92,16 @@ public final class SecretImpl implements Secret, Secret.Definition, Secret.Updat
     }
 
     public Secret create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecrets()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSecrets()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Secret create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecrets()
-                .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSecrets()
+            .createOrUpdate(resourceGroupName, labName, username, name, this.innerModel(), context);
         return this;
     }
 
@@ -121,53 +117,45 @@ public final class SecretImpl implements Secret, Secret.Definition, Secret.Updat
     }
 
     public Secret apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecrets()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateSecret, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSecrets()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateSecret, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Secret apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecrets()
-                .updateWithResponse(resourceGroupName, labName, username, name, updateSecret, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSecrets()
+            .updateWithResponse(resourceGroupName, labName, username, name, updateSecret, context)
+            .getValue();
         return this;
     }
 
     SecretImpl(SecretInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.username = Utils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "secrets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.username = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "secrets");
     }
 
     public Secret refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecrets()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSecrets()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Secret refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecrets()
-                .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSecrets()
+            .getWithResponse(resourceGroupName, labName, username, name, localExpand, context)
+            .getValue();
         return this;
     }
 

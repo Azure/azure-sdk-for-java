@@ -32,7 +32,8 @@ public final class EnvironmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentInner model = new EnvironmentInner().withProperties(new EnvironmentProperties().withTitle("zjuzgwyz")
-            .withDescription("txon").withKind(EnvironmentKind.PRODUCTION)
+            .withDescription("txon")
+            .withKind(EnvironmentKind.PRODUCTION)
             .withServer(new EnvironmentServer().withType(EnvironmentServerType.MULE_SOFT_API_MANAGEMENT)
                 .withManagementPortalUri(Arrays.asList("cbpwxqpsrknft", "uvriuhprwm", "yvxqtayriwwroy", "bexrmcq")))
             .withOnboarding(new Onboarding().withInstructions("cnojvknmefqsg")

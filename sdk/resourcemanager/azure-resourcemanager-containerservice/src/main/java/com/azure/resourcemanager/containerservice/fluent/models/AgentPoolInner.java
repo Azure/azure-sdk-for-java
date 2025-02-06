@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
@@ -92,6 +93,17 @@ public final class AgentPoolInner extends SubResource {
     public AgentPoolInner withId(String id) {
         super.withId(id);
         return this;
+    }
+
+    /**
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
+     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
     }
 
     /**
@@ -1159,6 +1171,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withWindowsProfile(windowsProfile);
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: The security settings of an agent pool.
+     * 
+     * @return the securityProfile value.
+     */
+    public AgentPoolSecurityProfile securityProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
+    }
+
+    /**
+     * Set the securityProfile property: The security settings of an agent pool.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withSecurityProfile(AgentPoolSecurityProfile securityProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withSecurityProfile(securityProfile);
         return this;
     }
 

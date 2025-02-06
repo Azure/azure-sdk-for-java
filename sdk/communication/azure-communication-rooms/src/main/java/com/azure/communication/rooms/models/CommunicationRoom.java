@@ -23,20 +23,22 @@ public final class CommunicationRoom {
      * @param validUntil The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, OffsetDateTime createdAt) {
+    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil,
+        OffsetDateTime createdAt) {
         this(roomId, validFrom, validUntil, createdAt, null);
     }
 
-        /**
-     * Overloaded constructor of CommunicationRoom.
-     *
-     * @param roomId Unique identifier of a room. This id is server generated.
-     * @param validFrom The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param validUntil The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param pstnDialOutEnabled Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By default, this flag is set to false.
-     */
-    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, OffsetDateTime createdAt, Boolean pstnDialOutEnabled) {
+    /**
+    * Overloaded constructor of CommunicationRoom.
+    *
+    * @param roomId Unique identifier of a room. This id is server generated.
+    * @param validFrom The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+    * @param validUntil The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+    * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+    * @param pstnDialOutEnabled Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By default, this flag is set to false.
+    */
+    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil,
+        OffsetDateTime createdAt, Boolean pstnDialOutEnabled) {
         this.roomId = roomId;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
@@ -44,11 +46,11 @@ public final class CommunicationRoom {
         this.isPstnDialOutEnabled = pstnDialOutEnabled;
     }
 
-     /**
-     * Get the id property: Unique identifier of a room. This id is server generated.
-     *
-     * @return the id value.
-     */
+    /**
+    * Get the id property: Unique identifier of a room. This id is server generated.
+    *
+    * @return the id value.
+    */
     public String getRoomId() {
         return this.roomId;
     }
@@ -82,6 +84,7 @@ public final class CommunicationRoom {
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;
     }
+
     /**
      * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
      * is enabled in a particular room. By default, this flag is set to false.
@@ -92,4 +95,3 @@ public final class CommunicationRoom {
         return this.isPstnDialOutEnabled;
     }
 }
-

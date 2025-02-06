@@ -20,7 +20,9 @@ public final class DeletedSecretHelper {
         void setManaged(DeletedSecret properties, Boolean managed);
         void setRecoverableDays(DeletedSecret properties, Integer recoverableDays);
         void setRecoveryId(DeletedSecret deletedSecret, String recoveryId);
+
         void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate);
+
         void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn);
     }
 

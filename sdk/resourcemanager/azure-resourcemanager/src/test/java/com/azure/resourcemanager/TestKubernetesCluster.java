@@ -25,7 +25,8 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
     public KubernetesCluster createResource(KubernetesClusters kubernetesClusters) throws Exception {
         final String sshKeyData = ResourceManagerTestProxyTestBase.sshPublicKey();
 
-        final String newName = "aks" + kubernetesClusters.manager().resourceManager().internalContext().randomResourceName("", 8);
+        final String newName
+            = "aks" + kubernetesClusters.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;
         final String agentPoolName = "ap" + newName;
         String clientId = "clientId";
@@ -47,33 +48,30 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         } catch (Exception e) {
         }
 
-        KubernetesCluster resource =
-            kubernetesClusters
-                .define(newName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withDefaultVersion()
-                .withRootUsername("aksadmin")
-                .withSshKey(sshKeyData)
-                .withServicePrincipalClientId(clientId)
-                .withServicePrincipalSecret(secret)
-                .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
-                .withDnsPrefix(dnsPrefix)
-                .withTag("tag1", "value1")
-                .create();
+        KubernetesCluster resource = kubernetesClusters.define(newName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withDefaultVersion()
+            .withRootUsername("aksadmin")
+            .withSshKey(sshKeyData)
+            .withServicePrincipalClientId(clientId)
+            .withServicePrincipalSecret(secret)
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(dnsPrefix)
+            .withTag("tag1", "value1")
+            .create();
         Assertions.assertNotNull(resource.id(), "Container service not found.");
         Assertions.assertEquals(Region.US_EAST, resource.region());
         Assertions.assertEquals("aksadmin", resource.linuxRootUsername());
         Assertions.assertEquals(1, resource.agentPools().size());
         Assertions.assertNotNull(resource.agentPools().get(agentPoolName));
         Assertions.assertEquals(1, resource.agentPools().get(agentPoolName).count());
-        Assertions
-            .assertEquals(
-                ContainerServiceVMSizeTypes.STANDARD_D2_V2, resource.agentPools().get(agentPoolName).vmSize());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_D2_V2,
+            resource.agentPools().get(agentPoolName).vmSize());
         Assertions.assertTrue(resource.tags().containsKey("tag1"));
 
         resource = kubernetesClusters.getByResourceGroup(resource.resourceGroupName(), newName);
@@ -90,20 +88,18 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
     public KubernetesCluster updateResource(KubernetesCluster resource) throws Exception {
         String agentPoolName = new ArrayList<>(resource.agentPools().keySet()).get(0);
         // Modify existing container service
-        resource =
-            resource
-                .update()
-                .updateAgentPool(agentPoolName)
-                    .withAgentPoolVirtualMachineCount(5)
-                    .parent()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
+        resource = resource.update()
+            .updateAgentPool(agentPoolName)
+            .withAgentPoolVirtualMachineCount(5)
+            .parent()
+            .withTag("tag2", "value2")
+            .withTag("tag3", "value3")
+            .withoutTag("tag1")
+            .apply();
 
         Assertions.assertEquals(1, resource.agentPools().size());
-        Assertions
-            .assertTrue(resource.agentPools().get(agentPoolName).count() == 5, "Agent pool count was not updated.");
+        Assertions.assertTrue(resource.agentPools().get(agentPoolName).count() == 5,
+            "Agent pool count was not updated.");
         Assertions.assertTrue(resource.tags().containsKey("tag2"));
         Assertions.assertTrue(!resource.tags().containsKey("tag1"));
         return resource;
@@ -111,21 +107,17 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
 
     @Override
     public void print(KubernetesCluster resource) {
-        System
-            .out
-            .println(
-                new StringBuilder()
-                    .append("Container Service: ")
-                    .append(resource.id())
-                    .append("Name: ")
-                    .append(resource.name())
-                    .append("\n\tResource group: ")
-                    .append(resource.resourceGroupName())
-                    .append("\n\tRegion: ")
-                    .append(resource.region())
-                    .append("\n\tTags: ")
-                    .append(resource.tags())
-                    .toString());
+        System.out.println(new StringBuilder().append("Container Service: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .toString());
     }
 
     /**

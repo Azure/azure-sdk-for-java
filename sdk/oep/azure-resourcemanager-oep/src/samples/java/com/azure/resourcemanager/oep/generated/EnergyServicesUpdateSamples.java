@@ -4,25 +4,27 @@
 
 package com.azure.resourcemanager.oep.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.oep.models.EnergyService;
 
-/** Samples for EnergyServices Update. */
+/**
+ * Samples for EnergyServices Update.
+ */
 public final class EnergyServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/OepResource_Update.json
+     * x-ms-original-file:
+     * specification/oep/resource-manager/Microsoft.OpenEnergyPlatform/preview/2021-06-01-preview/examples/
+     * OepResource_Update.json
      */
     /**
      * Sample code: OepResource_Update.
-     *
+     * 
      * @param manager Entry point to OepManager.
      */
     public static void oepResourceUpdate(com.azure.resourcemanager.oep.OepManager manager) {
-        EnergyService resource =
-            manager
-                .energyServices()
-                .getByResourceGroupWithResponse("DummyResourceGroupName", "DummyResourceName", Context.NONE)
-                .getValue();
+        EnergyService resource = manager.energyServices()
+            .getByResourceGroupWithResponse("DummyResourceGroupName", "DummyResourceName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

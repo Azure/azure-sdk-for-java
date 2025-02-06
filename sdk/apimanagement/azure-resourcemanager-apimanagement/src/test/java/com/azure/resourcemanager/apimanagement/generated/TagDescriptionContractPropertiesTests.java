@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TagDescriptionContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagDescriptionContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tagId\":\"agttm\",\"displayName\":\"magoaqylkjz\",\"description\":\"iua\",\"externalDocsUrl\":\"cgm\",\"externalDocsDescription\":\"tpfinzcpdltkr\"}")
-                .toObject(TagDescriptionContractProperties.class);
+        TagDescriptionContractProperties model = BinaryData.fromString(
+            "{\"tagId\":\"agttm\",\"displayName\":\"magoaqylkjz\",\"description\":\"iua\",\"externalDocsUrl\":\"cgm\",\"externalDocsDescription\":\"tpfinzcpdltkr\"}")
+            .toObject(TagDescriptionContractProperties.class);
         Assertions.assertEquals("iua", model.description());
         Assertions.assertEquals("cgm", model.externalDocsUrl());
         Assertions.assertEquals("tpfinzcpdltkr", model.externalDocsDescription());
@@ -25,13 +23,11 @@ public final class TagDescriptionContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionContractProperties model =
-            new TagDescriptionContractProperties()
-                .withDescription("iua")
-                .withExternalDocsUrl("cgm")
-                .withExternalDocsDescription("tpfinzcpdltkr")
-                .withTagId("agttm")
-                .withDisplayName("magoaqylkjz");
+        TagDescriptionContractProperties model = new TagDescriptionContractProperties().withDescription("iua")
+            .withExternalDocsUrl("cgm")
+            .withExternalDocsDescription("tpfinzcpdltkr")
+            .withTagId("agttm")
+            .withDisplayName("magoaqylkjz");
         model = BinaryData.fromObject(model).toObject(TagDescriptionContractProperties.class);
         Assertions.assertEquals("iua", model.description());
         Assertions.assertEquals("cgm", model.externalDocsUrl());

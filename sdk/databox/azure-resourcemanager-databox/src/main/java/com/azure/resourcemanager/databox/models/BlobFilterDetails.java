@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Filter details to transfer Azure Blobs. */
+/**
+ * Filter details to transfer Azure Blobs.
+ */
 @Fluent
-public final class BlobFilterDetails {
+public final class BlobFilterDetails implements JsonSerializable<BlobFilterDetails> {
     /*
      * Prefix list of the Azure blobs to be transferred.
      */
-    @JsonProperty(value = "blobPrefixList")
     private List<String> blobPrefixList;
 
     /*
      * List of full path of the blobs to be transferred.
      */
-    @JsonProperty(value = "blobPathList")
     private List<String> blobPathList;
 
     /*
      * List of blob containers to be transferred.
      */
-    @JsonProperty(value = "containerList")
     private List<String> containerList;
 
-    /** Creates an instance of BlobFilterDetails class. */
+    /**
+     * Creates an instance of BlobFilterDetails class.
+     */
     public BlobFilterDetails() {
     }
 
     /**
      * Get the blobPrefixList property: Prefix list of the Azure blobs to be transferred.
-     *
+     * 
      * @return the blobPrefixList value.
      */
     public List<String> blobPrefixList() {
@@ -44,7 +49,7 @@ public final class BlobFilterDetails {
 
     /**
      * Set the blobPrefixList property: Prefix list of the Azure blobs to be transferred.
-     *
+     * 
      * @param blobPrefixList the blobPrefixList value to set.
      * @return the BlobFilterDetails object itself.
      */
@@ -55,7 +60,7 @@ public final class BlobFilterDetails {
 
     /**
      * Get the blobPathList property: List of full path of the blobs to be transferred.
-     *
+     * 
      * @return the blobPathList value.
      */
     public List<String> blobPathList() {
@@ -64,7 +69,7 @@ public final class BlobFilterDetails {
 
     /**
      * Set the blobPathList property: List of full path of the blobs to be transferred.
-     *
+     * 
      * @param blobPathList the blobPathList value to set.
      * @return the BlobFilterDetails object itself.
      */
@@ -75,7 +80,7 @@ public final class BlobFilterDetails {
 
     /**
      * Get the containerList property: List of blob containers to be transferred.
-     *
+     * 
      * @return the containerList value.
      */
     public List<String> containerList() {
@@ -84,7 +89,7 @@ public final class BlobFilterDetails {
 
     /**
      * Set the containerList property: List of blob containers to be transferred.
-     *
+     * 
      * @param containerList the containerList value to set.
      * @return the BlobFilterDetails object itself.
      */
@@ -95,9 +100,56 @@ public final class BlobFilterDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("blobPrefixList", this.blobPrefixList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("blobPathList", this.blobPathList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("containerList", this.containerList,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobFilterDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobFilterDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobFilterDetails.
+     */
+    public static BlobFilterDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobFilterDetails deserializedBlobFilterDetails = new BlobFilterDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobPrefixList".equals(fieldName)) {
+                    List<String> blobPrefixList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobFilterDetails.blobPrefixList = blobPrefixList;
+                } else if ("blobPathList".equals(fieldName)) {
+                    List<String> blobPathList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobFilterDetails.blobPathList = blobPathList;
+                } else if ("containerList".equals(fieldName)) {
+                    List<String> containerList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobFilterDetails.containerList = containerList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobFilterDetails;
+        });
     }
 }

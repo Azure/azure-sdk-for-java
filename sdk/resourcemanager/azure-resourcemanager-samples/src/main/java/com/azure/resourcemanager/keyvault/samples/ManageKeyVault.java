@@ -46,11 +46,12 @@ public final class ManageKeyVault {
 
             System.out.println("Creating a key vault...");
 
-            Vault vault1 = azureResourceManager.vaults().define(vaultName1)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withEmptyAccessPolicy()
-                    .create();
+            Vault vault1 = azureResourceManager.vaults()
+                .define(vaultName1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withEmptyAccessPolicy()
+                .create();
 
             System.out.println("Created key vault");
             Utils.print(vault1);
@@ -61,13 +62,13 @@ public final class ManageKeyVault {
             System.out.println("Authorizing the application associated with the current service principal...");
 
             vault1 = vault1.update()
-                    .defineAccessPolicy()
-                        .forServicePrincipal(clientId)
-                        .allowKeyAllPermissions()
-                        .allowSecretPermissions(SecretPermissions.GET)
-                        .allowSecretPermissions(SecretPermissions.LIST)
-                        .attach()
-                    .apply();
+                .defineAccessPolicy()
+                .forServicePrincipal(clientId)
+                .allowKeyAllPermissions()
+                .allowSecretPermissions(SecretPermissions.GET)
+                .allowSecretPermissions(SecretPermissions.LIST)
+                .attach()
+                .apply();
 
             System.out.println("Updated key vault");
             Utils.print(vault1);
@@ -78,38 +79,37 @@ public final class ManageKeyVault {
             System.out.println("Update a key vault to enable deployments and add permissions to the application...");
 
             vault1 = vault1.update()
-                    .withDeploymentEnabled()
-                    .withTemplateDeploymentEnabled()
-                    .updateAccessPolicy(vault1.accessPolicies().get(0).objectId())
-                    .allowCertificatePermissions()
-                        .allowSecretAllPermissions()
-                        .parent()
-                    .apply();
+                .withDeploymentEnabled()
+                .withTemplateDeploymentEnabled()
+                .updateAccessPolicy(vault1.accessPolicies().get(0).objectId())
+                .allowCertificatePermissions()
+                .allowSecretAllPermissions()
+                .parent()
+                .apply();
 
             System.out.println("Updated key vault");
             // Print the network security group
             Utils.print(vault1);
 
-
             //============================================================
             // Create another key vault
 
-            Vault vault2 = azureResourceManager.vaults().define(vaultName2)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .defineAccessPolicy()
-                        .forServicePrincipal(clientId)
-                        .allowKeyPermissions(KeyPermissions.LIST)
-                        .allowKeyPermissions(KeyPermissions.GET)
-                        .allowKeyPermissions(KeyPermissions.DECRYPT)
-                        .allowSecretPermissions(SecretPermissions.GET)
-                        .attach()
-                    .create();
+            Vault vault2 = azureResourceManager.vaults()
+                .define(vaultName2)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forServicePrincipal(clientId)
+                .allowKeyPermissions(KeyPermissions.LIST)
+                .allowKeyPermissions(KeyPermissions.GET)
+                .allowKeyPermissions(KeyPermissions.DECRYPT)
+                .allowSecretPermissions(SecretPermissions.GET)
+                .attach()
+                .create();
 
             System.out.println("Created key vault");
             // Print the network security group
             Utils.print(vault2);
-
 
             //============================================================
             // List key vaults
@@ -140,6 +140,7 @@ public final class ManageKeyVault {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -156,8 +157,7 @@ public final class ManageKeyVault {
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

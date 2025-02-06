@@ -18,36 +18,30 @@ public final class DraOperationStatusImpl implements DraOperationStatus {
 
     private final DraOperationStatusClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public DraOperationStatusImpl(
-        DraOperationStatusClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public DraOperationStatusImpl(DraOperationStatusClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, fabricName, fabricAgentName, operationId, context);
+    public Response<OperationStatus> getWithResponse(String resourceGroupName, String fabricName,
+        String fabricAgentName, String operationId, Context context) {
+        Response<OperationStatusInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, fabricName, fabricAgentName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationStatus get(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId) {
-        OperationStatusInner inner =
-            this.serviceClient().get(resourceGroupName, fabricName, fabricAgentName, operationId);
+    public OperationStatus get(String resourceGroupName, String fabricName, String fabricAgentName,
+        String operationId) {
+        OperationStatusInner inner
+            = this.serviceClient().get(resourceGroupName, fabricName, fabricAgentName, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

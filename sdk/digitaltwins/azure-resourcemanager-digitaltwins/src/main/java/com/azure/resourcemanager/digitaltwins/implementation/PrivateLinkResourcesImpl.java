@@ -22,22 +22,18 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<GroupIdInformationResponse> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<GroupIdInformationResponseInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
+    public Response<GroupIdInformationResponse> listWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<GroupIdInformationResponseInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GroupIdInformationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,15 +49,12 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String resourceName, String resourceId, Context context) {
-        Response<GroupIdInformationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, resourceId, context);
+    public Response<GroupIdInformation> getWithResponse(String resourceGroupName, String resourceName,
+        String resourceId, Context context) {
+        Response<GroupIdInformationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, resourceId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GroupIdInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -67,8 +67,7 @@ public class ReceiveLinkTest {
                     sink.next(AmqpEndpointState.UNINITIALIZED);
                 });
 
-                Mono.delay(Duration.ofSeconds(1))
-                    .subscribe(e -> sink.next(AmqpEndpointState.ACTIVE));
+                Mono.delay(Duration.ofSeconds(1)).subscribe(e -> sink.next(AmqpEndpointState.ACTIVE));
             });
         });
 
@@ -76,29 +75,25 @@ public class ReceiveLinkTest {
         when(link4.getEndpointStates()).thenReturn(Flux.error(new IllegalArgumentException("Did not expect this.")));
 
         // Act & Assert
-        StepVerifier.create(getActiveLink())
-            .assertNext(theLink -> assertEquals(link3, theLink))
-            .verifyComplete();
+        StepVerifier.create(getActiveLink()).assertNext(theLink -> assertEquals(link3, theLink)).verifyComplete();
     }
 
     private Mono<AmqpReceiveLink> getActiveLink() {
         return Mono.defer(() -> {
-            return createReceiveLink()
-                .flatMap(link -> link.getEndpointStates()
-                    .contextWrite(Context.of("linkName", link.getLinkName()))
-                    .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
-                    .timeout(Duration.ofSeconds(4))
-                    .then(Mono.just(link)));
-        })
-            .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
-                final Throwable failure = signal.failure();
-                LOGGER.verbose("    Retry: {}. Error occurred while waiting: {}", signal.totalRetriesInARow(), failure);
-                if (failure instanceof TimeoutException) {
-                    return Mono.delay(Duration.ofSeconds(4));
-                } else {
-                    return Mono.<Long>error(failure);
-                }
-            })));
+            return createReceiveLink().flatMap(link -> link.getEndpointStates()
+                .contextWrite(Context.of("linkName", link.getLinkName()))
+                .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
+                .timeout(Duration.ofSeconds(4))
+                .then(Mono.just(link)));
+        }).retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
+            final Throwable failure = signal.failure();
+            LOGGER.verbose("    Retry: {}. Error occurred while waiting: {}", signal.totalRetriesInARow(), failure);
+            if (failure instanceof TimeoutException) {
+                return Mono.delay(Duration.ofSeconds(4));
+            } else {
+                return Mono.<Long>error(failure);
+            }
+        })));
     }
 
     private Mono<AmqpReceiveLink> createReceiveLink() {

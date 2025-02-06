@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.models.NetworkProfiles;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 public final class NetworkProfilesImpl extends
-    TopLevelModifiableResourcesImpl<NetworkProfile, NetworkProfileImpl, NetworkProfileInner, NetworkProfilesClient,
-        NetworkManager>
+    TopLevelModifiableResourcesImpl<NetworkProfile, NetworkProfileImpl, NetworkProfileInner, NetworkProfilesClient, NetworkManager>
     implements NetworkProfiles {
 
     public NetworkProfilesImpl(final NetworkManager networkManager) {

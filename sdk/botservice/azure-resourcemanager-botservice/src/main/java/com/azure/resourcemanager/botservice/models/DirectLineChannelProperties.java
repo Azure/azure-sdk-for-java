@@ -5,27 +5,47 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters to provide for the Direct Line channel. */
+/**
+ * The parameters to provide for the Direct Line channel.
+ */
 @Fluent
-public final class DirectLineChannelProperties {
+public final class DirectLineChannelProperties implements JsonSerializable<DirectLineChannelProperties> {
     /*
      * The list of Direct Line sites
      */
-    @JsonProperty(value = "sites")
     private List<DirectLineSite> sites;
+
+    /*
+     * The extensionKey1
+     */
+    private String extensionKey1;
+
+    /*
+     * The extensionKey2
+     */
+    private String extensionKey2;
 
     /*
      * Direct Line embed code of the resource
      */
-    @JsonProperty(value = "DirectLineEmbedCode")
     private String directLineEmbedCode;
 
     /**
+     * Creates an instance of DirectLineChannelProperties class.
+     */
+    public DirectLineChannelProperties() {
+    }
+
+    /**
      * Get the sites property: The list of Direct Line sites.
-     *
+     * 
      * @return the sites value.
      */
     public List<DirectLineSite> sites() {
@@ -34,7 +54,7 @@ public final class DirectLineChannelProperties {
 
     /**
      * Set the sites property: The list of Direct Line sites.
-     *
+     * 
      * @param sites the sites value to set.
      * @return the DirectLineChannelProperties object itself.
      */
@@ -44,8 +64,48 @@ public final class DirectLineChannelProperties {
     }
 
     /**
+     * Get the extensionKey1 property: The extensionKey1.
+     * 
+     * @return the extensionKey1 value.
+     */
+    public String extensionKey1() {
+        return this.extensionKey1;
+    }
+
+    /**
+     * Set the extensionKey1 property: The extensionKey1.
+     * 
+     * @param extensionKey1 the extensionKey1 value to set.
+     * @return the DirectLineChannelProperties object itself.
+     */
+    public DirectLineChannelProperties withExtensionKey1(String extensionKey1) {
+        this.extensionKey1 = extensionKey1;
+        return this;
+    }
+
+    /**
+     * Get the extensionKey2 property: The extensionKey2.
+     * 
+     * @return the extensionKey2 value.
+     */
+    public String extensionKey2() {
+        return this.extensionKey2;
+    }
+
+    /**
+     * Set the extensionKey2 property: The extensionKey2.
+     * 
+     * @param extensionKey2 the extensionKey2 value to set.
+     * @return the DirectLineChannelProperties object itself.
+     */
+    public DirectLineChannelProperties withExtensionKey2(String extensionKey2) {
+        this.extensionKey2 = extensionKey2;
+        return this;
+    }
+
+    /**
      * Get the directLineEmbedCode property: Direct Line embed code of the resource.
-     *
+     * 
      * @return the directLineEmbedCode value.
      */
     public String directLineEmbedCode() {
@@ -54,7 +114,7 @@ public final class DirectLineChannelProperties {
 
     /**
      * Set the directLineEmbedCode property: Direct Line embed code of the resource.
-     *
+     * 
      * @param directLineEmbedCode the directLineEmbedCode value to set.
      * @return the DirectLineChannelProperties object itself.
      */
@@ -65,12 +125,58 @@ public final class DirectLineChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sites() != null) {
             sites().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sites", this.sites, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("extensionKey1", this.extensionKey1);
+        jsonWriter.writeStringField("extensionKey2", this.extensionKey2);
+        jsonWriter.writeStringField("DirectLineEmbedCode", this.directLineEmbedCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DirectLineChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DirectLineChannelProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DirectLineChannelProperties.
+     */
+    public static DirectLineChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DirectLineChannelProperties deserializedDirectLineChannelProperties = new DirectLineChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sites".equals(fieldName)) {
+                    List<DirectLineSite> sites = reader.readArray(reader1 -> DirectLineSite.fromJson(reader1));
+                    deserializedDirectLineChannelProperties.sites = sites;
+                } else if ("extensionKey1".equals(fieldName)) {
+                    deserializedDirectLineChannelProperties.extensionKey1 = reader.getString();
+                } else if ("extensionKey2".equals(fieldName)) {
+                    deserializedDirectLineChannelProperties.extensionKey2 = reader.getString();
+                } else if ("DirectLineEmbedCode".equals(fieldName)) {
+                    deserializedDirectLineChannelProperties.directLineEmbedCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDirectLineChannelProperties;
+        });
     }
 }

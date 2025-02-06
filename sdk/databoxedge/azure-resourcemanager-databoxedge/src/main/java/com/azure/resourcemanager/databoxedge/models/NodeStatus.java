@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current status of the individual node. */
+/**
+ * The current status of the individual node.
+ */
 public final class NodeStatus extends ExpandableStringEnum<NodeStatus> {
-    /** Static value Unknown for NodeStatus. */
+    /**
+     * Static value Unknown for NodeStatus.
+     */
     public static final NodeStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Up for NodeStatus. */
+    /**
+     * Static value Up for NodeStatus.
+     */
     public static final NodeStatus UP = fromString("Up");
 
-    /** Static value Down for NodeStatus. */
+    /**
+     * Static value Down for NodeStatus.
+     */
     public static final NodeStatus DOWN = fromString("Down");
 
-    /** Static value Rebooting for NodeStatus. */
+    /**
+     * Static value Rebooting for NodeStatus.
+     */
     public static final NodeStatus REBOOTING = fromString("Rebooting");
 
-    /** Static value ShuttingDown for NodeStatus. */
+    /**
+     * Static value ShuttingDown for NodeStatus.
+     */
     public static final NodeStatus SHUTTING_DOWN = fromString("ShuttingDown");
 
     /**
      * Creates a new instance of NodeStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class NodeStatus extends ExpandableStringEnum<NodeStatus> {
 
     /**
      * Creates or finds a NodeStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NodeStatus.
      */
-    @JsonCreator
     public static NodeStatus fromString(String name) {
         return fromString(name, NodeStatus.class);
     }
 
     /**
      * Gets known NodeStatus values.
-     *
+     * 
      * @return known NodeStatus values.
      */
     public static Collection<NodeStatus> values() {

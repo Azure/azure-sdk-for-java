@@ -46,7 +46,9 @@ public final class CassandraKeyspaceGetPropertiesOptions extends OptionsResource
      */
     @Override
     public void validate() {
-        super.validate();
+        if (autoscaleSettings() != null) {
+            autoscaleSettings().validate();
+        }
     }
 
     /**

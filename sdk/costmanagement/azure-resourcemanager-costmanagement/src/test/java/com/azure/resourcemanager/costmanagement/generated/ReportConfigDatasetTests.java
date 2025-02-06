@@ -25,95 +25,364 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigDataset model =
-            BinaryData
-                .fromString(
-                    "{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"lyxwjkcprbnwbx\",\"jvtbvpyss\",\"dnrujqguhmuouqfp\",\"wzwbnguitn\"]},\"aggregation\":{\"ufizuckyf\":{\"name\":\"zga\",\"function\":\"Sum\"},\"dfvzwdzuhty\":{\"name\":\"hr\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"TagKey\",\"name\":\"dkfthwxmnt\"},{\"type\":\"TagKey\",\"name\":\"waopvkmijcmmxd\"},{\"type\":\"TagKey\",\"name\":\"fufsrpymzi\"},{\"type\":\"TagKey\",\"name\":\"sezcxtb\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"c\"},{\"direction\":\"Descending\",\"name\":\"ewmdw\"}],\"filter\":{\"and\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"or\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"dimensions\":{\"name\":\"ypyqrimzinp\",\"operator\":\"Contains\",\"values\":[\"jdkirsoodqx\"]},\"tags\":{\"name\":\"rmnohj\",\"operator\":\"In\",\"values\":[\"whdsoifiyip\"]}}}")
-                .toObject(ReportConfigDataset.class);
+        ReportConfigDataset model = BinaryData.fromString(
+            "{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"yoxgvcltbgsnc\",\"hkjeszzhbi\",\"htxfvgxbfsmxnehm\"]},\"aggregation\":{\"fqkkr\":{\"name\":\"cxgod\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"TagKey\",\"name\":\"kgriwflzlfbx\"},{\"type\":\"TagKey\",\"name\":\"uzycispnqza\"},{\"type\":\"Dimension\",\"name\":\"gkbrpyyd\"},{\"type\":\"Dimension\",\"name\":\"bnuqqkpik\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"tqagnbuynh\"},{\"direction\":\"Ascending\",\"name\":\"gmebfsiarbutrcv\"}],\"filter\":{\"and\":[{\"and\":[{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"mpxttdbhrbnlankx\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"k\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"kcxywnyt\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"yn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"xczfcl\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"xdbabphlwr\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"hsucoc\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"yazttbtwwrqpue\",\"operator\":\"Contains\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"xzfeyueaxibxuj\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"qwalmuzyoxaepd\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"xrhdwbavxbniwdjs\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"s\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"gnxytxhpzxbz\",\"operator\":\"In\",\"values\":[\"abgl\",\"uhxwtctyqiklbbov\",\"lwzbhvgyugu\"]},\"tags\":{\"name\":\"vmkfssxqu\",\"operator\":\"Contains\",\"values\":[\"plgmgsxnk\"]}},{\"and\":[{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"vlopwiyighx\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"wzbaiue\",\"operator\":\"Contains\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"ped\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"nabckhsmtx\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"hvpesapskrdqm\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"dhtldwkyz\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"tkncwsc\",\"operator\":\"Contains\",\"values\":[\"lxotogtwrupq\",\"xvnmicykvceov\",\"ilovnot\",\"fj\"]},\"tags\":{\"name\":\"njbkcnxdhbttkph\",\"operator\":\"In\",\"values\":[\"nv\",\"t\",\"qnermclfplphoxu\",\"crpab\"]}},{\"and\":[{\"and\":[{}],\"or\":[{}],\"dimensions\":{\"name\":\"azqugxywpmueefj\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"qkqujidsu\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"aocqxtccmgy\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ytlmoyrxvwfud\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"dzhlrq\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"ck\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"yvpycanuzbpzk\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"uwbc\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"hseyvju\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"slhs\",\"operator\":\"Contains\",\"values\":[]}}],\"dimensions\":{\"name\":\"eemaofmxagkvtme\",\"operator\":\"Contains\",\"values\":[\"krh\",\"hvljuahaquh\",\"dhmdua\"]},\"tags\":{\"name\":\"exq\",\"operator\":\"In\",\"values\":[\"adm\",\"sr\"]}},{\"and\":[{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"omzlfmi\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"bnbbeldawkz\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"akauha\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"fwxosowzxcu\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"jooxdjebw\",\"operator\":\"In\",\"values\":[\"wwfvov\",\"vmeueci\",\"yhz\"]},\"tags\":{\"name\":\"uojgj\",\"operator\":\"In\",\"values\":[\"ueiotwmcdyt\",\"x\",\"it\",\"nrjawgqwg\"]}}],\"or\":[{\"and\":[{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"py\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"lwn\",\"operator\":\"In\",\"values\":[]}},{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"whvylw\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"dhxujznbmpo\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"eualupjmkhf\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"bcswsrt\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"pbewtghfgblcgwx\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"v\",\"operator\":\"Contains\",\"values\":[]}}],\"dimensions\":{\"name\":\"kbegibt\",\"operator\":\"In\",\"values\":[\"iebwwaloayqcgwrt\",\"j\",\"zg\",\"yzm\"]},\"tags\":{\"name\":\"xongmtsavjcbpwxq\",\"operator\":\"Contains\",\"values\":[\"knftguvriuh\",\"rwmdyvxqtay\",\"iwwroyqbexrmc\",\"ibycno\"]}}],\"dimensions\":{\"name\":\"knme\",\"operator\":\"Contains\",\"values\":[\"gzva\",\"apj\",\"zhpvgqzcjrvxd\",\"zlmwlxkvugfhz\"]},\"tags\":{\"name\":\"awjvzunluthnnp\",\"operator\":\"In\",\"values\":[\"i\",\"eilpjzuaejxdu\",\"tskzbbtdzumveek\",\"pwo\"]}}}")
+            .toObject(ReportConfigDataset.class);
         Assertions.assertEquals(ReportGranularityType.MONTHLY, model.granularity());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.configuration().columns().get(0));
-        Assertions.assertEquals("zga", model.aggregation().get("ufizuckyf").name());
-        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("ufizuckyf").function());
+        Assertions.assertEquals("yoxgvcltbgsnc", model.configuration().columns().get(0));
+        Assertions.assertEquals("cxgod", model.aggregation().get("fqkkr").name());
+        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("fqkkr").function());
         Assertions.assertEquals(QueryColumnType.TAG_KEY, model.grouping().get(0).type());
-        Assertions.assertEquals("dkfthwxmnt", model.grouping().get(0).name());
+        Assertions.assertEquals("kgriwflzlfbx", model.grouping().get(0).name());
         Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.sorting().get(0).direction());
-        Assertions.assertEquals("c", model.sorting().get(0).name());
-        Assertions.assertEquals("ypyqrimzinp", model.filter().dimensions().name());
+        Assertions.assertEquals("tqagnbuynh", model.sorting().get(0).name());
+        Assertions.assertEquals("mpxttdbhrbnlankx", model.filter().and().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().and().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("k", model.filter().and().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().and().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("xzfeyueaxibxuj", model.filter().and().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().and().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.filter().and().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().and().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("gnxytxhpzxbz", model.filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("abgl", model.filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("vmkfssxqu", model.filter().and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().and().get(0).tags().operator());
+        Assertions.assertEquals("plgmgsxnk", model.filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("py", model.filter().or().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("lwn", model.filter().or().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("eualupjmkhf", model.filter().or().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("bcswsrt", model.filter().or().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().or().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("kbegibt", model.filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("iebwwaloayqcgwrt", model.filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("xongmtsavjcbpwxq", model.filter().or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().or().get(0).tags().operator());
+        Assertions.assertEquals("knftguvriuh", model.filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("knme", model.filter().dimensions().name());
         Assertions.assertEquals(OperatorType.CONTAINS, model.filter().dimensions().operator());
-        Assertions.assertEquals("jdkirsoodqx", model.filter().dimensions().values().get(0));
-        Assertions.assertEquals("rmnohj", model.filter().tags().name());
+        Assertions.assertEquals("gzva", model.filter().dimensions().values().get(0));
+        Assertions.assertEquals("awjvzunluthnnp", model.filter().tags().name());
         Assertions.assertEquals(OperatorType.IN, model.filter().tags().operator());
-        Assertions.assertEquals("whdsoifiyip", model.filter().tags().values().get(0));
+        Assertions.assertEquals("i", model.filter().tags().values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigDataset model =
-            new ReportConfigDataset()
-                .withGranularity(ReportGranularityType.MONTHLY)
-                .withConfiguration(
-                    new ReportConfigDatasetConfiguration()
-                        .withColumns(Arrays.asList("lyxwjkcprbnwbx", "jvtbvpyss", "dnrujqguhmuouqfp", "wzwbnguitn")))
-                .withAggregation(
-                    mapOf(
-                        "ufizuckyf",
-                        new ReportConfigAggregation().withName("zga").withFunction(FunctionType.SUM),
-                        "dfvzwdzuhty",
-                        new ReportConfigAggregation().withName("hr").withFunction(FunctionType.SUM)))
-                .withGrouping(
-                    Arrays
-                        .asList(
-                            new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("dkfthwxmnt"),
-                            new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("waopvkmijcmmxd"),
-                            new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("fufsrpymzi"),
-                            new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("sezcxtb")))
-                .withSorting(
-                    Arrays
-                        .asList(
-                            new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("c"),
-                            new ReportConfigSorting()
-                                .withDirection(ReportConfigSortingType.DESCENDING)
-                                .withName("ewmdw")))
-                .withFilter(
+        ReportConfigDataset model = new ReportConfigDataset().withGranularity(ReportGranularityType.MONTHLY)
+            .withConfiguration(new ReportConfigDatasetConfiguration()
+                .withColumns(Arrays.asList("yoxgvcltbgsnc", "hkjeszzhbi", "htxfvgxbfsmxnehm")))
+            .withAggregation(
+                mapOf("fqkkr", new ReportConfigAggregation().withName("cxgod").withFunction(FunctionType.SUM)))
+            .withGrouping(
+                Arrays.asList(new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("kgriwflzlfbx"),
+                    new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("uzycispnqza"),
+                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("gkbrpyyd"),
+                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("bnuqqkpik")))
+            .withSorting(Arrays.asList(
+                new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("tqagnbuynh"),
+                new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("gmebfsiarbutrcv")))
+            .withFilter(new ReportConfigFilter()
+                .withAnd(Arrays.asList(
                     new ReportConfigFilter()
-                        .withAnd(
-                            Arrays
-                                .asList(
-                                    new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withOr(
-                            Arrays
-                                .asList(
-                                    new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withDimensions(
-                            new ReportConfigComparisonExpression()
-                                .withName("ypyqrimzinp")
+                        .withAnd(Arrays.asList(
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("mpxttdbhrbnlankx")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("k")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("kcxywnyt")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("yn")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("xczfcl")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("xdbabphlwr")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("hsucoc")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("yazttbtwwrqpue")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))))
+                        .withOr(Arrays.asList(
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("xzfeyueaxibxuj")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("qwalmuzyoxaepd")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("xrhdwbavxbniwdjs")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("s")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))))
+                        .withDimensions(new ReportConfigComparisonExpression().withName("gnxytxhpzxbz")
+                            .withOperator(OperatorType.IN)
+                            .withValues(Arrays.asList("abgl", "uhxwtctyqiklbbov", "lwzbhvgyugu")))
+                        .withTags(new ReportConfigComparisonExpression().withName("vmkfssxqu")
+                            .withOperator(OperatorType.CONTAINS)
+                            .withValues(Arrays.asList("plgmgsxnk"))),
+                    new ReportConfigFilter()
+                        .withAnd(Arrays.asList(new ReportConfigFilter().withAnd(Arrays.asList(new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("vlopwiyighx")
                                 .withOperator(OperatorType.CONTAINS)
-                                .withValues(Arrays.asList("jdkirsoodqx")))
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("wzbaiue")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))))
+                        .withOr(Arrays.asList(
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("ped")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("nabckhsmtx")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("hvpesapskrdqm")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("dhtldwkyz")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))))
+                        .withDimensions(new ReportConfigComparisonExpression().withName("tkncwsc")
+                            .withOperator(OperatorType.CONTAINS)
+                            .withValues(Arrays.asList("lxotogtwrupq", "xvnmicykvceov", "ilovnot", "fj")))
                         .withTags(
-                            new ReportConfigComparisonExpression()
-                                .withName("rmnohj")
+                            new ReportConfigComparisonExpression().withName("njbkcnxdhbttkph")
                                 .withOperator(OperatorType.IN)
-                                .withValues(Arrays.asList("whdsoifiyip"))));
+                                .withValues(Arrays.asList("nv", "t", "qnermclfplphoxu", "crpab"))),
+                    new ReportConfigFilter()
+                        .withAnd(Arrays.asList(
+                            new ReportConfigFilter().withAnd(Arrays.asList(new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("azqugxywpmueefj")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("qkqujidsu")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("aocqxtccmgy")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("ytlmoyrxvwfud")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("dzhlrq")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("ck")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))))
+                        .withOr(Arrays.asList(
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("yvpycanuzbpzk")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("uwbc")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList())),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("hseyvju")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList()))
+                                .withTags(new ReportConfigComparisonExpression().withName("slhs")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList()))))
+                        .withDimensions(new ReportConfigComparisonExpression().withName("eemaofmxagkvtme")
+                            .withOperator(OperatorType.CONTAINS)
+                            .withValues(Arrays.asList("krh", "hvljuahaquh", "dhmdua")))
+                        .withTags(new ReportConfigComparisonExpression().withName("exq")
+                            .withOperator(OperatorType.IN)
+                            .withValues(Arrays.asList("adm", "sr"))),
+                    new ReportConfigFilter()
+                        .withAnd(Arrays.asList(new ReportConfigFilter()
+                            .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("omzlfmi")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("bnbbeldawkz")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList()))))
+                        .withOr(Arrays.asList(new ReportConfigFilter()
+                            .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("akauha")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("fwxosowzxcu")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList()))))
+                        .withDimensions(new ReportConfigComparisonExpression().withName("jooxdjebw")
+                            .withOperator(OperatorType.IN)
+                            .withValues(Arrays.asList("wwfvov", "vmeueci", "yhz")))
+                        .withTags(new ReportConfigComparisonExpression().withName("uojgj")
+                            .withOperator(OperatorType.IN)
+                            .withValues(Arrays.asList("ueiotwmcdyt", "x", "it", "nrjawgqwg")))))
+                .withOr(Arrays.asList(new ReportConfigFilter()
+                    .withAnd(Arrays.asList(
+                        new ReportConfigFilter().withAnd(Arrays.asList(new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("py")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("lwn")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList())),
+                        new ReportConfigFilter()
+                            .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("whvylw")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("dhxujznbmpo")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList()))))
+                    .withOr(Arrays.asList(
+                        new ReportConfigFilter()
+                            .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("eualupjmkhf")
+                                .withOperator(OperatorType.IN)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("bcswsrt")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList())),
+                        new ReportConfigFilter()
+                            .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter()))
+                            .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                new ReportConfigFilter(), new ReportConfigFilter()))
+                            .withDimensions(new ReportConfigComparisonExpression().withName("pbewtghfgblcgwx")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))
+                            .withTags(new ReportConfigComparisonExpression().withName("v")
+                                .withOperator(OperatorType.CONTAINS)
+                                .withValues(Arrays.asList()))))
+                    .withDimensions(new ReportConfigComparisonExpression().withName("kbegibt")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList("iebwwaloayqcgwrt", "j", "zg", "yzm")))
+                    .withTags(new ReportConfigComparisonExpression().withName("xongmtsavjcbpwxq")
+                        .withOperator(OperatorType.CONTAINS)
+                        .withValues(Arrays.asList("knftguvriuh", "rwmdyvxqtay", "iwwroyqbexrmc", "ibycno")))))
+                .withDimensions(new ReportConfigComparisonExpression().withName("knme")
+                    .withOperator(OperatorType.CONTAINS)
+                    .withValues(Arrays.asList("gzva", "apj", "zhpvgqzcjrvxd", "zlmwlxkvugfhz")))
+                .withTags(new ReportConfigComparisonExpression().withName("awjvzunluthnnp")
+                    .withOperator(OperatorType.IN)
+                    .withValues(Arrays.asList("i", "eilpjzuaejxdu", "tskzbbtdzumveek", "pwo"))));
         model = BinaryData.fromObject(model).toObject(ReportConfigDataset.class);
         Assertions.assertEquals(ReportGranularityType.MONTHLY, model.granularity());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.configuration().columns().get(0));
-        Assertions.assertEquals("zga", model.aggregation().get("ufizuckyf").name());
-        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("ufizuckyf").function());
+        Assertions.assertEquals("yoxgvcltbgsnc", model.configuration().columns().get(0));
+        Assertions.assertEquals("cxgod", model.aggregation().get("fqkkr").name());
+        Assertions.assertEquals(FunctionType.SUM, model.aggregation().get("fqkkr").function());
         Assertions.assertEquals(QueryColumnType.TAG_KEY, model.grouping().get(0).type());
-        Assertions.assertEquals("dkfthwxmnt", model.grouping().get(0).name());
+        Assertions.assertEquals("kgriwflzlfbx", model.grouping().get(0).name());
         Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.sorting().get(0).direction());
-        Assertions.assertEquals("c", model.sorting().get(0).name());
-        Assertions.assertEquals("ypyqrimzinp", model.filter().dimensions().name());
+        Assertions.assertEquals("tqagnbuynh", model.sorting().get(0).name());
+        Assertions.assertEquals("mpxttdbhrbnlankx", model.filter().and().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().and().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("k", model.filter().and().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().and().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("xzfeyueaxibxuj", model.filter().and().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().and().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.filter().and().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().and().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("gnxytxhpzxbz", model.filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("abgl", model.filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("vmkfssxqu", model.filter().and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().and().get(0).tags().operator());
+        Assertions.assertEquals("plgmgsxnk", model.filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("py", model.filter().or().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("lwn", model.filter().or().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("eualupjmkhf", model.filter().or().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("bcswsrt", model.filter().or().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().or().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("kbegibt", model.filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.IN, model.filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("iebwwaloayqcgwrt", model.filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("xongmtsavjcbpwxq", model.filter().or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.filter().or().get(0).tags().operator());
+        Assertions.assertEquals("knftguvriuh", model.filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("knme", model.filter().dimensions().name());
         Assertions.assertEquals(OperatorType.CONTAINS, model.filter().dimensions().operator());
-        Assertions.assertEquals("jdkirsoodqx", model.filter().dimensions().values().get(0));
-        Assertions.assertEquals("rmnohj", model.filter().tags().name());
+        Assertions.assertEquals("gzva", model.filter().dimensions().values().get(0));
+        Assertions.assertEquals("awjvzunluthnnp", model.filter().tags().name());
         Assertions.assertEquals(OperatorType.IN, model.filter().tags().operator());
-        Assertions.assertEquals("whdsoifiyip", model.filter().tags().values().get(0));
+        Assertions.assertEquals("i", model.filter().tags().values().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

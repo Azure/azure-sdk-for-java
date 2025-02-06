@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-/** The certificate item containing certificate metadata. */
+/**
+ * The certificate item containing certificate metadata.
+ */
 @Fluent
 public class CertificateItem implements JsonSerializable<CertificateItem> {
     /*
@@ -38,8 +40,11 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
      */
     private Base64Url x509Thumbprint;
 
-    /** Creates an instance of CertificateItem class. */
-    public CertificateItem() {}
+    /**
+     * Creates an instance of CertificateItem class.
+     */
+    public CertificateItem() {
+    }
 
     /**
      * Get the id property: Certificate identifier.
@@ -128,12 +133,15 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeJsonField("attributes", this.attributes);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString);
         jsonWriter.writeStringField("x5t", Objects.toString(this.x509Thumbprint, null));
         return jsonWriter.writeEndObject();
     }
@@ -143,33 +151,32 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateItem if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateItem.
      */
     public static CertificateItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateItem deserializedCertificateItem = new CertificateItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateItem deserializedCertificateItem = new CertificateItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificateItem.id = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateItem.attributes = CertificateAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCertificateItem.tags = tags;
-                        } else if ("x5t".equals(fieldName)) {
-                            deserializedCertificateItem.x509Thumbprint =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateItem.id = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateItem.attributes = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateItem.tags = tags;
+                } else if ("x5t".equals(fieldName)) {
+                    deserializedCertificateItem.x509Thumbprint
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateItem;
-                });
+            return deserializedCertificateItem;
+        });
     }
 }

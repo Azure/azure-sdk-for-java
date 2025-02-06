@@ -75,11 +75,10 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_WEST)
-                .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
-            domain = azureResourceManager.appServiceDomains().define(domainName)
+            domain = azureResourceManager.appServiceDomains()
+                .define(domainName)
                 .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                 .withFirstName("Jon")
@@ -102,8 +101,10 @@ public final class ManageLinuxWebAppWithTrafficManager {
             //============================================================
             // Create a self-singed SSL certificate
 
-            pfxPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".pfx";
-            String cerPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName + ".cer";
+            pfxPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_" + domainName
+                + ".pfx";
+            String cerPath = ManageLinuxWebAppWithTrafficManager.class.getResource("/").getPath() + "webapp_"
+                + domainName + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
@@ -172,7 +173,8 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
             System.out.println("Creating a traffic manager " + tmName + " for the web apps...");
 
-            TrafficManagerProfile trafficManager = azureResourceManager.trafficManagerProfiles().define(tmName)
+            TrafficManagerProfile trafficManager = azureResourceManager.trafficManagerProfiles()
+                .define(tmName)
                 .withExistingResourceGroup(rgName)
                 .withLeafDomainLabel(tmName)
                 .withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY)
@@ -198,27 +200,21 @@ public final class ManageLinuxWebAppWithTrafficManager {
 
             System.out.println("Scaling up app service plan " + plan1Name + "...");
 
-            plan1.update()
-                .withCapacity(plan1.capacity() * 2)
-                .apply();
+            plan1.update().withCapacity(plan1.capacity() * 2).apply();
 
             System.out.println("Scaled up app service plan " + plan1Name);
             Utils.print(plan1);
 
             System.out.println("Scaling up app service plan " + plan2Name + "...");
 
-            plan2.update()
-                .withCapacity(plan2.capacity() * 2)
-                .apply();
+            plan2.update().withCapacity(plan2.capacity() * 2).apply();
 
             System.out.println("Scaled up app service plan " + plan2Name);
             Utils.print(plan2);
 
             System.out.println("Scaling up app service plan " + plan3Name + "...");
 
-            plan3.update()
-                .withCapacity(plan3.capacity() * 2)
-                .apply();
+            plan3.update().withCapacity(plan3.capacity() * 2).apply();
 
             System.out.println("Scaled up app service plan " + plan3Name);
             Utils.print(plan3);
@@ -238,30 +234,32 @@ public final class ManageLinuxWebAppWithTrafficManager {
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azureResourceManager.appServicePlans().define(name)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withPricingTier(PricingTier.STANDARD_S2)
-                .withOperatingSystem(OperatingSystem.LINUX)
-                .create();
+        return azureResourceManager.appServicePlans()
+            .define(name)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withPricingTier(PricingTier.STANDARD_S2)
+            .withOperatingSystem(OperatingSystem.LINUX)
+            .create();
     }
 
-    private static final String WEB_APP_PACKAGE_URL =
-        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip";
+    private static final String WEB_APP_PACKAGE_URL
+        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip";
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
-        return azureResourceManager.webApps().define(name)
-                .withExistingLinuxPlan(plan)
-                .withExistingResourceGroup(rgName)
-                .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JRE8)
-                .withManagedHostnameBindings(domain, name)
-                .defineSslBinding()
-                    .forHostname(name + "." + domain.name())
-                    .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
-                    .withSniBasedSsl()
-                    .attach()
-                .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", WEB_APP_PACKAGE_URL)
-                .create();
+        return azureResourceManager.webApps()
+            .define(name)
+            .withExistingLinuxPlan(plan)
+            .withExistingResourceGroup(rgName)
+            .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JRE8)
+            .withManagedHostnameBindings(domain, name)
+            .defineSslBinding()
+            .forHostname(name + "." + domain.name())
+            .withPfxCertificateToUpload(new File(pfxPath), CERT_PASSWORD)
+            .withSniBasedSsl()
+            .attach()
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", WEB_APP_PACKAGE_URL)
+            .create();
     }
 
     /**
@@ -278,8 +276,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

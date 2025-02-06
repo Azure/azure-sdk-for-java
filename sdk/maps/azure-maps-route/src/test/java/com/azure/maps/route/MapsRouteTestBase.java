@@ -48,8 +48,8 @@ public class MapsRouteTestBase extends TestProxyTestBase {
     }
 
     MapsRouteClientBuilder getRouteAsyncClientBuilder(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
-        MapsRouteClientBuilder builder = modifyBuilder(httpClient, new MapsRouteClientBuilder()).serviceVersion(
-            serviceVersion);
+        MapsRouteClientBuilder builder
+            = modifyBuilder(httpClient, new MapsRouteClientBuilder()).serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
@@ -69,8 +69,8 @@ public class MapsRouteTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
+            customMatchers
+                .add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
@@ -82,15 +82,14 @@ public class MapsRouteTestBase extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential())
-                .mapsClientId("testRouteClient");
+            builder.credential(new MockTokenCredential()).mapsClientId("testRouteClient");
         } else {
             builder.credential(new AzurePowerShellCredentialBuilder().build())
                 .mapsClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
-        return builder.httpClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return builder
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     protected <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {

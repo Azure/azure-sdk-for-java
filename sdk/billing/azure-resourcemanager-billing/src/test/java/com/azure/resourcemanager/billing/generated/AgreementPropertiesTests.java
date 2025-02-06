@@ -5,26 +5,19 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.billing.fluent.models.AgreementProperties;
-import com.azure.resourcemanager.billing.models.Participants;
-import java.util.Arrays;
+import com.azure.resourcemanager.billing.models.AgreementProperties;
 
 public final class AgreementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgreementProperties model =
-            BinaryData
-                .fromString(
-                    "{\"agreementLink\":\"uaadraufactkahzo\",\"category\":\"MicrosoftCustomerAgreement\",\"acceptanceMode\":\"ESignOffline\",\"billingProfileInfo\":{\"billingProfileId\":\"xxpshneeku\",\"billingProfileDisplayName\":\"gs\",\"indirectRelationshipOrganizationName\":\"ubkwdle\"},\"effectiveDate\":\"2021-04-28T05:58:57Z\",\"expirationDate\":\"2021-04-26T16:34:12Z\",\"participants\":[{\"status\":\"bazpjuohmi\",\"statusDate\":\"2021-09-21T23:44:56Z\",\"email\":\"norwmduvwpklvx\"},{\"status\":\"ygdxpgpqchis\",\"statusDate\":\"2021-05-26T11:43:30Z\",\"email\":\"nb\"},{\"status\":\"rxgibbd\",\"statusDate\":\"2021-01-14T17:21:41Z\",\"email\":\"nfo\"},{\"status\":\"uors\",\"statusDate\":\"2021-10-18T05:02:18Z\",\"email\":\"wbqpl\"}],\"status\":\"vnuuepzl\"}")
-                .toObject(AgreementProperties.class);
+        AgreementProperties model = BinaryData.fromString(
+            "{\"acceptanceMode\":\"Other\",\"agreementLink\":\"cdm\",\"billingProfileInfo\":[{\"billingAccountId\":\"ryuanzwuxzdxtay\",\"billingProfileDisplayName\":\"hmwhfpmrqo\",\"billingProfileId\":\"tu\",\"billingProfileSystemId\":\"nryrtihf\",\"indirectRelationshipOrganizationName\":\"ijbpzvgnwzsymgl\"},{\"billingAccountId\":\"fcyzkohdbihanufh\",\"billingProfileDisplayName\":\"bj\",\"billingProfileId\":\"a\",\"billingProfileSystemId\":\"th\",\"indirectRelationshipOrganizationName\":\"hab\"},{\"billingAccountId\":\"pikxwczbyscnpqxu\",\"billingProfileDisplayName\":\"vyq\",\"billingProfileId\":\"wby\",\"billingProfileSystemId\":\"k\",\"indirectRelationshipOrganizationName\":\"dumjgrtfwvuk\"},{\"billingAccountId\":\"audccsnhs\",\"billingProfileDisplayName\":\"nyejhkryhtnap\",\"billingProfileId\":\"wlokjyem\",\"billingProfileSystemId\":\"vnipjox\",\"indirectRelationshipOrganizationName\":\"nchgej\"}],\"category\":\"AffiliatePurchaseTerms\",\"displayName\":\"mailzydehojw\",\"effectiveDate\":\"2021-10-12T05:13:50Z\",\"expirationDate\":\"2021-07-17T00:42:06Z\",\"participants\":[{\"email\":\"mqnjaqw\",\"status\":\"jsprozvcpute\",\"statusDate\":\"2021-06-05T01:38:25Z\"},{\"email\":\"mfdatscmdvpj\",\"status\":\"lsuuvmkjozkrwfnd\",\"statusDate\":\"2021-06-07T05:45:20Z\"},{\"email\":\"pslwejdpvw\",\"status\":\"oqpsoa\",\"statusDate\":\"2021-07-20T12:53:26Z\"},{\"email\":\"zakljlahbc\",\"status\":\"ffdfdosygexpa\",\"statusDate\":\"2021-04-29T11:27:29Z\"}],\"status\":\"hmsbzjhcrzevdp\",\"leadBillingAccountName\":\"xaolth\"}")
+            .toObject(AgreementProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgreementProperties model =
-            new AgreementProperties()
-                .withParticipants(
-                    Arrays.asList(new Participants(), new Participants(), new Participants(), new Participants()));
+        AgreementProperties model = new AgreementProperties();
         model = BinaryData.fromObject(model).toObject(AgreementProperties.class);
     }
 }

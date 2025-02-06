@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the agent registration keys. */
+/**
+ * Definition of the agent registration keys.
+ */
 @Fluent
-public final class AgentRegistrationKeys {
+public final class AgentRegistrationKeys implements JsonSerializable<AgentRegistrationKeys> {
     /*
      * Gets or sets the primary key.
      */
-    @JsonProperty(value = "primary")
     private String primary;
 
     /*
      * Gets or sets the secondary key.
      */
-    @JsonProperty(value = "secondary")
     private String secondary;
 
     /**
+     * Creates an instance of AgentRegistrationKeys class.
+     */
+    public AgentRegistrationKeys() {
+    }
+
+    /**
      * Get the primary property: Gets or sets the primary key.
-     *
+     * 
      * @return the primary value.
      */
     public String primary() {
@@ -33,7 +43,7 @@ public final class AgentRegistrationKeys {
 
     /**
      * Set the primary property: Gets or sets the primary key.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the AgentRegistrationKeys object itself.
      */
@@ -44,7 +54,7 @@ public final class AgentRegistrationKeys {
 
     /**
      * Get the secondary property: Gets or sets the secondary key.
-     *
+     * 
      * @return the secondary value.
      */
     public String secondary() {
@@ -53,7 +63,7 @@ public final class AgentRegistrationKeys {
 
     /**
      * Set the secondary property: Gets or sets the secondary key.
-     *
+     * 
      * @param secondary the secondary value to set.
      * @return the AgentRegistrationKeys object itself.
      */
@@ -64,9 +74,48 @@ public final class AgentRegistrationKeys {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primary", this.primary);
+        jsonWriter.writeStringField("secondary", this.secondary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentRegistrationKeys from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentRegistrationKeys if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentRegistrationKeys.
+     */
+    public static AgentRegistrationKeys fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentRegistrationKeys deserializedAgentRegistrationKeys = new AgentRegistrationKeys();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primary".equals(fieldName)) {
+                    deserializedAgentRegistrationKeys.primary = reader.getString();
+                } else if ("secondary".equals(fieldName)) {
+                    deserializedAgentRegistrationKeys.secondary = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentRegistrationKeys;
+        });
     }
 }

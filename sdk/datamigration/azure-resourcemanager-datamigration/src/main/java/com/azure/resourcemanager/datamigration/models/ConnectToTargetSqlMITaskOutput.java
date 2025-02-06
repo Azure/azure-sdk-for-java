@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Output for the task that validates connection to Azure SQL Database Managed Instance. */
+/**
+ * Output for the task that validates connection to Azure SQL Database Managed Instance.
+ */
 @Immutable
-public final class ConnectToTargetSqlMITaskOutput {
+public final class ConnectToTargetSqlMITaskOutput implements JsonSerializable<ConnectToTargetSqlMITaskOutput> {
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Target server version
      */
-    @JsonProperty(value = "targetServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerVersion;
 
     /*
      * Target server brand version
      */
-    @JsonProperty(value = "targetServerBrandVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String targetServerBrandVersion;
 
     /*
      * List of logins on the target server.
      */
-    @JsonProperty(value = "logins", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> logins;
 
     /*
      * List of agent jobs on the target server.
      */
-    @JsonProperty(value = "agentJobs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> agentJobs;
 
     /*
      * Validation errors
      */
-    @JsonProperty(value = "validationErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> validationErrors;
 
-    /** Creates an instance of ConnectToTargetSqlMITaskOutput class. */
+    /**
+     * Creates an instance of ConnectToTargetSqlMITaskOutput class.
+     */
     public ConnectToTargetSqlMITaskOutput() {
     }
 
     /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +64,7 @@ public final class ConnectToTargetSqlMITaskOutput {
 
     /**
      * Get the targetServerVersion property: Target server version.
-     *
+     * 
      * @return the targetServerVersion value.
      */
     public String targetServerVersion() {
@@ -71,7 +73,7 @@ public final class ConnectToTargetSqlMITaskOutput {
 
     /**
      * Get the targetServerBrandVersion property: Target server brand version.
-     *
+     * 
      * @return the targetServerBrandVersion value.
      */
     public String targetServerBrandVersion() {
@@ -80,7 +82,7 @@ public final class ConnectToTargetSqlMITaskOutput {
 
     /**
      * Get the logins property: List of logins on the target server.
-     *
+     * 
      * @return the logins value.
      */
     public List<String> logins() {
@@ -89,7 +91,7 @@ public final class ConnectToTargetSqlMITaskOutput {
 
     /**
      * Get the agentJobs property: List of agent jobs on the target server.
-     *
+     * 
      * @return the agentJobs value.
      */
     public List<String> agentJobs() {
@@ -98,7 +100,7 @@ public final class ConnectToTargetSqlMITaskOutput {
 
     /**
      * Get the validationErrors property: Validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<ReportableException> validationErrors() {
@@ -107,12 +109,62 @@ public final class ConnectToTargetSqlMITaskOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validationErrors() != null) {
             validationErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToTargetSqlMITaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToTargetSqlMITaskOutput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectToTargetSqlMITaskOutput.
+     */
+    public static ConnectToTargetSqlMITaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToTargetSqlMITaskOutput deserializedConnectToTargetSqlMITaskOutput
+                = new ConnectToTargetSqlMITaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMITaskOutput.id = reader.getString();
+                } else if ("targetServerVersion".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMITaskOutput.targetServerVersion = reader.getString();
+                } else if ("targetServerBrandVersion".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMITaskOutput.targetServerBrandVersion = reader.getString();
+                } else if ("logins".equals(fieldName)) {
+                    List<String> logins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectToTargetSqlMITaskOutput.logins = logins;
+                } else if ("agentJobs".equals(fieldName)) {
+                    List<String> agentJobs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectToTargetSqlMITaskOutput.agentJobs = agentJobs;
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedConnectToTargetSqlMITaskOutput.validationErrors = validationErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToTargetSqlMITaskOutput;
+        });
     }
 }

@@ -6,70 +6,39 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignment;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DatabasePrincipalAssignmentsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"principalId\":\"zzydmxzjijpvua\",\"role\":\"Monitor\",\"tenantId\":\"ihcirldef\",\"principalType\":\"User\",\"tenantName\":\"c\",\"principalName\":\"nbkkjanurnnq\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"pizxqltgrdogyp\"},\"id\":\"rxvbfihwuh\",\"name\":\"ctafsrbxrblm\",\"type\":\"iowxi\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"principalId\":\"yqwcabvnuil\",\"role\":\"Monitor\",\"tenantId\":\"aswlp\",\"principalType\":\"Group\",\"tenantName\":\"mrmfjl\",\"principalName\":\"wtoaukhfk\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"izmoaeds\"},\"id\":\"jwuive\",\"name\":\"wcgyeewxeiqb\",\"type\":\"smgomguaml\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DatabasePrincipalAssignment> response = manager.databasePrincipalAssignments()
+            .list("ssffxuifmc", "ypobkdqzr", "zsylollgt", com.azure.core.util.Context.NONE);
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DatabasePrincipalAssignment> response =
-            manager
-                .databasePrincipalAssignments()
-                .list("wfiwzcxmj", "byephmgt", "ljvrcmyfqipgxhnp", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("yqwcabvnuil", response.iterator().next().principalId());
+        Assertions.assertEquals("zzydmxzjijpvua", response.iterator().next().principalId());
         Assertions.assertEquals(DatabasePrincipalRole.MONITOR, response.iterator().next().role());
-        Assertions.assertEquals("aswlp", response.iterator().next().tenantId());
-        Assertions.assertEquals(PrincipalType.GROUP, response.iterator().next().principalType());
+        Assertions.assertEquals("ihcirldef", response.iterator().next().tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.iterator().next().principalType());
     }
 }

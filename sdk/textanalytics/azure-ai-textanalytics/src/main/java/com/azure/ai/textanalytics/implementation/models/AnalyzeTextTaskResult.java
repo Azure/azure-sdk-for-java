@@ -19,13 +19,12 @@ public class AnalyzeTextTaskResult implements JsonSerializable<AnalyzeTextTaskRe
     /*
      * Enumeration of supported Text Analysis task results.
      */
-    private AnalyzeTextTaskResultsKind kind;
+    private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.fromString("AnalyzeTextTaskResult");
 
     /**
      * Creates an instance of AnalyzeTextTaskResult class.
      */
     public AnalyzeTextTaskResult() {
-        this.kind = AnalyzeTextTaskResultsKind.fromString("AnalyzeTextTaskResult");
     }
 
     /**

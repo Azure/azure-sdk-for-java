@@ -79,12 +79,9 @@ public final class DataLakeAnalyticsAccountImpl
     public List<DataLakeStoreAccountInformation> dataLakeStoreAccounts() {
         List<DataLakeStoreAccountInformationInner> inner = this.innerModel().dataLakeStoreAccounts();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new DataLakeStoreAccountInformationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new DataLakeStoreAccountInformationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -93,12 +90,9 @@ public final class DataLakeAnalyticsAccountImpl
     public List<DataLakeStoreAccountInformation> publicDataLakeStoreAccounts() {
         List<DataLakeStoreAccountInformationInner> inner = this.innerModel().publicDataLakeStoreAccounts();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new DataLakeStoreAccountInformationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new DataLakeStoreAccountInformationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -107,12 +101,9 @@ public final class DataLakeAnalyticsAccountImpl
     public List<StorageAccountInformation> storageAccounts() {
         List<StorageAccountInformationInner> inner = this.innerModel().storageAccounts();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new StorageAccountInformationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new StorageAccountInformationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -121,12 +112,9 @@ public final class DataLakeAnalyticsAccountImpl
     public List<ComputePolicy> computePolicies() {
         List<ComputePolicyInner> inner = this.innerModel().computePolicies();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ComputePolicyImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ComputePolicyImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -153,12 +141,9 @@ public final class DataLakeAnalyticsAccountImpl
     public List<FirewallRule> firewallRules() {
         List<FirewallRuleInner> inner = this.innerModel().firewallRules();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new FirewallRuleImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new FirewallRuleImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -282,25 +267,21 @@ public final class DataLakeAnalyticsAccountImpl
     }
 
     public DataLakeAnalyticsAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, createParameters, Context.NONE);
         return this;
     }
 
     public DataLakeAnalyticsAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, createParameters, context);
         return this;
     }
 
-    DataLakeAnalyticsAccountImpl(
-        String name, com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
+    DataLakeAnalyticsAccountImpl(String name,
+        com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = new DataLakeAnalyticsAccountInner();
         this.serviceManager = serviceManager;
         this.accountName = name;
@@ -313,49 +294,40 @@ public final class DataLakeAnalyticsAccountImpl
     }
 
     public DataLakeAnalyticsAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateParameters, Context.NONE);
         return this;
     }
 
     public DataLakeAnalyticsAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateParameters, context);
         return this;
     }
 
-    DataLakeAnalyticsAccountImpl(
-        DataLakeAnalyticsAccountInner innerObject,
+    DataLakeAnalyticsAccountImpl(DataLakeAnalyticsAccountInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public DataLakeAnalyticsAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataLakeAnalyticsAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 
@@ -374,8 +346,8 @@ public final class DataLakeAnalyticsAccountImpl
         return this;
     }
 
-    public DataLakeAnalyticsAccountImpl withDataLakeStoreAccounts(
-        List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
+    public DataLakeAnalyticsAccountImpl
+        withDataLakeStoreAccounts(List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
         this.createParameters.withDataLakeStoreAccounts(dataLakeStoreAccounts);
         return this;
     }
@@ -390,14 +362,14 @@ public final class DataLakeAnalyticsAccountImpl
         }
     }
 
-    public DataLakeAnalyticsAccountImpl withStorageAccounts(
-        List<AddStorageAccountWithAccountParameters> storageAccounts) {
+    public DataLakeAnalyticsAccountImpl
+        withStorageAccounts(List<AddStorageAccountWithAccountParameters> storageAccounts) {
         this.createParameters.withStorageAccounts(storageAccounts);
         return this;
     }
 
-    public DataLakeAnalyticsAccountImpl withComputePolicies(
-        List<CreateComputePolicyWithAccountParameters> computePolicies) {
+    public DataLakeAnalyticsAccountImpl
+        withComputePolicies(List<CreateComputePolicyWithAccountParameters> computePolicies) {
         this.createParameters.withComputePolicies(computePolicies);
         return this;
     }
@@ -487,26 +459,26 @@ public final class DataLakeAnalyticsAccountImpl
         }
     }
 
-    public DataLakeAnalyticsAccountImpl withDataLakeStoreAccountsForUpdate(
-        List<UpdateDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
+    public DataLakeAnalyticsAccountImpl
+        withDataLakeStoreAccountsForUpdate(List<UpdateDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
         this.updateParameters.withDataLakeStoreAccounts(dataLakeStoreAccounts);
         return this;
     }
 
-    public DataLakeAnalyticsAccountImpl withStorageAccountsForUpdate(
-        List<UpdateStorageAccountWithAccountParameters> storageAccounts) {
+    public DataLakeAnalyticsAccountImpl
+        withStorageAccountsForUpdate(List<UpdateStorageAccountWithAccountParameters> storageAccounts) {
         this.updateParameters.withStorageAccounts(storageAccounts);
         return this;
     }
 
-    public DataLakeAnalyticsAccountImpl withComputePoliciesForUpdate(
-        List<UpdateComputePolicyWithAccountParameters> computePolicies) {
+    public DataLakeAnalyticsAccountImpl
+        withComputePoliciesForUpdate(List<UpdateComputePolicyWithAccountParameters> computePolicies) {
         this.updateParameters.withComputePolicies(computePolicies);
         return this;
     }
 
-    public DataLakeAnalyticsAccountImpl withFirewallRulesForUpdate(
-        List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeAnalyticsAccountImpl
+        withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
         this.updateParameters.withFirewallRules(firewallRules);
         return this;
     }

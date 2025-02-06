@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AsymmetricEncryptedSecretTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AsymmetricEncryptedSecret model =
-            BinaryData
-                .fromString(
-                    "{\"value\":\"vjfdx\",\"encryptionCertThumbprint\":\"vetvt\",\"encryptionAlgorithm\":\"RSAES_PKCS1_v_1_5\"}")
-                .toObject(AsymmetricEncryptedSecret.class);
-        Assertions.assertEquals("vjfdx", model.value());
-        Assertions.assertEquals("vetvt", model.encryptionCertThumbprint());
+        AsymmetricEncryptedSecret model = BinaryData.fromString(
+            "{\"value\":\"yhtozfikdowwqu\",\"encryptionCertThumbprint\":\"xzxcl\",\"encryptionAlgorithm\":\"RSAES_PKCS1_v_1_5\"}")
+            .toObject(AsymmetricEncryptedSecret.class);
+        Assertions.assertEquals("yhtozfikdowwqu", model.value());
+        Assertions.assertEquals("xzxcl", model.encryptionCertThumbprint());
         Assertions.assertEquals(EncryptionAlgorithm.RSAES_PKCS1_V_1_5, model.encryptionAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsymmetricEncryptedSecret model =
-            new AsymmetricEncryptedSecret()
-                .withValue("vjfdx")
-                .withEncryptionCertThumbprint("vetvt")
-                .withEncryptionAlgorithm(EncryptionAlgorithm.RSAES_PKCS1_V_1_5);
+        AsymmetricEncryptedSecret model = new AsymmetricEncryptedSecret().withValue("yhtozfikdowwqu")
+            .withEncryptionCertThumbprint("xzxcl")
+            .withEncryptionAlgorithm(EncryptionAlgorithm.RSAES_PKCS1_V_1_5);
         model = BinaryData.fromObject(model).toObject(AsymmetricEncryptedSecret.class);
-        Assertions.assertEquals("vjfdx", model.value());
-        Assertions.assertEquals("vetvt", model.encryptionCertThumbprint());
+        Assertions.assertEquals("yhtozfikdowwqu", model.value());
+        Assertions.assertEquals("xzxcl", model.encryptionCertThumbprint());
         Assertions.assertEquals(EncryptionAlgorithm.RSAES_PKCS1_V_1_5, model.encryptionAlgorithm());
     }
 }

@@ -6,85 +6,55 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
 import com.azure.resourcemanager.peering.models.PeeringService;
 import com.azure.resourcemanager.peering.models.PeeringServiceSku;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PeeringServicesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"sku\":{\"name\":\"gmvecactxmw\"},\"properties\":{\"peeringServiceLocation\":\"yowc\",\"peeringServiceProvider\":\"qovekqvgqou\",\"provisioningState\":\"Deleting\",\"providerPrimaryPeeringLocation\":\"mpjw\",\"providerBackupPeeringLocation\":\"vqikfxcvhrfsphu\"},\"location\":\"grttikteusqczk\",\"tags\":{\"ff\":\"lxubyj\",\"ibrta\":\"mfblcqcuubg\"},\"id\":\"metttwgd\",\"name\":\"lqxihhrmooiz\",\"type\":\"seypxiutcxapz\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"ejvegrhbpnaixex\"},\"properties\":{\"peeringServiceLocation\":\"dreaxh\",\"peeringServiceProvider\":\"xdrrvqahqkghtp\",\"provisioningState\":\"Updating\",\"providerPrimaryPeeringLocation\":\"hyjsvfycx\",\"providerBackupPeeringLocation\":\"fvoow\"},\"location\":\"rvmtgjq\",\"tags\":{\"yhgfipnsx\":\"ostronz\"},\"id\":\"mcwaekrrjr\",\"name\":\"afxtsgum\",\"type\":\"jglikkxwslolb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PeeringService response = manager.peeringServices()
+            .define("mieknlraria")
+            .withRegion("kb")
+            .withExistingResourceGroup("vodggxdbee")
+            .withTags(mapOf("pe", "jqctojcmisofie"))
+            .withSku(new PeeringServiceSku().withName("uagydwqfbylyrf"))
+            .withPeeringServiceLocation("gtcojocqwo")
+            .withPeeringServiceProvider("nzjvusfzldm")
+            .withProviderPrimaryPeeringLocation("ylfsbtk")
+            .withProviderBackupPeeringLocation("pysownbt")
+            .create();
 
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PeeringService response =
-            manager
-                .peeringServices()
-                .define("fq")
-                .withRegion("x")
-                .withExistingResourceGroup("htjsying")
-                .withTags(mapOf("wjygvjayvblmhvk", "kkgll", "gsopbyrqufegxu", "uhbxvvy", "bnhlmc", "wz"))
-                .withSku(new PeeringServiceSku().withName("tdhtmdvyp"))
-                .withPeeringServiceLocation("dgszywkbirryuzh")
-                .withPeeringServiceProvider("kj")
-                .withProviderPrimaryPeeringLocation("qqaatjinrvgou")
-                .withProviderBackupPeeringLocation("fiibfggjioolvr")
-                .create();
-
-        Assertions.assertEquals("ejvegrhbpnaixex", response.sku().name());
-        Assertions.assertEquals("rvmtgjq", response.location());
-        Assertions.assertEquals("ostronz", response.tags().get("yhgfipnsx"));
-        Assertions.assertEquals("dreaxh", response.peeringServiceLocation());
-        Assertions.assertEquals("xdrrvqahqkghtp", response.peeringServiceProvider());
-        Assertions.assertEquals("hyjsvfycx", response.providerPrimaryPeeringLocation());
-        Assertions.assertEquals("fvoow", response.providerBackupPeeringLocation());
+        Assertions.assertEquals("gmvecactxmw", response.sku().name());
+        Assertions.assertEquals("grttikteusqczk", response.location());
+        Assertions.assertEquals("lxubyj", response.tags().get("ff"));
+        Assertions.assertEquals("yowc", response.peeringServiceLocation());
+        Assertions.assertEquals("qovekqvgqou", response.peeringServiceProvider());
+        Assertions.assertEquals("mpjw", response.providerPrimaryPeeringLocation());
+        Assertions.assertEquals("vqikfxcvhrfsphu", response.providerBackupPeeringLocation());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

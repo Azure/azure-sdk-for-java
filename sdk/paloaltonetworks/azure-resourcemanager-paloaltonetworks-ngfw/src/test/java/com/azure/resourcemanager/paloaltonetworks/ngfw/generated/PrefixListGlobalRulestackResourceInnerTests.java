@@ -23,9 +23,11 @@ public final class PrefixListGlobalRulestackResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixListGlobalRulestackResourceInner model = new PrefixListGlobalRulestackResourceInner()
-            .withDescription("quxvypomgkop").withPrefixList(Arrays.asList("hojvpajqgxysmocm", "qfqvmkc"))
-            .withEtag("zapvhelx").withAuditComment("glyatddckcbcuej");
+        PrefixListGlobalRulestackResourceInner model
+            = new PrefixListGlobalRulestackResourceInner().withDescription("quxvypomgkop")
+                .withPrefixList(Arrays.asList("hojvpajqgxysmocm", "qfqvmkc"))
+                .withEtag("zapvhelx")
+                .withAuditComment("glyatddckcbcuej");
         model = BinaryData.fromObject(model).toObject(PrefixListGlobalRulestackResourceInner.class);
         Assertions.assertEquals("quxvypomgkop", model.description());
         Assertions.assertEquals("hojvpajqgxysmocm", model.prefixList().get(0));

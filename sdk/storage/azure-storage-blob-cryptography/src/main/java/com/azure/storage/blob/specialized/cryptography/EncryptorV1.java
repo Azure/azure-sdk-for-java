@@ -43,8 +43,7 @@ class EncryptorV1 extends Encryptor {
     @Override
     protected EncryptionData buildEncryptionData(Map<String, String> keyWrappingMetadata, WrappedKey wrappedKey) {
         return super.buildEncryptionData(keyWrappingMetadata, wrappedKey)
-            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V1,
-                EncryptionAlgorithm.AES_CBC_256))
+            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V1, EncryptionAlgorithm.AES_CBC_256))
             .setContentEncryptionIV(cipher.getIV());
     }
 
@@ -88,10 +87,8 @@ class EncryptorV1 extends Encryptor {
          * other words, cipher.doFinal() will not be called until the plainTextFlux has completed
          * and therefore all other data has been encrypted.
          */
-        encryptedTextFlux = Flux.concat(encryptedTextFlux,
-            Mono.fromCallable(() -> ByteBuffer.wrap(cipher.doFinal())));
+        encryptedTextFlux = Flux.concat(encryptedTextFlux, Mono.fromCallable(() -> ByteBuffer.wrap(cipher.doFinal())));
         return encryptedTextFlux;
     }
-
 
 }

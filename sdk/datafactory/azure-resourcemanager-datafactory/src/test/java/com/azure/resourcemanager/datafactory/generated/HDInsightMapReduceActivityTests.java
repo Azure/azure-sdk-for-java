@@ -23,76 +23,78 @@ public final class HDInsightMapReduceActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightMapReduceActivity model = BinaryData.fromString(
-            "{\"type\":\"HDInsightMapReduce\",\"typeProperties\":{\"storageLinkedServices\":[{\"referenceName\":\"oaafksormfhr\",\"parameters\":{\"ob\":\"dataxmnrdf\",\"aupjmjig\":\"datarvon\",\"xtoxlxojijtt\":\"datapbdfrtasau\",\"fs\":\"datayrxyn\"}}],\"arguments\":[\"dataci\",\"datashcpxftyh\"],\"getDebugInfo\":\"None\",\"className\":\"datauqsdurfqaawryc\",\"jarFilePath\":\"datazs\",\"jarLinkedService\":{\"referenceName\":\"rzt\",\"parameters\":{\"cighl\":\"dataysxxajr\",\"wcaxj\":\"dataddvnobesowbtnfq\"}},\"jarLibs\":[\"dataehoucmeuu\",\"dataajiotlcxofqjninr\",\"datakqekqtiuveaz\"],\"defines\":{\"lspih\":\"datawbiwygwpwquxiqg\",\"fizef\":\"dataxgvviotvoolk\",\"fwaehs\":\"databrndaquxvuf\"}},\"linkedServiceName\":{\"referenceName\":\"s\",\"parameters\":{\"eyeblkgupgnstq\":\"datavpys\"}},\"policy\":{\"timeout\":\"datafm\",\"retry\":\"dataoartvkhufktqgtjf\",\"retryIntervalInSeconds\":1205700344,\"secureInput\":false,\"secureOutput\":false,\"\":{\"kfzt\":\"datak\",\"kegyskmh\":\"datavonbtnnwa\"}},\"name\":\"wsbznjngerw\",\"description\":\"lpsswoslqmftk\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"fbdbzbaboeegale\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"btnhiaqegj\":\"datayzilocn\",\"oqzzyrovvna\":\"datahyvnqbhclbbk\"}},{\"activity\":\"xmjmhclhcqcjn\",\"dependencyConditions\":[\"Failed\",\"Failed\",\"Completed\"],\"\":{\"jebbacscirztsapx\":\"datasidasovlrjggvyd\",\"whsfhecpstfe\":\"databk\",\"qmlgsghcnybhvzl\":\"databsl\"}}],\"userProperties\":[{\"name\":\"wjaepjm\",\"value\":\"dataruzogsszoqj\"},{\"name\":\"nfaxcd\",\"value\":\"datamqe\"},{\"name\":\"hsirotj\",\"value\":\"dataltugobscpt\"}],\"\":{\"fozn\":\"dataqyuvhlpmjpzgjnq\",\"oumpks\":\"datad\"}}")
+            "{\"type\":\"HDInsightMapReduce\",\"typeProperties\":{\"storageLinkedServices\":[{\"referenceName\":\"rnlbfnuppwqkskns\",\"parameters\":{\"cx\":\"datakjboyggrmz\",\"gmtgoeayhojdgwez\":\"dataphdkxwstabgejopv\"}},{\"referenceName\":\"r\",\"parameters\":{\"dtj\":\"databdjzcfdpxbwqgkfx\",\"bc\":\"datayevvuddnwj\"}},{\"referenceName\":\"flemxbmaiiv\",\"parameters\":{\"o\":\"datatzbkevh\",\"sis\":\"datajpumpqlugzydylf\"}},{\"referenceName\":\"dmfo\",\"parameters\":{\"tkprbm\":\"datasvfnxxkmrfz\"}}],\"arguments\":[\"datarfhfjwikva\",\"datajx\"],\"getDebugInfo\":\"Always\",\"className\":\"dataqilvajc\",\"jarFilePath\":\"datapwlf\",\"jarLinkedService\":{\"referenceName\":\"ardjqwdrooo\",\"parameters\":{\"vdqcmegwajjzxcq\":\"datasyd\"}},\"jarLibs\":[\"dataxewocwmadyelwo\",\"datalxa\",\"datahanfjrdcaw\",\"datazqldakbijcxctn\"],\"defines\":{\"yhnoll\":\"datayczzwhwsidnqiav\",\"eoxoe\":\"datauhocb\",\"fcurn\":\"dataprtz\",\"stok\":\"dataujcunyua\"}},\"linkedServiceName\":{\"referenceName\":\"myayblmcenjc\",\"parameters\":{\"yubytslfmajswrf\":\"dataamuplxksph\",\"gvkqz\":\"datas\"}},\"policy\":{\"timeout\":\"datas\",\"retry\":\"dataufnhejualug\",\"retryIntervalInSeconds\":1662073469,\"secureInput\":false,\"secureOutput\":true,\"\":{\"s\":\"datalvi\"}},\"name\":\"zwtzdyz\",\"description\":\"gnnsojdmesox\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"h\",\"dependencyConditions\":[\"Succeeded\",\"Skipped\",\"Succeeded\"],\"\":{\"xtwsreadghlokvis\":\"databiouuqox\",\"kegrtvwff\":\"datazmheimsioonnfjgr\"}}],\"userProperties\":[{\"name\":\"uxpyveavstzbz\",\"value\":\"datakksdjkanizdcjx\"},{\"name\":\"zpmwxvfrmvtwwb\",\"value\":\"datahivfosbrqeywhlq\"}],\"\":{\"hbqjlly\":\"datahypuvhucaw\",\"dioumgvwb\":\"databqvnbxgk\"}}")
             .toObject(HDInsightMapReduceActivity.class);
-        Assertions.assertEquals("wsbznjngerw", model.name());
-        Assertions.assertEquals("lpsswoslqmftk", model.description());
+        Assertions.assertEquals("zwtzdyz", model.name());
+        Assertions.assertEquals("gnnsojdmesox", model.description());
         Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED, model.onInactiveMarkAs());
-        Assertions.assertEquals("fbdbzbaboeegale", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
+        Assertions.assertEquals("h", model.dependsOn().get(0).activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("wjaepjm", model.userProperties().get(0).name());
-        Assertions.assertEquals("s", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1205700344, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("uxpyveavstzbz", model.userProperties().get(0).name());
+        Assertions.assertEquals("myayblmcenjc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(1662073469, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(false, model.policy().secureInput());
-        Assertions.assertEquals(false, model.policy().secureOutput());
-        Assertions.assertEquals("oaafksormfhr", model.storageLinkedServices().get(0).referenceName());
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.NONE, model.getDebugInfo());
-        Assertions.assertEquals("rzt", model.jarLinkedService().referenceName());
+        Assertions.assertEquals(true, model.policy().secureOutput());
+        Assertions.assertEquals("rnlbfnuppwqkskns", model.storageLinkedServices().get(0).referenceName());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
+        Assertions.assertEquals("ardjqwdrooo", model.jarLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HDInsightMapReduceActivity model = new HDInsightMapReduceActivity().withName("wsbznjngerw")
-            .withDescription("lpsswoslqmftk")
+        HDInsightMapReduceActivity model = new HDInsightMapReduceActivity().withName("zwtzdyz")
+            .withDescription("gnnsojdmesox")
             .withState(ActivityState.INACTIVE)
-            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
-            .withDependsOn(Arrays.asList(
-                new ActivityDependency().withActivity("fbdbzbaboeegale")
-                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
-                    .withAdditionalProperties(mapOf()),
-                new ActivityDependency().withActivity("xmjmhclhcqcjn")
-                    .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED, DependencyCondition.FAILED,
-                        DependencyCondition.COMPLETED))
-                    .withAdditionalProperties(mapOf())))
-            .withUserProperties(Arrays.asList(new UserProperty().withName("wjaepjm").withValue("dataruzogsszoqj"),
-                new UserProperty().withName("nfaxcd").withValue("datamqe"),
-                new UserProperty().withName("hsirotj").withValue("dataltugobscpt")))
-            .withLinkedServiceName(
-                new LinkedServiceReference().withReferenceName("s").withParameters(mapOf("eyeblkgupgnstq", "datavpys")))
-            .withPolicy(new ActivityPolicy().withTimeout("datafm")
-                .withRetry("dataoartvkhufktqgtjf")
-                .withRetryIntervalInSeconds(1205700344)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("h")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.SKIPPED,
+                    DependencyCondition.SUCCEEDED))
+                .withAdditionalProperties(mapOf())))
+            .withUserProperties(
+                Arrays.asList(new UserProperty().withName("uxpyveavstzbz").withValue("datakksdjkanizdcjx"),
+                    new UserProperty().withName("zpmwxvfrmvtwwb").withValue("datahivfosbrqeywhlq")))
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("myayblmcenjc")
+                .withParameters(mapOf("yubytslfmajswrf", "dataamuplxksph", "gvkqz", "datas")))
+            .withPolicy(new ActivityPolicy().withTimeout("datas")
+                .withRetry("dataufnhejualug")
+                .withRetryIntervalInSeconds(1662073469)
                 .withSecureInput(false)
-                .withSecureOutput(false)
+                .withSecureOutput(true)
                 .withAdditionalProperties(mapOf()))
-            .withStorageLinkedServices(Arrays.asList(new LinkedServiceReference().withReferenceName("oaafksormfhr")
-                .withParameters(mapOf("ob", "dataxmnrdf", "aupjmjig", "datarvon", "xtoxlxojijtt", "datapbdfrtasau",
-                    "fs", "datayrxyn"))))
-            .withArguments(Arrays.asList("dataci", "datashcpxftyh"))
-            .withGetDebugInfo(HDInsightActivityDebugInfoOption.NONE)
-            .withClassName("datauqsdurfqaawryc")
-            .withJarFilePath("datazs")
-            .withJarLinkedService(new LinkedServiceReference().withReferenceName("rzt")
-                .withParameters(mapOf("cighl", "dataysxxajr", "wcaxj", "dataddvnobesowbtnfq")))
-            .withJarLibs(Arrays.asList("dataehoucmeuu", "dataajiotlcxofqjninr", "datakqekqtiuveaz"))
-            .withDefines(
-                mapOf("lspih", "datawbiwygwpwquxiqg", "fizef", "dataxgvviotvoolk", "fwaehs", "databrndaquxvuf"));
+            .withStorageLinkedServices(Arrays.asList(
+                new LinkedServiceReference().withReferenceName("rnlbfnuppwqkskns")
+                    .withParameters(mapOf("cx", "datakjboyggrmz", "gmtgoeayhojdgwez", "dataphdkxwstabgejopv")),
+                new LinkedServiceReference().withReferenceName("r")
+                    .withParameters(mapOf("dtj", "databdjzcfdpxbwqgkfx", "bc", "datayevvuddnwj")),
+                new LinkedServiceReference().withReferenceName("flemxbmaiiv")
+                    .withParameters(mapOf("o", "datatzbkevh", "sis", "datajpumpqlugzydylf")),
+                new LinkedServiceReference().withReferenceName("dmfo")
+                    .withParameters(mapOf("tkprbm", "datasvfnxxkmrfz"))))
+            .withArguments(Arrays.asList("datarfhfjwikva", "datajx"))
+            .withGetDebugInfo(HDInsightActivityDebugInfoOption.ALWAYS)
+            .withClassName("dataqilvajc")
+            .withJarFilePath("datapwlf")
+            .withJarLinkedService(new LinkedServiceReference().withReferenceName("ardjqwdrooo")
+                .withParameters(mapOf("vdqcmegwajjzxcq", "datasyd")))
+            .withJarLibs(Arrays.asList("dataxewocwmadyelwo", "datalxa", "datahanfjrdcaw", "datazqldakbijcxctn"))
+            .withDefines(mapOf("yhnoll", "datayczzwhwsidnqiav", "eoxoe", "datauhocb", "fcurn", "dataprtz", "stok",
+                "dataujcunyua"));
         model = BinaryData.fromObject(model).toObject(HDInsightMapReduceActivity.class);
-        Assertions.assertEquals("wsbznjngerw", model.name());
-        Assertions.assertEquals("lpsswoslqmftk", model.description());
+        Assertions.assertEquals("zwtzdyz", model.name());
+        Assertions.assertEquals("gnnsojdmesox", model.description());
         Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED, model.onInactiveMarkAs());
-        Assertions.assertEquals("fbdbzbaboeegale", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
+        Assertions.assertEquals("h", model.dependsOn().get(0).activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("wjaepjm", model.userProperties().get(0).name());
-        Assertions.assertEquals("s", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1205700344, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("uxpyveavstzbz", model.userProperties().get(0).name());
+        Assertions.assertEquals("myayblmcenjc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(1662073469, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(false, model.policy().secureInput());
-        Assertions.assertEquals(false, model.policy().secureOutput());
-        Assertions.assertEquals("oaafksormfhr", model.storageLinkedServices().get(0).referenceName());
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.NONE, model.getDebugInfo());
-        Assertions.assertEquals("rzt", model.jarLinkedService().referenceName());
+        Assertions.assertEquals(true, model.policy().secureOutput());
+        Assertions.assertEquals("rnlbfnuppwqkskns", model.storageLinkedServices().get(0).referenceName());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
+        Assertions.assertEquals("ardjqwdrooo", model.jarLinkedService().referenceName());
     }
 
     // Use "Map.of" if available

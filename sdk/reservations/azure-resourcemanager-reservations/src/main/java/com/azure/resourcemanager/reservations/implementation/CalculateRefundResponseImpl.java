@@ -13,8 +13,7 @@ public final class CalculateRefundResponseImpl implements CalculateRefundRespons
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    CalculateRefundResponseImpl(
-        CalculateRefundResponseInner innerObject,
+    CalculateRefundResponseImpl(CalculateRefundResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

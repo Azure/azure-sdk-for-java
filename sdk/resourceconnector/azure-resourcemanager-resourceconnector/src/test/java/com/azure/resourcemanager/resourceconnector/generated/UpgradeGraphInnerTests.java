@@ -11,11 +11,9 @@ import com.azure.resourcemanager.resourceconnector.models.UpgradeGraphProperties
 public final class UpgradeGraphInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradeGraphInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"felluwfzitonpe\",\"properties\":{\"applianceVersion\":\"jkjlxofpdvhpfx\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{\"data\":{},\"name\":\"mayhuybbkpodepoo\",\"namespace\":\"nuvamiheogna\"}},\"version\":\"zxtheotusivyevcc\"}]}}")
-                .toObject(UpgradeGraphInner.class);
+        UpgradeGraphInner model = BinaryData.fromString(
+            "{\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"felluwfzitonpe\",\"properties\":{\"applianceVersion\":\"jkjlxofpdvhpfx\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{\"data\":{},\"name\":\"mayhuybbkpodepoo\",\"namespace\":\"nuvamiheogna\"}},\"version\":\"zxtheotusivyevcc\"}]}}")
+            .toObject(UpgradeGraphInner.class);
     }
 
     @org.junit.jupiter.api.Test

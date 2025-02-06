@@ -17,8 +17,8 @@ import reactor.core.publisher.Mono;
  */
 public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
 
-    private static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
+    private static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL
+        = GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
 
     /**
      * The BuildDocumentModelTest class.
@@ -31,11 +31,9 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        SyncPoller<OperationResult, DocumentModelDetails>
-            syncPoller = documentModelAdministrationAsyncClient
-            .beginBuildDocumentModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
-                DocumentModelBuildMode.TEMPLATE, null,
-                new BuildDocumentModelOptions().setDescription("perf-training-model"))
+        SyncPoller<OperationResult, DocumentModelDetails> syncPoller = documentModelAdministrationAsyncClient
+            .beginBuildDocumentModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL, DocumentModelBuildMode.TEMPLATE,
+                null, new BuildDocumentModelOptions().setDescription("perf-training-model"))
             .getSyncPoller();
         modelId = syncPoller.getFinalResult().getModelId();
         assert modelId != null;
@@ -44,9 +42,8 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return documentModelAdministrationAsyncClient
-            .beginBuildDocumentModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
-                DocumentModelBuildMode.TEMPLATE, null,
-                new BuildDocumentModelOptions().setDescription("perf-training-model"))
+            .beginBuildDocumentModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL, DocumentModelBuildMode.TEMPLATE,
+                null, new BuildDocumentModelOptions().setDescription("perf-training-model"))
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -54,8 +51,8 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
                     pollResponse.getFinalResult().subscribe(response -> modelId = response.getModelId());
                     return Mono.empty();
                 } else {
-                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + pollResponse.getStatus()));
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                 }
             });
     }

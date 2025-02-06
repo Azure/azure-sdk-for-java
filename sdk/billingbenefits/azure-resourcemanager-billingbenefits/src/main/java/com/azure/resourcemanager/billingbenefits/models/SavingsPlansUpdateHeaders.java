@@ -7,21 +7,21 @@ package com.azure.resourcemanager.billingbenefits.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SavingsPlansUpdateHeaders model. */
+/**
+ * The SavingsPlansUpdateHeaders model.
+ */
 @Fluent
 public final class SavingsPlansUpdateHeaders {
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SavingsPlansUpdateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SavingsPlansUpdateHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class SavingsPlansUpdateHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -39,7 +39,7 @@ public final class SavingsPlansUpdateHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the SavingsPlansUpdateHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class SavingsPlansUpdateHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

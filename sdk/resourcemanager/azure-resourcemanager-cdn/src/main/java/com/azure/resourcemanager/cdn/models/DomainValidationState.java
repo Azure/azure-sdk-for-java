@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -73,7 +72,6 @@ public final class DomainValidationState extends ExpandableStringEnum<DomainVali
      * @param name a name to look for.
      * @return the corresponding DomainValidationState.
      */
-    @JsonCreator
     public static DomainValidationState fromString(String name) {
         return fromString(name, DomainValidationState.class);
     }

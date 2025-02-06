@@ -6,50 +6,53 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.StoragePoolOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of a StoragePool RP Operation. */
+/**
+ * Description of a StoragePool RP Operation.
+ */
 @Fluent
-public final class StoragePoolRPOperationInner {
+public final class StoragePoolRPOperationInner implements JsonSerializable<StoragePoolRPOperationInner> {
     /*
      * The name of the operation being performed on this particular object
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Indicates whether the operation applies to data-plane.
      */
-    @JsonProperty(value = "isDataAction", required = true)
     private boolean isDataAction;
 
     /*
      * Indicates the action type.
      */
-    @JsonProperty(value = "actionType")
     private String actionType;
 
     /*
      * Additional metadata about RP operation.
      */
-    @JsonProperty(value = "display", required = true)
     private StoragePoolOperationDisplay display;
 
     /*
      * The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
      * UX.
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
-    /** Creates an instance of StoragePoolRPOperationInner class. */
+    /**
+     * Creates an instance of StoragePoolRPOperationInner class.
+     */
     public StoragePoolRPOperationInner() {
     }
 
     /**
      * Get the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +61,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Set the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @param name the name value to set.
      * @return the StoragePoolRPOperationInner object itself.
      */
@@ -69,7 +72,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     public boolean isDataAction() {
@@ -78,7 +81,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation applies to data-plane.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the StoragePoolRPOperationInner object itself.
      */
@@ -89,7 +92,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Get the actionType property: Indicates the action type.
-     *
+     * 
      * @return the actionType value.
      */
     public String actionType() {
@@ -98,7 +101,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Set the actionType property: Indicates the action type.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the StoragePoolRPOperationInner object itself.
      */
@@ -109,7 +112,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Get the display property: Additional metadata about RP operation.
-     *
+     * 
      * @return the display value.
      */
     public StoragePoolOperationDisplay display() {
@@ -118,7 +121,7 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Set the display property: Additional metadata about RP operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the StoragePoolRPOperationInner object itself.
      */
@@ -130,7 +133,7 @@ public final class StoragePoolRPOperationInner {
     /**
      * Get the origin property: The intended executor of the operation; governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -140,7 +143,7 @@ public final class StoragePoolRPOperationInner {
     /**
      * Set the origin property: The intended executor of the operation; governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the StoragePoolRPOperationInner object itself.
      */
@@ -151,25 +154,72 @@ public final class StoragePoolRPOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model StoragePoolRPOperationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model StoragePoolRPOperationInner"));
         }
         if (display() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property display in model StoragePoolRPOperationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property display in model StoragePoolRPOperationInner"));
         } else {
             display().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StoragePoolRPOperationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("actionType", this.actionType);
+        jsonWriter.writeStringField("origin", this.origin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StoragePoolRPOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StoragePoolRPOperationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StoragePoolRPOperationInner.
+     */
+    public static StoragePoolRPOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StoragePoolRPOperationInner deserializedStoragePoolRPOperationInner = new StoragePoolRPOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStoragePoolRPOperationInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedStoragePoolRPOperationInner.isDataAction = reader.getBoolean();
+                } else if ("display".equals(fieldName)) {
+                    deserializedStoragePoolRPOperationInner.display = StoragePoolOperationDisplay.fromJson(reader);
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedStoragePoolRPOperationInner.actionType = reader.getString();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedStoragePoolRPOperationInner.origin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStoragePoolRPOperationInner;
+        });
+    }
 }

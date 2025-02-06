@@ -9,7 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestConfigurationSource;
@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class IntegrationTestBase extends TestBase {
+public abstract class IntegrationTestBase extends TestProxyTestBase {
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     // Tests use timeouts of 20-60 seconds to verify something has happened
@@ -207,8 +207,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings.
      */
     protected ServiceBusClientBuilder getBuilder() {
-        return getAuthenticatedBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+        return getAuthenticatedBuilder().proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
@@ -229,28 +228,29 @@ public abstract class IntegrationTestBase extends TestBase {
         return builder;
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(MessagingEntityType entityType,
-        int entityIndex, boolean isSessionAware, boolean sharedConnection) {
+    protected ServiceBusSenderClientBuilder getSenderBuilder(MessagingEntityType entityType, int entityIndex,
+        boolean isSessionAware, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder.sender()
-                    .queueName(queueName);
+                return builder.sender().queueName(queueName);
+
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
 
                 return builder.sender().topicName(topicName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(MessagingEntityType entityType,
-        int entityIndex, boolean sharedConnection) {
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(MessagingEntityType entityType, int entityIndex,
+        boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
@@ -259,14 +259,18 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK).queueName(queueName);
+
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                    .topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver()
+                    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
@@ -281,8 +285,7 @@ public abstract class IntegrationTestBase extends TestBase {
             case QUEUE:
                 final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder
-                    .retryOptions(retryOptions)
+                return builder.retryOptions(retryOptions)
                     .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                     .queueName(queueName);
@@ -292,41 +295,34 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return builder
-                    .retryOptions(retryOptions)
+                return builder.retryOptions(retryOptions)
                     .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                    .topicName(topicName).subscriptionName(subscriptionName);
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
     protected static Stream<Arguments> messagingEntityProvider() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION)
-        );
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE), Arguments.of(MessagingEntityType.SUBSCRIPTION));
     }
 
     protected static Stream<Arguments> messagingEntityWithSessions() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
-            Arguments.of(MessagingEntityType.QUEUE, true),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
-        );
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false), Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true));
     }
 
     protected static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
-        );
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED));
     }
 
     protected <T extends AutoCloseable> T toClose(T closeable) {
@@ -381,7 +377,8 @@ public abstract class IntegrationTestBase extends TestBase {
         Mono.when(closeableMonos).block(TIMEOUT);
     }
 
-    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled,
+        AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
         message.setMessageId(messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
@@ -394,14 +391,16 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void logMessage(ServiceBusMessage message, String entity, String description) {
-        logMessage(message.getMessageId(), -1, message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
+        logMessage(message.getMessageId(), -1, message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity,
+            description);
     }
 
     protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
         if (message == null) {
             logMessage(null, -1, entity, null, description);
         } else {
-            logMessage(message.getMessageId(), message.getSequenceNumber(), message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
+            logMessage(message.getMessageId(), message.getSequenceNumber(),
+                message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
         }
     }
 
@@ -416,12 +415,15 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void logMessages(List<ServiceBusMessage> messages, String entity, String description) {
-        messages.forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+        messages.forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID),
+            entity, description));
     }
 
-    protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages, String entity, String description) {
+    protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages,
+        String entity, String description) {
         List<ServiceBusReceivedMessage> list = messages.stream().collect(Collectors.toList());
-        list.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+        list.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(),
+            m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
         return list;
     }
 
@@ -459,8 +461,7 @@ public abstract class IntegrationTestBase extends TestBase {
             configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "false");
             configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "false");
         }
-        return new ConfigurationBuilder(configSource)
-            .build();
+        return new ConfigurationBuilder(configSource).build();
     }
 
     /**

@@ -71,7 +71,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     // is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
     // "ReceiveLinkHandler".
     public ServiceBusReactorReceiver(AmqpConnection connection, String entityPath, Receiver receiver,
-        ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
+        ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions) {
         super(connection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
             new AmqpMetricsProvider(null, connection.getFullyQualifiedNamespace(), entityPath));
         this.receiver = receiver;
@@ -87,40 +88,34 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         if (this.isV2) {
             this.receiverUnsettledDeliveries = null;
         } else {
-            this.receiverUnsettledDeliveries = new ReceiverUnsettledDeliveries(handler.getHostname(), entityPath, handler.getLinkName(),
-                dispatcher, retryOptions, MessageUtils.ZERO_LOCK_TOKEN, logger);
+            this.receiverUnsettledDeliveries = new ReceiverUnsettledDeliveries(handler.getHostname(), entityPath,
+                handler.getLinkName(), dispatcher, retryOptions, MessageUtils.ZERO_LOCK_TOKEN, logger);
         }
 
-        this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
-            .next()
-            .flatMap(state -> {
-                @SuppressWarnings("unchecked") final Map<Symbol, Object> remoteSource =
-                    ((Source) receiver.getRemoteSource()).getFilter();
-                final Object value = remoteSource.get(SESSION_FILTER);
-                if (value == null) {
-                    logger.info("There is no session id.");
-                    return Mono.empty();
-                }
+        this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE).next().flatMap(state -> {
+            @SuppressWarnings("unchecked")
+            final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
+            final Object value = remoteSource.get(SESSION_FILTER);
+            if (value == null) {
+                logger.info("There is no session id.");
+                return Mono.empty();
+            }
 
-                final String actualSessionId = String.valueOf(value);
-                return Mono.just(actualSessionId);
-            })
-            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+            final String actualSessionId = String.valueOf(value);
+            return Mono.just(actualSessionId);
+        }).cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
 
-        this.sessionLockedUntil = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
-            .next()
-            .map(state -> {
-                if (receiver.getRemoteProperties() != null
-                    && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
-                    final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
-                    return MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
-                } else {
-                    logger.info("Locked until not set.");
+        this.sessionLockedUntil = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE).next().map(state -> {
+            if (receiver.getRemoteProperties() != null
+                && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
+                final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
+                return MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
+            } else {
+                logger.info("Locked until not set.");
 
-                    return Instant.EPOCH.atOffset(ZoneOffset.UTC);
-                }
-            })
-            .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
+                return Instant.EPOCH.atOffset(ZoneOffset.UTC);
+            }
+        }).cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
 
         this.sessionProperties = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
@@ -131,16 +126,20 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             // A detach without an error-condition can happen when Service upgrades. Also, while the service often
             // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
             // when a free or new session is unavailable, detach can happen without the error-condition.
-            .switchIfEmpty(Mono.error(() -> new AmqpException(true, "Unable to read session properties. Receive Link completed without being Active.", null)))
+            .switchIfEmpty(Mono.error(() -> new AmqpException(true,
+                "Unable to read session properties. Receive Link completed without being Active.", null)))
             .map(__ -> {
                 @SuppressWarnings("unchecked")
                 final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
                 final Object sessionIdObject = remoteSource.get(SESSION_FILTER);
                 if (sessionIdObject == null) {
-                    throw logger.atInfo().log(new AmqpException(false, "Unable to read session properties. There is no session id.", null));
+                    throw logger.atInfo()
+                        .log(new AmqpException(false, "Unable to read session properties. There is no session id.",
+                            null));
                 }
                 final OffsetDateTime sessionLockedUntil;
-                if (receiver.getRemoteProperties() != null && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
+                if (receiver.getRemoteProperties() != null
+                    && receiver.getRemoteProperties().containsKey(LOCKED_UNTIL_UTC)) {
                     final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
                     sessionLockedUntil = MessageUtils.convertDotNetTicksToOffsetDateTime(ticks);
                 } else {
@@ -166,13 +165,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     public Flux<Message> receive() {
         if (isV2) {
-            return super.receive()
-                .publishOn(ReceiversPumpingScheduler.instance());
+            return super.receive().publishOn(ReceiversPumpingScheduler.instance());
         }
         // Remove empty update disposition messages. The deliveries themselves are ACKs with no message.
-        return super.receive()
-            .filter(message -> message != EMPTY_MESSAGE)
-            .publishOn(Schedulers.boundedElastic());
+        return super.receive().filter(message -> message != EMPTY_MESSAGE).publishOn(Schedulers.boundedElastic());
     }
 
     @Override
@@ -210,7 +206,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected Message decodeDelivery(Delivery delivery) {
         if (isV2) {
-            throw logger.logExceptionAsError(new IllegalStateException("decodeDelivery should not be called in V2 route."));
+            throw logger
+                .logExceptionAsError(new IllegalStateException("decodeDelivery should not be called in V2 route."));
         }
         final byte[] deliveryTag = delivery.getTag();
         final UUID lockToken;
@@ -248,7 +245,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected void onHandlerClose() {
         if (isV2) {
-            throw logger.logExceptionAsError(new IllegalStateException("onHandlerClose should not be called in V2 route."));
+            throw logger
+                .logExceptionAsError(new IllegalStateException("onHandlerClose should not be called in V2 route."));
         }
         // See the code comment in ReactorReceiver.onHandlerClose(), [temporary method, tobe removed.]
         receiverUnsettledDeliveries.close();

@@ -6,74 +6,83 @@ package com.azure.resourcemanager.workloads.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.workloads.WorkloadsManager;
 import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorInner;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitor;
+import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorMetricThresholds;
 import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorPropertiesGrouping;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.workloads.models.SapLandscapeMonitorSidMapping;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SapLandscapeMonitorsUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"grouping\":{\"landscape\":[{\"name\":\"wffplfmuvapc\",\"topSid\":[\"rrvwey\",\"xoy\"]},{\"name\":\"k\",\"topSid\":[\"immoiroqboshbrag\",\"pyyrmfs\",\"bpav\"]},{\"name\":\"pfppd\",\"topSid\":[\"upgahxkum\",\"sjcaacfdmmcpugm\",\"hqepvufhbzehewh\"]}],\"sapApplication\":[{\"name\":\"lbqnbldxeacl\",\"topSid\":[\"horimkr\",\"r\",\"moucsofldpuviyfc\"]}]},\"topMetricsThresholds\":[{\"name\":\"olhbhlvb\",\"green\":57.665108,\"yellow\":50.091267,\"red\":4.885763},{\"name\":\"tkcudfbsfarfsiow\",\"green\":26.474714,\"yellow\":94.00434,\"red\":93.93892}]},\"id\":\"wgfstmhqykizm\",\"name\":\"ksaoafcluqvox\",\"type\":\"ycjimryvwgcwwpbm\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Created\",\"grouping\":{\"landscape\":[],\"sapApplication\":[]},\"topMetricsThresholds\":[]},\"id\":\"dths\",\"name\":\"qgvriibakcla\",\"type\":\"jfrnxousxauzlwv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SapLandscapeMonitor response =
-            manager
-                .sapLandscapeMonitors()
-                .updateWithResponse(
-                    "psw",
-                    "kmvkhl",
+        SapLandscapeMonitor response
+            = manager.sapLandscapeMonitors()
+                .updateWithResponse("byrplrohkpig", "fusuckzmkwklsno",
                     new SapLandscapeMonitorInner()
                         .withGrouping(
                             new SapLandscapeMonitorPropertiesGrouping()
-                                .withLandscape(Arrays.asList())
-                                .withSapApplication(Arrays.asList()))
-                        .withTopMetricsThresholds(Arrays.asList()),
+                                .withLandscape(Arrays.asList(
+                                    new SapLandscapeMonitorSidMapping().withName("lhhjnh")
+                                        .withTopSid(Arrays.asList("dyynfsvkhgb", "qtanarfdlpuk", "py")),
+                                    new SapLandscapeMonitorSidMapping().withName("eizjcpeogkhnmg")
+                                        .withTopSid(Arrays.asList("uxddbhfh", "fpazjzoywjxhpd", "lontacnpq",
+                                            "tehtuevrhrljyoog"))))
+                                .withSapApplication(Arrays.asList(
+                                    new SapLandscapeMonitorSidMapping().withName("sd")
+                                        .withTopSid(Arrays.asList("wbsreur", "q", "fuarenlvhht")),
+                                    new SapLandscapeMonitorSidMapping().withName("nvnaf")
+                                        .withTopSid(Arrays.asList("yfedevjbo", "lcqxypokk")),
+                                    new SapLandscapeMonitorSidMapping().withName("inqcymczngnbdxxe")
+                                        .withTopSid(Arrays.asList("invudbch", "qdtvqecrqctmxx", "tddmf", "huytxzvtzn")),
+                                    new SapLandscapeMonitorSidMapping().withName("xbannovvoxc")
+                                        .withTopSid(Arrays.asList("prwnwvroevytlyo", "rrrouuxvnsa")))))
+                        .withTopMetricsThresholds(Arrays.asList(
+                            new SapLandscapeMonitorMetricThresholds().withName("ymodizrxk")
+                                .withGreen(32.972794F)
+                                .withYellow(55.554604F)
+                                .withRed(51.439102F),
+                            new SapLandscapeMonitorMetricThresholds().withName("pmkmlmvevfx")
+                                .withGreen(11.564517F)
+                                .withYellow(37.18479F)
+                                .withRed(31.498182F),
+                            new SapLandscapeMonitorMetricThresholds().withName("liohrd")
+                                .withGreen(64.72534F)
+                                .withYellow(55.954712F)
+                                .withRed(93.0307F),
+                            new SapLandscapeMonitorMetricThresholds().withName("awpcbbnzqcykn")
+                                .withGreen(75.755165F)
+                                .withYellow(41.84596F)
+                                .withRed(75.34312F))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("wffplfmuvapc", response.grouping().landscape().get(0).name());
+        Assertions.assertEquals("rrvwey", response.grouping().landscape().get(0).topSid().get(0));
+        Assertions.assertEquals("lbqnbldxeacl", response.grouping().sapApplication().get(0).name());
+        Assertions.assertEquals("horimkr", response.grouping().sapApplication().get(0).topSid().get(0));
+        Assertions.assertEquals("olhbhlvb", response.topMetricsThresholds().get(0).name());
+        Assertions.assertEquals(57.665108F, response.topMetricsThresholds().get(0).green());
+        Assertions.assertEquals(50.091267F, response.topMetricsThresholds().get(0).yellow());
+        Assertions.assertEquals(4.885763F, response.topMetricsThresholds().get(0).red());
     }
 }

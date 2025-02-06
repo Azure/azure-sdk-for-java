@@ -21,72 +21,74 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunCommandP
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunDataExtractsParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunReadCommandsParameters;
 
-/** An instance of this class provides access to all the operations defined in BareMetalMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BareMetalMachinesClient.
+ */
 public interface BareMetalMachinesClient {
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BareMetalMachineInner> list();
 
     /**
      * List bare metal machines in the subscription.
-     *
-     * <p>Get a list of bare metal machines in the provided subscription.
-     *
+     * 
+     * Get a list of bare metal machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BareMetalMachineInner> list(Context context);
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List bare metal machines in the resource group.
-     *
-     * <p>Get a list of bare metal machines in the provided resource group.
-     *
+     * 
+     * Get a list of bare metal machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machines in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machines in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -96,14 +98,14 @@ public interface BareMetalMachinesClient {
      * @return properties of the provided bare metal machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BareMetalMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    Response<BareMetalMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String bareMetalMachineName, Context context);
 
     /**
      * Retrieve the bare metal machine.
-     *
-     * <p>Get properties of the provided bare metal machine.
-     *
+     * 
+     * Get properties of the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,10 +118,10 @@ public interface BareMetalMachinesClient {
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -129,15 +131,15 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters);
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -148,18 +150,15 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineInner bareMetalMachineParameters,
-        Context context);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters, Context context);
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -169,15 +168,15 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner createOrUpdate(
-        String resourceGroupName, String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters);
+    BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineInner bareMetalMachineParameters);
 
     /**
      * Create or update the bare metal machine.
-     *
-     * <p>Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
-     * will be rejected as the life cycle of this resource is managed by the system.
-     *
+     * 
+     * Create a new bare metal machine or update the properties of the existing one.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
@@ -188,83 +187,83 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner createOrUpdate(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineInner bareMetalMachineParameters,
-        Context context);
+    BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineInner bareMetalMachineParameters, Context context);
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String bareMetalMachineName, Context context);
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Delete the bare metal machine.
-     *
-     * <p>Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
-     * this resource is managed by the system.
-     *
+     * 
+     * Delete the provided bare metal machine.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,15 +272,15 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -292,18 +291,15 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,10 +312,10 @@ public interface BareMetalMachinesClient {
 
     /**
      * Patch the bare metal machine.
-     *
-     * <p>Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
+     * 
+     * Patch properties of the provided bare metal machine, or update tags associated with the bare metal machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineUpdateParameters The request body.
@@ -330,17 +326,14 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner update(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters,
-        Context context);
+    BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,14 +342,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -367,17 +360,15 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(String resourceGroupName,
+        String bareMetalMachineName, BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
         Context context);
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,9 +381,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Cordon the bare metal machine.
-     *
-     * <p>Cordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Cordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineCordonParameters The request body.
@@ -403,17 +394,14 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner cordon(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
-        Context context);
+    OperationStatusResultInner cordon(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineCordonParameters bareMetalMachineCordonParameters, Context context);
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,14 +410,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginPowerOff(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -441,16 +429,14 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,9 +449,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Power off the bare metal machine.
-     *
-     * <p>Power off the provided bare metal machine.
-     *
+     * 
+     * Power off the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachinePowerOffParameters The request body.
@@ -476,17 +462,14 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner powerOff(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
-        Context context);
+    OperationStatusResultInner powerOff(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -495,14 +478,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReimage(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -512,14 +495,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReimage(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,9 +515,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Reimage the bare metal machine.
-     *
-     * <p>Reimage the provided bare metal machine.
-     *
+     * 
+     * Reimage the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -548,9 +531,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,14 +542,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginReplace(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -578,16 +561,14 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -600,9 +581,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Replace (service) the bare metal machine.
-     *
-     * <p>Replace the provided bare metal machine.
-     *
+     * 
+     * Replace the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineReplaceParameters The request body.
@@ -613,17 +594,14 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner replace(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
-        Context context);
+    OperationStatusResultInner replace(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,14 +610,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRestart(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -649,14 +627,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginRestart(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -669,9 +647,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Restart the bare metal machine.
-     *
-     * <p>Restart the provided bare metal machine.
-     *
+     * 
+     * Restart the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -685,10 +663,10 @@ public interface BareMetalMachinesClient {
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -699,16 +677,15 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
+        String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -720,17 +697,15 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -740,17 +715,15 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResultInner runCommand(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
 
     /**
      * Run the command on the bare metal machine.
-     *
-     * <p>Run the command or the script on the provided bare metal machine. The URL to storage account with the command
+     * 
+     * Run the command or the script on the provided bare metal machine. The URL to storage account with the command
      * execution results and the command exit code can be retrieved from the operation status API once available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunCommandParameters The request body.
@@ -761,19 +734,15 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
-        Context context);
+    OperationStatusResultInner runCommand(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -784,17 +753,15 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
+        String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -806,18 +773,15 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -827,18 +791,15 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResultInner runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
      * Run data extraction for a bare metal machine.
-     *
-     * <p>Run one or more data extractions on the provided bare metal machine. The URL to storage account with the
-     * command execution results and the command exit code can be retrieved from the operation status API once
-     * available.
-     *
+     * 
+     * Run one or more data extractions on the provided bare metal machine. The URL to storage account with the command
+     * execution results and the command exit code can be retrieved from the operation status API once available.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunDataExtractsParameters The request body.
@@ -849,19 +810,16 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
-        Context context);
+    OperationStatusResultInner runDataExtracts(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -872,17 +830,16 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
+        String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -894,18 +851,16 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
-        Context context);
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -915,18 +870,16 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResultInner runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
      * Run read-only commands against a bare metal machine.
-     *
-     * <p>Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
+     * 
+     * Run one or more read-only commands on the provided bare metal machine. The URL to storage account with the
      * command execution results and the command exit code can be retrieved from the operation status API once
      * available.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineRunReadCommandsParameters The request body.
@@ -937,17 +890,14 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner runReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
-        Context context);
+    OperationStatusResultInner runReadCommands(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context);
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -956,14 +906,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String bareMetalMachineName);
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -973,14 +923,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String bareMetalMachineName, Context context);
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -993,9 +943,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Start the bare metal machine.
-     *
-     * <p>Start the provided bare metal machine.
-     *
+     * 
+     * Start the provided bare metal machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -1009,9 +959,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1020,14 +970,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
-        String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginUncordon(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.
@@ -1037,14 +987,14 @@ public interface BareMetalMachinesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginUncordon(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1057,9 +1007,9 @@ public interface BareMetalMachinesClient {
 
     /**
      * Uncordon the bare metal machine.
-     *
-     * <p>Uncordon the provided bare metal machine's Kubernetes node.
-     *
+     * 
+     * Uncordon the provided bare metal machine's Kubernetes node.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param context The context to associate with this operation.

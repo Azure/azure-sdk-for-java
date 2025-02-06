@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PortTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Port model =
-            BinaryData.fromString("{\"transportProtocol\":\"Udp\",\"backendPort\":149368324}").toObject(Port.class);
+        Port model
+            = BinaryData.fromString("{\"transportProtocol\":\"Udp\",\"backendPort\":149368324}").toObject(Port.class);
         Assertions.assertEquals(TransportProtocol.UDP, model.transportProtocol());
         Assertions.assertEquals(149368324, model.backendPort());
     }

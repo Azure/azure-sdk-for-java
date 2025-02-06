@@ -11,17 +11,15 @@ public final class OracleTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleTableDatasetTypeProperties model = BinaryData
-            .fromString(
-                "{\"tableName\":\"datawcahdkmbjsmihr\",\"schema\":\"dataezbfsjwf\",\"table\":\"dataglkvbgukbsv\"}")
+            .fromString("{\"tableName\":\"datawdzpzl\",\"schema\":\"datauexlqpww\",\"table\":\"databjecfwl\"}")
             .toObject(OracleTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleTableDatasetTypeProperties model
-            = new OracleTableDatasetTypeProperties().withTableName("datawcahdkmbjsmihr")
-                .withSchema("dataezbfsjwf")
-                .withTable("dataglkvbgukbsv");
+        OracleTableDatasetTypeProperties model = new OracleTableDatasetTypeProperties().withTableName("datawdzpzl")
+            .withSchema("datauexlqpww")
+            .withTable("databjecfwl");
         model = BinaryData.fromObject(model).toObject(OracleTableDatasetTypeProperties.class);
     }
 }

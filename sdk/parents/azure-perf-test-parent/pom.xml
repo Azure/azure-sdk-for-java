@@ -50,7 +50,7 @@
     <perf.test.mainClass></perf.test.mainClass>
 
     <!-- Skip missing Javadocs in performance tests. -->
-    <doclint>all,-missing</doclint>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <build>

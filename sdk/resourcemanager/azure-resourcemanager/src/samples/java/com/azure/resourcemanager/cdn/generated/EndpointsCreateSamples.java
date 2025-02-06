@@ -45,18 +45,33 @@ public final class EndpointsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void endpointsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getEndpoints().create("RG", "profile1", "endpoint1",
-            new EndpointInner().withLocation("WestUs").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .create("RG", "profile1", "endpoint1", new EndpointInner().withLocation("WestUs")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                 .withOrigins(Arrays.asList(
-                    new DeepCreatedOrigin().withName("origin1").withHostname("www.someDomain1.net").withHttpPort(80)
-                        .withHttpsPort(443).withOriginHostHeader("www.someDomain1.net").withPriority(1).withWeight(50)
+                    new DeepCreatedOrigin().withName("origin1")
+                        .withHostname("www.someDomain1.net")
+                        .withHttpPort(80)
+                        .withHttpsPort(443)
+                        .withOriginHostHeader("www.someDomain1.net")
+                        .withPriority(1)
+                        .withWeight(50)
                         .withEnabled(true),
-                    new DeepCreatedOrigin().withName("origin2").withHostname("www.someDomain2.net").withHttpPort(80)
-                        .withHttpsPort(443).withOriginHostHeader("www.someDomain2.net").withPriority(2).withWeight(50)
+                    new DeepCreatedOrigin().withName("origin2")
+                        .withHostname("www.someDomain2.net")
+                        .withHttpPort(80)
+                        .withHttpsPort(443)
+                        .withOriginHostHeader("www.someDomain2.net")
+                        .withPriority(2)
+                        .withWeight(50)
                         .withEnabled(true)))
                 .withOriginGroups(Arrays.asList(new DeepCreatedOriginGroup().withName("originGroup1")
                     .withHealthProbeSettings(new HealthProbeParameters().withProbePath("/health.aspx")
-                        .withProbeRequestType(HealthProbeRequestType.GET).withProbeProtocol(ProbeProtocol.HTTP)
+                        .withProbeRequestType(HealthProbeRequestType.GET)
+                        .withProbeProtocol(ProbeProtocol.HTTP)
                         .withProbeIntervalInSeconds(120))
                     .withOrigins(Arrays.asList(new ResourceReference().withId(
                         "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/origins/origin1"),
@@ -67,28 +82,35 @@ public final class EndpointsCreateSamples {
                         .withResponseBasedFailoverThresholdPercentage(10))))
                 .withOriginPath("/photos")
                 .withContentTypesToCompress(Arrays.asList("text/html", "application/octet-stream"))
-                .withOriginHostHeader("www.bing.com").withIsCompressionEnabled(true).withIsHttpAllowed(true)
-                .withIsHttpsAllowed(true).withQueryStringCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
+                .withOriginHostHeader("www.bing.com")
+                .withIsCompressionEnabled(true)
+                .withIsHttpAllowed(true)
+                .withIsHttpsAllowed(true)
+                .withQueryStringCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
                 .withDefaultOriginGroup(new ResourceReference().withId(
                     "/subscriptions/subid/resourceGroups/RG/providers/Microsoft.Cdn/profiles/profile1/endpoints/endpoint1/originGroups/originGroup1"))
                 .withDeliveryPolicy(new EndpointPropertiesUpdateParametersDeliveryPolicy()
                     .withDescription("Test description for a policy.")
-                    .withRules(Arrays.asList(new DeliveryRule().withName("rule1").withOrder(1)
-                        .withConditions(Arrays.asList(new DeliveryRuleRemoteAddressCondition()
-                            .withParameters(new RemoteAddressMatchConditionParameters()
-                                .withOperator(RemoteAddressOperator.IPMATCH).withNegateCondition(true)
+                    .withRules(Arrays.asList(new DeliveryRule().withName("rule1")
+                        .withOrder(1)
+                        .withConditions(Arrays.asList(new DeliveryRuleRemoteAddressCondition().withParameters(
+                            new RemoteAddressMatchConditionParameters().withOperator(RemoteAddressOperator.IPMATCH)
+                                .withNegateCondition(true)
                                 .withMatchValues(Arrays.asList("192.168.1.0/24", "10.0.0.0/24")))))
                         .withActions(Arrays.asList(
                             new DeliveryRuleCacheExpirationAction().withParameters(
                                 new CacheExpirationActionParameters().withCacheBehavior(CacheBehavior.OVERRIDE)
-                                    .withCacheType(CacheType.ALL).withCacheDuration("10:10:09")),
+                                    .withCacheType(CacheType.ALL)
+                                    .withCacheDuration("10:10:09")),
                             new DeliveryRuleResponseHeaderAction()
                                 .withParameters(new HeaderActionParameters().withHeaderAction(HeaderAction.OVERWRITE)
-                                    .withHeaderName("Access-Control-Allow-Origin").withValue("*")),
+                                    .withHeaderName("Access-Control-Allow-Origin")
+                                    .withValue("*")),
                             new DeliveryRuleRequestHeaderAction()
                                 .withParameters(new HeaderActionParameters().withHeaderAction(HeaderAction.OVERWRITE)
-                                    .withHeaderName("Accept-Encoding").withValue("gzip"))))))),
-            com.azure.core.util.Context.NONE);
+                                    .withHeaderName("Accept-Encoding")
+                                    .withValue("gzip"))))))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

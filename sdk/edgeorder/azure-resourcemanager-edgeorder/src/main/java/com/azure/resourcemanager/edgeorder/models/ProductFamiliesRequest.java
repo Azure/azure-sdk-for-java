@@ -6,34 +6,39 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The filters for showing the product families. */
+/**
+ * The filters for showing the product families.
+ */
 @Fluent
-public final class ProductFamiliesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductFamiliesRequest.class);
-
+public final class ProductFamiliesRequest implements JsonSerializable<ProductFamiliesRequest> {
     /*
      * Dictionary of filterable properties on product family.
      */
-    @JsonProperty(value = "filterableProperties", required = true)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<FilterableProperty>> filterableProperties;
 
     /*
-     * Customer subscription properties. Clients can display available products
-     * to unregistered customers by explicitly passing subscription details
+     * Customer subscription properties. Clients can display available products to unregistered customers by explicitly
+     * passing subscription details
      */
-    @JsonProperty(value = "customerSubscriptionDetails")
     private CustomerSubscriptionDetails customerSubscriptionDetails;
 
     /**
+     * Creates an instance of ProductFamiliesRequest class.
+     */
+    public ProductFamiliesRequest() {
+    }
+
+    /**
      * Get the filterableProperties property: Dictionary of filterable properties on product family.
-     *
+     * 
      * @return the filterableProperties value.
      */
     public Map<String, List<FilterableProperty>> filterableProperties() {
@@ -42,7 +47,7 @@ public final class ProductFamiliesRequest {
 
     /**
      * Set the filterableProperties property: Dictionary of filterable properties on product family.
-     *
+     * 
      * @param filterableProperties the filterableProperties value to set.
      * @return the ProductFamiliesRequest object itself.
      */
@@ -54,7 +59,7 @@ public final class ProductFamiliesRequest {
     /**
      * Get the customerSubscriptionDetails property: Customer subscription properties. Clients can display available
      * products to unregistered customers by explicitly passing subscription details.
-     *
+     * 
      * @return the customerSubscriptionDetails value.
      */
     public CustomerSubscriptionDetails customerSubscriptionDetails() {
@@ -64,39 +69,81 @@ public final class ProductFamiliesRequest {
     /**
      * Set the customerSubscriptionDetails property: Customer subscription properties. Clients can display available
      * products to unregistered customers by explicitly passing subscription details.
-     *
+     * 
      * @param customerSubscriptionDetails the customerSubscriptionDetails value to set.
      * @return the ProductFamiliesRequest object itself.
      */
-    public ProductFamiliesRequest withCustomerSubscriptionDetails(
-        CustomerSubscriptionDetails customerSubscriptionDetails) {
+    public ProductFamiliesRequest
+        withCustomerSubscriptionDetails(CustomerSubscriptionDetails customerSubscriptionDetails) {
         this.customerSubscriptionDetails = customerSubscriptionDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filterableProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filterableProperties in model ProductFamiliesRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filterableProperties in model ProductFamiliesRequest"));
         } else {
-            filterableProperties()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.forEach(e1 -> e1.validate());
-                        }
-                    });
+            filterableProperties().values().forEach(e -> {
+                if (e != null) {
+                    e.forEach(e1 -> e1.validate());
+                }
+            });
         }
         if (customerSubscriptionDetails() != null) {
             customerSubscriptionDetails().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProductFamiliesRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("filterableProperties", this.filterableProperties,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeJsonField("customerSubscriptionDetails", this.customerSubscriptionDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductFamiliesRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductFamiliesRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProductFamiliesRequest.
+     */
+    public static ProductFamiliesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductFamiliesRequest deserializedProductFamiliesRequest = new ProductFamiliesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filterableProperties".equals(fieldName)) {
+                    Map<String, List<FilterableProperty>> filterableProperties
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> FilterableProperty.fromJson(reader2)));
+                    deserializedProductFamiliesRequest.filterableProperties = filterableProperties;
+                } else if ("customerSubscriptionDetails".equals(fieldName)) {
+                    deserializedProductFamiliesRequest.customerSubscriptionDetails
+                        = CustomerSubscriptionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductFamiliesRequest;
+        });
     }
 }

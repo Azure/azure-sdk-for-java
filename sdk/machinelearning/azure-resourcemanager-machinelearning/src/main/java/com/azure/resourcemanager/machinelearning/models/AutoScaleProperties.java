@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Auto scale properties. */
+/**
+ * Auto scale properties.
+ */
 @Fluent
-public final class AutoScaleProperties {
+public final class AutoScaleProperties implements JsonSerializable<AutoScaleProperties> {
     /*
      * The minNodeCount property.
      */
-    @JsonProperty(value = "minNodeCount")
     private Integer minNodeCount;
 
     /*
      * The enabled property.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The maxNodeCount property.
      */
-    @JsonProperty(value = "maxNodeCount")
     private Integer maxNodeCount;
 
-    /** Creates an instance of AutoScaleProperties class. */
+    /**
+     * Creates an instance of AutoScaleProperties class.
+     */
     public AutoScaleProperties() {
     }
 
     /**
      * Get the minNodeCount property: The minNodeCount property.
-     *
+     * 
      * @return the minNodeCount value.
      */
     public Integer minNodeCount() {
@@ -43,7 +48,7 @@ public final class AutoScaleProperties {
 
     /**
      * Set the minNodeCount property: The minNodeCount property.
-     *
+     * 
      * @param minNodeCount the minNodeCount value to set.
      * @return the AutoScaleProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class AutoScaleProperties {
 
     /**
      * Get the enabled property: The enabled property.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -63,7 +68,7 @@ public final class AutoScaleProperties {
 
     /**
      * Set the enabled property: The enabled property.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AutoScaleProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class AutoScaleProperties {
 
     /**
      * Get the maxNodeCount property: The maxNodeCount property.
-     *
+     * 
      * @return the maxNodeCount value.
      */
     public Integer maxNodeCount() {
@@ -83,7 +88,7 @@ public final class AutoScaleProperties {
 
     /**
      * Set the maxNodeCount property: The maxNodeCount property.
-     *
+     * 
      * @param maxNodeCount the maxNodeCount value to set.
      * @return the AutoScaleProperties object itself.
      */
@@ -94,9 +99,51 @@ public final class AutoScaleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minNodeCount", this.minNodeCount);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("maxNodeCount", this.maxNodeCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoScaleProperties.
+     */
+    public static AutoScaleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleProperties deserializedAutoScaleProperties = new AutoScaleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minNodeCount".equals(fieldName)) {
+                    deserializedAutoScaleProperties.minNodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAutoScaleProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxNodeCount".equals(fieldName)) {
+                    deserializedAutoScaleProperties.maxNodeCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleProperties;
+        });
     }
 }

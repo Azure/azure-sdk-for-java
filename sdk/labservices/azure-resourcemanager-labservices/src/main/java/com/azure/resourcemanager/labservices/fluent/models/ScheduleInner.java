@@ -8,29 +8,53 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RecurrencePattern;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Schedule for automatically turning virtual machines in a lab on and off at specified times. */
+/**
+ * Schedule for automatically turning virtual machines in a lab on and off at specified times.
+ */
 @Fluent
 public final class ScheduleInner extends ProxyResource {
     /*
      * Metadata pertaining to creation and last modification of the schedule.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Schedule resource properties
      */
-    @JsonProperty(value = "properties", required = true)
     private ScheduleProperties innerProperties = new ScheduleProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScheduleInner class.
+     */
+    public ScheduleInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the schedule.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -39,7 +63,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Schedule resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleProperties innerProperties() {
@@ -47,8 +71,38 @@ public final class ScheduleInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the schedule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +112,7 @@ public final class ScheduleInner extends ProxyResource {
     /**
      * Get the startAt property: When lab user virtual machines will be started. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @return the startAt value.
      */
     public OffsetDateTime startAt() {
@@ -68,7 +122,7 @@ public final class ScheduleInner extends ProxyResource {
     /**
      * Set the startAt property: When lab user virtual machines will be started. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @param startAt the startAt value to set.
      * @return the ScheduleInner object itself.
      */
@@ -83,7 +137,7 @@ public final class ScheduleInner extends ProxyResource {
     /**
      * Get the stopAt property: When lab user virtual machines will be stopped. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @return the stopAt value.
      */
     public OffsetDateTime stopAt() {
@@ -93,7 +147,7 @@ public final class ScheduleInner extends ProxyResource {
     /**
      * Set the stopAt property: When lab user virtual machines will be stopped. Timestamp offsets will be ignored and
      * timeZoneId is used instead.
-     *
+     * 
      * @param stopAt the stopAt value to set.
      * @return the ScheduleInner object itself.
      */
@@ -107,7 +161,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the recurrencePattern property: The recurrence pattern of the scheduled actions.
-     *
+     * 
      * @return the recurrencePattern value.
      */
     public RecurrencePattern recurrencePattern() {
@@ -116,7 +170,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the recurrencePattern property: The recurrence pattern of the scheduled actions.
-     *
+     * 
      * @param recurrencePattern the recurrencePattern value to set.
      * @return the ScheduleInner object itself.
      */
@@ -130,7 +184,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the timeZoneId property: The IANA timezone id for the schedule.
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -139,7 +193,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the timeZoneId property: The IANA timezone id for the schedule.
-     *
+     * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleInner object itself.
      */
@@ -153,7 +207,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Get the notes property: Notes for this schedule.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -162,7 +216,7 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Set the notes property: Notes for this schedule.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ScheduleInner object itself.
      */
@@ -176,18 +230,62 @@ public final class ScheduleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ScheduleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model ScheduleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleInner.
+     */
+    public static ScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleInner deserializedScheduleInner = new ScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduleInner.innerProperties = ScheduleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScheduleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleInner;
+        });
+    }
 }

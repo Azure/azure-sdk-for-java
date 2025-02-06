@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcePoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourcePoolInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"uuid\":\"rd\",\"vCenterId\":\"pewnw\",\"moRefId\":\"itjz\",\"inventoryItemId\":\"lusarh\",\"moName\":\"fcqhsmyurkd\",\"cpuSharesLevel\":\"lx\",\"cpuReservationMHz\":4178590504492637721,\"cpuLimitMHz\":1357587298187996304,\"memSharesLevel\":\"xukcdmpar\",\"memReservationMB\":743663973345531285,\"memLimitMB\":7105688458172828807,\"memOverallUsageGB\":8444265625651342832,\"memCapacityGB\":1140479818693475214,\"cpuOverallUsageMHz\":680048985091356612,\"cpuCapacityMHz\":5153006235521521190,\"customResourceName\":\"whfpmrqobmtu\",\"datastoreIds\":[\"ryrtihfxtijbpzv\",\"nwzsymg\"],\"networkIds\":[\"fcyzkohdbihanufh\"],\"statuses\":[{\"type\":\"y\",\"status\":\"git\",\"reason\":\"qhabifpikxwcz\",\"message\":\"scnpqxuhivy\",\"severity\":\"iwbybrkxvdumjg\",\"lastUpdatedAt\":\"2020-12-24T14:06:57Z\"}],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"type\":\"xgaudccs\",\"name\":\"s\"},\"kind\":\"yejhk\",\"location\":\"yhtnapczwlokjye\",\"tags\":{\"jnchgej\":\"vnipjox\",\"huxinpmqnj\":\"podmailzydehojwy\",\"vcputegj\":\"qwixjspro\"},\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}")
-                .toObject(ResourcePoolInner.class);
+        ResourcePoolInner model = BinaryData.fromString(
+            "{\"properties\":{\"uuid\":\"rd\",\"vCenterId\":\"pewnw\",\"moRefId\":\"itjz\",\"inventoryItemId\":\"lusarh\",\"moName\":\"fcqhsmyurkd\",\"cpuSharesLevel\":\"lx\",\"cpuReservationMHz\":4178590504492637721,\"cpuLimitMHz\":1357587298187996304,\"memSharesLevel\":\"xukcdmpar\",\"memReservationMB\":743663973345531285,\"memLimitMB\":7105688458172828807,\"memOverallUsageGB\":8444265625651342832,\"memCapacityGB\":1140479818693475214,\"cpuOverallUsageMHz\":680048985091356612,\"cpuCapacityMHz\":5153006235521521190,\"customResourceName\":\"whfpmrqobmtu\",\"datastoreIds\":[\"ryrtihfxtijbpzv\",\"nwzsymg\"],\"networkIds\":[\"fcyzkohdbihanufh\"],\"statuses\":[{\"type\":\"y\",\"status\":\"git\",\"reason\":\"qhabifpikxwcz\",\"message\":\"scnpqxuhivy\",\"severity\":\"iwbybrkxvdumjg\",\"lastUpdatedAt\":\"2020-12-24T14:06:57Z\"}],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"type\":\"xgaudccs\",\"name\":\"s\"},\"kind\":\"yejhk\",\"location\":\"yhtnapczwlokjye\",\"tags\":{\"jnchgej\":\"vnipjox\",\"huxinpmqnj\":\"podmailzydehojwy\",\"vcputegj\":\"qwixjspro\"},\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}")
+            .toObject(ResourcePoolInner.class);
         Assertions.assertEquals("yhtnapczwlokjye", model.location());
         Assertions.assertEquals("vnipjox", model.tags().get("jnchgej"));
         Assertions.assertEquals("xgaudccs", model.extendedLocation().type());
@@ -31,15 +29,13 @@ public final class ResourcePoolInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcePoolInner model =
-            new ResourcePoolInner()
-                .withLocation("yhtnapczwlokjye")
-                .withTags(mapOf("jnchgej", "vnipjox", "huxinpmqnj", "podmailzydehojwy", "vcputegj", "qwixjspro"))
-                .withExtendedLocation(new ExtendedLocation().withType("xgaudccs").withName("s"))
-                .withKind("yejhk")
-                .withVCenterId("pewnw")
-                .withMoRefId("itjz")
-                .withInventoryItemId("lusarh");
+        ResourcePoolInner model = new ResourcePoolInner().withLocation("yhtnapczwlokjye")
+            .withTags(mapOf("jnchgej", "vnipjox", "huxinpmqnj", "podmailzydehojwy", "vcputegj", "qwixjspro"))
+            .withExtendedLocation(new ExtendedLocation().withType("xgaudccs").withName("s"))
+            .withKind("yejhk")
+            .withVCenterId("pewnw")
+            .withMoRefId("itjz")
+            .withInventoryItemId("lusarh");
         model = BinaryData.fromObject(model).toObject(ResourcePoolInner.class);
         Assertions.assertEquals("yhtnapczwlokjye", model.location());
         Assertions.assertEquals("vnipjox", model.tags().get("jnchgej"));

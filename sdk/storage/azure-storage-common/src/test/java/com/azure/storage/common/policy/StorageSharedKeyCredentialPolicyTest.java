@@ -29,31 +29,25 @@ public class StorageSharedKeyCredentialPolicyTest {
 
     @SyncAsyncTest
     public void sharedKeyCredAddsAuthHeader() throws MalformedURLException {
-        StorageSharedKeyCredential storageSharedKeyCredential =
-            new StorageSharedKeyCredential("testAccountName", "testAccountKey");
+        StorageSharedKeyCredential storageSharedKeyCredential
+            = new StorageSharedKeyCredential("testAccountName", "testAccountKey");
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(MOCK_HTTP_RESPONSE);
-                }
-            })
-            .policies(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential),
-                (context, next) -> {
-                    String expectedSignature = storageSharedKeyCredential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
-                        context.getHttpRequest().getHttpMethod().toString(),
-                        context.getHttpRequest().getHeaders(),
-                        Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
-                    assertEquals(expectedSignature, context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue());
-                    return next.process();
-                })
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(MOCK_HTTP_RESPONSE);
+            }
+        }).policies(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential), (context, next) -> {
+            String expectedSignature
+                = storageSharedKeyCredential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
+                    context.getHttpRequest().getHttpMethod().toString(), context.getHttpRequest().getHeaders(),
+                    Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
+            assertEquals(expectedSignature,
+                context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue());
+            return next.process();
+        }).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost/"));
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request)
-        );
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 }

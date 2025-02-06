@@ -368,10 +368,8 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> createOrUpdateNotebookWithResponseAsync(String notebookName,
         NotebookResource notebook, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateNotebook(this.client.getEndpoint(), notebookName,
-            apiVersion, ifMatch, notebook, accept, context));
+        return FluxUtil
+            .withContext(context -> createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch, context));
     }
 
     /**
@@ -517,10 +515,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> getNotebookWithResponseAsync(String notebookName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getNotebook(this.client.getEndpoint(), notebookName, apiVersion,
-            ifNoneMatch, accept, context));
+        return FluxUtil.withContext(context -> getNotebookWithResponseAsync(notebookName, ifNoneMatch, context));
     }
 
     /**
@@ -652,10 +647,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNotebookWithResponseAsync(String notebookName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteNotebook(this.client.getEndpoint(), notebookName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deleteNotebookWithResponseAsync(notebookName, context));
     }
 
     /**
@@ -744,10 +736,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNotebookWithResponseAsync(String notebookName, ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameNotebook(this.client.getEndpoint(), notebookName,
-            apiVersion, request, accept, context));
+        return FluxUtil.withContext(context -> renameNotebookWithResponseAsync(notebookName, request, context));
     }
 
     /**
@@ -834,9 +823,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -855,9 +842,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -876,9 +861,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,9 +875,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -909,9 +890,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -929,9 +908,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -950,9 +927,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -966,9 +941,7 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

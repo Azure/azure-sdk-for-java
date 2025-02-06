@@ -41,7 +41,8 @@ public final class LogsColumnType extends ExpandableStringEnum<LogsColumnType> {
     /**
      * Creates an instance of LogsColumnType.
      */
-    public LogsColumnType() { }
+    public LogsColumnType() {
+    }
 
     /**
      * Creates or finds a LogsColumnType from its string representation.

@@ -13,7 +13,6 @@ import java.util.Objects;
  */
 @Fluent
 class FileSystemRenameOptions {
-
     private final String destinationFileSystemName;
     private DataLakeRequestConditions requestConditions;
 

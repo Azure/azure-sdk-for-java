@@ -44,6 +44,11 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
     public static final SearchIndexerDataSourceType ADLS_GEN2 = fromString("adlsgen2");
 
     /**
+     * Indicates a Microsoft Fabric OneLake datasource.
+     */
+    public static final SearchIndexerDataSourceType ONE_LAKE = fromString("onelake");
+
+    /**
      * Creates a new instance of SearchIndexerDataSourceType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

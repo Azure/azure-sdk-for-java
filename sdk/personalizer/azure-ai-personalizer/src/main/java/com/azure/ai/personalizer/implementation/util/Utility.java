@@ -67,17 +67,13 @@ public final class Utility {
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
 
-
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy,
-                                                 RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
-                                                 TokenCredential tokenCredential, PersonalizerAudience audience,
-                                                 List<HttpPipelinePolicy> perCallPolicies,
-                                                 List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
+        Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, PersonalizerAudience audience,
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
 
@@ -98,11 +94,10 @@ public final class Utility {
             if (audience == null) {
                 audience = PersonalizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
             }
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience + DEFAULT_SCOPE));
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience + DEFAULT_SCOPE));
         } else if (azureKeyCredential != null) {
-            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
-                azureKeyCredential));
+            httpPipelinePolicies
+                .add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY, azureKeyCredential));
         } else {
             // Throw exception that azureKeyCredential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
@@ -118,8 +113,7 @@ public final class Utility {
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(logOptions));
 
-        return new HttpPipelineBuilder()
-            .clientOptions(clientOptions)
+        return new HttpPipelineBuilder().clientOptions(clientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();

@@ -700,6 +700,7 @@ public class HttpLoggingPolicyTests {
             return messages;
         }
 
+        @SuppressWarnings("deprecation")
         void assertEqual(HttpLogMessage other, HttpLogOptions logOptions, LogLevel logLevel) {
             assertEquals(this.message, other.message);
             assertEquals(this.method, other.method);

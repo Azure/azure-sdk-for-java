@@ -14,24 +14,24 @@ public final class PackageStoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PackageStore model = BinaryData.fromString(
-            "{\"name\":\"npb\",\"packageStoreLinkedService\":{\"type\":\"LinkedServiceReference\",\"referenceName\":\"uobclobnaqeizpli\"}}")
+            "{\"name\":\"nhyyqxckd\",\"packageStoreLinkedService\":{\"type\":\"LinkedServiceReference\",\"referenceName\":\"isrdnowinc\"}}")
             .toObject(PackageStore.class);
-        Assertions.assertEquals("npb", model.name());
+        Assertions.assertEquals("nhyyqxckd", model.name());
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE,
             model.packageStoreLinkedService().type());
-        Assertions.assertEquals("uobclobnaqeizpli", model.packageStoreLinkedService().referenceName());
+        Assertions.assertEquals("isrdnowinc", model.packageStoreLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PackageStore model = new PackageStore().withName("npb")
+        PackageStore model = new PackageStore().withName("nhyyqxckd")
             .withPackageStoreLinkedService(
                 new EntityReference().withType(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE)
-                    .withReferenceName("uobclobnaqeizpli"));
+                    .withReferenceName("isrdnowinc"));
         model = BinaryData.fromObject(model).toObject(PackageStore.class);
-        Assertions.assertEquals("npb", model.name());
+        Assertions.assertEquals("nhyyqxckd", model.name());
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE,
             model.packageStoreLinkedService().type());
-        Assertions.assertEquals("uobclobnaqeizpli", model.packageStoreLinkedService().referenceName());
+        Assertions.assertEquals("isrdnowinc", model.packageStoreLinkedService().referenceName());
     }
 }

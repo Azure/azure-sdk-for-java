@@ -19,9 +19,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 /** Implementation for LoadBalancerInboundNatRule. */
 class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, LoadBalancerImpl, LoadBalancer>
     implements LoadBalancerInboundNatPool,
-        LoadBalancerInboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
-        LoadBalancerInboundNatPool.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancerInboundNatPool.Update {
+    LoadBalancerInboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
+    LoadBalancerInboundNatPool.UpdateDefinition<LoadBalancer.Update>, LoadBalancerInboundNatPool.Update {
 
     LoadBalancerInboundNatPoolImpl(InboundNatPool inner, LoadBalancerImpl parent) {
         super(inner, parent);
@@ -46,8 +45,7 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
 
     @Override
     public LoadBalancerFrontend frontend() {
-        return this
-            .parent()
+        return this.parent()
             .frontends()
             .get(ResourceUtils.nameFromResourceId(this.innerModel().frontendIpConfiguration().id()));
     }

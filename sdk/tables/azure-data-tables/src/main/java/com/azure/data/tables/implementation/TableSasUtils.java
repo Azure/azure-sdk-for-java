@@ -18,10 +18,6 @@ import java.util.Base64;
  * This class provides helper methods used when generating SAS.
  */
 public class TableSasUtils {
-    private static final String STRING_TO_SIGN_LOG_INFO_MESSAGE = "The string to sign computed by the SDK is: {}{}";
-    private static final String STRING_TO_SIGN_LOG_WARNING_MESSAGE = "Please remember to disable '{}' before going "
-        + "to production as this string can potentially contain PII.";
-
     /**
      * Shared helper method to append a SAS query parameter.
      *

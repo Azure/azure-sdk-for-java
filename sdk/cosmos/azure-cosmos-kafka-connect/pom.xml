@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
+  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
   <name>Apache Kafka Connect connector for Azure Cosmos DB</name>
   <description>This Package contains an Apache Kafka Connect source and sink connector for Azure Cosmos DB</description>
   <packaging>jar</packaging>
@@ -45,6 +45,7 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_kafka_connect</shadingPrefix>
+    <shadingPrefixNetty>azurecosmoskafkaconnect</shadingPrefixNetty>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
@@ -55,6 +56,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=com.azure.cosmos.kafka.connect
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.guava25.base=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
@@ -69,6 +71,8 @@ Licensed under the MIT License.
       --add-exports com.azure.cosmos/com.azure.cosmos.implementation.query=com.azure.cosmos.kafka.connect
 
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>
@@ -82,7 +86,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.63.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.67.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -101,7 +105,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -126,7 +130,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -205,13 +209,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -252,7 +256,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifest>
@@ -264,7 +268,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
           <includes>
@@ -281,16 +285,16 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
                 <include>org.apache.kafka:connect-api:[3.6.0]</include> <!-- {x-include-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
-                <include>io.confluent:kafka-connect-maven-plugin:[0.12.0]</include> <!-- {x-include-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
                 <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
                 <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
+                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -309,7 +313,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>shade</id>
@@ -354,7 +358,7 @@ Licensed under the MIT License.
                     </relocation>
                     <relocation>
                       <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.codehaus</pattern>
@@ -449,6 +453,54 @@ Licensed under the MIT License.
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>01-copy-readme-to-javadocTemp</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                    <delete includeEmptyDirs="true" quiet="true">
+                      <fileset dir="${project.basedir}/javadocTemp"/>
+                    </delete>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${project.basedir}/javadocTemp/README.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>03-repack</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/tmp" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_resolver_dns_native_macos_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_linux_aarch_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/llibazurecosmoskafkaconnect_netty_tcnative_linux_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_osx_aarch_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_osx_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_transport_native_epoll_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_transport_native_kqueue_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/netty_tcnative_windows_x86_64.dll" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_windows_x86_64.dll" />
+                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" />
+                    <delete dir="${project.build.directory}/tmp" />
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -467,7 +519,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
             </configuration>
           </plugin>
@@ -485,7 +537,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-emulator-testng.xml</suiteXmlFile>
@@ -506,7 +558,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>
@@ -527,7 +579,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-integration-testng.xml</suiteXmlFile>

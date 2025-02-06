@@ -5,7 +5,7 @@ extends:
   parameters:
     ServiceDirectory: textanalytics
     Location: eastus
-    SupportedClouds: 'Public,UsGov,China'
+    UseFederatedAuth: false
     Artifacts:
       - name: azure-ai-textanalytics
         groupId: com.azure

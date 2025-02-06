@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ConnectToSourceSqlServerTa
 public final class ConnectToSourceSqlServerTaskOutputDatabaseLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectToSourceSqlServerTaskOutputDatabaseLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"DatabaseLevelOutput\",\"name\":\"gfhzovawjvzunlut\",\"sizeMB\":1.0469623162358888,\"databaseFiles\":[{\"databaseName\":\"i\",\"id\":\"ilpjzuaejxdult\",\"logicalName\":\"zbbtdzumveek\",\"physicalFullName\":\"wozuhkf\",\"restoreFullName\":\"sjyofdx\",\"fileType\":\"Fulltext\",\"sizeMB\":98.97743602448948},{\"databaseName\":\"ouwaboekqvkeln\",\"id\":\"vbxwyjsflhh\",\"logicalName\":\"aln\",\"physicalFullName\":\"xisxyawjoyaqcsl\",\"restoreFullName\":\"pkii\",\"fileType\":\"Log\",\"sizeMB\":78.21639765597789}],\"compatibilityLevel\":\"CompatLevel100\",\"databaseState\":\"Online\",\"id\":\"hnrztfol\"}")
-                .toObject(ConnectToSourceSqlServerTaskOutputDatabaseLevel.class);
+        ConnectToSourceSqlServerTaskOutputDatabaseLevel model = BinaryData.fromString(
+            "{\"resultType\":\"DatabaseLevelOutput\",\"name\":\"ywpnvjt\",\"sizeMB\":36.42197096477435,\"databaseFiles\":[{\"databaseName\":\"lfplp\",\"id\":\"xus\",\"logicalName\":\"pabgyeps\",\"physicalFullName\":\"tazqugxywpmueefj\",\"restoreFullName\":\"fqkquj\",\"fileType\":\"Filestream\",\"sizeMB\":41.04159272065815},{\"databaseName\":\"obglaocqxtcc\",\"id\":\"yudxytlmoy\",\"logicalName\":\"vwfudwpzntxhd\",\"physicalFullName\":\"lrqjbhckfr\",\"restoreFullName\":\"rxsbkyvp\",\"fileType\":\"Filestream\",\"sizeMB\":59.9483549965609},{\"databaseName\":\"p\",\"id\":\"afkuwb\",\"logicalName\":\"nwbmeh\",\"physicalFullName\":\"eyvjusrtslhspkde\",\"restoreFullName\":\"aofmxagkvtme\",\"fileType\":\"Filestream\",\"sizeMB\":98.9411334393605},{\"databaseName\":\"hvljuahaquh\",\"id\":\"hmdua\",\"logicalName\":\"exq\",\"physicalFullName\":\"fadmws\",\"restoreFullName\":\"r\",\"fileType\":\"Filestream\",\"sizeMB\":29.84185249566388}],\"compatibilityLevel\":\"CompatLevel120\",\"databaseState\":\"OfflineSecondary\",\"id\":\"misgwbnb\"}")
+            .toObject(ConnectToSourceSqlServerTaskOutputDatabaseLevel.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -33,14 +33,18 @@
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/proxy/ExposingAvailableOperations.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/proxy/
+     * ExposingAvailableOperations.json
      */
     /**
      * Sample code: List available operations.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void listAvailableOperations(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
@@ -55,20 +59,23 @@ public final class OperationsListSamples {
 import com.azure.resourcemanager.mixedreality.models.Identity;
 import com.azure.resourcemanager.mixedreality.models.ResourceIdentityType;
 
-/** Samples for RemoteRenderingAccounts Create. */
+/**
+ * Samples for RemoteRenderingAccounts Create.
+ */
 public final class RemoteRenderingAccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/Put.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * Put.json
      */
     /**
      * Sample code: Create remote rendering account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void createRemoteRenderingAccount(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .remoteRenderingAccounts()
+    public static void
+        createRemoteRenderingAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        manager.remoteRenderingAccounts()
             .define("MyAccount")
             .withRegion("eastus2euap")
             .withExistingResourceGroup("MyResourceGroup")
@@ -81,20 +88,23 @@ public final class RemoteRenderingAccountsCreateSamples {
 ### RemoteRenderingAccounts_Delete
 
 ```java
-/** Samples for RemoteRenderingAccounts Delete. */
+/**
+ * Samples for RemoteRenderingAccounts Delete.
+ */
 public final class RemoteRenderingAccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/Delete.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * Delete.json
      */
     /**
      * Sample code: Delete remote rendering account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void deleteRemoteRenderingAccount(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .remoteRenderingAccounts()
+    public static void
+        deleteRemoteRenderingAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        manager.remoteRenderingAccounts()
             .deleteByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }
@@ -103,19 +113,22 @@ public final class RemoteRenderingAccountsDeleteSamples {
 ### RemoteRenderingAccounts_GetByResourceGroup
 
 ```java
-/** Samples for RemoteRenderingAccounts GetByResourceGroup. */
+/**
+ * Samples for RemoteRenderingAccounts GetByResourceGroup.
+ */
 public final class RemoteRenderingAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/Get.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * Get.json
      */
     /**
      * Sample code: Get remote rendering account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void getRemoteRenderingAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .remoteRenderingAccounts()
+        manager.remoteRenderingAccounts()
             .getByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }
@@ -124,18 +137,22 @@ public final class RemoteRenderingAccountsGetByResourceGroupSamples {
 ### RemoteRenderingAccounts_List
 
 ```java
-/** Samples for RemoteRenderingAccounts List. */
+/**
+ * Samples for RemoteRenderingAccounts List.
+ */
 public final class RemoteRenderingAccountsListSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/GetBySubscription.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * GetBySubscription.json
      */
     /**
      * Sample code: List remote rendering accounts by subscription.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void listRemoteRenderingAccountsBySubscription(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+    public static void
+        listRemoteRenderingAccountsBySubscription(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
         manager.remoteRenderingAccounts().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -144,18 +161,22 @@ public final class RemoteRenderingAccountsListSamples {
 ### RemoteRenderingAccounts_ListByResourceGroup
 
 ```java
-/** Samples for RemoteRenderingAccounts ListByResourceGroup. */
+/**
+ * Samples for RemoteRenderingAccounts ListByResourceGroup.
+ */
 public final class RemoteRenderingAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/GetByResourceGroup.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * GetByResourceGroup.json
      */
     /**
      * Sample code: List remote rendering accounts by resource group.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void listRemoteRenderingAccountsByResourceGroup(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+    public static void
+        listRemoteRenderingAccountsByResourceGroup(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
         manager.remoteRenderingAccounts().listByResourceGroup("MyResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -164,20 +185,23 @@ public final class RemoteRenderingAccountsListByResourceGroupSamples {
 ### RemoteRenderingAccounts_ListKeys
 
 ```java
-/** Samples for RemoteRenderingAccounts ListKeys. */
+/**
+ * Samples for RemoteRenderingAccounts ListKeys.
+ */
 public final class RemoteRenderingAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/ListKeys.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * ListKeys.json
      */
     /**
      * Sample code: List remote rendering account key.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void listRemoteRenderingAccountKey(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .remoteRenderingAccounts()
+    public static void
+        listRemoteRenderingAccountKey(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        manager.remoteRenderingAccounts()
             .listKeysWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }
@@ -189,25 +213,25 @@ public final class RemoteRenderingAccountsListKeysSamples {
 import com.azure.resourcemanager.mixedreality.models.AccountKeyRegenerateRequest;
 import com.azure.resourcemanager.mixedreality.models.Serial;
 
-/** Samples for RemoteRenderingAccounts RegenerateKeys. */
+/**
+ * Samples for RemoteRenderingAccounts RegenerateKeys.
+ */
 public final class RemoteRenderingAccountsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/RegenerateKey.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * RegenerateKey.json
      */
     /**
      * Sample code: Regenerate remote rendering account keys.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void regenerateRemoteRenderingAccountKeys(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .remoteRenderingAccounts()
-            .regenerateKeysWithResponse(
-                "MyResourceGroup",
-                "MyAccount",
-                new AccountKeyRegenerateRequest().withSerial(Serial.ONE),
-                com.azure.core.util.Context.NONE);
+    public static void
+        regenerateRemoteRenderingAccountKeys(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        manager.remoteRenderingAccounts()
+            .regenerateKeysWithResponse("MyResourceGroup", "MyAccount",
+                new AccountKeyRegenerateRequest().withSerial(Serial.ONE), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -221,30 +245,32 @@ import com.azure.resourcemanager.mixedreality.models.ResourceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for RemoteRenderingAccounts Update. */
+/**
+ * Samples for RemoteRenderingAccounts Update.
+ */
 public final class RemoteRenderingAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/Patch.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/remote-rendering/
+     * Patch.json
      */
     /**
      * Sample code: Update remote rendering account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void updateRemoteRenderingAccount(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        RemoteRenderingAccount resource =
-            manager
-                .remoteRenderingAccounts()
-                .getByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        updateRemoteRenderingAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        RemoteRenderingAccount resource = manager.remoteRenderingAccounts()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("hero", "romeo", "heroine", "juliet"))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -263,23 +289,24 @@ public final class RemoteRenderingAccountsUpdateSamples {
 ```java
 import com.azure.resourcemanager.mixedreality.models.CheckNameAvailabilityRequest;
 
-/** Samples for ResourceProvider CheckNameAvailabilityLocal. */
+/**
+ * Samples for ResourceProvider CheckNameAvailabilityLocal.
+ */
 public final class ResourceProviderCheckNameAvailabilityLocalSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/proxy/CheckNameAvailabilityForLocalUniqueness.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/proxy/
+     * CheckNameAvailabilityForLocalUniqueness.json
      */
     /**
      * Sample code: CheckLocalNameAvailability.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void checkLocalNameAvailability(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .resourceProviders()
-            .checkNameAvailabilityLocalWithResponse(
-                "eastus2euap",
-                new CheckNameAvailabilityRequest()
-                    .withName("MyAccount")
+        manager.resourceProviders()
+            .checkNameAvailabilityLocalWithResponse("eastus2euap",
+                new CheckNameAvailabilityRequest().withName("MyAccount")
                     .withType("Microsoft.MixedReality/spatialAnchorsAccounts"),
                 com.azure.core.util.Context.NONE);
     }
@@ -289,19 +316,22 @@ public final class ResourceProviderCheckNameAvailabilityLocalSamples {
 ### SpatialAnchorsAccounts_Create
 
 ```java
-/** Samples for SpatialAnchorsAccounts Create. */
+/**
+ * Samples for SpatialAnchorsAccounts Create.
+ */
 public final class SpatialAnchorsAccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Put.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Put
+     * .json
      */
     /**
      * Sample code: Create spatial anchor account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void createSpatialAnchorAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .spatialAnchorsAccounts()
+        manager.spatialAnchorsAccounts()
             .define("MyAccount")
             .withRegion("eastus2euap")
             .withExistingResourceGroup("MyResourceGroup")
@@ -313,19 +343,22 @@ public final class SpatialAnchorsAccountsCreateSamples {
 ### SpatialAnchorsAccounts_Delete
 
 ```java
-/** Samples for SpatialAnchorsAccounts Delete. */
+/**
+ * Samples for SpatialAnchorsAccounts Delete.
+ */
 public final class SpatialAnchorsAccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Delete.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * Delete.json
      */
     /**
      * Sample code: Delete spatial anchors account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void deleteSpatialAnchorsAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .spatialAnchorsAccounts()
+        manager.spatialAnchorsAccounts()
             .deleteByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }
@@ -334,19 +367,22 @@ public final class SpatialAnchorsAccountsDeleteSamples {
 ### SpatialAnchorsAccounts_GetByResourceGroup
 
 ```java
-/** Samples for SpatialAnchorsAccounts GetByResourceGroup. */
+/**
+ * Samples for SpatialAnchorsAccounts GetByResourceGroup.
+ */
 public final class SpatialAnchorsAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Get.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Get
+     * .json
      */
     /**
      * Sample code: Get spatial anchors account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void getSpatialAnchorsAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .spatialAnchorsAccounts()
+        manager.spatialAnchorsAccounts()
             .getByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }
@@ -355,18 +391,22 @@ public final class SpatialAnchorsAccountsGetByResourceGroupSamples {
 ### SpatialAnchorsAccounts_List
 
 ```java
-/** Samples for SpatialAnchorsAccounts List. */
+/**
+ * Samples for SpatialAnchorsAccounts List.
+ */
 public final class SpatialAnchorsAccountsListSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/GetBySubscription.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * GetBySubscription.json
      */
     /**
      * Sample code: List spatial anchors accounts by subscription.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void listSpatialAnchorsAccountsBySubscription(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+    public static void
+        listSpatialAnchorsAccountsBySubscription(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
         manager.spatialAnchorsAccounts().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -375,18 +415,22 @@ public final class SpatialAnchorsAccountsListSamples {
 ### SpatialAnchorsAccounts_ListByResourceGroup
 
 ```java
-/** Samples for SpatialAnchorsAccounts ListByResourceGroup. */
+/**
+ * Samples for SpatialAnchorsAccounts ListByResourceGroup.
+ */
 public final class SpatialAnchorsAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/GetByResourceGroup.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * GetByResourceGroup.json
      */
     /**
      * Sample code: List spatial anchor accounts by resource group.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void listSpatialAnchorAccountsByResourceGroup(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+    public static void
+        listSpatialAnchorAccountsByResourceGroup(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
         manager.spatialAnchorsAccounts().listByResourceGroup("MyResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -395,19 +439,22 @@ public final class SpatialAnchorsAccountsListByResourceGroupSamples {
 ### SpatialAnchorsAccounts_ListKeys
 
 ```java
-/** Samples for SpatialAnchorsAccounts ListKeys. */
+/**
+ * Samples for SpatialAnchorsAccounts ListKeys.
+ */
 public final class SpatialAnchorsAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/ListKeys.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * ListKeys.json
      */
     /**
      * Sample code: List spatial anchor account key.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void listSpatialAnchorAccountKey(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .spatialAnchorsAccounts()
+        manager.spatialAnchorsAccounts()
             .listKeysWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE);
     }
 }
@@ -419,25 +466,25 @@ public final class SpatialAnchorsAccountsListKeysSamples {
 import com.azure.resourcemanager.mixedreality.models.AccountKeyRegenerateRequest;
 import com.azure.resourcemanager.mixedreality.models.Serial;
 
-/** Samples for SpatialAnchorsAccounts RegenerateKeys. */
+/**
+ * Samples for SpatialAnchorsAccounts RegenerateKeys.
+ */
 public final class SpatialAnchorsAccountsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/RegenerateKey.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * RegenerateKey.json
      */
     /**
      * Sample code: Regenerate spatial anchors account keys.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
-    public static void regenerateSpatialAnchorsAccountKeys(
-        com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        manager
-            .spatialAnchorsAccounts()
-            .regenerateKeysWithResponse(
-                "MyResourceGroup",
-                "MyAccount",
-                new AccountKeyRegenerateRequest().withSerial(Serial.ONE),
-                com.azure.core.util.Context.NONE);
+    public static void
+        regenerateSpatialAnchorsAccountKeys(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
+        manager.spatialAnchorsAccounts()
+            .regenerateKeysWithResponse("MyResourceGroup", "MyAccount",
+                new AccountKeyRegenerateRequest().withSerial(Serial.ONE), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -449,25 +496,28 @@ import com.azure.resourcemanager.mixedreality.models.SpatialAnchorsAccount;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SpatialAnchorsAccounts Update. */
+/**
+ * Samples for SpatialAnchorsAccounts Update.
+ */
 public final class SpatialAnchorsAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/Patch.json
+     * x-ms-original-file:
+     * specification/mixedreality/resource-manager/Microsoft.MixedReality/stable/2021-01-01/examples/spatial-anchors/
+     * Patch.json
      */
     /**
      * Sample code: Update spatial anchors account.
-     *
+     * 
      * @param manager Entry point to MixedRealityManager.
      */
     public static void updateSpatialAnchorsAccount(com.azure.resourcemanager.mixedreality.MixedRealityManager manager) {
-        SpatialAnchorsAccount resource =
-            manager
-                .spatialAnchorsAccounts()
-                .getByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE)
-                .getValue();
+        SpatialAnchorsAccount resource = manager.spatialAnchorsAccounts()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyAccount", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("hero", "romeo", "heroine", "juliet")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -4,85 +4,86 @@
 
 package com.azure.resourcemanager.consumption.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ReservationRecommendations List. */
+/**
+ * Samples for ReservationRecommendations List.
+ */
 public final class ReservationRecommendationsListSamples {
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationRecommendationsBySubscription.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ReservationRecommendationsBySubscription.json
      */
     /**
      * Sample code: ReservationRecommendationsBySubscription-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void reservationRecommendationsBySubscriptionLegacy(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .reservationRecommendations()
-            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, Context.NONE);
+        manager.reservationRecommendations()
+            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationRecommendationsByBillingProfile.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ReservationRecommendationsByBillingProfile.json
      */
     /**
      * Sample code: ReservationRecommendationsByBillingProfile-Modern.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void reservationRecommendationsByBillingProfileModern(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .reservationRecommendations()
-            .list("providers/Microsoft.Billing/billingAccounts/123456/billingProfiles/6420", null, Context.NONE);
+        manager.reservationRecommendations()
+            .list("providers/Microsoft.Billing/billingAccounts/123456/billingProfiles/6420", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationRecommendationsByResourceGroup.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ReservationRecommendationsByResourceGroup.json
      */
     /**
      * Sample code: ReservationRecommendationsByResourceGroup-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void reservationRecommendationsByResourceGroupLegacy(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .reservationRecommendations()
-            .list("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testGroup", null, Context.NONE);
+        manager.reservationRecommendations()
+            .list("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testGroup", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationRecommendationsFilterBySubscriptionForScopeLookBackPeriod.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ReservationRecommendationsFilterBySubscriptionForScopeLookBackPeriod.json
      */
     /**
      * Sample code: ReservationRecommendationsFilterBySubscriptionForScopeLookBackPeriod-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void reservationRecommendationsFilterBySubscriptionForScopeLookBackPeriodLegacy(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .reservationRecommendations()
-            .list(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
+        manager.reservationRecommendations()
+            .list("subscriptions/00000000-0000-0000-0000-000000000000",
                 "properties/scope eq 'Single' AND properties/lookBackPeriod eq 'Last7Days'",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/ReservationRecommendationsByBillingAccount.json
+     * x-ms-original-file: specification/consumption/resource-manager/Microsoft.Consumption/stable/2021-10-01/examples/
+     * ReservationRecommendationsByBillingAccount.json
      */
     /**
      * Sample code: ReservationRecommendationsByBillingAccount-Legacy.
-     *
+     * 
      * @param manager Entry point to ConsumptionManager.
      */
     public static void reservationRecommendationsByBillingAccountLegacy(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
-        manager
-            .reservationRecommendations()
-            .list("providers/Microsoft.Billing/billingAccounts/123456", null, Context.NONE);
+        manager.reservationRecommendations()
+            .list("providers/Microsoft.Billing/billingAccounts/123456", null, com.azure.core.util.Context.NONE);
     }
 }

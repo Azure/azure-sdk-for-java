@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"value\":\"sxlzevgbmqj\",\"description\":\"bcypmi\",\"defaultValue\":\"w\",\"dataType\":\"uvcc\",\"allowedValues\":\"nfnbacfionlebxe\",\"source\":\"gtzxdpn\"}")
-                .toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("sxlzevgbmqj", model.value());
-        Assertions.assertEquals("gtzxdpn", model.source());
+        ConfigurationProperties model = BinaryData.fromString(
+            "{\"value\":\"bhj\",\"description\":\"igeho\",\"defaultValue\":\"bowsk\",\"dataType\":\"yktz\",\"allowedValues\":\"u\",\"source\":\"wgqyw\"}")
+            .toObject(ConfigurationProperties.class);
+        Assertions.assertEquals("bhj", model.value());
+        Assertions.assertEquals("wgqyw", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model = new ConfigurationProperties().withValue("sxlzevgbmqj").withSource("gtzxdpn");
+        ConfigurationProperties model = new ConfigurationProperties().withValue("bhj").withSource("wgqyw");
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("sxlzevgbmqj", model.value());
-        Assertions.assertEquals("gtzxdpn", model.source());
+        Assertions.assertEquals("bhj", model.value());
+        Assertions.assertEquals("wgqyw", model.source());
     }
 }

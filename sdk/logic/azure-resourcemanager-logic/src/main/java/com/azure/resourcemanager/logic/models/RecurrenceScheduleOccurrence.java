@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The recurrence schedule occurrence. */
+/**
+ * The recurrence schedule occurrence.
+ */
 @Fluent
-public final class RecurrenceScheduleOccurrence {
+public final class RecurrenceScheduleOccurrence implements JsonSerializable<RecurrenceScheduleOccurrence> {
     /*
      * The day of the week.
      */
-    @JsonProperty(value = "day")
     private DayOfWeek day;
 
     /*
      * The occurrence.
      */
-    @JsonProperty(value = "occurrence")
     private Integer occurrence;
 
-    /** Creates an instance of RecurrenceScheduleOccurrence class. */
+    /**
+     * Creates an instance of RecurrenceScheduleOccurrence class.
+     */
     public RecurrenceScheduleOccurrence() {
     }
 
     /**
      * Get the day property: The day of the week.
-     *
+     * 
      * @return the day value.
      */
     public DayOfWeek day() {
@@ -37,7 +43,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the day property: The day of the week.
-     *
+     * 
      * @param day the day value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
@@ -48,7 +54,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Get the occurrence property: The occurrence.
-     *
+     * 
      * @return the occurrence value.
      */
     public Integer occurrence() {
@@ -57,7 +63,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the occurrence property: The occurrence.
-     *
+     * 
      * @param occurrence the occurrence value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
@@ -68,9 +74,48 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("day", this.day == null ? null : this.day.toString());
+        jsonWriter.writeNumberField("occurrence", this.occurrence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecurrenceScheduleOccurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecurrenceScheduleOccurrence if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecurrenceScheduleOccurrence.
+     */
+    public static RecurrenceScheduleOccurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecurrenceScheduleOccurrence deserializedRecurrenceScheduleOccurrence = new RecurrenceScheduleOccurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("day".equals(fieldName)) {
+                    deserializedRecurrenceScheduleOccurrence.day = DayOfWeek.fromString(reader.getString());
+                } else if ("occurrence".equals(fieldName)) {
+                    deserializedRecurrenceScheduleOccurrence.occurrence = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecurrenceScheduleOccurrence;
+        });
     }
 }

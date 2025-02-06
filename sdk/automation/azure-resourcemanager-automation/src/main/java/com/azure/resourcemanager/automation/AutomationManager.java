@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -124,7 +124,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AutomationManager. Automation Client. */
+/**
+ * Entry point to AutomationManager.
+ * Automation Client.
+ */
 public final class AutomationManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -223,18 +226,16 @@ public final class AutomationManager {
     private AutomationManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AutomationClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AutomationClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Automation service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Automation service API instance.
@@ -247,7 +248,7 @@ public final class AutomationManager {
 
     /**
      * Creates an instance of Automation service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Automation service API instance.
@@ -260,14 +261,16 @@ public final class AutomationManager {
 
     /**
      * Gets a Configurable instance that can be used to create AutomationManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AutomationManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -339,8 +342,8 @@ public final class AutomationManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -357,8 +360,8 @@ public final class AutomationManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -378,15 +381,13 @@ public final class AutomationManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.automation")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -411,51 +412,41 @@ public final class AutomationManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new AutomationManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -467,7 +458,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Python2Packages. It manages Module.
-     *
+     * 
      * @return Resource collection API of Python2Packages.
      */
     public Python2Packages python2Packages() {
@@ -479,20 +470,20 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of AgentRegistrationInformations.
-     *
+     * 
      * @return Resource collection API of AgentRegistrationInformations.
      */
     public AgentRegistrationInformations agentRegistrationInformations() {
         if (this.agentRegistrationInformations == null) {
-            this.agentRegistrationInformations =
-                new AgentRegistrationInformationsImpl(clientObject.getAgentRegistrationInformations(), this);
+            this.agentRegistrationInformations
+                = new AgentRegistrationInformationsImpl(clientObject.getAgentRegistrationInformations(), this);
         }
         return agentRegistrationInformations;
     }
 
     /**
      * Gets the resource collection API of DscNodes.
-     *
+     * 
      * @return Resource collection API of DscNodes.
      */
     public DscNodes dscNodes() {
@@ -504,7 +495,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of NodeReports.
-     *
+     * 
      * @return Resource collection API of NodeReports.
      */
     public NodeReports nodeReports() {
@@ -516,7 +507,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of DscNodeConfigurations. It manages DscNodeConfiguration.
-     *
+     * 
      * @return Resource collection API of DscNodeConfigurations.
      */
     public DscNodeConfigurations dscNodeConfigurations() {
@@ -528,7 +519,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of DscCompilationJobs. It manages DscCompilationJob.
-     *
+     * 
      * @return Resource collection API of DscCompilationJobs.
      */
     public DscCompilationJobs dscCompilationJobs() {
@@ -540,20 +531,20 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of DscCompilationJobStreams.
-     *
+     * 
      * @return Resource collection API of DscCompilationJobStreams.
      */
     public DscCompilationJobStreams dscCompilationJobStreams() {
         if (this.dscCompilationJobStreams == null) {
-            this.dscCompilationJobStreams =
-                new DscCompilationJobStreamsImpl(clientObject.getDscCompilationJobStreams(), this);
+            this.dscCompilationJobStreams
+                = new DscCompilationJobStreamsImpl(clientObject.getDscCompilationJobStreams(), this);
         }
         return dscCompilationJobStreams;
     }
 
     /**
      * Gets the resource collection API of NodeCountInformations.
-     *
+     * 
      * @return Resource collection API of NodeCountInformations.
      */
     public NodeCountInformations nodeCountInformations() {
@@ -565,7 +556,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of SourceControls. It manages SourceControl.
-     *
+     * 
      * @return Resource collection API of SourceControls.
      */
     public SourceControls sourceControls() {
@@ -577,7 +568,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of SourceControlSyncJobs. It manages SourceControlSyncJob.
-     *
+     * 
      * @return Resource collection API of SourceControlSyncJobs.
      */
     public SourceControlSyncJobs sourceControlSyncJobs() {
@@ -589,20 +580,20 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of SourceControlSyncJobStreams.
-     *
+     * 
      * @return Resource collection API of SourceControlSyncJobStreams.
      */
     public SourceControlSyncJobStreams sourceControlSyncJobStreams() {
         if (this.sourceControlSyncJobStreams == null) {
-            this.sourceControlSyncJobStreams =
-                new SourceControlSyncJobStreamsImpl(clientObject.getSourceControlSyncJobStreams(), this);
+            this.sourceControlSyncJobStreams
+                = new SourceControlSyncJobStreamsImpl(clientObject.getSourceControlSyncJobStreams(), this);
         }
         return sourceControlSyncJobStreams;
     }
 
     /**
      * Gets the resource collection API of AutomationAccounts. It manages AutomationAccount.
-     *
+     * 
      * @return Resource collection API of AutomationAccounts.
      */
     public AutomationAccounts automationAccounts() {
@@ -614,7 +605,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of StatisticsOperations.
-     *
+     * 
      * @return Resource collection API of StatisticsOperations.
      */
     public StatisticsOperations statisticsOperations() {
@@ -626,7 +617,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -638,7 +629,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Keys.
-     *
+     * 
      * @return Resource collection API of Keys.
      */
     public Keys keys() {
@@ -650,7 +641,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Certificates. It manages Certificate.
-     *
+     * 
      * @return Resource collection API of Certificates.
      */
     public Certificates certificates() {
@@ -662,7 +653,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Connections. It manages Connection.
-     *
+     * 
      * @return Resource collection API of Connections.
      */
     public Connections connections() {
@@ -674,7 +665,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of ConnectionTypes. It manages ConnectionType.
-     *
+     * 
      * @return Resource collection API of ConnectionTypes.
      */
     public ConnectionTypes connectionTypes() {
@@ -686,7 +677,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Credentials. It manages Credential.
-     *
+     * 
      * @return Resource collection API of Credentials.
      */
     public Credentials credentials() {
@@ -698,7 +689,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of JobSchedules. It manages JobSchedule.
-     *
+     * 
      * @return Resource collection API of JobSchedules.
      */
     public JobSchedules jobSchedules() {
@@ -710,7 +701,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of LinkedWorkspaces.
-     *
+     * 
      * @return Resource collection API of LinkedWorkspaces.
      */
     public LinkedWorkspaces linkedWorkspaces() {
@@ -722,7 +713,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Activities.
-     *
+     * 
      * @return Resource collection API of Activities.
      */
     public Activities activities() {
@@ -734,7 +725,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Modules.
-     *
+     * 
      * @return Resource collection API of Modules.
      */
     public Modules modules() {
@@ -746,7 +737,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of ObjectDataTypes.
-     *
+     * 
      * @return Resource collection API of ObjectDataTypes.
      */
     public ObjectDataTypes objectDataTypes() {
@@ -758,7 +749,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Fields.
-     *
+     * 
      * @return Resource collection API of Fields.
      */
     public Fields fields() {
@@ -770,7 +761,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Schedules. It manages Schedule.
-     *
+     * 
      * @return Resource collection API of Schedules.
      */
     public Schedules schedules() {
@@ -782,7 +773,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Variables. It manages Variable.
-     *
+     * 
      * @return Resource collection API of Variables.
      */
     public Variables variables() {
@@ -794,7 +785,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Watchers. It manages Watcher.
-     *
+     * 
      * @return Resource collection API of Watchers.
      */
     public Watchers watchers() {
@@ -806,7 +797,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of DscConfigurations. It manages DscConfiguration.
-     *
+     * 
      * @return Resource collection API of DscConfigurations.
      */
     public DscConfigurations dscConfigurations() {
@@ -818,7 +809,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Jobs. It manages Job.
-     *
+     * 
      * @return Resource collection API of Jobs.
      */
     public Jobs jobs() {
@@ -830,7 +821,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of JobStreams.
-     *
+     * 
      * @return Resource collection API of JobStreams.
      */
     public JobStreams jobStreams() {
@@ -842,7 +833,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -854,7 +845,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -866,47 +857,46 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of SoftwareUpdateConfigurations. It manages SoftwareUpdateConfiguration.
-     *
+     * 
      * @return Resource collection API of SoftwareUpdateConfigurations.
      */
     public SoftwareUpdateConfigurations softwareUpdateConfigurations() {
         if (this.softwareUpdateConfigurations == null) {
-            this.softwareUpdateConfigurations =
-                new SoftwareUpdateConfigurationsImpl(clientObject.getSoftwareUpdateConfigurations(), this);
+            this.softwareUpdateConfigurations
+                = new SoftwareUpdateConfigurationsImpl(clientObject.getSoftwareUpdateConfigurations(), this);
         }
         return softwareUpdateConfigurations;
     }
 
     /**
      * Gets the resource collection API of SoftwareUpdateConfigurationRuns.
-     *
+     * 
      * @return Resource collection API of SoftwareUpdateConfigurationRuns.
      */
     public SoftwareUpdateConfigurationRuns softwareUpdateConfigurationRuns() {
         if (this.softwareUpdateConfigurationRuns == null) {
-            this.softwareUpdateConfigurationRuns =
-                new SoftwareUpdateConfigurationRunsImpl(clientObject.getSoftwareUpdateConfigurationRuns(), this);
+            this.softwareUpdateConfigurationRuns
+                = new SoftwareUpdateConfigurationRunsImpl(clientObject.getSoftwareUpdateConfigurationRuns(), this);
         }
         return softwareUpdateConfigurationRuns;
     }
 
     /**
      * Gets the resource collection API of SoftwareUpdateConfigurationMachineRuns.
-     *
+     * 
      * @return Resource collection API of SoftwareUpdateConfigurationMachineRuns.
      */
     public SoftwareUpdateConfigurationMachineRuns softwareUpdateConfigurationMachineRuns() {
         if (this.softwareUpdateConfigurationMachineRuns == null) {
-            this.softwareUpdateConfigurationMachineRuns =
-                new SoftwareUpdateConfigurationMachineRunsImpl(
-                    clientObject.getSoftwareUpdateConfigurationMachineRuns(), this);
+            this.softwareUpdateConfigurationMachineRuns = new SoftwareUpdateConfigurationMachineRunsImpl(
+                clientObject.getSoftwareUpdateConfigurationMachineRuns(), this);
         }
         return softwareUpdateConfigurationMachineRuns;
     }
 
     /**
      * Gets the resource collection API of RunbookDrafts.
-     *
+     * 
      * @return Resource collection API of RunbookDrafts.
      */
     public RunbookDrafts runbookDrafts() {
@@ -918,7 +908,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Runbooks. It manages Runbook.
-     *
+     * 
      * @return Resource collection API of Runbooks.
      */
     public Runbooks runbooks() {
@@ -930,7 +920,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of TestJobStreams.
-     *
+     * 
      * @return Resource collection API of TestJobStreams.
      */
     public TestJobStreams testJobStreams() {
@@ -942,7 +932,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of TestJobs.
-     *
+     * 
      * @return Resource collection API of TestJobs.
      */
     public TestJobs testJobs() {
@@ -954,7 +944,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of Webhooks. It manages Webhook.
-     *
+     * 
      * @return Resource collection API of Webhooks.
      */
     public Webhooks webhooks() {
@@ -966,7 +956,7 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of HybridRunbookWorkers. It manages HybridRunbookWorker.
-     *
+     * 
      * @return Resource collection API of HybridRunbookWorkers.
      */
     public HybridRunbookWorkers hybridRunbookWorkers() {
@@ -978,33 +968,35 @@ public final class AutomationManager {
 
     /**
      * Gets the resource collection API of DeletedAutomationAccounts.
-     *
+     * 
      * @return Resource collection API of DeletedAutomationAccounts.
      */
     public DeletedAutomationAccounts deletedAutomationAccounts() {
         if (this.deletedAutomationAccounts == null) {
-            this.deletedAutomationAccounts =
-                new DeletedAutomationAccountsImpl(clientObject.getDeletedAutomationAccounts(), this);
+            this.deletedAutomationAccounts
+                = new DeletedAutomationAccountsImpl(clientObject.getDeletedAutomationAccounts(), this);
         }
         return deletedAutomationAccounts;
     }
 
     /**
      * Gets the resource collection API of HybridRunbookWorkerGroups. It manages HybridRunbookWorkerGroup.
-     *
+     * 
      * @return Resource collection API of HybridRunbookWorkerGroups.
      */
     public HybridRunbookWorkerGroups hybridRunbookWorkerGroups() {
         if (this.hybridRunbookWorkerGroups == null) {
-            this.hybridRunbookWorkerGroups =
-                new HybridRunbookWorkerGroupsImpl(clientObject.getHybridRunbookWorkerGroups(), this);
+            this.hybridRunbookWorkerGroups
+                = new HybridRunbookWorkerGroupsImpl(clientObject.getHybridRunbookWorkerGroups(), this);
         }
         return hybridRunbookWorkerGroups;
     }
 
     /**
-     * @return Wrapped service client AutomationClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client AutomationClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AutomationClient.
      */
     public AutomationClient serviceClient() {
         return this.clientObject;

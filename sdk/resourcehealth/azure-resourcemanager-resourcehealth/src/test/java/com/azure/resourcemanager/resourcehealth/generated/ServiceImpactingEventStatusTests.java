@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceImpactingEventStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceImpactingEventStatus model =
-            BinaryData.fromString("{\"value\":\"mngnzscxaqw\"}").toObject(ServiceImpactingEventStatus.class);
+        ServiceImpactingEventStatus model
+            = BinaryData.fromString("{\"value\":\"mngnzscxaqw\"}").toObject(ServiceImpactingEventStatus.class);
         Assertions.assertEquals("mngnzscxaqw", model.value());
     }
 

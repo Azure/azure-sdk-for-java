@@ -17,9 +17,11 @@ public class ListPageRangesOptions {
     private BlobRequestConditions requestConditions;
     private Integer pageSize;
 
-
     /**
+     * Creates a new instance of {@link ListPageRangesOptions}.
+     *
      * @param range The range to diff.
+     * @throws NullPointerException If {@code range} is null.
      */
     public ListPageRangesOptions(BlobRange range) {
         Objects.requireNonNull(range);

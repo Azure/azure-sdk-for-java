@@ -22,7 +22,8 @@ public final class VirtualNetworkEncryption implements JsonSerializable<VirtualN
     private boolean enabled;
 
     /*
-     * If the encrypted VNet allows VM that does not support encryption
+     * If the encrypted VNet allows VM that does not support encryption. This field is for future support,
+     * AllowUnencrypted is the only supported value at general availability.
      */
     private VirtualNetworkEncryptionEnforcement enforcement;
 
@@ -53,7 +54,8 @@ public final class VirtualNetworkEncryption implements JsonSerializable<VirtualN
     }
 
     /**
-     * Get the enforcement property: If the encrypted VNet allows VM that does not support encryption.
+     * Get the enforcement property: If the encrypted VNet allows VM that does not support encryption. This field is for
+     * future support, AllowUnencrypted is the only supported value at general availability.
      * 
      * @return the enforcement value.
      */
@@ -62,7 +64,8 @@ public final class VirtualNetworkEncryption implements JsonSerializable<VirtualN
     }
 
     /**
-     * Set the enforcement property: If the encrypted VNet allows VM that does not support encryption.
+     * Set the enforcement property: If the encrypted VNet allows VM that does not support encryption. This field is for
+     * future support, AllowUnencrypted is the only supported value at general availability.
      * 
      * @param enforcement the enforcement value to set.
      * @return the VirtualNetworkEncryption object itself.

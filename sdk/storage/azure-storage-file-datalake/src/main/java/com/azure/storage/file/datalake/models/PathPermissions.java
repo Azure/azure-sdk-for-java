@@ -14,11 +14,10 @@ import java.util.Objects;
  * Manipulating resource permissions is only supported when ADLS interop and Hierarchical Namespace are enabled.
  */
 public class PathPermissions {
-
-    private static final String PATH_PERMISSIONS_OCTAL_FORMAT_ERROR = "String cannot be null and must be four "
-        + "characters (first bit--sticky bit--must be set to 0 for umask).";
-    private static final String PATH_PERMISSIONS_SYMBOLIC_FORMAT_ERROR = "Invalid format. The only character that may "
-        + "validly follow the permissions string is '+'.";
+    private static final String PATH_PERMISSIONS_OCTAL_FORMAT_ERROR
+        = "String cannot be null and must be four " + "characters (first bit--sticky bit--must be set to 0 for umask).";
+    private static final String PATH_PERMISSIONS_SYMBOLIC_FORMAT_ERROR
+        = "Invalid format. The only character that may " + "validly follow the permissions string is '+'.";
 
     /**
      * Permissions for the owner.
@@ -94,7 +93,7 @@ public class PathPermissions {
 
     /**
      * Converts an octal string into a {@code PathPermissions} object.
-     *
+     * <p>
      * e.g. 1752
      * 0/1 in the first digit indicates sticky bit. Each subsequent octal character can be expanded into three bits.
      * In order of MSB to LSB, the bits represent read, write, execute.
@@ -119,7 +118,7 @@ public class PathPermissions {
 
     /**
      * Converts a symbolic representation of the permissions into a {@code PathPermissions} object.
-     *
+     * <p>
      * e.g. rwxr-x-wT
      * Each set of three characters correspondes to owner, owning group, and other respectively. 'r', 'w', and 'x'
      * respectively refer to read, write, and execute. A '-' indicates the permission is not given. The sticky bit, if
@@ -233,7 +232,7 @@ public class PathPermissions {
     }
 
     /**
-     * Returns whether or not the sticky bit has been set. The sticky bit may be set on directories, the files in that
+     * Returns whether the sticky bit has been set. The sticky bit may be set on directories, the files in that
      * directory may only be renamed or deleted by the file's owner, the directory's owner, or the root user.
      *
      * @return {@code true} if the sticky bit is set and {@code false} otherwise.
@@ -255,7 +254,7 @@ public class PathPermissions {
     }
 
     /**
-     * Returns whether or not there is more permissions information in the ACLs. The permissions string only returns
+     * Returns whether there is more permissions information in the ACLs. The permissions string only returns
      * information on the owner, owning group, and other, but the ACLs may contain more permissions for specific users
      * or groups.
      *

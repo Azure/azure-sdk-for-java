@@ -6,8 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,26 +18,23 @@ import java.util.Map;
  * Databricks Notebook activity properties.
  */
 @Fluent
-public final class DatabricksNotebookActivityTypeProperties {
+public final class DatabricksNotebookActivityTypeProperties
+    implements JsonSerializable<DatabricksNotebookActivityTypeProperties> {
     /*
      * The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "notebookPath", required = true)
     private Object notebookPath;
 
     /*
      * Base parameters to be used for each run of this job.If the notebook takes a parameter that is not specified, the
      * default value from the notebook will be used.
      */
-    @JsonProperty(value = "baseParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> baseParameters;
 
     /*
      * A list of libraries to be installed on the cluster that will execute the job.
      */
-    @JsonProperty(value = "libraries")
     private List<Map<String, Object>> libraries;
 
     /**
@@ -121,4 +121,53 @@ public final class DatabricksNotebookActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabricksNotebookActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("notebookPath", this.notebookPath);
+        jsonWriter.writeMapField("baseParameters", this.baseParameters,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("libraries", this.libraries,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabricksNotebookActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabricksNotebookActivityTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabricksNotebookActivityTypeProperties.
+     */
+    public static DatabricksNotebookActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabricksNotebookActivityTypeProperties deserializedDatabricksNotebookActivityTypeProperties
+                = new DatabricksNotebookActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notebookPath".equals(fieldName)) {
+                    deserializedDatabricksNotebookActivityTypeProperties.notebookPath = reader.readUntyped();
+                } else if ("baseParameters".equals(fieldName)) {
+                    Map<String, Object> baseParameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDatabricksNotebookActivityTypeProperties.baseParameters = baseParameters;
+                } else if ("libraries".equals(fieldName)) {
+                    List<Map<String, Object>> libraries
+                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    deserializedDatabricksNotebookActivityTypeProperties.libraries = libraries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabricksNotebookActivityTypeProperties;
+        });
+    }
 }

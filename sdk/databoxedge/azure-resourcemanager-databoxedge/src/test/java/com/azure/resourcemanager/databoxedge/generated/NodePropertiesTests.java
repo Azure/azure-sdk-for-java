@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.fluent.models.NodeProperties;
 public final class NodePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"nodeStatus\":\"Down\",\"nodeChassisSerialNumber\":\"nwbmeh\",\"nodeSerialNumber\":\"eyvjusrtslhspkde\",\"nodeDisplayName\":\"aofmxagkvtme\",\"nodeFriendlySoftwareVersion\":\"qkrhahvljua\",\"nodeHcsVersion\":\"quhcdhmduala\",\"nodeInstanceId\":\"qpv\"}")
-                .toObject(NodeProperties.class);
+        NodeProperties model = BinaryData.fromString(
+            "{\"nodeStatus\":\"Down\",\"nodeChassisSerialNumber\":\"ellwptfdy\",\"nodeSerialNumber\":\"fqbuaceopzf\",\"nodeDisplayName\":\"hhuao\",\"nodeFriendlySoftwareVersion\":\"pcqeqx\",\"nodeHcsVersion\":\"z\",\"nodeInstanceId\":\"hzxct\"}")
+            .toObject(NodeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

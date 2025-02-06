@@ -5,75 +5,74 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** All key-value properties. */
+/**
+ * All key-value properties.
+ */
 @Fluent
-public final class KeyValueProperties {
+public final class KeyValueProperties implements JsonSerializable<KeyValueProperties> {
     /*
      * The primary identifier of a key-value.
      * The key is used in unison with the label to uniquely identify a key-value.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
      * A value used to group key-values.
      * The label is used in unison with the key to uniquely identify a key-value.
      */
-    @JsonProperty(value = "label", access = JsonProperty.Access.WRITE_ONLY)
     private String label;
 
     /*
      * The value of the key-value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The content type of the key-value's value.
      * Providing a proper content-type can enable transformations of values when they are retrieved by applications.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * An ETag indicating the state of a key-value within a configuration store.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The last time a modifying operation was performed on the given key-value.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * A value indicating whether the key-value is locked.
      * A locked key-value may not be modified until it is unlocked.
      */
-    @JsonProperty(value = "locked", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean locked;
 
     /*
      * A dictionary of tags that can help identify what a key-value may be applicable for.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of KeyValueProperties class. */
+    /**
+     * Creates an instance of KeyValueProperties class.
+     */
     public KeyValueProperties() {
     }
 
     /**
-     * Get the key property: The primary identifier of a key-value. The key is used in unison with the label to uniquely
-     * identify a key-value.
-     *
+     * Get the key property: The primary identifier of a key-value.
+     * The key is used in unison with the label to uniquely identify a key-value.
+     * 
      * @return the key value.
      */
     public String key() {
@@ -81,9 +80,9 @@ public final class KeyValueProperties {
     }
 
     /**
-     * Get the label property: A value used to group key-values. The label is used in unison with the key to uniquely
-     * identify a key-value.
-     *
+     * Get the label property: A value used to group key-values.
+     * The label is used in unison with the key to uniquely identify a key-value.
+     * 
      * @return the label value.
      */
     public String label() {
@@ -92,7 +91,7 @@ public final class KeyValueProperties {
 
     /**
      * Get the value property: The value of the key-value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -101,7 +100,7 @@ public final class KeyValueProperties {
 
     /**
      * Set the value property: The value of the key-value.
-     *
+     * 
      * @param value the value value to set.
      * @return the KeyValueProperties object itself.
      */
@@ -111,9 +110,9 @@ public final class KeyValueProperties {
     }
 
     /**
-     * Get the contentType property: The content type of the key-value's value. Providing a proper content-type can
-     * enable transformations of values when they are retrieved by applications.
-     *
+     * Get the contentType property: The content type of the key-value's value.
+     * Providing a proper content-type can enable transformations of values when they are retrieved by applications.
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -121,9 +120,9 @@ public final class KeyValueProperties {
     }
 
     /**
-     * Set the contentType property: The content type of the key-value's value. Providing a proper content-type can
-     * enable transformations of values when they are retrieved by applications.
-     *
+     * Set the contentType property: The content type of the key-value's value.
+     * Providing a proper content-type can enable transformations of values when they are retrieved by applications.
+     * 
      * @param contentType the contentType value to set.
      * @return the KeyValueProperties object itself.
      */
@@ -134,7 +133,7 @@ public final class KeyValueProperties {
 
     /**
      * Get the etag property: An ETag indicating the state of a key-value within a configuration store.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -143,7 +142,7 @@ public final class KeyValueProperties {
 
     /**
      * Get the lastModified property: The last time a modifying operation was performed on the given key-value.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -151,9 +150,9 @@ public final class KeyValueProperties {
     }
 
     /**
-     * Get the locked property: A value indicating whether the key-value is locked. A locked key-value may not be
-     * modified until it is unlocked.
-     *
+     * Get the locked property: A value indicating whether the key-value is locked.
+     * A locked key-value may not be modified until it is unlocked.
+     * 
      * @return the locked value.
      */
     public Boolean locked() {
@@ -162,7 +161,7 @@ public final class KeyValueProperties {
 
     /**
      * Get the tags property: A dictionary of tags that can help identify what a key-value may be applicable for.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -171,7 +170,7 @@ public final class KeyValueProperties {
 
     /**
      * Set the tags property: A dictionary of tags that can help identify what a key-value may be applicable for.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the KeyValueProperties object itself.
      */
@@ -182,9 +181,63 @@ public final class KeyValueProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyValueProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyValueProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyValueProperties.
+     */
+    public static KeyValueProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyValueProperties deserializedKeyValueProperties = new KeyValueProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedKeyValueProperties.key = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedKeyValueProperties.label = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyValueProperties.value = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedKeyValueProperties.contentType = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedKeyValueProperties.etag = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedKeyValueProperties.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("locked".equals(fieldName)) {
+                    deserializedKeyValueProperties.locked = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyValueProperties.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyValueProperties;
+        });
     }
 }

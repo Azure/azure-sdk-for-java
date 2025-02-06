@@ -16,11 +16,13 @@ import com.azure.resourcemanager.apimanagement.models.ProductPoliciesCreateOrUpd
 import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetResponse;
 
-/** An instance of this class provides access to all the operations defined in ProductPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductPoliciesClient.
+ */
 public interface ProductPoliciesClient {
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -31,12 +33,12 @@ public interface ProductPoliciesClient {
      * @return the policy configuration at the Product level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyCollectionInner> listByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    Response<PolicyCollectionInner> listByProductWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context);
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -50,7 +52,7 @@ public interface ProductPoliciesClient {
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -62,12 +64,12 @@ public interface ProductPoliciesClient {
      * @return the ETag of the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context);
+    ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, Context context);
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -81,7 +83,7 @@ public interface ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -94,17 +96,12 @@ public interface ProductPoliciesClient {
      * @return the policy configuration at the Product level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    ProductPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -119,7 +116,7 @@ public interface ProductPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -133,18 +130,12 @@ public interface ProductPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    ProductPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -156,22 +147,18 @@ public interface ProductPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters);
+    PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyContractInner parameters);
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,23 +166,18 @@ public interface ProductPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class ProfileResourceState extends ExpandableStringEnum<ProfileReso
      * @param name a name to look for.
      * @return the corresponding ProfileResourceState.
      */
-    @JsonCreator
     public static ProfileResourceState fromString(String name) {
         return fromString(name, ProfileResourceState.class);
     }

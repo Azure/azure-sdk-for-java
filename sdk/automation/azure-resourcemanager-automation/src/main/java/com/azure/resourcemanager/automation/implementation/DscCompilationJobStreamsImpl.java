@@ -21,33 +21,29 @@ public final class DscCompilationJobStreamsImpl implements DscCompilationJobStre
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public DscCompilationJobStreamsImpl(
-        DscCompilationJobStreamsClient innerClient,
+    public DscCompilationJobStreamsImpl(DscCompilationJobStreamsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public JobStreamListResult listByJob(String resourceGroupName, String automationAccountName, UUID jobId) {
-        JobStreamListResultInner inner =
-            this.serviceClient().listByJob(resourceGroupName, automationAccountName, jobId);
+    public Response<JobStreamListResult> listByJobWithResponse(String resourceGroupName, String automationAccountName,
+        UUID jobId, Context context) {
+        Response<JobStreamListResultInner> inner
+            = this.serviceClient().listByJobWithResponse(resourceGroupName, automationAccountName, jobId, context);
         if (inner != null) {
-            return new JobStreamListResultImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JobStreamListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<JobStreamListResult> listByJobWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobId, Context context) {
-        Response<JobStreamListResultInner> inner =
-            this.serviceClient().listByJobWithResponse(resourceGroupName, automationAccountName, jobId, context);
+    public JobStreamListResult listByJob(String resourceGroupName, String automationAccountName, UUID jobId) {
+        JobStreamListResultInner inner
+            = this.serviceClient().listByJob(resourceGroupName, automationAccountName, jobId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new JobStreamListResultImpl(inner.getValue(), this.manager()));
+            return new JobStreamListResultImpl(inner, this.manager());
         } else {
             return null;
         }

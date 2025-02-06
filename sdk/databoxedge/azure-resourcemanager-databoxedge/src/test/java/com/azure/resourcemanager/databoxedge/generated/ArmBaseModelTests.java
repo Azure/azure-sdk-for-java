@@ -10,9 +10,8 @@ import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 public final class ArmBaseModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmBaseModel model =
-            BinaryData
-                .fromString("{\"id\":\"wooc\",\"name\":\"cbonqvpk\",\"type\":\"lrxnjeaseiphe\"}")
+        ArmBaseModel model
+            = BinaryData.fromString("{\"id\":\"npwlbjnpg\",\"name\":\"cftadeh\",\"type\":\"nltyfsoppusuesnz\"}")
                 .toObject(ArmBaseModel.class);
     }
 

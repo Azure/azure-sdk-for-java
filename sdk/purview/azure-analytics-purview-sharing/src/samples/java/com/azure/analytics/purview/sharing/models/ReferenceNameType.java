@@ -4,10 +4,9 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Defines the type of resource being shared.
@@ -20,7 +19,7 @@ public final class ReferenceNameType extends ExpandableStringEnum<ReferenceNameT
 
     /**
      * Creates a new instance of ReferenceNameType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,18 +28,17 @@ public final class ReferenceNameType extends ExpandableStringEnum<ReferenceNameT
 
     /**
      * Creates or finds a ReferenceNameType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ReferenceNameType.
      */
-    @JsonCreator
     public static ReferenceNameType fromString(String name) {
         return fromString(name, ReferenceNameType.class);
     }
 
     /**
      * Gets known ReferenceNameType values.
-     * 
+     *
      * @return known ReferenceNameType values.
      */
     public static Collection<ReferenceNameType> values() {

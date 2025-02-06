@@ -20,6 +20,7 @@ public final class FileSystemUndeleteOptions {
      *
      * @param deletedFileSystemName The name of the previously deleted file system.
      * @param deletedFileSystemVersion The version of the previously deleted file system.
+     * @throws NullPointerException If {@code deletedFileSystemName} or {@code deletedFileSystemVersion} is null.
      */
     public FileSystemUndeleteOptions(String deletedFileSystemName, String deletedFileSystemVersion) {
         StorageImplUtils.assertNotNull("deletedFileSystemName", deletedFileSystemName);

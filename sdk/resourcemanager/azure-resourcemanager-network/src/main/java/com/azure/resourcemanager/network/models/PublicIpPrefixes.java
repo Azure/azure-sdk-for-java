@@ -15,15 +15,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
 /** Type representing PublicIpPrefixes. */
-public interface PublicIpPrefixes
-    extends SupportsListing<PublicIpPrefix>,
-        SupportsCreating<PublicIpPrefix.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<PublicIpPrefix>,
-        SupportsGettingByResourceGroup<PublicIpPrefix>,
-        SupportsGettingById<PublicIpPrefix>,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<PublicIpPrefix>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface PublicIpPrefixes extends SupportsListing<PublicIpPrefix>,
+    SupportsCreating<PublicIpPrefix.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<PublicIpPrefix>, SupportsGettingByResourceGroup<PublicIpPrefix>,
+    SupportsGettingById<PublicIpPrefix>, SupportsDeletingByResourceGroup, SupportsBatchCreation<PublicIpPrefix>,
+    SupportsBatchDeletion, HasManager<NetworkManager> {
 }

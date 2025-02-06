@@ -17,7 +17,6 @@ import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
-import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -67,57 +66,52 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     // Remove the `id`, `name`, `Set-Cookie` sanitizers from the list of common sanitizers.
     // See list of sanitizers: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs
-    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493", "AZSDK2015"};
+    private static final String[] REMOVE_SANITIZER_ID = { "AZSDK3430", "AZSDK3493", "AZSDK2015" };
 
-    private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
+    private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT = "java_sdk_tests_assistants.txt";
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
     private static final String MS_LOGO_PNG = "ms_logo.png";
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
-                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
-                false))
-            .buildAsyncClient();
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, false))
+                .buildAsyncClient();
     }
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        return getAzureAssistantsClientBuilder(buildAssertingClient(
-                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient,
-                false), serviceVersion)
-                .buildAsyncClient();
+        return getAzureAssistantsClientBuilder(
+            buildAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, false),
+            serviceVersion).buildAsyncClient();
     }
 
     AssistantsClient getAssistantsClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
-                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true))
                 .buildClient();
     }
 
     AssistantsClient getAssistantsClient(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        return getAzureAssistantsClientBuilder(buildAssertingClient(
-                        interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
-                serviceVersion)
-                .buildClient();
+        return getAzureAssistantsClientBuilder(
+            buildAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, true),
+            serviceVersion).buildClient();
     }
 
-    AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        AssistantsClientBuilder builder = new AssistantsClientBuilder()
-                .httpClient(httpClient)
-                .serviceVersion(serviceVersion);
+    AssistantsClientBuilder getAzureAssistantsClientBuilder(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
+        AssistantsClientBuilder builder
+            = new AssistantsClientBuilder().httpClient(httpClient).serviceVersion(serviceVersion);
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(TestUtils.FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(TestUtils.FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
 
         if (getTestMode() != TestMode.LIVE) {
@@ -130,15 +124,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     AssistantsClientBuilder getAssistantsClientBuilder(HttpClient httpClient) {
-        AssistantsClientBuilder builder = new AssistantsClientBuilder()
-                .httpClient(httpClient);
+        AssistantsClientBuilder builder = new AssistantsClientBuilder().httpClient(httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new KeyCredential(TestUtils.FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
             builder.credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
@@ -153,16 +145,17 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     private void addTestRecordCustomSanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(
-            new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
-        ));
+        interceptorManager.addSanitizers(
+            Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("Content-Type",
+                    "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
+        interceptorManager
+            .addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     private void removeDefaultSanitizers() {
@@ -172,16 +165,15 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
 
     void createAssistantsRunner(Consumer<AssistantCreationOptions> testRunner) {
-        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                .setName("Math Tutor")
-                .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
+        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW).setName("Math Tutor")
+            .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
+            .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
     void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
-        testRunner.accept(new AssistantThreadCreationOptions()
-                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
-                        "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
+        testRunner.accept(
+            new AssistantThreadCreationOptions().setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
+                "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
     }
 
     void createMessageRunner(Consumer<String> testRunner) {
@@ -193,20 +185,16 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     void createThreadAndRunRunner(Consumer<CreateAndRunThreadOptions> testRunner, String assistantId) {
-        testRunner.accept(
-                new CreateAndRunThreadOptions(assistantId)
-                        .setThread(new AssistantThreadCreationOptions()
-                                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
-                                        "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
+        testRunner.accept(new CreateAndRunThreadOptions(assistantId).setThread(
+            new AssistantThreadCreationOptions().setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
+                "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
 
     }
 
     void createThreadRunWithFunctionCallRunner(Consumer<CreateAndRunThreadOptions> testRunner, String assistantId) {
-        testRunner.accept(
-            new CreateAndRunThreadOptions(assistantId)
-                .setThread(new AssistantThreadCreationOptions()
-                    .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
-                        "Please make a graph for my boilerplate equation")))));
+        testRunner.accept(new CreateAndRunThreadOptions(assistantId)
+            .setThread(new AssistantThreadCreationOptions().setMessages(Arrays.asList(
+                new ThreadMessageOptions(MessageRole.USER, "Please make a graph for my boilerplate equation")))));
 
     }
 
@@ -214,29 +202,16 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(new CreateRunOptions(assistantId));
     }
 
-    void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
-        FileDetails fileDetails = new FileDetails(
-            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")), "java_sdk_tests_assistants.txt");
-
-        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-            .setName("Java SDK Retrieval Sample")
-            .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-            .setTools(Arrays.asList(new FileSearchToolDefinition()));
-
-        testRunner.accept(fileDetails, assistantOptions);
-    }
-
     void createFunctionToolCallRunner(BiConsumer<AssistantCreationOptions, AssistantThreadCreationOptions> testRunner) {
         FunctionsToolCallHelper functionsToolCallHelper = new FunctionsToolCallHelper();
-        List<ToolDefinition> toolDefinition = Arrays.asList(
-            functionsToolCallHelper.getAirlinePriceToDestinationForSeasonDefinition(),
-            functionsToolCallHelper.getFavoriteVacationDestinationDefinition(),
-            functionsToolCallHelper.getPreferredAirlineForSeasonDefinition()
-        );
-        AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-            .setName("Java SDK Function Tool Call Test")
-            .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-            .setTools(toolDefinition);
+        List<ToolDefinition> toolDefinition
+            = Arrays.asList(functionsToolCallHelper.getAirlinePriceToDestinationForSeasonDefinition(),
+                functionsToolCallHelper.getFavoriteVacationDestinationDefinition(),
+                functionsToolCallHelper.getPreferredAirlineForSeasonDefinition());
+        AssistantCreationOptions assistantOptions
+            = new AssistantCreationOptions(GPT_4_1106_PREVIEW).setName("Java SDK Function Tool Call Test")
+                .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+                .setTools(toolDefinition);
 
         AssistantThreadCreationOptions threadCreationOptions = new AssistantThreadCreationOptions();
 
@@ -262,14 +237,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     void modifyVectorStoreRunner(Consumer<VectorStoreUpdateOptions> testRunner) {
-        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions()
-                .setName("updatedName");
+        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions().setName("updatedName");
         testRunner.accept(updateVectorStoreOptions);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
-        AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
-                .skipRequest((ignored1, ignored2) -> false);
+        AssertingHttpClientBuilder builder
+            = new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false);
         if (sync) {
             builder.assertSync();
         } else {
@@ -290,8 +264,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return object;
     }
 
-    static <T> PageableList<T> asserAndGetPageableListFromResponse(Response<BinaryData> actualResponse, int expectedCode,
-                                                     CheckedFunction<JsonReader, List<T>> readListFunction) {
+    static <T> PageableList<T> asserAndGetPageableListFromResponse(Response<BinaryData> actualResponse,
+        int expectedCode, CheckedFunction<JsonReader, List<T>> readListFunction) {
         assertNotNull(actualResponse);
         assertEquals(expectedCode, actualResponse.getStatusCode());
         assertInstanceOf(Response.class, actualResponse);
@@ -340,8 +314,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String createMathTutorAssistant(AssistantsClient client) {
-        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                .setName("Math Tutor")
+        AssistantCreationOptions assistantCreationOptions
+            = new AssistantCreationOptions(GPT_4_1106_PREVIEW).setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
         return createAssistant(client, assistantCreationOptions);
@@ -349,15 +323,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     String createMathTutorAssistantWithFunctionTool(AssistantsClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                .setName("Math Tutor")
-                .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
-                    + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
-                .setTools(Arrays.asList(
-                    new CodeInterpreterToolDefinition(),
-                    new FunctionToolDefinition(
-                        new FunctionDefinition("get_boilerplate_equation", BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
-                            .setDescription("Retrieves a predefined 'boilerplate equation' from the caller")
-                )));
+            .setName("Math Tutor")
+            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
+                + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+            .setTools(Arrays.asList(new CodeInterpreterToolDefinition(),
+                new FunctionToolDefinition(new FunctionDefinition("get_boilerplate_equation",
+                    BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
+                        .setDescription("Retrieves a predefined 'boilerplate equation' from the caller"))));
         return createAssistant(client, assistantCreationOptions);
     }
 
@@ -366,18 +338,16 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             .setName("Math Tutor")
             .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
                 + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
-            .setTools(Arrays.asList(
-                new CodeInterpreterToolDefinition(),
-                new FunctionToolDefinition(
-                    new FunctionDefinition("get_boilerplate_equation", BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
-                        .setDescription("Retrieves a predefined 'boilerplate equation' from the caller")
-                )));
+            .setTools(Arrays.asList(new CodeInterpreterToolDefinition(),
+                new FunctionToolDefinition(new FunctionDefinition("get_boilerplate_equation",
+                    BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
+                        .setDescription("Retrieves a predefined 'boilerplate equation' from the caller"))));
         return createAssistant(client, assistantCreationOptions);
     }
 
     String createMathTutorAssistant(AssistantsAsyncClient client) {
-        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                .setName("Math Tutor")
+        AssistantCreationOptions assistantCreationOptions
+            = new AssistantCreationOptions(GPT_4_1106_PREVIEW).setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
         return createAssistant(client, assistantCreationOptions);
@@ -386,9 +356,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     String uploadFile(AssistantsClient client, String fileName, FilePurpose filePurpose) {
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
 
-        OpenAIFile openAIFile = client.uploadFile(
-            fileDetails,
-            filePurpose);
+        OpenAIFile openAIFile = client.uploadFile(fileDetails, filePurpose);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
         return openAIFile.getId();
@@ -397,9 +365,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     String uploadFileAsync(AssistantsAsyncClient client, String fileName, FilePurpose filePurpose) {
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
 
-        OpenAIFile openAIFile = client.uploadFile(
-                fileDetails,
-                filePurpose).block();
+        OpenAIFile openAIFile = client.uploadFile(fileDetails, filePurpose).block();
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
         return openAIFile.getId();
@@ -421,12 +387,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             return;
         }
         for (String fileId : fileIds) {
-            StepVerifier.create(client.deleteFile(fileId))
-                    .assertNext(deletionStatus -> {
-                        assertEquals(fileId, deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.deleteFile(fileId)).assertNext(deletionStatus -> {
+                assertEquals(fileId, deletionStatus.getId());
+                assertTrue(deletionStatus.isDeleted());
+            }).verifyComplete();
         }
     }
 
@@ -442,11 +406,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     void deleteVectorStoresAsync(AssistantsAsyncClient client, String... vectorStoreIds) {
         if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
             for (String vectorStoreId : vectorStoreIds) {
-                StepVerifier.create(client.deleteVectorStore(vectorStoreId))
-                        .assertNext(vectorStoreDeletionStatus -> {
-                            assertTrue(vectorStoreDeletionStatus.isDeleted());
-                        })
-                        .verifyComplete();
+                StepVerifier.create(client.deleteVectorStore(vectorStoreId)).assertNext(vectorStoreDeletionStatus -> {
+                    assertTrue(vectorStoreDeletionStatus.isDeleted());
+                }).verifyComplete();
             }
         }
     }
@@ -483,25 +445,21 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (CoreUtils.isNullOrEmpty(assistantId)) {
             return;
         }
-        StepVerifier.create(client.deleteAssistant(assistantId))
-                .assertNext(deletionStatus -> {
-                    assertEquals(assistantId, deletionStatus.getId());
-                    assertTrue(deletionStatus.isDeleted());
-                })
-                .verifyComplete();
+        StepVerifier.create(client.deleteAssistant(assistantId)).assertNext(deletionStatus -> {
+            assertEquals(assistantId, deletionStatus.getId());
+            assertTrue(deletionStatus.isDeleted());
+        }).verifyComplete();
     }
 
     String createThread(AssistantsAsyncClient client) {
         AtomicReference<String> threadIdRef = new AtomicReference<>();
         // Create a simple thread without a message
-        StepVerifier.create(client.createThread(new AssistantThreadCreationOptions()))
-                .assertNext(assistantThread -> {
-                    assertNotNull(assistantThread.getId());
-                    assertNotNull(assistantThread.getCreatedAt());
-                    assertEquals("thread", assistantThread.getObject());
-                    threadIdRef.set(assistantThread.getId());
-                })
-                .verifyComplete();
+        StepVerifier.create(client.createThread(new AssistantThreadCreationOptions())).assertNext(assistantThread -> {
+            assertNotNull(assistantThread.getId());
+            assertNotNull(assistantThread.getCreatedAt());
+            assertEquals("thread", assistantThread.getObject());
+            threadIdRef.set(assistantThread.getId());
+        }).verifyComplete();
         return threadIdRef.get();
     }
 
@@ -519,12 +477,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             return;
         }
         // Delete the created thread
-        StepVerifier.create(client.deleteThread(threadId))
-                .assertNext(deletionStatus -> {
-                    assertEquals(threadId, deletionStatus.getId());
-                    assertTrue(deletionStatus.isDeleted());
-                })
-                .verifyComplete();
+        StepVerifier.create(client.deleteThread(threadId)).assertNext(deletionStatus -> {
+            assertEquals(threadId, deletionStatus.getId());
+            assertTrue(deletionStatus.isDeleted());
+        }).verifyComplete();
     }
 
     void deleteThread(AssistantsClient client, String threadId) {
@@ -539,15 +495,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     ThreadRun createThreadAndRun(AssistantsAsyncClient client, CreateAndRunThreadOptions options) {
         AtomicReference<ThreadRun> threadRunRef = new AtomicReference<>();
-        StepVerifier.create(client.createThreadAndRun(options))
-                .assertNext(run -> {
-                    assertNotNull(run.getId());
-                    assertNotNull(run.getCreatedAt());
-                    assertEquals("thread.run", run.getObject());
-                    assertNotNull(run.getInstructions());
-                    threadRunRef.set(run);
-                })
-                .verifyComplete();
+        StepVerifier.create(client.createThreadAndRun(options)).assertNext(run -> {
+            assertNotNull(run.getId());
+            assertNotNull(run.getCreatedAt());
+            assertEquals("thread.run", run.getObject());
+            assertNotNull(run.getInstructions());
+            threadRunRef.set(run);
+        }).verifyComplete();
         return threadRunRef.get();
     }
 

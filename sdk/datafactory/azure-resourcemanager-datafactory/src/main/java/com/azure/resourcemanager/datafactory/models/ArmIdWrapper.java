@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A wrapper for an ARM resource id.
  */
 @Immutable
-public final class ArmIdWrapper {
+public final class ArmIdWrapper implements JsonSerializable<ArmIdWrapper> {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
@@ -39,5 +42,40 @@ public final class ArmIdWrapper {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmIdWrapper from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmIdWrapper if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmIdWrapper.
+     */
+    public static ArmIdWrapper fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmIdWrapper deserializedArmIdWrapper = new ArmIdWrapper();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedArmIdWrapper.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmIdWrapper;
+        });
     }
 }

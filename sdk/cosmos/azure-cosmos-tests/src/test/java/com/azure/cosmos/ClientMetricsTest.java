@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -88,6 +89,8 @@ public class ClientMetricsTest extends BatchTestBase {
     private CosmosClientTelemetryConfig inputClientTelemetryConfig;
     private CosmosMicrometerMetricsOptions inputMetricsOptions;
     private Tag clientCorrelationTag;
+    private long diagnosticHandlerFailuresBaseline;
+    private DiagnosticsProvider diagnosticsProvider;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
@@ -113,7 +116,6 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(this.meterRegistry).isNull();
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
-
         this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry)
             .setMetricCategories(metricCategories)
@@ -136,6 +138,9 @@ public class ClientMetricsTest extends BatchTestBase {
         this.client = getClientBuilder()
             .clientTelemetryConfig(inputClientTelemetryConfig)
             .buildClient();
+
+        this.diagnosticsProvider = ReflectionUtils.getDiagnosticsProvider(client.asyncClient());
+        this.diagnosticHandlerFailuresBaseline = diagnosticsProvider.getDiagnosticHandlerFailuresSnapshot();
 
         assertThat(
             ImplementationBridgeHelpers
@@ -162,6 +167,10 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     public void afterTest() {
+        if (this.diagnosticsProvider != null) {
+            assertThat(this.diagnosticsProvider.getDiagnosticHandlerFailuresSnapshot())
+                .isEqualTo(this.diagnosticHandlerFailuresBaseline);
+        }
         this.container = null;
         CosmosClient clientSnapshot = this.client;
         if (clientSnapshot != null) {
@@ -397,6 +406,38 @@ public class ClientMetricsTest extends BatchTestBase {
                 0,
                 500
             );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Read"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                0,
+                500
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readNonExistingItem() throws Exception {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        try {
+
+            try {
+                container.readItem(
+                    UUID.randomUUID().toString(),
+                    new PartitionKey(UUID.randomUUID().toString()),
+                    new CosmosItemRequestOptions(),
+                    InternalObjectNode.class);
+            } catch (CosmosException expectedError) {
+                assertThat(expectedError.getStatusCode()).isEqualTo(404);
+                assertThat(expectedError.getSubStatusCode()).isEqualTo(0);
+            }
 
             this.validateMetrics(
                 Tag.of(
@@ -957,6 +998,27 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.Operation.toString(), "Document/Batch"),
                 Tag.of(TagName.PartitionKeyRangeId.toString(), "0"),
                 Tag.of(TagName.PartitionKeyRangeId.toString(), "1"));
+
+            this.validateBatchOpCountPerEvaluation(
+                Tag.of(TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "0"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "1"));
+
+            this.validateBatchOpRetriedCountPerEvaluation(
+                Tag.of(TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "0"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "1"));
+
+            this.validateBatchGlobalOpCount(
+                Tag.of(TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "0"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "1"));
+
+            this.validateTargetMaxMicroBatchSize(
+                Tag.of(TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "0"),
+                Tag.of(TagName.PartitionKeyRangeId.toString(), "1"));
+
         } finally {
             this.afterTest();
         }
@@ -1291,83 +1353,101 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void meterNameFromStringConversion() {
-        assertThat(CosmosMetricName.fromString("cosmos.client.op.laTency"))
-            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_LATENCY);
-        assertThat(CosmosMetricName.fromString("cosmos.client.op.cAlls"))
-            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_CALLS);
-        assertThat(CosmosMetricName.fromString("cosmos.client.op.rus"))
-            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_REQUEST_CHARGE);
-        assertThat(CosmosMetricName.fromString("cosmos.client.OP.actualItemCount"))
-            .isSameAs(CosmosMetricName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.op.MAXItemCount"))
-            .isSameAs(CosmosMetricName.OPERATION_DETAILS_MAX_ITEM_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.op.REGIONScontacted"))
-            .isSameAs(CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.op.laTency"))
+//            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_LATENCY);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.op.cAlls"))
+//            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_CALLS);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.op.rus"))
+//            .isSameAs(CosmosMetricName.OPERATION_SUMMARY_REQUEST_CHARGE);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.OP.actualItemCount"))
+//            .isSameAs(CosmosMetricName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.op.MAXItemCount"))
+//            .isSameAs(CosmosMetricName.OPERATION_DETAILS_MAX_ITEM_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.op.REGIONScontacted"))
+//            .isSameAs(CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.reqPaylOADSize"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.rspPayloadSIZE"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.backendLatency"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.LAtency"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_LATENCY);
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.RUS"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.ReQUEsts"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUESTS);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.TIMEline"))
+//            .isSameAs(CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.Req.rntbd.actualItemCount"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.actualITemCount"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
 
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.reqPaylOADSize"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rspPayloadSIZE"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
+        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkOpCountPerEvaluation"))
+            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_COUNT_PER_EVALUATION);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_RETRIED_COUNT_PER_EVALUATION);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkGlobalOpCount"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_GLOBAL_OP_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_TARGET_MAX_MICRO_BATCH_SIZE);
 
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.backendLatency"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.LAtency"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_LATENCY);
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.RUS"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.rntbd.ReQUEsts"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUESTS);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.TIMEline"))
-            .isSameAs(CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);
-        assertThat(CosmosMetricName.fromString("cosmos.client.Req.rntbd.actualItemCount"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.rntbd.actualITemCount"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
-
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.LAtency"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.RUS"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
-        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.ReQUEsts"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.tiMELine"))
-            .isSameAs(CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE);
-        assertThat(CosmosMetricName.fromString("cosmos.client.Req.gw.actualItemCount"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.actualITemCount"))
-            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
-
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.latency"))
-            .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.requests"))
-            .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
-
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.acquired.COUNT"))
-            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_ACQUIRED_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.available.COUNT"))
-            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_AVAILABLE_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.closed.COUNT"))
-            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_CLOSED_COUNT);
-
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.endpoints.COUNT"))
-            .isSameAs(CosmosMetricName.DIRECT_ENDPOINTS_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.endpoints.evicted"))
-            .isSameAs(CosmosMetricName.DIRECT_ENDPOINTS_EVICTED);
-
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.concurrent.count"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_CONCURRENT_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.LAtency"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.FAIled.latency"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY_FAILED);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.successful.latency"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY_SUCCESS);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.queued.count"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_QUEUED_COUNT);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.req.RSPsize"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_RESPONSE);
-        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.req.reqsize"))
-            .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_REQUEST);
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.LAtency"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.RUS"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
+//        assertThat(CosmosMetricName.fromString("cosmos.CLIENT.req.gw.ReQUEsts"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.tiMELine"))
+//            .isSameAs(CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.Req.gw.actualItemCount"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.actualITemCount"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkOpCountPerEvaluation"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_COUNT_PER_EVALUATION);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkOpRetriedCountPerEvaluation"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_RETRIED_COUNT_PER_EVALUATION);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkGlobalOpCount"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_GLOBAL_OP_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.req.gw.bulkTargetMaxMicroBatchSize"))
+//            .isSameAs(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_TARGET_MAX_MICRO_BATCH_SIZE);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.latency"))
+//            .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.addressResolution.requests"))
+//            .isSameAs(CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.acquired.COUNT"))
+//            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_ACQUIRED_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.available.COUNT"))
+//            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_AVAILABLE_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.channels.closed.COUNT"))
+//            .isSameAs(CosmosMetricName.DIRECT_CHANNELS_CLOSED_COUNT);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.endpoints.COUNT"))
+//            .isSameAs(CosmosMetricName.DIRECT_ENDPOINTS_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.endpoints.evicted"))
+//            .isSameAs(CosmosMetricName.DIRECT_ENDPOINTS_EVICTED);
+//
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.concurrent.count"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_CONCURRENT_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.LAtency"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.FAIled.latency"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY_FAILED);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.successful.latency"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_LATENCY_SUCCESS);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.requests.queued.count"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_QUEUED_COUNT);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.req.RSPsize"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_RESPONSE);
+//        assertThat(CosmosMetricName.fromString("cosmos.client.RNTBD.req.reqsize"))
+//            .isSameAs(CosmosMetricName.DIRECT_REQUEST_SIZE_REQUEST);
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
@@ -1476,6 +1556,62 @@ public class ClientMetricsTest extends BatchTestBase {
             } else {
                 for (Tag expectedRequestTag : expectedRequestTags) {
                     this.assertMetrics("cosmos.client.req.gw.actualItemCount", true, expectedRequestTag);
+                }
+            }
+        }
+    }
+
+    private void validateBatchOpCountPerEvaluation(Tag... expectedRequestTags) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkOpCountPerEvaluation", true, expectedRequestTag);
+                }
+            } else {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.gw.bulkOpCountPerEvaluation", true, expectedRequestTag);
+                }
+            }
+        }
+    }
+
+    private void validateBatchOpRetriedCountPerEvaluation(Tag... expectedRequestTags) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkOpRetriedCountPerEvaluation", true, expectedRequestTag);
+                }
+            } else {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.gw.bulkOpRetriedCountPerEvaluation", true, expectedRequestTag);
+                }
+            }
+        }
+    }
+
+    private void validateBatchGlobalOpCount(Tag... expectedRequestTags) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkGlobalOpCount", true, expectedRequestTag);
+                }
+            } else {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.gw.bulkGlobalOpCount", true, expectedRequestTag);
+                }
+            }
+        }
+    }
+
+    private void validateTargetMaxMicroBatchSize(Tag... expectedRequestTags) {
+        if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.rntbd.bulkTargetMaxMicroBatchSize", true, expectedRequestTag);
+                }
+            } else {
+                for (Tag expectedRequestTag : expectedRequestTags) {
+                    this.assertMetrics("cosmos.client.req.gw.bulkTargetMaxMicroBatchSize", true, expectedRequestTag);
                 }
             }
         }

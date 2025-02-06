@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes metadata for retrieving price info. */
+/**
+ * Describes metadata for retrieving price info.
+ */
 @Immutable
-public final class SkuCost {
+public final class SkuCost implements JsonSerializable<SkuCost> {
     /*
      * Meter id of the Sku.
      */
-    @JsonProperty(value = "meterId", access = JsonProperty.Access.WRITE_ONLY)
     private String meterId;
 
     /*
      * The type of the meter.
      */
-    @JsonProperty(value = "meterType", access = JsonProperty.Access.WRITE_ONLY)
     private String meterType;
 
     /*
      * Multiplier specifies the region specific value to be multiplied with 1$ guid. Eg: Our new regions will be using
      * 1$ shipping guid with appropriate multiplier specific to region.
      */
-    @JsonProperty(value = "multiplier", access = JsonProperty.Access.WRITE_ONLY)
     private Double multiplier;
 
-    /** Creates an instance of SkuCost class. */
+    /**
+     * Creates an instance of SkuCost class.
+     */
     public SkuCost() {
     }
 
     /**
      * Get the meterId property: Meter id of the Sku.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -44,7 +49,7 @@ public final class SkuCost {
 
     /**
      * Get the meterType property: The type of the meter.
-     *
+     * 
      * @return the meterType value.
      */
     public String meterType() {
@@ -54,7 +59,7 @@ public final class SkuCost {
     /**
      * Get the multiplier property: Multiplier specifies the region specific value to be multiplied with 1$ guid. Eg:
      * Our new regions will be using 1$ shipping guid with appropriate multiplier specific to region.
-     *
+     * 
      * @return the multiplier value.
      */
     public Double multiplier() {
@@ -63,9 +68,48 @@ public final class SkuCost {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuCost from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuCost if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the SkuCost.
+     */
+    public static SkuCost fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuCost deserializedSkuCost = new SkuCost();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("meterId".equals(fieldName)) {
+                    deserializedSkuCost.meterId = reader.getString();
+                } else if ("meterType".equals(fieldName)) {
+                    deserializedSkuCost.meterType = reader.getString();
+                } else if ("multiplier".equals(fieldName)) {
+                    deserializedSkuCost.multiplier = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuCost;
+        });
     }
 }

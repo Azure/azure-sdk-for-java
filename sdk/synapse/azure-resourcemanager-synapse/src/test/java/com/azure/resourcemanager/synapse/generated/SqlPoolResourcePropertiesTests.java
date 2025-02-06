@@ -14,44 +14,43 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"maxSizeBytes\":547148134768197922,\"collation\":\"vtq\",\"sourceDatabaseId\":\"n\",\"recoverableDatabaseId\":\"ynhijggme\",\"provisioningState\":\"siarbutrcvpn\",\"status\":\"zmhjrunmp\",\"restorePointInTime\":\"2021-03-04T22:45:41Z\",\"createMode\":\"Default\",\"creationDate\":\"2021-07-16T15:39:21Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-10-27T21:49:11Z\"}")
-                .toObject(SqlPoolResourceProperties.class);
-        Assertions.assertEquals(547148134768197922L, model.maxSizeBytes());
-        Assertions.assertEquals("vtq", model.collation());
-        Assertions.assertEquals("n", model.sourceDatabaseId());
-        Assertions.assertEquals("ynhijggme", model.recoverableDatabaseId());
-        Assertions.assertEquals("siarbutrcvpn", model.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T22:45:41Z"), model.restorePointInTime());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
-        Assertions.assertEquals(StorageAccountType.LRS, model.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T21:49:11Z"), model.sourceDatabaseDeletionDate());
+        SqlPoolResourceProperties model = BinaryData.fromString(
+            "{\"maxSizeBytes\":1375339389748279377,\"collation\":\"kkbnu\",\"sourceDatabaseId\":\"ywvtylbfpnc\",\"recoverableDatabaseId\":\"doiwi\",\"provisioningState\":\"htywubxcbihwq\",\"status\":\"fdntwjchrdgoih\",\"restorePointInTime\":\"2021-10-03T14:03:48Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-12-07T13:58:09Z\",\"storageAccountType\":\"ZRS\"}")
+            .toObject(SqlPoolResourceProperties.class);
+        Assertions.assertEquals(1375339389748279377L, model.maxSizeBytes());
+        Assertions.assertEquals("kkbnu", model.collation());
+        Assertions.assertEquals("ywvtylbfpnc", model.sourceDatabaseId());
+        Assertions.assertEquals("doiwi", model.recoverableDatabaseId());
+        Assertions.assertEquals("htywubxcbihwq", model.provisioningState());
+        Assertions.assertEquals("fdntwjchrdgoih", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T14:03:48Z"), model.restorePointInTime());
+        Assertions.assertEquals(CreateMode.POINT_IN_TIME_RESTORE, model.createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T13:58:09Z"), model.creationDate());
+        Assertions.assertEquals(StorageAccountType.ZRS, model.storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolResourceProperties model =
-            new SqlPoolResourceProperties()
-                .withMaxSizeBytes(547148134768197922L)
-                .withCollation("vtq")
-                .withSourceDatabaseId("n")
-                .withRecoverableDatabaseId("ynhijggme")
-                .withProvisioningState("siarbutrcvpn")
-                .withRestorePointInTime(OffsetDateTime.parse("2021-03-04T22:45:41Z"))
-                .withCreateMode(CreateMode.DEFAULT)
-                .withStorageAccountType(StorageAccountType.LRS)
-                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-10-27T21:49:11Z"));
+        SqlPoolResourceProperties model = new SqlPoolResourceProperties().withMaxSizeBytes(1375339389748279377L)
+            .withCollation("kkbnu")
+            .withSourceDatabaseId("ywvtylbfpnc")
+            .withRecoverableDatabaseId("doiwi")
+            .withProvisioningState("htywubxcbihwq")
+            .withStatus("fdntwjchrdgoih")
+            .withRestorePointInTime(OffsetDateTime.parse("2021-10-03T14:03:48Z"))
+            .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+            .withCreationDate(OffsetDateTime.parse("2021-12-07T13:58:09Z"))
+            .withStorageAccountType(StorageAccountType.ZRS);
         model = BinaryData.fromObject(model).toObject(SqlPoolResourceProperties.class);
-        Assertions.assertEquals(547148134768197922L, model.maxSizeBytes());
-        Assertions.assertEquals("vtq", model.collation());
-        Assertions.assertEquals("n", model.sourceDatabaseId());
-        Assertions.assertEquals("ynhijggme", model.recoverableDatabaseId());
-        Assertions.assertEquals("siarbutrcvpn", model.provisioningState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T22:45:41Z"), model.restorePointInTime());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
-        Assertions.assertEquals(StorageAccountType.LRS, model.storageAccountType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T21:49:11Z"), model.sourceDatabaseDeletionDate());
+        Assertions.assertEquals(1375339389748279377L, model.maxSizeBytes());
+        Assertions.assertEquals("kkbnu", model.collation());
+        Assertions.assertEquals("ywvtylbfpnc", model.sourceDatabaseId());
+        Assertions.assertEquals("doiwi", model.recoverableDatabaseId());
+        Assertions.assertEquals("htywubxcbihwq", model.provisioningState());
+        Assertions.assertEquals("fdntwjchrdgoih", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-03T14:03:48Z"), model.restorePointInTime());
+        Assertions.assertEquals(CreateMode.POINT_IN_TIME_RESTORE, model.createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T13:58:09Z"), model.creationDate());
+        Assertions.assertEquals(StorageAccountType.ZRS, model.storageAccountType());
     }
 }

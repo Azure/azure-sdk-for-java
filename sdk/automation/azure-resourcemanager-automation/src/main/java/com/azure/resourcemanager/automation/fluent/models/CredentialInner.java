@@ -6,21 +6,46 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the credential. */
+/**
+ * Definition of the credential.
+ */
 @Fluent
 public final class CredentialInner extends ProxyResource {
     /*
      * Gets or sets the properties of the credential.
      */
-    @JsonProperty(value = "properties")
     private CredentialProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CredentialInner class.
+     */
+    public CredentialInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the credential.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CredentialProperties innerProperties() {
@@ -28,8 +53,38 @@ public final class CredentialInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the username property: Gets the user name of the credential.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -38,7 +93,7 @@ public final class CredentialInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -47,7 +102,7 @@ public final class CredentialInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -56,7 +111,7 @@ public final class CredentialInner extends ProxyResource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +120,7 @@ public final class CredentialInner extends ProxyResource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the CredentialInner object itself.
      */
@@ -79,12 +134,55 @@ public final class CredentialInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CredentialInner.
+     */
+    public static CredentialInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialInner deserializedCredentialInner = new CredentialInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCredentialInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCredentialInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCredentialInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCredentialInner.innerProperties = CredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialInner;
+        });
     }
 }

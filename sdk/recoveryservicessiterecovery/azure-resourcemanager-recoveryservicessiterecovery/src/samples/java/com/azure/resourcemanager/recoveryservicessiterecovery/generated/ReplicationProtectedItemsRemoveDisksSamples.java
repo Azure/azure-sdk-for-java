@@ -25,11 +25,12 @@ public final class ReplicationProtectedItemsRemoveDisksSamples {
      */
     public static void
         removesDiskS(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectedItems().removeDisks("vault1", "resourceGroupPS1", "cloud1",
-            "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b",
-            new RemoveDisksInput()
-                .withProperties(new RemoveDisksInputProperties().withProviderSpecificDetails(new A2ARemoveDisksInput()
-                    .withVmDisksUris(Arrays.asList("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")))),
-            com.azure.core.util.Context.NONE);
+        manager.replicationProtectedItems()
+            .removeDisks("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+                "f8491e4f-817a-40dd-a90c-af773978c75b",
+                new RemoveDisksInput().withProperties(
+                    new RemoveDisksInputProperties().withProviderSpecificDetails(new A2ARemoveDisksInput()
+                        .withVmDisksUris(Arrays.asList("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")))),
+                com.azure.core.util.Context.NONE);
     }
 }

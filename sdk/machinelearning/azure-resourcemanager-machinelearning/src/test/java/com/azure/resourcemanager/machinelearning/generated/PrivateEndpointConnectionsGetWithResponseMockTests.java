@@ -6,80 +6,48 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.machinelearning.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.machinelearning.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"kefkzlxvcozcgoeo\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"cbnunzuysajvvq\",\"actionsRequired\":\"o\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"4e30d8d2-f312-4638-8a62-5306572077f5\",\"tenantId\":\"aa47c843-683d-4cdb-8414-00130b4e60e2\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"btkqjqjcajg\":{\"principalId\":\"20b6abcb-9548-421c-aa89-089c5c3ae6fb\",\"clientId\":\"9e1713c0-2a5e-4804-9d3c-fa3b784455f2\"}}},\"location\":\"y\",\"tags\":{\"mrvkxeojtdyulglh\":\"hk\",\"xspxgogypbztgae\":\"lwruklfq\"},\"sku\":{\"name\":\"nskvctvuz\",\"tier\":\"Basic\",\"size\":\"ttmhlvr\",\"family\":\"yxrnwukfajnpdwz\",\"capacity\":803272560},\"id\":\"wdepemziayfi\",\"name\":\"ii\",\"type\":\"xcor\"}";
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wzlzklasl\",\"subnetArmId\":\"ciz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Timeout\",\"description\":\"arwp\",\"actionsRequired\":\"saudoejtighsx\"},\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"77a4ccdb-fb26-4f04-884f-577353706d15\",\"tenantId\":\"82e5dd6c-ed00-424d-b9d3-56306a3b5e26\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"ahovuuw\",\"tags\":{\"jnhj\":\"e\",\"fbbcngkegxcypxbb\":\"oti\",\"qlf\":\"etwilyrzoxpd\"},\"sku\":{\"name\":\"lqownkiua\",\"tier\":\"Free\",\"size\":\"ahwkxjjm\",\"family\":\"nlmsoo\",\"capacity\":1046371938},\"id\":\"ecdh\",\"name\":\"yswcrptveajczx\",\"type\":\"lgsrgkrfizrpywlp\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .getWithResponse("bkbdhlltqstqkqs", "gxiynecovagzk", "eubanlxunpqcc", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .getWithResponse("ymgbfmd", "uyyaescjxna", "pyxqbkxdtbfkih", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("ahovuuw", response.location());
-        Assertions.assertEquals("e", response.tags().get("jnhj"));
-        Assertions.assertEquals("lqownkiua", response.sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.sku().tier());
-        Assertions.assertEquals("ahwkxjjm", response.sku().size());
-        Assertions.assertEquals("nlmsoo", response.sku().family());
-        Assertions.assertEquals(1046371938, response.sku().capacity());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.TIMEOUT, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("arwp", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("saudoejtighsx", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("y", response.location());
+        Assertions.assertEquals("hk", response.tags().get("mrvkxeojtdyulglh"));
+        Assertions.assertEquals("nskvctvuz", response.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
+        Assertions.assertEquals("ttmhlvr", response.sku().size());
+        Assertions.assertEquals("yxrnwukfajnpdwz", response.sku().family());
+        Assertions.assertEquals(803272560, response.sku().capacity());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("cbnunzuysajvvq", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("o", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -29,23 +29,29 @@ public final class ListRoleAssignmentsInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListRoleAssignmentsInner model
-            = new ListRoleAssignmentsInner()
-                .withCount(
-                    1235353776)
-                .withRoleAssignmentResponse(Arrays.asList(
-                    new RoleAssignmentDetailInner().withRoleId("eiithlvmez").withPrincipalId("v")
-                        .withUsername("hxmzsbbzoggig")
-                        .withDataTypeScope(Arrays.asList("wburvjxxjnspydpt", "oenkouknvudwti", "kbldngkpocipa"))
-                        .withPrincipalType("yxoegukgjnp").withRole(DataProductUserRole.SENSITIVE_READER)
-                        .withRoleAssignmentId("cgygev"),
-                    new RoleAssignmentDetailInner().withRoleId("zntypmrb").withPrincipalId("izcdrqjsd")
-                        .withUsername("ydnfyhxdeoejz").withDataTypeScope(Arrays.asList("w")).withPrincipalType("fsj")
-                        .withRole(DataProductUserRole.SENSITIVE_READER).withRoleAssignmentId("gzfbishcbk"),
-                    new RoleAssignmentDetailInner().withRoleId("ajdeyeamdphaga").withPrincipalId("pbuxwgipwhon")
-                        .withUsername("wkgshwa").withDataTypeScope(Arrays.asList("ixzbinjeputtmryw"))
-                        .withPrincipalType("uzoqft").withRole(DataProductUserRole.SENSITIVE_READER)
-                        .withRoleAssignmentId("qzrnkcqvyxlwhz")));
+        ListRoleAssignmentsInner model = new ListRoleAssignmentsInner().withCount(1235353776)
+            .withRoleAssignmentResponse(Arrays.asList(
+                new RoleAssignmentDetailInner().withRoleId("eiithlvmez")
+                    .withPrincipalId("v")
+                    .withUsername("hxmzsbbzoggig")
+                    .withDataTypeScope(Arrays.asList("wburvjxxjnspydpt", "oenkouknvudwti", "kbldngkpocipa"))
+                    .withPrincipalType("yxoegukgjnp")
+                    .withRole(DataProductUserRole.SENSITIVE_READER)
+                    .withRoleAssignmentId("cgygev"),
+                new RoleAssignmentDetailInner().withRoleId("zntypmrb")
+                    .withPrincipalId("izcdrqjsd")
+                    .withUsername("ydnfyhxdeoejz")
+                    .withDataTypeScope(Arrays.asList("w"))
+                    .withPrincipalType("fsj")
+                    .withRole(DataProductUserRole.SENSITIVE_READER)
+                    .withRoleAssignmentId("gzfbishcbk"),
+                new RoleAssignmentDetailInner().withRoleId("ajdeyeamdphaga")
+                    .withPrincipalId("pbuxwgipwhon")
+                    .withUsername("wkgshwa")
+                    .withDataTypeScope(Arrays.asList("ixzbinjeputtmryw"))
+                    .withPrincipalType("uzoqft")
+                    .withRole(DataProductUserRole.SENSITIVE_READER)
+                    .withRoleAssignmentId("qzrnkcqvyxlwhz")));
         model = BinaryData.fromObject(model).toObject(ListRoleAssignmentsInner.class);
         Assertions.assertEquals(1235353776, model.count());
         Assertions.assertEquals("eiithlvmez", model.roleAssignmentResponse().get(0).roleId());

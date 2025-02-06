@@ -6,20 +6,18 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.RemediationDeploymentSummary;
-import org.junit.jupiter.api.Test;
 
 public final class RemediationDeploymentSummaryTests {
-    @Test
-    public void testDeserialize() {
-        RemediationDeploymentSummary model =
-            BinaryData
-                .fromString(
-                    "{\"totalDeployments\":432312766,\"successfulDeployments\":903059115,\"failedDeployments\":1535190702}")
-                .toObject(RemediationDeploymentSummary.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RemediationDeploymentSummary model = BinaryData
+            .fromString(
+                "{\"totalDeployments\":234614005,\"successfulDeployments\":331087178,\"failedDeployments\":377543492}")
+            .toObject(RemediationDeploymentSummary.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RemediationDeploymentSummary model = new RemediationDeploymentSummary();
         model = BinaryData.fromObject(model).toObject(RemediationDeploymentSummary.class);
     }

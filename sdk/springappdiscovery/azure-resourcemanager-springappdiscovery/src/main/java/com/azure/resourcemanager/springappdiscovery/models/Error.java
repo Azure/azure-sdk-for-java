@@ -5,66 +5,63 @@
 package com.azure.resourcemanager.springappdiscovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Defines the error.
  */
 @Fluent
-public final class Error {
+public final class Error implements JsonSerializable<Error> {
     /*
      * The error ID.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * The error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The summarized error message.
      */
-    @JsonProperty(value = "summaryMessage")
     private String summaryMessage;
 
     /*
      * The account ID used to login.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /*
      * The detailed error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The error possible causes.
      */
-    @JsonProperty(value = "possibleCauses")
     private String possibleCauses;
 
     /*
      * The error recommended action
      */
-    @JsonProperty(value = "recommendedAction")
     private String recommendedAction;
 
     /*
      * The error severity
      */
-    @JsonProperty(value = "severity")
     private String severity;
 
     /*
      * Time when this error was last updated.
      */
-    @JsonProperty(value = "updatedTimeStamp")
     private OffsetDateTime updatedTimestamp;
 
     /**
@@ -259,5 +256,69 @@ public final class Error {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("summaryMessage", this.summaryMessage);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("possibleCauses", this.possibleCauses);
+        jsonWriter.writeStringField("recommendedAction", this.recommendedAction);
+        jsonWriter.writeStringField("severity", this.severity);
+        jsonWriter.writeStringField("updatedTimeStamp",
+            this.updatedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedTimestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Error from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Error.
+     */
+    public static Error fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Error deserializedError = new Error();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedError.id = reader.getNullable(JsonReader::getLong);
+                } else if ("code".equals(fieldName)) {
+                    deserializedError.code = reader.getString();
+                } else if ("summaryMessage".equals(fieldName)) {
+                    deserializedError.summaryMessage = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedError.runAsAccountId = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedError.message = reader.getString();
+                } else if ("possibleCauses".equals(fieldName)) {
+                    deserializedError.possibleCauses = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedError.recommendedAction = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedError.severity = reader.getString();
+                } else if ("updatedTimeStamp".equals(fieldName)) {
+                    deserializedError.updatedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedError;
+        });
     }
 }

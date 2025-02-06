@@ -37,8 +37,8 @@ public class ListConfigurationSettingsTest extends ServiceTest<PerfStressOptions
     public Mono<Void> globalSetupAsync() {
         List<Mono<ConfigurationSetting>> settingMonoList = new ArrayList<>();
         for (int i = 0; i < settingCount; i++) {
-            settingMonoList.add(configurationAsyncClient.setConfigurationSetting(
-                new ConfigurationSetting().setKey(KEY_PREFIX + i).setValue(SETTING_VALUE)));
+            settingMonoList.add(configurationAsyncClient
+                .setConfigurationSetting(new ConfigurationSetting().setKey(KEY_PREFIX + i).setValue(SETTING_VALUE)));
         }
 
         return Flux.concat(settingMonoList).then();
@@ -48,8 +48,8 @@ public class ListConfigurationSettingsTest extends ServiceTest<PerfStressOptions
     public Mono<Void> globalCleanupAsync() {
         List<Mono<ConfigurationSetting>> settingMonoList = new ArrayList<>();
         for (int i = 0; i < settingCount; i++) {
-            settingMonoList.add(configurationAsyncClient.deleteConfigurationSetting(
-                new ConfigurationSetting().setKey(KEY_PREFIX + i).setValue(SETTING_VALUE)));
+            settingMonoList.add(configurationAsyncClient
+                .deleteConfigurationSetting(new ConfigurationSetting().setKey(KEY_PREFIX + i).setValue(SETTING_VALUE)));
         }
 
         return Flux.concat(settingMonoList).then();

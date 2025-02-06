@@ -16,37 +16,36 @@ import com.azure.resourcemanager.costmanagement.models.WeeksOfMonth;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-/** Samples for ScheduledActions CreateOrUpdateByScope. */
+/**
+ * Samples for ScheduledActions CreateOrUpdateByScope.
+ */
 public final class ScheduledActionsCreateOrUpdateByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-createOrUpdate-shared.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledAction-createOrUpdate-shared.json
      */
     /**
      * Sample code: CreateOrUpdateScheduledActionByScope.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void createOrUpdateScheduledActionByScope(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
+    public static void
+        createOrUpdateScheduledActionByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions()
             .define("monthlyCostByResource")
             .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000")
             .withKind(ScheduledActionKind.EMAIL)
             .withDisplayName("Monthly Cost By Resource")
             .withFileDestination(new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV)))
-            .withNotification(
-                new NotificationProperties()
-                    .withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
-                    .withSubject("Cost by resource this month"))
-            .withSchedule(
-                new ScheduleProperties()
-                    .withFrequency(ScheduleFrequency.MONTHLY)
-                    .withHourOfDay(10)
-                    .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
-                    .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.THIRD))
-                    .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
-                    .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
+            .withNotification(new NotificationProperties().withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
+                .withSubject("Cost by resource this month"))
+            .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.MONTHLY)
+                .withHourOfDay(10)
+                .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
+                .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.THIRD))
+                .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
+                .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
             .withStatus(ScheduledActionStatus.ENABLED)
             .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample")
             .withIfMatch("")
@@ -54,30 +53,27 @@ public final class ScheduledActionsCreateOrUpdateByScopeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
      */
     /**
      * Sample code: CreateOrUpdateInsightAlertScheduledActionByScope.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void createOrUpdateInsightAlertScheduledActionByScope(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
+        manager.scheduledActions()
             .define("dailyAnomalyByResource")
             .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000")
             .withKind(ScheduledActionKind.INSIGHT_ALERT)
             .withDisplayName("Daily anomaly by resource")
-            .withNotification(
-                new NotificationProperties()
-                    .withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
-                    .withSubject("Cost anomaly detected in the resource"))
-            .withSchedule(
-                new ScheduleProperties()
-                    .withFrequency(ScheduleFrequency.DAILY)
-                    .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
-                    .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
+            .withNotification(new NotificationProperties().withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
+                .withSubject("Cost anomaly detected in the resource"))
+            .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.DAILY)
+                .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
+                .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
             .withStatus(ScheduledActionStatus.ENABLED)
             .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample")
             .withIfMatch("")

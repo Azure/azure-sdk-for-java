@@ -10,9 +10,8 @@ import com.azure.resourcemanager.networkcloud.models.ClusterAvailableVersion;
 public final class ClusterAvailableVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterAvailableVersion model =
-            BinaryData
-                .fromString("{\"supportExpiryDate\":\"kphywpnvjto\",\"targetClusterVersion\":\"ermclfplphoxuscr\"}")
+        ClusterAvailableVersion model
+            = BinaryData.fromString("{\"supportExpiryDate\":\"tbobz\",\"targetClusterVersion\":\"pcjwv\"}")
                 .toObject(ClusterAvailableVersion.class);
     }
 

@@ -97,10 +97,8 @@ import java.util.Map;
  * @see SecretAsyncClient
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
-public final class SecretClientBuilder implements
-    TokenCredentialTrait<SecretClientBuilder>,
-    HttpTrait<SecretClientBuilder>,
-    ConfigurationTrait<SecretClientBuilder> {
+public final class SecretClientBuilder implements TokenCredentialTrait<SecretClientBuilder>,
+    HttpTrait<SecretClientBuilder>, ConfigurationTrait<SecretClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
@@ -187,8 +185,8 @@ public final class SecretClientBuilder implements
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         if (version == null) {
@@ -211,15 +209,14 @@ public final class SecretClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        ClientOptions localClientOptions = clientOptions != null
-            ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
         policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
@@ -273,8 +270,7 @@ public final class SecretClientBuilder implements
             URL url = new URL(vaultUrl);
             this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault url is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault url is malformed.", e));
         }
 
         return this;
@@ -516,7 +512,7 @@ public final class SecretClientBuilder implements
         }
 
         try {
-            URL url =  new URL(configEndpoint);
+            URL url = new URL(configEndpoint);
             return url.toString();
         } catch (MalformedURLException ex) {
             return null;

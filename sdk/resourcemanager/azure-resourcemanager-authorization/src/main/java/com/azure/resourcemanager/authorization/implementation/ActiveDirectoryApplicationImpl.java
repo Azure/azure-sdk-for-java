@@ -28,15 +28,10 @@ import java.util.Map;
 import java.util.Set;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
-class ActiveDirectoryApplicationImpl
-    extends CreatableUpdatableImpl<
-        ActiveDirectoryApplication,
-        MicrosoftGraphApplicationInner,
-        ActiveDirectoryApplicationImpl>
-    implements ActiveDirectoryApplication,
-        ActiveDirectoryApplication.Definition,
-        ActiveDirectoryApplication.Update,
-        HasCredential<ActiveDirectoryApplicationImpl> {
+class ActiveDirectoryApplicationImpl extends
+    CreatableUpdatableImpl<ActiveDirectoryApplication, MicrosoftGraphApplicationInner, ActiveDirectoryApplicationImpl>
+    implements ActiveDirectoryApplication, ActiveDirectoryApplication.Definition, ActiveDirectoryApplication.Update,
+    HasCredential<ActiveDirectoryApplicationImpl> {
     private AuthorizationManager manager;
     private final Map<String, PasswordCredential> cachedPasswordCredentials;
     private final Map<String, CertificateCredential> cachedCertificateCredentials;
@@ -63,8 +58,7 @@ class ActiveDirectoryApplicationImpl
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
         Retry retry = RetryUtils.backoffRetryFor404ResourceNotFound();
 
-        return manager
-            .serviceClient()
+        return manager.serviceClient()
             .getApplicationsApplications()
             .createApplicationAsync(innerModel())
             .map(innerToFluentMap(this))
@@ -74,10 +68,11 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
-        return manager.serviceClient().getApplicationsApplications().updateApplicationAsync(id(), innerModel())
+        return manager.serviceClient()
+            .getApplicationsApplications()
+            .updateApplicationAsync(id(), innerModel())
             .then(submitCredentialAsync(null).doOnComplete(this::postRequest).then(refreshAsync()));
     }
-
 
     private void refreshCredentials(MicrosoftGraphApplicationInner inner) {
         cachedCertificateCredentials.clear();
@@ -99,18 +94,17 @@ class ActiveDirectoryApplicationImpl
     }
 
     private Flux<?> submitCredentialAsync(Retry retry) {
-        return Flux.defer(() -> Flux.fromIterable(passwordCredentialToCreate)
-            .flatMap(passwordCredential -> {
-                Mono<MicrosoftGraphPasswordCredentialInner> monoAddPassword =
-                    manager().serviceClient().getApplications()
-                        .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
-                            .withPasswordCredential(passwordCredential.innerModel()));
-                if (retry != null) {
-                    monoAddPassword = monoAddPassword.retryWhen(retry);
-                }
-                monoAddPassword = monoAddPassword.doOnNext(passwordCredential::setInner);
-                return monoAddPassword;
-            }));
+        return Flux.defer(() -> Flux.fromIterable(passwordCredentialToCreate).flatMap(passwordCredential -> {
+            Mono<MicrosoftGraphPasswordCredentialInner> monoAddPassword = manager().serviceClient()
+                .getApplications()
+                .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
+                    .withPasswordCredential(passwordCredential.innerModel()));
+            if (retry != null) {
+                monoAddPassword = monoAddPassword.retryWhen(retry);
+            }
+            monoAddPassword = monoAddPassword.doOnNext(passwordCredential::setInner);
+            return monoAddPassword;
+        }));
     }
 
     private void postRequest() {
@@ -184,7 +178,9 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     protected Mono<MicrosoftGraphApplicationInner> getInnerAsync() {
-        return manager.serviceClient().getApplicationsApplications().getApplicationAsync(id())
+        return manager.serviceClient()
+            .getApplicationsApplications()
+            .getApplicationAsync(id())
             .doOnSuccess(this::refreshCredentials);
     }
 

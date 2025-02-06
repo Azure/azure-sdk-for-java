@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-
 class InteractiveBrowserBrokerCredentialBuilderTest {
 
     @Test
@@ -24,14 +23,16 @@ class InteractiveBrowserBrokerCredentialBuilderTest {
     }
 
     @Test
-    public void canSetWindowHandle() {} {
+    public void canSetWindowHandle() {
+    }
+
+    {
         assertDoesNotThrow(() -> {
             InteractiveBrowserBrokerCredentialBuilder builder = new InteractiveBrowserBrokerCredentialBuilder();
             builder.setWindowHandle(1L);
             InteractiveBrowserCredential credential = builder.build();
         });
     }
-
 
     @Test
     void clientOptions() {

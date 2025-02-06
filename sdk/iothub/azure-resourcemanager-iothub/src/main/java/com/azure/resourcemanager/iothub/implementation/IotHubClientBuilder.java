@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the IotHubClientImpl type. */
-@ServiceClientBuilder(serviceClients = {IotHubClientImpl.class})
+/**
+ * A builder for creating a new instance of the IotHubClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { IotHubClientImpl.class })
 public final class IotHubClientBuilder {
     /*
      * The subscription identifier.
@@ -24,7 +26,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The subscription identifier.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the IotHubClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the IotHubClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the IotHubClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the IotHubClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the IotHubClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the IotHubClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class IotHubClientBuilder {
 
     /**
      * Builds an instance of IotHubClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of IotHubClientImpl.
      */
     public IotHubClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        IotHubClientImpl client =
-            new IotHubClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        IotHubClientImpl client = new IotHubClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+            localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

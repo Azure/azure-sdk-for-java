@@ -16,15 +16,15 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
     private KeyVaultSettingsClient client;
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = getClientBuilder(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
-            .buildClient();
+        client
+            = getClientBuilder(
+                buildSyncAssertingClient(
+                    interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+                forCleanup).buildClient();
         if (!interceptorManager.isLiveMode()) {
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");

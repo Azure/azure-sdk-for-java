@@ -21,37 +21,28 @@ public final class DatabaseOperationsImpl implements DatabaseOperations {
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public DatabaseOperationsImpl(
-        DatabaseOperationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public DatabaseOperationsImpl(DatabaseOperationsClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DatabaseInviteFollowerResult> inviteFollowerWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context) {
-        Response<DatabaseInviteFollowerResultInner> inner =
-            this
-                .serviceClient()
-                .inviteFollowerWithResponse(resourceGroupName, clusterName, databaseName, parameters, context);
+    public Response<DatabaseInviteFollowerResult> inviteFollowerWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters, Context context) {
+        Response<DatabaseInviteFollowerResultInner> inner = this.serviceClient()
+            .inviteFollowerWithResponse(resourceGroupName, clusterName, databaseName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DatabaseInviteFollowerResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DatabaseInviteFollowerResult inviteFollower(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters) {
-        DatabaseInviteFollowerResultInner inner =
-            this.serviceClient().inviteFollower(resourceGroupName, clusterName, databaseName, parameters);
+    public DatabaseInviteFollowerResult inviteFollower(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters) {
+        DatabaseInviteFollowerResultInner inner
+            = this.serviceClient().inviteFollower(resourceGroupName, clusterName, databaseName, parameters);
         if (inner != null) {
             return new DatabaseInviteFollowerResultImpl(inner, this.manager());
         } else {

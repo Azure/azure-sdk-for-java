@@ -24,19 +24,9 @@ public final class Error extends ManagementError {
     private String innerError;
 
     /*
-     * The error code parsed from the body of the http error response.
+     * Additional info for the error.
      */
-    private String code;
-
-    /*
-     * The error message parsed from the body of the http error response.
-     */
-    private String message;
-
-    /*
-     * The target of the error.
-     */
-    private String target;
+    private List<AdditionalInfo> additionalInfo;
 
     /*
      * Details for the error.
@@ -44,9 +34,19 @@ public final class Error extends ManagementError {
     private List<ManagementError> details;
 
     /*
-     * Additional info for the error.
+     * The target of the error.
      */
-    private List<AdditionalInfo> additionalInfo;
+    private String target;
+
+    /*
+     * The error message parsed from the body of the http error response.
+     */
+    private String message;
+
+    /*
+     * The error code parsed from the body of the http error response.
+     */
+    private String code;
 
     /**
      * Creates an instance of Error class.
@@ -64,33 +64,13 @@ public final class Error extends ManagementError {
     }
 
     /**
-     * Get the code property: The error code parsed from the body of the http error response.
+     * Get the additionalInfo property: Additional info for the error.
      * 
-     * @return the code value.
+     * @return the additionalInfo value.
      */
     @Override
-    public String getCode() {
-        return this.code;
-    }
-
-    /**
-     * Get the message property: The error message parsed from the body of the http error response.
-     * 
-     * @return the message value.
-     */
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
-
-    /**
-     * Get the target property: The target of the error.
-     * 
-     * @return the target value.
-     */
-    @Override
-    public String getTarget() {
-        return this.target;
+    public List<AdditionalInfo> getAdditionalInfo() {
+        return this.additionalInfo;
     }
 
     /**
@@ -104,13 +84,33 @@ public final class Error extends ManagementError {
     }
 
     /**
-     * Get the additionalInfo property: Additional info for the error.
+     * Get the target property: The target of the error.
      * 
-     * @return the additionalInfo value.
+     * @return the target value.
      */
     @Override
-    public List<AdditionalInfo> getAdditionalInfo() {
-        return this.additionalInfo;
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
+     * 
+     * @return the message value.
+     */
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Get the code property: The error code parsed from the body of the http error response.
+     * 
+     * @return the code value.
+     */
+    @Override
+    public String getCode() {
+        return this.code;
     }
 
     /**

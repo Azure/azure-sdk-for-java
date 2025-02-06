@@ -4,31 +4,34 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Grants ListAll. */
+/**
+ * Samples for Grants ListAll.
+ */
 public final class GrantsListAllSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantListIncludeAllocatedBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * GrantListIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantListIncludeAllocatedBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantListIncludeAllocatedBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().listAll(true, Context.NONE);
+        manager.grants().listAll(true, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantList.json
      */
     /**
      * Sample code: GrantList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().listAll(false, Context.NONE);
+        manager.grants().listAll(false, com.azure.core.util.Context.NONE);
     }
 }

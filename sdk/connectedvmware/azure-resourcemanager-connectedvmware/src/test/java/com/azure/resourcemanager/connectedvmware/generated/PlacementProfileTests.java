@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PlacementProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlacementProfile model =
-            BinaryData
-                .fromString(
-                    "{\"resourcePoolId\":\"qibrtalme\",\"clusterId\":\"t\",\"hostId\":\"dslqxihhrmooizqs\",\"datastoreId\":\"pxiutc\"}")
-                .toObject(PlacementProfile.class);
+        PlacementProfile model = BinaryData.fromString(
+            "{\"resourcePoolId\":\"qibrtalme\",\"clusterId\":\"t\",\"hostId\":\"dslqxihhrmooizqs\",\"datastoreId\":\"pxiutc\"}")
+            .toObject(PlacementProfile.class);
         Assertions.assertEquals("qibrtalme", model.resourcePoolId());
         Assertions.assertEquals("t", model.clusterId());
         Assertions.assertEquals("dslqxihhrmooizqs", model.hostId());
@@ -24,12 +22,10 @@ public final class PlacementProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlacementProfile model =
-            new PlacementProfile()
-                .withResourcePoolId("qibrtalme")
-                .withClusterId("t")
-                .withHostId("dslqxihhrmooizqs")
-                .withDatastoreId("pxiutc");
+        PlacementProfile model = new PlacementProfile().withResourcePoolId("qibrtalme")
+            .withClusterId("t")
+            .withHostId("dslqxihhrmooizqs")
+            .withDatastoreId("pxiutc");
         model = BinaryData.fromObject(model).toObject(PlacementProfile.class);
         Assertions.assertEquals("qibrtalme", model.resourcePoolId());
         Assertions.assertEquals("t", model.clusterId());

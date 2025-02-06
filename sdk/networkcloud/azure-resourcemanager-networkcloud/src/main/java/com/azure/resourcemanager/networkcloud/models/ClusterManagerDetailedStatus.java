@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The detailed status that provides additional information about the cluster manager. */
+/**
+ * The detailed status that provides additional information about the cluster manager.
+ */
 public final class ClusterManagerDetailedStatus extends ExpandableStringEnum<ClusterManagerDetailedStatus> {
-    /** Static value Error for ClusterManagerDetailedStatus. */
+    /**
+     * Static value Error for ClusterManagerDetailedStatus.
+     */
     public static final ClusterManagerDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Available for ClusterManagerDetailedStatus. */
+    /**
+     * Static value Available for ClusterManagerDetailedStatus.
+     */
     public static final ClusterManagerDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Provisioning for ClusterManagerDetailedStatus. */
+    /**
+     * Static value Provisioning for ClusterManagerDetailedStatus.
+     */
     public static final ClusterManagerDetailedStatus PROVISIONING = fromString("Provisioning");
 
-    /** Static value ProvisioningFailed for ClusterManagerDetailedStatus. */
+    /**
+     * Static value ProvisioningFailed for ClusterManagerDetailedStatus.
+     */
     public static final ClusterManagerDetailedStatus PROVISIONING_FAILED = fromString("ProvisioningFailed");
 
-    /** Static value Updating for ClusterManagerDetailedStatus. */
+    /**
+     * Static value Updating for ClusterManagerDetailedStatus.
+     */
     public static final ClusterManagerDetailedStatus UPDATING = fromString("Updating");
 
-    /** Static value UpdateFailed for ClusterManagerDetailedStatus. */
+    /**
+     * Static value UpdateFailed for ClusterManagerDetailedStatus.
+     */
     public static final ClusterManagerDetailedStatus UPDATE_FAILED = fromString("UpdateFailed");
 
     /**
      * Creates a new instance of ClusterManagerDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class ClusterManagerDetailedStatus extends ExpandableStringEnum<Clu
 
     /**
      * Creates or finds a ClusterManagerDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterManagerDetailedStatus.
      */
-    @JsonCreator
     public static ClusterManagerDetailedStatus fromString(String name) {
         return fromString(name, ClusterManagerDetailedStatus.class);
     }
 
     /**
      * Gets known ClusterManagerDetailedStatus values.
-     *
+     * 
      * @return known ClusterManagerDetailedStatus values.
      */
     public static Collection<ClusterManagerDetailedStatus> values() {

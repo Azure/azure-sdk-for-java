@@ -28,7 +28,8 @@ public class AzurePostgresqlAuthenticationPlugin implements AuthenticationPlugin
         this(new AzureAuthenticationTemplate(), properties);
     }
 
-    AzurePostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate, Properties properties) {
+    AzurePostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate,
+        Properties properties) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
         this.azureAuthenticationTemplate.init(properties);
     }

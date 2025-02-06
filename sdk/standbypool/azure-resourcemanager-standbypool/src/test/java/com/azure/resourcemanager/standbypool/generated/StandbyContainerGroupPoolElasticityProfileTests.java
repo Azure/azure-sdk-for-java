@@ -13,19 +13,19 @@ public final class StandbyContainerGroupPoolElasticityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyContainerGroupPoolElasticityProfile model
-            = BinaryData.fromString("{\"maxReadyCapacity\":5837880679371880466,\"refillPolicy\":\"always\"}")
+            = BinaryData.fromString("{\"maxReadyCapacity\":7557755322277139478,\"refillPolicy\":\"always\"}")
                 .toObject(StandbyContainerGroupPoolElasticityProfile.class);
-        Assertions.assertEquals(5837880679371880466L, model.maxReadyCapacity());
+        Assertions.assertEquals(7557755322277139478L, model.maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.refillPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyContainerGroupPoolElasticityProfile model
-            = new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(5837880679371880466L)
+            = new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(7557755322277139478L)
                 .withRefillPolicy(RefillPolicy.ALWAYS);
         model = BinaryData.fromObject(model).toObject(StandbyContainerGroupPoolElasticityProfile.class);
-        Assertions.assertEquals(5837880679371880466L, model.maxReadyCapacity());
+        Assertions.assertEquals(7557755322277139478L, model.maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.refillPolicy());
     }
 }

@@ -13,17 +13,18 @@ public final class SnowflakeExportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeExportCopyCommand model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"sewjqg\":\"datayssz\",\"x\":\"dataloorhxduregljqp\",\"mhvwgc\":\"dataaakgdka\"},\"additionalFormatOptions\":{\"goomapcaxno\":\"databdkq\",\"jzt\":\"datanjfvjqvectoo\",\"vsrvkzv\":\"dataalsnm\"},\"storageIntegration\":\"dataeztmdyb\",\"\":{\"qogtnfla\":\"dataj\",\"q\":\"dataspghfv\",\"ocrr\":\"datajmyqosrsf\",\"dpyohnmru\":\"datarr\"}}")
+            "{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"ofdhrifekstrmsb\":\"datawikmgwxysut\",\"nssmaaxzcdlnvup\":\"datadgrzkeuplorn\"},\"additionalFormatOptions\":{\"lvoyltmxqalq\":\"databzyhtbjyycaco\",\"jwwoxanefellhdsg\":\"datary\",\"cbvuvwdp\":\"datagdubwmalt\",\"hnaghglaxj\":\"datal\"},\"storageIntegration\":\"databmfm\",\"\":{\"dpicwnbt\":\"dataatswvt\",\"erkaiikbpf\":\"datalrsfmtrmodkn\",\"keyhjuaezkb\":\"dataqxpq\",\"tqvtpkod\":\"datavtaul\"}}")
             .toObject(SnowflakeExportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnowflakeExportCopyCommand model = new SnowflakeExportCopyCommand()
-            .withAdditionalCopyOptions(mapOf("sewjqg", "datayssz", "x", "dataloorhxduregljqp", "mhvwgc", "dataaakgdka"))
-            .withAdditionalFormatOptions(
-                mapOf("goomapcaxno", "databdkq", "jzt", "datanjfvjqvectoo", "vsrvkzv", "dataalsnm"))
-            .withStorageIntegration("dataeztmdyb");
+            .withAdditionalCopyOptions(
+                mapOf("ofdhrifekstrmsb", "datawikmgwxysut", "nssmaaxzcdlnvup", "datadgrzkeuplorn"))
+            .withAdditionalFormatOptions(mapOf("lvoyltmxqalq", "databzyhtbjyycaco", "jwwoxanefellhdsg", "datary",
+                "cbvuvwdp", "datagdubwmalt", "hnaghglaxj", "datal"))
+            .withStorageIntegration("databmfm");
         model = BinaryData.fromObject(model).toObject(SnowflakeExportCopyCommand.class);
     }
 

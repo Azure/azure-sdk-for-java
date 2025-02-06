@@ -11,14 +11,14 @@ public final class DWCopyCommandDefaultValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DWCopyCommandDefaultValue model
-            = BinaryData.fromString("{\"columnName\":\"dataxllfwxdou\",\"defaultValue\":\"datazpaqjahjxgedtmzh\"}")
+            = BinaryData.fromString("{\"columnName\":\"datan\",\"defaultValue\":\"datapnpunrvjb\"}")
                 .toObject(DWCopyCommandDefaultValue.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DWCopyCommandDefaultValue model
-            = new DWCopyCommandDefaultValue().withColumnName("dataxllfwxdou").withDefaultValue("datazpaqjahjxgedtmzh");
+            = new DWCopyCommandDefaultValue().withColumnName("datan").withDefaultValue("datapnpunrvjb");
         model = BinaryData.fromObject(model).toObject(DWCopyCommandDefaultValue.class);
     }
 }

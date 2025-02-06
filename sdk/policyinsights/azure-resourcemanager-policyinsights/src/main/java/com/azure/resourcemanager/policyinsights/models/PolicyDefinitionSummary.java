@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Policy definition summary. */
+/**
+ * Policy definition summary.
+ */
 @Fluent
-public final class PolicyDefinitionSummary {
+public final class PolicyDefinitionSummary implements JsonSerializable<PolicyDefinitionSummary> {
     /*
      * Policy definition ID.
      */
-    @JsonProperty(value = "policyDefinitionId")
     private String policyDefinitionId;
 
     /*
      * Policy definition reference ID.
      */
-    @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
      * Policy definition group names.
      */
-    @JsonProperty(value = "policyDefinitionGroupNames")
     private List<String> policyDefinitionGroupNames;
 
     /*
      * Policy effect, i.e. policy definition action.
      */
-    @JsonProperty(value = "effect")
     private String effect;
 
     /*
      * Compliance summary for the policy definition.
      */
-    @JsonProperty(value = "results")
     private SummaryResults results;
 
-    /** Creates an instance of PolicyDefinitionSummary class. */
+    /**
+     * Creates an instance of PolicyDefinitionSummary class.
+     */
     public PolicyDefinitionSummary() {
     }
 
     /**
      * Get the policyDefinitionId property: Policy definition ID.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -56,7 +59,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Set the policyDefinitionId property: Policy definition ID.
-     *
+     * 
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyDefinitionSummary object itself.
      */
@@ -67,7 +70,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Get the policyDefinitionReferenceId property: Policy definition reference ID.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -76,7 +79,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Set the policyDefinitionReferenceId property: Policy definition reference ID.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the PolicyDefinitionSummary object itself.
      */
@@ -87,7 +90,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Get the policyDefinitionGroupNames property: Policy definition group names.
-     *
+     * 
      * @return the policyDefinitionGroupNames value.
      */
     public List<String> policyDefinitionGroupNames() {
@@ -96,7 +99,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Set the policyDefinitionGroupNames property: Policy definition group names.
-     *
+     * 
      * @param policyDefinitionGroupNames the policyDefinitionGroupNames value to set.
      * @return the PolicyDefinitionSummary object itself.
      */
@@ -107,7 +110,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Get the effect property: Policy effect, i.e. policy definition action.
-     *
+     * 
      * @return the effect value.
      */
     public String effect() {
@@ -116,7 +119,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Set the effect property: Policy effect, i.e. policy definition action.
-     *
+     * 
      * @param effect the effect value to set.
      * @return the PolicyDefinitionSummary object itself.
      */
@@ -127,7 +130,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Get the results property: Compliance summary for the policy definition.
-     *
+     * 
      * @return the results value.
      */
     public SummaryResults results() {
@@ -136,7 +139,7 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Set the results property: Compliance summary for the policy definition.
-     *
+     * 
      * @param results the results value to set.
      * @return the PolicyDefinitionSummary object itself.
      */
@@ -147,12 +150,62 @@ public final class PolicyDefinitionSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (results() != null) {
             results().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyDefinitionId", this.policyDefinitionId);
+        jsonWriter.writeStringField("policyDefinitionReferenceId", this.policyDefinitionReferenceId);
+        jsonWriter.writeArrayField("policyDefinitionGroupNames", this.policyDefinitionGroupNames,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("effect", this.effect);
+        jsonWriter.writeJsonField("results", this.results);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyDefinitionSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyDefinitionSummary if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyDefinitionSummary.
+     */
+    public static PolicyDefinitionSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyDefinitionSummary deserializedPolicyDefinitionSummary = new PolicyDefinitionSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyDefinitionId".equals(fieldName)) {
+                    deserializedPolicyDefinitionSummary.policyDefinitionId = reader.getString();
+                } else if ("policyDefinitionReferenceId".equals(fieldName)) {
+                    deserializedPolicyDefinitionSummary.policyDefinitionReferenceId = reader.getString();
+                } else if ("policyDefinitionGroupNames".equals(fieldName)) {
+                    List<String> policyDefinitionGroupNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPolicyDefinitionSummary.policyDefinitionGroupNames = policyDefinitionGroupNames;
+                } else if ("effect".equals(fieldName)) {
+                    deserializedPolicyDefinitionSummary.effect = reader.getString();
+                } else if ("results".equals(fieldName)) {
+                    deserializedPolicyDefinitionSummary.results = SummaryResults.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyDefinitionSummary;
+        });
     }
 }

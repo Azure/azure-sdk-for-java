@@ -6,55 +6,57 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Contact Profile Link. */
+/**
+ * Contact Profile Link.
+ */
 @Fluent
-public final class ContactProfileLink {
+public final class ContactProfileLink implements JsonSerializable<ContactProfileLink> {
     /*
      * Link name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Polarization. e.g. (RHCP, LHCP).
      */
-    @JsonProperty(value = "polarization", required = true)
     private Polarization polarization;
 
     /*
      * Direction (Uplink or Downlink).
      */
-    @JsonProperty(value = "direction", required = true)
     private Direction direction;
 
     /*
      * Gain to noise temperature in db/K. It is the required G/T by the customer. Not used yet.
      */
-    @JsonProperty(value = "gainOverTemperature")
     private Float gainOverTemperature;
 
     /*
      * Effective Isotropic Radiated Power (EIRP) in dBW. It is the required EIRP by the customer. Not used yet.
      */
-    @JsonProperty(value = "eirpdBW")
     private Float eirpdBW;
 
     /*
      * Contact Profile Link Channel.
      */
-    @JsonProperty(value = "channels", required = true)
     private List<ContactProfileLinkChannel> channels;
 
-    /** Creates an instance of ContactProfileLink class. */
+    /**
+     * Creates an instance of ContactProfileLink class.
+     */
     public ContactProfileLink() {
     }
 
     /**
      * Get the name property: Link name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +65,7 @@ public final class ContactProfileLink {
 
     /**
      * Set the name property: Link name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ContactProfileLink object itself.
      */
@@ -74,7 +76,7 @@ public final class ContactProfileLink {
 
     /**
      * Get the polarization property: Polarization. e.g. (RHCP, LHCP).
-     *
+     * 
      * @return the polarization value.
      */
     public Polarization polarization() {
@@ -83,7 +85,7 @@ public final class ContactProfileLink {
 
     /**
      * Set the polarization property: Polarization. e.g. (RHCP, LHCP).
-     *
+     * 
      * @param polarization the polarization value to set.
      * @return the ContactProfileLink object itself.
      */
@@ -94,7 +96,7 @@ public final class ContactProfileLink {
 
     /**
      * Get the direction property: Direction (Uplink or Downlink).
-     *
+     * 
      * @return the direction value.
      */
     public Direction direction() {
@@ -103,7 +105,7 @@ public final class ContactProfileLink {
 
     /**
      * Set the direction property: Direction (Uplink or Downlink).
-     *
+     * 
      * @param direction the direction value to set.
      * @return the ContactProfileLink object itself.
      */
@@ -115,7 +117,7 @@ public final class ContactProfileLink {
     /**
      * Get the gainOverTemperature property: Gain to noise temperature in db/K. It is the required G/T by the customer.
      * Not used yet.
-     *
+     * 
      * @return the gainOverTemperature value.
      */
     public Float gainOverTemperature() {
@@ -125,7 +127,7 @@ public final class ContactProfileLink {
     /**
      * Set the gainOverTemperature property: Gain to noise temperature in db/K. It is the required G/T by the customer.
      * Not used yet.
-     *
+     * 
      * @param gainOverTemperature the gainOverTemperature value to set.
      * @return the ContactProfileLink object itself.
      */
@@ -137,7 +139,7 @@ public final class ContactProfileLink {
     /**
      * Get the eirpdBW property: Effective Isotropic Radiated Power (EIRP) in dBW. It is the required EIRP by the
      * customer. Not used yet.
-     *
+     * 
      * @return the eirpdBW value.
      */
     public Float eirpdBW() {
@@ -147,7 +149,7 @@ public final class ContactProfileLink {
     /**
      * Set the eirpdBW property: Effective Isotropic Radiated Power (EIRP) in dBW. It is the required EIRP by the
      * customer. Not used yet.
-     *
+     * 
      * @param eirpdBW the eirpdBW value to set.
      * @return the ContactProfileLink object itself.
      */
@@ -158,7 +160,7 @@ public final class ContactProfileLink {
 
     /**
      * Get the channels property: Contact Profile Link Channel.
-     *
+     * 
      * @return the channels value.
      */
     public List<ContactProfileLinkChannel> channels() {
@@ -167,7 +169,7 @@ public final class ContactProfileLink {
 
     /**
      * Set the channels property: Contact Profile Link Channel.
-     *
+     * 
      * @param channels the channels value to set.
      * @return the ContactProfileLink object itself.
      */
@@ -178,33 +180,84 @@ public final class ContactProfileLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ContactProfileLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ContactProfileLink"));
         }
         if (polarization() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property polarization in model ContactProfileLink"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model ContactProfileLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property direction in model ContactProfileLink"));
         }
         if (channels() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property channels in model ContactProfileLink"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property channels in model ContactProfileLink"));
         } else {
             channels().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContactProfileLink.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("polarization", this.polarization == null ? null : this.polarization.toString());
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
+        jsonWriter.writeArrayField("channels", this.channels, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("gainOverTemperature", this.gainOverTemperature);
+        jsonWriter.writeNumberField("eirpdBW", this.eirpdBW);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactProfileLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactProfileLink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContactProfileLink.
+     */
+    public static ContactProfileLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactProfileLink deserializedContactProfileLink = new ContactProfileLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedContactProfileLink.name = reader.getString();
+                } else if ("polarization".equals(fieldName)) {
+                    deserializedContactProfileLink.polarization = Polarization.fromString(reader.getString());
+                } else if ("direction".equals(fieldName)) {
+                    deserializedContactProfileLink.direction = Direction.fromString(reader.getString());
+                } else if ("channels".equals(fieldName)) {
+                    List<ContactProfileLinkChannel> channels
+                        = reader.readArray(reader1 -> ContactProfileLinkChannel.fromJson(reader1));
+                    deserializedContactProfileLink.channels = channels;
+                } else if ("gainOverTemperature".equals(fieldName)) {
+                    deserializedContactProfileLink.gainOverTemperature = reader.getNullable(JsonReader::getFloat);
+                } else if ("eirpdBW".equals(fieldName)) {
+                    deserializedContactProfileLink.eirpdBW = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactProfileLink;
+        });
+    }
 }

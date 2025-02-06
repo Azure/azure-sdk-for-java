@@ -16,8 +16,7 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject,
+    OperationImpl(OperationInner innerObject,
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -108,27 +108,18 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
     }
 
     public DnsResolver create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsResolvers()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsResolverName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsResolvers()
+            .createOrUpdate(resourceGroupName, dnsResolverName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public DnsResolver create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsResolvers()
-                .createOrUpdate(
-                    resourceGroupName, dnsResolverName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsResolvers()
+            .createOrUpdate(resourceGroupName, dnsResolverName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -147,48 +138,40 @@ public final class DnsResolverImpl implements DnsResolver, DnsResolver.Definitio
     }
 
     public DnsResolver apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsResolvers()
-                .update(resourceGroupName, dnsResolverName, updateParameters, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsResolvers()
+            .update(resourceGroupName, dnsResolverName, updateParameters, updateIfMatch, Context.NONE);
         return this;
     }
 
     public DnsResolver apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsResolvers()
-                .update(resourceGroupName, dnsResolverName, updateParameters, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsResolvers()
+            .update(resourceGroupName, dnsResolverName, updateParameters, updateIfMatch, context);
         return this;
     }
 
-    DnsResolverImpl(
-        DnsResolverInner innerObject, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    DnsResolverImpl(DnsResolverInner innerObject,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverName = Utils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dnsResolverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
     }
 
     public DnsResolver refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsResolvers()
-                .getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsResolvers()
+            .getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DnsResolver refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDnsResolvers()
-                .getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDnsResolvers()
+            .getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, context)
+            .getValue();
         return this;
     }
 

@@ -20,7 +20,10 @@ public final class DataCollectionEndpointsListByResourceGroupSamples {
      */
     public static void
         listDataCollectionEndpointsByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionEndpoints()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionEndpoints()
             .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

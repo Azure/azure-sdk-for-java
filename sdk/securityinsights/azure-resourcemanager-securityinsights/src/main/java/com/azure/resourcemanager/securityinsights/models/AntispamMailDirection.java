@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The directionality of this mail message. */
+/**
+ * The directionality of this mail message.
+ */
 public final class AntispamMailDirection extends ExpandableStringEnum<AntispamMailDirection> {
-    /** Static value Unknown for AntispamMailDirection. */
+    /**
+     * Static value Unknown for AntispamMailDirection.
+     */
     public static final AntispamMailDirection UNKNOWN = fromString("Unknown");
 
-    /** Static value Inbound for AntispamMailDirection. */
+    /**
+     * Static value Inbound for AntispamMailDirection.
+     */
     public static final AntispamMailDirection INBOUND = fromString("Inbound");
 
-    /** Static value Outbound for AntispamMailDirection. */
+    /**
+     * Static value Outbound for AntispamMailDirection.
+     */
     public static final AntispamMailDirection OUTBOUND = fromString("Outbound");
 
-    /** Static value Intraorg for AntispamMailDirection. */
+    /**
+     * Static value Intraorg for AntispamMailDirection.
+     */
     public static final AntispamMailDirection INTRAORG = fromString("Intraorg");
 
     /**
+     * Creates a new instance of AntispamMailDirection value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AntispamMailDirection() {
+    }
+
+    /**
      * Creates or finds a AntispamMailDirection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AntispamMailDirection.
      */
-    @JsonCreator
     public static AntispamMailDirection fromString(String name) {
         return fromString(name, AntispamMailDirection.class);
     }
 
     /**
      * Gets known AntispamMailDirection values.
-     *
+     * 
      * @return known AntispamMailDirection values.
      */
     public static Collection<AntispamMailDirection> values() {

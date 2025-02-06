@@ -10,60 +10,53 @@ import com.azure.resourcemanager.timeseriesinsights.models.LocalTimestamp;
 import com.azure.resourcemanager.timeseriesinsights.models.LocalTimestampFormat;
 import com.azure.resourcemanager.timeseriesinsights.models.LocalTimestampTimeZoneOffset;
 
-/** Samples for EventSources CreateOrUpdate. */
+/**
+ * Samples for EventSources CreateOrUpdate.
+ */
 public final class EventSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/EventSourcesCreateEventHub.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * EventSourcesCreateEventHub.json
      */
     /**
      * Sample code: CreateEventHubEventSource.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
-    public static void createEventHubEventSource(
-        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
-        manager
-            .eventSources()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "env1",
-                "es1",
-                new EventHubEventSourceCreateOrUpdateParameters()
-                    .withLocation("West US")
-                    .withSharedAccessKey("fakeTokenPlaceholder")
-                    .withServiceBusNamespace("sbn")
-                    .withEventHubName("ehn")
-                    .withConsumerGroupName("cgn")
-                    .withKeyName("fakeTokenPlaceholder")
-                    .withEventSourceResourceId("somePathInArm")
-                    .withTimestampPropertyName("someTimestampProperty")
-                    .withLocalTimestampPropertiesLocalTimestamp(
-                        new LocalTimestamp()
-                            .withFormat(LocalTimestampFormat.fromString("TimeSpan"))
-                            .withTimeZoneOffset(
-                                new LocalTimestampTimeZoneOffset().withPropertyName("someEventPropertyName")))
-                    .withType(IngressStartAtType.EARLIEST_AVAILABLE),
-                com.azure.core.util.Context.NONE);
+    public static void
+        createEventHubEventSource(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
+        manager.eventSources()
+            .createOrUpdateWithResponse("rg1", "env1", "es1", new EventHubEventSourceCreateOrUpdateParameters()
+                .withLocation("West US")
+                .withSharedAccessKey("fakeTokenPlaceholder")
+                .withServiceBusNamespace("sbn")
+                .withEventHubName("ehn")
+                .withConsumerGroupName("cgn")
+                .withKeyName("fakeTokenPlaceholder")
+                .withEventSourceResourceId("somePathInArm")
+                .withTimestampPropertyName("someTimestampProperty")
+                .withLocalTimestampPropertiesLocalTimestamp(new LocalTimestamp()
+                    .withFormat(LocalTimestampFormat.fromString("TimeSpan"))
+                    .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("someEventPropertyName")))
+                .withType(IngressStartAtType.EARLIEST_AVAILABLE), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/EventSourcesCreateEventHubWithCustomEnquedTime.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * EventSourcesCreateEventHubWithCustomEnquedTime.json
      */
     /**
      * Sample code: EventSourcesCreateEventHubWithCustomEnquedTime.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
     public static void eventSourcesCreateEventHubWithCustomEnquedTime(
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
-        manager
-            .eventSources()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "env1",
-                "es1",
-                new EventHubEventSourceCreateOrUpdateParameters()
-                    .withLocation("West US")
+        manager.eventSources()
+            .createOrUpdateWithResponse("rg1", "env1", "es1",
+                new EventHubEventSourceCreateOrUpdateParameters().withLocation("West US")
                     .withSharedAccessKey("fakeTokenPlaceholder")
                     .withServiceBusNamespace("sbn")
                     .withEventHubName("ehn")

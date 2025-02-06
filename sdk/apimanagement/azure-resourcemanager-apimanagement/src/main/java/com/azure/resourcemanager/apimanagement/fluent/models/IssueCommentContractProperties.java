@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Issue Comment contract Properties. */
+/**
+ * Issue Comment contract Properties.
+ */
 @Fluent
-public final class IssueCommentContractProperties {
+public final class IssueCommentContractProperties implements JsonSerializable<IssueCommentContractProperties> {
     /*
      * Comment text.
      */
-    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Date and time when the comment was created.
      */
-    @JsonProperty(value = "createdDate")
     private OffsetDateTime createdDate;
 
     /*
      * A resource identifier for the user who left the comment.
      */
-    @JsonProperty(value = "userId", required = true)
     private String userId;
 
-    /** Creates an instance of IssueCommentContractProperties class. */
+    /**
+     * Creates an instance of IssueCommentContractProperties class.
+     */
     public IssueCommentContractProperties() {
     }
 
     /**
      * Get the text property: Comment text.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -45,7 +52,7 @@ public final class IssueCommentContractProperties {
 
     /**
      * Set the text property: Comment text.
-     *
+     * 
      * @param text the text value to set.
      * @return the IssueCommentContractProperties object itself.
      */
@@ -56,7 +63,7 @@ public final class IssueCommentContractProperties {
 
     /**
      * Get the createdDate property: Date and time when the comment was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -65,7 +72,7 @@ public final class IssueCommentContractProperties {
 
     /**
      * Set the createdDate property: Date and time when the comment was created.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the IssueCommentContractProperties object itself.
      */
@@ -76,7 +83,7 @@ public final class IssueCommentContractProperties {
 
     /**
      * Get the userId property: A resource identifier for the user who left the comment.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -85,7 +92,7 @@ public final class IssueCommentContractProperties {
 
     /**
      * Set the userId property: A resource identifier for the user who left the comment.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the IssueCommentContractProperties object itself.
      */
@@ -96,23 +103,67 @@ public final class IssueCommentContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (text() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property text in model IssueCommentContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property text in model IssueCommentContractProperties"));
         }
         if (userId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userId in model IssueCommentContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property userId in model IssueCommentContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IssueCommentContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeStringField("createdDate",
+            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueCommentContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueCommentContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IssueCommentContractProperties.
+     */
+    public static IssueCommentContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueCommentContractProperties deserializedIssueCommentContractProperties
+                = new IssueCommentContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedIssueCommentContractProperties.text = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedIssueCommentContractProperties.userId = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedIssueCommentContractProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueCommentContractProperties;
+        });
+    }
 }

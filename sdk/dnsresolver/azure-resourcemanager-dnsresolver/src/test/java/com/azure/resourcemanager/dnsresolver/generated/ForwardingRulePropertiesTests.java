@@ -12,53 +12,35 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ForwardingRulePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ForwardingRuleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"jfeallnwsub\",\"targetDnsServers\":[{\"ipAddress\":\"njampm\",\"port\":1365754949},{\"ipAddress\":\"zscxaqwo\",\"port\":1004687873},{\"ipAddress\":\"cbonqvpk\",\"port\":1873646059}],\"metadata\":{\"pheoflokeyy\":\"jease\",\"jp\":\"enjbdlwtgrhp\",\"e\":\"umasxazjpq\",\"zvdudgwdslfhotwm\":\"ualhbxxhejj\"},\"forwardingRuleState\":\"Disabled\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(ForwardingRuleProperties.class);
-        Assertions.assertEquals("jfeallnwsub", model.domainName());
-        Assertions.assertEquals("njampm", model.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(1365754949, model.targetDnsServers().get(0).port());
-        Assertions.assertEquals("jease", model.metadata().get("pheoflokeyy"));
-        Assertions.assertEquals(ForwardingRuleState.DISABLED, model.forwardingRuleState());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ForwardingRuleProperties model = BinaryData.fromString(
+            "{\"domainName\":\"orxzdmohctbqvud\",\"targetDnsServers\":[{\"ipAddress\":\"dndnvow\",\"port\":1798708201}],\"metadata\":{\"zj\":\"gwdkcglhsl\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Deleting\"}")
+            .toObject(ForwardingRuleProperties.class);
+        Assertions.assertEquals("orxzdmohctbqvud", model.domainName());
+        Assertions.assertEquals("dndnvow", model.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1798708201, model.targetDnsServers().get(0).port());
+        Assertions.assertEquals("gwdkcglhsl", model.metadata().get("zj"));
+        Assertions.assertEquals(ForwardingRuleState.ENABLED, model.forwardingRuleState());
     }
 
-    @Test
-    public void testSerialize() {
-        ForwardingRuleProperties model =
-            new ForwardingRuleProperties()
-                .withDomainName("jfeallnwsub")
-                .withTargetDnsServers(
-                    Arrays
-                        .asList(
-                            new TargetDnsServer().withIpAddress("njampm").withPort(1365754949),
-                            new TargetDnsServer().withIpAddress("zscxaqwo").withPort(1004687873),
-                            new TargetDnsServer().withIpAddress("cbonqvpk").withPort(1873646059)))
-                .withMetadata(
-                    mapOf(
-                        "pheoflokeyy",
-                        "jease",
-                        "jp",
-                        "enjbdlwtgrhp",
-                        "e",
-                        "umasxazjpq",
-                        "zvdudgwdslfhotwm",
-                        "ualhbxxhejj"))
-                .withForwardingRuleState(ForwardingRuleState.DISABLED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ForwardingRuleProperties model = new ForwardingRuleProperties().withDomainName("orxzdmohctbqvud")
+            .withTargetDnsServers(Arrays.asList(new TargetDnsServer().withIpAddress("dndnvow").withPort(1798708201)))
+            .withMetadata(mapOf("zj", "gwdkcglhsl"))
+            .withForwardingRuleState(ForwardingRuleState.ENABLED);
         model = BinaryData.fromObject(model).toObject(ForwardingRuleProperties.class);
-        Assertions.assertEquals("jfeallnwsub", model.domainName());
-        Assertions.assertEquals("njampm", model.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(1365754949, model.targetDnsServers().get(0).port());
-        Assertions.assertEquals("jease", model.metadata().get("pheoflokeyy"));
-        Assertions.assertEquals(ForwardingRuleState.DISABLED, model.forwardingRuleState());
+        Assertions.assertEquals("orxzdmohctbqvud", model.domainName());
+        Assertions.assertEquals("dndnvow", model.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1798708201, model.targetDnsServers().get(0).port());
+        Assertions.assertEquals("gwdkcglhsl", model.metadata().get("zj"));
+        Assertions.assertEquals(ForwardingRuleState.ENABLED, model.forwardingRuleState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

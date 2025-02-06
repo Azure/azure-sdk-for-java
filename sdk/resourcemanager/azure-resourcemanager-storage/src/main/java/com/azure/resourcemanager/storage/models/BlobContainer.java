@@ -19,55 +19,107 @@ import java.util.Map;
 @Fluent
 public interface BlobContainer
     extends HasInnerModel<BlobContainerInner>, Indexable, Updatable<BlobContainer.Update>, HasManager<StorageManager> {
-    /** @return the etag value. */
+    /**
+     * Gets the etag value.
+     *
+     * @return the etag value.
+     */
     String etag();
 
-    /** @return the hasImmutabilityPolicy value. */
+    /**
+     * Checks whether the container has immutability policy.
+     *
+     * @return the hasImmutabilityPolicy value.
+     */
     Boolean hasImmutabilityPolicy();
 
-    /** @return the hasLegalHold value. */
+    /**
+     * Checks whether the container has legal hold.
+     *
+     * @return the hasLegalHold value.
+     */
     Boolean hasLegalHold();
 
-    /** @return the id value. */
+    /**
+     * Gets container resource ID.
+     *
+     * @return the id value.
+     */
     String id();
 
-    /** @return the immutabilityPolicy value. */
+    /**
+     * Gets the properties of the immutability policy.
+     *
+     * @return the immutabilityPolicy value.
+     */
     ImmutabilityPolicyProperties immutabilityPolicy();
 
-    /** @return the lastModifiedTime value. */
+    /**
+     * Gets the last modified time.
+     *
+     * @return the lastModifiedTime value.
+     */
     OffsetDateTime lastModifiedTime();
 
-    /** @return the leaseDuration value. */
+    /**
+     * Gets the lease duration.
+     *
+     * @return the leaseDuration value.
+     */
     LeaseDuration leaseDuration();
 
-    /** @return the leaseState value. */
+    /**
+     * Gets the lease state.
+     *
+     * @return the leaseState value.
+     */
     LeaseState leaseState();
 
-    /** @return the leaseStatus value. */
+    /**
+     * gets the lease status.
+     *
+     * @return the leaseStatus value.
+     */
     LeaseStatus leaseStatus();
 
-    /** @return the legalHold value. */
+    /**
+     * Gets the legal hold.
+     *
+     * @return the legalHold value.
+     */
     LegalHoldProperties legalHold();
 
-    /** @return the metadata value. */
+    /**
+     * Gets the metadata.
+     *
+     * @return the metadata value.
+     */
     Map<String, String> metadata();
 
-    /** @return the name value. */
+    /**
+     * Gets the name of the blob container.
+     *
+     * @return the name value.
+     */
     String name();
 
-    /** @return the publicAccess value. */
+    /**
+     * Gets the public access.
+     *
+     * @return the publicAccess value.
+     */
     PublicAccess publicAccess();
 
-    /** @return the type value. */
+    /**
+     * Gets the type of the blob container.
+     *
+     * @return the type value.
+     */
     String type();
 
     /** The entirety of the BlobContainer definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithBlobService,
-            DefinitionStages.WithPublicAccess,
-            DefinitionStages.WithMetadata,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithBlobService,
+        DefinitionStages.WithPublicAccess, DefinitionStages.WithMetadata, DefinitionStages.WithCreate {
     }
 
     /** Grouping of BlobContainer definition stages. */

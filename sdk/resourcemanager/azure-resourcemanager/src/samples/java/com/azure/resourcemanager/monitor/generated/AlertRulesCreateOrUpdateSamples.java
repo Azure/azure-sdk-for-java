@@ -28,16 +28,24 @@ public final class AlertRulesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAlertRules().createOrUpdateWithResponse(
-            "Rac46PostSwapRG", "chiricutin",
-            new AlertRuleResourceInner().withLocation("West US").withTags(mapOf()).withNamePropertiesName("chiricutin")
-                .withDescription("Pura Vida").withIsEnabled(true)
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAlertRules()
+            .createOrUpdateWithResponse("Rac46PostSwapRG", "chiricutin", new AlertRuleResourceInner()
+                .withLocation("West US")
+                .withTags(mapOf())
+                .withNamePropertiesName("chiricutin")
+                .withDescription("Pura Vida")
+                .withIsEnabled(true)
                 .withCondition(new ThresholdRuleCondition().withDataSource(new RuleMetricDataSource().withResourceUri(
                     "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest")
-                    .withMetricName("Requests")).withOperator(ConditionOperator.GREATER_THAN).withThreshold(3.0)
-                    .withWindowSize(Duration.parse("PT5M")).withTimeAggregation(TimeAggregationOperator.TOTAL))
-                .withActions(Arrays.asList()),
-            com.azure.core.util.Context.NONE);
+                    .withMetricName("Requests"))
+                    .withOperator(ConditionOperator.GREATER_THAN)
+                    .withThreshold(3.0)
+                    .withWindowSize(Duration.parse("PT5M"))
+                    .withTimeAggregation(TimeAggregationOperator.TOTAL))
+                .withActions(Arrays.asList()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

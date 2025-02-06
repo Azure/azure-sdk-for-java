@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of a Message Details resource.
  */
 @Fluent
-public final class MessageProperties {
+public final class MessageProperties implements JsonSerializable<MessageProperties> {
     /*
      * Content type.
      */
-    @JsonProperty(value = "contentType", access = JsonProperty.Access.WRITE_ONLY)
     private TranscriptContentType contentType;
 
     /*
      * Direction of communication.
      */
-    @JsonProperty(value = "communicationDirection", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationDirection communicationDirection;
 
     /*
      * Name of the sender.
      */
-    @JsonProperty(value = "sender")
     private String sender;
 
     /*
      * Body of the communication.
      */
-    @JsonProperty(value = "body")
     private String body;
 
     /*
      * Time in UTC (ISO 8601 format) when the communication was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /**
@@ -122,5 +122,52 @@ public final class MessageProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sender", this.sender);
+        jsonWriter.writeStringField("body", this.body);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MessageProperties.
+     */
+    public static MessageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageProperties deserializedMessageProperties = new MessageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentType".equals(fieldName)) {
+                    deserializedMessageProperties.contentType = TranscriptContentType.fromString(reader.getString());
+                } else if ("communicationDirection".equals(fieldName)) {
+                    deserializedMessageProperties.communicationDirection
+                        = CommunicationDirection.fromString(reader.getString());
+                } else if ("sender".equals(fieldName)) {
+                    deserializedMessageProperties.sender = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedMessageProperties.body = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedMessageProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMessageProperties;
+        });
     }
 }

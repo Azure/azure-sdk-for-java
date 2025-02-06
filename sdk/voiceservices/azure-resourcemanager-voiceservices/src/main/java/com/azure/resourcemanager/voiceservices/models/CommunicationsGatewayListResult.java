@@ -6,32 +6,38 @@ package com.azure.resourcemanager.voiceservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.voiceservices.fluent.models.CommunicationsGatewayInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a CommunicationsGateway list operation. */
+/**
+ * The response of a CommunicationsGateway list operation.
+ */
 @Fluent
-public final class CommunicationsGatewayListResult {
+public final class CommunicationsGatewayListResult implements JsonSerializable<CommunicationsGatewayListResult> {
     /*
      * The CommunicationsGateway items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<CommunicationsGatewayInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CommunicationsGatewayListResult class. */
+    /**
+     * Creates an instance of CommunicationsGatewayListResult class.
+     */
     public CommunicationsGatewayListResult() {
     }
 
     /**
      * Get the value property: The CommunicationsGateway items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<CommunicationsGatewayInner> value() {
@@ -40,7 +46,7 @@ public final class CommunicationsGatewayListResult {
 
     /**
      * Set the value property: The CommunicationsGateway items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the CommunicationsGatewayListResult object itself.
      */
@@ -51,7 +57,7 @@ public final class CommunicationsGatewayListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class CommunicationsGatewayListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CommunicationsGatewayListResult object itself.
      */
@@ -71,19 +77,61 @@ public final class CommunicationsGatewayListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CommunicationsGatewayListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CommunicationsGatewayListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommunicationsGatewayListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationsGatewayListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationsGatewayListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunicationsGatewayListResult.
+     */
+    public static CommunicationsGatewayListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationsGatewayListResult deserializedCommunicationsGatewayListResult
+                = new CommunicationsGatewayListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CommunicationsGatewayInner> value
+                        = reader.readArray(reader1 -> CommunicationsGatewayInner.fromJson(reader1));
+                    deserializedCommunicationsGatewayListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCommunicationsGatewayListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationsGatewayListResult;
+        });
+    }
 }

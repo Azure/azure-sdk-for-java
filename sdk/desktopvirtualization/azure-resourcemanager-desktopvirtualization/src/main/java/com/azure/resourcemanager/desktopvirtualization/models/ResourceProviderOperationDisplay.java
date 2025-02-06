@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Display metadata associated with the operation. */
+/**
+ * Display metadata associated with the operation.
+ */
 @Fluent
-public final class ResourceProviderOperationDisplay {
+public final class ResourceProviderOperationDisplay implements JsonSerializable<ResourceProviderOperationDisplay> {
     /*
      * Resource provider: Microsoft Desktop Virtualization.
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * Resource on which the operation is performed.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * Type of operation: get, read, delete, etc.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Description of this operation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ResourceProviderOperationDisplay class. */
+    /**
+     * Creates an instance of ResourceProviderOperationDisplay class.
+     */
     public ResourceProviderOperationDisplay() {
     }
 
     /**
      * Get the provider property: Resource provider: Microsoft Desktop Virtualization.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the provider property: Resource provider: Microsoft Desktop Virtualization.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Get the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Get the operation property: Type of operation: get, read, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the operation property: Type of operation: get, read, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Get the description property: Description of this operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Set the description property: Description of this operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResourceProviderOperationDisplay object itself.
      */
@@ -120,9 +124,55 @@ public final class ResourceProviderOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderOperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderOperationDisplay if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderOperationDisplay.
+     */
+    public static ResourceProviderOperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderOperationDisplay deserializedResourceProviderOperationDisplay
+                = new ResourceProviderOperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedResourceProviderOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedResourceProviderOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedResourceProviderOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedResourceProviderOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderOperationDisplay;
+        });
     }
 }

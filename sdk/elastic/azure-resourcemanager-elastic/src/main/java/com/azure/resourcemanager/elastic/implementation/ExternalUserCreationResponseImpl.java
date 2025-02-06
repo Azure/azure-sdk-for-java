@@ -12,8 +12,7 @@ public final class ExternalUserCreationResponseImpl implements ExternalUserCreat
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    ExternalUserCreationResponseImpl(
-        ExternalUserCreationResponseInner innerObject,
+    ExternalUserCreationResponseImpl(ExternalUserCreationResponseInner innerObject,
         com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -15,8 +15,7 @@ public final class ResourceCollectionImpl implements ResourceCollection {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    ResourceCollectionImpl(
-        ResourceCollectionInner innerObject,
+    ResourceCollectionImpl(ResourceCollectionInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

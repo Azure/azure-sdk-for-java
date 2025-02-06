@@ -45,12 +45,15 @@ public final class DataProductsListRolesAssignmentsWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ListRoleAssignments response = manager.dataProducts().listRolesAssignmentsWithResponse("wiyighxpkdw",
-            "baiuebbaumny", "dataupedeojnabckhs", com.azure.core.util.Context.NONE).getValue();
+        ListRoleAssignments response = manager.dataProducts()
+            .listRolesAssignmentsWithResponse("wiyighxpkdw", "baiuebbaumny", "dataupedeojnabckhs",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(611656940, response.count());
         Assertions.assertEquals("psiebtfhvpes", response.roleAssignmentResponse().get(0).roleId());

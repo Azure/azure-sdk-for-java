@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentAccessEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentAccessEndpoint model =
-            BinaryData
-                .fromString("{\"type\":\"External\"}")
-                .toObject(IntegrationServiceEnvironmentAccessEndpoint.class);
-        Assertions.assertEquals(IntegrationServiceEnvironmentAccessEndpointType.EXTERNAL, model.type());
+        IntegrationServiceEnvironmentAccessEndpoint model = BinaryData.fromString("{\"type\":\"Internal\"}")
+            .toObject(IntegrationServiceEnvironmentAccessEndpoint.class);
+        Assertions.assertEquals(IntegrationServiceEnvironmentAccessEndpointType.INTERNAL, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentAccessEndpoint model =
-            new IntegrationServiceEnvironmentAccessEndpoint()
-                .withType(IntegrationServiceEnvironmentAccessEndpointType.EXTERNAL);
+        IntegrationServiceEnvironmentAccessEndpoint model = new IntegrationServiceEnvironmentAccessEndpoint()
+            .withType(IntegrationServiceEnvironmentAccessEndpointType.INTERNAL);
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentAccessEndpoint.class);
-        Assertions.assertEquals(IntegrationServiceEnvironmentAccessEndpointType.EXTERNAL, model.type());
+        Assertions.assertEquals(IntegrationServiceEnvironmentAccessEndpointType.INTERNAL, model.type());
     }
 }

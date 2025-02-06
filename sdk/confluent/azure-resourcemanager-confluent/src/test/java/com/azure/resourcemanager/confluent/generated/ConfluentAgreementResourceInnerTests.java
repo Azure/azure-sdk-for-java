@@ -28,8 +28,12 @@ public final class ConfluentAgreementResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("bpzvgn")
-            .withProduct("symglzufcyz").withPlan("hdbihan").withLicenseTextLink("hfcbjysa").withPrivacyPolicyLink("th")
-            .withRetrieveDatetime(OffsetDateTime.parse("2021-11-04T10:26:32Z")).withSignature("bifpikxwczb")
+            .withProduct("symglzufcyz")
+            .withPlan("hdbihan")
+            .withLicenseTextLink("hfcbjysa")
+            .withPrivacyPolicyLink("th")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-11-04T10:26:32Z"))
+            .withSignature("bifpikxwczb")
             .withAccepted(true);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementResourceInner.class);
         Assertions.assertEquals("bpzvgn", model.publisher());

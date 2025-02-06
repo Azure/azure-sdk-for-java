@@ -5,84 +5,82 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.MonitorPropertiesErrors;
 import com.azure.resourcemanager.workloads.models.RoutingPreference;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of a SAP monitor. */
+/**
+ * Describes the properties of a SAP monitor.
+ */
 @Fluent
-public final class MonitorProperties {
+public final class MonitorProperties implements JsonSerializable<MonitorProperties> {
     /*
      * State of provisioning of the SAP monitor.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadMonitorProvisioningState provisioningState;
 
     /*
      * Defines the SAP monitor errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private MonitorPropertiesErrors errors;
 
     /*
      * The SAP monitor resources will be deployed in the SAP monitoring region. The subnet region should be same as the
      * SAP monitoring region.
      */
-    @JsonProperty(value = "appLocation")
     private String appLocation;
 
     /*
      * Sets the routing preference of the SAP monitor. By default only RFC1918 traffic is routed to the customer VNET.
      */
-    @JsonProperty(value = "routingPreference")
     private RoutingPreference routingPreference;
 
     /*
      * Sets the preference for zone redundancy on resources created for the SAP monitor. By default resources will be
      * created which do not support zone redundancy.
      */
-    @JsonProperty(value = "zoneRedundancyPreference")
     private String zoneRedundancyPreference;
 
     /*
      * Managed resource group configuration
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedRGConfiguration managedResourceGroupConfiguration;
 
     /*
      * The ARM ID of the Log Analytics Workspace that is used for SAP monitoring.
      */
-    @JsonProperty(value = "logAnalyticsWorkspaceArmId")
     private String logAnalyticsWorkspaceArmId;
 
     /*
      * The subnet which the SAP monitor will be deployed in
      */
-    @JsonProperty(value = "monitorSubnet")
     private String monitorSubnet;
 
     /*
      * The ARM ID of the MSI used for SAP monitoring.
      */
-    @JsonProperty(value = "msiArmId", access = JsonProperty.Access.WRITE_ONLY)
     private String msiArmId;
 
     /*
      * The ARM ID of the Storage account used for SAP monitoring.
      */
-    @JsonProperty(value = "storageAccountArmId", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountArmId;
 
-    /** Creates an instance of MonitorProperties class. */
+    /**
+     * Creates an instance of MonitorProperties class.
+     */
     public MonitorProperties() {
     }
 
     /**
      * Get the provisioningState property: State of provisioning of the SAP monitor.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -91,7 +89,7 @@ public final class MonitorProperties {
 
     /**
      * Get the errors property: Defines the SAP monitor errors.
-     *
+     * 
      * @return the errors value.
      */
     public MonitorPropertiesErrors errors() {
@@ -101,7 +99,7 @@ public final class MonitorProperties {
     /**
      * Get the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
      * region should be same as the SAP monitoring region.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -111,7 +109,7 @@ public final class MonitorProperties {
     /**
      * Set the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
      * region should be same as the SAP monitoring region.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the MonitorProperties object itself.
      */
@@ -123,7 +121,7 @@ public final class MonitorProperties {
     /**
      * Get the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
-     *
+     * 
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -133,7 +131,7 @@ public final class MonitorProperties {
     /**
      * Set the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
-     *
+     * 
      * @param routingPreference the routingPreference value to set.
      * @return the MonitorProperties object itself.
      */
@@ -145,7 +143,7 @@ public final class MonitorProperties {
     /**
      * Get the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
      * SAP monitor. By default resources will be created which do not support zone redundancy.
-     *
+     * 
      * @return the zoneRedundancyPreference value.
      */
     public String zoneRedundancyPreference() {
@@ -155,7 +153,7 @@ public final class MonitorProperties {
     /**
      * Set the zoneRedundancyPreference property: Sets the preference for zone redundancy on resources created for the
      * SAP monitor. By default resources will be created which do not support zone redundancy.
-     *
+     * 
      * @param zoneRedundancyPreference the zoneRedundancyPreference value to set.
      * @return the MonitorProperties object itself.
      */
@@ -166,7 +164,7 @@ public final class MonitorProperties {
 
     /**
      * Get the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @return the managedResourceGroupConfiguration value.
      */
     public ManagedRGConfiguration managedResourceGroupConfiguration() {
@@ -175,12 +173,12 @@ public final class MonitorProperties {
 
     /**
      * Set the managedResourceGroupConfiguration property: Managed resource group configuration.
-     *
+     * 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public MonitorProperties
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }
@@ -188,7 +186,7 @@ public final class MonitorProperties {
     /**
      * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
-     *
+     * 
      * @return the logAnalyticsWorkspaceArmId value.
      */
     public String logAnalyticsWorkspaceArmId() {
@@ -198,7 +196,7 @@ public final class MonitorProperties {
     /**
      * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
-     *
+     * 
      * @param logAnalyticsWorkspaceArmId the logAnalyticsWorkspaceArmId value to set.
      * @return the MonitorProperties object itself.
      */
@@ -209,7 +207,7 @@ public final class MonitorProperties {
 
     /**
      * Get the monitorSubnet property: The subnet which the SAP monitor will be deployed in.
-     *
+     * 
      * @return the monitorSubnet value.
      */
     public String monitorSubnet() {
@@ -218,7 +216,7 @@ public final class MonitorProperties {
 
     /**
      * Set the monitorSubnet property: The subnet which the SAP monitor will be deployed in.
-     *
+     * 
      * @param monitorSubnet the monitorSubnet value to set.
      * @return the MonitorProperties object itself.
      */
@@ -229,7 +227,7 @@ public final class MonitorProperties {
 
     /**
      * Get the msiArmId property: The ARM ID of the MSI used for SAP monitoring.
-     *
+     * 
      * @return the msiArmId value.
      */
     public String msiArmId() {
@@ -238,7 +236,7 @@ public final class MonitorProperties {
 
     /**
      * Get the storageAccountArmId property: The ARM ID of the Storage account used for SAP monitoring.
-     *
+     * 
      * @return the storageAccountArmId value.
      */
     public String storageAccountArmId() {
@@ -247,7 +245,7 @@ public final class MonitorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -257,5 +255,67 @@ public final class MonitorProperties {
         if (managedResourceGroupConfiguration() != null) {
             managedResourceGroupConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appLocation", this.appLocation);
+        jsonWriter.writeStringField("routingPreference",
+            this.routingPreference == null ? null : this.routingPreference.toString());
+        jsonWriter.writeStringField("zoneRedundancyPreference", this.zoneRedundancyPreference);
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeStringField("logAnalyticsWorkspaceArmId", this.logAnalyticsWorkspaceArmId);
+        jsonWriter.writeStringField("monitorSubnet", this.monitorSubnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorProperties.
+     */
+    public static MonitorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorProperties deserializedMonitorProperties = new MonitorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedMonitorProperties.provisioningState
+                        = WorkloadMonitorProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedMonitorProperties.errors = MonitorPropertiesErrors.fromJson(reader);
+                } else if ("appLocation".equals(fieldName)) {
+                    deserializedMonitorProperties.appLocation = reader.getString();
+                } else if ("routingPreference".equals(fieldName)) {
+                    deserializedMonitorProperties.routingPreference = RoutingPreference.fromString(reader.getString());
+                } else if ("zoneRedundancyPreference".equals(fieldName)) {
+                    deserializedMonitorProperties.zoneRedundancyPreference = reader.getString();
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedMonitorProperties.managedResourceGroupConfiguration
+                        = ManagedRGConfiguration.fromJson(reader);
+                } else if ("logAnalyticsWorkspaceArmId".equals(fieldName)) {
+                    deserializedMonitorProperties.logAnalyticsWorkspaceArmId = reader.getString();
+                } else if ("monitorSubnet".equals(fieldName)) {
+                    deserializedMonitorProperties.monitorSubnet = reader.getString();
+                } else if ("msiArmId".equals(fieldName)) {
+                    deserializedMonitorProperties.msiArmId = reader.getString();
+                } else if ("storageAccountArmId".equals(fieldName)) {
+                    deserializedMonitorProperties.storageAccountArmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorProperties;
+        });
     }
 }

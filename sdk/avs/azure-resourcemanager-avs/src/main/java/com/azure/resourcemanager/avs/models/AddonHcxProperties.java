@@ -84,7 +84,6 @@ public final class AddonHcxProperties extends AddonProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (offer() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property offer in model AddonHcxProperties"));

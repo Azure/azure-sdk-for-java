@@ -24,15 +24,16 @@ public class Messages {
     public static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
     public static final String INVALID_OPERATION_DISPOSED_RECEIVER = getMessage("INVALID_OPERATION_DISPOSED_RECEIVER");
     public static final String INVALID_OPERATION_DISPOSED_SENDER = getMessage("INVALID_OPERATION_DISPOSED_SENDER");
-    public static final String INVALID_OPERATION_DISPOSED_RULE_MANAGER = getMessage("INVALID_OPERATION_DISPOSED_RULE_MANAGER");
+    public static final String INVALID_OPERATION_DISPOSED_RULE_MANAGER
+        = getMessage("INVALID_OPERATION_DISPOSED_RULE_MANAGER");
 
     private static synchronized Properties getProperties() {
         if (properties != null) {
             return properties;
         }
         properties = new Properties();
-        try (InputStream inputStream =
-                 Thread.currentThread().getContextClassLoader().getResourceAsStream(MESSAGES_PROPERTIES_PATH)) {
+        try (InputStream inputStream
+            = Thread.currentThread().getContextClassLoader().getResourceAsStream(MESSAGES_PROPERTIES_PATH)) {
             if (inputStream != null) {
                 properties.load(inputStream);
             } else {
@@ -45,7 +46,7 @@ public class Messages {
     }
 
     private static ClientLogger initializeLogger() {
-        Map<String,  Object> loggingContext = new HashMap<>(1);
+        Map<String, Object> loggingContext = new HashMap<>(1);
         loggingContext.put("propertiesPath", MESSAGES_PROPERTIES_PATH);
         return new ClientLogger(Messages.class, loggingContext);
     }

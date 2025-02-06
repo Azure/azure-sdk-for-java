@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.purview.generated;
 
-/** Samples for Accounts ListByResourceGroup. */
+/**
+ * Samples for Accounts ListByResourceGroup.
+ */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_ListByResourceGroup.
+     * json
      */
     /**
      * Sample code: Accounts_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to PurviewManager.
      */
     public static void accountsListByResourceGroup(com.azure.resourcemanager.purview.PurviewManager manager) {

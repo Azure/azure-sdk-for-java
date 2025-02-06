@@ -23,7 +23,7 @@ public final class GatewaysListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"r\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"hkpigqfusuckzmkw\",\"allowedFeatures\":[\"noxaxmqeqal\",\"hjnhgwydyynfsvk\",\"gbv\"]},\"location\":\"anarfdlpukhpyrne\",\"tags\":{\"ddbhf\":\"cpeogkhnmgbrou\",\"ontacnpq\":\"pfpazjzoywjxhpdu\",\"xh\":\"tehtuevrhrljyoog\"},\"id\":\"sd\",\"name\":\"ugwbsreurfqkf\",\"type\":\"arenlvhhtklnvnaf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"gatewayId\":\"swlpaugmrmfj\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"toaukhfkvcisiz\",\"allowedFeatures\":[\"eds\"]},\"location\":\"wuived\",\"tags\":{\"ei\":\"yeew\",\"mgomg\":\"bp\",\"cshhv\":\"amljdlrgmsplzgau\"},\"id\":\"ewgnxkympqanxrj\",\"name\":\"ixt\",\"type\":\"bta\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class GatewaysListMockTests {
 
         PagedIterable<Gateway> response = manager.gateways().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("anarfdlpukhpyrne", response.iterator().next().location());
-        Assertions.assertEquals("cpeogkhnmgbrou", response.iterator().next().tags().get("ddbhf"));
+        Assertions.assertEquals("wuived", response.iterator().next().location());
+        Assertions.assertEquals("yeew", response.iterator().next().tags().get("ei"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.iterator().next().gatewayType());
-        Assertions.assertEquals("noxaxmqeqal", response.iterator().next().allowedFeatures().get(0));
+        Assertions.assertEquals("eds", response.iterator().next().allowedFeatures().get(0));
     }
 }

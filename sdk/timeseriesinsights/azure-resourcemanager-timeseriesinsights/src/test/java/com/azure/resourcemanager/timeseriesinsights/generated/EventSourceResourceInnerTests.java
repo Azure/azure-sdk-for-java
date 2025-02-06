@@ -13,26 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EventSourceResource\",\"location\":\"djwzrlov\",\"tags\":{\"s\":\"whijcoejctbza\",\"ukdkexxppofmxa\":\"sycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\"},\"id\":\"hvpmoue\",\"name\":\"hd\",\"type\":\"xibqeojnx\"}")
-                .toObject(EventSourceResourceInner.class);
-        Assertions.assertEquals("djwzrlov", model.location());
-        Assertions.assertEquals("whijcoejctbza", model.tags().get("s"));
+        EventSourceResourceInner model = BinaryData.fromString(
+            "{\"kind\":\"EventSourceResource\",\"location\":\"kiiuxhqyudxor\",\"tags\":{\"oczvy\":\"b\",\"watkpnpulexxb\":\"fqrvkdvjsllrmvvd\",\"yokacspkw\":\"zwtruwiqzbqjvsov\",\"rkcciwwzjuqk\":\"hzdobpxjmflbvvnc\"},\"id\":\"rsa\",\"name\":\"iwkuofos\",\"type\":\"ghsauuimjmvxied\"}")
+            .toObject(EventSourceResourceInner.class);
+        Assertions.assertEquals("kiiuxhqyudxor", model.location());
+        Assertions.assertEquals("b", model.tags().get("oczvy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceResourceInner model =
-            new EventSourceResourceInner()
-                .withLocation("djwzrlov")
-                .withTags(mapOf("s", "whijcoejctbza", "ukdkexxppofmxa", "sycbkbfk", "jpgd", "c", "j", "toc"));
+        EventSourceResourceInner model = new EventSourceResourceInner().withLocation("kiiuxhqyudxor")
+            .withTags(mapOf("oczvy", "b", "watkpnpulexxb", "fqrvkdvjsllrmvvd", "yokacspkw", "zwtruwiqzbqjvsov",
+                "rkcciwwzjuqk", "hzdobpxjmflbvvnc"));
         model = BinaryData.fromObject(model).toObject(EventSourceResourceInner.class);
-        Assertions.assertEquals("djwzrlov", model.location());
-        Assertions.assertEquals("whijcoejctbza", model.tags().get("s"));
+        Assertions.assertEquals("kiiuxhqyudxor", model.location());
+        Assertions.assertEquals("b", model.tags().get("oczvy"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

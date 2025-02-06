@@ -11,26 +11,24 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateFirewallRuleWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateFirewallRuleWithAccountParameters model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"tnb\",\"properties\":{\"startIpAddress\":\"bkzgcwrwclx\",\"endIpAddress\":\"wrljdouskc\"}}")
-                .toObject(CreateFirewallRuleWithAccountParameters.class);
-        Assertions.assertEquals("tnb", model.name());
-        Assertions.assertEquals("bkzgcwrwclx", model.startIpAddress());
-        Assertions.assertEquals("wrljdouskc", model.endIpAddress());
+        CreateFirewallRuleWithAccountParameters model = BinaryData
+            .fromString(
+                "{\"name\":\"gbwjzrnf\",\"properties\":{\"startIpAddress\":\"gxg\",\"endIpAddress\":\"spemvtzfk\"}}")
+            .toObject(CreateFirewallRuleWithAccountParameters.class);
+        Assertions.assertEquals("gbwjzrnf", model.name());
+        Assertions.assertEquals("gxg", model.startIpAddress());
+        Assertions.assertEquals("spemvtzfk", model.endIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateFirewallRuleWithAccountParameters model =
-            new CreateFirewallRuleWithAccountParameters()
-                .withName("tnb")
-                .withStartIpAddress("bkzgcwrwclx")
-                .withEndIpAddress("wrljdouskc");
+        CreateFirewallRuleWithAccountParameters model
+            = new CreateFirewallRuleWithAccountParameters().withName("gbwjzrnf")
+                .withStartIpAddress("gxg")
+                .withEndIpAddress("spemvtzfk");
         model = BinaryData.fromObject(model).toObject(CreateFirewallRuleWithAccountParameters.class);
-        Assertions.assertEquals("tnb", model.name());
-        Assertions.assertEquals("bkzgcwrwclx", model.startIpAddress());
-        Assertions.assertEquals("wrljdouskc", model.endIpAddress());
+        Assertions.assertEquals("gbwjzrnf", model.name());
+        Assertions.assertEquals("gxg", model.startIpAddress());
+        Assertions.assertEquals("spemvtzfk", model.endIpAddress());
     }
 }

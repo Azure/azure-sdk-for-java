@@ -23,7 +23,9 @@ public final class DisplayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Display model = new Display().withProvider("a").withResource("th").withOperation("hab")
+        Display model = new Display().withProvider("a")
+            .withResource("th")
+            .withOperation("hab")
             .withDescription("pikxwczbyscnpqxu");
         model = BinaryData.fromObject(model).toObject(Display.class);
         Assertions.assertEquals("a", model.provider());

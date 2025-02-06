@@ -1,14 +1,54 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.9.13 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 2.9.12 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 2.9.11 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded Reactor Core from `3.4.38` to `3.4.41`.
+
+## 2.9.10 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 2.9.9 (2024-09-12)
 
 ### Features Added
 
-### Breaking Changes
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, removing the dependency on AmqpChannelProcessor. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
 
 ### Bugs Fixed
 
+- Fixes the endpoint state subscription to log errors using ClientLogger so that error do not reach Reactor global OnErrorDropped hook. ([41637](https://github.com/Azure/azure-sdk-for-java/issues/41637))
+- Fixes thread unsafe operation in AMQP session by introducing ReactorSessionCache. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 2.9.8 (2024-07-31)
 
@@ -21,19 +61,19 @@
 ## 2.9.7 (2024-07-12)
 
 ### Bugs Fixed
-- Removing duplicate ReactorSession::closeAsync call in session-endpoint error-handler. (#40667)[https://github.com/Azure/azure-sdk-for-java/pull/40667]
+- Removing duplicate ReactorSession::closeAsync call in session-endpoint error-handler. ([#40667](https://github.com/Azure/azure-sdk-for-java/pull/40667))
 
 ## 2.9.6 (2024-06-11)
 
 ### Features Added
 
-- Added feature to enable/disable SSL when initially creating connection to support amqp calls on port 5672.
+- Added feature to enable/disable SSL when initially creating connection to support AMQP calls on port 5672.
 
 ## 2.9.5 (2024-06-06)
 
 ### Bugs Fixed
 
-- Expose and use port when parsing `ConnectionStringProperties`. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
+- Expose and use port when parsing `ConnectionStringProperties`. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
 
 ### Other Changes
 
@@ -552,7 +592,7 @@
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
-- Fixed a bug that caused amqp connection not to retry when network error happened.
+- Fixed a bug that caused AMQP connection not to retry when network error happened.
 
 ## 2.0.5 (2021-05-07)
 

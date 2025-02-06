@@ -21,21 +21,18 @@ public final class HostsImpl implements Hosts {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public HostsImpl(
-        HostsClient innerClient, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    public HostsImpl(HostsClient innerClient,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<HostModel> getByResourceGroupWithResponse(
-        String resourceGroupName, String hostname, Context context) {
-        Response<HostModelInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, hostname, context);
+    public Response<HostModel> getByResourceGroupWithResponse(String resourceGroupName, String hostname,
+        Context context) {
+        Response<HostModelInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, hostname, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new HostModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,97 +58,77 @@ public final class HostsImpl implements Hosts {
 
     public PagedIterable<HostModel> list() {
         PagedIterable<HostModelInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HostModel> list(Context context) {
         PagedIterable<HostModelInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HostModel> listByResourceGroup(String resourceGroupName) {
         PagedIterable<HostModelInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HostModel> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<HostModelInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
     }
 
     public HostModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hostname = Utils.getValueFromIdByName(id, "hosts");
+        String hostname = ResourceManagerUtils.getValueFromIdByName(id, "hosts");
         if (hostname == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, hostname, Context.NONE).getValue();
     }
 
     public Response<HostModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hostname = Utils.getValueFromIdByName(id, "hosts");
+        String hostname = ResourceManagerUtils.getValueFromIdByName(id, "hosts");
         if (hostname == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, hostname, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hostname = Utils.getValueFromIdByName(id, "hosts");
+        String hostname = ResourceManagerUtils.getValueFromIdByName(id, "hosts");
         if (hostname == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
         }
         Boolean localForce = null;
         this.delete(resourceGroupName, hostname, localForce, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hostname = Utils.getValueFromIdByName(id, "hosts");
+        String hostname = ResourceManagerUtils.getValueFromIdByName(id, "hosts");
         if (hostname == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hosts'.", id)));
         }
         this.delete(resourceGroupName, hostname, force, context);
     }

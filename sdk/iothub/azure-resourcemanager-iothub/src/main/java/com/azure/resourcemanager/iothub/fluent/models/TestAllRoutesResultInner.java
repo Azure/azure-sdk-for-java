@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.models.MatchedRoute;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of testing all routes. */
+/**
+ * Result of testing all routes.
+ */
 @Fluent
-public final class TestAllRoutesResultInner {
+public final class TestAllRoutesResultInner implements JsonSerializable<TestAllRoutesResultInner> {
     /*
      * JSON-serialized array of matched routes
      */
-    @JsonProperty(value = "routes")
     private List<MatchedRoute> routes;
 
-    /** Creates an instance of TestAllRoutesResultInner class. */
+    /**
+     * Creates an instance of TestAllRoutesResultInner class.
+     */
     public TestAllRoutesResultInner() {
     }
 
     /**
      * Get the routes property: JSON-serialized array of matched routes.
-     *
+     * 
      * @return the routes value.
      */
     public List<MatchedRoute> routes() {
@@ -33,7 +40,7 @@ public final class TestAllRoutesResultInner {
 
     /**
      * Set the routes property: JSON-serialized array of matched routes.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the TestAllRoutesResultInner object itself.
      */
@@ -44,12 +51,49 @@ public final class TestAllRoutesResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (routes() != null) {
             routes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestAllRoutesResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestAllRoutesResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestAllRoutesResultInner.
+     */
+    public static TestAllRoutesResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestAllRoutesResultInner deserializedTestAllRoutesResultInner = new TestAllRoutesResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routes".equals(fieldName)) {
+                    List<MatchedRoute> routes = reader.readArray(reader1 -> MatchedRoute.fromJson(reader1));
+                    deserializedTestAllRoutesResultInner.routes = routes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestAllRoutesResultInner;
+        });
     }
 }

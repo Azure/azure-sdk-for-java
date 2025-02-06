@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SharesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SharesClient.
+ */
 public final class SharesClientImpl implements SharesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SharesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxEdgeManagementClientImpl client;
 
     /**
      * Initializes an instance of SharesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SharesClientImpl(DataBoxEdgeManagementClientImpl client) {
@@ -64,125 +70,87 @@ public final class SharesClientImpl implements SharesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
     public interface SharesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/shares")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/shares")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ShareList>> listByDataBoxEdgeDevice(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ShareList>> listByDataBoxEdgeDevice(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/shares/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/shares/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ShareInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ShareInner>> get(@HostParam("$host") String endpoint, @PathParam("deviceName") String deviceName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/shares/{name}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/shares/{name}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ShareInner share,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ShareInner share, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/shares/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/shares/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/shares/{name}/refresh")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/shares/{name}/refresh")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> refresh(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> refresh(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ShareList>> listByDataBoxEdgeDeviceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the shares in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all the shares on the Data Box Edge/Gateway device along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName) {
+    private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,32 +158,16 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDataBoxEdgeDevice(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ShareInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ShareInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the shares in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -223,25 +175,21 @@ public final class SharesClientImpl implements SharesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all the shares on the Data Box Edge/Gateway device along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,73 +198,58 @@ public final class SharesClientImpl implements SharesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDataBoxEdgeDevice(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the shares in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with {@link
-     *     PagedFlux}.
+     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ShareInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the shares in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with {@link
-     *     PagedFlux}.
+     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ShareInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
+    private PagedFlux<ShareInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the shares in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName) {
@@ -325,25 +258,25 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Lists all the shares in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with {@link
-     *     PagedIterable}.
+     * @return collection of all the shares on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ShareInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context) {
+    public PagedIterable<ShareInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByDataBoxEdgeDeviceAsync(deviceName, resourceGroupName, context));
     }
 
     /**
      * Gets a share by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -355,10 +288,8 @@ public final class SharesClientImpl implements SharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ShareInner>> getWithResponseAsync(String deviceName, String name, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -367,10 +298,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -378,24 +307,14 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a share by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -406,13 +325,11 @@ public final class SharesClientImpl implements SharesClient {
      * @return a share by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ShareInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<ShareInner>> getWithResponseAsync(String deviceName, String name, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -421,10 +338,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,21 +347,13 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a share by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -463,7 +370,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Gets a share by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -474,14 +381,14 @@ public final class SharesClientImpl implements SharesClient {
      * @return a share by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    public Response<ShareInner> getWithResponse(String deviceName, String name, String resourceGroupName,
+        Context context) {
         return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
     }
 
     /**
      * Gets a share by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -497,7 +404,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -506,16 +413,14 @@ public final class SharesClientImpl implements SharesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a share on the Data Box Edge/Gateway device along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, ShareInner share) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, ShareInner share) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -524,10 +429,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -539,26 +442,14 @@ public final class SharesClientImpl implements SharesClient {
             share.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            share,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), deviceName, name,
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), share, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -568,16 +459,14 @@ public final class SharesClientImpl implements SharesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a share on the Data Box Edge/Gateway device along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, ShareInner share, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, ShareInner share, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -586,10 +475,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -602,22 +489,13 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                share,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), share, accept, context);
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -628,19 +506,17 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link PollerFlux} for polling of represents a share on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ShareInner>, ShareInner> beginCreateOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, ShareInner share) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, share);
-        return this
-            .client
-            .<ShareInner, ShareInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ShareInner.class, ShareInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ShareInner>, ShareInner> beginCreateOrUpdateAsync(String deviceName, String name,
+        String resourceGroupName, ShareInner share) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, share);
+        return this.client.<ShareInner, ShareInner>getLroResult(mono, this.client.getHttpPipeline(), ShareInner.class,
+            ShareInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -652,20 +528,18 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link PollerFlux} for polling of represents a share on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ShareInner>, ShareInner> beginCreateOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, ShareInner share, Context context) {
+    private PollerFlux<PollResult<ShareInner>, ShareInner> beginCreateOrUpdateAsync(String deviceName, String name,
+        String resourceGroupName, ShareInner share, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, share, context);
-        return this
-            .client
-            .<ShareInner, ShareInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ShareInner.class, ShareInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, share, context);
+        return this.client.<ShareInner, ShareInner>getLroResult(mono, this.client.getHttpPipeline(), ShareInner.class,
+            ShareInner.class, context);
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -676,14 +550,14 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link SyncPoller} for polling of represents a share on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ShareInner>, ShareInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, ShareInner share) {
+    public SyncPoller<PollResult<ShareInner>, ShareInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, ShareInner share) {
         return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, share).getSyncPoller();
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -695,14 +569,14 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link SyncPoller} for polling of represents a share on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ShareInner>, ShareInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, ShareInner share, Context context) {
+    public SyncPoller<PollResult<ShareInner>, ShareInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, ShareInner share, Context context) {
         return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, share, context).getSyncPoller();
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -713,16 +587,15 @@ public final class SharesClientImpl implements SharesClient {
      * @return represents a share on the Data Box Edge/Gateway device on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ShareInner> createOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, ShareInner share) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, share)
-            .last()
+    private Mono<ShareInner> createOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+        ShareInner share) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, share).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -734,16 +607,15 @@ public final class SharesClientImpl implements SharesClient {
      * @return represents a share on the Data Box Edge/Gateway device on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ShareInner> createOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, ShareInner share, Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, share, context)
-            .last()
+    private Mono<ShareInner> createOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+        ShareInner share, Context context) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, share, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -760,7 +632,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Creates a new share or updates an existing share on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -772,14 +644,14 @@ public final class SharesClientImpl implements SharesClient {
      * @return represents a share on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShareInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, ShareInner share, Context context) {
+    public ShareInner createOrUpdate(String deviceName, String name, String resourceGroupName, ShareInner share,
+        Context context) {
         return createOrUpdateAsync(deviceName, name, resourceGroupName, share, context).block();
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -789,13 +661,11 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -804,10 +674,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -815,24 +683,14 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -843,13 +701,11 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -858,10 +714,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -869,21 +723,13 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -893,18 +739,16 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -915,18 +759,17 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -942,7 +785,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -953,14 +796,14 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context) {
         return this.beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -971,14 +814,13 @@ public final class SharesClientImpl implements SharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -990,14 +832,13 @@ public final class SharesClientImpl implements SharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1012,7 +853,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Deletes the share on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1028,7 +869,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1038,13 +879,11 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -1053,10 +892,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1064,24 +901,14 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .refresh(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.refresh(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1092,13 +919,11 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -1107,10 +932,8 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1118,21 +941,13 @@ public final class SharesClientImpl implements SharesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .refresh(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.refresh(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1142,18 +957,16 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRefreshAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private PollerFlux<PollResult<Void>, Void> beginRefreshAsync(String deviceName, String name,
+        String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = refreshWithResponseAsync(deviceName, name, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1164,18 +977,17 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRefreshAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRefreshAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = refreshWithResponseAsync(deviceName, name, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1191,7 +1003,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1202,14 +1014,14 @@ public final class SharesClientImpl implements SharesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRefresh(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRefresh(String deviceName, String name, String resourceGroupName,
+        Context context) {
         return this.beginRefreshAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1220,14 +1032,13 @@ public final class SharesClientImpl implements SharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshAsync(String deviceName, String name, String resourceGroupName) {
-        return beginRefreshAsync(deviceName, name, resourceGroupName)
-            .last()
+        return beginRefreshAsync(deviceName, name, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1239,14 +1050,13 @@ public final class SharesClientImpl implements SharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshAsync(String deviceName, String name, String resourceGroupName, Context context) {
-        return beginRefreshAsync(deviceName, name, resourceGroupName, context)
-            .last()
+        return beginRefreshAsync(deviceName, name, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1261,7 +1071,7 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Refreshes the share metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The share name.
      * @param resourceGroupName The resource group name.
@@ -1277,14 +1087,13 @@ public final class SharesClientImpl implements SharesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all the shares on the Data Box Edge/Gateway device along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink) {
@@ -1292,63 +1101,43 @@ public final class SharesClientImpl implements SharesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ShareInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ShareInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all the shares on the Data Box Edge/Gateway device along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ShareInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

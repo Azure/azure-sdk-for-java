@@ -7,20 +7,19 @@ package com.azure.resourcemanager.education.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.models.InviteCodeGenerateRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InviteCodeGenerateRequestTests {
-    @Test
-    public void testDeserialize() {
-        InviteCodeGenerateRequest model =
-            BinaryData.fromString("{\"maxStudentCount\":2.6165128}").toObject(InviteCodeGenerateRequest.class);
-        Assertions.assertEquals(2.6165128F, model.maxStudentCount());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InviteCodeGenerateRequest model
+            = BinaryData.fromString("{\"maxStudentCount\":70.85303}").toObject(InviteCodeGenerateRequest.class);
+        Assertions.assertEquals(70.85303F, model.maxStudentCount());
     }
 
-    @Test
-    public void testSerialize() {
-        InviteCodeGenerateRequest model = new InviteCodeGenerateRequest().withMaxStudentCount(2.6165128F);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InviteCodeGenerateRequest model = new InviteCodeGenerateRequest().withMaxStudentCount(70.85303F);
         model = BinaryData.fromObject(model).toObject(InviteCodeGenerateRequest.class);
-        Assertions.assertEquals(2.6165128F, model.maxStudentCount());
+        Assertions.assertEquals(70.85303F, model.maxStudentCount());
     }
 }

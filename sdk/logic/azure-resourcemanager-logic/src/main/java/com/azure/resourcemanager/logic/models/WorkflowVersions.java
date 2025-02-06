@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkflowVersions. */
+/**
+ * Resource collection API of WorkflowVersions.
+ */
 public interface WorkflowVersions {
     /**
      * Gets a list of workflow versions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface WorkflowVersions {
 
     /**
      * Gets a list of workflow versions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -38,7 +40,7 @@ public interface WorkflowVersions {
 
     /**
      * Gets a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -48,12 +50,12 @@ public interface WorkflowVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workflow version along with {@link Response}.
      */
-    Response<WorkflowVersion> getWithResponse(
-        String resourceGroupName, String workflowName, String versionId, Context context);
+    Response<WorkflowVersion> getWithResponse(String resourceGroupName, String workflowName, String versionId,
+        Context context);
 
     /**
      * Gets a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.

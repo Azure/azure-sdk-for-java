@@ -4,27 +4,24 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IotDpsResource GetOperationResult. */
+/**
+ * Samples for IotDpsResource GetOperationResult.
+ */
 public final class IotDpsResourceGetOperationResultSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetOperationResult.json
+     * x-ms-original-file:
+     * specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/
+     * DPSGetOperationResult.json
      */
     /**
      * Sample code: DPSGetOperationResult.
-     *
+     * 
      * @param manager Entry point to IotDpsManager.
      */
-    public static void dPSGetOperationResult(
-        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
-        manager
-            .iotDpsResources()
-            .getOperationResultWithResponse(
-                "MTY5OTNmZDctODI5Yy00N2E2LTkxNDQtMDU1NGIyYzY1ZjRl",
-                "myResourceGroup",
-                "myFirstProvisioningService",
-                "1508265712453",
-                Context.NONE);
+    public static void
+        dPSGetOperationResult(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
+        manager.iotDpsResources()
+            .getOperationResultWithResponse("MTY5OTNmZDctODI5Yy00N2E2LTkxNDQtMDU1NGIyYzY1ZjRl", "myResourceGroup",
+                "myFirstProvisioningService", "1508265712453", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeInstanceVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeInstanceVersion model =
-            BinaryData.fromString("{\"runtime\":\"z\"}").toObject(ComputeInstanceVersion.class);
-        Assertions.assertEquals("z", model.runtime());
+        ComputeInstanceVersion model
+            = BinaryData.fromString("{\"runtime\":\"muwrx\"}").toObject(ComputeInstanceVersion.class);
+        Assertions.assertEquals("muwrx", model.runtime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeInstanceVersion model = new ComputeInstanceVersion().withRuntime("z");
+        ComputeInstanceVersion model = new ComputeInstanceVersion().withRuntime("muwrx");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceVersion.class);
-        Assertions.assertEquals("z", model.runtime());
+        Assertions.assertEquals("muwrx", model.runtime());
     }
 }

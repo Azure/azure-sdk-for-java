@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionConfiguration;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that are associated with an aggregate function.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Aggregate")
 @Fluent
 public final class AggregateFunctionProperties extends FunctionProperties {
+    /*
+     * Indicates the type of function.
+     */
+    private String type = "Aggregate";
+
     /**
      * Creates an instance of AggregateFunctionProperties class.
      */
@@ -23,29 +29,83 @@ public final class AggregateFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the type property: Indicates the type of function.
+     * 
+     * @return the type value.
      */
     @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the inputs property: The inputs property.
+     * 
+     * @return the inputs value.
+     */
+    public List<FunctionInput> inputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().inputs();
+    }
+
+    /**
+     * Set the inputs property: The inputs property.
+     * 
+     * @param inputs the inputs value to set.
+     * @return the AggregateFunctionProperties object itself.
+     */
     public AggregateFunctionProperties withInputs(List<FunctionInput> inputs) {
-        super.withInputs(inputs);
+        if (this.innerProperties() == null) {
+            this.withInnerProperties(new FunctionConfiguration());
+        }
+        this.innerProperties().withInputs(inputs);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the output property: Describes the output of a function.
+     * 
+     * @return the output value.
      */
-    @Override
+    public FunctionOutput output() {
+        return this.innerProperties() == null ? null : this.innerProperties().output();
+    }
+
+    /**
+     * Set the output property: Describes the output of a function.
+     * 
+     * @param output the output value to set.
+     * @return the AggregateFunctionProperties object itself.
+     */
     public AggregateFunctionProperties withOutput(FunctionOutput output) {
-        super.withOutput(output);
+        if (this.innerProperties() == null) {
+            this.withInnerProperties(new FunctionConfiguration());
+        }
+        this.innerProperties().withOutput(output);
         return this;
     }
 
     /**
-     * {@inheritDoc}
+     * Get the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     * 
+     * @return the binding value.
      */
-    @Override
+    public FunctionBinding binding() {
+        return this.innerProperties() == null ? null : this.innerProperties().binding();
+    }
+
+    /**
+     * Set the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     * 
+     * @param binding the binding value to set.
+     * @return the AggregateFunctionProperties object itself.
+     */
     public AggregateFunctionProperties withBinding(FunctionBinding binding) {
-        super.withBinding(binding);
+        if (this.innerProperties() == null) {
+            this.withInnerProperties(new FunctionConfiguration());
+        }
+        this.innerProperties().withBinding(binding);
         return this;
     }
 
@@ -56,6 +116,49 @@ public final class AggregateFunctionProperties extends FunctionProperties {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", innerProperties());
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AggregateFunctionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AggregateFunctionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AggregateFunctionProperties.
+     */
+    public static AggregateFunctionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AggregateFunctionProperties deserializedAggregateFunctionProperties = new AggregateFunctionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("etag".equals(fieldName)) {
+                    deserializedAggregateFunctionProperties.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAggregateFunctionProperties.withInnerProperties(FunctionConfiguration.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAggregateFunctionProperties.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAggregateFunctionProperties;
+        });
     }
 }

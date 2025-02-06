@@ -61,17 +61,13 @@
     "**/resourcemanager/**",
     "**/azure-resourcemanager*/**",
     "**/microsoft-azure-*/**",
-    "**/azure-core-jackson-tests/**",
     "**/src/test/**",
     "**src/**/samples/**/*.json",
     "**/src/**/samples/**/*.ipynb",
     "**/sdk/**/swagger/**",
     "**/src/**/resources/**",
-    "sdk/aot/azure-aot-graalvm-samples/**",
     "sdk/agrifood/azure-verticals-agrifood-farming/**",
-    "sdk/aot/azure-aot-graalvm-support-netty/**",
     "sdk/anomalydetector/azure-ai-anomalydetector/**",
-    "sdk/aot/azure-aot-graalvm-support/**",
     "sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/**",
     "sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/**",
     "sdk/appconfiguration/azure-spring-cloud-feature-management-web/**",
@@ -116,20 +112,7 @@
     "sdk/confidentialledger/azure-security-confidentialledger/**",
     "sdk/core/.idea/**",
     "sdk/containerregistry/azure-containers-containerregistry/**",
-    "sdk/core/azure-core-experimental/**",
-    "sdk/core/azure-core-http-jdk-httpclient/**",
-    "sdk/core/azure-core-http-netty/**",
-    "sdk/core/azure-core-http-okhttp/**",
-    "sdk/core/azure-core-serializer-avro-jackson/**",
-    "sdk/core/azure-core-metrics-opentelemetry/**",
-    "sdk/core/azure-core-serializer-avro-apache/**",
-    "sdk/core/azure-core-http-vertx/**",
-    "sdk/core/azure-core-serializer-json-gson/**",
-    "sdk/core/azure-core-serializer-json-jackson/**",
-    "sdk/core/azure-core-management/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
-    "sdk/core/azure-core-tracing-opentelemetry/**",
-    "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
@@ -137,7 +120,6 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
-    "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -163,8 +145,9 @@
     "sdk/keyvault/test-resources/test-resources.json",
     "sdk/keyvault/test-resources-jca/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
-    "sdk/core/azure-core/**",
+    "sdk/formrecognizer/test-resources.json",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
+    "sdk/documentintelligence/test-resources.json",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
@@ -172,6 +155,7 @@
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
+    "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
     "sdk/modelsrepository/azure-iot-modelsrepository/**",
     "sdk/parents/azure-client-sdk-parent/**",
@@ -215,9 +199,10 @@
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
-    "sdk/clientcore/core-json/**",
     "sdk/clientcore/http-okhttp3/**",
-    "sdk/clientcore/http-jdk-httpclient/**",
+    "sdk/clientcore/annotation-processor/**",
+    "sdk/clientcore/annotation-processor-test/**",
+    "sdk/clientcore/tools/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
     "sdk/serialization/azure-xml/**",
@@ -227,7 +212,8 @@
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/StemmerTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/SnowballTokenFilterLanguage.java",
     "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TextTranslationSkillLanguage.java",
-    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java"
+    "sdk/search/azure-search-documents/src/main/java/com/azure/search/documents/indexes/models/TokenFilterName.java",
+    "sdk/openai/azure-ai-openai-realtime/tsp-location.yaml"
   ],
   "words": [
     "adal",
@@ -423,6 +409,7 @@
     "ssis",
     "substringof",
     "Sybase",
+    "tcnative",
     "testdb",
     "TFVC",
     "timeframe",
@@ -432,6 +419,7 @@
     "undelete",
     "unmanaged",
     "unmutated",
+    "vectorizer",
     "versionid",
     "vertx",
     "Vertx",
@@ -458,7 +446,8 @@
         "VMSS",
         "reimaged",
         "isdirectory",
-        "SSDLRS"
+        "SSDLRS",
+        "VMGUEST"
       ]
     },
     {
@@ -493,7 +482,10 @@
         "AICLIP",
         "TLARGE",
         "TBASE",
-        "TGIANT"
+        "TGIANT",
+        "tiktoken",
+        "AITOKENS",
+        "Matryoshka"
       ]
     },
     {
@@ -587,6 +579,14 @@
         "authorid",
         "encounterid",
         "docid"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/azure-health-insights-radiologyinsights/**",
+      "words": [
+        "pericholecystic",
+        "craniocaudally",
+        "angiomyolipomas"
       ]
     },
     {
@@ -837,6 +837,14 @@
       ]
     },
     {
+      "filename": "/sdk/ai/**",
+      "words": [
+        "OTEL",
+        "ubinary",
+        "UBINARY"
+      ]
+    },
+    {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
         "adal",
@@ -977,7 +985,8 @@
         "liudmila",
         "Milli",
         "qpid",
-        "unretriable"
+        "unretriable",
+        "AMQPS"
       ]
     },
     {
@@ -1021,6 +1030,7 @@
         "epoll",
         "fcgi",
         "flywaydb",
+        "fips",
         "gcloud",
         "gimap",
         "ginq",
@@ -1133,7 +1143,6 @@
         "staxex",
         "stree",
         "sybasease",
-        "tcnative",
         "tekton",
         "testng",
         "tidb",
@@ -1156,7 +1165,10 @@
         "xsom",
         "yasson",
         "yugabytedb",
-        "zaxxer"
+        "zaxxer",
+        "LINUXVMIMAGE",
+        "LINUXPOOL",
+        "OSVmImage"
       ]
     },
     {
@@ -1193,6 +1205,7 @@
         "Authoritys",
         "autoconfiguation",
         "Conditonal",
+        "DCOSMOS",
         "documentdb",
         "DOCUMENTDB",
         "DOWHILE",
@@ -1202,6 +1215,7 @@
         "Jndi",
         "JPMS",
         "JWKS",
+        "LINUXVMIMAGE",
         "myproject",
         "MYPROJECT",
         "namesapce",
@@ -1271,11 +1285,73 @@
       ]
     },
     {
+      "filename": "sdk/tables/**",
+      "words": [
+        "mmspecial"
+      ]
+    },
+    {
       "filename": "sdk/tables/azure-data-tables/**",
       "words": [
         "upserts",
         "upserted",
-        "raud"
+        "raud",
+        "mmspecial"
+      ]
+    },
+    {
+      "filename": "sdk/core/**",
+      "words": [
+        "reta",
+        "tozsvath",
+        "ueisele",
+        "Thowable",
+        "Dtest",
+        "azyncoperation",
+        "Referer",
+        "limolkova",
+        "sess",
+        "cnonce",
+        "mvnrepository",
+        "IMDS",
+        "Doesnt",
+        "xffffffffffff",
+        "imgur",
+        "Bufs",
+        "Unpooled",
+        "okio",
+        "usgovcloudapi",
+        "southcentralus",
+        "centralus",
+        "northcentralus",
+        "uksouth",
+        "ukwest",
+        "usgovvirginia",
+        "usgoviowa",
+        "usgovarizona",
+        "usgovtexas",
+        "usdodeast",
+        "usdodcentral",
+        "junitextensions",
+        "urllistofbytes",
+        "urllistoflistofbytes",
+        "urlmapofbytes",
+        "inproc",
+        "otel",
+        "tmpdir",
+        "aarch",
+        "CNCF"
+        ]
+    },
+    {
+      "filename": "sdk/translation/azure-ai-translation-document/**",
+      "words": [
+        "cancelacurrentlyprocessingorqueuedtranslation",
+        "returnsalistofbatchrequestssubmittedandthestatusforeachrequest",
+        "returnsalistofsupporteddocumentformats",
+        "returnsthestatusofasingledocumentinabatchtranslationrequest",
+        "submitadocumenttranslationrequesttothedocumenttranslationservice",
+        "translateasingledocument"
       ]
     }
   ],

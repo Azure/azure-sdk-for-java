@@ -3,6 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
@@ -16,6 +18,7 @@ import io.opentelemetry.semconv.ServiceAttributes;
 import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +39,8 @@ public class TelemetryItemExporter {
     private static final int MAX_CONCURRENT_EXPORTS = 100;
 
     private static final String _OTELRESOURCE_ = "_OTELRESOURCE_";
+
+    private static final ClientLogger logger = new ClientLogger(TelemetryItemExporter.class);
 
     private static final OperationLogger operationLogger = new OperationLogger(TelemetryItemExporter.class,
         "Put export into the background (don't wait for it to return)");
@@ -125,6 +130,21 @@ public class TelemetryItemExporter {
     // serialize an array of TelemetryItems to an array of byte buffers
     private static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
         try {
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                try (StringWriter debug = new StringWriter()) {
+                    for (int i = 0; i < telemetryItems.size(); i++) {
+                        JsonWriter jsonWriter = JsonProviders.createWriter(debug);
+                        telemetryItems.get(i).toJson(jsonWriter);
+                        jsonWriter.flush();
+
+                        if (i < telemetryItems.size() - 1) {
+                            debug.write('\n');
+                        }
+                    }
+                    logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), debug);
+                }
+            }
+
             ByteBufferOutputStream out = writeTelemetryItemsAsByteBufferOutputStream(telemetryItems);
             out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
             List<ByteBuffer> byteBuffers = out.getByteBuffers();

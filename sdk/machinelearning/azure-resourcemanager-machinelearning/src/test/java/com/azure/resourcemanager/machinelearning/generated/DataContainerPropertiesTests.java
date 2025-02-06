@@ -14,53 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class DataContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataContainerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataType\":\"mltable\",\"isArchived\":false,\"latestVersion\":\"vwxnbkfe\",\"nextVersion\":\"xscyhwzdgirujbz\",\"description\":\"mvzzbtdcqvp\",\"properties\":{\"n\":\"ujviylwdshfs\",\"rymsgaojfmw\":\"bgye\",\"hirctymoxoftpipi\":\"cotmr\",\"lihhyuspskasdvlm\":\"yczuhxacpq\"},\"tags\":{\"ulucv\":\"gz\",\"urisjnhnytxifqj\":\"amrsreuzv\",\"esutrgjupauutpw\":\"gxmrhublwp\",\"jqgwzp\":\"qhih\"}}")
-                .toObject(DataContainerProperties.class);
-        Assertions.assertEquals("mvzzbtdcqvp", model.description());
-        Assertions.assertEquals("ujviylwdshfs", model.properties().get("n"));
-        Assertions.assertEquals("gz", model.tags().get("ulucv"));
-        Assertions.assertEquals(false, model.isArchived());
-        Assertions.assertEquals(DataType.MLTABLE, model.dataType());
+        DataContainerProperties model = BinaryData.fromString(
+            "{\"dataType\":\"uri_folder\",\"isArchived\":true,\"latestVersion\":\"guaadraufactkahz\",\"nextVersion\":\"ajjziuxxpshne\",\"description\":\"ulfgslqu\",\"tags\":{\"o\":\"dlenrdsutujbazpj\",\"uvwpklvxwmyg\":\"minyflnorwm\",\"hiszepnnbjcrxgib\":\"xpgpq\"},\"properties\":{\"kokwbqplhlvnu\":\"xconfozauors\",\"phwzsoldweyuqdu\":\"epzl\",\"biorktal\":\"vmnnrw\"}}")
+            .toObject(DataContainerProperties.class);
+        Assertions.assertEquals("ulfgslqu", model.description());
+        Assertions.assertEquals("dlenrdsutujbazpj", model.tags().get("o"));
+        Assertions.assertEquals("xconfozauors", model.properties().get("kokwbqplhlvnu"));
+        Assertions.assertEquals(true, model.isArchived());
+        Assertions.assertEquals(DataType.URI_FOLDER, model.dataType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataContainerProperties model =
-            new DataContainerProperties()
-                .withDescription("mvzzbtdcqvp")
-                .withProperties(
-                    mapOf(
-                        "n",
-                        "ujviylwdshfs",
-                        "rymsgaojfmw",
-                        "bgye",
-                        "hirctymoxoftpipi",
-                        "cotmr",
-                        "lihhyuspskasdvlm",
-                        "yczuhxacpq"))
-                .withTags(
-                    mapOf(
-                        "ulucv",
-                        "gz",
-                        "urisjnhnytxifqj",
-                        "amrsreuzv",
-                        "esutrgjupauutpw",
-                        "gxmrhublwp",
-                        "jqgwzp",
-                        "qhih"))
-                .withIsArchived(false)
-                .withDataType(DataType.MLTABLE);
+        DataContainerProperties model = new DataContainerProperties().withDescription("ulfgslqu")
+            .withTags(mapOf("o", "dlenrdsutujbazpj", "uvwpklvxwmyg", "minyflnorwm", "hiszepnnbjcrxgib", "xpgpq"))
+            .withProperties(mapOf("kokwbqplhlvnu", "xconfozauors", "phwzsoldweyuqdu", "epzl", "biorktal", "vmnnrw"))
+            .withIsArchived(true)
+            .withDataType(DataType.URI_FOLDER);
         model = BinaryData.fromObject(model).toObject(DataContainerProperties.class);
-        Assertions.assertEquals("mvzzbtdcqvp", model.description());
-        Assertions.assertEquals("ujviylwdshfs", model.properties().get("n"));
-        Assertions.assertEquals("gz", model.tags().get("ulucv"));
-        Assertions.assertEquals(false, model.isArchived());
-        Assertions.assertEquals(DataType.MLTABLE, model.dataType());
+        Assertions.assertEquals("ulfgslqu", model.description());
+        Assertions.assertEquals("dlenrdsutujbazpj", model.tags().get("o"));
+        Assertions.assertEquals("xconfozauors", model.properties().get("kokwbqplhlvnu"));
+        Assertions.assertEquals(true, model.isArchived());
+        Assertions.assertEquals(DataType.URI_FOLDER, model.dataType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

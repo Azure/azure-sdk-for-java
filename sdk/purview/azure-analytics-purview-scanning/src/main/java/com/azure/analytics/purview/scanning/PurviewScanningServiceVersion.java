@@ -6,9 +6,13 @@ package com.azure.analytics.purview.scanning;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of PurviewScanning. */
+/**
+ * Service version of PurviewScanning.
+ */
 public enum PurviewScanningServiceVersion implements ServiceVersion {
-    /** Enum value 2018-12-01-preview. */
+    /**
+     * Enum value 2018-12-01-preview.
+     */
     V2018_12_01_PREVIEW("2018-12-01-preview");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum PurviewScanningServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum PurviewScanningServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link PurviewScanningServiceVersion}.
      */
     public static PurviewScanningServiceVersion getLatest() {

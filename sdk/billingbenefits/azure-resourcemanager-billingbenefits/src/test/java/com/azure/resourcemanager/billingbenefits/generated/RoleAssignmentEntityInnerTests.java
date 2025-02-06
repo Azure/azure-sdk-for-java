@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class RoleAssignmentEntityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleAssignmentEntityInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"wpdappdsbdkv\",\"name\":\"wjfeusnhutjel\",\"properties\":{\"principalId\":\"ldhugjzzdatqxh\",\"roleDefinitionId\":\"dgeablgphu\",\"scope\":\"cndvkaozwyiftyhx\"}}")
-                .toObject(RoleAssignmentEntityInner.class);
-        Assertions.assertEquals("wpdappdsbdkv", model.id());
-        Assertions.assertEquals("wjfeusnhutjel", model.name());
-        Assertions.assertEquals("ldhugjzzdatqxh", model.principalId());
-        Assertions.assertEquals("dgeablgphu", model.roleDefinitionId());
-        Assertions.assertEquals("cndvkaozwyiftyhx", model.scope());
+        RoleAssignmentEntityInner model = BinaryData.fromString(
+            "{\"id\":\"qduujitcjczdz\",\"name\":\"ndhkrw\",\"properties\":{\"principalId\":\"ppdsbdkvwrwj\",\"roleDefinitionId\":\"usnhutje\",\"scope\":\"mrldhu\"}}")
+            .toObject(RoleAssignmentEntityInner.class);
+        Assertions.assertEquals("qduujitcjczdz", model.id());
+        Assertions.assertEquals("ndhkrw", model.name());
+        Assertions.assertEquals("ppdsbdkvwrwj", model.principalId());
+        Assertions.assertEquals("usnhutje", model.roleDefinitionId());
+        Assertions.assertEquals("mrldhu", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleAssignmentEntityInner model =
-            new RoleAssignmentEntityInner()
-                .withId("wpdappdsbdkv")
-                .withName("wjfeusnhutjel")
-                .withPrincipalId("ldhugjzzdatqxh")
-                .withRoleDefinitionId("dgeablgphu")
-                .withScope("cndvkaozwyiftyhx");
+        RoleAssignmentEntityInner model = new RoleAssignmentEntityInner().withId("qduujitcjczdz")
+            .withName("ndhkrw")
+            .withPrincipalId("ppdsbdkvwrwj")
+            .withRoleDefinitionId("usnhutje")
+            .withScope("mrldhu");
         model = BinaryData.fromObject(model).toObject(RoleAssignmentEntityInner.class);
-        Assertions.assertEquals("wpdappdsbdkv", model.id());
-        Assertions.assertEquals("wjfeusnhutjel", model.name());
-        Assertions.assertEquals("ldhugjzzdatqxh", model.principalId());
-        Assertions.assertEquals("dgeablgphu", model.roleDefinitionId());
-        Assertions.assertEquals("cndvkaozwyiftyhx", model.scope());
+        Assertions.assertEquals("qduujitcjczdz", model.id());
+        Assertions.assertEquals("ndhkrw", model.name());
+        Assertions.assertEquals("ppdsbdkvwrwj", model.principalId());
+        Assertions.assertEquals("usnhutje", model.roleDefinitionId());
+        Assertions.assertEquals("mrldhu", model.scope());
     }
 }

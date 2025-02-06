@@ -17,85 +17,75 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCloudNodeListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCloudNodeListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"jhulsuuvmkjo\",\"value\":[{\"properties\":{\"availabilityZoneId\":\"f\",\"availabilityZoneName\":\"iodjp\",\"cloudRackName\":\"w\",\"created\":\"2021-12-10T02:07:51Z\",\"nodesCount\":1273374631,\"placementGroupId\":\"vwryoqpso\",\"placementGroupName\":\"ctazakljlahbcryf\",\"privateCloudId\":\"fdosyg\",\"privateCloudName\":\"paojakhmsbzjh\",\"provisioningState\":\"zevdphlx\",\"purchaseId\":\"b24ff01c-f46a-4d62-a77c-475cec3a672a\",\"status\":\"unused\",\"vmwareClusterName\":\"qtrgqjbpfzfsinzg\"},\"sku\":{\"capacity\":\"jrwzox\",\"description\":\"tfell\",\"family\":\"fziton\",\"name\":\"eqfpj\",\"tier\":\"lxofpdvhpfxxypin\"},\"location\":\"nmayhuybb\",\"tags\":{\"nuvamiheogna\":\"depoog\",\"usivye\":\"xzxtheo\",\"nfygxgispemvtz\":\"cciqihnhungbwjz\"},\"id\":\"kufubljo\",\"name\":\"xqeofjaeqjhqjba\",\"type\":\"v\"},{\"properties\":{\"availabilityZoneId\":\"mjqulngsn\",\"availabilityZoneName\":\"bybkzgcwrwclxx\",\"cloudRackName\":\"ljdousk\",\"created\":\"2021-02-01T10:32:52Z\",\"nodesCount\":1132832602,\"placementGroupId\":\"ocrcjdk\",\"placementGroupName\":\"nh\",\"privateCloudId\":\"njbiksqrglssain\",\"privateCloudName\":\"jwnzlljfmp\",\"provisioningState\":\"ebvmgxsabkyqd\",\"purchaseId\":\"7c211873-1855-4f4d-b3cf-402898522665\",\"status\":\"unused\",\"vmwareClusterName\":\"c\"},\"sku\":{\"capacity\":\"dzevndhkrw\",\"description\":\"appd\",\"family\":\"dkvwrwjfe\",\"name\":\"snhu\",\"tier\":\"eltmrldhugjzzdat\"},\"location\":\"xhocdgeablgphuti\",\"tags\":{\"k\":\"vkaozwyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\"},\"id\":\"awxklr\",\"name\":\"plwckbas\",\"type\":\"ypnddhsgcb\"}]}")
-                .toObject(DedicatedCloudNodeListResponse.class);
-        Assertions.assertEquals("jhulsuuvmkjo", model.nextLink());
-        Assertions.assertEquals("nmayhuybb", model.value().get(0).location());
-        Assertions.assertEquals("depoog", model.value().get(0).tags().get("nuvamiheogna"));
-        Assertions.assertEquals("jrwzox", model.value().get(0).sku().capacity());
-        Assertions.assertEquals("tfell", model.value().get(0).sku().description());
-        Assertions.assertEquals("fziton", model.value().get(0).sku().family());
-        Assertions.assertEquals("eqfpj", model.value().get(0).sku().name());
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.value().get(0).sku().tier());
-        Assertions.assertEquals("f", model.value().get(0).availabilityZoneId());
-        Assertions.assertEquals(1273374631, model.value().get(0).nodesCount());
-        Assertions.assertEquals("vwryoqpso", model.value().get(0).placementGroupId());
-        Assertions
-            .assertEquals(UUID.fromString("b24ff01c-f46a-4d62-a77c-475cec3a672a"), model.value().get(0).purchaseId());
+        DedicatedCloudNodeListResponse model = BinaryData.fromString(
+            "{\"nextLink\":\"qktapspwgcuert\",\"value\":[{\"properties\":{\"availabilityZoneId\":\"o\",\"availabilityZoneName\":\"qw\",\"cloudRackName\":\"mdgbbjfdd\",\"created\":\"2020-12-21T12:36:22Z\",\"nodesCount\":655603730,\"placementGroupId\":\"bexppb\",\"placementGroupName\":\"q\",\"privateCloudId\":\"ol\",\"privateCloudName\":\"fpsalgbqu\",\"provisioningState\":\"gjyjgzjaoyfhrtxi\",\"purchaseId\":\"abbae26c-16cf-483a-ac9a-89fbc50bca14\",\"skuDescription\":{\"id\":\"erkujys\",\"name\":\"l\"},\"status\":\"used\",\"vmwareClusterName\":\"fqawrlyxw\"},\"sku\":{\"capacity\":\"prbnwbxgjvtbv\",\"description\":\"sszdnru\",\"family\":\"guhmuouqfpr\",\"name\":\"zw\",\"tier\":\"g\"},\"location\":\"itnwuizgazxufi\",\"tags\":{\"rfidfvzwdz\":\"kyfi\",\"sdkf\":\"htymw\"},\"id\":\"hwxmnteiwa\",\"name\":\"pvkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"},{\"properties\":{\"availabilityZoneId\":\"xtbzsgfyccsne\",\"availabilityZoneName\":\"dwzjeiach\",\"cloudRackName\":\"osfln\",\"created\":\"2021-02-05T00:34:52Z\",\"nodesCount\":1314309812,\"placementGroupId\":\"qpteeh\",\"placementGroupName\":\"vypyqrimzinpv\",\"privateCloudId\":\"jdkirsoodqx\",\"privateCloudName\":\"rmnohj\",\"provisioningState\":\"kwh\",\"purchaseId\":\"bdfd0bd9-b74e-4cf5-acf4-a12c64e79ed6\",\"skuDescription\":{\"id\":\"oifiyipjxsqwpgr\",\"name\":\"bznorcjxvsnby\"},\"status\":\"used\",\"vmwareClusterName\":\"nmoc\"},\"sku\":{\"capacity\":\"shurzafbljjgpbto\",\"description\":\"jmkljavbqidtqajz\",\"family\":\"l\",\"name\":\"kudjkrlkhb\",\"tier\":\"fepgzgq\"},\"location\":\"xzlocxscp\",\"tags\":{\"l\":\"rhhbcs\",\"bnbdxkqpxokajion\":\"mmajtjaodx\",\"jrmvdjwzrlo\":\"imexgstxgcpodgma\"},\"id\":\"mcl\",\"name\":\"hijco\",\"type\":\"jctbza\"}]}")
+            .toObject(DedicatedCloudNodeListResponse.class);
+        Assertions.assertEquals("qktapspwgcuert", model.nextLink());
+        Assertions.assertEquals("itnwuizgazxufi", model.value().get(0).location());
+        Assertions.assertEquals("kyfi", model.value().get(0).tags().get("rfidfvzwdz"));
+        Assertions.assertEquals("prbnwbxgjvtbv", model.value().get(0).sku().capacity());
+        Assertions.assertEquals("sszdnru", model.value().get(0).sku().description());
+        Assertions.assertEquals("guhmuouqfpr", model.value().get(0).sku().family());
+        Assertions.assertEquals("zw", model.value().get(0).sku().name());
+        Assertions.assertEquals("g", model.value().get(0).sku().tier());
+        Assertions.assertEquals("o", model.value().get(0).availabilityZoneId());
+        Assertions.assertEquals(655603730, model.value().get(0).nodesCount());
+        Assertions.assertEquals("bexppb", model.value().get(0).placementGroupId());
+        Assertions.assertEquals(UUID.fromString("abbae26c-16cf-483a-ac9a-89fbc50bca14"),
+            model.value().get(0).purchaseId());
+        Assertions.assertEquals("erkujys", model.value().get(0).idPropertiesId());
+        Assertions.assertEquals("l", model.value().get(0).namePropertiesName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCloudNodeListResponse model =
-            new DedicatedCloudNodeListResponse()
-                .withNextLink("jhulsuuvmkjo")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DedicatedCloudNodeInner()
-                                .withLocation("nmayhuybb")
-                                .withTags(
-                                    mapOf(
-                                        "nuvamiheogna",
-                                        "depoog",
-                                        "usivye",
-                                        "xzxtheo",
-                                        "nfygxgispemvtz",
-                                        "cciqihnhungbwjz"))
-                                .withSku(
-                                    new Sku()
-                                        .withCapacity("jrwzox")
-                                        .withDescription("tfell")
-                                        .withFamily("fziton")
-                                        .withName("eqfpj")
-                                        .withTier("lxofpdvhpfxxypin"))
-                                .withAvailabilityZoneId("f")
-                                .withNodesCount(1273374631)
-                                .withPlacementGroupId("vwryoqpso")
-                                .withPurchaseId(UUID.fromString("b24ff01c-f46a-4d62-a77c-475cec3a672a")),
-                            new DedicatedCloudNodeInner()
-                                .withLocation("xhocdgeablgphuti")
-                                .withTags(mapOf("k", "vkaozwyiftyhxhur", "kjfkg", "tyxolniwpwc"))
-                                .withSku(
-                                    new Sku()
-                                        .withCapacity("dzevndhkrw")
-                                        .withDescription("appd")
-                                        .withFamily("dkvwrwjfe")
-                                        .withName("snhu")
-                                        .withTier("eltmrldhugjzzdat"))
-                                .withAvailabilityZoneId("mjqulngsn")
-                                .withNodesCount(1132832602)
-                                .withPlacementGroupId("ocrcjdk")
-                                .withPurchaseId(UUID.fromString("7c211873-1855-4f4d-b3cf-402898522665"))));
+        DedicatedCloudNodeListResponse model = new DedicatedCloudNodeListResponse().withNextLink("qktapspwgcuert")
+            .withValue(Arrays.asList(
+                new DedicatedCloudNodeInner().withLocation("itnwuizgazxufi")
+                    .withTags(mapOf("rfidfvzwdz", "kyfi", "sdkf", "htymw"))
+                    .withSku(new Sku().withCapacity("prbnwbxgjvtbv")
+                        .withDescription("sszdnru")
+                        .withFamily("guhmuouqfpr")
+                        .withName("zw")
+                        .withTier("g"))
+                    .withAvailabilityZoneId("o")
+                    .withNodesCount(655603730)
+                    .withPlacementGroupId("bexppb")
+                    .withPurchaseId(UUID.fromString("abbae26c-16cf-483a-ac9a-89fbc50bca14"))
+                    .withIdPropertiesId("erkujys")
+                    .withNamePropertiesName("l"),
+                new DedicatedCloudNodeInner().withLocation("xzlocxscp")
+                    .withTags(mapOf("l", "rhhbcs", "bnbdxkqpxokajion", "mmajtjaodx", "jrmvdjwzrlo", "imexgstxgcpodgma"))
+                    .withSku(new Sku().withCapacity("shurzafbljjgpbto")
+                        .withDescription("jmkljavbqidtqajz")
+                        .withFamily("l")
+                        .withName("kudjkrlkhb")
+                        .withTier("fepgzgq"))
+                    .withAvailabilityZoneId("xtbzsgfyccsne")
+                    .withNodesCount(1314309812)
+                    .withPlacementGroupId("qpteeh")
+                    .withPurchaseId(UUID.fromString("bdfd0bd9-b74e-4cf5-acf4-a12c64e79ed6"))
+                    .withIdPropertiesId("oifiyipjxsqwpgr")
+                    .withNamePropertiesName("bznorcjxvsnby")));
         model = BinaryData.fromObject(model).toObject(DedicatedCloudNodeListResponse.class);
-        Assertions.assertEquals("jhulsuuvmkjo", model.nextLink());
-        Assertions.assertEquals("nmayhuybb", model.value().get(0).location());
-        Assertions.assertEquals("depoog", model.value().get(0).tags().get("nuvamiheogna"));
-        Assertions.assertEquals("jrwzox", model.value().get(0).sku().capacity());
-        Assertions.assertEquals("tfell", model.value().get(0).sku().description());
-        Assertions.assertEquals("fziton", model.value().get(0).sku().family());
-        Assertions.assertEquals("eqfpj", model.value().get(0).sku().name());
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.value().get(0).sku().tier());
-        Assertions.assertEquals("f", model.value().get(0).availabilityZoneId());
-        Assertions.assertEquals(1273374631, model.value().get(0).nodesCount());
-        Assertions.assertEquals("vwryoqpso", model.value().get(0).placementGroupId());
-        Assertions
-            .assertEquals(UUID.fromString("b24ff01c-f46a-4d62-a77c-475cec3a672a"), model.value().get(0).purchaseId());
+        Assertions.assertEquals("qktapspwgcuert", model.nextLink());
+        Assertions.assertEquals("itnwuizgazxufi", model.value().get(0).location());
+        Assertions.assertEquals("kyfi", model.value().get(0).tags().get("rfidfvzwdz"));
+        Assertions.assertEquals("prbnwbxgjvtbv", model.value().get(0).sku().capacity());
+        Assertions.assertEquals("sszdnru", model.value().get(0).sku().description());
+        Assertions.assertEquals("guhmuouqfpr", model.value().get(0).sku().family());
+        Assertions.assertEquals("zw", model.value().get(0).sku().name());
+        Assertions.assertEquals("g", model.value().get(0).sku().tier());
+        Assertions.assertEquals("o", model.value().get(0).availabilityZoneId());
+        Assertions.assertEquals(655603730, model.value().get(0).nodesCount());
+        Assertions.assertEquals("bexppb", model.value().get(0).placementGroupId());
+        Assertions.assertEquals(UUID.fromString("abbae26c-16cf-483a-ac9a-89fbc50bca14"),
+            model.value().get(0).purchaseId());
+        Assertions.assertEquals("erkujys", model.value().get(0).idPropertiesId());
+        Assertions.assertEquals("l", model.value().get(0).namePropertiesName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

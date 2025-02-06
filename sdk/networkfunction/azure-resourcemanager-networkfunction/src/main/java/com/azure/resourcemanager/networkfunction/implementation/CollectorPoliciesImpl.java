@@ -21,37 +21,31 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
 
     private final com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager;
 
-    public CollectorPoliciesImpl(
-        CollectorPoliciesClient innerClient,
+    public CollectorPoliciesImpl(CollectorPoliciesClient innerClient,
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<CollectorPolicy> list(String resourceGroupName, String azureTrafficCollectorName) {
-        PagedIterable<CollectorPolicyInner> inner =
-            this.serviceClient().list(resourceGroupName, azureTrafficCollectorName);
-        return Utils.mapPage(inner, inner1 -> new CollectorPolicyImpl(inner1, this.manager()));
+        PagedIterable<CollectorPolicyInner> inner
+            = this.serviceClient().list(resourceGroupName, azureTrafficCollectorName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CollectorPolicyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CollectorPolicy> list(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
-        PagedIterable<CollectorPolicyInner> inner =
-            this.serviceClient().list(resourceGroupName, azureTrafficCollectorName, context);
-        return Utils.mapPage(inner, inner1 -> new CollectorPolicyImpl(inner1, this.manager()));
+    public PagedIterable<CollectorPolicy> list(String resourceGroupName, String azureTrafficCollectorName,
+        Context context) {
+        PagedIterable<CollectorPolicyInner> inner
+            = this.serviceClient().list(resourceGroupName, azureTrafficCollectorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CollectorPolicyImpl(inner1, this.manager()));
     }
 
-    public Response<CollectorPolicy> getWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
-        Response<CollectorPolicyInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
+    public Response<CollectorPolicy> getWithResponse(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context) {
+        Response<CollectorPolicyInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CollectorPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,8 +53,8 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
     }
 
     public CollectorPolicy get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        CollectorPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
+        CollectorPolicyInner inner
+            = this.serviceClient().get(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
         if (inner != null) {
             return new CollectorPolicyImpl(inner, this.manager());
         } else {
@@ -72,133 +66,84 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
         this.serviceClient().delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
     }
 
-    public void delete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
+    public void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
     }
 
     public CollectorPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureTrafficCollectorName = Utils.getValueFromIdByName(id, "azureTrafficCollectors");
+        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
         if (azureTrafficCollectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
         }
-        String collectorPolicyName = Utils.getValueFromIdByName(id, "collectorPolicies");
+        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "collectorPolicies");
         if (collectorPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
             .getValue();
     }
 
     public Response<CollectorPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureTrafficCollectorName = Utils.getValueFromIdByName(id, "azureTrafficCollectors");
+        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
         if (azureTrafficCollectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
         }
-        String collectorPolicyName = Utils.getValueFromIdByName(id, "collectorPolicies");
+        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "collectorPolicies");
         if (collectorPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureTrafficCollectorName = Utils.getValueFromIdByName(id, "azureTrafficCollectors");
+        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
         if (azureTrafficCollectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
         }
-        String collectorPolicyName = Utils.getValueFromIdByName(id, "collectorPolicies");
+        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "collectorPolicies");
         if (collectorPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
         }
         this.delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureTrafficCollectorName = Utils.getValueFromIdByName(id, "azureTrafficCollectors");
+        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
         if (azureTrafficCollectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
         }
-        String collectorPolicyName = Utils.getValueFromIdByName(id, "collectorPolicies");
+        String collectorPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "collectorPolicies");
         if (collectorPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'collectorPolicies'.", id)));
         }
         this.delete(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
     }

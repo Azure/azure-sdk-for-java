@@ -11,132 +11,139 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NeighborGrou
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of NeighborGroup. */
+/**
+ * An immutable client-side representation of NeighborGroup.
+ */
 public interface NeighborGroup {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the networkTapIds property: List of NetworkTap IDs where neighbor group is associated.
-     *
+     * 
      * @return the networkTapIds value.
      */
     List<String> networkTapIds();
 
     /**
      * Gets the networkTapRuleIds property: List of Network Tap Rule IDs where neighbor group is associated.
-     *
+     * 
      * @return the networkTapRuleIds value.
      */
     List<String> networkTapRuleIds();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the destination property: An array of destination IPv4 Addresses or IPv6 Addresses.
-     *
+     * 
      * @return the destination value.
      */
     NeighborGroupDestination destination();
 
     /**
      * Gets the annotation property: Switch configuration description.
-     *
+     * 
      * @return the annotation value.
      */
     String annotation();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.managednetworkfabric.fluent.models.NeighborGroupInner object.
-     *
+     * 
      * @return the inner object.
      */
     NeighborGroupInner innerModel();
 
-    /** The entirety of the NeighborGroup definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the NeighborGroup definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The NeighborGroup definition stages. */
+    /**
+     * The NeighborGroup definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the NeighborGroup definition. */
+        /**
+         * The first stage of the NeighborGroup definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the NeighborGroup definition allowing to specify location. */
+        /**
+         * The stage of the NeighborGroup definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -144,18 +151,20 @@ public interface NeighborGroup {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the NeighborGroup definition allowing to specify parent resource. */
+        /**
+         * The stage of the NeighborGroup definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -170,47 +179,53 @@ public interface NeighborGroup {
             extends DefinitionStages.WithTags, DefinitionStages.WithDestination, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             NeighborGroup create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             NeighborGroup create(Context context);
         }
 
-        /** The stage of the NeighborGroup definition allowing to specify tags. */
+        /**
+         * The stage of the NeighborGroup definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the NeighborGroup definition allowing to specify destination. */
+        /**
+         * The stage of the NeighborGroup definition allowing to specify destination.
+         */
         interface WithDestination {
             /**
              * Specifies the destination property: An array of destination IPv4 Addresses or IPv6 Addresses..
-             *
+             * 
              * @param destination An array of destination IPv4 Addresses or IPv6 Addresses.
              * @return the next definition stage.
              */
             WithCreate withDestination(NeighborGroupDestination destination);
         }
 
-        /** The stage of the NeighborGroup definition allowing to specify annotation. */
+        /**
+         * The stage of the NeighborGroup definition allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
@@ -220,58 +235,68 @@ public interface NeighborGroup {
 
     /**
      * Begins update for the NeighborGroup resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     NeighborGroup.Update update();
 
-    /** The template for NeighborGroup update. */
+    /**
+     * The template for NeighborGroup update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithDestination, UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         NeighborGroup apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         NeighborGroup apply(Context context);
     }
 
-    /** The NeighborGroup update stages. */
+    /**
+     * The NeighborGroup update stages.
+     */
     interface UpdateStages {
-        /** The stage of the NeighborGroup update allowing to specify tags. */
+        /**
+         * The stage of the NeighborGroup update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the NeighborGroup update allowing to specify destination. */
+        /**
+         * The stage of the NeighborGroup update allowing to specify destination.
+         */
         interface WithDestination {
             /**
              * Specifies the destination property: An array of destination IPv4 Addresses or IPv6 Addresses..
-             *
+             * 
              * @param destination An array of destination IPv4 Addresses or IPv6 Addresses.
              * @return the next definition stage.
              */
             Update withDestination(NeighborGroupDestination destination);
         }
 
-        /** The stage of the NeighborGroup update allowing to specify annotation. */
+        /**
+         * The stage of the NeighborGroup update allowing to specify annotation.
+         */
         interface WithAnnotation {
             /**
              * Specifies the annotation property: Switch configuration description..
-             *
+             * 
              * @param annotation Switch configuration description.
              * @return the next definition stage.
              */
@@ -281,14 +306,14 @@ public interface NeighborGroup {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     NeighborGroup refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

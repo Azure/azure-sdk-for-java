@@ -46,7 +46,9 @@ final class TracingFluxOperator<T> extends BaseSubscriber<T> {
 
     private final CoreSubscriber<? super T> downstream;
     private final BiConsumer<T, Function<T, Throwable>> instrumentation;
-    private TracingFluxOperator(CoreSubscriber<? super T> downstream, BiConsumer<T, Function<T, Throwable>> instrumentation) {
+
+    private TracingFluxOperator(CoreSubscriber<? super T> downstream,
+        BiConsumer<T, Function<T, Throwable>> instrumentation) {
         this.downstream = downstream;
         this.instrumentation = instrumentation;
     }
@@ -79,4 +81,3 @@ final class TracingFluxOperator<T> extends BaseSubscriber<T> {
         downstream.onComplete();
     }
 }
-

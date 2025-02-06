@@ -10,6 +10,6 @@ module com.azure.resourcemanager.deviceupdate {
     exports com.azure.resourcemanager.deviceupdate.fluent.models;
     exports com.azure.resourcemanager.deviceupdate.models;
 
-    opens com.azure.resourcemanager.deviceupdate.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.deviceupdate.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.deviceupdate.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.deviceupdate.models to com.azure.core;
 }

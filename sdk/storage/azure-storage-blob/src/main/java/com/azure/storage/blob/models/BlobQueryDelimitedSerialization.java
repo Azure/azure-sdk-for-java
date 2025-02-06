@@ -7,12 +7,17 @@ package com.azure.storage.blob.models;
  * Defines the input or output delimited (CSV) serialization for a blob quick query request.
  */
 public class BlobQueryDelimitedSerialization implements BlobQuerySerialization {
-
     private char columnSeparator;
     private char fieldQuote;
     private char escapeChar;
     private boolean headersPresent;
     private char recordSeparator;
+
+    /**
+     * Creates a new instance of {@link BlobQueryDelimitedSerialization}.
+     */
+    public BlobQueryDelimitedSerialization() {
+    }
 
     /**
      * Gets the column separator.

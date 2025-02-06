@@ -151,7 +151,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
     @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider")
     public void createConnectorWithWrongContainerName(boolean useMasterKey) {
 
-        logger.info("sinkToSingleContainer " + useMasterKey);
+        logger.info("createConnectorWithWrongContainerName " + useMasterKey);
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String wrongContainerName = "wrongContainerName";
         String topicName = wrongContainerName + "-" + UUID.randomUUID();
@@ -191,6 +191,61 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
             assertThat(connectorStatus.getConnector().get("trace")
                 .contains("java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account.")).isTrue();
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // IMPORTANT: remove the connector after use
+            if (kafkaCosmosConnectContainer != null) {
+                kafkaCosmosConnectContainer.deleteTopic(topicName);
+                kafkaCosmosConnectContainer.deleteConnector(connectorName);
+            }
+        }
+    }
+
+    @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider")
+    public void createConnectorWithWrongDatabaseName(boolean useMasterKey) {
+
+        logger.info("createConnectorWithWrongDatabaseName " + useMasterKey);
+        Map<String, String> sinkConnectorConfig = new HashMap<>();
+        String wrongDatabaseName = "wrongDatabaseName";
+        String topicName = wrongDatabaseName + "-" + UUID.randomUUID();
+
+        sinkConnectorConfig.put("topics", topicName);
+        sinkConnectorConfig.put("value.converter", JsonConverter.class.getName());
+        sinkConnectorConfig.put("value.converter.schemas.enable", "false");
+        sinkConnectorConfig.put("key.converter", StringConverter.class.getName());
+        sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
+        sinkConnectorConfig.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
+        sinkConnectorConfig.put("azure.cosmos.application.name", "Test");
+        sinkConnectorConfig.put("azure.cosmos.sink.database.name", wrongDatabaseName);
+        sinkConnectorConfig.put("azure.cosmos.sink.containers.topicMap", topicName + "#" + singlePartitionContainerName);
+
+        if (useMasterKey) {
+            sinkConnectorConfig.put("azure.cosmos.account.key", KafkaCosmosTestConfigurations.MASTER_KEY);
+        } else {
+            sinkConnectorConfig.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+            sinkConnectorConfig.put("azure.cosmos.account.tenantId", KafkaCosmosTestConfigurations.ACCOUNT_TENANT_ID);
+            sinkConnectorConfig.put("azure.cosmos.auth.aad.clientId", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_ID);
+            sinkConnectorConfig.put("azure.cosmos.auth.aad.clientSecret", KafkaCosmosTestConfigurations.ACCOUNT_AAD_CLIENT_SECRET);
+        }
+
+        // Create topic ahead of time
+        kafkaCosmosConnectContainer.createTopic(topicName, 1);
+
+        String connectorName = "simpleTest-" + UUID.randomUUID();
+        try {
+            // register the sink connector
+            logger.info("Registering connector " + connectorName);
+            kafkaCosmosConnectContainer.registerConnector(connectorName, sinkConnectorConfig);
+
+            // give some time for the connector to start up
+            Thread.sleep(10000);
+            // verify connector tasks
+            ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
+            assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
+            assertThat(connectorStatus.getConnector().get("trace")
+                .contains("org.apache.kafka.connect.errors.ConnectException: Database specified in the config does not exist in the CosmosDB account.")).isTrue();
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

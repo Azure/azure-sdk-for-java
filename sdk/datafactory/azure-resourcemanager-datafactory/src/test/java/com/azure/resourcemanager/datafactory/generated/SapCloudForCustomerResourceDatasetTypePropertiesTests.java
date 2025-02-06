@@ -10,15 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.SapCloudForCustomerRe
 public final class SapCloudForCustomerResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapCloudForCustomerResourceDatasetTypeProperties model
-            = BinaryData.fromString("{\"path\":\"datarvkgpogplbjuvl\"}")
-                .toObject(SapCloudForCustomerResourceDatasetTypeProperties.class);
+        SapCloudForCustomerResourceDatasetTypeProperties model = BinaryData.fromString("{\"path\":\"dataygotoh\"}")
+            .toObject(SapCloudForCustomerResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapCloudForCustomerResourceDatasetTypeProperties model
-            = new SapCloudForCustomerResourceDatasetTypeProperties().withPath("datarvkgpogplbjuvl");
+            = new SapCloudForCustomerResourceDatasetTypeProperties().withPath("dataygotoh");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerResourceDatasetTypeProperties.class);
     }
 }

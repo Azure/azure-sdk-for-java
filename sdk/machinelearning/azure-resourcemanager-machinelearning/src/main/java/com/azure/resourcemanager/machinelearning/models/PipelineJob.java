@@ -5,117 +5,71 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Pipeline Job definition: defines generic to MFE attributes. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("Pipeline")
+/**
+ * Pipeline Job definition: defines generic to MFE attributes.
+ */
 @Fluent
 public final class PipelineJob extends JobBaseProperties {
     /*
-     * Inputs for the pipeline job.
+     * [Required] Specifies the type of job.
      */
-    @JsonProperty(value = "inputs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, JobInput> inputs;
-
-    /*
-     * Jobs construct the Pipeline Job.
-     */
-    @JsonProperty(value = "jobs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> jobs;
-
-    /*
-     * Outputs for the pipeline job
-     */
-    @JsonProperty(value = "outputs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, JobOutput> outputs;
+    private JobType jobType = JobType.PIPELINE;
 
     /*
      * Pipeline settings, for things like ContinueRunOnStepFailure etc.
      */
-    @JsonProperty(value = "settings")
     private Object settings;
+
+    /*
+     * Jobs construct the Pipeline Job.
+     */
+    private Map<String, Object> jobs;
+
+    /*
+     * Inputs for the pipeline job.
+     */
+    private Map<String, JobInput> inputs;
+
+    /*
+     * Outputs for the pipeline job
+     */
+    private Map<String, JobOutput> outputs;
 
     /*
      * ARM resource ID of source job.
      */
-    @JsonProperty(value = "sourceJobId")
     private String sourceJobId;
 
-    /** Creates an instance of PipelineJob class. */
+    /*
+     * Status of the job.
+     */
+    private JobStatus status;
+
+    /**
+     * Creates an instance of PipelineJob class.
+     */
     public PipelineJob() {
     }
 
     /**
-     * Get the inputs property: Inputs for the pipeline job.
-     *
-     * @return the inputs value.
+     * Get the jobType property: [Required] Specifies the type of job.
+     * 
+     * @return the jobType value.
      */
-    public Map<String, JobInput> inputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Set the inputs property: Inputs for the pipeline job.
-     *
-     * @param inputs the inputs value to set.
-     * @return the PipelineJob object itself.
-     */
-    public PipelineJob withInputs(Map<String, JobInput> inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
-    /**
-     * Get the jobs property: Jobs construct the Pipeline Job.
-     *
-     * @return the jobs value.
-     */
-    public Map<String, Object> jobs() {
-        return this.jobs;
-    }
-
-    /**
-     * Set the jobs property: Jobs construct the Pipeline Job.
-     *
-     * @param jobs the jobs value to set.
-     * @return the PipelineJob object itself.
-     */
-    public PipelineJob withJobs(Map<String, Object> jobs) {
-        this.jobs = jobs;
-        return this;
-    }
-
-    /**
-     * Get the outputs property: Outputs for the pipeline job.
-     *
-     * @return the outputs value.
-     */
-    public Map<String, JobOutput> outputs() {
-        return this.outputs;
-    }
-
-    /**
-     * Set the outputs property: Outputs for the pipeline job.
-     *
-     * @param outputs the outputs value to set.
-     * @return the PipelineJob object itself.
-     */
-    public PipelineJob withOutputs(Map<String, JobOutput> outputs) {
-        this.outputs = outputs;
-        return this;
+    @Override
+    public JobType jobType() {
+        return this.jobType;
     }
 
     /**
      * Get the settings property: Pipeline settings, for things like ContinueRunOnStepFailure etc.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -124,7 +78,7 @@ public final class PipelineJob extends JobBaseProperties {
 
     /**
      * Set the settings property: Pipeline settings, for things like ContinueRunOnStepFailure etc.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the PipelineJob object itself.
      */
@@ -134,8 +88,68 @@ public final class PipelineJob extends JobBaseProperties {
     }
 
     /**
+     * Get the jobs property: Jobs construct the Pipeline Job.
+     * 
+     * @return the jobs value.
+     */
+    public Map<String, Object> jobs() {
+        return this.jobs;
+    }
+
+    /**
+     * Set the jobs property: Jobs construct the Pipeline Job.
+     * 
+     * @param jobs the jobs value to set.
+     * @return the PipelineJob object itself.
+     */
+    public PipelineJob withJobs(Map<String, Object> jobs) {
+        this.jobs = jobs;
+        return this;
+    }
+
+    /**
+     * Get the inputs property: Inputs for the pipeline job.
+     * 
+     * @return the inputs value.
+     */
+    public Map<String, JobInput> inputs() {
+        return this.inputs;
+    }
+
+    /**
+     * Set the inputs property: Inputs for the pipeline job.
+     * 
+     * @param inputs the inputs value to set.
+     * @return the PipelineJob object itself.
+     */
+    public PipelineJob withInputs(Map<String, JobInput> inputs) {
+        this.inputs = inputs;
+        return this;
+    }
+
+    /**
+     * Get the outputs property: Outputs for the pipeline job.
+     * 
+     * @return the outputs value.
+     */
+    public Map<String, JobOutput> outputs() {
+        return this.outputs;
+    }
+
+    /**
+     * Set the outputs property: Outputs for the pipeline job.
+     * 
+     * @param outputs the outputs value to set.
+     * @return the PipelineJob object itself.
+     */
+    public PipelineJob withOutputs(Map<String, JobOutput> outputs) {
+        this.outputs = outputs;
+        return this;
+    }
+
+    /**
      * Get the sourceJobId property: ARM resource ID of source job.
-     *
+     * 
      * @return the sourceJobId value.
      */
     public String sourceJobId() {
@@ -144,7 +158,7 @@ public final class PipelineJob extends JobBaseProperties {
 
     /**
      * Set the sourceJobId property: ARM resource ID of source job.
-     *
+     * 
      * @param sourceJobId the sourceJobId value to set.
      * @return the PipelineJob object itself.
      */
@@ -153,70 +167,100 @@ public final class PipelineJob extends JobBaseProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the status property: Status of the job.
+     * 
+     * @return the status value.
+     */
     @Override
-    public PipelineJob withComponentId(String componentId) {
-        super.withComponentId(componentId);
-        return this;
+    public JobStatus status() {
+        return this.status;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PipelineJob withComputeId(String computeId) {
-        super.withComputeId(computeId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PipelineJob withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PipelineJob withExperimentName(String experimentName) {
         super.withExperimentName(experimentName);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PipelineJob withIdentity(IdentityConfiguration identity) {
-        super.withIdentity(identity);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PipelineJob withIsArchived(Boolean isArchived) {
-        super.withIsArchived(isArchived);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PipelineJob withServices(Map<String, JobService> services) {
         super.withServices(services);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineJob withComputeId(String computeId) {
+        super.withComputeId(computeId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineJob withIsArchived(Boolean isArchived) {
+        super.withIsArchived(isArchived);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineJob withIdentity(IdentityConfiguration identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineJob withComponentId(String componentId) {
+        super.withComponentId(componentId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineJob withNotificationSetting(NotificationSetting notificationSetting) {
+        super.withNotificationSetting(notificationSetting);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PipelineJob withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public PipelineJob withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PipelineJob withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -224,32 +268,127 @@ public final class PipelineJob extends JobBaseProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PipelineJob withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (inputs() != null) {
-            inputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            inputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (outputs() != null) {
-            outputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            outputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("experimentName", experimentName());
+        jsonWriter.writeMapField("services", services(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("computeId", computeId());
+        jsonWriter.writeBooleanField("isArchived", isArchived());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeStringField("componentId", componentId());
+        jsonWriter.writeJsonField("notificationSetting", notificationSetting());
+        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
+        jsonWriter.writeUntypedField("settings", this.settings);
+        jsonWriter.writeMapField("jobs", this.jobs, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("sourceJobId", this.sourceJobId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineJob if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PipelineJob.
+     */
+    public static PipelineJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineJob deserializedPipelineJob = new PipelineJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPipelineJob.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPipelineJob.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPipelineJob.withProperties(properties);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPipelineJob.withDisplayName(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedPipelineJob.status = JobStatus.fromString(reader.getString());
+                } else if ("experimentName".equals(fieldName)) {
+                    deserializedPipelineJob.withExperimentName(reader.getString());
+                } else if ("services".equals(fieldName)) {
+                    Map<String, JobService> services = reader.readMap(reader1 -> JobService.fromJson(reader1));
+                    deserializedPipelineJob.withServices(services);
+                } else if ("computeId".equals(fieldName)) {
+                    deserializedPipelineJob.withComputeId(reader.getString());
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedPipelineJob.withIsArchived(reader.getNullable(JsonReader::getBoolean));
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPipelineJob.withIdentity(IdentityConfiguration.fromJson(reader));
+                } else if ("componentId".equals(fieldName)) {
+                    deserializedPipelineJob.withComponentId(reader.getString());
+                } else if ("notificationSetting".equals(fieldName)) {
+                    deserializedPipelineJob.withNotificationSetting(NotificationSetting.fromJson(reader));
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedPipelineJob.jobType = JobType.fromString(reader.getString());
+                } else if ("settings".equals(fieldName)) {
+                    deserializedPipelineJob.settings = reader.readUntyped();
+                } else if ("jobs".equals(fieldName)) {
+                    Map<String, Object> jobs = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedPipelineJob.jobs = jobs;
+                } else if ("inputs".equals(fieldName)) {
+                    Map<String, JobInput> inputs = reader.readMap(reader1 -> JobInput.fromJson(reader1));
+                    deserializedPipelineJob.inputs = inputs;
+                } else if ("outputs".equals(fieldName)) {
+                    Map<String, JobOutput> outputs = reader.readMap(reader1 -> JobOutput.fromJson(reader1));
+                    deserializedPipelineJob.outputs = outputs;
+                } else if ("sourceJobId".equals(fieldName)) {
+                    deserializedPipelineJob.sourceJobId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPipelineJob;
+        });
     }
 }

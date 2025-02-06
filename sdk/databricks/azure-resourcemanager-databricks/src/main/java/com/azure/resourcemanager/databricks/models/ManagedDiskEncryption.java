@@ -6,37 +6,42 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that contains details of encryption used on the workspace. */
+/**
+ * The object that contains details of encryption used on the workspace.
+ */
 @Fluent
-public final class ManagedDiskEncryption {
+public final class ManagedDiskEncryption implements JsonSerializable<ManagedDiskEncryption> {
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault
      */
-    @JsonProperty(value = "keySource", required = true)
     private EncryptionKeySource keySource;
 
     /*
      * Key Vault input properties for encryption.
      */
-    @JsonProperty(value = "keyVaultProperties", required = true)
     private ManagedDiskEncryptionKeyVaultProperties keyVaultProperties;
 
     /*
      * Indicate whether the latest key version should be automatically used for Managed Disk Encryption.
      */
-    @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
 
-    /** Creates an instance of ManagedDiskEncryption class. */
+    /**
+     * Creates an instance of ManagedDiskEncryption class.
+     */
     public ManagedDiskEncryption() {
     }
 
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.Keyvault.
-     *
+     * 
      * @return the keySource value.
      */
     public EncryptionKeySource keySource() {
@@ -46,7 +51,7 @@ public final class ManagedDiskEncryption {
     /**
      * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.Keyvault.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the ManagedDiskEncryption object itself.
      */
@@ -57,7 +62,7 @@ public final class ManagedDiskEncryption {
 
     /**
      * Get the keyVaultProperties property: Key Vault input properties for encryption.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public ManagedDiskEncryptionKeyVaultProperties keyVaultProperties() {
@@ -66,7 +71,7 @@ public final class ManagedDiskEncryption {
 
     /**
      * Set the keyVaultProperties property: Key Vault input properties for encryption.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the ManagedDiskEncryption object itself.
      */
@@ -78,7 +83,7 @@ public final class ManagedDiskEncryption {
     /**
      * Get the rotationToLatestKeyVersionEnabled property: Indicate whether the latest key version should be
      * automatically used for Managed Disk Encryption.
-     *
+     * 
      * @return the rotationToLatestKeyVersionEnabled value.
      */
     public Boolean rotationToLatestKeyVersionEnabled() {
@@ -88,7 +93,7 @@ public final class ManagedDiskEncryption {
     /**
      * Set the rotationToLatestKeyVersionEnabled property: Indicate whether the latest key version should be
      * automatically used for Managed Disk Encryption.
-     *
+     * 
      * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
      * @return the ManagedDiskEncryption object itself.
      */
@@ -99,24 +104,68 @@ public final class ManagedDiskEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keySource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property keySource in model ManagedDiskEncryption"));
         }
         if (keyVaultProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultProperties in model ManagedDiskEncryption"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultProperties in model ManagedDiskEncryption"));
         } else {
             keyVaultProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedDiskEncryption.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keySource", this.keySource == null ? null : this.keySource.toString());
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
+        jsonWriter.writeBooleanField("rotationToLatestKeyVersionEnabled", this.rotationToLatestKeyVersionEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDiskEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDiskEncryption if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedDiskEncryption.
+     */
+    public static ManagedDiskEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDiskEncryption deserializedManagedDiskEncryption = new ManagedDiskEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keySource".equals(fieldName)) {
+                    deserializedManagedDiskEncryption.keySource = EncryptionKeySource.fromString(reader.getString());
+                } else if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedManagedDiskEncryption.keyVaultProperties
+                        = ManagedDiskEncryptionKeyVaultProperties.fromJson(reader);
+                } else if ("rotationToLatestKeyVersionEnabled".equals(fieldName)) {
+                    deserializedManagedDiskEncryption.rotationToLatestKeyVersionEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDiskEncryption;
+        });
+    }
 }

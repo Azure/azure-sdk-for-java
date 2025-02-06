@@ -17,7 +17,7 @@ import com.azure.resourcemanager.logic.fluent.models.ApiOperationInner;
 public interface IntegrationServiceEnvironmentManagedApiOperationsClient {
     /**
      * Gets the managed Api operations.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -27,12 +27,12 @@ public interface IntegrationServiceEnvironmentManagedApiOperationsClient {
      * @return the managed Api operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiOperationInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName);
+    PagedIterable<ApiOperationInner> list(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName);
 
     /**
      * Gets the managed Api operations.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -43,6 +43,6 @@ public interface IntegrationServiceEnvironmentManagedApiOperationsClient {
      * @return the managed Api operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiOperationInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+    PagedIterable<ApiOperationInner> list(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName, Context context);
 }

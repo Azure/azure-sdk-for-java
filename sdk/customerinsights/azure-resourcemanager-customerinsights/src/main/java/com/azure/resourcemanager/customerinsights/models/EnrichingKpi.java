@@ -5,109 +5,221 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.fluent.models.KpiDefinitionInner;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The enriching KPI definition. */
+/**
+ * The enriching KPI definition.
+ */
 @Fluent
 public final class EnrichingKpi extends KpiDefinitionInner {
-    /** Creates an instance of EnrichingKpi class. */
+    /*
+     * Provisioning state.
+     */
+    private ProvisioningStates provisioningState;
+
+    /*
+     * The participant profiles.
+     */
+    private List<KpiParticipantProfilesMetadata> participantProfilesMetadata;
+
+    /*
+     * The KPI GroupByMetadata.
+     */
+    private List<KpiGroupByMetadata> groupByMetadata;
+
+    /*
+     * The KPI name.
+     */
+    private String kpiName;
+
+    /*
+     * The hub name.
+     */
+    private String tenantId;
+
+    /**
+     * Creates an instance of EnrichingKpi class.
+     */
     public EnrichingKpi() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the provisioningState property: Provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningStates provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the participantProfilesMetadata property: The participant profiles.
+     * 
+     * @return the participantProfilesMetadata value.
+     */
+    @Override
+    public List<KpiParticipantProfilesMetadata> participantProfilesMetadata() {
+        return this.participantProfilesMetadata;
+    }
+
+    /**
+     * Get the groupByMetadata property: The KPI GroupByMetadata.
+     * 
+     * @return the groupByMetadata value.
+     */
+    @Override
+    public List<KpiGroupByMetadata> groupByMetadata() {
+        return this.groupByMetadata;
+    }
+
+    /**
+     * Get the kpiName property: The KPI name.
+     * 
+     * @return the kpiName value.
+     */
+    @Override
+    public String kpiName() {
+        return this.kpiName;
+    }
+
+    /**
+     * Get the tenantId property: The hub name.
+     * 
+     * @return the tenantId value.
+     */
+    @Override
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withEntityType(EntityTypes entityType) {
         super.withEntityType(entityType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withEntityTypeName(String entityTypeName) {
         super.withEntityTypeName(entityTypeName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withDisplayName(Map<String, String> displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withDescription(Map<String, String> description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withCalculationWindow(CalculationWindowTypes calculationWindow) {
         super.withCalculationWindow(calculationWindow);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withCalculationWindowFieldName(String calculationWindowFieldName) {
         super.withCalculationWindowFieldName(calculationWindowFieldName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withFunction(KpiFunctions function) {
         super.withFunction(function);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withExpression(String expression) {
         super.withExpression(expression);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withUnit(String unit) {
         super.withUnit(unit);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withFilter(String filter) {
         super.withFilter(filter);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withGroupBy(List<String> groupBy) {
         super.withGroupBy(groupBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withThresHolds(KpiThresholds thresHolds) {
         super.withThresHolds(thresHolds);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withAliases(List<KpiAlias> aliases) {
         super.withAliases(aliases);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EnrichingKpi withExtracts(List<KpiExtract> extracts) {
         super.withExtracts(extracts);
@@ -116,11 +228,144 @@ public final class EnrichingKpi extends KpiDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (entityType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property entityType in model EnrichingKpi"));
+        }
+        if (entityTypeName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property entityTypeName in model EnrichingKpi"));
+        }
+        if (calculationWindow() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property calculationWindow in model EnrichingKpi"));
+        }
+        if (function() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property function in model EnrichingKpi"));
+        }
+        if (expression() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property expression in model EnrichingKpi"));
+        }
+        if (groupByMetadata() != null) {
+            groupByMetadata().forEach(e -> e.validate());
+        }
+        if (participantProfilesMetadata() != null) {
+            participantProfilesMetadata().forEach(e -> e.validate());
+        }
+        if (thresHolds() != null) {
+            thresHolds().validate();
+        }
+        if (aliases() != null) {
+            aliases().forEach(e -> e.validate());
+        }
+        if (extracts() != null) {
+            extracts().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnrichingKpi.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityType", entityType() == null ? null : entityType().toString());
+        jsonWriter.writeStringField("entityTypeName", entityTypeName());
+        jsonWriter.writeStringField("calculationWindow",
+            calculationWindow() == null ? null : calculationWindow().toString());
+        jsonWriter.writeStringField("function", function() == null ? null : function().toString());
+        jsonWriter.writeStringField("expression", expression());
+        jsonWriter.writeMapField("displayName", displayName(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", description(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("calculationWindowFieldName", calculationWindowFieldName());
+        jsonWriter.writeStringField("unit", unit());
+        jsonWriter.writeStringField("filter", filter());
+        jsonWriter.writeArrayField("groupBy", groupBy(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("thresHolds", thresHolds());
+        jsonWriter.writeArrayField("aliases", aliases(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extracts", extracts(), (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichingKpi from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichingKpi if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnrichingKpi.
+     */
+    public static EnrichingKpi fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichingKpi deserializedEnrichingKpi = new EnrichingKpi();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityType".equals(fieldName)) {
+                    deserializedEnrichingKpi.withEntityType(EntityTypes.fromString(reader.getString()));
+                } else if ("entityTypeName".equals(fieldName)) {
+                    deserializedEnrichingKpi.withEntityTypeName(reader.getString());
+                } else if ("calculationWindow".equals(fieldName)) {
+                    deserializedEnrichingKpi
+                        .withCalculationWindow(CalculationWindowTypes.fromString(reader.getString()));
+                } else if ("function".equals(fieldName)) {
+                    deserializedEnrichingKpi.withFunction(KpiFunctions.fromString(reader.getString()));
+                } else if ("expression".equals(fieldName)) {
+                    deserializedEnrichingKpi.withExpression(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedEnrichingKpi.tenantId = reader.getString();
+                } else if ("kpiName".equals(fieldName)) {
+                    deserializedEnrichingKpi.kpiName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnrichingKpi.withDisplayName(displayName);
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEnrichingKpi.withDescription(description);
+                } else if ("calculationWindowFieldName".equals(fieldName)) {
+                    deserializedEnrichingKpi.withCalculationWindowFieldName(reader.getString());
+                } else if ("unit".equals(fieldName)) {
+                    deserializedEnrichingKpi.withUnit(reader.getString());
+                } else if ("filter".equals(fieldName)) {
+                    deserializedEnrichingKpi.withFilter(reader.getString());
+                } else if ("groupBy".equals(fieldName)) {
+                    List<String> groupBy = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEnrichingKpi.withGroupBy(groupBy);
+                } else if ("groupByMetadata".equals(fieldName)) {
+                    List<KpiGroupByMetadata> groupByMetadata
+                        = reader.readArray(reader1 -> KpiGroupByMetadata.fromJson(reader1));
+                    deserializedEnrichingKpi.groupByMetadata = groupByMetadata;
+                } else if ("participantProfilesMetadata".equals(fieldName)) {
+                    List<KpiParticipantProfilesMetadata> participantProfilesMetadata
+                        = reader.readArray(reader1 -> KpiParticipantProfilesMetadata.fromJson(reader1));
+                    deserializedEnrichingKpi.participantProfilesMetadata = participantProfilesMetadata;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEnrichingKpi.provisioningState = ProvisioningStates.fromString(reader.getString());
+                } else if ("thresHolds".equals(fieldName)) {
+                    deserializedEnrichingKpi.withThresHolds(KpiThresholds.fromJson(reader));
+                } else if ("aliases".equals(fieldName)) {
+                    List<KpiAlias> aliases = reader.readArray(reader1 -> KpiAlias.fromJson(reader1));
+                    deserializedEnrichingKpi.withAliases(aliases);
+                } else if ("extracts".equals(fieldName)) {
+                    List<KpiExtract> extracts = reader.readArray(reader1 -> KpiExtract.fromJson(reader1));
+                    deserializedEnrichingKpi.withExtracts(extracts);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichingKpi;
+        });
     }
 }

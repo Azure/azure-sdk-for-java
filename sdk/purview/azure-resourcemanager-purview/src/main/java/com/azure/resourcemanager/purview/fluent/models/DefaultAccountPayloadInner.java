@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.purview.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.purview.models.ScopeType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Payload to get and set the default account in the given scope. */
+/**
+ * Payload to get and set the default account in the given scope.
+ */
 @Fluent
-public final class DefaultAccountPayloadInner {
+public final class DefaultAccountPayloadInner implements JsonSerializable<DefaultAccountPayloadInner> {
     /*
      * The name of the account that is set as the default.
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * The resource group name of the account that is set as the default.
      */
-    @JsonProperty(value = "resourceGroupName")
     private String resourceGroupName;
 
     /*
      * The scope object ID. For example, sub ID or tenant ID.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The scope tenant in which the default account is set.
      */
-    @JsonProperty(value = "scopeTenantId")
     private String scopeTenantId;
 
     /*
      * The scope where the default account is set.
      */
-    @JsonProperty(value = "scopeType")
     private ScopeType scopeType;
 
     /*
      * The subscription ID of the account that is set as the default.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
-    /** Creates an instance of DefaultAccountPayloadInner class. */
+    /**
+     * Creates an instance of DefaultAccountPayloadInner class.
+     */
     public DefaultAccountPayloadInner() {
     }
 
     /**
      * Get the accountName property: The name of the account that is set as the default.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -62,7 +64,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Set the accountName property: The name of the account that is set as the default.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the DefaultAccountPayloadInner object itself.
      */
@@ -73,7 +75,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Get the resourceGroupName property: The resource group name of the account that is set as the default.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -82,7 +84,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Set the resourceGroupName property: The resource group name of the account that is set as the default.
-     *
+     * 
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the DefaultAccountPayloadInner object itself.
      */
@@ -93,7 +95,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Get the scope property: The scope object ID. For example, sub ID or tenant ID.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -102,7 +104,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Set the scope property: The scope object ID. For example, sub ID or tenant ID.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the DefaultAccountPayloadInner object itself.
      */
@@ -113,7 +115,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Get the scopeTenantId property: The scope tenant in which the default account is set.
-     *
+     * 
      * @return the scopeTenantId value.
      */
     public String scopeTenantId() {
@@ -122,7 +124,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Set the scopeTenantId property: The scope tenant in which the default account is set.
-     *
+     * 
      * @param scopeTenantId the scopeTenantId value to set.
      * @return the DefaultAccountPayloadInner object itself.
      */
@@ -133,7 +135,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Get the scopeType property: The scope where the default account is set.
-     *
+     * 
      * @return the scopeType value.
      */
     public ScopeType scopeType() {
@@ -142,7 +144,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Set the scopeType property: The scope where the default account is set.
-     *
+     * 
      * @param scopeType the scopeType value to set.
      * @return the DefaultAccountPayloadInner object itself.
      */
@@ -153,7 +155,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Get the subscriptionId property: The subscription ID of the account that is set as the default.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -162,7 +164,7 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Set the subscriptionId property: The subscription ID of the account that is set as the default.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the DefaultAccountPayloadInner object itself.
      */
@@ -173,9 +175,60 @@ public final class DefaultAccountPayloadInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("resourceGroupName", this.resourceGroupName);
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("scopeTenantId", this.scopeTenantId);
+        jsonWriter.writeStringField("scopeType", this.scopeType == null ? null : this.scopeType.toString());
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultAccountPayloadInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultAccountPayloadInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultAccountPayloadInner.
+     */
+    public static DefaultAccountPayloadInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultAccountPayloadInner deserializedDefaultAccountPayloadInner = new DefaultAccountPayloadInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedDefaultAccountPayloadInner.accountName = reader.getString();
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedDefaultAccountPayloadInner.resourceGroupName = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedDefaultAccountPayloadInner.scope = reader.getString();
+                } else if ("scopeTenantId".equals(fieldName)) {
+                    deserializedDefaultAccountPayloadInner.scopeTenantId = reader.getString();
+                } else if ("scopeType".equals(fieldName)) {
+                    deserializedDefaultAccountPayloadInner.scopeType = ScopeType.fromString(reader.getString());
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedDefaultAccountPayloadInner.subscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultAccountPayloadInner;
+        });
     }
 }

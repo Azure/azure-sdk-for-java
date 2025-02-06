@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperDslConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperDslConnectorProperties model = BinaryData.fromString("{\"name\":\"rb\",\"value\":\"dataxsjybvitvqk\"}")
-            .toObject(MapperDslConnectorProperties.class);
-        Assertions.assertEquals("rb", model.name());
+        MapperDslConnectorProperties model
+            = BinaryData.fromString("{\"name\":\"ybxawoijpodtblx\",\"value\":\"datakwjdjodqhy\"}")
+                .toObject(MapperDslConnectorProperties.class);
+        Assertions.assertEquals("ybxawoijpodtblx", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MapperDslConnectorProperties model
-            = new MapperDslConnectorProperties().withName("rb").withValue("dataxsjybvitvqk");
+            = new MapperDslConnectorProperties().withName("ybxawoijpodtblx").withValue("datakwjdjodqhy");
         model = BinaryData.fromObject(model).toObject(MapperDslConnectorProperties.class);
-        Assertions.assertEquals("rb", model.name());
+        Assertions.assertEquals("ybxawoijpodtblx", model.name());
     }
 }

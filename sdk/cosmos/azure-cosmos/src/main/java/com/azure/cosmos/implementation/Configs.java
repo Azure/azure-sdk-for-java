@@ -5,15 +5,20 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -31,7 +36,6 @@ public class Configs {
     public static final String SPECULATION_TYPE = "COSMOS_SPECULATION_TYPE";
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
-    private final SslContext sslContext;
 
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
@@ -43,6 +47,12 @@ public class Configs {
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
+    private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
+    private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
+    private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
+    private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
+    private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
+    private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -178,6 +188,10 @@ public class Configs {
     private static final String MAX_ITEM_COUNT_FOR_VECTOR_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH";
     public static final int DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH = 50000;
 
+    private static final String MAX_ITEM_COUNT_FOR_HYBRID_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_HYBRID_SEARCH";
+    private static final String MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE = "COSMOS_MAX_ITEM_SIZE_FOR_HYBRID_SEARCH";
+    public static final int DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH = 1000;
+
     private static final String AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = "COSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY";
 
     private static final boolean DEFAULT_AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = false;
@@ -203,6 +217,26 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
 
+    // Bulk default settings
+    public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE = "COSMOS.MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+    public static final String MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE = "COSMOS_MIN_TARGET_BULK_MICRO_BATCH_SIZE";
+    public static final int DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE = 1;
+
+    public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY = "COSMOS.MAX_BULK_MICRO_BATCH_CONCURRENCY";
+    public static final String MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_CONCURRENCY";
+    public static final int DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY = 1;
+
+    public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = "COSMOS.MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final int DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 1000;
+
+    // Config of CodingErrorAction on charset decoder for malformed input
+    public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
+    public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = StringUtils.EMPTY;
+
+    // Config of CodingErrorAction on charset decoder for unmapped character
+    public static final String CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER";
+    public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = StringUtils.EMPTY;
 
     // Metrics
     // Samples:
@@ -245,26 +279,87 @@ public class Configs {
     private static final boolean DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = true;
     private static final String SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = "COSMOS.SHOULD_LOG_INCORRECTLY_MAPPED_USER_SESSION_TOKEN";
 
-    public Configs() {
-        this.sslContext = sslContextInit();
-    }
+    private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
+    private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
+
+    private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
+    private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
+    private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
+
+    // Config to indicate whether allow http connections
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = false;
+    private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = "COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
+    private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE = "COSMOS_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
+
+    // Config to indicate whether disable server certificate validation for emulator
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final boolean DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = false;
+    private static final String EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = "COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED";
+    private static final String EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED_VARIABLE = "COSMOS_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED";
+
+    // Config to indicate emulator host name
+    // Please note that this config should only during development or test, please do not use in prod env
+    private static final String DEFAULT_EMULATOR_HOST = StringUtils.EMPTY;
+    private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
+    private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
+
+    // Flag to indicate whether enabled http2 for gateway
+    private static final boolean DEFAULT_HTTP2_ENABLED = false;
+    private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
+    private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
+
+    // Config to indicate the maximum number of live connections to keep in the pool for http2
+    private static final int DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE = 1000;
+    private static final String HTTP2_MAX_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE";
+    private static final String HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE";
+
+    // Config to indicate the minimum number of live connections to keep in the pool for http2
+    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = 1;
+    private static final String HTTP2_MIN_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE";
+    private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
+
+    // Config to indicate the maximum number of the concurrent streams that can be opened to the remote peer for http2
+    private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
+    private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
+    private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
     public static int getCPUCnt() {
         return CPU_CNT;
     }
 
-    private SslContext sslContextInit() {
+    private SslContext sslContextInit(boolean serverCertVerificationDisabled, boolean http2Enabled) {
         try {
-            SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            SslContextBuilder sslContextBuilder =
+                SslContextBuilder
+                    .forClient()
+                    .sslProvider(SslContext.defaultClientProvider());
+
+            if (serverCertVerificationDisabled) {
+                sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            }
+
+            if (http2Enabled) {
+                sslContextBuilder
+                    .applicationProtocolConfig(
+                        new ApplicationProtocolConfig(
+                            ApplicationProtocolConfig.Protocol.ALPN,
+                            ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE,
+                            ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT,
+                            ApplicationProtocolNames.HTTP_2,
+                            ApplicationProtocolNames.HTTP_1_1
+                        )
+                    );
+            }
+            return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
         }
     }
 
-    public SslContext getSslContext() {
-        return this.sslContext;
+    public SslContext getSslContext(boolean serverCertValidationDisabled, boolean http2Enabled) {
+        return sslContextInit(serverCertValidationDisabled, http2Enabled);
     }
 
     public Protocol getProtocol() {
@@ -315,43 +410,71 @@ public class Configs {
         return getJVMConfigAsInt(MAX_DIRECT_HTTPS_POOL_SIZE, DEFAULT_DIRECT_HTTPS_POOL_SIZE);
     }
 
-    public int getMaxHttpHeaderSize() {
-        return getJVMConfigAsInt(MAX_HTTP_HEADER_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_REQUEST_HEADER_SIZE);
+    public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
+        return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
 
-    public int getMaxHttpInitialLineLength() {
-        return getJVMConfigAsInt(MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH);
+    public URI getThinclientEndpoint() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENDPOINT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return URI.create(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENDPOINT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return URI.create(valueFromEnvVariable);
+        }
+
+        return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
     }
 
-    public int getMaxHttpChunkSize() {
-        return getJVMConfigAsInt(MAX_HTTP_CHUNK_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_CHUNK_SIZE_IN_BYTES);
-    }
+    public static boolean getThinclientEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
 
-    public int getMaxHttpBodyLength() {
-        return getJVMConfigAsInt(MAX_HTTP_BODY_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES);
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_ENABLED;
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
     }
 
+    public static int getMaxHttpHeaderSize() {
+        return getJVMConfigAsInt(MAX_HTTP_HEADER_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_REQUEST_HEADER_SIZE);
+    }
+
+    public static int getMaxHttpInitialLineLength() {
+        return getJVMConfigAsInt(MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH);
+    }
+
+    public static int getMaxHttpChunkSize() {
+        return getJVMConfigAsInt(MAX_HTTP_CHUNK_SIZE_IN_BYTES, DEFAULT_MAX_HTTP_CHUNK_SIZE_IN_BYTES);
+    }
+
+    public static int getMaxHttpBodyLength() {
+        return getJVMConfigAsInt(MAX_HTTP_BODY_LENGTH_IN_BYTES, DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES);
+    }
+
     public static int getClientTelemetrySchedulingInSec() {
         return getJVMConfigAsInt(CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS, DEFAULT_CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS);
     }
 
-    public int getGlobalEndpointManagerMaxInitializationTimeInSeconds() {
-        return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
-    }
-
-    public String getReactorNettyConnectionPoolName() {
+    public static String getReactorNettyConnectionPoolName() {
         return REACTOR_NETTY_CONNECTION_POOL_NAME;
     }
 
-    public Duration getMaxIdleConnectionTimeout() {
+    public static Duration getMaxIdleConnectionTimeout() {
         return MAX_IDLE_CONNECTION_TIMEOUT;
     }
 
-    public Duration getConnectionAcquireTimeout() {
+    public static Duration getConnectionAcquireTimeout() {
         return CONNECTION_ACQUIRE_TIMEOUT;
     }
 
@@ -383,12 +506,12 @@ public class Configs {
     public static int getDefaultHttpPoolSize() {
         String valueFromSystemProperty = System.getProperty(HTTP_DEFAULT_CONNECTION_POOL_SIZE);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
@@ -397,12 +520,12 @@ public class Configs {
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
         String valueFromSystemProperty = System.getProperty(DEFAULT_E2E_FOR_NON_POINT_DISABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.valueOf(valueFromSystemProperty);
+            return Boolean.parseBoolean(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.valueOf(valueFromEnvVariable);
+            return Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
@@ -411,26 +534,68 @@ public class Configs {
     public static boolean isIdValueValidationEnabled() {
         String valueFromSystemProperty = System.getProperty(PREVENT_INVALID_ID_CHARS);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return !Boolean.valueOf(valueFromSystemProperty);
+            return !Boolean.parseBoolean(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return!Boolean.valueOf(valueFromEnvVariable);
+            return!Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
     }
 
+    public static int getMinTargetBulkMicroBatchSize() {
+        String valueFromSystemProperty = System.getProperty(MIN_TARGET_BULK_MICRO_BATCH_SIZE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MIN_TARGET_BULK_MICRO_BATCH_SIZE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MIN_TARGET_BULK_MICRO_BATCH_SIZE;
+    }
+
+    public static int getMaxBulkMicroBatchConcurrency() {
+        String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_CONCURRENCY);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MAX_BULK_MICRO_BATCH_CONCURRENCY_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MAX_BULK_MICRO_BATCH_CONCURRENCY;
+    }
+
+    public static int getMaxBulkMicroBatchFlushIntervalInMs() {
+        String valueFromSystemProperty = System.getProperty(MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS;
+    }
+
     public static int getMaxHttpRequestTimeout() {
         String valueFromSystemProperty = System.getProperty(HTTP_MAX_REQUEST_TIMEOUT);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Integer.valueOf(valueFromSystemProperty);
+            return Integer.parseInt(valueFromSystemProperty);
         }
 
         String valueFromEnvVariable = System.getenv(HTTP_MAX_REQUEST_TIMEOUT_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Integer.valueOf(valueFromEnvVariable);
+            return Integer.parseInt(valueFromEnvVariable);
         }
 
         return DEFAULT_HTTP_MAX_REQUEST_TIMEOUT;
@@ -511,7 +676,7 @@ public class Configs {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
-            return Integer.valueOf(val);
+            return Integer.parseInt(val);
         }
     }
 
@@ -519,7 +684,7 @@ public class Configs {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
         } else {
-            return Boolean.valueOf(val);
+            return Boolean.parseBoolean(val);
         }
     }
 
@@ -561,6 +726,19 @@ public class Configs {
              firstNonNull(
                 emptyToNull(System.getenv().get(MAX_ITEM_COUNT_FOR_VECTOR_SEARCH)),
                 String.valueOf(DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH))));
+    }
+
+    public static int getMaxItemCountForHybridSearchSearch() {
+        String valueFromSystemProperty = System.getProperty(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromSystemVariable = System.getenv(MAX_ITEM_COUNT_FOR_HYBRID_SEARCH_VARIABLE);
+        if (valueFromSystemVariable != null && !valueFromSystemVariable.isEmpty()) {
+            return Integer.parseInt(valueFromSystemVariable);
+        }
+        return DEFAULT_MAX_ITEM_COUNT_FOR_HYBRID_SEARCH;
     }
 
     public static boolean getAzureCosmosNonStreamingOrderByDisabled() {
@@ -655,6 +833,18 @@ public class Configs {
                     String.valueOf(DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)));
 
         return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static boolean shouldOptInDefaultCircuitBreakerConfig() {
+
+        String shouldOptInDefaultPartitionLevelCircuitBreakerConfig =
+            System.getProperty(
+                PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN)),
+                    String.valueOf(DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN)));
+
+        return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
     public static CosmosMicrometerMetricsConfig getMetricsConfig() {
@@ -773,5 +963,100 @@ public class Configs {
         }
 
         return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
+    }
+
+    public static String getCharsetDecoderErrorActionOnMalformedInput() {
+        return System.getProperty(
+                CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT)),
+                    DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT));
+    }
+
+    public static String getCharsetDecoderErrorActionOnUnmappedCharacter() {
+        return System.getProperty(
+                CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
+                    DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
+    }
+
+    public static boolean shouldDisableIMDSAccess() {
+        String shouldDisableIMDSAccess =
+            System.getProperty(
+                COSMOS_DISABLE_IMDS_ACCESS,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(COSMOS_DISABLE_IMDS_ACCESS_VARIABLE)),
+                    String.valueOf(COSMOS_DISABLE_IMDS_ACCESS_DEFAULT)));
+
+        return Boolean.parseBoolean(shouldDisableIMDSAccess);
+    }
+
+    public static boolean isHttpConnectionWithoutTLSAllowed() {
+        String httpForEmulatorAllowed = System.getProperty(
+            HTTP_CONNECTION_WITHOUT_TLS_ALLOWED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED)));
+
+        return Boolean.parseBoolean(httpForEmulatorAllowed);
+    }
+
+    public static boolean isHttp2Enabled() {
+        String httpEnabledConfig = System.getProperty(
+            HTTP2_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_ENABLED)));
+
+        return Boolean.parseBoolean(httpEnabledConfig);
+    }
+
+    public static int getHttp2MaxConnectionPoolSize() {
+        String http2MaxConnectionPoolSize = System.getProperty(
+            HTTP2_MAX_CONNECTION_POOL_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE)));
+
+        return Integer.parseInt(http2MaxConnectionPoolSize);
+    }
+
+    public static int getHttp2MinConnectionPoolSize() {
+        String http2MinConnectionPoolSize = System.getProperty(
+            HTTP2_MIN_CONNECTION_POOL_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE)));
+
+        return Integer.parseInt(http2MinConnectionPoolSize);
+    }
+
+    public static int getHttp2MaxConcurrentStreams() {
+        String http2MaxConcurrentStreams = System.getProperty(
+            HTTP2_MAX_CONCURRENT_STREAMS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS)));
+
+        return Integer.parseInt(http2MaxConcurrentStreams);
+    }
+
+    public static boolean isEmulatorServerCertValidationDisabled() {
+        String certVerificationDisabledConfig = System.getProperty(
+            EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED)));
+
+        return Boolean.parseBoolean(certVerificationDisabledConfig);
+    }
+
+    public static String getEmulatorHost() {
+        return System.getProperty(
+            EMULATOR_HOST,
+            firstNonNull(
+                emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
+                DEFAULT_EMULATOR_HOST));
     }
 }

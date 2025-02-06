@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of health probe request that is made.
  */
@@ -41,7 +38,6 @@ public enum HealthProbeRequestType {
      * @param value the serialized value to parse.
      * @return the parsed HealthProbeRequestType object, or null if unable to parse.
      */
-    @JsonCreator
     public static HealthProbeRequestType fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum HealthProbeRequestType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

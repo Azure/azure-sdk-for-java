@@ -87,6 +87,12 @@ public final class ShareLeaseClientBuilder {
     private boolean allowTrailingDot;
 
     /**
+     * Creates a new instance of {@link ShareLeaseClientBuilder}.
+     */
+    public ShareLeaseClientBuilder() {
+    }
+
+    /**
      * Creates a {@link ShareLeaseClient} based on the configurations set in the builder.
      *
      * @return a {@link ShareLeaseClient} based on the configurations in this builder.
@@ -202,7 +208,6 @@ public final class ShareLeaseClientBuilder {
     private String getLeaseId() {
         return (leaseId == null) ? CoreUtils.randomUuid().toString() : leaseId;
     }
-
 
     /**
      * Set the trailing dot property to specify whether trailing dot will be trimmed or not from the source URI.

@@ -6,6 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -33,6 +37,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
@@ -101,16 +106,32 @@ public class TestUtils {
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
 
+    /**
+     * Sanitizer to remove header values for ServiceBusDlqSupplementaryAuthorization and
+     * ServiceBusSupplementaryAuthorization.
+     */
+    public static final TestProxySanitizer AUTHORIZATION_HEADER;
+
+    public static final List<TestProxySanitizer> TEST_PROXY_SANITIZERS;
+
+    public static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
+
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
         APPLICATION_PROPERTIES.put("a-number", 10L);
         APPLICATION_PROPERTIES.put("status-code", AmqpResponseCode.OK.getValue());
-    }
 
-    /**
-     * Namespace used to record tests.
-     */
-    public static final String TEST_NAMESPACE = "sb-java-conniey-sb1";
+        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", null,
+            "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey",
+            TestProxySanitizerType.HEADER);
+        TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
+
+        final List<String> skippedHeaders
+            = Arrays.asList("ServiceBusDlqSupplementaryAuthorization", "ServiceBusSupplementaryAuthorization");
+        final CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(skippedHeaders);
+
+        TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
+    }
 
     /**
      * Gets the namespace connection string.
@@ -128,7 +149,8 @@ public class TestUtils {
             URI endpoint = properties.getEndpoint();
             String entityPath = properties.getEntityPath();
             String resourceUrl = entityPath == null || entityPath.trim().length() == 0
-                ? endpoint.toString() : endpoint.toString() +  properties.getEntityPath();
+                ? endpoint.toString()
+                : endpoint.toString() + properties.getEntityPath();
 
             String utf8Encoding = UTF_8.name();
             OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
@@ -145,10 +167,8 @@ public class TestUtils {
                 byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
                 String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
-                    audienceUri,
-                    URLEncoder.encode(signature, utf8Encoding),
-                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat, audienceUri,
+                    URLEncoder.encode(signature, utf8Encoding), URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
                     URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
 
                 if (entityPath == null) {
@@ -243,12 +263,14 @@ public class TestUtils {
      *   configured with service connections federated identity, {@code null} otherwise.
      */
     public static AzurePipelinesCredentialBuilder getPipelineCredentialBuilder() {
-        final String serviceConnectionId  = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        final String serviceConnectionId = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
         final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
         final String systemAccessToken = getPropertyValue("SYSTEM_ACCESSTOKEN");
-        if (CoreUtils.isNullOrEmpty(serviceConnectionId) || CoreUtils.isNullOrEmpty(clientId)
-            || CoreUtils.isNullOrEmpty(tenantId) || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
             return null;
         }
         return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
@@ -271,7 +293,8 @@ public class TestUtils {
             final AzurePipelinesCredentialBuilder builder = TestUtils.getPipelineCredentialBuilder();
             if (builder == null) {
                 // Throws org.opentest4j.TestAbortedException exception.
-                assumeTrue(false, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+                assumeTrue(false,
+                    "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
                 return null;
             }
             final AzurePipelinesCredential pipelinesCredential = builder.build();
@@ -308,7 +331,8 @@ public class TestUtils {
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
         message.setBody(new Data(new Binary(contents)));
-        message.getMessageAnnotations().getValue()
+        message.getMessageAnnotations()
+            .getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
         Map<String, Object> applicationProperties = new HashMap<>();
@@ -351,14 +375,12 @@ public class TestUtils {
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId, byte[] content) {
-        return IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> {
-                final ServiceBusMessage message = getServiceBusMessage(content, messageId);
-                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
+        return IntStream.range(0, numberOfEvents).mapToObj(number -> {
+            final ServiceBusMessage message = getServiceBusMessage(content, messageId);
+            message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
-                return message;
-            })
-            .collect(Collectors.toList());
+            return message;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -371,14 +393,12 @@ public class TestUtils {
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId) {
-        return IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> {
-                final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
-                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
+        return IntStream.range(0, numberOfEvents).mapToObj(number -> {
+            final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
+            message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
-                return message;
-            })
-            .collect(Collectors.toList());
+            return message;
+        }).collect(Collectors.toList());
     }
 
     public static ServiceBusMessage getServiceBusMessage(String body, String messageId) {

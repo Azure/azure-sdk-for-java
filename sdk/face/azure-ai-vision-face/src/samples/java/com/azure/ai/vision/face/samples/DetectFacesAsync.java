@@ -12,8 +12,9 @@ import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class DetectFacesAsync {
     public static void main(String[] args) {
         FaceAsyncClient client = new FaceClientBuilder()
             .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         BinaryData imageBinary = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_DETECT_SAMPLE_IMAGE);

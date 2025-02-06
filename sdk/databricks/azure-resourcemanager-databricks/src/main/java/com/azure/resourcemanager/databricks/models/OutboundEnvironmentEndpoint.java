@@ -7,26 +7,28 @@ package com.azure.resourcemanager.databricks.models;
 import com.azure.resourcemanager.databricks.fluent.models.OutboundEnvironmentEndpointInner;
 import java.util.List;
 
-/** An immutable client-side representation of OutboundEnvironmentEndpoint. */
+/**
+ * An immutable client-side representation of OutboundEnvironmentEndpoint.
+ */
 public interface OutboundEnvironmentEndpoint {
     /**
      * Gets the category property: The category of endpoints accessed by the Workspace, e.g. azure-storage, azure-mysql,
      * etc.
-     *
+     * 
      * @return the category value.
      */
     String category();
 
     /**
      * Gets the endpoints property: The endpoints that Workspace connect to.
-     *
+     * 
      * @return the endpoints value.
      */
     List<EndpointDependency> endpoints();
 
     /**
      * Gets the inner com.azure.resourcemanager.databricks.fluent.models.OutboundEnvironmentEndpointInner object.
-     *
+     * 
      * @return the inner object.
      */
     OutboundEnvironmentEndpointInner innerModel();

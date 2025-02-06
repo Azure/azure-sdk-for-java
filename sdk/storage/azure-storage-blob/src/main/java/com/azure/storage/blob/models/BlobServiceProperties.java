@@ -41,7 +41,8 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
     private List<BlobCorsRule> cors;
 
     /*
-     * The default version to use for requests to the Blob service if an incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent versions
+     * The default version to use for requests to the Blob service if an incoming request's version is not specified.
+     * Possible values include version 2008-10-27 and all more recent versions
      */
     private String defaultServiceVersion;
 

@@ -11,19 +11,19 @@ public final class MicrosoftAccessSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessSink model = BinaryData.fromString(
-            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datayipjzgmxqaupy\",\"writeBatchSize\":\"datagoyp\",\"writeBatchTimeout\":\"dataooyyfysn\",\"sinkRetryCount\":\"datajnl\",\"sinkRetryWait\":\"datacmhonojese\",\"maxConcurrentConnections\":\"dataxel\",\"disableMetricsCollection\":\"dataxwmpziy\",\"\":{\"wpcutzlvx\":\"datajswedkfofyfwpu\",\"vddwgozr\":\"dataolvedzrjkrpor\",\"dyhcwcgvyuuse\":\"dataglkmgcxmkrldfo\"}}")
+            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datanpry\",\"writeBatchSize\":\"dataujqyeyzoivi\",\"writeBatchTimeout\":\"datanihmwvhc\",\"sinkRetryCount\":\"datamua\",\"sinkRetryWait\":\"datatd\",\"maxConcurrentConnections\":\"datai\",\"disableMetricsCollection\":\"datazytdj\",\"\":{\"bxm\":\"datansdadyrhmpokfxc\"}}")
             .toObject(MicrosoftAccessSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datagoyp")
-            .withWriteBatchTimeout("dataooyyfysn")
-            .withSinkRetryCount("datajnl")
-            .withSinkRetryWait("datacmhonojese")
-            .withMaxConcurrentConnections("dataxel")
-            .withDisableMetricsCollection("dataxwmpziy")
-            .withPreCopyScript("datayipjzgmxqaupy");
+        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("dataujqyeyzoivi")
+            .withWriteBatchTimeout("datanihmwvhc")
+            .withSinkRetryCount("datamua")
+            .withSinkRetryWait("datatd")
+            .withMaxConcurrentConnections("datai")
+            .withDisableMetricsCollection("datazytdj")
+            .withPreCopyScript("datanpry");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSink.class);
     }
 }

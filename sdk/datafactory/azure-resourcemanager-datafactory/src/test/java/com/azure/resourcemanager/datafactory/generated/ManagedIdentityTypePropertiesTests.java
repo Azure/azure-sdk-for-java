@@ -12,14 +12,14 @@ public final class ManagedIdentityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentityTypeProperties model
-            = BinaryData.fromString("{\"resourceId\":\"amb\"}").toObject(ManagedIdentityTypeProperties.class);
-        Assertions.assertEquals("amb", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"flbch\"}").toObject(ManagedIdentityTypeProperties.class);
+        Assertions.assertEquals("flbch", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentityTypeProperties model = new ManagedIdentityTypeProperties().withResourceId("amb");
+        ManagedIdentityTypeProperties model = new ManagedIdentityTypeProperties().withResourceId("flbch");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityTypeProperties.class);
-        Assertions.assertEquals("amb", model.resourceId());
+        Assertions.assertEquals("flbch", model.resourceId());
     }
 }

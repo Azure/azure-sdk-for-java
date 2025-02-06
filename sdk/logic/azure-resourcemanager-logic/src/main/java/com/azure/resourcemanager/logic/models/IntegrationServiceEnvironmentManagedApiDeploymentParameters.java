@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration service environment managed api deployment parameters. */
+/**
+ * The integration service environment managed api deployment parameters.
+ */
 @Fluent
-public final class IntegrationServiceEnvironmentManagedApiDeploymentParameters {
+public final class IntegrationServiceEnvironmentManagedApiDeploymentParameters
+    implements JsonSerializable<IntegrationServiceEnvironmentManagedApiDeploymentParameters> {
     /*
      * The integration service environment managed api content link for deployment.
      */
-    @JsonProperty(value = "contentLinkDefinition")
     private ContentLink contentLinkDefinition;
 
-    /** Creates an instance of IntegrationServiceEnvironmentManagedApiDeploymentParameters class. */
+    /**
+     * Creates an instance of IntegrationServiceEnvironmentManagedApiDeploymentParameters class.
+     */
     public IntegrationServiceEnvironmentManagedApiDeploymentParameters() {
     }
 
     /**
      * Get the contentLinkDefinition property: The integration service environment managed api content link for
      * deployment.
-     *
+     * 
      * @return the contentLinkDefinition value.
      */
     public ContentLink contentLinkDefinition() {
@@ -33,24 +41,64 @@ public final class IntegrationServiceEnvironmentManagedApiDeploymentParameters {
     /**
      * Set the contentLinkDefinition property: The integration service environment managed api content link for
      * deployment.
-     *
+     * 
      * @param contentLinkDefinition the contentLinkDefinition value to set.
      * @return the IntegrationServiceEnvironmentManagedApiDeploymentParameters object itself.
      */
-    public IntegrationServiceEnvironmentManagedApiDeploymentParameters withContentLinkDefinition(
-        ContentLink contentLinkDefinition) {
+    public IntegrationServiceEnvironmentManagedApiDeploymentParameters
+        withContentLinkDefinition(ContentLink contentLinkDefinition) {
         this.contentLinkDefinition = contentLinkDefinition;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentLinkDefinition() != null) {
             contentLinkDefinition().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contentLinkDefinition", this.contentLinkDefinition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationServiceEnvironmentManagedApiDeploymentParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationServiceEnvironmentManagedApiDeploymentParameters if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * IntegrationServiceEnvironmentManagedApiDeploymentParameters.
+     */
+    public static IntegrationServiceEnvironmentManagedApiDeploymentParameters fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationServiceEnvironmentManagedApiDeploymentParameters deserializedIntegrationServiceEnvironmentManagedApiDeploymentParameters
+                = new IntegrationServiceEnvironmentManagedApiDeploymentParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentLinkDefinition".equals(fieldName)) {
+                    deserializedIntegrationServiceEnvironmentManagedApiDeploymentParameters.contentLinkDefinition
+                        = ContentLink.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationServiceEnvironmentManagedApiDeploymentParameters;
+        });
     }
 }

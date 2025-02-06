@@ -73,14 +73,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster along with
+     * @return the private link resources that need to be created for a Redis Enterprise cluster along with
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -111,7 +111,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -119,7 +119,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster along with
+     * @return the private link resources that need to be created for a Redis Enterprise cluster along with
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -150,14 +150,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster as paginated response
+     * @return the private link resources that need to be created for a Redis Enterprise cluster as paginated response
      * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -166,7 +166,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -174,7 +174,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster as paginated response
+     * @return the private link resources that need to be created for a Redis Enterprise cluster as paginated response
      * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -184,14 +184,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster as paginated response
+     * @return the private link resources that need to be created for a Redis Enterprise cluster as paginated response
      * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -200,7 +200,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * Gets the private link resources that need to be created for a RedisEnterprise cluster.
+     * Gets the private link resources that need to be created for a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -208,7 +208,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a RedisEnterprise cluster as paginated response
+     * @return the private link resources that need to be created for a Redis Enterprise cluster as paginated response
      * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

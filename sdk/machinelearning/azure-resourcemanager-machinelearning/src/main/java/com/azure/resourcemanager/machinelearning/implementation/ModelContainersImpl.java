@@ -22,8 +22,7 @@ public final class ModelContainersImpl implements ModelContainers {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public ModelContainersImpl(
-        ModelContainersClient innerClient,
+    public ModelContainersImpl(ModelContainersClient innerClient,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,23 +30,18 @@ public final class ModelContainersImpl implements ModelContainers {
 
     public PagedIterable<ModelContainer> list(String resourceGroupName, String workspaceName) {
         PagedIterable<ModelContainerInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new ModelContainerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModelContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ModelContainer> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        ListViewType listViewType,
+    public PagedIterable<ModelContainer> list(String resourceGroupName, String workspaceName, String skip,
+        Integer count, ListViewType listViewType, Context context) {
+        PagedIterable<ModelContainerInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, skip, count, listViewType, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModelContainerImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context) {
-        PagedIterable<ModelContainerInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, skip, count, listViewType, context);
-        return Utils.mapPage(inner, inner1 -> new ModelContainerImpl(inner1, this.manager()));
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
@@ -55,15 +49,12 @@ public final class ModelContainersImpl implements ModelContainers {
         this.serviceClient().delete(resourceGroupName, workspaceName, name);
     }
 
-    public Response<ModelContainer> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<ModelContainerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
+    public Response<ModelContainer> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context) {
+        Response<ModelContainerInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ModelContainerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -80,105 +71,77 @@ public final class ModelContainersImpl implements ModelContainers {
     }
 
     public ModelContainer getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "models");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "models");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
     public Response<ModelContainer> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "models");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "models");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "models");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "models");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "models");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "models");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'models'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }

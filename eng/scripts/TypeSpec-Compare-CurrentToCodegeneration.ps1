@@ -21,7 +21,19 @@ param(
 function Reset-Repository {
   # Clean up generated code, so that next step will not be affected.
   git reset --hard
-  git clean -fd $sdkPath
+  git clean -fd .
+}
+
+$tspYamls = Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse
+if ($tspYamls.Count -eq 0) {
+  Write-Host "
+
+  ===========================================
+  No TypeSpec files to regenerate
+  ===========================================
+
+  "
+  exit 0
 }
 
 Write-Host "
@@ -43,7 +55,7 @@ Invoking tsp-client update
 "
 
 $failedSdk = $null
-foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
+foreach ($tspLocationPath in $tspYamls) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
   Push-Location
@@ -70,7 +82,8 @@ Verify no diff
 "
 
 # prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**"
+git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":
+(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java"
 
 if ($LastExitCode -ne 0) {
   $status = git status -s | Out-String

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Configuration to use NNI for Infrastructure Management. Example: True/False. */
+/**
+ * Configuration to use NNI for Infrastructure Management. Example: True/False.
+ */
 public final class IsManagementType extends ExpandableStringEnum<IsManagementType> {
-    /** Static value True for IsManagementType. */
+    /**
+     * Static value True for IsManagementType.
+     */
     public static final IsManagementType TRUE = fromString("True");
 
-    /** Static value False for IsManagementType. */
+    /**
+     * Static value False for IsManagementType.
+     */
     public static final IsManagementType FALSE = fromString("False");
 
     /**
      * Creates a new instance of IsManagementType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class IsManagementType extends ExpandableStringEnum<IsManagementTyp
 
     /**
      * Creates or finds a IsManagementType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IsManagementType.
      */
-    @JsonCreator
     public static IsManagementType fromString(String name) {
         return fromString(name, IsManagementType.class);
     }
 
     /**
      * Gets known IsManagementType values.
-     *
+     * 
      * @return known IsManagementType values.
      */
     public static Collection<IsManagementType> values() {

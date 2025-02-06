@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of QueryTexts. */
+/**
+ * Resource collection API of QueryTexts.
+ */
 public interface QueryTexts {
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -27,7 +29,7 @@ public interface QueryTexts {
 
     /**
      * Retrieve the Query-Store query texts for the queryId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryId The Query-Store query identifier.
@@ -40,7 +42,7 @@ public interface QueryTexts {
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -53,7 +55,7 @@ public interface QueryTexts {
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param queryIds The query identifiers.
@@ -63,6 +65,6 @@ public interface QueryTexts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QueryText> listByServer(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context);
+    PagedIterable<QueryText> listByServer(String resourceGroupName, String serverName, List<String> queryIds,
+        Context context);
 }

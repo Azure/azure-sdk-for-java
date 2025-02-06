@@ -29,8 +29,8 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     private final String endtime;
 
     /*
-     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
-     * case for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
+     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special case
+     * for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
      * FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      */
@@ -88,9 +88,9 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601
-     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
-     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601 duration
+     * format with a special case for 'FULL' value that returns single datapoint for entire time span requested
+     * (*Examples: PT15M, PT1H, P1D, FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * 
      * @return the interval value.
@@ -100,9 +100,9 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601
-     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
-     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601 duration
+     * format with a special case for 'FULL' value that returns single datapoint for entire time span requested
+     * (*Examples: PT15M, PT1H, P1D, FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * 
      * @param interval the interval value to set.
@@ -182,6 +182,9 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

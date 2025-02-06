@@ -23,16 +23,10 @@ import reactor.core.publisher.Mono;
 /** Entry point to network interface management. */
 @Fluent
 public interface NetworkInterfaces
-    extends SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
-        SupportsListing<NetworkInterface>,
-        SupportsListingByResourceGroup<NetworkInterface>,
-        SupportsGettingByResourceGroup<NetworkInterface>,
-        SupportsGettingById<NetworkInterface>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<NetworkInterface>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<NetworkInterface.DefinitionStages.Blank>, SupportsListing<NetworkInterface>,
+    SupportsListingByResourceGroup<NetworkInterface>, SupportsGettingByResourceGroup<NetworkInterface>,
+    SupportsGettingById<NetworkInterface>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<NetworkInterface>, SupportsBatchDeletion, HasManager<NetworkManager> {
 
     /**
      * Gets a network interface associated with a virtual machine scale set instance.
@@ -43,8 +37,8 @@ public interface NetworkInterfaces
      * @param name the network interface name
      * @return network interface
      */
-    VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(
-        String resourceGroupName, String scaleSetName, String instanceId, String name);
+    VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(String resourceGroupName,
+        String scaleSetName, String instanceId, String name);
 
     /**
      * Gets a network interface associated with a virtual machine scale set instance.
@@ -55,8 +49,8 @@ public interface NetworkInterfaces
      * @param name the network interface name
      * @return network interface
      */
-    Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineScaleSetInstanceIdAsync(
-        String resourceGroupName, String scaleSetName, String instanceId, String name);
+    Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineScaleSetInstanceIdAsync(String resourceGroupName,
+        String scaleSetName, String instanceId, String name);
 
     /**
      * List the network interfaces associated with a virtual machine scale set.
@@ -65,8 +59,8 @@ public interface NetworkInterfaces
      * @param scaleSetName scale set name
      * @return list of network interfaces
      */
-    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(
-        String resourceGroupName, String scaleSetName);
+    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(String resourceGroupName,
+        String scaleSetName);
 
     /**
      * List the network interfaces associated with a virtual machine scale set.
@@ -84,8 +78,8 @@ public interface NetworkInterfaces
      * @param instanceId the virtual machine scale set vm instance id
      * @return list of network interfaces
      */
-    PagedIterable<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(
-        String resourceGroupName, String scaleSetName, String instanceId);
+    PagedIterable<VirtualMachineScaleSetNetworkInterface>
+        listByVirtualMachineScaleSetInstanceId(String resourceGroupName, String scaleSetName, String instanceId);
 
     /**
      * List the network interfaces associated with a specific virtual machine instance in a scale set asynchronously.
@@ -95,8 +89,8 @@ public interface NetworkInterfaces
      * @param instanceId the virtual machine scale set vm instance id
      * @return list of network interfaces
      */
-    PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceIdAsync(
-        String resourceGroupName, String scaleSetName, String instanceId);
+    PagedFlux<VirtualMachineScaleSetNetworkInterface>
+        listByVirtualMachineScaleSetInstanceIdAsync(String resourceGroupName, String scaleSetName, String instanceId);
 
     /**
      * Begins deleting a virtual machine from Azure, identifying it by its resource ID.

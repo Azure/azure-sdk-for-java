@@ -8,13 +8,8 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 /** Represents an record set collection associated with a private DNS zone. */
-class PrivateDnsRecordSetsImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        PrivateDnsRecordSetImpl,
-        PrivateDnsRecordSet,
-        RecordSetInner,
-        PrivateDnsZoneImpl,
-        PrivateDnsZone> {
+class PrivateDnsRecordSetsImpl extends
+    ExternalChildResourcesNonCachedImpl<PrivateDnsRecordSetImpl, PrivateDnsRecordSet, RecordSetInner, PrivateDnsZoneImpl, PrivateDnsZone> {
     /** The default record set ttl in seconds. */
     private static final long DEFAULT_TTL_IN_SECONDS = 3600;
 

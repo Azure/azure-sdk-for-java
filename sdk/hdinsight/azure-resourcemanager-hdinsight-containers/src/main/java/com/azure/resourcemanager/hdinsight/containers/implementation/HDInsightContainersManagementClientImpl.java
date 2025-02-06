@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hdinsight.containers.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,9 +27,12 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.AvailableClusterPoo
 import com.azure.resourcemanager.hdinsight.containers.fluent.AvailableClusterVersionsClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterAvailableUpgradesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterJobsClient;
+import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterLibrariesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterPoolAvailableUpgradesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterPoolsClient;
+import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterPoolUpgradeHistoriesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.ClustersClient;
+import com.azure.resourcemanager.hdinsight.containers.fluent.ClusterUpgradeHistoriesClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.HDInsightContainersManagementClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.LocationsClient;
 import com.azure.resourcemanager.hdinsight.containers.fluent.OperationsClient;
@@ -159,6 +163,20 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
     }
 
     /**
+     * The ClusterPoolUpgradeHistoriesClient object to access its operations.
+     */
+    private final ClusterPoolUpgradeHistoriesClient clusterPoolUpgradeHistories;
+
+    /**
+     * Gets the ClusterPoolUpgradeHistoriesClient object to access its operations.
+     * 
+     * @return the ClusterPoolUpgradeHistoriesClient object.
+     */
+    public ClusterPoolUpgradeHistoriesClient getClusterPoolUpgradeHistories() {
+        return this.clusterPoolUpgradeHistories;
+    }
+
+    /**
      * The ClustersClient object to access its operations.
      */
     private final ClustersClient clusters;
@@ -184,6 +202,20 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
      */
     public ClusterAvailableUpgradesClient getClusterAvailableUpgrades() {
         return this.clusterAvailableUpgrades;
+    }
+
+    /**
+     * The ClusterUpgradeHistoriesClient object to access its operations.
+     */
+    private final ClusterUpgradeHistoriesClient clusterUpgradeHistories;
+
+    /**
+     * Gets the ClusterUpgradeHistoriesClient object to access its operations.
+     * 
+     * @return the ClusterUpgradeHistoriesClient object.
+     */
+    public ClusterUpgradeHistoriesClient getClusterUpgradeHistories() {
+        return this.clusterUpgradeHistories;
     }
 
     /**
@@ -257,6 +289,20 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
     }
 
     /**
+     * The ClusterLibrariesClient object to access its operations.
+     */
+    private final ClusterLibrariesClient clusterLibraries;
+
+    /**
+     * Gets the ClusterLibrariesClient object to access its operations.
+     * 
+     * @return the ClusterLibrariesClient object.
+     */
+    public ClusterLibrariesClient getClusterLibraries() {
+        return this.clusterLibraries;
+    }
+
+    /**
      * Initializes an instance of HDInsightContainersManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -273,16 +319,19 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-11-01-preview";
+        this.apiVersion = "2024-05-01-preview";
         this.clusterPools = new ClusterPoolsClientImpl(this);
         this.clusterPoolAvailableUpgrades = new ClusterPoolAvailableUpgradesClientImpl(this);
+        this.clusterPoolUpgradeHistories = new ClusterPoolUpgradeHistoriesClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.clusterAvailableUpgrades = new ClusterAvailableUpgradesClientImpl(this);
+        this.clusterUpgradeHistories = new ClusterUpgradeHistoriesClientImpl(this);
         this.clusterJobs = new ClusterJobsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.availableClusterPoolVersions = new AvailableClusterPoolVersionsClientImpl(this);
         this.availableClusterVersions = new AvailableClusterVersionsClientImpl(this);
+        this.clusterLibraries = new ClusterLibrariesClientImpl(this);
     }
 
     /**
@@ -345,8 +394,8 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -387,7 +436,7 @@ public final class HDInsightContainersManagementClientImpl implements HDInsightC
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

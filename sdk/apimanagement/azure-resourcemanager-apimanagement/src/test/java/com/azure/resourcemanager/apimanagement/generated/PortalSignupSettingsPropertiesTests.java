@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PortalSignupSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortalSignupSettingsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":true,\"termsOfService\":{\"text\":\"zaudgjtfbclakkuc\",\"enabled\":true,\"consentRequired\":false}}")
-                .toObject(PortalSignupSettingsProperties.class);
+        PortalSignupSettingsProperties model = BinaryData.fromString(
+            "{\"enabled\":true,\"termsOfService\":{\"text\":\"zaudgjtfbclakkuc\",\"enabled\":true,\"consentRequired\":false}}")
+            .toObject(PortalSignupSettingsProperties.class);
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals("zaudgjtfbclakkuc", model.termsOfService().text());
         Assertions.assertEquals(true, model.termsOfService().enabled());
@@ -25,14 +23,10 @@ public final class PortalSignupSettingsPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalSignupSettingsProperties model =
-            new PortalSignupSettingsProperties()
+        PortalSignupSettingsProperties model = new PortalSignupSettingsProperties().withEnabled(true)
+            .withTermsOfService(new TermsOfServiceProperties().withText("zaudgjtfbclakkuc")
                 .withEnabled(true)
-                .withTermsOfService(
-                    new TermsOfServiceProperties()
-                        .withText("zaudgjtfbclakkuc")
-                        .withEnabled(true)
-                        .withConsentRequired(false));
+                .withConsentRequired(false));
         model = BinaryData.fromObject(model).toObject(PortalSignupSettingsProperties.class);
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals("zaudgjtfbclakkuc", model.termsOfService().text());

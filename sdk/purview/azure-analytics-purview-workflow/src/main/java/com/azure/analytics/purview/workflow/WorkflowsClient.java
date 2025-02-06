@@ -17,14 +17,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = WorkflowsClientBuilder.class)
 public final class WorkflowsClient {
-    @Generated private final WorkflowsImpl serviceClient;
+    @Generated
+    private final WorkflowsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -34,10 +37,10 @@ public final class WorkflowsClient {
 
     /**
      * List all workflows.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -56,8 +59,9 @@ public final class WorkflowsClient {
      *     isEnabled: boolean (Required)
      *     description: String (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.orbital.fluent.models.OperationResultInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsResultsClient.
+ */
 public interface OperationsResultsClient {
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface OperationsResultsClient {
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -38,12 +40,12 @@ public interface OperationsResultsClient {
      * @return the {@link SyncPoller} for polling of operation Result Entity.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(
-        String location, String operationId, Context context);
+    SyncPoller<PollResult<OperationResultInner>, OperationResultInner> beginGet(String location, String operationId,
+        Context context);
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +58,7 @@ public interface OperationsResultsClient {
 
     /**
      * Returns operation results.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.

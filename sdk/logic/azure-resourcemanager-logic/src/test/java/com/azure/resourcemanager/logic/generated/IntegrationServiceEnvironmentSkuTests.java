@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentSku model =
-            BinaryData
-                .fromString("{\"name\":\"Premium\",\"capacity\":1775201606}")
-                .toObject(IntegrationServiceEnvironmentSku.class);
+        IntegrationServiceEnvironmentSku model = BinaryData.fromString("{\"name\":\"Premium\",\"capacity\":900937379}")
+            .toObject(IntegrationServiceEnvironmentSku.class);
         Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.PREMIUM, model.name());
-        Assertions.assertEquals(1775201606, model.capacity());
+        Assertions.assertEquals(900937379, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentSku model =
-            new IntegrationServiceEnvironmentSku()
-                .withName(IntegrationServiceEnvironmentSkuName.PREMIUM)
-                .withCapacity(1775201606);
+        IntegrationServiceEnvironmentSku model
+            = new IntegrationServiceEnvironmentSku().withName(IntegrationServiceEnvironmentSkuName.PREMIUM)
+                .withCapacity(900937379);
         model = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentSku.class);
         Assertions.assertEquals(IntegrationServiceEnvironmentSkuName.PREMIUM, model.name());
-        Assertions.assertEquals(1775201606, model.capacity());
+        Assertions.assertEquals(900937379, model.capacity());
     }
 }

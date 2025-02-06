@@ -23,9 +23,11 @@ class MixedRealityAccountKeyCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        String token = String.format("%s:%s", this.accountId.toString(), this.keyCredential.getKey());
-        AccessToken result = new AccessToken(token, OffsetDateTime.MAX);
+        return Mono.fromSupplier(() -> getTokenSync(tokenRequestContext));
+    }
 
-        return Mono.just(result);
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        return new AccessToken(accountId + ":" + keyCredential.getKey(), OffsetDateTime.MAX);
     }
 }

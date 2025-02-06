@@ -6,30 +6,36 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for migration task input. */
+/**
+ * Base class for migration task input.
+ */
 @Fluent
-public class SqlMigrationTaskInput {
+public class SqlMigrationTaskInput implements JsonSerializable<SqlMigrationTaskInput> {
     /*
      * Information for connecting to source
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private SqlConnectionInfo sourceConnectionInfo;
 
     /*
      * Information for connecting to target
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private SqlConnectionInfo targetConnectionInfo;
 
-    /** Creates an instance of SqlMigrationTaskInput class. */
+    /**
+     * Creates an instance of SqlMigrationTaskInput class.
+     */
     public SqlMigrationTaskInput() {
     }
 
     /**
      * Get the sourceConnectionInfo property: Information for connecting to source.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public SqlConnectionInfo sourceConnectionInfo() {
@@ -38,7 +44,7 @@ public class SqlMigrationTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Information for connecting to source.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the SqlMigrationTaskInput object itself.
      */
@@ -49,7 +55,7 @@ public class SqlMigrationTaskInput {
 
     /**
      * Get the targetConnectionInfo property: Information for connecting to target.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public SqlConnectionInfo targetConnectionInfo() {
@@ -58,7 +64,7 @@ public class SqlMigrationTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Information for connecting to target.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the SqlMigrationTaskInput object itself.
      */
@@ -69,27 +75,65 @@ public class SqlMigrationTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model SqlMigrationTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model SqlMigrationTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model SqlMigrationTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model SqlMigrationTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlMigrationTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlMigrationTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlMigrationTaskInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlMigrationTaskInput.
+     */
+    public static SqlMigrationTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlMigrationTaskInput deserializedSqlMigrationTaskInput = new SqlMigrationTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedSqlMigrationTaskInput.sourceConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedSqlMigrationTaskInput.targetConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlMigrationTaskInput;
+        });
+    }
 }

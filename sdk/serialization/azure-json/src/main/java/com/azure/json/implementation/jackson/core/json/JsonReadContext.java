@@ -15,11 +15,11 @@ public final class JsonReadContext extends JsonStreamContext {
     /**
      * Parent context for this context; null for root context.
      */
-    protected final JsonReadContext _parent;
+    private final JsonReadContext _parent;
 
     // // // Optional duplicate detection
 
-    protected DupDetector _dups;
+    private DupDetector _dups;
 
     /*
      * /**********************************************************
@@ -29,7 +29,7 @@ public final class JsonReadContext extends JsonStreamContext {
      * /**********************************************************
      */
 
-    protected JsonReadContext _child;
+    private JsonReadContext _child;
 
     /*
      * /**********************************************************
@@ -37,15 +37,15 @@ public final class JsonReadContext extends JsonStreamContext {
      * /**********************************************************
      */
 
-    protected String _currentName;
+    private String _currentName;
 
     /**
      * @since 2.5
      */
-    protected Object _currentValue;
+    private Object _currentValue;
 
-    protected int _lineNr;
-    protected int _columnNr;
+    private int _lineNr;
+    private int _columnNr;
 
     /*
      * /**********************************************************
@@ -115,10 +115,6 @@ public final class JsonReadContext extends JsonStreamContext {
      * /**********************************************************
      */
 
-    public static JsonReadContext createRootContext(int lineNr, int colNr, DupDetector dups) {
-        return new JsonReadContext(null, dups, TYPE_ROOT, lineNr, colNr);
-    }
-
     public static JsonReadContext createRootContext(DupDetector dups) {
         return new JsonReadContext(null, dups, TYPE_ROOT, 1, 0);
     }
@@ -154,12 +150,6 @@ public final class JsonReadContext extends JsonStreamContext {
     @Override
     public String getCurrentName() {
         return _currentName;
-    }
-
-    // @since 2.9
-    @Override
-    public boolean hasCurrentName() {
-        return _currentName != null;
     }
 
     @Override

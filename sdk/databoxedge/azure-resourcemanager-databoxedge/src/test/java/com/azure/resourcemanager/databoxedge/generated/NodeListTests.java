@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.NodeList;
 public final class NodeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"nodeStatus\":\"Unknown\",\"nodeChassisSerialNumber\":\"ykvceoveil\",\"nodeSerialNumber\":\"notyfjfcnjbkcn\",\"nodeDisplayName\":\"hbttkphyw\",\"nodeFriendlySoftwareVersion\":\"vjtoqnermclfp\",\"nodeHcsVersion\":\"hoxus\",\"nodeInstanceId\":\"pabgyeps\"},\"id\":\"jta\",\"name\":\"qugxywpmueefjzwf\",\"type\":\"kqujidsuyono\"}]}")
-                .toObject(NodeList.class);
+        NodeList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"nodeStatus\":\"Up\",\"nodeChassisSerialNumber\":\"loayqcgw\",\"nodeSerialNumber\":\"zjuzgwyz\",\"nodeDisplayName\":\"txon\",\"nodeFriendlySoftwareVersion\":\"ts\",\"nodeHcsVersion\":\"jcbpwxqpsrknft\",\"nodeInstanceId\":\"vriuhprwmdyvx\"},\"id\":\"tayriwwroyqbex\",\"name\":\"mcqibycnojv\",\"type\":\"nmefqsgzvahapj\"},{\"properties\":{\"nodeStatus\":\"ShuttingDown\",\"nodeChassisSerialNumber\":\"gqzcjr\",\"nodeSerialNumber\":\"djzlmwlx\",\"nodeDisplayName\":\"ug\",\"nodeFriendlySoftwareVersion\":\"zovawjvz\",\"nodeHcsVersion\":\"luthn\",\"nodeInstanceId\":\"rnxipei\"},\"id\":\"pjzu\",\"name\":\"e\",\"type\":\"xdult\"},{\"properties\":{\"nodeStatus\":\"ShuttingDown\",\"nodeChassisSerialNumber\":\"tdzumveekgpw\",\"nodeSerialNumber\":\"uh\",\"nodeDisplayName\":\"p\",\"nodeFriendlySoftwareVersion\":\"jyofdxluusdtto\",\"nodeHcsVersion\":\"aboekqv\",\"nodeInstanceId\":\"lns\"},\"id\":\"vbxwyjsflhh\",\"name\":\"aalnjixi\",\"type\":\"xyawj\"}]}")
+            .toObject(NodeList.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -938,8 +938,10 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(String resourceGroupName,
         String profileName, String originGroupName, String originName, AfdOriginUpdateParameters originUpdateProperties,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName,
-            originUpdateProperties, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -961,7 +963,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     public Mono<AfdOriginInner> updateAsync(String resourceGroupName, String profileName, String originGroupName,
         String originName, AfdOriginUpdateParameters originUpdateProperties) {
         return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1286,9 +1289,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1315,9 +1316,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

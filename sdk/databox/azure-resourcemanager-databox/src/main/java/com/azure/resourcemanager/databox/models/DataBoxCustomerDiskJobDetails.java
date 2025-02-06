@@ -6,64 +6,73 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Customer disk job details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobDetailsType")
-@JsonTypeName("DataBoxCustomerDisk")
+/**
+ * Customer disk job details.
+ */
 @Fluent
 public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator jobDetailsType = ClassDiscriminator.DATA_BOX_CUSTOMER_DISK;
+
+    /*
      * Contains the map of disk serial number to the disk details for import jobs.
      */
-    @JsonProperty(value = "importDiskDetailsCollection")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ImportDiskDetails> importDiskDetailsCollection;
 
     /*
      * Contains the map of disk serial number to the disk details for export jobs.
      */
-    @JsonProperty(value = "exportDiskDetailsCollection", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ExportDiskDetails> exportDiskDetailsCollection;
 
     /*
      * Copy progress per disk.
      */
-    @JsonProperty(value = "copyProgress", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataBoxCustomerDiskCopyProgress> copyProgress;
 
     /*
      * Delivery package shipping details.
      */
-    @JsonProperty(value = "deliverToDcPackageDetails", access = JsonProperty.Access.WRITE_ONLY)
     private PackageCarrierInfo deliverToDcPackageDetails;
 
     /*
      * Return package shipping details.
      */
-    @JsonProperty(value = "returnToCustomerPackageDetails", required = true)
     private PackageCarrierDetails returnToCustomerPackageDetails;
 
     /*
      * Flag to indicate if disk manifest should be backed-up in the Storage Account.
      */
-    @JsonProperty(value = "enableManifestBackup")
     private Boolean enableManifestBackup;
 
-    /** Creates an instance of DataBoxCustomerDiskJobDetails class. */
+    /**
+     * Creates an instance of DataBoxCustomerDiskJobDetails class.
+     */
     public DataBoxCustomerDiskJobDetails() {
+    }
+
+    /**
+     * Get the jobDetailsType property: Indicates the type of job details.
+     * 
+     * @return the jobDetailsType value.
+     */
+    @Override
+    public ClassDiscriminator jobDetailsType() {
+        return this.jobDetailsType;
     }
 
     /**
      * Get the importDiskDetailsCollection property: Contains the map of disk serial number to the disk details for
      * import jobs.
-     *
+     * 
      * @return the importDiskDetailsCollection value.
      */
     public Map<String, ImportDiskDetails> importDiskDetailsCollection() {
@@ -73,12 +82,12 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     /**
      * Set the importDiskDetailsCollection property: Contains the map of disk serial number to the disk details for
      * import jobs.
-     *
+     * 
      * @param importDiskDetailsCollection the importDiskDetailsCollection value to set.
      * @return the DataBoxCustomerDiskJobDetails object itself.
      */
-    public DataBoxCustomerDiskJobDetails withImportDiskDetailsCollection(
-        Map<String, ImportDiskDetails> importDiskDetailsCollection) {
+    public DataBoxCustomerDiskJobDetails
+        withImportDiskDetailsCollection(Map<String, ImportDiskDetails> importDiskDetailsCollection) {
         this.importDiskDetailsCollection = importDiskDetailsCollection;
         return this;
     }
@@ -86,7 +95,7 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     /**
      * Get the exportDiskDetailsCollection property: Contains the map of disk serial number to the disk details for
      * export jobs.
-     *
+     * 
      * @return the exportDiskDetailsCollection value.
      */
     public Map<String, ExportDiskDetails> exportDiskDetailsCollection() {
@@ -95,7 +104,7 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
 
     /**
      * Get the copyProgress property: Copy progress per disk.
-     *
+     * 
      * @return the copyProgress value.
      */
     public List<DataBoxCustomerDiskCopyProgress> copyProgress() {
@@ -104,7 +113,7 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
 
     /**
      * Get the deliverToDcPackageDetails property: Delivery package shipping details.
-     *
+     * 
      * @return the deliverToDcPackageDetails value.
      */
     public PackageCarrierInfo deliverToDcPackageDetails() {
@@ -113,7 +122,7 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
 
     /**
      * Get the returnToCustomerPackageDetails property: Return package shipping details.
-     *
+     * 
      * @return the returnToCustomerPackageDetails value.
      */
     public PackageCarrierDetails returnToCustomerPackageDetails() {
@@ -122,12 +131,12 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
 
     /**
      * Set the returnToCustomerPackageDetails property: Return package shipping details.
-     *
+     * 
      * @param returnToCustomerPackageDetails the returnToCustomerPackageDetails value to set.
      * @return the DataBoxCustomerDiskJobDetails object itself.
      */
-    public DataBoxCustomerDiskJobDetails withReturnToCustomerPackageDetails(
-        PackageCarrierDetails returnToCustomerPackageDetails) {
+    public DataBoxCustomerDiskJobDetails
+        withReturnToCustomerPackageDetails(PackageCarrierDetails returnToCustomerPackageDetails) {
         this.returnToCustomerPackageDetails = returnToCustomerPackageDetails;
         return this;
     }
@@ -135,7 +144,7 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     /**
      * Get the enableManifestBackup property: Flag to indicate if disk manifest should be backed-up in the Storage
      * Account.
-     *
+     * 
      * @return the enableManifestBackup value.
      */
     public Boolean enableManifestBackup() {
@@ -145,7 +154,7 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     /**
      * Set the enableManifestBackup property: Flag to indicate if disk manifest should be backed-up in the Storage
      * Account.
-     *
+     * 
      * @param enableManifestBackup the enableManifestBackup value to set.
      * @return the DataBoxCustomerDiskJobDetails object itself.
      */
@@ -154,56 +163,72 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withContactDetails(ContactDetails contactDetails) {
         super.withContactDetails(contactDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withShippingAddress(ShippingAddress shippingAddress) {
         super.withShippingAddress(shippingAddress);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withDataImportDetails(List<DataImportDetails> dataImportDetails) {
         super.withDataImportDetails(dataImportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withDataExportDetails(List<DataExportDetails> dataExportDetails) {
         super.withDataExportDetails(dataExportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withPreferences(Preferences preferences) {
         super.withPreferences(preferences);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
         super.withReverseShippingDetails(reverseShippingDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withKeyEncryptionKey(KeyEncryptionKey keyEncryptionKey) {
         super.withKeyEncryptionKey(keyEncryptionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxCustomerDiskJobDetails withExpectedDataSizeInTeraBytes(Integer expectedDataSizeInTeraBytes) {
         super.withExpectedDataSizeInTeraBytes(expectedDataSizeInTeraBytes);
@@ -212,31 +237,24 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (importDiskDetailsCollection() != null) {
-            importDiskDetailsCollection()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            importDiskDetailsCollection().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (exportDiskDetailsCollection() != null) {
-            exportDiskDetailsCollection()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            exportDiskDetailsCollection().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (copyProgress() != null) {
             copyProgress().forEach(e -> e.validate());
@@ -245,15 +263,188 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
             deliverToDcPackageDetails().validate();
         }
         if (returnToCustomerPackageDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property returnToCustomerPackageDetails in model"
-                            + " DataBoxCustomerDiskJobDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property returnToCustomerPackageDetails in model DataBoxCustomerDiskJobDetails"));
         } else {
             returnToCustomerPackageDetails().validate();
+        }
+        if (jobStages() != null) {
+            jobStages().forEach(e -> e.validate());
+        }
+        if (contactDetails() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactDetails in model DataBoxCustomerDiskJobDetails"));
+        } else {
+            contactDetails().validate();
+        }
+        if (shippingAddress() != null) {
+            shippingAddress().validate();
+        }
+        if (deliveryPackage() != null) {
+            deliveryPackage().validate();
+        }
+        if (returnPackage() != null) {
+            returnPackage().validate();
+        }
+        if (dataImportDetails() != null) {
+            dataImportDetails().forEach(e -> e.validate());
+        }
+        if (dataExportDetails() != null) {
+            dataExportDetails().forEach(e -> e.validate());
+        }
+        if (preferences() != null) {
+            preferences().validate();
+        }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
+        if (copyLogDetails() != null) {
+            copyLogDetails().forEach(e -> e.validate());
+        }
+        if (deviceErasureDetails() != null) {
+            deviceErasureDetails().validate();
+        }
+        if (keyEncryptionKey() != null) {
+            keyEncryptionKey().validate();
+        }
+        if (lastMitigationActionOnJob() != null) {
+            lastMitigationActionOnJob().validate();
+        }
+        if (datacenterAddress() != null) {
+            datacenterAddress().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataBoxCustomerDiskJobDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", contactDetails());
+        jsonWriter.writeJsonField("shippingAddress", shippingAddress());
+        jsonWriter.writeArrayField("dataImportDetails", dataImportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataExportDetails", dataExportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("preferences", preferences());
+        jsonWriter.writeJsonField("reverseShippingDetails", reverseShippingDetails());
+        jsonWriter.writeJsonField("keyEncryptionKey", keyEncryptionKey());
+        jsonWriter.writeNumberField("expectedDataSizeInTeraBytes", expectedDataSizeInTeraBytes());
+        jsonWriter.writeJsonField("returnToCustomerPackageDetails", this.returnToCustomerPackageDetails);
+        jsonWriter.writeStringField("jobDetailsType",
+            this.jobDetailsType == null ? null : this.jobDetailsType.toString());
+        jsonWriter.writeMapField("importDiskDetailsCollection", this.importDiskDetailsCollection,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableManifestBackup", this.enableManifestBackup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxCustomerDiskJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxCustomerDiskJobDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataBoxCustomerDiskJobDetails.
+     */
+    public static DataBoxCustomerDiskJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxCustomerDiskJobDetails deserializedDataBoxCustomerDiskJobDetails
+                = new DataBoxCustomerDiskJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.withContactDetails(ContactDetails.fromJson(reader));
+                } else if ("jobStages".equals(fieldName)) {
+                    List<JobStages> jobStages = reader.readArray(reader1 -> JobStages.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.withJobStages(jobStages);
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.withShippingAddress(ShippingAddress.fromJson(reader));
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDeliveryPackage(PackageShippingDetails.fromJson(reader));
+                } else if ("returnPackage".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withReturnPackage(PackageShippingDetails.fromJson(reader));
+                } else if ("dataImportDetails".equals(fieldName)) {
+                    List<DataImportDetails> dataImportDetails
+                        = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.withDataImportDetails(dataImportDetails);
+                } else if ("dataExportDetails".equals(fieldName)) {
+                    List<DataExportDetails> dataExportDetails
+                        = reader.readArray(reader1 -> DataExportDetails.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.withDataExportDetails(dataExportDetails);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.withPreferences(Preferences.fromJson(reader));
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withReverseShippingDetails(ReverseShippingDetails.fromJson(reader));
+                } else if ("copyLogDetails".equals(fieldName)) {
+                    List<CopyLogDetails> copyLogDetails = reader.readArray(reader1 -> CopyLogDetails.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.withCopyLogDetails(copyLogDetails);
+                } else if ("reverseShipmentLabelSasKey".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.withReverseShipmentLabelSasKey(reader.getString());
+                } else if ("chainOfCustodySasKey".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.withChainOfCustodySasKey(reader.getString());
+                } else if ("deviceErasureDetails".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDeviceErasureDetails(DeviceErasureDetails.fromJson(reader));
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.withKeyEncryptionKey(KeyEncryptionKey.fromJson(reader));
+                } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withExpectedDataSizeInTeraBytes(reader.getNullable(JsonReader::getInt));
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedDataBoxCustomerDiskJobDetails.withActions(actions);
+                } else if ("lastMitigationActionOnJob".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withLastMitigationActionOnJob(LastMitigationActionOnJob.fromJson(reader));
+                } else if ("datacenterAddress".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDatacenterAddress(DatacenterAddressResponse.fromJson(reader));
+                } else if ("dataCenterCode".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails
+                        .withDataCenterCode(DataCenterCode.fromString(reader.getString()));
+                } else if ("returnToCustomerPackageDetails".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.returnToCustomerPackageDetails
+                        = PackageCarrierDetails.fromJson(reader);
+                } else if ("jobDetailsType".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.jobDetailsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("importDiskDetailsCollection".equals(fieldName)) {
+                    Map<String, ImportDiskDetails> importDiskDetailsCollection
+                        = reader.readMap(reader1 -> ImportDiskDetails.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.importDiskDetailsCollection = importDiskDetailsCollection;
+                } else if ("exportDiskDetailsCollection".equals(fieldName)) {
+                    Map<String, ExportDiskDetails> exportDiskDetailsCollection
+                        = reader.readMap(reader1 -> ExportDiskDetails.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.exportDiskDetailsCollection = exportDiskDetailsCollection;
+                } else if ("copyProgress".equals(fieldName)) {
+                    List<DataBoxCustomerDiskCopyProgress> copyProgress
+                        = reader.readArray(reader1 -> DataBoxCustomerDiskCopyProgress.fromJson(reader1));
+                    deserializedDataBoxCustomerDiskJobDetails.copyProgress = copyProgress;
+                } else if ("deliverToDcPackageDetails".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.deliverToDcPackageDetails
+                        = PackageCarrierInfo.fromJson(reader);
+                } else if ("enableManifestBackup".equals(fieldName)) {
+                    deserializedDataBoxCustomerDiskJobDetails.enableManifestBackup
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxCustomerDiskJobDetails;
+        });
+    }
 }

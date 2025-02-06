@@ -1,0 +1,42 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for Azure-Storage-Blob Library
+# --------------------------------------------------------------------
+#
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipes.migrateAzureStorageBlob
+displayName: Migrate from azure-storage-blob to next generation stack
+description: This recipe migrates the Azure Storage Blob library to the next generation stack.
+recipeList:
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.BlobClient
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.BlobClient
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.BlobServiceClient
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.BlobServiceClient
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.BlobServiceClientBuilder
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.BlobServiceClientBuilder
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.BlobClientBuilder
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.BlobClientBuilder
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.models.BlobItem
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.models.BlobItem
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.models.BlobItemProperties
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.models.BlobItemProperties
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.models.BlobStorageException
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.models.BlobStorageException
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.models.ListBlobsOptions
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.models.ListBlobsOptions
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.specialized.BlockBlobClient
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.specialized.BlockBlobClient
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.storage.blob.specialized.BlockBlobClientBuilder
+      newFullyQualifiedTypeName: com.azure.v2.storage.blob.specialized.BlockBlobClientBuilder
+

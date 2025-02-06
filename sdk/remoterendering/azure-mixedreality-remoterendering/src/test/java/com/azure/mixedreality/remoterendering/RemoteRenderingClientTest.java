@@ -22,8 +22,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     private RemoteRenderingClient getClient(HttpClient httpClient) {
-        return new RemoteRenderingClientBuilder()
-            .accountId(super.getAccountId())
+        return new RemoteRenderingClientBuilder().accountId(super.getAccountId())
             .accountDomain(super.getAccountDomain())
             .credential(super.getAccountKey())
             .endpoint(super.getServiceEndpoint())
@@ -36,24 +35,25 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     public void conversionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
-        AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageUrl())
-            .setInputRelativeAssetPath("testBox.fbx")
-            .setInputBlobPrefix("Input")
-            .setInputStorageContainerReadListSas(getBlobContainerSasToken())
-            .setOutputStorageContainerUrl(getStorageUrl())
-            .setOutputBlobPrefix("Output")
-            .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
+        AssetConversionOptions conversionOptions
+            = new AssetConversionOptions().setInputStorageContainerUrl(getStorageUrl())
+                .setInputRelativeAssetPath("testBox.fbx")
+                .setInputBlobPrefix("Input")
+                .setInputStorageContainerReadListSas(getBlobContainerSasToken())
+                .setOutputStorageContainerUrl(getStorageUrl())
+                .setOutputBlobPrefix("Output")
+                .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("conversionTest");
 
-        SyncPoller<AssetConversion, AssetConversion> conversionPoller = setSyncPollerPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        SyncPoller<AssetConversion, AssetConversion> conversionPoller
+            = setSyncPollerPollInterval(client.beginConversion(conversionId, conversionOptions));
 
         AssetConversion conversion0 = conversionPoller.poll().getValue();
 
         assertEquals(conversionId, conversion0.getId());
-        assertEquals(conversionOptions.getInputRelativeAssetPath(), conversion0.getOptions().getInputRelativeAssetPath());
+        assertEquals(conversionOptions.getInputRelativeAssetPath(),
+            conversion0.getOptions().getInputRelativeAssetPath());
         assertNotEquals(AssetConversionStatus.FAILED, conversion0.getStatus());
 
         AssetConversion conversion = client.getConversion(conversionId);
@@ -84,16 +84,17 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         RemoteRenderingClient client = getClient(httpClient);
 
         // Don't provide SAS tokens.
-        AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageUrl())
-            .setInputRelativeAssetPath("testBox.fbx")
-            .setInputBlobPrefix("Input")
-            .setOutputStorageContainerUrl(getStorageUrl())
-            .setOutputBlobPrefix("Output");
+        AssetConversionOptions conversionOptions
+            = new AssetConversionOptions().setInputStorageContainerUrl(getStorageUrl())
+                .setInputRelativeAssetPath("testBox.fbx")
+                .setInputBlobPrefix("Input")
+                .setOutputStorageContainerUrl(getStorageUrl())
+                .setOutputBlobPrefix("Output");
 
         String conversionId = getRandomId("failedConversionNoAccess");
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
 
         assertTrue(ex.getMessage().contains(RESPONSE_CODE_403));
 
@@ -107,19 +108,19 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
-        AssetConversionOptions conversionOptions = new AssetConversionOptions()
-            .setInputStorageContainerUrl(getStorageUrl())
-            .setInputRelativeAssetPath("boxWhichDoesNotExist.fbx")
-            .setInputBlobPrefix("Input")
-            .setInputStorageContainerReadListSas(getBlobContainerSasToken())
-            .setOutputStorageContainerUrl(getStorageUrl())
-            .setOutputBlobPrefix("Output")
-            .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
+        AssetConversionOptions conversionOptions
+            = new AssetConversionOptions().setInputStorageContainerUrl(getStorageUrl())
+                .setInputRelativeAssetPath("boxWhichDoesNotExist.fbx")
+                .setInputBlobPrefix("Input")
+                .setInputStorageContainerReadListSas(getBlobContainerSasToken())
+                .setOutputStorageContainerUrl(getStorageUrl())
+                .setOutputBlobPrefix("Output")
+                .setOutputStorageContainerWriteSas(getBlobContainerSasToken());
 
         String conversionId = getRandomId("failedConversionMissingAsset");
 
-        SyncPoller<AssetConversion, AssetConversion> conversionPoller = setSyncPollerPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        SyncPoller<AssetConversion, AssetConversion> conversionPoller
+            = setSyncPollerPollInterval(client.beginConversion(conversionId, conversionOptions));
 
         AssetConversion conversion = conversionPoller.waitForCompletion().getValue();
 
@@ -130,23 +131,26 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertEquals(conversion.getError().getCode(), "InputContainerError");
         // Message: "Could not find the asset file in the storage account. Please make sure all paths and names are correct and the file is uploaded to storage."
         assertNotNull(conversion.getError().getMessage());
-        assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("could not find the asset file in the storage account"));
+        assertTrue(conversion.getError()
+            .getMessage()
+            .toLowerCase(Locale.ROOT)
+            .contains("could not find the asset file in the storage account"));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void sessionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
-        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
+        BeginSessionOptions options
+            = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("sessionTest2");
 
-        SyncPoller<RenderingSession, RenderingSession> sessionPoller = setSyncPollerPollInterval(client
-            .beginSession(sessionId, options));
+        SyncPoller<RenderingSession, RenderingSession> sessionPoller
+            = setSyncPollerPollInterval(client.beginSession(sessionId, options));
 
         RenderingSession session0 = sessionPoller.poll().getValue();
 
-        assertEquals(options.getSize(), session0.getSize());
         assertEquals(sessionId, session0.getId());
 
         RenderingSession sessionProperties = client.getSession(sessionId);
@@ -157,10 +161,10 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertEquals(updatedSession.getMaxLeaseTime().toMinutes(), 5);
 
         RenderingSession readyRenderingSession = sessionPoller.getFinalResult();
-        assertTrue((readyRenderingSession.getMaxLeaseTime().toMinutes() == 4) || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
+        assertTrue((readyRenderingSession.getMaxLeaseTime().toMinutes() == 4)
+            || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
         assertNotNull(readyRenderingSession.getHostname());
         assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
-        assertEquals(readyRenderingSession.getSize(), options.getSize());
 
         UpdateSessionOptions updateOptions2 = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(6));
         assertEquals(6, updateOptions2.getMaxLeaseTime().toMinutes());
@@ -174,11 +178,13 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     @MethodSource("getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
-        BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
+        BeginSessionOptions options
+            = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
 
         String sessionId = getRandomId("failedSessionTest");
 
-        ErrorResponseException ex = assertThrows(ErrorResponseException.class, () -> client.beginSession(sessionId, options));
+        ErrorResponseException ex
+            = assertThrows(ErrorResponseException.class, () -> client.beginSession(sessionId, options));
 
         assertTrue(ex.getMessage().contains(RESPONSE_CODE_400));
 

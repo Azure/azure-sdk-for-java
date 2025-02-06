@@ -1,14 +1,58 @@
 # Release History
 
-## 1.0.0-beta.21 (Unreleased)
+## 1.0.0 (2025-02-06)
 
-### Features Added
-
-### Breaking Changes
+Initial GA of `azure-core-http-vertx`.
 
 ### Bugs Fixed
 
+- Fixed a bug where a request would fail with `IllegalStateException("Result is already complete")` when multiple
+  exceptions happened during the request. When multiple exceptions happen, the first exception is now thrown and 
+  subsequent exceptions are added to the suppressed exceptions of the first exception. ([#43402](https://github.com/Azure/azure-sdk-for-java/pull/43402))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 1.0.0-beta.24 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.0.0-beta.23 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
+## 1.0.0-beta.22 (2024-10-01)
+
+### Breaking Changes
+
+- Renamed `VertxAsyncHttpClient` to `VertxHttpClient`, `VertxAsyncHttpClientBuilder` to `VertxHttpClientBuilder`, and
+  `VertxAsyncHttpClientProvider` to `VertxHttpClientProvider`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded Vert.x from `4.5.8` to `4.5.10`.
+
+## 1.0.0-beta.21 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.0.0-beta.20 (2024-07-31)
 

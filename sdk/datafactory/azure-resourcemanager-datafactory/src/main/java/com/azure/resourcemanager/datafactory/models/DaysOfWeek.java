@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.datafactory.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for DaysOfWeek.
  */
@@ -61,7 +58,6 @@ public enum DaysOfWeek {
      * @param value the serialized value to parse.
      * @return the parsed DaysOfWeek object, or null if unable to parse.
      */
-    @JsonCreator
     public static DaysOfWeek fromString(String value) {
         if (value == null) {
             return null;
@@ -78,7 +74,6 @@ public enum DaysOfWeek {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -38,13 +38,11 @@ public final class OperationResult {
     }
 
     static {
-        OperationResultHelper.setAccessor(
-            new OperationResultHelper.OperationResultAccessor() {
-                @Override
-                public void setOperationId(
-                    OperationResult operationResult, String operationId) {
-                    operationResult.setOperationId(operationId);
-                }
-            });
+        OperationResultHelper.setAccessor(new OperationResultHelper.OperationResultAccessor() {
+            @Override
+            public void setOperationId(OperationResult operationResult, String operationId) {
+                operationResult.setOperationId(operationId);
+            }
+        });
     }
 }

@@ -12,12 +12,14 @@ import com.azure.resourcemanager.managementgroups.fluent.models.HierarchySetting
 import com.azure.resourcemanager.managementgroups.fluent.models.HierarchySettingsListInner;
 import com.azure.resourcemanager.managementgroups.models.CreateOrUpdateSettingsRequest;
 
-/** An instance of this class provides access to all the operations defined in HierarchySettingsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HierarchySettingsOperationsClient.
+ */
 public interface HierarchySettingsOperationsClient {
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface HierarchySettingsOperationsClient {
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +46,7 @@ public interface HierarchySettingsOperationsClient {
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +60,7 @@ public interface HierarchySettingsOperationsClient {
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,7 +72,7 @@ public interface HierarchySettingsOperationsClient {
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @param context The context to associate with this operation.
@@ -80,12 +82,12 @@ public interface HierarchySettingsOperationsClient {
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HierarchySettingsInner> createOrUpdateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
+    Response<HierarchySettingsInner> createOrUpdateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +100,7 @@ public interface HierarchySettingsOperationsClient {
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @param context The context to associate with this operation.
@@ -108,12 +110,12 @@ public interface HierarchySettingsOperationsClient {
      * @return settings defined at the Management Group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HierarchySettingsInner> updateWithResponse(
-        String groupId, CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
+    Response<HierarchySettingsInner> updateWithResponse(String groupId,
+        CreateOrUpdateSettingsRequest createTenantSettingsRequest, Context context);
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +128,7 @@ public interface HierarchySettingsOperationsClient {
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface HierarchySettingsOperationsClient {
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

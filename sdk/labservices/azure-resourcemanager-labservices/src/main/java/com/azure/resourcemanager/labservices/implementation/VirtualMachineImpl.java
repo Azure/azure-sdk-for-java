@@ -17,8 +17,8 @@ public final class VirtualMachineImpl implements VirtualMachine {
 
     private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
-    VirtualMachineImpl(
-        VirtualMachineInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
+    VirtualMachineImpl(VirtualMachineInner innerObject,
+        com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

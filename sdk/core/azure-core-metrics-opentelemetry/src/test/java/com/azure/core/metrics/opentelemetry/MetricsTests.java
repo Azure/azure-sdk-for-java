@@ -6,6 +6,7 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
@@ -366,5 +367,24 @@ public class MetricsTests {
         value.set(1);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics()).isEmpty();
+    }
+
+    @Test
+    public void sdkOptions() {
+        LibraryTelemetryOptions sdkOptions
+            = new LibraryTelemetryOptions("az.sdk-name").setLibraryVersion("1.0.0-beta.1")
+                .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
+        InstrumentationScopeInfo expectedInstrumentationScope = InstrumentationScopeInfo
+            .create(sdkOptions.getLibraryName(), sdkOptions.getLibraryVersion(), sdkOptions.getSchemaUrl());
+
+        Meter meter = MeterProvider.getDefaultProvider()
+            .createMeter(sdkOptions, new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry));
+        assertTrue(meter.isEnabled());
+        DoubleHistogram histogram = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
+        assertTrue(histogram.isEnabled());
+        histogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(metric -> assertThat(metric).hasInstrumentationScope(expectedInstrumentationScope));
     }
 }

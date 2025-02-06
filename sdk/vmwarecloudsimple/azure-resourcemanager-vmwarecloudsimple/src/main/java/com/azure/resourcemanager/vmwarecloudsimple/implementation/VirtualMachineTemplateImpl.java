@@ -19,8 +19,7 @@ public final class VirtualMachineTemplateImpl implements VirtualMachineTemplate 
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    VirtualMachineTemplateImpl(
-        VirtualMachineTemplateInner innerObject,
+    VirtualMachineTemplateImpl(VirtualMachineTemplateInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -83,12 +82,8 @@ public final class VirtualMachineTemplateImpl implements VirtualMachineTemplate 
     public List<VirtualNic> nics() {
         List<VirtualNicInner> inner = this.innerModel().nics();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualNicImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new VirtualNicImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

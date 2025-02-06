@@ -7,6 +7,7 @@ package com.azure.resourcemanager.logic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountMapInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountMapListResult;
+import com.azure.resourcemanager.logic.models.IntegrationAccountMapPropertiesParametersSchema;
 import com.azure.resourcemanager.logic.models.MapType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,67 +17,62 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountMapListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountMapListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"mapType\":\"Xslt\",\"createdTime\":\"2021-09-27T04:00:59Z\",\"changedTime\":\"2021-06-03T19:27:08Z\",\"content\":\"jguufzdm\",\"contentType\":\"qtfihwhbotzinga\",\"metadata\":\"dataphoszqz\"},\"location\":\"dphqamv\",\"tags\":{\"nvyq\":\"wynwcvtbvkayhm\",\"cjaesgvvs\":\"atkzwpcnpw\",\"wygzlvdnkfxusem\":\"cyajguqf\",\"pfcqdp\":\"wzrmuh\"},\"id\":\"qxqvpsvuoymgc\",\"name\":\"elvezrypq\",\"type\":\"mfe\"},{\"properties\":{\"mapType\":\"Liquid\",\"createdTime\":\"2021-10-17T10:06:59Z\",\"changedTime\":\"2021-02-20T05:54:30Z\",\"content\":\"hkobopgxedk\",\"contentType\":\"epbqpcrfkbw\",\"metadata\":\"datanjv\"},\"location\":\"dw\",\"tags\":{\"tn\":\"qek\"},\"id\":\"htjsying\",\"name\":\"fq\",\"type\":\"tmtdhtmdvypgik\"},{\"properties\":{\"mapType\":\"Liquid\",\"createdTime\":\"2021-07-11T10:33:14Z\",\"changedTime\":\"2021-03-02T21:03:10Z\",\"content\":\"rryuzhlhkjo\",\"contentType\":\"vqqaatjinrvgo\",\"metadata\":\"datafiibfggjioolvr\"},\"location\":\"x\",\"tags\":{\"wjygvjayvblmhvk\":\"kkgll\",\"gsopbyrqufegxu\":\"uhbxvvy\",\"bnhlmc\":\"wz\"},\"id\":\"l\",\"name\":\"dn\",\"type\":\"itvgbmhrixkwm\"}],\"nextLink\":\"jejveg\"}")
-                .toObject(IntegrationAccountMapListResult.class);
-        Assertions.assertEquals("dphqamv", model.value().get(0).location());
-        Assertions.assertEquals("wynwcvtbvkayhm", model.value().get(0).tags().get("nvyq"));
-        Assertions.assertEquals(MapType.XSLT, model.value().get(0).mapType());
-        Assertions.assertEquals("jguufzdm", model.value().get(0).content());
-        Assertions.assertEquals("qtfihwhbotzinga", model.value().get(0).contentType());
-        Assertions.assertEquals("jejveg", model.nextLink());
+        IntegrationAccountMapListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"mapType\":\"Liquid\",\"parametersSchema\":{\"ref\":\"culkbawpfaj\"},\"createdTime\":\"2021-07-10T16:24:37Z\",\"changedTime\":\"2021-06-13T08:11:07Z\",\"content\":\"wtjjguktalhsnv\",\"contentType\":\"dmxzr\",\"contentLink\":{\"uri\":\"imlnwiaaomylw\",\"contentVersion\":\"z\",\"contentSize\":2879623854104865105,\"contentHash\":{\"algorithm\":\"hwwn\",\"value\":\"hlf\"},\"metadata\":\"datawpchwahf\"},\"metadata\":\"datausnfepgfewet\"},\"location\":\"l\",\"tags\":{\"cxfhbcporxv\":\"ncxykxhdjhlimm\",\"xfpxtgqscja\":\"cjzhqi\",\"qaz\":\"ftjuh\"},\"id\":\"mtggu\",\"name\":\"pijrajcivmmghf\",\"type\":\"fiwrxgkn\"},{\"properties\":{\"mapType\":\"NotSpecified\",\"parametersSchema\":{\"ref\":\"inzqodfvpgs\"},\"createdTime\":\"2021-06-18T14:08:16Z\",\"changedTime\":\"2021-08-05T02:27:24Z\",\"content\":\"bpfgzdj\",\"contentType\":\"vzflbq\",\"contentLink\":{\"uri\":\"qvlgafcqusrdvetn\",\"contentVersion\":\"dtutnwldu\",\"contentSize\":6613508255547335147,\"contentHash\":{\"algorithm\":\"yrmewipmvekdx\",\"value\":\"uqgsj\"},\"metadata\":\"dataundxgketw\"},\"metadata\":\"datahzjhf\"},\"location\":\"mhv\",\"tags\":{\"qsxvmhf\":\"vgpmun\"},\"id\":\"uzjyihsasbhudypo\",\"name\":\"yue\",\"type\":\"slynsqyrpfoo\"},{\"properties\":{\"mapType\":\"Xslt30\",\"parametersSchema\":{\"ref\":\"tyms\"},\"createdTime\":\"2021-07-18T21:06:13Z\",\"changedTime\":\"2021-08-12T19:25:58Z\",\"content\":\"nfwqzdzgtilaxhn\",\"contentType\":\"qlyvijo\",\"contentLink\":{\"uri\":\"vk\",\"contentVersion\":\"yzunbixxrtikv\",\"contentSize\":1201991349148626260,\"contentHash\":{\"algorithm\":\"lrcivtsoxfrke\",\"value\":\"pmyyefrpmpdnqq\"},\"metadata\":\"dataawaoqvmmbnpqfrt\"},\"metadata\":\"datakzmegnitgvkxlz\"},\"location\":\"qdrfegcealzxwhc\",\"tags\":{\"qhlwigdivbkbxgo\":\"ymo\",\"vdaeyyguxakjsq\":\"fajuwas\"},\"id\":\"hzbezkgi\",\"name\":\"sidxasicdd\",\"type\":\"vvjskgfmocwahp\"}],\"nextLink\":\"atjeaahh\"}")
+            .toObject(IntegrationAccountMapListResult.class);
+        Assertions.assertEquals("l", model.value().get(0).location());
+        Assertions.assertEquals("ncxykxhdjhlimm", model.value().get(0).tags().get("cxfhbcporxv"));
+        Assertions.assertEquals(MapType.LIQUID, model.value().get(0).mapType());
+        Assertions.assertEquals("culkbawpfaj", model.value().get(0).parametersSchema().ref());
+        Assertions.assertEquals("wtjjguktalhsnv", model.value().get(0).content());
+        Assertions.assertEquals("dmxzr", model.value().get(0).contentType());
+        Assertions.assertEquals("atjeaahh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountMapListResult model =
-            new IntegrationAccountMapListResult()
+        IntegrationAccountMapListResult model
+            = new IntegrationAccountMapListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new IntegrationAccountMapInner()
-                                .withLocation("dphqamv")
+                            new IntegrationAccountMapInner().withLocation("l")
                                 .withTags(
-                                    mapOf(
-                                        "nvyq",
-                                        "wynwcvtbvkayhm",
-                                        "cjaesgvvs",
-                                        "atkzwpcnpw",
-                                        "wygzlvdnkfxusem",
-                                        "cyajguqf",
-                                        "pfcqdp",
-                                        "wzrmuh"))
-                                .withMapType(MapType.XSLT)
-                                .withContent("jguufzdm")
-                                .withContentType("qtfihwhbotzinga")
-                                .withMetadata("dataphoszqz"),
-                            new IntegrationAccountMapInner()
-                                .withLocation("dw")
-                                .withTags(mapOf("tn", "qek"))
+                                    mapOf("cxfhbcporxv", "ncxykxhdjhlimm", "xfpxtgqscja", "cjzhqi", "qaz", "ftjuh"))
                                 .withMapType(MapType.LIQUID)
-                                .withContent("hkobopgxedk")
-                                .withContentType("epbqpcrfkbw")
-                                .withMetadata("datanjv"),
-                            new IntegrationAccountMapInner()
-                                .withLocation("x")
-                                .withTags(
-                                    mapOf("wjygvjayvblmhvk", "kkgll", "gsopbyrqufegxu", "uhbxvvy", "bnhlmc", "wz"))
-                                .withMapType(MapType.LIQUID)
-                                .withContent("rryuzhlhkjo")
-                                .withContentType("vqqaatjinrvgo")
-                                .withMetadata("datafiibfggjioolvr")))
-                .withNextLink("jejveg");
+                                .withParametersSchema(
+                                    new IntegrationAccountMapPropertiesParametersSchema().withRef("culkbawpfaj"))
+                                .withContent("wtjjguktalhsnv")
+                                .withContentType("dmxzr")
+                                .withMetadata("datausnfepgfewet"),
+                            new IntegrationAccountMapInner().withLocation("mhv")
+                                .withTags(mapOf("qsxvmhf", "vgpmun"))
+                                .withMapType(MapType.NOT_SPECIFIED)
+                                .withParametersSchema(
+                                    new IntegrationAccountMapPropertiesParametersSchema().withRef("inzqodfvpgs"))
+                                .withContent("bpfgzdj")
+                                .withContentType("vzflbq")
+                                .withMetadata("datahzjhf"),
+                            new IntegrationAccountMapInner().withLocation("qdrfegcealzxwhc")
+                                .withTags(mapOf("qhlwigdivbkbxgo", "ymo", "vdaeyyguxakjsq", "fajuwas"))
+                                .withMapType(MapType.XSLT30)
+                                .withParametersSchema(
+                                    new IntegrationAccountMapPropertiesParametersSchema().withRef("tyms"))
+                                .withContent("nfwqzdzgtilaxhn")
+                                .withContentType("qlyvijo")
+                                .withMetadata("datakzmegnitgvkxlz")))
+                .withNextLink("atjeaahh");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountMapListResult.class);
-        Assertions.assertEquals("dphqamv", model.value().get(0).location());
-        Assertions.assertEquals("wynwcvtbvkayhm", model.value().get(0).tags().get("nvyq"));
-        Assertions.assertEquals(MapType.XSLT, model.value().get(0).mapType());
-        Assertions.assertEquals("jguufzdm", model.value().get(0).content());
-        Assertions.assertEquals("qtfihwhbotzinga", model.value().get(0).contentType());
-        Assertions.assertEquals("jejveg", model.nextLink());
+        Assertions.assertEquals("l", model.value().get(0).location());
+        Assertions.assertEquals("ncxykxhdjhlimm", model.value().get(0).tags().get("cxfhbcporxv"));
+        Assertions.assertEquals(MapType.LIQUID, model.value().get(0).mapType());
+        Assertions.assertEquals("culkbawpfaj", model.value().get(0).parametersSchema().ref());
+        Assertions.assertEquals("wtjjguktalhsnv", model.value().get(0).content());
+        Assertions.assertEquals("dmxzr", model.value().get(0).contentType());
+        Assertions.assertEquals("atjeaahh", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -101,8 +101,8 @@ public interface B2CTenants {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Azure AD B2C tenant resource along with {@link Response}.
      */
-    Response<B2CTenantResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<B2CTenantResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only

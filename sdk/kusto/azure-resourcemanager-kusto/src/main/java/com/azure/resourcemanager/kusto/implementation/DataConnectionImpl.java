@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.implementation;
 
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.models.DataConnection;
+import com.azure.resourcemanager.kusto.models.DataConnectionKind;
 
 public final class DataConnectionImpl implements DataConnection {
     private DataConnectionInner innerObject;
@@ -27,6 +28,10 @@ public final class DataConnectionImpl implements DataConnection {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public DataConnectionKind kind() {
+        return this.innerModel().kind();
     }
 
     public String location() {

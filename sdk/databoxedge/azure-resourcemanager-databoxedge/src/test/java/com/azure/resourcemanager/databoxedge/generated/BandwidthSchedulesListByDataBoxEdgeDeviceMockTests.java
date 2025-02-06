@@ -6,67 +6,38 @@ package com.azure.resourcemanager.databoxedge.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databoxedge.DataBoxEdgeManager;
 import com.azure.resourcemanager.databoxedge.models.BandwidthSchedule;
 import com.azure.resourcemanager.databoxedge.models.DayOfWeek;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BandwidthSchedulesListByDataBoxEdgeDeviceMockTests {
     @Test
     public void testListByDataBoxEdgeDevice() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"start\":\"ttsttktlahbqact\",\"stop\":\"tgzukxitmmqt\",\"rateInMbps\":451636472,\"days\":[\"Friday\",\"Monday\",\"Sunday\"]},\"id\":\"rnxrxcpj\",\"name\":\"isavok\",\"type\":\"dzf\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"start\":\"zpnfqntcypsxj\",\"stop\":\"foimwkslircizjxv\",\"rateInMbps\":1233687153,\"days\":[\"Saturday\",\"Sunday\",\"Thursday\"]},\"id\":\"cvlhv\",\"name\":\"gdyftumrtwna\",\"type\":\"jslb\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataBoxEdgeManager manager = DataBoxEdgeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<BandwidthSchedule> response = manager.bandwidthSchedules()
+            .listByDataBoxEdgeDevice("youpfgfbkj", "bdyhgkfminsgowz", com.azure.core.util.Context.NONE);
 
-        DataBoxEdgeManager manager =
-            DataBoxEdgeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<BandwidthSchedule> response =
-            manager.bandwidthSchedules().listByDataBoxEdgeDevice("hej", "g", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("zpnfqntcypsxj", response.iterator().next().start());
-        Assertions.assertEquals("foimwkslircizjxv", response.iterator().next().stop());
-        Assertions.assertEquals(1233687153, response.iterator().next().rateInMbps());
-        Assertions.assertEquals(DayOfWeek.SATURDAY, response.iterator().next().days().get(0));
+        Assertions.assertEquals("ttsttktlahbqact", response.iterator().next().start());
+        Assertions.assertEquals("tgzukxitmmqt", response.iterator().next().stop());
+        Assertions.assertEquals(451636472, response.iterator().next().rateInMbps());
+        Assertions.assertEquals(DayOfWeek.FRIDAY, response.iterator().next().days().get(0));
     }
 }

@@ -5,11 +5,25 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data type for indicators connection. */
+/**
+ * Data type for indicators connection.
+ */
 @Fluent
 public final class TIDataConnectorDataTypesIndicators extends DataConnectorDataTypeCommon {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of TIDataConnectorDataTypesIndicators class.
+     */
+    public TIDataConnectorDataTypesIndicators() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TIDataConnectorDataTypesIndicators withState(DataTypeState state) {
         super.withState(state);
@@ -18,11 +32,48 @@ public final class TIDataConnectorDataTypesIndicators extends DataConnectorDataT
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TIDataConnectorDataTypesIndicators from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TIDataConnectorDataTypesIndicators if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TIDataConnectorDataTypesIndicators.
+     */
+    public static TIDataConnectorDataTypesIndicators fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TIDataConnectorDataTypesIndicators deserializedTIDataConnectorDataTypesIndicators
+                = new TIDataConnectorDataTypesIndicators();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedTIDataConnectorDataTypesIndicators
+                        .withState(DataTypeState.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTIDataConnectorDataTypesIndicators;
+        });
     }
 }

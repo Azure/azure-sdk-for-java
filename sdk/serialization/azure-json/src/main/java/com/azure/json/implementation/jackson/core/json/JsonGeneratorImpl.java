@@ -1,21 +1,25 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.json;
 
-import java.io.IOException;
-
-import com.azure.json.implementation.jackson.core.*;
+import com.azure.json.implementation.jackson.core.JsonGenerator;
+import com.azure.json.implementation.jackson.core.ObjectCodec;
+import com.azure.json.implementation.jackson.core.SerializableString;
+import com.azure.json.implementation.jackson.core.StreamWriteCapability;
+import com.azure.json.implementation.jackson.core.Version;
 import com.azure.json.implementation.jackson.core.base.GeneratorBase;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
 import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
-import com.azure.json.implementation.jackson.core.util.DefaultPrettyPrinter;
+import com.azure.json.implementation.jackson.core.io.SerializedString;
 import com.azure.json.implementation.jackson.core.util.JacksonFeatureSet;
 import com.azure.json.implementation.jackson.core.util.VersionUtil;
+
+import java.io.IOException;
 
 /**
  * Intermediate base class shared by JSON-backed generators
  * like {@link UTF8JsonGenerator} and {@link WriterBasedJsonGenerator}.
- * 
+ *
  * @since 2.1
  */
 public abstract class JsonGeneratorImpl extends GeneratorBase {
@@ -88,10 +92,10 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
 
     /**
      * Separator to use, if any, between root-level values.
-     * 
+     *
      * @since 2.1
      */
-    protected SerializableString _rootValueSeparator = DefaultPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR;
+    protected SerializableString _rootValueSeparator = new SerializedString(" ");
 
     /**
      * Flag that is set if quoting is not to be added around
@@ -164,7 +168,7 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
 
     @Override
     public JsonGenerator setHighestNonEscapedChar(int charCode) {
-        _maximumNonEscapedChar = (charCode < 0) ? 0 : charCode;
+        _maximumNonEscapedChar = Math.max(charCode, 0);
         return this;
     }
 
@@ -209,40 +213,6 @@ public abstract class JsonGeneratorImpl extends GeneratorBase {
      * /* Shared helper methods
      * /**********************************************************
      */
-
-    protected void _verifyPrettyValueWrite(String typeMsg, int status) throws IOException {
-        // If we have a pretty printer, it knows what to do:
-        switch (status) {
-            case JsonWriteContext.STATUS_OK_AFTER_COMMA: // array
-                _cfgPrettyPrinter.writeArrayValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AFTER_COLON:
-                _cfgPrettyPrinter.writeObjectFieldValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AFTER_SPACE:
-                _cfgPrettyPrinter.writeRootValueSeparator(this);
-                break;
-
-            case JsonWriteContext.STATUS_OK_AS_IS:
-                // First entry, but of which context?
-                if (_writeContext.inArray()) {
-                    _cfgPrettyPrinter.beforeArrayValues(this);
-                } else if (_writeContext.inObject()) {
-                    _cfgPrettyPrinter.beforeObjectEntries(this);
-                }
-                break;
-
-            case JsonWriteContext.STATUS_EXPECT_NAME:
-                _reportCantWriteValueExpectName(typeMsg);
-                break;
-
-            default:
-                _throwInternal();
-                break;
-        }
-    }
 
     protected void _reportCantWriteValueExpectName(String typeMsg) throws IOException {
         _reportError(

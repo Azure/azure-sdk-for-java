@@ -18,6 +18,12 @@ import java.util.UUID;
 @Fluent
 public class DataSourceCredential implements JsonSerializable<DataSourceCredential> {
     /*
+     * Type of data source credential
+     */
+    private DataSourceCredentialType dataSourceCredentialType
+        = DataSourceCredentialType.fromString("DataSourceCredential");
+
+    /*
      * Unique id of data source credential
      */
     private UUID dataSourceCredentialId;
@@ -36,6 +42,15 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * Creates an instance of DataSourceCredential class.
      */
     public DataSourceCredential() {
+    }
+
+    /**
+     * Get the dataSourceCredentialType property: Type of data source credential.
+     * 
+     * @return the dataSourceCredentialType value.
+     */
+    public DataSourceCredentialType getDataSourceCredentialType() {
+        return this.dataSourceCredentialType;
     }
 
     /**
@@ -98,10 +113,15 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dataSourceCredentialName", this.dataSourceCredentialName);
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         jsonWriter.writeStringField("dataSourceCredentialDescription", this.dataSourceCredentialDescription);
         return jsonWriter.writeEndObject();
     }
@@ -112,37 +132,36 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataSourceCredential if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataSourceCredential.
      */
     public static DataSourceCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("dataSourceCredentialType".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("dataSourceCredentialType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
                 }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("AzureSQLConnectionString".equals(discriminatorValue)) {
-                return AzureSQLConnectionStringCredential.fromJson(readerToUse.reset());
-            } else if ("DataLakeGen2SharedKey".equals(discriminatorValue)) {
-                return DataLakeGen2SharedKeyCredential.fromJson(readerToUse.reset());
-            } else if ("ServicePrincipal".equals(discriminatorValue)) {
-                return ServicePrincipalCredential.fromJson(readerToUse.reset());
-            } else if ("ServicePrincipalInKV".equals(discriminatorValue)) {
-                return ServicePrincipalInKVCredential.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureSQLConnectionString".equals(discriminatorValue)) {
+                    return AzureSQLConnectionStringCredential.fromJson(readerToUse.reset());
+                } else if ("DataLakeGen2SharedKey".equals(discriminatorValue)) {
+                    return DataLakeGen2SharedKeyCredential.fromJson(readerToUse.reset());
+                } else if ("ServicePrincipal".equals(discriminatorValue)) {
+                    return ServicePrincipalCredential.fromJson(readerToUse.reset());
+                } else if ("ServicePrincipalInKV".equals(discriminatorValue)) {
+                    return ServicePrincipalInKVCredential.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
             }
         });
     }
@@ -156,6 +175,9 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
 
                 if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedDataSourceCredential.dataSourceCredentialName = reader.getString();
+                } else if ("dataSourceCredentialType".equals(fieldName)) {
+                    deserializedDataSourceCredential.dataSourceCredentialType
+                        = DataSourceCredentialType.fromString(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
                     deserializedDataSourceCredential.dataSourceCredentialId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));

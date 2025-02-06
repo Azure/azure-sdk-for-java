@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IscsiLunTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IscsiLun model =
-            BinaryData
-                .fromString("{\"name\":\"zqlveualupjmkhf\",\"managedDiskAzureResourceId\":\"obbc\",\"lun\":198742016}")
+        IscsiLun model
+            = BinaryData.fromString("{\"name\":\"yat\",\"managedDiskAzureResourceId\":\"dckcbc\",\"lun\":1827810592}")
                 .toObject(IscsiLun.class);
-        Assertions.assertEquals("zqlveualupjmkhf", model.name());
-        Assertions.assertEquals("obbc", model.managedDiskAzureResourceId());
+        Assertions.assertEquals("yat", model.name());
+        Assertions.assertEquals("dckcbc", model.managedDiskAzureResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiLun model = new IscsiLun().withName("zqlveualupjmkhf").withManagedDiskAzureResourceId("obbc");
+        IscsiLun model = new IscsiLun().withName("yat").withManagedDiskAzureResourceId("dckcbc");
         model = BinaryData.fromObject(model).toObject(IscsiLun.class);
-        Assertions.assertEquals("zqlveualupjmkhf", model.name());
-        Assertions.assertEquals("obbc", model.managedDiskAzureResourceId());
+        Assertions.assertEquals("yat", model.name());
+        Assertions.assertEquals("dckcbc", model.managedDiskAzureResourceId());
     }
 }

@@ -14,7 +14,8 @@ import com.azure.core.util.IterableStream;
 public final class ClassifyDocumentResultPropertiesHelper {
     private static ClassifyDocumentResultAccessor accessor;
 
-    private ClassifyDocumentResultPropertiesHelper() { }
+    private ClassifyDocumentResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentResult} instance.
@@ -22,8 +23,8 @@ public final class ClassifyDocumentResultPropertiesHelper {
     public interface ClassifyDocumentResultAccessor {
         void setClassifications(ClassifyDocumentResult classifyDocumentResult,
             IterableStream<ClassificationCategory> classifications);
-        void setWarnings(ClassifyDocumentResult classifyDocumentResult,
-            IterableStream<TextAnalyticsWarning> warnings);
+
+        void setWarnings(ClassifyDocumentResult classifyDocumentResult, IterableStream<TextAnalyticsWarning> warnings);
     }
 
     /**

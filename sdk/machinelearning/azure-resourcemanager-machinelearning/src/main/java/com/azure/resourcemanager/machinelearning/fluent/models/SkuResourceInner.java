@@ -5,58 +5,43 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.models.SkuCapacity;
 import com.azure.resourcemanager.machinelearning.models.SkuSetting;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Fulfills ARM Contract requirement to list all available SKUS for a resource. */
+/**
+ * Fulfills ARM Contract requirement to list all available SKUS for a resource.
+ */
 @Fluent
-public final class SkuResourceInner {
-    /*
-     * Gets or sets the Sku Capacity.
-     */
-    @JsonProperty(value = "capacity")
-    private SkuCapacity capacity;
-
+public final class SkuResourceInner implements JsonSerializable<SkuResourceInner> {
     /*
      * The resource type name.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * Gets or sets the Sku.
      */
-    @JsonProperty(value = "sku")
     private SkuSetting sku;
 
-    /** Creates an instance of SkuResourceInner class. */
+    /*
+     * Gets or sets the Sku Capacity.
+     */
+    private SkuCapacity capacity;
+
+    /**
+     * Creates an instance of SkuResourceInner class.
+     */
     public SkuResourceInner() {
     }
 
     /**
-     * Get the capacity property: Gets or sets the Sku Capacity.
-     *
-     * @return the capacity value.
-     */
-    public SkuCapacity capacity() {
-        return this.capacity;
-    }
-
-    /**
-     * Set the capacity property: Gets or sets the Sku Capacity.
-     *
-     * @param capacity the capacity value to set.
-     * @return the SkuResourceInner object itself.
-     */
-    public SkuResourceInner withCapacity(SkuCapacity capacity) {
-        this.capacity = capacity;
-        return this;
-    }
-
-    /**
      * Get the resourceType property: The resource type name.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -65,7 +50,7 @@ public final class SkuResourceInner {
 
     /**
      * Get the sku property: Gets or sets the Sku.
-     *
+     * 
      * @return the sku value.
      */
     public SkuSetting sku() {
@@ -74,7 +59,7 @@ public final class SkuResourceInner {
 
     /**
      * Set the sku property: Gets or sets the Sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SkuResourceInner object itself.
      */
@@ -84,16 +69,77 @@ public final class SkuResourceInner {
     }
 
     /**
+     * Get the capacity property: Gets or sets the Sku Capacity.
+     * 
+     * @return the capacity value.
+     */
+    public SkuCapacity capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set the capacity property: Gets or sets the Sku Capacity.
+     * 
+     * @param capacity the capacity value to set.
+     * @return the SkuResourceInner object itself.
+     */
+    public SkuResourceInner withCapacity(SkuCapacity capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (capacity() != null) {
-            capacity().validate();
-        }
         if (sku() != null) {
             sku().validate();
         }
+        if (capacity() != null) {
+            capacity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuResourceInner.
+     */
+    public static SkuResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuResourceInner deserializedSkuResourceInner = new SkuResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedSkuResourceInner.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSkuResourceInner.sku = SkuSetting.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSkuResourceInner.capacity = SkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuResourceInner;
+        });
     }
 }

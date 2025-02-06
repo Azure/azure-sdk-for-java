@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.fluent.models.BotInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of bot service operation response. */
+/**
+ * The list of bot service operation response.
+ */
 @Fluent
-public final class BotResponseList {
+public final class BotResponseList implements JsonSerializable<BotResponseList> {
     /*
      * The link used to get the next page of bot service resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets the list of bot service results and their properties.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<BotInner> value;
 
     /**
+     * Creates an instance of BotResponseList class.
+     */
+    public BotResponseList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of bot service resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class BotResponseList {
 
     /**
      * Set the nextLink property: The link used to get the next page of bot service resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BotResponseList object itself.
      */
@@ -46,7 +56,7 @@ public final class BotResponseList {
 
     /**
      * Get the value property: Gets the list of bot service results and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<BotInner> value() {
@@ -55,12 +65,51 @@ public final class BotResponseList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BotResponseList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BotResponseList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BotResponseList.
+     */
+    public static BotResponseList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BotResponseList deserializedBotResponseList = new BotResponseList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedBotResponseList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<BotInner> value = reader.readArray(reader1 -> BotInner.fromJson(reader1));
+                    deserializedBotResponseList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBotResponseList;
+        });
     }
 }

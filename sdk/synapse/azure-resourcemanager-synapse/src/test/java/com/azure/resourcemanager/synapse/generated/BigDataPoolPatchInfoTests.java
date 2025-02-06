@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class BigDataPoolPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BigDataPoolPatchInfo model =
-            BinaryData.fromString("{\"tags\":{\"rsnm\":\"hppr\"}}").toObject(BigDataPoolPatchInfo.class);
-        Assertions.assertEquals("hppr", model.tags().get("rsnm"));
+        BigDataPoolPatchInfo model
+            = BinaryData.fromString("{\"tags\":{\"jqul\":\"aeqjhqjbasvms\"}}").toObject(BigDataPoolPatchInfo.class);
+        Assertions.assertEquals("aeqjhqjbasvms", model.tags().get("jqul"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BigDataPoolPatchInfo model = new BigDataPoolPatchInfo().withTags(mapOf("rsnm", "hppr"));
+        BigDataPoolPatchInfo model = new BigDataPoolPatchInfo().withTags(mapOf("jqul", "aeqjhqjbasvms"));
         model = BinaryData.fromObject(model).toObject(BigDataPoolPatchInfo.class);
-        Assertions.assertEquals("hppr", model.tags().get("rsnm"));
+        Assertions.assertEquals("aeqjhqjbasvms", model.tags().get("jqul"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

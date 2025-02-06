@@ -23,8 +23,8 @@ public final class AgentPoolProvisioningStatusStatusTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolProvisioningStatusStatus model
-            = new AgentPoolProvisioningStatusStatus().withErrorMessage("aajrm").withReadyReplicas(
+        AgentPoolProvisioningStatusStatus model = new AgentPoolProvisioningStatusStatus().withErrorMessage("aajrm")
+            .withReadyReplicas(
                 Arrays.asList(new AgentPoolUpdateProfile().withCount(2081594756).withVmSize("lovmclwhijcoe"),
                     new AgentPoolUpdateProfile().withCount(1619207085).withVmSize("kexxppof")));
         model = BinaryData.fromObject(model).toObject(AgentPoolProvisioningStatusStatus.class);

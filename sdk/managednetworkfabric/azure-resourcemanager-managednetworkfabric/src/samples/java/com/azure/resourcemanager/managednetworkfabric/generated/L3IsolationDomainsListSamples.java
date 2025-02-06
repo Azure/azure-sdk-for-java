@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for L3IsolationDomains List. */
+/**
+ * Samples for L3IsolationDomains List.
+ */
 public final class L3IsolationDomainsListSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * L3IsolationDomains_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_ListBySubscription_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void l3IsolationDomainsListBySubscriptionMaximumSetGen(

@@ -3,7 +3,6 @@
 
 package com.azure.identity;
 
-
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
  *
@@ -21,8 +20,9 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     public SharedTokenCacheCredentialBuilder() {
         super();
     }
-    private TokenCachePersistenceOptions tokenCachePersistenceOptions = new TokenCachePersistenceOptions()
-        .setUnencryptedStorageAllowed(true);
+
+    private TokenCachePersistenceOptions tokenCachePersistenceOptions
+        = new TokenCachePersistenceOptions().setUnencryptedStorageAllowed(true);
 
     /**
      * Sets the username for the account.
@@ -55,8 +55,8 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public SharedTokenCacheCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                              tokenCachePersistenceOptions) {
+    public SharedTokenCacheCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
         return this;
     }
@@ -81,6 +81,6 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     public SharedTokenCacheCredential build() {
         identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return new SharedTokenCacheCredential(username, clientId, tenantId,
-                identityClientOptions.enablePersistentCache().setAllowUnencryptedCache(true));
+            identityClientOptions.enablePersistentCache().setAllowUnencryptedCache(true));
     }
 }

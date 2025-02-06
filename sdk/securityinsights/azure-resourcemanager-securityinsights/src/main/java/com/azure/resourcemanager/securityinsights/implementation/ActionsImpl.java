@@ -21,24 +21,36 @@ public final class ActionsImpl implements Actions {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public ActionsImpl(
-        ActionsClient innerClient, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    public ActionsImpl(ActionsClient innerClient,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ActionResponse> listByAlertRule(
-        String resourceGroupName, String workspaceName, String ruleId) {
-        PagedIterable<ActionResponseInner> inner =
-            this.serviceClient().listByAlertRule(resourceGroupName, workspaceName, ruleId);
-        return Utils.mapPage(inner, inner1 -> new ActionResponseImpl(inner1, this.manager()));
+    public PagedIterable<ActionResponse> listByAlertRule(String resourceGroupName, String workspaceName,
+        String ruleId) {
+        PagedIterable<ActionResponseInner> inner
+            = this.serviceClient().listByAlertRule(resourceGroupName, workspaceName, ruleId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ActionResponseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ActionResponse> listByAlertRule(
-        String resourceGroupName, String workspaceName, String ruleId, Context context) {
-        PagedIterable<ActionResponseInner> inner =
-            this.serviceClient().listByAlertRule(resourceGroupName, workspaceName, ruleId, context);
-        return Utils.mapPage(inner, inner1 -> new ActionResponseImpl(inner1, this.manager()));
+    public PagedIterable<ActionResponse> listByAlertRule(String resourceGroupName, String workspaceName, String ruleId,
+        Context context) {
+        PagedIterable<ActionResponseInner> inner
+            = this.serviceClient().listByAlertRule(resourceGroupName, workspaceName, ruleId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ActionResponseImpl(inner1, this.manager()));
+    }
+
+    public Response<ActionResponse> getWithResponse(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, Context context) {
+        Response<ActionResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ActionResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ActionResponse get(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
@@ -50,158 +62,107 @@ public final class ActionsImpl implements Actions {
         }
     }
 
-    public Response<ActionResponse> getWithResponse(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, Context context) {
-        Response<ActionResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ActionResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String ruleId,
+        String actionId, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, ruleId, actionId, context);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
         this.serviceClient().delete(resourceGroupName, workspaceName, ruleId, actionId);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String ruleId, String actionId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, ruleId, actionId, context);
-    }
-
     public ActionResponse getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String ruleId = Utils.getValueFromIdByName(id, "alertRules");
+        String ruleId = ResourceManagerUtils.getValueFromIdByName(id, "alertRules");
         if (ruleId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
         }
-        String actionId = Utils.getValueFromIdByName(id, "actions");
+        String actionId = ResourceManagerUtils.getValueFromIdByName(id, "actions");
         if (actionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE).getValue();
     }
 
     public Response<ActionResponse> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String ruleId = Utils.getValueFromIdByName(id, "alertRules");
+        String ruleId = ResourceManagerUtils.getValueFromIdByName(id, "alertRules");
         if (ruleId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
         }
-        String actionId = Utils.getValueFromIdByName(id, "actions");
+        String actionId = ResourceManagerUtils.getValueFromIdByName(id, "actions");
         if (actionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String ruleId = Utils.getValueFromIdByName(id, "alertRules");
+        String ruleId = ResourceManagerUtils.getValueFromIdByName(id, "alertRules");
         if (ruleId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
         }
-        String actionId = Utils.getValueFromIdByName(id, "actions");
+        String actionId = ResourceManagerUtils.getValueFromIdByName(id, "actions");
         if (actionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String ruleId = Utils.getValueFromIdByName(id, "alertRules");
+        String ruleId = ResourceManagerUtils.getValueFromIdByName(id, "alertRules");
         if (ruleId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'alertRules'.", id)));
         }
-        String actionId = Utils.getValueFromIdByName(id, "actions");
+        String actionId = ResourceManagerUtils.getValueFromIdByName(id, "actions");
         if (actionId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actions'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, ruleId, actionId, context);
     }

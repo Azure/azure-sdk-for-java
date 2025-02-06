@@ -32,22 +32,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,43 +64,36 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientR")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/connectivityCheck")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/connectivityCheck")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsync(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ConnectivityCheckRequest connectivityCheckRequestParams,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information on the connectivity status along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsyncWithResponseAsync(
-        String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
+    private Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsyncWithResponseAsync(String resourceGroupName,
+        String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -104,40 +103,27 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectivityCheckRequestParams == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter connectivityCheckRequestParams is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter connectivityCheckRequestParams is required and cannot be null."));
         } else {
             connectivityCheckRequestParams.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .performConnectivityCheckAsync(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            connectivityCheckRequestParams,
-                            accept,
-                            context))
+            .withContext(context -> service.performConnectivityCheckAsync(this.client.getEndpoint(), resourceGroupName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                connectivityCheckRequestParams, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -145,20 +131,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information on the connectivity status along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsyncWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        ConnectivityCheckRequest connectivityCheckRequestParams,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsyncWithResponseAsync(String resourceGroupName,
+        String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,37 +149,26 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectivityCheckRequestParams == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter connectivityCheckRequestParams is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter connectivityCheckRequestParams is required and cannot be null."));
         } else {
             connectivityCheckRequestParams.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .performConnectivityCheckAsync(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                connectivityCheckRequestParams,
-                accept,
-                context);
+        return service.performConnectivityCheckAsync(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), connectivityCheckRequestParams, accept,
+            context);
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -209,25 +179,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
-        beginPerformConnectivityCheckAsyncAsync(
-            String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            performConnectivityCheckAsyncWithResponseAsync(
-                resourceGroupName, serviceName, connectivityCheckRequestParams);
-        return this
-            .client
-            .<ConnectivityCheckResponseInner, ConnectivityCheckResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectivityCheckResponseInner.class,
-                ConnectivityCheckResponseInner.class,
-                this.client.getContext());
+        beginPerformConnectivityCheckAsyncAsync(String resourceGroupName, String serviceName,
+            ConnectivityCheckRequest connectivityCheckRequestParams) {
+        Mono<Response<Flux<ByteBuffer>>> mono = performConnectivityCheckAsyncWithResponseAsync(resourceGroupName,
+            serviceName, connectivityCheckRequestParams);
+        return this.client.<ConnectivityCheckResponseInner, ConnectivityCheckResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectivityCheckResponseInner.class, ConnectivityCheckResponseInner.class,
+            this.client.getContext());
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -239,29 +203,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
-        beginPerformConnectivityCheckAsyncAsync(
-            String resourceGroupName,
-            String serviceName,
-            ConnectivityCheckRequest connectivityCheckRequestParams,
-            Context context) {
+        beginPerformConnectivityCheckAsyncAsync(String resourceGroupName, String serviceName,
+            ConnectivityCheckRequest connectivityCheckRequestParams, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            performConnectivityCheckAsyncWithResponseAsync(
-                resourceGroupName, serviceName, connectivityCheckRequestParams, context);
-        return this
-            .client
-            .<ConnectivityCheckResponseInner, ConnectivityCheckResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectivityCheckResponseInner.class,
-                ConnectivityCheckResponseInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = performConnectivityCheckAsyncWithResponseAsync(resourceGroupName,
+            serviceName, connectivityCheckRequestParams, context);
+        return this.client.<ConnectivityCheckResponseInner, ConnectivityCheckResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectivityCheckResponseInner.class, ConnectivityCheckResponseInner.class,
+            context);
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -272,8 +227,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
-        beginPerformConnectivityCheckAsync(
-            String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
+        beginPerformConnectivityCheckAsync(String resourceGroupName, String serviceName,
+            ConnectivityCheckRequest connectivityCheckRequestParams) {
         return this
             .beginPerformConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams)
             .getSyncPoller();
@@ -282,7 +237,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -294,21 +249,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
-        beginPerformConnectivityCheckAsync(
-            String resourceGroupName,
-            String serviceName,
-            ConnectivityCheckRequest connectivityCheckRequestParams,
-            Context context) {
+        beginPerformConnectivityCheckAsync(String resourceGroupName, String serviceName,
+            ConnectivityCheckRequest connectivityCheckRequestParams, Context context) {
         return this
-            .beginPerformConnectivityCheckAsyncAsync(
-                resourceGroupName, serviceName, connectivityCheckRequestParams, context)
+            .beginPerformConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -318,8 +270,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return information on the connectivity status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectivityCheckResponseInner> performConnectivityCheckAsyncAsync(
-        String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
+    private Mono<ConnectivityCheckResponseInner> performConnectivityCheckAsyncAsync(String resourceGroupName,
+        String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
         return beginPerformConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -328,7 +280,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -339,21 +291,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return information on the connectivity status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectivityCheckResponseInner> performConnectivityCheckAsyncAsync(
-        String resourceGroupName,
-        String serviceName,
-        ConnectivityCheckRequest connectivityCheckRequestParams,
-        Context context) {
-        return beginPerformConnectivityCheckAsyncAsync(
-                resourceGroupName, serviceName, connectivityCheckRequestParams, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ConnectivityCheckResponseInner> performConnectivityCheckAsyncAsync(String resourceGroupName,
+        String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams, Context context) {
+        return beginPerformConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -363,8 +310,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectivityCheckResponseInner performConnectivityCheckAsync(
-        String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
+    public ConnectivityCheckResponseInner performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams) {
         return performConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams)
             .block();
     }
@@ -372,7 +319,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -383,13 +330,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectivityCheckResponseInner performConnectivityCheckAsync(
-        String resourceGroupName,
-        String serviceName,
-        ConnectivityCheckRequest connectivityCheckRequestParams,
-        Context context) {
-        return performConnectivityCheckAsyncAsync(
-                resourceGroupName, serviceName, connectivityCheckRequestParams, context)
-            .block();
+    public ConnectivityCheckResponseInner performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams, Context context) {
+        return performConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams,
+            context).block();
     }
 }

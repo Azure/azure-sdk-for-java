@@ -168,9 +168,7 @@ public class ShareAsyncClient {
      * @return a {@link ShareDirectoryAsyncClient} that interacts with the directory in the share
      */
     public ShareDirectoryAsyncClient getDirectoryClient(String directoryName) {
-        directoryName = "/".equals(directoryName)
-            ? ""
-            : directoryName;
+        directoryName = "/".equals(directoryName) ? "" : directoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
             serviceVersion, sasToken);
     }
@@ -243,10 +241,9 @@ public class ShareAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(new ShareGetPropertiesOptions(), context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t ->
-                    t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404
-                && ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND,
-                t -> {
+            .onErrorResume(t -> t instanceof ShareStorageException
+                && ((ShareStorageException) t).getStatusCode() == 404
+                && ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND, t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
@@ -375,7 +372,8 @@ public class ShareAsyncClient {
             .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -445,11 +443,11 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
         try {
             options = options == null ? new ShareCreateOptions() : options;
-            return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException) t).getStatusCode() == 409, t -> {
+            return createWithResponse(options, context).onErrorResume(
+                t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                        response.getHeaders(), null));
                 });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -524,7 +522,8 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().createSnapshotWithResponseAsync(shareName, null, metadata, context)
+        return azureFileStorageClient.getShares()
+            .createSnapshotWithResponseAsync(shareName, null, metadata, context)
             .map(ModelHelper::mapCreateSnapshotResponse);
     }
 
@@ -621,12 +620,13 @@ public class ShareAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(ShareDeleteOptions options, Context context) {
         options = options == null ? new ShareDeleteOptions() : options;
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
-            ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-            requestConditions.getLeaseId(), context);
+        return azureFileStorageClient.getShares()
+            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
+                ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
+                requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -698,8 +698,8 @@ public class ShareAsyncClient {
     Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareDeleteOptions options, Context context) {
         return deleteWithResponse(options, context)
             .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
-                t -> {
+            .onErrorResume(
+                t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404, t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
@@ -802,8 +802,8 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareProperties>> getPropertiesWithResponse(ShareGetPropertiesOptions options, Context context) {
         options = options == null ? new ShareGetPropertiesOptions() : options;
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
             .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(), context)
@@ -934,13 +934,15 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setPropertiesWithResponse(ShareSetPropertiesOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponseAsync(shareName, null,
-            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
-            options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
-            options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(), context)
+        return azureFileStorageClient.getShares()
+            .setPropertiesNoCustomHeadersWithResponseAsync(shareName, null, options.getQuotaInGb(),
+                options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
+                options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
+                options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1060,11 +1062,12 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(ShareSetMetadataOptions options, Context context) {
         options = options == null ? new ShareSetMetadataOptions() : options;
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().setMetadataNoCustomHeadersWithResponseAsync(shareName, null,
-            options.getMetadata(), requestConditions.getLeaseId(), context)
+        return azureFileStorageClient.getShares()
+            .setMetadataNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(),
+                requestConditions.getLeaseId(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1123,18 +1126,14 @@ public class ShareAsyncClient {
     public PagedFlux<ShareSignedIdentifier> getAccessPolicy(ShareGetAccessPolicyOptions options) {
         ShareGetAccessPolicyOptions finalOptions = options == null ? new ShareGetAccessPolicyOptions() : options;
         ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
-            ? new ShareRequestConditions() : finalOptions.getRequestConditions();
+            ? new ShareRequestConditions()
+            : finalOptions.getRequestConditions();
         try {
-            Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever =
-                marker -> this.azureFileStorageClient.getShares()
-                    .getAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(),
-                        Context.NONE)
-                    .map(response -> new PagedResponseBase<>(response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        response.getValue().items(),
-                        null,
-                        response.getDeserializedHeaders()));
+            Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever
+                = marker -> this.azureFileStorageClient.getShares()
+                    .getAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), Context.NONE)
+                    .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), response.getValue().items(), null, response.getDeserializedHeaders()));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -1250,15 +1249,16 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setAccessPolicyWithResponse(ShareSetAccessPolicyOptions options, Context context) {
         options = options == null ? new ShareSetAccessPolicyOptions() : options;
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
-        List<ShareSignedIdentifier> permissions =
-            ModelHelper.truncateAccessPolicyPermissionsToSeconds(options.getPermissions());
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
+        List<ShareSignedIdentifier> permissions
+            = ModelHelper.truncateAccessPolicyPermissionsToSeconds(options.getPermissions());
 
         context = context == null ? Context.NONE : context;
 
-        return azureFileStorageClient.getShares().setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null,
-                requestConditions.getLeaseId(), permissions, context)
+        return azureFileStorageClient.getShares()
+            .setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null, requestConditions.getLeaseId(),
+                permissions, context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1345,11 +1345,11 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareStatistics>> getStatisticsWithResponse(ShareGetStatisticsOptions options, Context context) {
         options = options == null ? new ShareGetStatisticsOptions() : options;
-        ShareRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new ShareRequestConditions() : options.getRequestConditions();
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().getStatisticsNoCustomHeadersWithResponseAsync(shareName, null,
-            requestConditions.getLeaseId(), context)
+        return azureFileStorageClient.getShares()
+            .getStatisticsNoCustomHeadersWithResponseAsync(shareName, null, requestConditions.getLeaseId(), context)
             .map(ModelHelper::mapGetStatisticsResponse);
     }
 
@@ -1419,8 +1419,8 @@ public class ShareAsyncClient {
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
-            return withContext(context ->
-                createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context));
+            return withContext(context -> createDirectoryWithResponse(directoryName, smbProperties, filePermission,
+                metadata, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1502,8 +1502,7 @@ public class ShareAsyncClient {
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
         ShareDirectoryCreateOptions options) {
         try {
-            return withContext(context ->
-                createDirectoryIfNotExistsWithResponse(directoryName, options, context));
+            return withContext(context -> createDirectoryIfNotExistsWithResponse(directoryName, options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1514,12 +1513,13 @@ public class ShareAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createDirectoryWithResponse(directoryName, options.getSmbProperties(), options.getFilePermission(),
-                options.getMetadata(), context).onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException) t).getStatusCode() == 409, t -> {
-                    HttpResponse response = ((ShareStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), getDirectoryClient(directoryName)));
-                });
+                options.getMetadata(), context).onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), getDirectoryClient(directoryName)));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1681,9 +1681,8 @@ public class ShareAsyncClient {
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context ->
-                createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
-                    requestConditions, context));
+            return withContext(context -> createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties,
+                filePermission, metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1694,8 +1693,9 @@ public class ShareAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata, requestConditions,
-                context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
+                requestConditions, context)
+            .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
     /**
@@ -1836,8 +1836,8 @@ public class ShareAsyncClient {
         try {
             return deleteDirectoryWithResponse(directoryName, context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t
-                instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                .onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -2010,7 +2010,8 @@ public class ShareAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName,
+        ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions, context));
         } catch (RuntimeException ex) {
@@ -2018,13 +2019,14 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Context context) {
         try {
             requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
             return deleteFileWithResponse(fileName, requestConditions, context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t)
-                    .getStatusCode() == 404,
+                .onErrorResume(
+                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -2132,14 +2134,15 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<String>> createPermissionWithResponse(String filePermission, FilePermissionFormat filePermissionFormat,
-                                                        Context context) {
+    Mono<Response<String>> createPermissionWithResponse(String filePermission,
+        FilePermissionFormat filePermissionFormat, Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
+        SharePermission sharePermission
+            = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
         return azureFileStorageClient.getShares()
-                .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-                .map(response -> new SimpleResponse<>(response,
-                        response.getDeserializedHeaders().getXMsFilePermissionKey()));
+            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+            .map(response -> new SimpleResponse<>(response,
+                response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**
@@ -2233,7 +2236,7 @@ public class ShareAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey,
-                                                            FilePermissionFormat filePermissionFormat) {
+        FilePermissionFormat filePermissionFormat) {
         try {
             return withContext(context -> getPermissionWithResponse(filePermissionKey, filePermissionFormat, context));
         } catch (RuntimeException ex) {
@@ -2241,8 +2244,8 @@ public class ShareAsyncClient {
         }
     }
 
-    Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, FilePermissionFormat filePermissionFormat,
-        Context context) {
+    Mono<Response<String>> getPermissionWithResponse(String filePermissionKey,
+        FilePermissionFormat filePermissionFormat, Context context) {
         return azureFileStorageClient.getShares()
             .getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));

@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.JobScheduleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response model for the list job schedule operation. */
+/**
+ * The response model for the list job schedule operation.
+ */
 @Fluent
-public final class JobScheduleListResult {
+public final class JobScheduleListResult implements JsonSerializable<JobScheduleListResult> {
     /*
      * Gets or sets a list of job schedules.
      */
-    @JsonProperty(value = "value")
     private List<JobScheduleInner> value;
 
     /*
      * Gets or sets the next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of JobScheduleListResult class.
+     */
+    public JobScheduleListResult() {
+    }
+
+    /**
      * Get the value property: Gets or sets a list of job schedules.
-     *
+     * 
      * @return the value value.
      */
     public List<JobScheduleInner> value() {
@@ -35,7 +45,7 @@ public final class JobScheduleListResult {
 
     /**
      * Set the value property: Gets or sets a list of job schedules.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobScheduleListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class JobScheduleListResult {
 
     /**
      * Get the nextLink property: Gets or sets the next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +65,7 @@ public final class JobScheduleListResult {
 
     /**
      * Set the nextLink property: Gets or sets the next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the JobScheduleListResult object itself.
      */
@@ -66,12 +76,52 @@ public final class JobScheduleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobScheduleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobScheduleListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobScheduleListResult.
+     */
+    public static JobScheduleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobScheduleListResult deserializedJobScheduleListResult = new JobScheduleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<JobScheduleInner> value = reader.readArray(reader1 -> JobScheduleInner.fromJson(reader1));
+                    deserializedJobScheduleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedJobScheduleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobScheduleListResult;
+        });
     }
 }

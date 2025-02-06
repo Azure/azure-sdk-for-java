@@ -9,8 +9,6 @@ module com.azure.communication.identity {
     exports com.azure.communication.identity;
     exports com.azure.communication.identity.models;
 
-    opens com.azure.communication.identity.models
-        to com.azure.core;
-    opens com.azure.communication.identity.implementation.models
-        to com.azure.core;
+    opens com.azure.communication.identity.models to com.azure.core;
+    opens com.azure.communication.identity.implementation.models to com.azure.core;
 }

@@ -24,11 +24,12 @@ public final class ReplicationMigrationItemsResumeReplicationSampl {
      */
     public static void
         resumeReplication(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().resumeReplication("migrationvault", "resourcegroup1", "vmwarefabric1",
-            "vmwareContainer1", "virtualmachine1",
-            new ResumeReplicationInput()
-                .withProperties(new ResumeReplicationInputProperties().withProviderSpecificDetails(
-                    new VMwareCbtResumeReplicationInput().withDeleteMigrationResources("false"))),
-            com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems()
+            .resumeReplication("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1",
+                "virtualmachine1",
+                new ResumeReplicationInput()
+                    .withProperties(new ResumeReplicationInputProperties().withProviderSpecificDetails(
+                        new VMwareCbtResumeReplicationInput().withDeleteMigrationResources("false"))),
+                com.azure.core.util.Context.NONE);
     }
 }

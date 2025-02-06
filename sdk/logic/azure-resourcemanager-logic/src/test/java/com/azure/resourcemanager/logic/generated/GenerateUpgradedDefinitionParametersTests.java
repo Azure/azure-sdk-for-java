@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateUpgradedDefinitionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateUpgradedDefinitionParameters model =
-            BinaryData
-                .fromString("{\"targetSchemaVersion\":\"otkftutqxlngx\"}")
-                .toObject(GenerateUpgradedDefinitionParameters.class);
-        Assertions.assertEquals("otkftutqxlngx", model.targetSchemaVersion());
+        GenerateUpgradedDefinitionParameters model = BinaryData.fromString("{\"targetSchemaVersion\":\"gpw\"}")
+            .toObject(GenerateUpgradedDefinitionParameters.class);
+        Assertions.assertEquals("gpw", model.targetSchemaVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateUpgradedDefinitionParameters model =
-            new GenerateUpgradedDefinitionParameters().withTargetSchemaVersion("otkftutqxlngx");
+        GenerateUpgradedDefinitionParameters model
+            = new GenerateUpgradedDefinitionParameters().withTargetSchemaVersion("gpw");
         model = BinaryData.fromObject(model).toObject(GenerateUpgradedDefinitionParameters.class);
-        Assertions.assertEquals("otkftutqxlngx", model.targetSchemaVersion());
+        Assertions.assertEquals("gpw", model.targetSchemaVersion());
     }
 }

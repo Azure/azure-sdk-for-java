@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class GitHubConnectorStatsPropertiesTests {
     @Test
     public void testDeserialize() {
-        GitHubConnectorStatsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Canceled\",\"ownersCount\":87946417642997689,\"reposCount\":232356034449895741}")
-                .toObject(GitHubConnectorStatsProperties.class);
+        GitHubConnectorStatsProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"ownersCount\":87946417642997689,\"reposCount\":232356034449895741}")
+            .toObject(GitHubConnectorStatsProperties.class);
         Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
         Assertions.assertEquals(87946417642997689L, model.ownersCount());
         Assertions.assertEquals(232356034449895741L, model.reposCount());
@@ -25,9 +23,8 @@ public final class GitHubConnectorStatsPropertiesTests {
 
     @Test
     public void testSerialize() {
-        GitHubConnectorStatsProperties model =
-            new GitHubConnectorStatsProperties()
-                .withProvisioningState(ProvisioningState.CANCELED)
+        GitHubConnectorStatsProperties model
+            = new GitHubConnectorStatsProperties().withProvisioningState(ProvisioningState.CANCELED)
                 .withOwnersCount(87946417642997689L)
                 .withReposCount(232356034449895741L);
         model = BinaryData.fromObject(model).toObject(GitHubConnectorStatsProperties.class);

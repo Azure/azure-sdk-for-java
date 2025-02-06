@@ -14,22 +14,24 @@ public final class DataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataDisk model = BinaryData.fromString(
-            "{\"lun\":1394705984,\"caching\":\"ReadWrite\",\"diskSizeGB\":2111014163,\"storageAccountType\":\"StandardSSD_LRS\"}")
+            "{\"lun\":2043531661,\"caching\":\"ReadWrite\",\"diskSizeGB\":900444322,\"storageAccountType\":\"StandardSSD_LRS\"}")
             .toObject(DataDisk.class);
-        Assertions.assertEquals(1394705984, model.lun());
+        Assertions.assertEquals(2043531661, model.lun());
         Assertions.assertEquals(CachingType.READ_WRITE, model.caching());
-        Assertions.assertEquals(2111014163, model.diskSizeGB());
+        Assertions.assertEquals(900444322, model.diskSizeGB());
         Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataDisk model = new DataDisk().withLun(1394705984).withCaching(CachingType.READ_WRITE)
-            .withDiskSizeGB(2111014163).withStorageAccountType(StorageAccountType.STANDARD_SSD_LRS);
+        DataDisk model = new DataDisk().withLun(2043531661)
+            .withCaching(CachingType.READ_WRITE)
+            .withDiskSizeGB(900444322)
+            .withStorageAccountType(StorageAccountType.STANDARD_SSD_LRS);
         model = BinaryData.fromObject(model).toObject(DataDisk.class);
-        Assertions.assertEquals(1394705984, model.lun());
+        Assertions.assertEquals(2043531661, model.lun());
         Assertions.assertEquals(CachingType.READ_WRITE, model.caching());
-        Assertions.assertEquals(2111014163, model.diskSizeGB());
+        Assertions.assertEquals(900444322, model.diskSizeGB());
         Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.storageAccountType());
     }
 }

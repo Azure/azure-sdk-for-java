@@ -94,10 +94,11 @@ public final class ManageNetworkWatcher {
             //============================================================
             // Create network watcher
             System.out.println("Creating network watcher...");
-            nw = azureResourceManager.networkWatchers().define(nwName)
-                    .withRegion(region)
-                    .withNewResourceGroup()
-                    .create();
+            nw = azureResourceManager.networkWatchers()
+                .define(nwName)
+                .withRegion(region)
+                .withNewResourceGroup()
+                .create();
             System.out.println("Created network watcher");
             // Print the network watcher
             Utils.print(nw);
@@ -107,69 +108,73 @@ public final class ManageNetworkWatcher {
 
             // Create network security group, virtual network and VM; add packetCapture extension to enable
             System.out.println("Creating network security group...");
-            NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups().define(nsgName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .defineRule("DenyInternetInComing")
-                    .denyInbound()
-                    .fromAddress("INTERNET")
-                    .fromAnyPort()
-                    .toAnyAddress()
-                    .toPort(443)
-                    .withAnyProtocol()
-                    .attach()
-                    .create();
+            NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups()
+                .define(nsgName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .defineRule("DenyInternetInComing")
+                .denyInbound()
+                .fromAddress("INTERNET")
+                .fromAnyPort()
+                .toAnyAddress()
+                .toPort(443)
+                .withAnyProtocol()
+                .attach()
+                .create();
 
             System.out.println("Defining a virtual network...");
-            Creatable<Network> virtualNetworkDefinition = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withAddressSpace("192.168.0.0/16")
-                    .defineSubnet(subnetName)
-                    .withAddressPrefix("192.168.2.0/24")
-                    .withExistingNetworkSecurityGroup(nsg)
-                    .attach();
+            Creatable<Network> virtualNetworkDefinition = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withAddressSpace("192.168.0.0/16")
+                .defineSubnet(subnetName)
+                .withAddressPrefix("192.168.2.0/24")
+                .withExistingNetworkSecurityGroup(nsg)
+                .attach();
 
             System.out.println("Creating a virtual machine...");
-            VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork(virtualNetworkDefinition)
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(dnsLabel)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                    .withRootUsername(userName)
-                    .withRootPassword(Utils.password())
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    // This extension is needed to enable packet capture
-                    .defineNewExtension("packetCapture")
-                    .withPublisher("Microsoft.Azure.NetworkWatcher")
-                    .withType("NetworkWatcherAgentLinux")
-                    .withVersion("1.4")
-                    .withMinorVersionAutoUpgrade()
-                    .attach()
-                    .create();
+            VirtualMachine vm = azureResourceManager.virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork(virtualNetworkDefinition)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(dnsLabel)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withRootUsername(userName)
+                .withRootPassword(Utils.password())
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                // This extension is needed to enable packet capture
+                .defineNewExtension("packetCapture")
+                .withPublisher("Microsoft.Azure.NetworkWatcher")
+                .withType("NetworkWatcherAgentLinux")
+                .withVersion("1.4")
+                .withMinorVersionAutoUpgrade()
+                .attach()
+                .create();
 
             // Create storage account
             System.out.println("Creating storage account...");
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withGeneralPurposeAccountKindV2()
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(saName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withGeneralPurposeAccountKindV2()
+                .create();
 
             // Start a packet capture
             System.out.println("Creating packet capture...");
             PacketCapture packetCapture = nw.packetCaptures()
-                    .define(packetCaptureName)
-                    .withTarget(vm.id())
-                    .withStorageAccountId(storageAccount.id())
-                    .withStoragePath(storageAccount.endPoints().primary().blob() + packetCaptureStorageContainer)
-                    .withTimeLimitInSeconds(1500)
-                    .definePacketCaptureFilter()
-                    .withProtocol(PcProtocol.TCP)
-                    .attach()
-                    .create();
+                .define(packetCaptureName)
+                .withTarget(vm.id())
+                .withStorageAccountId(storageAccount.id())
+                .withStoragePath(storageAccount.endPoints().primary().blob() + packetCaptureStorageContainer)
+                .withTimeLimitInSeconds(1500)
+                .definePacketCaptureFilter()
+                .withProtocol(PcProtocol.TCP)
+                .attach()
+                .create();
             System.out.println("Created packet capture");
             Utils.print(packetCapture);
 
@@ -194,23 +199,24 @@ public final class ManageNetworkWatcher {
             // Test IP flow on the NIC
             System.out.println("Verifying IP flow for VM ID " + vm.id() + "...");
             VerificationIPFlow verificationIPFlow = nw.verifyIPFlow()
-                    .withTargetResourceId(vm.id())
-                    .withDirection(Direction.INBOUND)
-                    .withProtocol(IpFlowProtocol.TCP)
-                    .withLocalIPAddress(ipAddress)
-                    .withRemoteIPAddress("8.8.8.8")
-                    .withLocalPort("443")
-                    .withRemotePort("443")
-                    .execute();
+                .withTargetResourceId(vm.id())
+                .withDirection(Direction.INBOUND)
+                .withProtocol(IpFlowProtocol.TCP)
+                .withLocalIPAddress(ipAddress)
+                .withRemoteIPAddress("8.8.8.8")
+                .withLocalPort("443")
+                .withRemotePort("443")
+                .execute();
             Utils.print(verificationIPFlow);
 
             //============================================================
             // Analyze next hop - get the next hop type and IP address for a virtual machine
             System.out.println("Calculating next hop...");
-            NextHop nextHop = nw.nextHop().withTargetResourceId(vm.id())
-                    .withSourceIpAddress(ipAddress)
-                    .withDestinationIpAddress("8.8.8.8")
-                    .execute();
+            NextHop nextHop = nw.nextHop()
+                .withTargetResourceId(vm.id())
+                .withSourceIpAddress(ipAddress)
+                .withDestinationIpAddress("8.8.8.8")
+                .execute();
             Utils.print(nextHop);
 
             //============================================================
@@ -235,11 +241,11 @@ public final class ManageNetworkWatcher {
 
             // Enable NSG flow log
             flowLogSettings.update()
-                    .withLogging()
-                    .withStorageAccount(storageAccount.id())
-                    .withRetentionPolicyDays(5)
-                    .withRetentionPolicyEnabled()
-                    .apply();
+                .withLogging()
+                .withStorageAccount(storageAccount.id())
+                .withRetentionPolicyDays(5)
+                .withRetentionPolicyEnabled()
+                .apply();
             Utils.print(flowLogSettings);
 
             // wait for flow log to log an event
@@ -248,9 +254,7 @@ public final class ManageNetworkWatcher {
 
             // Disable NSG flow log
             System.out.println("Disabling flow log...");
-            flowLogSettings.update()
-                    .withoutLogging()
-                    .apply();
+            flowLogSettings.update().withoutLogging().apply();
             Utils.print(flowLogSettings);
 
             // TODO: Verify the below azure storage code based on Azure core.
@@ -258,18 +262,18 @@ public final class ManageNetworkWatcher {
             // Download a packet capture
             String accountKey = storageAccount.getKeys().get(0).value();
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                    storageAccount.name(), accountKey);
+                storageAccount.name(), accountKey);
 
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-                .connectionString(connectionString)
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString)
                 .httpClient(storageAccount.manager().httpPipeline().getHttpClient())
                 .buildClient();
-            BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(packetCaptureStorageContainer);
+            BlobContainerClient blobContainerClient
+                = blobServiceClient.getBlobContainerClient(packetCaptureStorageContainer);
             // iterate over subfolders structure to get the file
             BlobItem item = blobContainerClient.listBlobs().iterator().next();
-//            while (item instanceof Blob) {
-//                item = ((CloudBlobDirectory) item).listBlobs().iterator().next();
-//            }
+            //            while (item instanceof Blob) {
+            //                item = ((CloudBlobDirectory) item).listBlobs().iterator().next();
+            //            }
             // download packet capture file
             BlobClient blobClient = blobContainerClient.getBlobClient(item.getName());
             blobClient.downloadToFile(packetCaptureFile);
@@ -277,12 +281,13 @@ public final class ManageNetworkWatcher {
 
             //============================================================
             // Download a flow log
-            blobContainerClient = blobServiceClient.getBlobContainerClient("insights-logs-networksecuritygroupflowevent");
+            blobContainerClient
+                = blobServiceClient.getBlobContainerClient("insights-logs-networksecuritygroupflowevent");
             // iterate over subfolders structure to get the file
             item = blobContainerClient.listBlobs().iterator().next();
-//            while (item instanceof CloudBlobDirectory) {
-//                item = ((CloudBlobDirectory) item).listBlobs().iterator().next();
-//            }
+            //            while (item instanceof CloudBlobDirectory) {
+            //                item = ((CloudBlobDirectory) item).listBlobs().iterator().next();
+            //            }
             blobClient = blobContainerClient.getBlobClient(item.getName());
             System.out.println("Flow log:");
             blobClient.download(System.out);
@@ -328,8 +333,7 @@ public final class ManageNetworkWatcher {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

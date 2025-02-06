@@ -26,7 +26,8 @@ import java.util.function.BiFunction;
 /**
  * This class contains the response information returned from the server when downloading a blob.
  */
-public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> implements Closeable {
+public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>>
+    implements Closeable {
 
     static {
         BlobDownloadAsyncResponseConstructorProxy.setAccessor(BlobDownloadAsyncResponse::new);
@@ -79,7 +80,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
 
     private static Flux<ByteBuffer> createResponseFlux(StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
-        return FluxUtil.createRetriableDownloadFlux(sourceResponse::getValue,
+        return FluxUtil
+            .createRetriableDownloadFlux(sourceResponse::getValue,
                 (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(StreamResponse::getValue),
                 retryOptions.getMaxRetryRequests())
             .defaultIfEmpty(EMPTY_BUFFER);

@@ -12,8 +12,8 @@ public final class SharedKeysImpl implements SharedKeys {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    SharedKeysImpl(
-        SharedKeysInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    SharedKeysImpl(SharedKeysInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

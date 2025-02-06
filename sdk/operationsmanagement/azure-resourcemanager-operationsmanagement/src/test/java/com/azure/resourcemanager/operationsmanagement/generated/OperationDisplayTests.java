@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"aoyfhrtxilnerkuj\",\"resource\":\"vlejuvfqa\",\"operation\":\"lyxwjkcprbnwbx\"}")
-                .toObject(OperationDisplay.class);
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.provider());
-        Assertions.assertEquals("vlejuvfqa", model.resource());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.operation());
+        OperationDisplay model = BinaryData
+            .fromString("{\"provider\":\"zcxtbzsgfyccsn\",\"resource\":\"mdwzjeiachboo\",\"operation\":\"lnrosfqp\"}")
+            .toObject(OperationDisplay.class);
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.provider());
+        Assertions.assertEquals("mdwzjeiachboo", model.resource());
+        Assertions.assertEquals("lnrosfqp", model.operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDisplay model =
-            new OperationDisplay()
-                .withProvider("aoyfhrtxilnerkuj")
-                .withResource("vlejuvfqa")
-                .withOperation("lyxwjkcprbnwbx");
+        OperationDisplay model = new OperationDisplay().withProvider("zcxtbzsgfyccsn")
+            .withResource("mdwzjeiachboo")
+            .withOperation("lnrosfqp");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.provider());
-        Assertions.assertEquals("vlejuvfqa", model.resource());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.operation());
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.provider());
+        Assertions.assertEquals("mdwzjeiachboo", model.resource());
+        Assertions.assertEquals("lnrosfqp", model.operation());
     }
 }

@@ -18,7 +18,8 @@ public final class DeploymentsDeleteSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsDelete(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .deleteWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
+                com.azure.core.util.Context.NONE);
     }
 }

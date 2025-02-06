@@ -13,26 +13,44 @@ import java.util.Map;
 /** An immutable client-side representation of an Azure Topology info object, associated with network watcher. */
 @Fluent
 public interface Topology extends Executable<Topology>, HasInnerModel<TopologyInner>, HasParent<NetworkWatcher> {
-    /** @return GUID representing the id */
+    /**
+     * Gets GUID representing the id.
+     *
+     * @return GUID representing the id
+     */
     String id();
 
-    /** @return parameters used to query this topology */
+    /**
+     * Gets parameters used to query this topology.
+     *
+     * @return parameters used to query this topology
+     */
     TopologyParameters topologyParameters();
 
-    /** @return the datetime when the topology was initially created for the resource group. */
+    /**
+     * Gets the datetime when the topology was initially created for the resource group.
+     *
+     * @return the datetime when the topology was initially created for the resource group.
+     */
     OffsetDateTime createdTime();
 
-    /** @return the datetime when the topology was last modified */
+    /**
+     * Gets the datetime when the topology was last modified.
+     *
+     * @return the datetime when the topology was last modified
+     */
     OffsetDateTime lastModifiedTime();
 
-    /** @return The resources in this topology */
+    /**
+     * Gets the resources in this topology.
+     *
+     * @return The resources in this topology
+     */
     Map<String, TopologyResource> resources();
 
     /** The entirety of topology parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResourceGroup,
-            DefinitionStages.WithExecute,
-            DefinitionStages.WithExecuteAndSubnet {
+    interface Definition extends DefinitionStages.WithTargetResourceGroup, DefinitionStages.WithExecute,
+        DefinitionStages.WithExecuteAndSubnet {
     }
 
     /** Grouping of topology definition stages. */

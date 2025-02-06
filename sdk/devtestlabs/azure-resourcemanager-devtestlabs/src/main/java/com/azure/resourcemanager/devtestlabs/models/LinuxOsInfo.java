@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about a Linux OS. */
+/**
+ * Information about a Linux OS.
+ */
 @Fluent
-public final class LinuxOsInfo {
+public final class LinuxOsInfo implements JsonSerializable<LinuxOsInfo> {
     /*
      * The state of the Linux OS (i.e. NonDeprovisioned, DeprovisionRequested, DeprovisionApplied).
      */
-    @JsonProperty(value = "linuxOsState")
     private LinuxOsState linuxOsState;
 
-    /** Creates an instance of LinuxOsInfo class. */
+    /**
+     * Creates an instance of LinuxOsInfo class.
+     */
     public LinuxOsInfo() {
     }
 
     /**
      * Get the linuxOsState property: The state of the Linux OS (i.e. NonDeprovisioned, DeprovisionRequested,
      * DeprovisionApplied).
-     *
+     * 
      * @return the linuxOsState value.
      */
     public LinuxOsState linuxOsState() {
@@ -33,7 +40,7 @@ public final class LinuxOsInfo {
     /**
      * Set the linuxOsState property: The state of the Linux OS (i.e. NonDeprovisioned, DeprovisionRequested,
      * DeprovisionApplied).
-     *
+     * 
      * @param linuxOsState the linuxOsState value to set.
      * @return the LinuxOsInfo object itself.
      */
@@ -44,9 +51,45 @@ public final class LinuxOsInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("linuxOsState", this.linuxOsState == null ? null : this.linuxOsState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxOsInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxOsInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxOsInfo.
+     */
+    public static LinuxOsInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxOsInfo deserializedLinuxOsInfo = new LinuxOsInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linuxOsState".equals(fieldName)) {
+                    deserializedLinuxOsInfo.linuxOsState = LinuxOsState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxOsInfo;
+        });
     }
 }

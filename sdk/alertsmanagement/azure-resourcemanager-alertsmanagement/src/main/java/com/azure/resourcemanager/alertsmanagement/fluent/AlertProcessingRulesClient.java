@@ -15,11 +15,13 @@ import com.azure.resourcemanager.alertsmanagement.models.AlertProcessingRulesGet
 import com.azure.resourcemanager.alertsmanagement.models.AlertProcessingRulesUpdateResponse;
 import com.azure.resourcemanager.alertsmanagement.models.PatchObject;
 
-/** An instance of this class provides access to all the operations defined in AlertProcessingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AlertProcessingRulesClient.
+ */
 public interface AlertProcessingRulesClient {
     /**
      * List all alert processing rules in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of alert processing rules as paginated response with {@link PagedIterable}.
@@ -29,7 +31,7 @@ public interface AlertProcessingRulesClient {
 
     /**
      * List all alert processing rules in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,7 @@ public interface AlertProcessingRulesClient {
 
     /**
      * List all alert processing rules in a resource group.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,7 +55,7 @@ public interface AlertProcessingRulesClient {
 
     /**
      * List all alert processing rules in a resource group.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +68,22 @@ public interface AlertProcessingRulesClient {
 
     /**
      * Get an alert processing rule by name.
-     *
+     * 
+     * @param resourceGroupName Resource group name where the resource is created.
+     * @param alertProcessingRuleName The name of the alert processing rule that needs to be fetched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an alert processing rule by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AlertProcessingRulesGetByResourceGroupResponse getByResourceGroupWithResponse(String resourceGroupName,
+        String alertProcessingRuleName, Context context);
+
+    /**
+     * Get an alert processing rule by name.
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param alertProcessingRuleName The name of the alert processing rule that needs to be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,38 +95,8 @@ public interface AlertProcessingRulesClient {
     AlertProcessingRuleInner getByResourceGroup(String resourceGroupName, String alertProcessingRuleName);
 
     /**
-     * Get an alert processing rule by name.
-     *
-     * @param resourceGroupName Resource group name where the resource is created.
-     * @param alertProcessingRuleName The name of the alert processing rule that needs to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert processing rule by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertProcessingRulesGetByResourceGroupResponse getByResourceGroupWithResponse(
-        String resourceGroupName, String alertProcessingRuleName, Context context);
-
-    /**
      * Create or update an alert processing rule.
-     *
-     * @param resourceGroupName Resource group name where the resource is created.
-     * @param alertProcessingRuleName The name of the alert processing rule that needs to be created/updated.
-     * @param alertProcessingRule Alert processing rule to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert processing rule object containing target scopes, conditions and scheduling logic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertProcessingRuleInner createOrUpdate(
-        String resourceGroupName, String alertProcessingRuleName, AlertProcessingRuleInner alertProcessingRule);
-
-    /**
-     * Create or update an alert processing rule.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param alertProcessingRuleName The name of the alert processing rule that needs to be created/updated.
      * @param alertProcessingRule Alert processing rule to be created/updated.
@@ -120,15 +107,42 @@ public interface AlertProcessingRulesClient {
      * @return alert processing rule object containing target scopes, conditions and scheduling logic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertProcessingRulesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String alertProcessingRuleName,
-        AlertProcessingRuleInner alertProcessingRule,
+    AlertProcessingRulesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String alertProcessingRuleName, AlertProcessingRuleInner alertProcessingRule, Context context);
+
+    /**
+     * Create or update an alert processing rule.
+     * 
+     * @param resourceGroupName Resource group name where the resource is created.
+     * @param alertProcessingRuleName The name of the alert processing rule that needs to be created/updated.
+     * @param alertProcessingRule Alert processing rule to be created/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return alert processing rule object containing target scopes, conditions and scheduling logic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AlertProcessingRuleInner createOrUpdate(String resourceGroupName, String alertProcessingRuleName,
+        AlertProcessingRuleInner alertProcessingRule);
+
+    /**
+     * Delete an alert processing rule.
+     * 
+     * @param resourceGroupName Resource group name where the resource is created.
+     * @param alertProcessingRuleName The name of the alert processing rule that needs to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AlertProcessingRulesDeleteResponse deleteWithResponse(String resourceGroupName, String alertProcessingRuleName,
         Context context);
 
     /**
      * Delete an alert processing rule.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param alertProcessingRuleName The name of the alert processing rule that needs to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,38 +153,8 @@ public interface AlertProcessingRulesClient {
     void delete(String resourceGroupName, String alertProcessingRuleName);
 
     /**
-     * Delete an alert processing rule.
-     *
-     * @param resourceGroupName Resource group name where the resource is created.
-     * @param alertProcessingRuleName The name of the alert processing rule that needs to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertProcessingRulesDeleteResponse deleteWithResponse(
-        String resourceGroupName, String alertProcessingRuleName, Context context);
-
-    /**
      * Enable, disable, or update tags for an alert processing rule.
-     *
-     * @param resourceGroupName Resource group name where the resource is created.
-     * @param alertProcessingRuleName The name that needs to be updated.
-     * @param alertProcessingRulePatch Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert processing rule object containing target scopes, conditions and scheduling logic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertProcessingRuleInner update(
-        String resourceGroupName, String alertProcessingRuleName, PatchObject alertProcessingRulePatch);
-
-    /**
-     * Enable, disable, or update tags for an alert processing rule.
-     *
+     * 
      * @param resourceGroupName Resource group name where the resource is created.
      * @param alertProcessingRuleName The name that needs to be updated.
      * @param alertProcessingRulePatch Parameters supplied to the operation.
@@ -181,9 +165,21 @@ public interface AlertProcessingRulesClient {
      * @return alert processing rule object containing target scopes, conditions and scheduling logic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AlertProcessingRulesUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String alertProcessingRuleName,
-        PatchObject alertProcessingRulePatch,
-        Context context);
+    AlertProcessingRulesUpdateResponse updateWithResponse(String resourceGroupName, String alertProcessingRuleName,
+        PatchObject alertProcessingRulePatch, Context context);
+
+    /**
+     * Enable, disable, or update tags for an alert processing rule.
+     * 
+     * @param resourceGroupName Resource group name where the resource is created.
+     * @param alertProcessingRuleName The name that needs to be updated.
+     * @param alertProcessingRulePatch Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return alert processing rule object containing target scopes, conditions and scheduling logic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AlertProcessingRuleInner update(String resourceGroupName, String alertProcessingRuleName,
+        PatchObject alertProcessingRulePatch);
 }

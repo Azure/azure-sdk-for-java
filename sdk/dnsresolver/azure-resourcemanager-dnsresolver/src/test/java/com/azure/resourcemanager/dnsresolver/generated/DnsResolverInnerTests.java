@@ -10,34 +10,30 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverInner;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DnsResolverInnerTests {
-    @Test
-    public void testDeserialize() {
-        DnsResolverInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"mhquvgjxp\",\"properties\":{\"virtualNetwork\":{\"id\":\"czmehmtzopbsp\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Canceled\",\"resourceGuid\":\"gsybbejhp\"},\"location\":\"ycm\",\"tags\":{\"tbmufpo\":\"obhdxbmtqioqjze\"},\"id\":\"noi\",\"name\":\"hwlrx\",\"type\":\"bqsoqijg\"}")
-                .toObject(DnsResolverInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DnsResolverInner model = BinaryData.fromString(
+            "{\"etag\":\"mhquvgjxp\",\"properties\":{\"virtualNetwork\":{\"id\":\"czmehmtzopbsp\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Canceled\",\"resourceGuid\":\"gsybbejhp\"},\"location\":\"ycm\",\"tags\":{\"tbmufpo\":\"obhdxbmtqioqjze\"},\"id\":\"noi\",\"name\":\"hwlrx\",\"type\":\"bqsoqijg\"}")
+            .toObject(DnsResolverInner.class);
         Assertions.assertEquals("ycm", model.location());
         Assertions.assertEquals("obhdxbmtqioqjze", model.tags().get("tbmufpo"));
         Assertions.assertEquals("czmehmtzopbsp", model.virtualNetwork().id());
     }
 
-    @Test
-    public void testSerialize() {
-        DnsResolverInner model =
-            new DnsResolverInner()
-                .withLocation("ycm")
-                .withTags(mapOf("tbmufpo", "obhdxbmtqioqjze"))
-                .withVirtualNetwork(new SubResource().withId("czmehmtzopbsp"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DnsResolverInner model = new DnsResolverInner().withLocation("ycm")
+            .withTags(mapOf("tbmufpo", "obhdxbmtqioqjze"))
+            .withVirtualNetwork(new SubResource().withId("czmehmtzopbsp"));
         model = BinaryData.fromObject(model).toObject(DnsResolverInner.class);
         Assertions.assertEquals("ycm", model.location());
         Assertions.assertEquals("obhdxbmtqioqjze", model.tags().get("tbmufpo"));
         Assertions.assertEquals("czmehmtzopbsp", model.virtualNetwork().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Definition of custom data column.
  */
 @Fluent
-public final class ColumnDefinition {
+public final class ColumnDefinition implements JsonSerializable<ColumnDefinition> {
     /*
      * The name of the column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the column data.
      */
-    @JsonProperty(value = "type")
     private KnownColumnDefinitionType type;
 
     /**
@@ -76,5 +78,44 @@ public final class ColumnDefinition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ColumnDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ColumnDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ColumnDefinition.
+     */
+    public static ColumnDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ColumnDefinition deserializedColumnDefinition = new ColumnDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedColumnDefinition.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedColumnDefinition.type = KnownColumnDefinitionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedColumnDefinition;
+        });
     }
 }

@@ -15,27 +15,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"u\":{\"principalId\":\"ufgmjzrwrdg\",\"clientId\":\"wae\"},\"fozbhdmsmlmzqhof\":{\"principalId\":\"kopbminrf\",\"clientId\":\"oyuhhziui\"}},\"principalId\":\"maequiahxicslfa\",\"tenantId\":\"z\"}")
-                .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
+        ManagedIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wib\":{\"principalId\":\"olppvksrpqvujz\",\"clientId\":\"ehtwdwrft\"},\"hevxcced\":{\"principalId\":\"cdl\",\"clientId\":\"shfwpracstwity\"},\"navvwx\":{\"principalId\":\"nmdyodnwzxl\",\"clientId\":\"cvnhltiugc\"},\"daciz\":{\"principalId\":\"byqunyow\",\"clientId\":\"lmdjrkvfgbvfvpdb\"}},\"principalId\":\"q\",\"tenantId\":\"krribdeibqi\"}")
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentity model =
-            new ManagedIdentity()
-                .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "u",
-                        new UserAssignedIdentityProperty(),
-                        "fozbhdmsmlmzqhof",
-                        new UserAssignedIdentityProperty()));
+        ManagedIdentity model = new ManagedIdentity().withType(ManagedIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
+                mapOf("wib", new UserAssignedIdentityProperty(), "hevxcced", new UserAssignedIdentityProperty(),
+                    "navvwx", new UserAssignedIdentityProperty(), "daciz", new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

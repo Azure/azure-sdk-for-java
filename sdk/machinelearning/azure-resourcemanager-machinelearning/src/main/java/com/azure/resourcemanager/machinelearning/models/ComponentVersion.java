@@ -8,74 +8,83 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionInner;
 
-/** An immutable client-side representation of ComponentVersion. */
+/**
+ * An immutable client-side representation of ComponentVersion.
+ */
 public interface ComponentVersion {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: [Required] Additional attributes of the entity.
-     *
+     * 
      * @return the properties value.
      */
     ComponentVersionProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ComponentVersionInner innerModel();
 
-    /** The entirety of the ComponentVersion definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the ComponentVersion definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
-    /** The ComponentVersion definition stages. */
+
+    /**
+     * The ComponentVersion definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ComponentVersion definition. */
+        /**
+         * The first stage of the ComponentVersion definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the ComponentVersion definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the ComponentVersion definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName, name.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName Name of Azure Machine Learning workspace.
              * @param name Container name.
@@ -83,16 +92,20 @@ public interface ComponentVersion {
              */
             WithProperties withExistingComponent(String resourceGroupName, String workspaceName, String name);
         }
-        /** The stage of the ComponentVersion definition allowing to specify properties. */
+
+        /**
+         * The stage of the ComponentVersion definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: [Required] Additional attributes of the entity..
-             *
+             * 
              * @param properties [Required] Additional attributes of the entity.
              * @return the next definition stage.
              */
             WithCreate withProperties(ComponentVersionProperties properties);
         }
+
         /**
          * The stage of the ComponentVersion definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -100,69 +113,99 @@ public interface ComponentVersion {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ComponentVersion create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ComponentVersion create(Context context);
         }
     }
+
     /**
      * Begins update for the ComponentVersion resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ComponentVersion.Update update();
 
-    /** The template for ComponentVersion update. */
+    /**
+     * The template for ComponentVersion update.
+     */
     interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ComponentVersion apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ComponentVersion apply(Context context);
     }
-    /** The ComponentVersion update stages. */
+
+    /**
+     * The ComponentVersion update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ComponentVersion update allowing to specify properties. */
+        /**
+         * The stage of the ComponentVersion update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: [Required] Additional attributes of the entity..
-             *
+             * 
              * @param properties [Required] Additional attributes of the entity.
              * @return the next definition stage.
              */
             Update withProperties(ComponentVersionProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ComponentVersion refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     ComponentVersion refresh(Context context);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param body Destination registry info.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void publish(DestinationAsset body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param body Destination registry info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void publish(DestinationAsset body, Context context);
 }

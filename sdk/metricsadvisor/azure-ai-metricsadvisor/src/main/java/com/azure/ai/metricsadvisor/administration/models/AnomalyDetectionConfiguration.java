@@ -144,8 +144,8 @@ public final class AnomalyDetectionConfiguration {
      *     a {@code null} value for this parameter is ignored.
      * @return The MetricAnomalyDetectionConfiguration object itself.
      */
-    public AnomalyDetectionConfiguration setWholeSeriesDetectionCondition(
-        MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
+    public AnomalyDetectionConfiguration
+        setWholeSeriesDetectionCondition(MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
         if (wholeSeriesCondition == null) {
             return this;
         }
@@ -160,8 +160,8 @@ public final class AnomalyDetectionConfiguration {
      *     a {@code null} value for this parameter is ignored.
      * @return The MetricAnomalyDetectionConfiguration object itself.
      */
-    public AnomalyDetectionConfiguration addSeriesGroupDetectionCondition(
-        MetricSeriesGroupDetectionCondition groupCondition) {
+    public AnomalyDetectionConfiguration
+        addSeriesGroupDetectionCondition(MetricSeriesGroupDetectionCondition groupCondition) {
         if (groupCondition == null) {
             return this;
         }
@@ -176,8 +176,7 @@ public final class AnomalyDetectionConfiguration {
      *     {@code null} value for this parameter is ignored.
      * @return The MetricAnomalyDetectionConfiguration object itself.
      */
-    public AnomalyDetectionConfiguration removeSeriesGroupDetectionCondition(
-        DimensionKey seriesGroupKey) {
+    public AnomalyDetectionConfiguration removeSeriesGroupDetectionCondition(DimensionKey seriesGroupKey) {
         if (seriesGroupKey == null) {
             return this;
         }
@@ -217,8 +216,7 @@ public final class AnomalyDetectionConfiguration {
      *     a {@code null} value for this parameter is ignored.
      * @return The MetricAnomalyDetectionConfiguration object itself.
      */
-    public AnomalyDetectionConfiguration removeSingleSeriesDetectionCondition(
-        DimensionKey seriesKey) {
+    public AnomalyDetectionConfiguration removeSingleSeriesDetectionCondition(DimensionKey seriesKey) {
         if (seriesKey == null) {
             return this;
         }

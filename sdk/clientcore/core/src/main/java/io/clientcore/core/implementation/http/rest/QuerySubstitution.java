@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.http.rest;
 
 /**
- * A Query Substitution is a value that can be used to replace placeholder values in a URL in the query. Placeholders
+ * A Query Substitution is a value that can be used to replace placeholder values in a URI in the query. Placeholders
  * look like: {@code "http://host.com/filename.html?{queryParameter1}&amp;{queryParameter2}"}, where "{queryParameter1}"
  * and "{queryParameter2}" are the placeholders.
  */
@@ -14,7 +14,7 @@ public class QuerySubstitution extends Substitution {
     /**
      * Create a new QuerySubstitution.
      *
-     * @param urlParameterName The name that is used between curly quotes as a placeholder in the target URL.
+     * @param uriParameterName The name that is used between curly quotes as a placeholder in the target URI.
      * @param methodParameterIndex The index of the parameter in the original interface method where the value for the
      * placeholder is.
      * @param shouldEncode Whether the value from the method's argument should be encoded when the substitution is
@@ -22,9 +22,9 @@ public class QuerySubstitution extends Substitution {
      * @param multipleParams Whether the value from the method argument needs to be sent as string in case the values
      * are a list or as multiple query parameters.
      */
-    public QuerySubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
+    public QuerySubstitution(String uriParameterName, int methodParameterIndex, boolean shouldEncode,
         boolean multipleParams) {
-        super(urlParameterName, methodParameterIndex, shouldEncode);
+        super(uriParameterName, methodParameterIndex, shouldEncode);
         this.multipleParams = multipleParams;
     }
 

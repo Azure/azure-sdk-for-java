@@ -15,8 +15,7 @@ public final class SensitivityLabelUpdatePropertiesImpl implements SensitivityLa
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SensitivityLabelUpdatePropertiesImpl(
-        SensitivityLabelUpdatePropertiesInner innerObject,
+    SensitivityLabelUpdatePropertiesImpl(SensitivityLabelUpdatePropertiesInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

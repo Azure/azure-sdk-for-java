@@ -14,8 +14,8 @@ import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentManag
 
 public final class IntegrationServiceEnvironmentManagedApiOperationsImpl
     implements IntegrationServiceEnvironmentManagedApiOperations {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(IntegrationServiceEnvironmentManagedApiOperationsImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(IntegrationServiceEnvironmentManagedApiOperationsImpl.class);
 
     private final IntegrationServiceEnvironmentManagedApiOperationsClient innerClient;
 
@@ -28,18 +28,18 @@ public final class IntegrationServiceEnvironmentManagedApiOperationsImpl
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ApiOperation> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
-        PagedIterable<ApiOperationInner> inner =
-            this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName, apiName);
-        return Utils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
+    public PagedIterable<ApiOperation> list(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName) {
+        PagedIterable<ApiOperationInner> inner
+            = this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName, apiName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ApiOperation> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
-        PagedIterable<ApiOperationInner> inner =
-            this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName, apiName, context);
-        return Utils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
+    public PagedIterable<ApiOperation> list(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName, Context context) {
+        PagedIterable<ApiOperationInner> inner
+            = this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName, apiName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
     }
 
     private IntegrationServiceEnvironmentManagedApiOperationsClient serviceClient() {

@@ -99,7 +99,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: core
-    JavadocSafeJavaBuildVersion: '1.21'
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
@@ -164,40 +163,31 @@ extends:
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
     AdditionalModules:
+      - name: azure-core-tracing-opentelemetry-samples
+        groupId: com.azure
       - name: azure-core-perf
         groupId: com.azure
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
-    MatrixReplace:
-      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-    AdditionalStagesAfterBuild:
-      - stage: DependencyVersionOverridesTests
-        displayName: 'Dependency Version Overrides'
-        dependsOn: []
-        jobs:
-          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
-            parameters:
-              Artifacts:
-                - name: azure-core-version-tests
-                  groupId: com.azure
-                  safeName: azurecoreversiontests
-              VersionOverrides:
-                - jackson_2.10
-                - jackson_2.11
-                - jackson_2.12
-                - jackson_2.14
-                - jackson_2.15
-                - jackson_2.16
-                - jackson_2.17
-                - reactor_2020
-                - reactor_2022
-                - reactor_2023
-              TestGoals: surefire:test
+
+    # This needs to be temporarily here for the PR pipeline.
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
+    # Run separate version override tests using a different artifacts list
+    # This matrix config overrides the ArtifactsJson variable
+    AdditionalMatrixConfigs:
+      - Name: version_overrides_tests
+        Path: sdk/core/version-overrides-matrix.json
+        Selection: all
+        GenerateVMJobs: true
 
     LiveTestStages:
       - template: /sdk/storage/tests-template.yml
         parameters:
           AdditionalMatrixReplace:
             - TestFromSource=(.*)/true
-

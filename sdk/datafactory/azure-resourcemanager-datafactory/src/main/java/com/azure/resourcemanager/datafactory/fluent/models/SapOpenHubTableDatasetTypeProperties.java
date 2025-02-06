@@ -6,32 +6,34 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sap Business Warehouse Open Hub Destination Table properties.
  */
 @Fluent
-public final class SapOpenHubTableDatasetTypeProperties {
+public final class SapOpenHubTableDatasetTypeProperties
+    implements JsonSerializable<SapOpenHubTableDatasetTypeProperties> {
     /*
      * The name of the Open Hub Destination with destination type as Database Table. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "openHubDestinationName", required = true)
     private Object openHubDestinationName;
 
     /*
      * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "excludeLastRequest")
     private Object excludeLastRequest;
 
     /*
      * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
      * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
-    @JsonProperty(value = "baseRequestId")
     private Object baseRequestId;
 
     /**
@@ -122,4 +124,48 @@ public final class SapOpenHubTableDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapOpenHubTableDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("openHubDestinationName", this.openHubDestinationName);
+        jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
+        jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapOpenHubTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapOpenHubTableDatasetTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapOpenHubTableDatasetTypeProperties.
+     */
+    public static SapOpenHubTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapOpenHubTableDatasetTypeProperties deserializedSapOpenHubTableDatasetTypeProperties
+                = new SapOpenHubTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("openHubDestinationName".equals(fieldName)) {
+                    deserializedSapOpenHubTableDatasetTypeProperties.openHubDestinationName = reader.readUntyped();
+                } else if ("excludeLastRequest".equals(fieldName)) {
+                    deserializedSapOpenHubTableDatasetTypeProperties.excludeLastRequest = reader.readUntyped();
+                } else if ("baseRequestId".equals(fieldName)) {
+                    deserializedSapOpenHubTableDatasetTypeProperties.baseRequestId = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapOpenHubTableDatasetTypeProperties;
+        });
+    }
 }

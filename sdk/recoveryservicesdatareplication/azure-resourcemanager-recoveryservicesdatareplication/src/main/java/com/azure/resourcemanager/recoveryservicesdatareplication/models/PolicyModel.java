@@ -7,69 +7,76 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PolicyModelInner;
 
-/** An immutable client-side representation of PolicyModel. */
+/**
+ * An immutable client-side representation of PolicyModel.
+ */
 public interface PolicyModel {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Policy model properties.
-     *
+     * 
      * @return the properties value.
      */
     PolicyModelProperties properties();
 
     /**
      * Gets the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     PolicyModelSystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.PolicyModelInner object.
-     *
+     * 
      * @return the inner object.
      */
     PolicyModelInner innerModel();
 
-    /** The entirety of the PolicyModel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the PolicyModel definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
-    /** The PolicyModel definition stages. */
+    /**
+     * The PolicyModel definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PolicyModel definition. */
+        /**
+         * The first stage of the PolicyModel definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the PolicyModel definition allowing to specify parent resource. */
+        /**
+         * The stage of the PolicyModel definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, vaultName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param vaultName The vault name.
              * @return the next definition stage.
@@ -77,11 +84,13 @@ public interface PolicyModel {
             WithProperties withExistingReplicationVault(String resourceGroupName, String vaultName);
         }
 
-        /** The stage of the PolicyModel definition allowing to specify properties. */
+        /**
+         * The stage of the PolicyModel definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Policy model properties..
-             *
+             * 
              * @param properties Policy model properties.
              * @return the next definition stage.
              */
@@ -95,14 +104,14 @@ public interface PolicyModel {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PolicyModel create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
@@ -112,14 +121,14 @@ public interface PolicyModel {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PolicyModel refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -19,26 +19,20 @@ public final class ReplicationExtensionsImpl implements ReplicationExtensions {
 
     private final ReplicationExtensionsClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public ReplicationExtensionsImpl(
-        ReplicationExtensionsClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public ReplicationExtensionsImpl(ReplicationExtensionsClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ReplicationExtensionModel> getWithResponse(
-        String resourceGroupName, String vaultName, String replicationExtensionName, Context context) {
-        Response<ReplicationExtensionModelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, replicationExtensionName, context);
+    public Response<ReplicationExtensionModel> getWithResponse(String resourceGroupName, String vaultName,
+        String replicationExtensionName, Context context) {
+        Response<ReplicationExtensionModelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, replicationExtensionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationExtensionModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -46,8 +40,8 @@ public final class ReplicationExtensionsImpl implements ReplicationExtensions {
     }
 
     public ReplicationExtensionModel get(String resourceGroupName, String vaultName, String replicationExtensionName) {
-        ReplicationExtensionModelInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, replicationExtensionName);
+        ReplicationExtensionModelInner inner
+            = this.serviceClient().get(resourceGroupName, vaultName, replicationExtensionName);
         if (inner != null) {
             return new ReplicationExtensionModelImpl(inner, this.manager());
         } else {
@@ -65,135 +59,87 @@ public final class ReplicationExtensionsImpl implements ReplicationExtensions {
 
     public PagedIterable<ReplicationExtensionModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<ReplicationExtensionModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new ReplicationExtensionModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationExtensionModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReplicationExtensionModel> list(String resourceGroupName, String vaultName, Context context) {
-        PagedIterable<ReplicationExtensionModelInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicationExtensionModelImpl(inner1, this.manager()));
+        PagedIterable<ReplicationExtensionModelInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationExtensionModelImpl(inner1, this.manager()));
     }
 
     public ReplicationExtensionModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String replicationExtensionName = Utils.getValueFromIdByName(id, "replicationExtensions");
+        String replicationExtensionName = ResourceManagerUtils.getValueFromIdByName(id, "replicationExtensions");
         if (replicationExtensionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE).getValue();
     }
 
     public Response<ReplicationExtensionModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String replicationExtensionName = Utils.getValueFromIdByName(id, "replicationExtensions");
+        String replicationExtensionName = ResourceManagerUtils.getValueFromIdByName(id, "replicationExtensions");
         if (replicationExtensionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, vaultName, replicationExtensionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String replicationExtensionName = Utils.getValueFromIdByName(id, "replicationExtensions");
+        String replicationExtensionName = ResourceManagerUtils.getValueFromIdByName(id, "replicationExtensions");
         if (replicationExtensionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.", id)));
         }
         this.delete(resourceGroupName, vaultName, replicationExtensionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String replicationExtensionName = Utils.getValueFromIdByName(id, "replicationExtensions");
+        String replicationExtensionName = ResourceManagerUtils.getValueFromIdByName(id, "replicationExtensions");
         if (replicationExtensionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationExtensions'.", id)));
         }
         this.delete(resourceGroupName, vaultName, replicationExtensionName, context);
     }

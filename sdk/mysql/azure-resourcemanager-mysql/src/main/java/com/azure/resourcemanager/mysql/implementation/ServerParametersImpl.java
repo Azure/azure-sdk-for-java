@@ -13,22 +13,23 @@ import com.azure.resourcemanager.mysql.models.ServerParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServerParametersImpl implements ServerParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerParametersImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerParametersImpl.class);
 
     private final ServerParametersClient innerClient;
 
     private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    public ServerParametersImpl(
-        ServerParametersClient innerClient, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
+    public ServerParametersImpl(ServerParametersClient innerClient,
+        com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value);
+    public ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value) {
+        ConfigurationListResultInner inner
+            = this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value);
         if (inner != null) {
             return new ConfigurationListResultImpl(inner, this.manager());
         } else {
@@ -36,10 +37,10 @@ public final class ServerParametersImpl implements ServerParameters {
         }
     }
 
-    public ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value, context);
+    public ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value, Context context) {
+        ConfigurationListResultInner inner
+            = this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value, context);
         if (inner != null) {
             return new ConfigurationListResultImpl(inner, this.manager());
         } else {

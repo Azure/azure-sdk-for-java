@@ -41,7 +41,6 @@ public class SegmentTests {
     private Shard mockShard2;
     private ChangefeedCursor cfCursor;
 
-
     private static final String SHARD_PATH0 = "log/00/2020/03/25/0200/";
     private static final String SHARD_PATH1 = "log/01/2020/03/25/0200/";
     private static final String SHARD_PATH2 = "log/02/2020/03/25/0200/";
@@ -79,9 +78,12 @@ public class SegmentTests {
 
     private List<BlobChangefeedEventWrapper> getMockEventWrappers(String shardPath) {
         List<BlobChangefeedEventWrapper> mockEventWrappers = new ArrayList<>(3);
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(0), cfCursor.toShardCursor(shardPath)));
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(1), cfCursor.toShardCursor(shardPath)));
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(2), cfCursor.toShardCursor(shardPath)));
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(0),
+            cfCursor.toShardCursor(shardPath)));
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(1),
+            cfCursor.toShardCursor(shardPath)));
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(MockedChangefeedResources.getMockBlobChangefeedEvent(2),
+            cfCursor.toShardCursor(shardPath)));
         return mockEventWrappers;
     }
 
@@ -135,8 +137,8 @@ public class SegmentTests {
 
         /* This is the stuff that actually matters. */
         if (caseNumber == 1) {
-            verify(mockShardFactory).getShard(
-                SHARD_PATH0, cfCursor.toShardCursor(SHARD_PATH0), new ShardCursor(SHARD_PATH0 + "00000.avro", 1257, 84));
+            verify(mockShardFactory).getShard(SHARD_PATH0, cfCursor.toShardCursor(SHARD_PATH0),
+                new ShardCursor(SHARD_PATH0 + "00000.avro", 1257, 84));
             verify(mockShard0).getEvents();
             verify(mockShardFactory).getShard(SHARD_PATH1, cfCursor.toShardCursor(SHARD_PATH1), null);
             verify(mockShard1).getEvents();
@@ -144,24 +146,24 @@ public class SegmentTests {
             verify(mockShard2).getEvents();
         }
         if (caseNumber == 2) {
-            verify(mockShardFactory).getShard(
-                SHARD_PATH0, cfCursor.toShardCursor(SHARD_PATH0), new ShardCursor(SHARD_PATH0 + "00000.avro", 2589, 3));
+            verify(mockShardFactory).getShard(SHARD_PATH0, cfCursor.toShardCursor(SHARD_PATH0),
+                new ShardCursor(SHARD_PATH0 + "00000.avro", 2589, 3));
             verify(mockShard0).getEvents();
-            verify(mockShardFactory).getShard(
-                SHARD_PATH1, cfCursor.toShardCursor(SHARD_PATH1), new ShardCursor(SHARD_PATH1 + "00000.avro", 345789, 8));
+            verify(mockShardFactory).getShard(SHARD_PATH1, cfCursor.toShardCursor(SHARD_PATH1),
+                new ShardCursor(SHARD_PATH1 + "00000.avro", 345789, 8));
             verify(mockShard1).getEvents();
             verify(mockShardFactory).getShard(SHARD_PATH2, cfCursor.toShardCursor(SHARD_PATH2), null);
             verify(mockShard2).getEvents();
         }
         if (caseNumber == 3) {
-            verify(mockShardFactory).getShard(
-                SHARD_PATH0, cfCursor.toShardCursor(SHARD_PATH0), new ShardCursor(SHARD_PATH0 + "00000.avro", 492, 67));
+            verify(mockShardFactory).getShard(SHARD_PATH0, cfCursor.toShardCursor(SHARD_PATH0),
+                new ShardCursor(SHARD_PATH0 + "00000.avro", 492, 67));
             verify(mockShard0).getEvents();
-            verify(mockShardFactory).getShard(
-                SHARD_PATH1, cfCursor.toShardCursor(SHARD_PATH1), new ShardCursor(SHARD_PATH1 + "00001.avro", 1257, 84));
+            verify(mockShardFactory).getShard(SHARD_PATH1, cfCursor.toShardCursor(SHARD_PATH1),
+                new ShardCursor(SHARD_PATH1 + "00001.avro", 1257, 84));
             verify(mockShard1).getEvents();
-            verify(mockShardFactory).getShard(
-                SHARD_PATH2, cfCursor.toShardCursor(SHARD_PATH2), new ShardCursor(SHARD_PATH2 + "00002.avro", 5678, 6));
+            verify(mockShardFactory).getShard(SHARD_PATH2, cfCursor.toShardCursor(SHARD_PATH2),
+                new ShardCursor(SHARD_PATH2 + "00002.avro", 5678, 6));
             verify(mockShard2).getEvents();
         }
     }
@@ -170,19 +172,25 @@ public class SegmentTests {
         // caseNumber | userCursor
         return Stream.of(
             /* Shard 0 should use the cursor and Shard 1 and 2 should pass in null. */
-            Arguments.of(1, new SegmentCursor(SEGMENT_PATH, null).toShardCursor(SHARD_PATH0)
-                .toEventCursor(SHARD_PATH0 + "00000.avro", 1257, 84)),
+            Arguments.of(1,
+                new SegmentCursor(SEGMENT_PATH, null).toShardCursor(SHARD_PATH0)
+                    .toEventCursor(SHARD_PATH0 + "00000.avro", 1257, 84)),
 
             /* Shard 0 and 1 should use the cursor and Shard 2 should pass in null. */
-            Arguments.of(2, new SegmentCursor(SEGMENT_PATH, null).toShardCursor(SHARD_PATH0)
-                .toEventCursor(SHARD_PATH0 + "00000.avro", 2589, 3).toShardCursor(SHARD_PATH1)
-                .toEventCursor(SHARD_PATH1 + "00000.avro", 345789, 8)),
+            Arguments.of(2,
+                new SegmentCursor(SEGMENT_PATH, null).toShardCursor(SHARD_PATH0)
+                    .toEventCursor(SHARD_PATH0 + "00000.avro", 2589, 3)
+                    .toShardCursor(SHARD_PATH1)
+                    .toEventCursor(SHARD_PATH1 + "00000.avro", 345789, 8)),
 
             /* Shard 0, 1 and 2 should use the cursor. */
-            Arguments.of(3, new SegmentCursor(SEGMENT_PATH, null).toShardCursor(SHARD_PATH0)
-                .toEventCursor(SHARD_PATH0 + "00000.avro", 492, 67).toShardCursor(SHARD_PATH1)
-                .toEventCursor(SHARD_PATH1 + "00001.avro", 1257, 84).toShardCursor(SHARD_PATH2)
-                .toEventCursor(SHARD_PATH2 + "00002.avro", 5678, 6)));
+            Arguments.of(3,
+                new SegmentCursor(SEGMENT_PATH, null).toShardCursor(SHARD_PATH0)
+                    .toEventCursor(SHARD_PATH0 + "00000.avro", 492, 67)
+                    .toShardCursor(SHARD_PATH1)
+                    .toEventCursor(SHARD_PATH1 + "00001.avro", 1257, 84)
+                    .toShardCursor(SHARD_PATH2)
+                    .toEventCursor(SHARD_PATH2 + "00002.avro", 5678, 6)));
     }
 
     @Test

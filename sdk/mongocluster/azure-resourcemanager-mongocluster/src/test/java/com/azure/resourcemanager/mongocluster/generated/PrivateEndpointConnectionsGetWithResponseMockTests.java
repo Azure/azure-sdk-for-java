@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"kpoc\",\"pazyxoegukg\",\"npiucgygevqznty\",\"mrbpizcdrqj\"],\"privateEndpoint\":{\"id\":\"ydnfyhxdeoejz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"fsj\",\"actionsRequired\":\"gzfbishcbk\"},\"provisioningState\":\"Deleting\"},\"id\":\"eyeam\",\"name\":\"p\",\"type\":\"agalpbuxwgipwhon\"}";
+            = "{\"properties\":{\"groupIds\":[\"pwvlqdq\"],\"privateEndpoint\":{\"id\":\"qylihkaetckt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"vf\",\"actionsRequired\":\"kymuctqhjfbebr\"},\"provisioningState\":\"Succeeded\"},\"id\":\"rfuwutt\",\"name\":\"xfvjrbirp\",\"type\":\"xepcyvahfn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnectionResource response = manager.privateEndpointConnections()
-            .getWithResponse("koen", "ou", "nvudwtiukb", com.azure.core.util.Context.NONE)
+            .getWithResponse("uconuqszfkbey", "ewrmjmwvvjektc", "senhwlrs", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fsj", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("gzfbishcbk",
+        Assertions.assertEquals("vf", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("kymuctqhjfbebr",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

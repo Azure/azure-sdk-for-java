@@ -31,7 +31,7 @@ public class JsonParserSequence extends JsonParserDelegate {
      *<p>
      * Default setting is <code>false</code> (for backwards-compatibility)
      * so that possible existing token is not considered for parsers.
-     * 
+     *
      * @since 2.8
      */
     protected final boolean _checkForExistingToken;
@@ -90,7 +90,7 @@ public class JsonParserSequence extends JsonParserDelegate {
         if (!(first instanceof JsonParserSequence || second instanceof JsonParserSequence)) {
             return new JsonParserSequence(checkForExistingToken, new JsonParser[] { first, second });
         }
-        ArrayList<JsonParser> p = new ArrayList<JsonParser>();
+        ArrayList<JsonParser> p = new ArrayList<>();
         if (first instanceof JsonParserSequence) {
             ((JsonParserSequence) first).addFlattenedActiveParsers(p);
         } else {
@@ -101,7 +101,7 @@ public class JsonParserSequence extends JsonParserDelegate {
         } else {
             p.add(second);
         }
-        return new JsonParserSequence(checkForExistingToken, p.toArray(new JsonParser[p.size()]));
+        return new JsonParserSequence(checkForExistingToken, p.toArray(new JsonParser[0]));
     }
 
     @Deprecated // since 2.8
@@ -186,17 +186,6 @@ public class JsonParserSequence extends JsonParserDelegate {
      * /*******************************************************
      */
 
-    /**
-     * Method that is most useful for debugging or testing;
-     * returns actual number of underlying parsers sequence
-     * was constructed with (nor just ones remaining active)
-     *
-     * @return Number of actual underlying parsers this sequence has
-     */
-    public int containedParsersCount() {
-        return _parsers.length;
-    }
-
     /*
      * /*******************************************************
      * /* Helper methods
@@ -207,7 +196,7 @@ public class JsonParserSequence extends JsonParserDelegate {
      * Method that will switch active delegate parser from the current one
      * to the next parser in sequence, if there is another parser left:
      * if so, the next parser will become the active delegate parser.
-     * 
+     *
      * @return True if switch succeeded; false otherwise
      *
      * @since 2.8

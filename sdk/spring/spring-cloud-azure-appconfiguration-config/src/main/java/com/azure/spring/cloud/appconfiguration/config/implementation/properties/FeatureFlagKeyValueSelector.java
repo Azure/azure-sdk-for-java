@@ -25,8 +25,18 @@ public final class FeatureFlagKeyValueSelector {
      */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
+    /**
+     * Key filter to use when loading feature flags. The provided key filter is
+     * appended after the feature flag prefix, ".appconfig.featureflag/". By
+     * default, all feature flags are loaded.
+     */
     private String keyFilter = "";
 
+    /**
+     * Label filter to use when loading feature flags. By default, all feature flags
+     * with no label are loaded. The label filter must be a non-null string that
+     * does not contain an asterisk.
+     */
     private String labelFilter;
 
     /**
@@ -74,6 +84,7 @@ public final class FeatureFlagKeyValueSelector {
 
     /**
      * Get all labels as a single String
+     * 
      * @param profiles current user profiles
      * @return comma separated list of labels
      */

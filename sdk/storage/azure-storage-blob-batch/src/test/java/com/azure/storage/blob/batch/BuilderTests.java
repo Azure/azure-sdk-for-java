@@ -28,11 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuilderTests {
-    private static final StorageSharedKeyCredential CREDENTIALS =
-        new StorageSharedKeyCredential("accountName", "accountKey");
+    private static final StorageSharedKeyCredential CREDENTIALS
+        = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-batch.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-storage-blob-batch.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
@@ -42,11 +42,12 @@ public class BuilderTests {
 
     @Test
     public void constructFromServiceClientBlobUserAgentModificationPolicy() {
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             // This is supposed to be matching the following azsdk-java-azure-storage-blob/<version> azsdk-java-azure-storage-blob-batch/<version> <this part is the OS/runtime information>
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(
+                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
+                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(serviceClient).buildClient();
@@ -57,11 +58,12 @@ public class BuilderTests {
 
     @Test
     public void constructFromContainerClientBlobUserAgentModificationPolicy() {
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobContainerClient containerClient = new BlobContainerClientBuilder().endpoint(ENDPOINT)
             .containerName("containerName")
             .credential(CREDENTIALS)
-            .httpClient(new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
+            .httpClient(
+                new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-"
+                    + CLIENT_NAME + "/" + CLIENT_VERSION + " " + "(.)*"))
             .buildClient();
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(containerClient).buildClient();

@@ -18,7 +18,10 @@ public final class OriginsListByEndpointSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void originsListByEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getOrigins().listByEndpoint("RG", "profile1", "endpoint1",
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getOrigins()
+            .listByEndpoint("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

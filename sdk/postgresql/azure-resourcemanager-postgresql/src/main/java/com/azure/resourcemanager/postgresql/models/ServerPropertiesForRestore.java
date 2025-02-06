@@ -5,36 +5,54 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The properties used to create a new server by restoring from a backup. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode")
-@JsonTypeName("PointInTimeRestore")
+/**
+ * The properties used to create a new server by restoring from a backup.
+ */
 @Fluent
 public final class ServerPropertiesForRestore extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForRestore.class);
+    /*
+     * The mode to create a new server.
+     */
+    private CreateMode createMode = CreateMode.POINT_IN_TIME_RESTORE;
 
     /*
      * The source server id to restore from.
      */
-    @JsonProperty(value = "sourceServerId", required = true)
     private String sourceServerId;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to
-     * restore from.
+     * Restore point creation time (ISO8601 format), specifying the time to restore from.
      */
-    @JsonProperty(value = "restorePointInTime", required = true)
     private OffsetDateTime restorePointInTime;
 
     /**
+     * Creates an instance of ServerPropertiesForRestore class.
+     */
+    public ServerPropertiesForRestore() {
+    }
+
+    /**
+     * Get the createMode property: The mode to create a new server.
+     * 
+     * @return the createMode value.
+     */
+    @Override
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
      * Get the sourceServerId property: The source server id to restore from.
-     *
+     * 
      * @return the sourceServerId value.
      */
     public String sourceServerId() {
@@ -43,7 +61,7 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
 
     /**
      * Set the sourceServerId property: The source server id to restore from.
-     *
+     * 
      * @param sourceServerId the sourceServerId value to set.
      * @return the ServerPropertiesForRestore object itself.
      */
@@ -55,7 +73,7 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
     /**
      * Get the restorePointInTime property: Restore point creation time (ISO8601 format), specifying the time to restore
      * from.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -65,7 +83,7 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
     /**
      * Set the restorePointInTime property: Restore point creation time (ISO8601 format), specifying the time to restore
      * from.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ServerPropertiesForRestore object itself.
      */
@@ -74,42 +92,54 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForRestore withVersion(ServerVersion version) {
         super.withVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForRestore withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         super.withSslEnforcement(sslEnforcement);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForRestore withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
         super.withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForRestore withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
         super.withInfrastructureEncryption(infrastructureEncryption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForRestore withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForRestore withStorageProfile(StorageProfile storageProfile) {
         super.withStorageProfile(storageProfile);
@@ -118,23 +148,97 @@ public final class ServerPropertiesForRestore extends ServerPropertiesForCreate 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sourceServerId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceServerId in model ServerPropertiesForRestore"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceServerId in model ServerPropertiesForRestore"));
         }
         if (restorePointInTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restorePointInTime in model ServerPropertiesForRestore"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restorePointInTime in model ServerPropertiesForRestore"));
         }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPropertiesForRestore.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version() == null ? null : version().toString());
+        jsonWriter.writeStringField("sslEnforcement", sslEnforcement() == null ? null : sslEnforcement().toString());
+        jsonWriter.writeStringField("minimalTlsVersion",
+            minimalTlsVersion() == null ? null : minimalTlsVersion().toString());
+        jsonWriter.writeStringField("infrastructureEncryption",
+            infrastructureEncryption() == null ? null : infrastructureEncryption().toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        jsonWriter.writeJsonField("storageProfile", storageProfile());
+        jsonWriter.writeStringField("sourceServerId", this.sourceServerId);
+        jsonWriter.writeStringField("restorePointInTime",
+            this.restorePointInTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restorePointInTime));
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerPropertiesForRestore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerPropertiesForRestore if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerPropertiesForRestore.
+     */
+    public static ServerPropertiesForRestore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerPropertiesForRestore deserializedServerPropertiesForRestore = new ServerPropertiesForRestore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore.withVersion(ServerVersion.fromString(reader.getString()));
+                } else if ("sslEnforcement".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore
+                        .withSslEnforcement(SslEnforcementEnum.fromString(reader.getString()));
+                } else if ("minimalTlsVersion".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore
+                        .withMinimalTlsVersion(MinimalTlsVersionEnum.fromString(reader.getString()));
+                } else if ("infrastructureEncryption".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore
+                        .withInfrastructureEncryption(InfrastructureEncryption.fromString(reader.getString()));
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore
+                        .withPublicNetworkAccess(PublicNetworkAccessEnum.fromString(reader.getString()));
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore.withStorageProfile(StorageProfile.fromJson(reader));
+                } else if ("sourceServerId".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore.sourceServerId = reader.getString();
+                } else if ("restorePointInTime".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore.restorePointInTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedServerPropertiesForRestore.createMode = CreateMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerPropertiesForRestore;
+        });
     }
 }

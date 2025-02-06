@@ -14,37 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":71110697464047174,\"routeTargets\":[\"oum\",\"znv\",\"l\"]},{\"action\":\"Permit\",\"sequenceNumber\":5729494135721513095,\"routeTargets\":[\"zgfxonjtpusl\",\"ywpvt\",\"otz\",\"pdbollg\"]}],\"annotation\":\"fqiu\"}")
-                .toObject(IpExtendedCommunityProperties.class);
-        Assertions.assertEquals("fqiu", model.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(71110697464047174L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("oum", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        IpExtendedCommunityProperties model = BinaryData.fromString(
+            "{\"configurationState\":\"Rejected\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":2275725598738013501,\"routeTargets\":[\"iexhajl\",\"n\",\"hiqfyuttdiy\",\"b\"]}],\"annotation\":\"n\"}")
+            .toObject(IpExtendedCommunityProperties.class);
+        Assertions.assertEquals("n", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(2275725598738013501L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("iexhajl", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityProperties model =
-            new IpExtendedCommunityProperties()
-                .withAnnotation("fqiu")
-                .withIpExtendedCommunityRules(
-                    Arrays
-                        .asList(
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(71110697464047174L)
-                                .withRouteTargets(Arrays.asList("oum", "znv", "l")),
-                            new IpExtendedCommunityRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(5729494135721513095L)
-                                .withRouteTargets(Arrays.asList("zgfxonjtpusl", "ywpvt", "otz", "pdbollg"))));
+        IpExtendedCommunityProperties model = new IpExtendedCommunityProperties().withAnnotation("n")
+            .withIpExtendedCommunityRules(
+                Arrays.asList(new IpExtendedCommunityRule().withAction(CommunityActionTypes.DENY)
+                    .withSequenceNumber(2275725598738013501L)
+                    .withRouteTargets(Arrays.asList("iexhajl", "n", "hiqfyuttdiy", "b"))));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityProperties.class);
-        Assertions.assertEquals("fqiu", model.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipExtendedCommunityRules().get(0).action());
-        Assertions.assertEquals(71110697464047174L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions.assertEquals("oum", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("n", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(2275725598738013501L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("iexhajl", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 }

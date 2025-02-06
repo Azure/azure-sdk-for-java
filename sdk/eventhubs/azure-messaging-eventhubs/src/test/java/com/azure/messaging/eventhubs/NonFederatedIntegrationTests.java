@@ -15,6 +15,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import reactor.test.StepVerifier;
@@ -23,6 +24,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("integration")
 public class NonFederatedIntegrationTests extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(NonFederatedIntegrationTests.class);
     private static final String PARTITION_ID = "2";
@@ -32,32 +34,29 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS", matches =
-        ".*ShadAccessSignature .*")
-    void sendWithSasConnectionString() {
+    @EnabledIfEnvironmentVariable(
+        named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS",
+        matches = ".*SharedAccessSignature.*")
+    public void sendWithSasConnectionString() {
         final String eventHubName = TestUtils.getEventHubName();
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
 
-        final EventHubProducerAsyncClient eventHubAsyncClient = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString(true))
-            .eventHubName(eventHubName)
-            .buildAsyncProducerClient());
+        final EventHubProducerAsyncClient eventHubAsyncClient
+            = toClose(new EventHubClientBuilder().connectionString(TestUtils.getConnectionString(true))
+                .eventHubName(eventHubName)
+                .buildAsyncProducerClient());
 
-        StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
-            .assertNext(properties -> {
-                Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(eventHubAsyncClient.getEventHubProperties()).assertNext(properties -> {
+            Assertions.assertEquals(getEventHubName(), properties.getName());
+            Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+        }).expectComplete().verify(TIMEOUT);
 
-        StepVerifier.create(eventHubAsyncClient.send(event, options))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(eventHubAsyncClient.send(event, options)).expectComplete().verify(TIMEOUT);
     }
 
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void sendAndReceiveEventByAzureSasCredential() {
         Assumptions.assumeTrue(TestUtils.getConnectionString(true) != null,
             "SAS was not set. Can't run test scenario.");
@@ -70,19 +69,17 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
         final EventData testData = new EventData("test-contents".getBytes(UTF_8));
 
         EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureSasCredential(sharedAccessSignature))
+            .credential(fullyQualifiedNamespace, eventHubName, new AzureSasCredential(sharedAccessSignature))
             .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
             assertTrue(batch.tryAdd(testData));
             return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
+        })).expectComplete().verify(TIMEOUT);
     }
 
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void sendAndReceiveEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
         String fullyQualifiedNamespace = properties.getEndpoint().getHost();
@@ -92,44 +89,42 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
 
         final EventData testData = new EventData("items".getBytes(UTF_8));
 
-        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-            .buildAsyncProducerClient());
+        EventHubProducerAsyncClient asyncProducerClient = toClose(
+            new EventHubClientBuilder()
+                .credential(fullyQualifiedNamespace, eventHubName,
+                    new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
+                .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
             assertTrue(batch.tryAdd(testData));
             return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
+        })).expectComplete().verify(TIMEOUT);
     }
 
     /**
      * Verifies that error conditions are handled for fetching Event Hub metadata.
      */
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void getPartitionPropertiesInvalidToken() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
-            original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
+        final TokenCredential invalidTokenCredential
+            = new EventHubSharedKeyCredential(original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
         final String eventHubName = TestUtils.getEventHubName();
 
         // Act & Assert
-        try (EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), eventHubName, invalidTokenCredential)
-            .buildAsyncClient()) {
-            StepVerifier.create(invalidClient.getProperties())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof AmqpException);
+        try (EventHubAsyncClient invalidClient
+            = createBuilder().credential(original.getEndpoint().getHost(), eventHubName, invalidTokenCredential)
+                .buildAsyncClient()) {
+            StepVerifier.create(invalidClient.getProperties()).expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
 
-                    AmqpException exception = (AmqpException) error;
-                    Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                    Assertions.assertFalse(exception.isTransient());
-                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-                })
-                .verify(TIMEOUT);
+                AmqpException exception = (AmqpException) error;
+                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+            }).verify(TIMEOUT);
         }
     }
 
@@ -137,26 +132,25 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void getPartitionPropertiesNonExistentHub() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
-        final TokenCredential validCredentials = new EventHubSharedKeyCredential(
-            original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
+        final TokenCredential validCredentials = new EventHubSharedKeyCredential(original.getSharedAccessKeyName(),
+            original.getSharedAccessKey(), TIMEOUT);
 
         // Act & Assert
-        try (EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
-            .buildAsyncClient()) {
-            StepVerifier.create(invalidClient.getPartitionIds())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof AmqpException);
+        try (EventHubAsyncClient invalidClient
+            = createBuilder().credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
+                .buildAsyncClient()) {
+            StepVerifier.create(invalidClient.getPartitionIds()).expectErrorSatisfies(error -> {
+                Assertions.assertTrue(error instanceof AmqpException);
 
-                    AmqpException exception = (AmqpException) error;
-                    Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
-                    Assertions.assertFalse(exception.isTransient());
-                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-                })
-                .verify(TIMEOUT);
+                AmqpException exception = (AmqpException) error;
+                Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                Assertions.assertFalse(exception.isTransient());
+                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+            }).verify(TIMEOUT);
         }
     }
 

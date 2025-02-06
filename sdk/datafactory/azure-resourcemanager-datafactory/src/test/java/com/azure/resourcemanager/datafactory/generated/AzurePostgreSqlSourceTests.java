@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"datamenqcjjfxqtvsfs\",\"queryTimeout\":\"datayzgaweixnoblazw\",\"additionalColumns\":\"dataaczi\",\"sourceRetryCount\":\"dataduwlsovitpcsma\",\"sourceRetryWait\":\"datadxubhmiuxypvuaz\",\"maxConcurrentConnections\":\"datatbnekhjz\",\"disableMetricsCollection\":\"datab\",\"\":{\"pp\":\"dataqkuozarr\",\"bkvbcvoyqnr\":\"datazry\",\"woghbpzxkjqecj\":\"datadrctarvz\"}}")
+            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"dataxllfwxdou\",\"queryTimeout\":\"datazpaqjahjxgedtmzh\",\"additionalColumns\":\"datahktywtac\",\"sourceRetryCount\":\"datakie\",\"sourceRetryWait\":\"dataqrfassiiil\",\"maxConcurrentConnections\":\"datargahscay\",\"disableMetricsCollection\":\"datagc\",\"\":{\"vqopxun\":\"dataieqonsbukznxd\"}}")
             .toObject(AzurePostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("dataduwlsovitpcsma")
-            .withSourceRetryWait("datadxubhmiuxypvuaz")
-            .withMaxConcurrentConnections("datatbnekhjz")
-            .withDisableMetricsCollection("datab")
-            .withQueryTimeout("datayzgaweixnoblazw")
-            .withAdditionalColumns("dataaczi")
-            .withQuery("datamenqcjjfxqtvsfs");
+        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datakie")
+            .withSourceRetryWait("dataqrfassiiil")
+            .withMaxConcurrentConnections("datargahscay")
+            .withDisableMetricsCollection("datagc")
+            .withQueryTimeout("datazpaqjahjxgedtmzh")
+            .withAdditionalColumns("datahktywtac")
+            .withQuery("dataxllfwxdou");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSource.class);
     }
 }

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceReference model =
-            BinaryData
-                .fromString("{\"id\":\"bqe\",\"name\":\"nxqbzvddn\",\"type\":\"ndei\"}")
+        ResourceReference model
+            = BinaryData.fromString("{\"id\":\"riwwroy\",\"name\":\"exrmcqibycnojvk\",\"type\":\"e\"}")
                 .toObject(ResourceReference.class);
-        Assertions.assertEquals("bqe", model.id());
+        Assertions.assertEquals("riwwroy", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceReference model = new ResourceReference().withId("bqe");
+        ResourceReference model = new ResourceReference().withId("riwwroy");
         model = BinaryData.fromObject(model).toObject(ResourceReference.class);
-        Assertions.assertEquals("bqe", model.id());
+        Assertions.assertEquals("riwwroy", model.id());
     }
 }

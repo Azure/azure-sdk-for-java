@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,36 +17,30 @@ import java.util.Map;
  * Definition of what monitoring data to collect and where that data should be sent.
  */
 @Fluent
-public class DataCollectionRule {
+public class DataCollectionRule implements JsonSerializable<DataCollectionRule> {
     /*
      * Description of the data collection rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The immutable ID of this data collection rule. This property is READ-ONLY.
      */
-    @JsonProperty(value = "immutableId", access = JsonProperty.Access.WRITE_ONLY)
     private String immutableId;
 
     /*
      * The resource ID of the data collection endpoint that this rule can be used with.
      */
-    @JsonProperty(value = "dataCollectionEndpointId")
     private String dataCollectionEndpointId;
 
     /*
      * Metadata about the resource
      */
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private DataCollectionRuleMetadata metadata;
 
     /*
      * Declaration of custom streams used in this rule.
      */
-    @JsonProperty(value = "streamDeclarations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, StreamDeclaration> streamDeclarations;
 
     /*
@@ -51,25 +48,21 @@ public class DataCollectionRule {
      * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
      * endpoint.
      */
-    @JsonProperty(value = "dataSources")
     private DataCollectionRuleDataSources dataSources;
 
     /*
      * The specification of destinations.
      */
-    @JsonProperty(value = "destinations")
     private DataCollectionRuleDestinations destinations;
 
     /*
      * The specification of data flows.
      */
-    @JsonProperty(value = "dataFlows")
     private List<DataFlow> dataFlows;
 
     /*
      * The resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionRuleProvisioningState provisioningState;
 
     /**
@@ -108,6 +101,17 @@ public class DataCollectionRule {
     }
 
     /**
+     * Set the immutableId property: The immutable ID of this data collection rule. This property is READ-ONLY.
+     * 
+     * @param immutableId the immutableId value to set.
+     * @return the DataCollectionRule object itself.
+     */
+    DataCollectionRule withImmutableId(String immutableId) {
+        this.immutableId = immutableId;
+        return this;
+    }
+
+    /**
      * Get the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
      * used with.
      * 
@@ -136,6 +140,17 @@ public class DataCollectionRule {
      */
     public DataCollectionRuleMetadata metadata() {
         return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Metadata about the resource.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the DataCollectionRule object itself.
+     */
+    DataCollectionRule withMetadata(DataCollectionRuleMetadata metadata) {
+        this.metadata = metadata;
+        return this;
     }
 
     /**
@@ -232,6 +247,17 @@ public class DataCollectionRule {
     }
 
     /**
+     * Set the provisioningState property: The resource provisioning state.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the DataCollectionRule object itself.
+     */
+    DataCollectionRule withProvisioningState(KnownDataCollectionRuleProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -256,5 +282,67 @@ public class DataCollectionRule {
         if (dataFlows() != null) {
             dataFlows().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("dataCollectionEndpointId", this.dataCollectionEndpointId);
+        jsonWriter.writeMapField("streamDeclarations", this.streamDeclarations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dataSources", this.dataSources);
+        jsonWriter.writeJsonField("destinations", this.destinations);
+        jsonWriter.writeArrayField("dataFlows", this.dataFlows, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataCollectionRule.
+     */
+    public static DataCollectionRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionRule deserializedDataCollectionRule = new DataCollectionRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDataCollectionRule.description = reader.getString();
+                } else if ("immutableId".equals(fieldName)) {
+                    deserializedDataCollectionRule.immutableId = reader.getString();
+                } else if ("dataCollectionEndpointId".equals(fieldName)) {
+                    deserializedDataCollectionRule.dataCollectionEndpointId = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedDataCollectionRule.metadata = DataCollectionRuleMetadata.fromJson(reader);
+                } else if ("streamDeclarations".equals(fieldName)) {
+                    Map<String, StreamDeclaration> streamDeclarations
+                        = reader.readMap(reader1 -> StreamDeclaration.fromJson(reader1));
+                    deserializedDataCollectionRule.streamDeclarations = streamDeclarations;
+                } else if ("dataSources".equals(fieldName)) {
+                    deserializedDataCollectionRule.dataSources = DataCollectionRuleDataSources.fromJson(reader);
+                } else if ("destinations".equals(fieldName)) {
+                    deserializedDataCollectionRule.destinations = DataCollectionRuleDestinations.fromJson(reader);
+                } else if ("dataFlows".equals(fieldName)) {
+                    List<DataFlow> dataFlows = reader.readArray(reader1 -> DataFlow.fromJson(reader1));
+                    deserializedDataCollectionRule.dataFlows = dataFlows;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDataCollectionRule.provisioningState
+                        = KnownDataCollectionRuleProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionRule;
+        });
     }
 }

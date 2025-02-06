@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged Products list representation. */
+/**
+ * Paged Products list representation.
+ */
 @Fluent
-public final class ProductCollection {
+public final class ProductCollection implements JsonSerializable<ProductCollection> {
     /*
      * Page values.
      */
-    @JsonProperty(value = "value")
     private List<ProductContractInner> value;
 
     /*
      * Total record count number across all pages.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Next page link if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProductCollection class. */
+    /**
+     * Creates an instance of ProductCollection class.
+     */
     public ProductCollection() {
     }
 
     /**
      * Get the value property: Page values.
-     *
+     * 
      * @return the value value.
      */
     public List<ProductContractInner> value() {
@@ -45,7 +50,7 @@ public final class ProductCollection {
 
     /**
      * Set the value property: Page values.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProductCollection object itself.
      */
@@ -56,7 +61,7 @@ public final class ProductCollection {
 
     /**
      * Get the count property: Total record count number across all pages.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -65,7 +70,7 @@ public final class ProductCollection {
 
     /**
      * Set the count property: Total record count number across all pages.
-     *
+     * 
      * @param count the count value to set.
      * @return the ProductCollection object itself.
      */
@@ -76,7 +81,7 @@ public final class ProductCollection {
 
     /**
      * Get the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -85,7 +90,7 @@ public final class ProductCollection {
 
     /**
      * Set the nextLink property: Next page link if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProductCollection object itself.
      */
@@ -96,12 +101,56 @@ public final class ProductCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductCollection.
+     */
+    public static ProductCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductCollection deserializedProductCollection = new ProductCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProductContractInner> value
+                        = reader.readArray(reader1 -> ProductContractInner.fromJson(reader1));
+                    deserializedProductCollection.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedProductCollection.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProductCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductCollection;
+        });
     }
 }

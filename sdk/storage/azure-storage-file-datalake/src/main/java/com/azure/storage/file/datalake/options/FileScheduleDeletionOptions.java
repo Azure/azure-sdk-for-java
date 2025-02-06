@@ -33,6 +33,7 @@ public class FileScheduleDeletionOptions {
      * @param timeToExpire Duration before file will be deleted.
      * @param expiryRelativeTo Specifies if TimeToExpire should be
      * set relative to the file's creation time, or the current time.
+     * @throws NullPointerException If {@code timeToExpire} or {@code expiryRelativeTo} is null.
      */
     public FileScheduleDeletionOptions(Duration timeToExpire, FileExpirationOffset expiryRelativeTo) {
         StorageImplUtils.assertNotNull("timeToExpire", timeToExpire);
@@ -45,6 +46,7 @@ public class FileScheduleDeletionOptions {
     /**
      * Sets the {@link OffsetDateTime} when the file will be deleted.
      * @param expiresOn The {@link OffsetDateTime} when the file will be deleted.
+     * @throws NullPointerException If {@code expiresOn} is null.
      */
     public FileScheduleDeletionOptions(OffsetDateTime expiresOn) {
         StorageImplUtils.assertNotNull("expiresOn", expiresOn);
@@ -54,6 +56,8 @@ public class FileScheduleDeletionOptions {
     }
 
     /**
+     * Gets the duration before the file will be deleted.
+     *
      * @return Duration before file should be deleted.
      */
     public Duration getTimeToExpire() {
@@ -61,16 +65,18 @@ public class FileScheduleDeletionOptions {
     }
 
     /**
-     * @return if {@link #getTimeToExpire()} should be
-     * set relative to the file's creation time, or the current time.
+     * Gets the offset to set the expiry time relative to.
+     *
+     * @return if {@link #getTimeToExpire()} should be set relative to the file's creation time, or the current time.
      */
     public FileExpirationOffset getExpiryRelativeTo() {
         return expiryRelativeTo;
     }
 
     /**
-     * @return The {@link OffsetDateTime} to set for when
-     * the file will be deleted.
+     * Gets the {@link OffsetDateTime} to set for when the file will be deleted.
+     *
+     * @return The {@link OffsetDateTime} to set for when the file will be deleted.
      */
     public OffsetDateTime getExpiresOn() {
         return expiresOn;

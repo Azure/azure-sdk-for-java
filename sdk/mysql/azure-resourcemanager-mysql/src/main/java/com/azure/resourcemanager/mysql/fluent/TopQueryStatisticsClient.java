@@ -41,8 +41,8 @@ public interface TopQueryStatisticsClient {
      * @return represents a Query Statistic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryStatisticInner> getWithResponse(
-        String resourceGroupName, String serverName, String queryStatisticId, Context context);
+    Response<QueryStatisticInner> getWithResponse(String resourceGroupName, String serverName, String queryStatisticId,
+        Context context);
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
@@ -56,8 +56,8 @@ public interface TopQueryStatisticsClient {
      * @return a list of query statistics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryStatisticInner> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters);
+    PagedIterable<QueryStatisticInner> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters);
 
     /**
      * Retrieve the Query-Store top queries for specified metric and aggregation.
@@ -72,6 +72,6 @@ public interface TopQueryStatisticsClient {
      * @return a list of query statistics.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryStatisticInner> listByServer(
-        String resourceGroupName, String serverName, TopQueryStatisticsInput parameters, Context context);
+    PagedIterable<QueryStatisticInner> listByServer(String resourceGroupName, String serverName,
+        TopQueryStatisticsInput parameters, Context context);
 }

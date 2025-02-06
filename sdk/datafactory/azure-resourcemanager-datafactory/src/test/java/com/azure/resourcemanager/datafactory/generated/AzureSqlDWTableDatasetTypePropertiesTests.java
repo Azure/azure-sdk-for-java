@@ -10,17 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureSqlDWTableDatase
 public final class AzureSqlDWTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSqlDWTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"dataiydvxc\",\"schema\":\"datahyhgo\",\"table\":\"datasoy\"}")
-                .toObject(AzureSqlDWTableDatasetTypeProperties.class);
+        AzureSqlDWTableDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"datajihvfjcqrttjfuq\",\"schema\":\"datafjewfeqbavdo\",\"table\":\"datawy\"}")
+            .toObject(AzureSqlDWTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSqlDWTableDatasetTypeProperties model
-            = new AzureSqlDWTableDatasetTypeProperties().withTableName("dataiydvxc")
-                .withSchema("datahyhgo")
-                .withTable("datasoy");
+            = new AzureSqlDWTableDatasetTypeProperties().withTableName("datajihvfjcqrttjfuq")
+                .withSchema("datafjewfeqbavdo")
+                .withTable("datawy");
         model = BinaryData.fromObject(model).toObject(AzureSqlDWTableDatasetTypeProperties.class);
     }
 }

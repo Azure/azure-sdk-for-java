@@ -6,6 +6,4 @@ module com.azure.data.schemaregistry.jsonschema {
     requires transitive com.azure.data.schemaregistry;
 
     exports com.azure.data.schemaregistry.jsonschema;
-
-    opens com.azure.data.schemaregistry.jsonschema to com.azure.core;
 }

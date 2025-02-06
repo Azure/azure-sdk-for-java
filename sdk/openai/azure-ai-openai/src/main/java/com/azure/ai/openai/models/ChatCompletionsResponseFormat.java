@@ -82,6 +82,8 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
                     return ChatCompletionsTextResponseFormat.fromJson(readerToUse.reset());
                 } else if ("json_object".equals(discriminatorValue)) {
                     return ChatCompletionsJsonResponseFormat.fromJson(readerToUse.reset());
+                } else if ("json_schema".equals(discriminatorValue)) {
+                    return ChatCompletionsJsonSchemaResponseFormat.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

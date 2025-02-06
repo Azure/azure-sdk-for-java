@@ -13,28 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkTapIds\":[\"qqw\",\"tqsmoxsa\",\"uxejgwecywnfyszz\",\"czs\"],\"networkTapRuleIds\":[\"bdnd\"],\"provisioningState\":\"Deleting\",\"destination\":{\"ipv4Addresses\":[\"yvrmkjm\",\"it\",\"chwudlxee\"],\"ipv6Addresses\":[\"pmnoejhqlf\",\"sibz\"]},\"annotation\":\"rfgxkyd\"}")
-                .toObject(NeighborGroupProperties.class);
-        Assertions.assertEquals("rfgxkyd", model.annotation());
-        Assertions.assertEquals("yvrmkjm", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("pmnoejhqlf", model.destination().ipv6Addresses().get(0));
+        NeighborGroupProperties model = BinaryData.fromString(
+            "{\"networkTapIds\":[\"gfyvrtpqpe\",\"hzcgkrepdqhqyhwq\",\"e\"],\"networkTapRuleIds\":[\"qabckmzeoxin\",\"greohtwhlpuzjp\",\"eezn\"],\"provisioningState\":\"Accepted\",\"destination\":{\"ipv4Addresses\":[\"bfaxyxzlbc\"],\"ipv6Addresses\":[\"msexroqr\"]},\"annotation\":\"ktxfvonfe\"}")
+            .toObject(NeighborGroupProperties.class);
+        Assertions.assertEquals("ktxfvonfe", model.annotation());
+        Assertions.assertEquals("bfaxyxzlbc", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("msexroqr", model.destination().ipv6Addresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupProperties model =
-            new NeighborGroupProperties()
-                .withAnnotation("rfgxkyd")
-                .withDestination(
-                    new NeighborGroupDestination()
-                        .withIpv4Addresses(Arrays.asList("yvrmkjm", "it", "chwudlxee"))
-                        .withIpv6Addresses(Arrays.asList("pmnoejhqlf", "sibz")));
+        NeighborGroupProperties model = new NeighborGroupProperties().withAnnotation("ktxfvonfe")
+            .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("bfaxyxzlbc"))
+                .withIpv6Addresses(Arrays.asList("msexroqr")));
         model = BinaryData.fromObject(model).toObject(NeighborGroupProperties.class);
-        Assertions.assertEquals("rfgxkyd", model.annotation());
-        Assertions.assertEquals("yvrmkjm", model.destination().ipv4Addresses().get(0));
-        Assertions.assertEquals("pmnoejhqlf", model.destination().ipv6Addresses().get(0));
+        Assertions.assertEquals("ktxfvonfe", model.annotation());
+        Assertions.assertEquals("bfaxyxzlbc", model.destination().ipv4Addresses().get(0));
+        Assertions.assertEquals("msexroqr", model.destination().ipv6Addresses().get(0));
     }
 }

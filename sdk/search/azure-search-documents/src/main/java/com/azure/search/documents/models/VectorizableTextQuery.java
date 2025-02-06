@@ -27,6 +27,11 @@ public final class VectorizableTextQuery extends VectorQuery {
      */
     private final String text;
 
+    /*
+     * Can be configured to let a generative model rewrite the query before sending it to be vectorized.
+     */
+    private QueryRewrites queryRewrites;
+
     /**
      * Creates an instance of VectorizableTextQuery class.
      *
@@ -53,6 +58,28 @@ public final class VectorizableTextQuery extends VectorQuery {
      */
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * Get the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
+     * to be vectorized.
+     *
+     * @return the queryRewrites value.
+     */
+    public QueryRewrites getQueryRewrites() {
+        return this.queryRewrites;
+    }
+
+    /**
+     * Set the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
+     * to be vectorized.
+     *
+     * @param queryRewrites the queryRewrites value to set.
+     * @return the VectorizableTextQuery object itself.
+     */
+    public VectorizableTextQuery setQueryRewrites(QueryRewrites queryRewrites) {
+        this.queryRewrites = queryRewrites;
+        return this;
     }
 
     /**
@@ -104,6 +131,24 @@ public final class VectorizableTextQuery extends VectorQuery {
      * {@inheritDoc}
      */
     @Override
+    public VectorizableTextQuery setThreshold(VectorThreshold threshold) {
+        super.setThreshold(threshold);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VectorizableTextQuery setFilterOverride(String filterOverride) {
+        super.setFilterOverride(filterOverride);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
@@ -111,8 +156,11 @@ public final class VectorizableTextQuery extends VectorQuery {
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
+        jsonWriter.writeJsonField("threshold", getThreshold());
+        jsonWriter.writeStringField("filterOverride", getFilterOverride());
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("queryRewrites", this.queryRewrites == null ? null : this.queryRewrites.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -132,9 +180,12 @@ public final class VectorizableTextQuery extends VectorQuery {
             Boolean exhaustive = null;
             Double oversampling = null;
             Float weight = null;
+            VectorThreshold threshold = null;
+            String filterOverride = null;
             boolean textFound = false;
             String text = null;
             VectorQueryKind kind = VectorQueryKind.TEXT;
+            QueryRewrites queryRewrites = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -148,11 +199,17 @@ public final class VectorizableTextQuery extends VectorQuery {
                     oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     weight = reader.getNullable(JsonReader::getFloat);
+                } else if ("threshold".equals(fieldName)) {
+                    threshold = VectorThreshold.fromJson(reader);
+                } else if ("filterOverride".equals(fieldName)) {
+                    filterOverride = reader.getString();
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                     textFound = true;
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorQueryKind.fromString(reader.getString());
+                } else if ("queryRewrites".equals(fieldName)) {
+                    queryRewrites = QueryRewrites.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -164,7 +221,10 @@ public final class VectorizableTextQuery extends VectorQuery {
                 deserializedVectorizableTextQuery.setExhaustive(exhaustive);
                 deserializedVectorizableTextQuery.setOversampling(oversampling);
                 deserializedVectorizableTextQuery.setWeight(weight);
+                deserializedVectorizableTextQuery.setThreshold(threshold);
+                deserializedVectorizableTextQuery.setFilterOverride(filterOverride);
                 deserializedVectorizableTextQuery.kind = kind;
+                deserializedVectorizableTextQuery.queryRewrites = queryRewrites;
                 return deserializedVectorizableTextQuery;
             }
             throw new IllegalStateException("Missing required property: text");

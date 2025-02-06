@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class KnownPerfCounterDataSourceStreams extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding KnownPerfCounterDataSourceStreams.
      */
-    @JsonCreator
     public static KnownPerfCounterDataSourceStreams fromString(String name) {
         return fromString(name, KnownPerfCounterDataSourceStreams.class);
     }

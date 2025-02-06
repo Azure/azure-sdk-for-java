@@ -10,11 +10,9 @@ import com.azure.resourcemanager.machinelearning.models.ListWorkspaceQuotas;
 public final class ListWorkspaceQuotasTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListWorkspaceQuotas model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"gidyjrrf\",\"amlWorkspaceLocation\":\"aos\",\"type\":\"xc\",\"name\":{\"value\":\"pclhocohslk\",\"localizedValue\":\"leggzfbu\"},\"limit\":5326513191162029025,\"unit\":\"Count\"},{\"id\":\"k\",\"amlWorkspaceLocation\":\"eiithlvmez\",\"type\":\"shxmzsbbzoggigrx\",\"name\":{\"value\":\"rvjx\",\"localizedValue\":\"nspydptkoenkoukn\"},\"limit\":5351704758336650999,\"unit\":\"Count\"},{\"id\":\"kbldngkpocipa\",\"amlWorkspaceLocation\":\"xoegukgjnpiucgy\",\"type\":\"vqzntypmrbpizcdr\",\"name\":{\"value\":\"dpydn\",\"localizedValue\":\"hxdeoejz\"},\"limit\":731748747615090484,\"unit\":\"Count\"}],\"nextLink\":\"ttgzfbis\"}")
-                .toObject(ListWorkspaceQuotas.class);
+        ListWorkspaceQuotas model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"zjancuxr\",\"amlWorkspaceLocation\":\"wbavxbniwdj\",\"type\":\"zt\",\"name\":{\"value\":\"pgn\",\"localizedValue\":\"txhp\"},\"limit\":6965353138700786103,\"unit\":\"Count\"},{\"id\":\"abgl\",\"amlWorkspaceLocation\":\"hxw\",\"type\":\"tyq\",\"name\":{\"value\":\"bbovplwzbhvgyugu\",\"localizedValue\":\"vmkfssxqu\"},\"limit\":2455965823671467627,\"unit\":\"Count\"},{\"id\":\"gsxnkjzkdeslpv\",\"amlWorkspaceLocation\":\"pwiyig\",\"type\":\"pkdwzbai\",\"name\":{\"value\":\"baumnyqupedeoj\",\"localizedValue\":\"bckhsmtxpsi\"},\"limit\":8592172469751933163,\"unit\":\"Count\"}],\"nextLink\":\"esap\"}")
+            .toObject(ListWorkspaceQuotas.class);
     }
 
     @org.junit.jupiter.api.Test

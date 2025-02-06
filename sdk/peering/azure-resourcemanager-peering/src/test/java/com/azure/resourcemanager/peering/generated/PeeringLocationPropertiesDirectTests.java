@@ -15,59 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringLocationPropertiesDirectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringLocationPropertiesDirect model =
-            BinaryData
-                .fromString(
-                    "{\"peeringFacilities\":[{\"address\":\"buxwgip\",\"directPeeringType\":\"Edge\",\"peeringDBFacilityId\":390798331,\"peeringDBFacilityLink\":\"kgshwa\"},{\"address\":\"ixzbinjeputtmryw\",\"directPeeringType\":\"Ix\",\"peeringDBFacilityId\":1117331465,\"peeringDBFacilityLink\":\"tiyqzrnkcqv\"},{\"address\":\"lwh\",\"directPeeringType\":\"Internal\",\"peeringDBFacilityId\":1205063617,\"peeringDBFacilityLink\":\"hoqqnwvlr\"},{\"address\":\"vwhheunmmqhgyx\",\"directPeeringType\":\"Transit\",\"peeringDBFacilityId\":521536914,\"peeringDBFacilityLink\":\"uko\"}],\"bandwidthOffers\":[{\"offerName\":\"xuconu\",\"valueInMbps\":447504444},{\"offerName\":\"kbeype\",\"valueInMbps\":1004577663},{\"offerName\":\"mwvvjektcxsenhw\",\"valueInMbps\":223779123},{\"offerName\":\"frzpwvlqdqgb\",\"valueInMbps\":629213684}]}")
-                .toObject(PeeringLocationPropertiesDirect.class);
-        Assertions.assertEquals("buxwgip", model.peeringFacilities().get(0).address());
-        Assertions.assertEquals(DirectPeeringType.EDGE, model.peeringFacilities().get(0).directPeeringType());
-        Assertions.assertEquals(390798331, model.peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("kgshwa", model.peeringFacilities().get(0).peeringDBFacilityLink());
-        Assertions.assertEquals("xuconu", model.bandwidthOffers().get(0).offerName());
-        Assertions.assertEquals(447504444, model.bandwidthOffers().get(0).valueInMbps());
+        PeeringLocationPropertiesDirect model = BinaryData.fromString(
+            "{\"peeringFacilities\":[{\"address\":\"qukkfp\",\"directPeeringType\":\"Ix\",\"peeringDBFacilityId\":1737094412,\"peeringDBFacilityLink\":\"nkjzkdeslpvlop\"}],\"bandwidthOffers\":[{\"offerName\":\"ghxpkdw\",\"valueInMbps\":1170549879},{\"offerName\":\"uebbaumnyqup\",\"valueInMbps\":1687595526}]}")
+            .toObject(PeeringLocationPropertiesDirect.class);
+        Assertions.assertEquals("qukkfp", model.peeringFacilities().get(0).address());
+        Assertions.assertEquals(DirectPeeringType.IX, model.peeringFacilities().get(0).directPeeringType());
+        Assertions.assertEquals(1737094412, model.peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("ghxpkdw", model.bandwidthOffers().get(0).offerName());
+        Assertions.assertEquals(1170549879, model.bandwidthOffers().get(0).valueInMbps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringLocationPropertiesDirect model =
-            new PeeringLocationPropertiesDirect()
-                .withPeeringFacilities(
-                    Arrays
-                        .asList(
-                            new DirectPeeringFacility()
-                                .withAddress("buxwgip")
-                                .withDirectPeeringType(DirectPeeringType.EDGE)
-                                .withPeeringDBFacilityId(390798331)
-                                .withPeeringDBFacilityLink("kgshwa"),
-                            new DirectPeeringFacility()
-                                .withAddress("ixzbinjeputtmryw")
-                                .withDirectPeeringType(DirectPeeringType.IX)
-                                .withPeeringDBFacilityId(1117331465)
-                                .withPeeringDBFacilityLink("tiyqzrnkcqv"),
-                            new DirectPeeringFacility()
-                                .withAddress("lwh")
-                                .withDirectPeeringType(DirectPeeringType.INTERNAL)
-                                .withPeeringDBFacilityId(1205063617)
-                                .withPeeringDBFacilityLink("hoqqnwvlr"),
-                            new DirectPeeringFacility()
-                                .withAddress("vwhheunmmqhgyx")
-                                .withDirectPeeringType(DirectPeeringType.TRANSIT)
-                                .withPeeringDBFacilityId(521536914)
-                                .withPeeringDBFacilityLink("uko")))
-                .withBandwidthOffers(
-                    Arrays
-                        .asList(
-                            new PeeringBandwidthOffer().withOfferName("xuconu").withValueInMbps(447504444),
-                            new PeeringBandwidthOffer().withOfferName("kbeype").withValueInMbps(1004577663),
-                            new PeeringBandwidthOffer().withOfferName("mwvvjektcxsenhw").withValueInMbps(223779123),
-                            new PeeringBandwidthOffer().withOfferName("frzpwvlqdqgb").withValueInMbps(629213684)));
+        PeeringLocationPropertiesDirect model = new PeeringLocationPropertiesDirect()
+            .withPeeringFacilities(Arrays.asList(new DirectPeeringFacility().withAddress("qukkfp")
+                .withDirectPeeringType(DirectPeeringType.IX)
+                .withPeeringDBFacilityId(1737094412)
+                .withPeeringDBFacilityLink("nkjzkdeslpvlop")))
+            .withBandwidthOffers(
+                Arrays.asList(new PeeringBandwidthOffer().withOfferName("ghxpkdw").withValueInMbps(1170549879),
+                    new PeeringBandwidthOffer().withOfferName("uebbaumnyqup").withValueInMbps(1687595526)));
         model = BinaryData.fromObject(model).toObject(PeeringLocationPropertiesDirect.class);
-        Assertions.assertEquals("buxwgip", model.peeringFacilities().get(0).address());
-        Assertions.assertEquals(DirectPeeringType.EDGE, model.peeringFacilities().get(0).directPeeringType());
-        Assertions.assertEquals(390798331, model.peeringFacilities().get(0).peeringDBFacilityId());
-        Assertions.assertEquals("kgshwa", model.peeringFacilities().get(0).peeringDBFacilityLink());
-        Assertions.assertEquals("xuconu", model.bandwidthOffers().get(0).offerName());
-        Assertions.assertEquals(447504444, model.bandwidthOffers().get(0).valueInMbps());
+        Assertions.assertEquals("qukkfp", model.peeringFacilities().get(0).address());
+        Assertions.assertEquals(DirectPeeringType.IX, model.peeringFacilities().get(0).directPeeringType());
+        Assertions.assertEquals(1737094412, model.peeringFacilities().get(0).peeringDBFacilityId());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.peeringFacilities().get(0).peeringDBFacilityLink());
+        Assertions.assertEquals("ghxpkdw", model.bandwidthOffers().get(0).offerName());
+        Assertions.assertEquals(1170549879, model.bandwidthOffers().get(0).valueInMbps());
     }
 }

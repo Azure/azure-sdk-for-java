@@ -11,11 +11,9 @@ import com.azure.resourcemanager.azureadexternalidentities.models.OperationDispl
 public final class OperationDetailImpl implements OperationDetail {
     private OperationDetailInner innerObject;
 
-    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager
-        serviceManager;
+    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager;
 
-    OperationDetailImpl(
-        OperationDetailInner innerObject,
+    OperationDetailImpl(OperationDetailInner innerObject,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

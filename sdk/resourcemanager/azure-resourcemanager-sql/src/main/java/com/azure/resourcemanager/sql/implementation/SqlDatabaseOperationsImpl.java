@@ -28,8 +28,8 @@ public class SqlDatabaseOperationsImpl
         Objects.requireNonNull(manager);
         this.sqlServer = parent;
         this.manager = manager;
-        this.sqlDatabases =
-            new SqlDatabasesAsExternalChildResourcesImpl(this.sqlServer.taskGroup(), manager, "SqlDatabase");
+        this.sqlDatabases
+            = new SqlDatabasesAsExternalChildResourcesImpl(this.sqlServer.taskGroup(), manager, "SqlDatabase");
     }
 
     SqlDatabaseOperationsImpl(SqlServerManager manager) {
@@ -47,17 +47,13 @@ public class SqlDatabaseOperationsImpl
     }
 
     @Override
-    public Mono<SqlDatabase> getBySqlServerAsync(
-        final String resourceGroupName, final String sqlServerName, final String name) {
-        return this
-            .manager
-            .serviceClient()
+    public Mono<SqlDatabase> getBySqlServerAsync(final String resourceGroupName, final String sqlServerName,
+        final String name) {
+        return this.manager.serviceClient()
             .getDatabases()
             .getAsync(resourceGroupName, sqlServerName, name)
-            .map(
-                inner ->
-                    new SqlDatabaseImpl(
-                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
+            .map(inner -> new SqlDatabaseImpl(resourceGroupName, sqlServerName, inner.location(), inner.name(), inner,
+                manager));
     }
 
     @Override
@@ -65,16 +61,15 @@ public class SqlDatabaseOperationsImpl
         if (sqlServer == null) {
             return null;
         }
-        DatabaseInner inner =
-            this.manager.serviceClient().getDatabases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+        DatabaseInner inner
+            = this.manager.serviceClient().getDatabases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null) ? new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager) : null;
     }
 
     @Override
     public Mono<SqlDatabase> getBySqlServerAsync(final SqlServer sqlServer, String name) {
         Objects.requireNonNull(sqlServer);
-        return sqlServer
-            .manager()
+        return sqlServer.manager()
             .serviceClient()
             .getDatabases()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
@@ -100,21 +95,17 @@ public class SqlDatabaseOperationsImpl
     @Override
     public SqlDatabase getById(String id) {
         Objects.requireNonNull(id);
-        return this
-            .getBySqlServer(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.getBySqlServer(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<SqlDatabase> getByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this
-            .getBySqlServerAsync(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.getBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -130,21 +121,17 @@ public class SqlDatabaseOperationsImpl
     @Override
     public void deleteById(String id) {
         Objects.requireNonNull(id);
-        this
-            .deleteBySqlServer(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        this.deleteBySqlServer(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this
-            .deleteBySqlServerAsync(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.deleteBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -165,38 +152,30 @@ public class SqlDatabaseOperationsImpl
     @Override
     public List<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlDatabase> databasesSet = new ArrayList<>();
-        for (DatabaseInner inner
-            : this.manager.serviceClient().getDatabases().listByServer(resourceGroupName, sqlServerName)) {
-            databasesSet
-                .add(
-                    new SqlDatabaseImpl(
-                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
+        for (DatabaseInner inner : this.manager.serviceClient()
+            .getDatabases()
+            .listByServer(resourceGroupName, sqlServerName)) {
+            databasesSet.add(
+                new SqlDatabaseImpl(resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
         }
         return Collections.unmodifiableList(databasesSet);
     }
 
     @Override
     public PagedFlux<SqlDatabase> listBySqlServerAsync(final String resourceGroupName, final String sqlServerName) {
-        return PagedConverter.mapPage(this
-            .manager
-            .serviceClient()
-            .getDatabases()
-            .listByServerAsync(resourceGroupName, sqlServerName),
-                inner ->
-                    new SqlDatabaseImpl(
-                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
+        return PagedConverter.mapPage(
+            this.manager.serviceClient().getDatabases().listByServerAsync(resourceGroupName, sqlServerName),
+            inner -> new SqlDatabaseImpl(resourceGroupName, sqlServerName, inner.location(), inner.name(), inner,
+                manager));
     }
 
     @Override
     public List<SqlDatabase> listBySqlServer(SqlServer sqlServer) {
         List<SqlDatabase> firewallRuleSet = new ArrayList<>();
         if (sqlServer != null) {
-            for (DatabaseInner inner
-                : this
-                    .manager
-                    .serviceClient()
-                    .getDatabases()
-                    .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+            for (DatabaseInner inner : this.manager.serviceClient()
+                .getDatabases()
+                .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 firewallRuleSet.add(new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }
@@ -205,11 +184,11 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public PagedFlux<SqlDatabase> listBySqlServerAsync(final SqlServer sqlServer) {
-        return PagedConverter.mapPage(sqlServer
-            .manager()
-            .serviceClient()
-            .getDatabases()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
+        return PagedConverter.mapPage(
+            sqlServer.manager()
+                .serviceClient()
+                .getDatabases()
+                .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
             inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 

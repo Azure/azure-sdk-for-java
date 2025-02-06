@@ -24,41 +24,38 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public VirtualMachinesImpl(
-        VirtualMachinesClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public VirtualMachinesImpl(VirtualMachinesClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<VirtualMachine> list() {
         PagedIterable<VirtualMachineInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualMachine> list(Context context) {
         PagedIterable<VirtualMachineInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualMachine> listByResourceGroup(String resourceGroupName) {
         PagedIterable<VirtualMachineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VirtualMachine> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<VirtualMachineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public Response<VirtualMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context) {
-        Response<VirtualMachineInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
+    public Response<VirtualMachine> getByResourceGroupWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context) {
+        Response<VirtualMachineInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualMachineImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,12 +71,22 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineName);
+    public OperationStatusResult deleteByResourceGroup(String resourceGroupName, String virtualMachineName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, virtualMachineName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String virtualMachineName, Context context) {
-        this.serviceClient().delete(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult delete(String resourceGroupName, String virtualMachineName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, virtualMachineName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public OperationStatusResult powerOff(String resourceGroupName, String virtualMachineName) {
@@ -91,15 +98,10 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public OperationStatusResult powerOff(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
-        Context context) {
-        OperationStatusResultInner inner =
-            this
-                .serviceClient()
-                .powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
+    public OperationStatusResult powerOff(String resourceGroupName, String virtualMachineName,
+        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -162,83 +164,59 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public VirtualMachine getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, Context.NONE).getValue();
     }
 
     public Response<VirtualMachine> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        this.delete(resourceGroupName, virtualMachineName, Context.NONE);
+        return this.delete(resourceGroupName, virtualMachineName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
+        String virtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        this.delete(resourceGroupName, virtualMachineName, context);
+        return this.delete(resourceGroupName, virtualMachineName, context);
     }
 
     private VirtualMachinesClient serviceClient() {

@@ -31,7 +31,7 @@ Azure SDK produces span for public client calls such as `SecretClient.getSecret`
 
 ## Azure SDK tracing with Azure Monitor Java agent
 
-By using an Azure Monitor Java in-process agent, you can enable monitoring of your applications without any code changes. For more information, see [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent). Azure SDK support is enabled by default starting with agent version 3.2.
+By using an Azure Monitor Java in-process agent, you can enable monitoring of your applications without any code changes. For more information, see [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://learn.microsoft.com/azure/azure-monitor/app/java-in-process-agent). Azure SDK support is enabled by default starting with agent version 3.2.
 
 ## Tracing Azure SDK calls with OpenTelemetry Java agent
 
@@ -52,7 +52,7 @@ To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opente
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.48</version>
+  <version>1.0.0-beta.53</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -268,9 +268,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure-messaging-eventhubs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs
 [azure-security-keyvault-secrets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets
 [context]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java/blob/main/QUICKSTART.md
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java#opentelemetry-for-java
 [sample_app_config]: https://github.com/Azure/azure-sdk-for-java/blob/340efc149a29df01358e1a4d580a4b1d045494b3/sdk/core/azure-core-tracing-opentelemetry-samples/src/samples/java/com/azure/core/tracing/opentelemetry/samples/CreateConfigurationSettingLoggingExporterSample.java

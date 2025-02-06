@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The object being used to update tags and sku of a resource, in general used for PATCH operations. */
+/**
+ * The object being used to update tags and sku of a resource, in general used for PATCH operations.
+ */
 @Fluent
 public final class PatchResourceTagsAndSku extends PatchResourceTags {
     /*
      * The resource model definition representing SKU
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
-    /** Creates an instance of PatchResourceTagsAndSku class. */
+    /**
+     * Creates an instance of PatchResourceTagsAndSku class.
+     */
     public PatchResourceTagsAndSku() {
     }
 
     /**
      * Get the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -32,7 +38,7 @@ public final class PatchResourceTagsAndSku extends PatchResourceTags {
 
     /**
      * Set the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PatchResourceTagsAndSku object itself.
      */
@@ -41,7 +47,9 @@ public final class PatchResourceTagsAndSku extends PatchResourceTags {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PatchResourceTagsAndSku withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,14 +58,53 @@ public final class PatchResourceTagsAndSku extends PatchResourceTags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchResourceTagsAndSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchResourceTagsAndSku if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchResourceTagsAndSku.
+     */
+    public static PatchResourceTagsAndSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchResourceTagsAndSku deserializedPatchResourceTagsAndSku = new PatchResourceTagsAndSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPatchResourceTagsAndSku.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPatchResourceTagsAndSku.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchResourceTagsAndSku;
+        });
     }
 }

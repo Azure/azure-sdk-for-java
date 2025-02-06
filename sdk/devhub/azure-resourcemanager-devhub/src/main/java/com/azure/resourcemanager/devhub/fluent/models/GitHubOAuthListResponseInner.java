@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.devhub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The response from List GitHubOAuth operation. */
+/**
+ * The response from List GitHubOAuth operation.
+ */
 @Fluent
-public final class GitHubOAuthListResponseInner {
+public final class GitHubOAuthListResponseInner implements JsonSerializable<GitHubOAuthListResponseInner> {
     /*
      * Singleton list response containing one GitHubOAuthResponse response
      */
-    @JsonProperty(value = "value")
     private List<GitHubOAuthResponseInner> value;
 
-    /** Creates an instance of GitHubOAuthListResponseInner class. */
+    /**
+     * Creates an instance of GitHubOAuthListResponseInner class.
+     */
     public GitHubOAuthListResponseInner() {
     }
 
     /**
      * Get the value property: Singleton list response containing one GitHubOAuthResponse response.
-     *
+     * 
      * @return the value value.
      */
     public List<GitHubOAuthResponseInner> value() {
@@ -32,7 +39,7 @@ public final class GitHubOAuthListResponseInner {
 
     /**
      * Set the value property: Singleton list response containing one GitHubOAuthResponse response.
-     *
+     * 
      * @param value the value value to set.
      * @return the GitHubOAuthListResponseInner object itself.
      */
@@ -43,12 +50,50 @@ public final class GitHubOAuthListResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubOAuthListResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubOAuthListResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitHubOAuthListResponseInner.
+     */
+    public static GitHubOAuthListResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubOAuthListResponseInner deserializedGitHubOAuthListResponseInner = new GitHubOAuthListResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GitHubOAuthResponseInner> value
+                        = reader.readArray(reader1 -> GitHubOAuthResponseInner.fromJson(reader1));
+                    deserializedGitHubOAuthListResponseInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubOAuthListResponseInner;
+        });
     }
 }

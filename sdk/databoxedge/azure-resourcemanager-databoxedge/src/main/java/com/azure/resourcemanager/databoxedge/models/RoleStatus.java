@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Role status. */
+/**
+ * Role status.
+ */
 public final class RoleStatus extends ExpandableStringEnum<RoleStatus> {
-    /** Static value Enabled for RoleStatus. */
+    /**
+     * Static value Enabled for RoleStatus.
+     */
     public static final RoleStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for RoleStatus. */
+    /**
+     * Static value Disabled for RoleStatus.
+     */
     public static final RoleStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of RoleStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class RoleStatus extends ExpandableStringEnum<RoleStatus> {
 
     /**
      * Creates or finds a RoleStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoleStatus.
      */
-    @JsonCreator
     public static RoleStatus fromString(String name) {
         return fromString(name, RoleStatus.class);
     }
 
     /**
      * Gets known RoleStatus values.
-     *
+     * 
      * @return known RoleStatus values.
      */
     public static Collection<RoleStatus> values() {

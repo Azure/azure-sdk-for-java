@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The TrafficRegionRolloutConfiguration model. */
+/**
+ * The TrafficRegionRolloutConfiguration model.
+ */
 @Fluent
 public class TrafficRegionRolloutConfiguration extends TrafficRegions {
     /*
      * The waitDuration property.
      */
-    @JsonProperty(value = "waitDuration")
     private Duration waitDuration;
 
-    /** Creates an instance of TrafficRegionRolloutConfiguration class. */
+    /**
+     * Creates an instance of TrafficRegionRolloutConfiguration class.
+     */
     public TrafficRegionRolloutConfiguration() {
     }
 
     /**
      * Get the waitDuration property: The waitDuration property.
-     *
+     * 
      * @return the waitDuration value.
      */
     public Duration waitDuration() {
@@ -33,7 +40,7 @@ public class TrafficRegionRolloutConfiguration extends TrafficRegions {
 
     /**
      * Set the waitDuration property: The waitDuration property.
-     *
+     * 
      * @param waitDuration the waitDuration value to set.
      * @return the TrafficRegionRolloutConfiguration object itself.
      */
@@ -42,7 +49,9 @@ public class TrafficRegionRolloutConfiguration extends TrafficRegions {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TrafficRegionRolloutConfiguration withRegions(List<String> regions) {
         super.withRegions(regions);
@@ -51,11 +60,52 @@ public class TrafficRegionRolloutConfiguration extends TrafficRegions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("regions", regions(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("waitDuration", CoreUtils.durationToStringWithDays(this.waitDuration));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficRegionRolloutConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficRegionRolloutConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrafficRegionRolloutConfiguration.
+     */
+    public static TrafficRegionRolloutConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficRegionRolloutConfiguration deserializedTrafficRegionRolloutConfiguration
+                = new TrafficRegionRolloutConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTrafficRegionRolloutConfiguration.withRegions(regions);
+                } else if ("waitDuration".equals(fieldName)) {
+                    deserializedTrafficRegionRolloutConfiguration.waitDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficRegionRolloutConfiguration;
+        });
     }
 }

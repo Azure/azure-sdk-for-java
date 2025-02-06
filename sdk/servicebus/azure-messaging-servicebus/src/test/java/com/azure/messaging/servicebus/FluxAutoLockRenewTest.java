@@ -67,7 +67,8 @@ public class FluxAutoLockRenewTest {
     private static final ClientLogger LOGGER = new ClientLogger(FluxAutoLockRenewTest.class);
     private static final ServiceBusTracer NOOP_TRACER = new ServiceBusTracer(null, "", "");
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-    private final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(BinaryData.fromString("Some Data"));
+    private final ServiceBusReceivedMessage receivedMessage
+        = new ServiceBusReceivedMessage(BinaryData.fromString("Some Data"));
     private final ServiceBusMessageContext message = new ServiceBusMessageContext(receivedMessage);
     private final TestPublisher<ServiceBusMessageContext> messagesPublisher = TestPublisher.create();
     private final Flux<? extends ServiceBusMessageContext> messageSource = messagesPublisher.flux();
@@ -83,8 +84,8 @@ public class FluxAutoLockRenewTest {
         receivedMessage.setLockToken(LOCK_TOKEN_UUID);
         receivedMessage.setLockedUntil(lockedUntil);
         renewalFunction = lockToken -> Mono.just(OffsetDateTime.now().plusSeconds(10));
-        defaultReceiverOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
-            MAX_AUTO_LOCK_RENEW_DURATION, true);
+        defaultReceiverOptions
+            = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, MAX_AUTO_LOCK_RENEW_DURATION, true);
     }
 
     @AfterEach
@@ -105,26 +106,24 @@ public class FluxAutoLockRenewTest {
         receivedMessage2.setLockToken(UUID.randomUUID());
         receivedMessage2.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act & Assert
-        StepVerifier.create(renewOperator)
-            .then(() -> {
-                messagesPublisher.next(message);
-                messagesPublisher.next(message2);
-            })
+        StepVerifier.create(renewOperator).then(() -> {
+            messagesPublisher.next(message);
+            messagesPublisher.next(message2);
+        })
             .assertNext(actual -> Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken()))
             .thenCancel()
             .verify(DEFAULT_TIMEOUT);
 
-        assertEquals(1, messageLockContainer.addOrUpdateInvocations.size(),
-            "should have at least one invocation.");
+        assertEquals(1, messageLockContainer.addOrUpdateInvocations.size(), "should have at least one invocation.");
 
         assertTrue(messageLockContainer.addOrUpdateInvocations.containsKey(LOCK_TOKEN_STRING));
 
-        final List<LockRenewalOperation> lockRenewalOperations =
-            messageLockContainer.addOrUpdateOperations.get(LOCK_TOKEN_STRING);
+        final List<LockRenewalOperation> lockRenewalOperations
+            = messageLockContainer.addOrUpdateOperations.get(LOCK_TOKEN_STRING);
 
         assertNotNull(lockRenewalOperations);
         assertEquals(1, lockRenewalOperations.size());
@@ -140,22 +139,22 @@ public class FluxAutoLockRenewTest {
         final TestContainer messageLockContainer = new TestContainer();
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(null,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER));
+        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(null, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER));
 
-        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, null, renewalFunction, NOOP_TRACER));
+        assertThrows(NullPointerException.class,
+            () -> new FluxAutoLockRenew(messageSource, defaultReceiverOptions, null, renewalFunction, NOOP_TRACER));
 
-        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, null, NOOP_TRACER));
+        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, null, NOOP_TRACER));
 
-        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, null));
+        assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, null));
 
         ReceiverOptions zeroLockDurationOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             DISABLE_AUTO_LOCK_RENEW_DURATION, true);
-        assertThrows(IllegalArgumentException.class, () -> new FluxAutoLockRenew(messageSource,
-            zeroLockDurationOptions, messageLockContainer, renewalFunction, NOOP_TRACER));
+        assertThrows(IllegalArgumentException.class, () -> new FluxAutoLockRenew(messageSource, zeroLockDurationOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER));
     }
 
     /**
@@ -174,25 +173,21 @@ public class FluxAutoLockRenewTest {
         };
         final TestContainer messageLockContainer = new TestContainer();
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, lockTokenRenewFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, lockTokenRenewFunction, NOOP_TRACER);
 
         // Act & Assert
-        StepVerifier.create(renewOperator.take(1))
-            .then(() -> messagesPublisher.next(message))
-            .assertNext(actual -> {
-                OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
-                try {
-                    TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
-                } catch (InterruptedException e) {
-                    LOGGER.warning("Exception while wait. ", e);
-                }
-                Assertions.assertNotNull(actual);
-                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
-                Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(renewOperator.take(1)).then(() -> messagesPublisher.next(message)).assertNext(actual -> {
+            OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
+            try {
+                TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
+            } catch (InterruptedException e) {
+                LOGGER.warning("Exception while wait. ", e);
+            }
+            Assertions.assertNotNull(actual);
+            Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
+            Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
@@ -213,37 +208,33 @@ public class FluxAutoLockRenewTest {
         Tracer tracer = mock(Tracer.class);
         when(tracer.isEnabled()).thenReturn(true);
         when(tracer.start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any())).thenAnswer(
-            invocation -> invocation.getArgument(2, Context.class)
-                    .addData(PARENT_TRACE_CONTEXT_KEY, "span"));
+            invocation -> invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "span"));
 
         ServiceBusTracer sbTracer = new ServiceBusTracer(tracer, "ns", "entity");
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, lockTokenRenewFunction, sbTracer);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, lockTokenRenewFunction, sbTracer);
 
         // Act & Assert
-        StepVerifier.create(renewOperator.take(1))
-            .then(() -> messagesPublisher.next(message))
-            .assertNext(actual -> {
-                OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
-                try {
-                    TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
-                } catch (InterruptedException e) {
-                    fail(e);
-                }
-                Assertions.assertNotNull(actual);
-                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
-                Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(renewOperator.take(1)).then(() -> messagesPublisher.next(message)).assertNext(actual -> {
+            OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
+            try {
+                TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
+            } catch (InterruptedException e) {
+                fail(e);
+            }
+            Assertions.assertNotNull(actual);
+            Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
+            Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
 
         // we might not have got all the spans yet.
         verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).extractContext(any());
-        verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).start(eq("ServiceBus.renewMessageLock"),
+            any(StartSpanOptions.class), any(Context.class));
         verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).end(isNull(), isNull(), any(Context.class));
     }
 
@@ -255,36 +246,31 @@ public class FluxAutoLockRenewTest {
         Tracer tracer = mock(Tracer.class);
         when(tracer.isEnabled()).thenReturn(true);
         when(tracer.start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any())).thenAnswer(
-            invocation -> invocation.getArgument(2, Context.class)
-                .addData(PARENT_TRACE_CONTEXT_KEY, "span"));
+            invocation -> invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "span"));
         ServiceBusTracer sbTracer = new ServiceBusTracer(tracer, "ns", "entity");
 
         CountDownLatch latch = new CountDownLatch(1);
         RuntimeException toThrow = new RuntimeException("boo");
 
-        final Function<String, Mono<OffsetDateTime>> lockTokenRenewFunction = lockToken -> Mono.error(toThrow)
-            .map(i -> OffsetDateTime.now())
-            .doFinally(st -> latch.countDown());
+        final Function<String, Mono<OffsetDateTime>> lockTokenRenewFunction
+            = lockToken -> Mono.error(toThrow).map(i -> OffsetDateTime.now()).doFinally(st -> latch.countDown());
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, lockTokenRenewFunction, sbTracer);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, lockTokenRenewFunction, sbTracer);
 
         // Act & Assert
-        StepVerifier.create(renewOperator.take(1))
-            .then(() -> messagesPublisher.next(message))
-            .assertNext(actual -> {
-                try {
-                    assertTrue(latch.await(20, TimeUnit.SECONDS));
-                } catch (InterruptedException e) {
-                    fail(e);
-                }
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(renewOperator.take(1)).then(() -> messagesPublisher.next(message)).assertNext(actual -> {
+            try {
+                assertTrue(latch.await(20, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                fail(e);
+            }
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(tracer, times(1)).extractContext(any());
-        verify(tracer, times(1)).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, times(1)).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class),
+            any(Context.class));
         verify(tracer, times(1)).end(isNull(), same(toThrow), any(Context.class));
     }
 
@@ -318,10 +304,10 @@ public class FluxAutoLockRenewTest {
         // Arrange
         final ErrorLockContainer errorTestContainer = new ErrorLockContainer(LOCK_TOKEN_STRING);
         final String expectedSessionId = "1";
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, errorTestContainer, renewalFunction, NOOP_TRACER);
-        final ServiceBusMessageContext errorContext = new ServiceBusMessageContext(expectedSessionId,
-            new RuntimeException("fake error"));
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            errorTestContainer, renewalFunction, NOOP_TRACER);
+        final ServiceBusMessageContext errorContext
+            = new ServiceBusMessageContext(expectedSessionId, new RuntimeException("fake error"));
 
         // Act & Assert
         StepVerifier.create(renewOperator.take(1))
@@ -345,16 +331,13 @@ public class FluxAutoLockRenewTest {
         final AtomicBoolean onCompleteCalled = new AtomicBoolean(false);
         final TestContainer messageLockContainer = new TestContainer();
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act
-        Disposable disposable = renewOperator
-            .subscribe(serviceBusReceivedMessage -> {
-                throw new RuntimeException("fake user generated exception.");
-            },
-                (throwable) -> onErrorCalled.set(true),
-                () -> onCompleteCalled.set(true));
+        Disposable disposable = renewOperator.subscribe(serviceBusReceivedMessage -> {
+            throw new RuntimeException("fake user generated exception.");
+        }, (throwable) -> onErrorCalled.set(true), () -> onCompleteCalled.set(true));
 
         messagesPublisher.next(message);
         TimeUnit.SECONDS.sleep(waitForSubscriberSeconds);
@@ -371,8 +354,8 @@ public class FluxAutoLockRenewTest {
         // Arrange
         final String expectedMappedValue = null;
         final TestContainer messageLockContainer = new TestContainer();
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act & Assert
         StepVerifier.create(renewOperator.map(serviceBusReceivedMessage -> expectedMappedValue))
@@ -385,8 +368,8 @@ public class FluxAutoLockRenewTest {
     public void nullMapperTest() {
         // Arrange
         final TestContainer messageLockContainer = new TestContainer();
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act & Assert
         assertThrows(NullPointerException.class, () -> renewOperator.map(null));
@@ -399,8 +382,8 @@ public class FluxAutoLockRenewTest {
     void renewCanBeSubscribedMultipleTimes() {
         // Arrange
         final TestContainer messageLockContainer = new TestContainer();
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act & Assert
         StepVerifier.create(renewOperator.take(1))
@@ -438,13 +421,12 @@ public class FluxAutoLockRenewTest {
         receivedMessage3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
         final ServiceBusMessageContext message3 = new ServiceBusMessageContext(receivedMessage3);
 
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
-
-        final Flux<Long> renewOperatorSource = renewOperator
-            .filter(actual -> actual.getMessage().getEnqueuedSequenceNumber() > 1)
-            .map(messageContext -> messageContext.getMessage().getEnqueuedSequenceNumber());
+        final Flux<Long> renewOperatorSource
+            = renewOperator.filter(actual -> actual.getMessage().getEnqueuedSequenceNumber() > 1)
+                .map(messageContext -> messageContext.getMessage().getEnqueuedSequenceNumber());
 
         // Act & Assert
         StepVerifier.create(renewOperatorSource)
@@ -476,10 +458,9 @@ public class FluxAutoLockRenewTest {
         receivedMessage3.setLockedUntil(OffsetDateTime.now().plusSeconds(2));
         final ServiceBusMessageContext message3 = new ServiceBusMessageContext(receivedMessage3);
 
-
         final String expectedMappedValue = "New Expected Mapped Value";
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         final Flux<String> renewOperatorSource = renewOperator.map(serviceBusReceivedMessage -> expectedMappedValue);
 
@@ -517,16 +498,17 @@ public class FluxAutoLockRenewTest {
         receivedMessage2.setLockedUntil(lockedUntil);
         receivedMessage2.setEnqueuedSequenceNumber(expectedEnqueuedSequenceNumber);
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act & Assert
-        StepVerifier.create(renewOperator
-                .filter(actual -> actual.getMessage().getEnqueuedSequenceNumber() > 1)
+        StepVerifier
+            .create(renewOperator.filter(actual -> actual.getMessage().getEnqueuedSequenceNumber() > 1)
                 .map(messageContext -> messageContext.getMessage().getEnqueuedSequenceNumber()))
             .thenRequest(1)
             .then(() -> messagesPublisher.next(message, message2, message3))
-            .assertNext(actualEnqueuedSequenceNumber -> assertEquals(expectedEnqueuedSequenceNumber, actualEnqueuedSequenceNumber))
+            .assertNext(actualEnqueuedSequenceNumber -> assertEquals(expectedEnqueuedSequenceNumber,
+                actualEnqueuedSequenceNumber))
             .thenCancel()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -536,12 +518,11 @@ public class FluxAutoLockRenewTest {
         // Arrange
         final TestContainer messageLockContainer = new TestContainer();
 
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            defaultReceiverOptions, messageLockContainer, renewalFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, defaultReceiverOptions,
+            messageLockContainer, renewalFunction, NOOP_TRACER);
 
         // Act & Assert
-        StepVerifier.create(renewOperator
-                .contextWrite((context) -> context.put("A", "B")))
+        StepVerifier.create(renewOperator.contextWrite((context) -> context.put("A", "B")))
             .thenRequest(1)
             .expectAccessibleContext()
             .contains("A", "B")
@@ -571,25 +552,21 @@ public class FluxAutoLockRenewTest {
         };
         ReceiverOptions receiverOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, enableAutoComplete);
-        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
-            receiverOptions, messageLockContainer, lockTokenRenewFunction, NOOP_TRACER);
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource, receiverOptions,
+            messageLockContainer, lockTokenRenewFunction, NOOP_TRACER);
 
         // Act & Assert
-        StepVerifier.create(renewOperator.take(1))
-            .then(() -> messagesPublisher.next(message))
-            .assertNext(actual -> {
-                OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
-                try {
-                    Thread.sleep(totalProcessingTimeSeconds * 1000 + 100);
-                } catch (InterruptedException e) {
-                    LOGGER.warning("Exception while wait. ", e);
-                }
-                Assertions.assertNotNull(actual);
-                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
-                Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(renewOperator.take(1)).then(() -> messagesPublisher.next(message)).assertNext(actual -> {
+            OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
+            try {
+                Thread.sleep(totalProcessingTimeSeconds * 1000 + 100);
+            } catch (InterruptedException e) {
+                LOGGER.warning("Exception while wait. ", e);
+            }
+            Assertions.assertNotNull(actual);
+            Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
+            Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
 
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast,
@@ -613,7 +590,8 @@ public class FluxAutoLockRenewTest {
         }
 
         @Override
-        public OffsetDateTime addOrUpdate(String lockToken, OffsetDateTime lockTokenExpiration, LockRenewalOperation item) {
+        public OffsetDateTime addOrUpdate(String lockToken, OffsetDateTime lockTokenExpiration,
+            LockRenewalOperation item) {
             addOrUpdateInvocations.compute(lockToken, (existingKey, existingValue) -> {
                 if (existingValue == null) {
                     return 1;
@@ -638,8 +616,7 @@ public class FluxAutoLockRenewTest {
 
         @Override
         public void remove(String lockToken) {
-            removeInvocations.compute(lockToken,
-                (key, existingValue) -> existingValue == null ? 1 : existingValue + 1);
+            removeInvocations.compute(lockToken, (key, existingValue) -> existingValue == null ? 1 : existingValue + 1);
 
             super.remove(lockToken);
         }
@@ -649,7 +626,8 @@ public class FluxAutoLockRenewTest {
      * Exists so that Mockito doesn't fall over with not a mock exception.
      */
     private static class ErrorLockContainer extends LockContainer<LockRenewalOperation> {
-        private final AmqpException error = new AmqpException(false, "test-exception", new AmqpErrorContext("namespace"));
+        private final AmqpException error
+            = new AmqpException(false, "test-exception", new AmqpErrorContext("namespace"));
         private final HashMap<String, Integer> addOrUpdateInvocations = new HashMap<>();
         private final String matchingLockToken;
 
@@ -659,7 +637,8 @@ public class FluxAutoLockRenewTest {
         }
 
         @Override
-        public OffsetDateTime addOrUpdate(String lockToken, OffsetDateTime lockTokenExpiration, LockRenewalOperation item) {
+        public OffsetDateTime addOrUpdate(String lockToken, OffsetDateTime lockTokenExpiration,
+            LockRenewalOperation item) {
             addOrUpdateInvocations.compute(lockToken, (existingKey, existingValue) -> {
                 if (existingValue == null) {
                     return 1;

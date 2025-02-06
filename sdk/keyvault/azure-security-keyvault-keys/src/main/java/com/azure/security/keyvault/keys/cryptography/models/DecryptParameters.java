@@ -92,7 +92,7 @@ public final class DecryptParameters {
      * @return The {@link DecryptParameters}.
      */
     public static DecryptParameters createA128GcmParameters(byte[] ciphertext, byte[] iv, byte[] authenticationTag,
-                                                            byte[] additionalAuthenticatedData) {
+        byte[] additionalAuthenticatedData) {
         return new DecryptParameters(EncryptionAlgorithm.A128GCM, ciphertext, iv, authenticationTag,
             additionalAuthenticatedData);
     }
@@ -153,7 +153,7 @@ public final class DecryptParameters {
      * @return The {@link DecryptParameters}.
      */
     public static DecryptParameters createA192GcmParameters(byte[] ciphertext, byte[] iv, byte[] authenticationTag,
-                                                            byte[] additionalAuthenticatedData) {
+        byte[] additionalAuthenticatedData) {
         return new DecryptParameters(EncryptionAlgorithm.A192GCM, ciphertext, iv, authenticationTag,
             additionalAuthenticatedData);
     }
@@ -214,7 +214,7 @@ public final class DecryptParameters {
      * @return The {@link DecryptParameters}.
      */
     public static DecryptParameters createA256GcmParameters(byte[] ciphertext, byte[] iv, byte[] authenticationTag,
-                                                            byte[] additionalAuthenticatedData) {
+        byte[] additionalAuthenticatedData) {
         return new DecryptParameters(EncryptionAlgorithm.A256GCM, ciphertext, iv, authenticationTag,
             additionalAuthenticatedData);
     }
@@ -228,8 +228,7 @@ public final class DecryptParameters {
      * @return The {@link DecryptParameters}.
      */
     public static DecryptParameters createRsa15Parameters(byte[] ciphertext) {
-        return new DecryptParameters(EncryptionAlgorithm.RSA1_5, ciphertext, null, null,
-            null);
+        return new DecryptParameters(EncryptionAlgorithm.RSA1_5, ciphertext, null, null, null);
     }
 
     /**
@@ -241,8 +240,7 @@ public final class DecryptParameters {
      * @return The {@link DecryptParameters}.
      */
     public static DecryptParameters createRsaOaepParameters(byte[] ciphertext) {
-        return new DecryptParameters(EncryptionAlgorithm.RSA_OAEP, ciphertext, null, null,
-            null);
+        return new DecryptParameters(EncryptionAlgorithm.RSA_OAEP, ciphertext, null, null, null);
     }
 
     /**
@@ -254,8 +252,7 @@ public final class DecryptParameters {
      * @return The {@link DecryptParameters}.
      */
     public static DecryptParameters createRsaOaep256Parameters(byte[] ciphertext) {
-        return new DecryptParameters(EncryptionAlgorithm.RSA_OAEP_256, ciphertext, null, null,
-            null);
+        return new DecryptParameters(EncryptionAlgorithm.RSA_OAEP_256, ciphertext, null, null, null);
     }
 
     /**
@@ -268,11 +265,12 @@ public final class DecryptParameters {
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      */
     DecryptParameters(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv, byte[] authenticationTag,
-                      byte[] additionalAuthenticatedData) {
+        byte[] additionalAuthenticatedData) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(ciphertext, "Cipher text content to be decrypted cannot be null.");
 
-        if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
+        if (algorithm == EncryptionAlgorithm.A128GCM
+            || algorithm == EncryptionAlgorithm.A192GCM
             || algorithm == EncryptionAlgorithm.A256GCM) {
 
             Objects.requireNonNull(authenticationTag, "Authentication tag cannot be null for GCM decryption.");

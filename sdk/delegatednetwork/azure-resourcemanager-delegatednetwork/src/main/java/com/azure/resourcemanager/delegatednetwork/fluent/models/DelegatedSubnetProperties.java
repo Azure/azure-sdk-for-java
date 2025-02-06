@@ -5,45 +5,49 @@
 package com.azure.resourcemanager.delegatednetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetState;
 import com.azure.resourcemanager.delegatednetwork.models.SubnetDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of delegated subnet. */
+/**
+ * Properties of delegated subnet.
+ */
 @Fluent
-public final class DelegatedSubnetProperties {
+public final class DelegatedSubnetProperties implements JsonSerializable<DelegatedSubnetProperties> {
     /*
      * Resource guid.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The current state of dnc delegated subnet resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DelegatedSubnetState provisioningState;
 
     /*
      * subnet details
      */
-    @JsonProperty(value = "subnetDetails")
     private SubnetDetails subnetDetails;
 
     /*
      * Properties of the controller.
      */
-    @JsonProperty(value = "controllerDetails")
     private ControllerDetails controllerDetails;
 
-    /** Creates an instance of DelegatedSubnetProperties class. */
+    /**
+     * Creates an instance of DelegatedSubnetProperties class.
+     */
     public DelegatedSubnetProperties() {
     }
 
     /**
      * Get the resourceGuid property: Resource guid.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -52,7 +56,7 @@ public final class DelegatedSubnetProperties {
 
     /**
      * Get the provisioningState property: The current state of dnc delegated subnet resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DelegatedSubnetState provisioningState() {
@@ -61,7 +65,7 @@ public final class DelegatedSubnetProperties {
 
     /**
      * Get the subnetDetails property: subnet details.
-     *
+     * 
      * @return the subnetDetails value.
      */
     public SubnetDetails subnetDetails() {
@@ -70,7 +74,7 @@ public final class DelegatedSubnetProperties {
 
     /**
      * Set the subnetDetails property: subnet details.
-     *
+     * 
      * @param subnetDetails the subnetDetails value to set.
      * @return the DelegatedSubnetProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class DelegatedSubnetProperties {
 
     /**
      * Get the controllerDetails property: Properties of the controller.
-     *
+     * 
      * @return the controllerDetails value.
      */
     public ControllerDetails controllerDetails() {
@@ -90,7 +94,7 @@ public final class DelegatedSubnetProperties {
 
     /**
      * Set the controllerDetails property: Properties of the controller.
-     *
+     * 
      * @param controllerDetails the controllerDetails value to set.
      * @return the DelegatedSubnetProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class DelegatedSubnetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -111,5 +115,49 @@ public final class DelegatedSubnetProperties {
         if (controllerDetails() != null) {
             controllerDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnetDetails", this.subnetDetails);
+        jsonWriter.writeJsonField("controllerDetails", this.controllerDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedSubnetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedSubnetProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DelegatedSubnetProperties.
+     */
+    public static DelegatedSubnetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedSubnetProperties deserializedDelegatedSubnetProperties = new DelegatedSubnetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuid".equals(fieldName)) {
+                    deserializedDelegatedSubnetProperties.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDelegatedSubnetProperties.provisioningState
+                        = DelegatedSubnetState.fromString(reader.getString());
+                } else if ("subnetDetails".equals(fieldName)) {
+                    deserializedDelegatedSubnetProperties.subnetDetails = SubnetDetails.fromJson(reader);
+                } else if ("controllerDetails".equals(fieldName)) {
+                    deserializedDelegatedSubnetProperties.controllerDetails = ControllerDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedSubnetProperties;
+        });
     }
 }

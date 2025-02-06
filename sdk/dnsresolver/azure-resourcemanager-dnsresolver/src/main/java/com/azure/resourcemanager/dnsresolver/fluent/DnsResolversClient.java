@@ -15,41 +15,35 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverInner;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolverPatch;
 
-/** An instance of this class provides access to all the operations defined in DnsResolversClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DnsResolversClient.
+ */
 public interface DnsResolversClient {
     /**
      * Creates or updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        DnsResolverInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdate(String resourceGroupName,
+        String dnsResolverName, DnsResolverInner parameters);
 
     /**
      * Creates or updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,40 +51,12 @@ public interface DnsResolversClient {
      * @return the {@link SyncPoller} for polling of describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        DnsResolverInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdate(String resourceGroupName,
+        String dnsResolverName, DnsResolverInner parameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Creates or updates a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsResolverInner createOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        DnsResolverInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
-
-    /**
-     * Creates or updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
@@ -104,14 +70,14 @@ public interface DnsResolversClient {
 
     /**
      * Creates or updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,39 +85,32 @@ public interface DnsResolversClient {
      * @return describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsResolverInner createOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        DnsResolverInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    DnsResolverInner createOrUpdate(String resourceGroupName, String dnsResolverName, DnsResolverInner parameters,
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(
-        String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters, String ifMatch);
+    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(String resourceGroupName,
+        String dnsResolverName, DnsResolverPatch parameters);
 
     /**
      * Updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,29 +118,12 @@ public interface DnsResolversClient {
      * @return the {@link SyncPoller} for polling of describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(
-        String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters, String ifMatch, Context context);
+    SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(String resourceGroupName,
+        String dnsResolverName, DnsResolverPatch parameters, String ifMatch, Context context);
 
     /**
      * Updates a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsResolverInner update(
-        String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters, String ifMatch);
-
-    /**
-     * Updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
@@ -195,12 +137,12 @@ public interface DnsResolversClient {
 
     /**
      * Updates a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -208,31 +150,29 @@ public interface DnsResolversClient {
      * @return describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsResolverInner update(
-        String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters, String ifMatch, Context context);
+    DnsResolverInner update(String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters,
+        String ifMatch, Context context);
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName, String ifMatch);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName);
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -240,26 +180,12 @@ public interface DnsResolversClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dnsResolverName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName, String ifMatch,
+        Context context);
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String dnsResolverName, String ifMatch);
-
-    /**
-     * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,11 +197,11 @@ public interface DnsResolversClient {
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -286,7 +212,22 @@ public interface DnsResolversClient {
 
     /**
      * Gets properties of a DNS resolver.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a DNS resolver along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DnsResolverInner> getByResourceGroupWithResponse(String resourceGroupName, String dnsResolverName,
+        Context context);
+
+    /**
+     * Gets properties of a DNS resolver.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,90 +239,75 @@ public interface DnsResolversClient {
     DnsResolverInner getByResourceGroup(String resourceGroupName, String dnsResolverName);
 
     /**
-     * Gets properties of a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DnsResolverInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dnsResolverName, Context context);
-
-    /**
      * Lists DNS resolvers within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsResolverInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists DNS resolvers within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsResolverInner> listByResourceGroup(String resourceGroupName, Integer top, Context context);
 
     /**
      * Lists DNS resolvers in all resource groups of a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsResolverInner> list();
 
     /**
      * Lists DNS resolvers in all resource groups of a subscription.
-     *
+     * 
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsResolverInner> list(Integer top, Context context);
 
     /**
      * Lists DNS resolver resource IDs linked to a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on sub-resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName);
 
     /**
      * Lists DNS resolver resource IDs linked to a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -389,10 +315,10 @@ public interface DnsResolversClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on sub-resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubResource> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName, Integer top, Context context);
+    PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName, Integer top,
+        Context context);
 }

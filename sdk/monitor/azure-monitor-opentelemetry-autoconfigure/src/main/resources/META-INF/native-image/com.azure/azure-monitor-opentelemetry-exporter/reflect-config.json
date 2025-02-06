@@ -1,0 +1,144 @@
+[
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorLogRecordExporter",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorMetricExporter",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorTraceExporter",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.AvailabilityData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.DataPointType",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ExportResult",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ExportResultException",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricDataPoint",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorBase",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.PageViewData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.PageViewPerfData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.SeverityLevel",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.StackFrame",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryErrorDetails",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  }
+]

@@ -20,6 +20,28 @@ public final class IntegrationRuntimeResource extends SubResource {
      */
     private IntegrationRuntime properties;
 
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of IntegrationRuntimeResource class.
      */
@@ -44,6 +66,48 @@ public final class IntegrationRuntimeResource extends SubResource {
     public IntegrationRuntimeResource setProperties(IntegrationRuntime properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -73,13 +137,13 @@ public final class IntegrationRuntimeResource extends SubResource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedIntegrationRuntimeResource.setId(reader.getString());
+                    deserializedIntegrationRuntimeResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedIntegrationRuntimeResource.setName(reader.getString());
+                    deserializedIntegrationRuntimeResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedIntegrationRuntimeResource.setType(reader.getString());
+                    deserializedIntegrationRuntimeResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedIntegrationRuntimeResource.setEtag(reader.getString());
+                    deserializedIntegrationRuntimeResource.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedIntegrationRuntimeResource.properties = IntegrationRuntime.fromJson(reader);
                 } else {

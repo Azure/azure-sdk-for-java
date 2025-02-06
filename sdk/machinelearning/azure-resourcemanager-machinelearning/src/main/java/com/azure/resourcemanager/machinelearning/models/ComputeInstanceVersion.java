@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Version of computeInstance. */
+/**
+ * Version of computeInstance.
+ */
 @Fluent
-public final class ComputeInstanceVersion {
+public final class ComputeInstanceVersion implements JsonSerializable<ComputeInstanceVersion> {
     /*
      * Runtime of compute instance.
      */
-    @JsonProperty(value = "runtime")
     private String runtime;
 
-    /** Creates an instance of ComputeInstanceVersion class. */
+    /**
+     * Creates an instance of ComputeInstanceVersion class.
+     */
     public ComputeInstanceVersion() {
     }
 
     /**
      * Get the runtime property: Runtime of compute instance.
-     *
+     * 
      * @return the runtime value.
      */
     public String runtime() {
@@ -31,7 +38,7 @@ public final class ComputeInstanceVersion {
 
     /**
      * Set the runtime property: Runtime of compute instance.
-     *
+     * 
      * @param runtime the runtime value to set.
      * @return the ComputeInstanceVersion object itself.
      */
@@ -42,9 +49,45 @@ public final class ComputeInstanceVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runtime", this.runtime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceVersion.
+     */
+    public static ComputeInstanceVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceVersion deserializedComputeInstanceVersion = new ComputeInstanceVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runtime".equals(fieldName)) {
+                    deserializedComputeInstanceVersion.runtime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceVersion;
+        });
     }
 }

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.GrantDetailsInner;
-import org.junit.jupiter.api.Test;
 
 public final class GrantDetailsInnerTests {
-    @Test
-    public void testDeserialize() {
-        GrantDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"offerCap\":{\"currency\":\"rtfw\",\"value\":0.16884804},\"effectiveDate\":\"2021-05-02T17:53:53Z\",\"offerType\":\"Academic\",\"expirationDate\":\"2021-05-03T09:30:55Z\",\"status\":\"Inactive\",\"allocatedBudget\":{\"currency\":\"s\",\"value\":80.03657}},\"id\":\"ejhkry\",\"name\":\"tnapczwlokjyemkk\",\"type\":\"ni\"}")
-                .toObject(GrantDetailsInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GrantDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"offerCap\":{\"currency\":\"snhsjcnyejhkryh\",\"value\":20.20244},\"effectiveDate\":\"2021-10-27T17:34:25Z\",\"offerType\":\"Student\",\"expirationDate\":\"2021-08-11T07:28:39Z\",\"status\":\"Active\",\"allocatedBudget\":{\"currency\":\"mkkvnip\",\"value\":58.11662}},\"id\":\"jnchgej\",\"name\":\"podmailzydehojwy\",\"type\":\"huxinpmqnj\"}")
+            .toObject(GrantDetailsInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GrantDetailsInner model = new GrantDetailsInner();
         model = BinaryData.fromObject(model).toObject(GrantDetailsInner.class);
     }

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Destination of the view data. This is optional. Currently only CSV format is supported. */
+/**
+ * Destination of the view data. This is optional. Currently only CSV format is supported.
+ */
 @Fluent
-public final class FileDestination {
+public final class FileDestination implements JsonSerializable<FileDestination> {
     /*
      * Destination of the view data. Currently only CSV format is supported.
      */
-    @JsonProperty(value = "fileFormats")
     private List<FileFormat> fileFormats;
 
-    /** Creates an instance of FileDestination class. */
+    /**
+     * Creates an instance of FileDestination class.
+     */
     public FileDestination() {
     }
 
     /**
      * Get the fileFormats property: Destination of the view data. Currently only CSV format is supported.
-     *
+     * 
      * @return the fileFormats value.
      */
     public List<FileFormat> fileFormats() {
@@ -32,7 +39,7 @@ public final class FileDestination {
 
     /**
      * Set the fileFormats property: Destination of the view data. Currently only CSV format is supported.
-     *
+     * 
      * @param fileFormats the fileFormats value to set.
      * @return the FileDestination object itself.
      */
@@ -43,9 +50,48 @@ public final class FileDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("fileFormats", this.fileFormats,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileDestination if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileDestination.
+     */
+    public static FileDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileDestination deserializedFileDestination = new FileDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileFormats".equals(fieldName)) {
+                    List<FileFormat> fileFormats
+                        = reader.readArray(reader1 -> FileFormat.fromString(reader1.getString()));
+                    deserializedFileDestination.fileFormats = fileFormats;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileDestination;
+        });
     }
 }

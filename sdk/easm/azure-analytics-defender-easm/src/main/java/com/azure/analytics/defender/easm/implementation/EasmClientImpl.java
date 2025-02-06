@@ -168,7 +168,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAssetResource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/assets")
@@ -178,7 +178,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAssetResourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/assets")
@@ -189,8 +189,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateAssets(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/assets")
         @ExpectedResponses({ 200 })
@@ -200,8 +200,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateAssetsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/assets/{assetId}")
         @ExpectedResponses({ 200 })
@@ -211,7 +211,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAssetResource(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("assetId") String assetId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/assets/{assetId}")
         @ExpectedResponses({ 200 })
@@ -221,7 +221,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAssetResourceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("assetId") String assetId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/dataConnections")
         @ExpectedResponses({ 200 })
@@ -230,7 +230,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDataConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/dataConnections")
@@ -240,7 +240,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDataConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/dataConnections:validate")
@@ -250,8 +250,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> validateDataConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/dataConnections:validate")
         @ExpectedResponses({ 200 })
@@ -260,8 +261,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> validateDataConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200 })
@@ -271,7 +273,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200 })
@@ -281,7 +283,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDataConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200 })
@@ -291,8 +293,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceDataConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200 })
@@ -302,8 +304,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceDataConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 204 })
@@ -313,7 +315,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDataConnection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 204 })
@@ -323,7 +325,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDataConnectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("dataConnectionName") String dataConnectionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups")
         @ExpectedResponses({ 200 })
@@ -332,7 +334,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoGroup(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups")
@@ -342,7 +344,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoGroupSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/discoGroups:validate")
@@ -352,8 +354,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> validateDiscoGroup(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/discoGroups:validate")
         @ExpectedResponses({ 200 })
@@ -362,8 +365,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> validateDiscoGroupSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups/{groupName}")
         @ExpectedResponses({ 200 })
@@ -373,7 +377,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDiscoGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups/{groupName}")
         @ExpectedResponses({ 200 })
@@ -383,7 +387,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDiscoGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/discoGroups/{groupName}")
         @ExpectedResponses({ 200 })
@@ -393,8 +397,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceDiscoGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/discoGroups/{groupName}")
         @ExpectedResponses({ 200 })
@@ -404,8 +408,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceDiscoGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/discoGroups/{groupName}:run")
         @ExpectedResponses({ 204 })
@@ -415,7 +419,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> runDiscoGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/discoGroups/{groupName}:run")
         @ExpectedResponses({ 204 })
@@ -425,7 +429,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> runDiscoGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups/{groupName}/runs")
         @ExpectedResponses({ 200 })
@@ -435,7 +439,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRuns(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/discoGroups/{groupName}/runs")
         @ExpectedResponses({ 200 })
@@ -445,7 +449,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("groupName") String groupName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/discoTemplates")
         @ExpectedResponses({ 200 })
@@ -454,7 +458,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoTemplate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/discoTemplates")
@@ -464,7 +468,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoTemplateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/discoTemplates/{templateId}")
@@ -475,7 +479,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDiscoTemplate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("templateId") String templateId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/discoTemplates/{templateId}")
         @ExpectedResponses({ 200 })
@@ -485,7 +489,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDiscoTemplateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("templateId") String templateId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/reports/assets:getBillable")
         @ExpectedResponses({ 200 })
@@ -494,7 +498,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBillable(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/reports/assets:getBillable")
@@ -504,7 +508,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getBillableSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/reports/assets:getSnapshot")
@@ -514,8 +518,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSnapshot(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/reports/assets:getSnapshot")
         @ExpectedResponses({ 200 })
@@ -524,8 +529,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSnapshotSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/reports/assets:getSummary")
         @ExpectedResponses({ 200 })
@@ -534,8 +540,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSummary(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Post("/reports/assets:getSummary")
         @ExpectedResponses({ 200 })
@@ -544,8 +551,9 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSummarySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Get("/savedFilters")
         @ExpectedResponses({ 200 })
@@ -554,7 +562,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSavedFilter(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/savedFilters")
@@ -564,7 +572,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSavedFilterSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/savedFilters/{filterName}")
@@ -575,7 +583,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSavedFilter(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/savedFilters/{filterName}")
         @ExpectedResponses({ 200 })
@@ -585,7 +593,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSavedFilterSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/savedFilters/{filterName}")
         @ExpectedResponses({ 200 })
@@ -595,8 +603,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrReplaceSavedFilter(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/savedFilters/{filterName}")
         @ExpectedResponses({ 200 })
@@ -606,8 +614,8 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrReplaceSavedFilterSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/savedFilters/{filterName}")
         @ExpectedResponses({ 204 })
@@ -617,7 +625,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSavedFilter(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/savedFilters/{filterName}")
         @ExpectedResponses({ 204 })
@@ -627,7 +635,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSavedFilterSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("filterName") String filterName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/tasks")
         @ExpectedResponses({ 200 })
@@ -636,7 +644,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTask(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/tasks")
@@ -646,7 +654,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTaskSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/tasks/{taskId}")
@@ -657,7 +665,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("taskId") String taskId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/tasks/{taskId}")
         @ExpectedResponses({ 200 })
@@ -667,7 +675,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("taskId") String taskId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/tasks/{taskId}:cancel")
         @ExpectedResponses({ 200 })
@@ -677,7 +685,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("taskId") String taskId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/tasks/{taskId}:cancel")
         @ExpectedResponses({ 200 })
@@ -687,7 +695,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("taskId") String taskId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -696,7 +704,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAssetResourceNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -706,7 +714,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAssetResourceNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -717,7 +725,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDataConnectionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -726,7 +734,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDataConnectionNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -736,7 +744,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -746,7 +754,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoGroupNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -756,7 +764,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -766,7 +774,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listRunsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -776,7 +784,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDiscoTemplateNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -786,7 +794,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDiscoTemplateNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -796,7 +804,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSavedFilterNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -806,7 +814,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSavedFilterNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -816,7 +824,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTaskNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -826,7 +834,7 @@ public final class EasmClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listTaskNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
@@ -847,7 +855,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -874,7 +883,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -911,7 +921,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -938,7 +949,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -993,7 +1005,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1020,7 +1033,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1055,7 +1069,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1082,7 +1097,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1124,7 +1140,8 @@ public final class EasmClientImpl {
      * Update labels on assets matching the provided filter.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
      *     externalId: String (Optional)
@@ -1133,11 +1150,13 @@ public final class EasmClientImpl {
      *     }
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1147,10 +1166,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filter An expression on the resource type that selects the resources to be returned.
      * @param body Body parameter.
@@ -1164,16 +1184,18 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAssetsWithResponseAsync(String filter, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateAssets(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), filter, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), filter, contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Update labels on assets matching the provided filter.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
      *     externalId: String (Optional)
@@ -1182,11 +1204,13 @@ public final class EasmClientImpl {
      *     }
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1196,10 +1220,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filter An expression on the resource type that selects the resources to be returned.
      * @param body Body parameter.
@@ -1213,16 +1238,18 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAssetsWithResponse(String filter, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateAssetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), filter, accept, body,
-            requestOptions, Context.NONE);
+        return service.updateAssetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), filter, contentType,
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Retrieve an asset by assetId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1249,7 +1276,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assetId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1271,7 +1299,8 @@ public final class EasmClientImpl {
      * Retrieve an asset by assetId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1298,7 +1327,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assetId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1327,7 +1357,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1342,7 +1373,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1374,7 +1406,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1389,7 +1422,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1439,7 +1473,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1454,7 +1489,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1484,7 +1520,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1499,7 +1536,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1541,7 +1579,8 @@ public final class EasmClientImpl {
      * Validate a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1549,11 +1588,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -1564,11 +1605,12 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1582,16 +1624,18 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> validateDataConnectionWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.validateDataConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Validate a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1599,11 +1643,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -1614,11 +1660,12 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1630,16 +1677,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> validateDataConnectionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.validateDataConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            body, requestOptions, Context.NONE);
+        return service.validateDataConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Retrieve a data connection with a given dataConnectionName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1654,7 +1703,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1676,7 +1726,8 @@ public final class EasmClientImpl {
      * Retrieve a data connection with a given dataConnectionName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1691,7 +1742,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1713,7 +1765,8 @@ public final class EasmClientImpl {
      * Create or replace a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1721,11 +1774,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1740,7 +1795,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -1754,16 +1810,19 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceDataConnectionWithResponseAsync(String dataConnectionName,
         BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrReplaceDataConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), dataConnectionName, accept, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createOrReplaceDataConnection(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                dataConnectionName, contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1771,11 +1830,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1790,7 +1851,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -1804,9 +1866,10 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceDataConnectionWithResponse(String dataConnectionName, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceDataConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            dataConnectionName, accept, body, requestOptions, Context.NONE);
+            dataConnectionName, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -1859,7 +1922,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1899,7 +1963,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1932,7 +1997,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1972,7 +2038,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2023,7 +2090,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2063,7 +2131,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2094,7 +2163,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2134,7 +2204,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2176,7 +2247,8 @@ public final class EasmClientImpl {
      * Validate a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2196,11 +2268,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -2211,11 +2285,12 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2229,16 +2304,18 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> validateDiscoGroupWithResponseAsync(BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.validateDiscoGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Validate a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2258,11 +2335,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -2273,11 +2352,12 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2289,16 +2369,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> validateDiscoGroupWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.validateDiscoGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
-            requestOptions, Context.NONE);
+        return service.validateDiscoGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Retrieve a discovery group with a given groupName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2338,7 +2420,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2359,7 +2442,8 @@ public final class EasmClientImpl {
      * Retrieve a discovery group with a given groupName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2399,7 +2483,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2420,7 +2505,8 @@ public final class EasmClientImpl {
      * Create a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2440,11 +2526,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2484,7 +2572,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -2498,16 +2587,18 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponseAsync(String groupName, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrReplaceDiscoGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), groupName, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), groupName, contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Create a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2527,11 +2618,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2571,7 +2664,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -2585,9 +2679,10 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceDiscoGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            groupName, accept, body, requestOptions, Context.NONE);
+            groupName, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2639,7 +2734,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2660,7 +2756,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2693,7 +2790,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2714,7 +2812,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2766,7 +2865,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2787,7 +2887,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2819,7 +2920,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2840,7 +2942,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2892,7 +2995,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -2912,7 +3016,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2945,7 +3050,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -2965,7 +3071,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3016,7 +3123,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3036,7 +3144,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3067,7 +3176,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3087,7 +3197,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3129,7 +3240,8 @@ public final class EasmClientImpl {
      * Retrieve a disco template with a given templateId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3149,7 +3261,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param templateId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3172,7 +3285,8 @@ public final class EasmClientImpl {
      * Retrieve a disco template with a given templateId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3192,7 +3306,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param templateId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3213,7 +3328,8 @@ public final class EasmClientImpl {
      * Get billable assets summary for the workspace.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3228,7 +3344,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3249,7 +3366,8 @@ public final class EasmClientImpl {
      * Get billable assets summary for the workspace.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3264,7 +3382,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3284,18 +3403,21 @@ public final class EasmClientImpl {
      * Get the most recent snapshot of asset summary values for the snapshot request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metric: String (Optional)
      *     labelName: String (Optional)
      *     size: Integer (Optional)
      *     page: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     displayName: String (Optional)
      *     metric: String (Optional)
@@ -3336,7 +3458,8 @@ public final class EasmClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3349,27 +3472,31 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSnapshotWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSnapshot(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metric: String (Optional)
      *     labelName: String (Optional)
      *     size: Integer (Optional)
      *     page: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     displayName: String (Optional)
      *     metric: String (Optional)
@@ -3410,7 +3537,8 @@ public final class EasmClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3422,16 +3550,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSnapshotWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.getSnapshotSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
-            requestOptions, Context.NONE);
+        return service.getSnapshotSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
      * Get asset summary details for the summary request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metricCategories (Optional): [
      *         String (Optional)
@@ -3446,11 +3576,13 @@ public final class EasmClientImpl {
      *     segmentBy: String (Optional)
      *     labelName: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3469,7 +3601,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3482,16 +3615,18 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSummaryWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSummary(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Get asset summary details for the summary request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metricCategories (Optional): [
      *         String (Optional)
@@ -3506,11 +3641,13 @@ public final class EasmClientImpl {
      *     segmentBy: String (Optional)
      *     labelName: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3529,7 +3666,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3541,9 +3679,10 @@ public final class EasmClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
-        return service.getSummarySync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
-            requestOptions, Context.NONE);
+        return service.getSummarySync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -3559,7 +3698,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3567,7 +3707,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3600,7 +3741,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3608,7 +3750,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3659,7 +3802,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3667,7 +3811,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3698,7 +3843,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3706,7 +3852,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3748,7 +3895,8 @@ public final class EasmClientImpl {
      * Retrieve a saved filter by filterName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3756,7 +3904,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3778,7 +3927,8 @@ public final class EasmClientImpl {
      * Retrieve a saved filter by filterName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3786,7 +3936,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3807,16 +3958,19 @@ public final class EasmClientImpl {
      * Create or replace a saved filter with a given filterName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3824,7 +3978,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -3838,25 +3993,29 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceSavedFilterWithResponseAsync(String filterName, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrReplaceSavedFilter(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), filterName, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), filterName, contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Create or replace a saved filter with a given filterName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3864,7 +4023,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -3878,9 +4038,10 @@ public final class EasmClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData body,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrReplaceSavedFilterSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            filterName, accept, body, requestOptions, Context.NONE);
+            filterName, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -3934,7 +4095,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -3944,10 +4106,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3981,7 +4144,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -3991,10 +4155,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4047,7 +4212,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4057,10 +4223,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4093,7 +4260,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4103,10 +4271,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4148,7 +4317,8 @@ public final class EasmClientImpl {
      * Retrieve a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4158,10 +4328,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4182,7 +4353,8 @@ public final class EasmClientImpl {
      * Retrieve a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4192,10 +4364,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4216,7 +4389,8 @@ public final class EasmClientImpl {
      * Cancel a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4226,10 +4400,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4250,7 +4425,8 @@ public final class EasmClientImpl {
      * Cancel a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4260,10 +4436,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4284,7 +4461,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -4311,7 +4489,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4337,7 +4516,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -4364,7 +4544,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4387,7 +4568,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -4402,7 +4584,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4427,7 +4610,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -4442,7 +4626,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4465,7 +4650,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4505,7 +4691,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4531,7 +4718,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4571,7 +4759,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4594,7 +4783,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -4615,7 +4805,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4639,7 +4830,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -4660,7 +4852,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4683,7 +4876,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -4703,7 +4897,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4729,7 +4924,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -4749,7 +4945,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4772,7 +4969,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4780,7 +4978,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4806,7 +5005,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4814,7 +5014,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4837,7 +5038,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4847,10 +5049,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4874,7 +5077,8 @@ public final class EasmClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4884,10 +5088,11 @@ public final class EasmClientImpl {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.botservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
 import com.azure.resourcemanager.botservice.models.AlexaChannel;
 import com.azure.resourcemanager.botservice.models.AlexaChannelProperties;
@@ -18,113 +17,84 @@ import com.azure.resourcemanager.botservice.models.LineChannelProperties;
 import com.azure.resourcemanager.botservice.models.LineRegistration;
 import java.util.Arrays;
 
-/** Samples for Channels Update. */
+/**
+ * Samples for Channels Update.
+ */
 public final class ChannelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateDirectLineSpeechChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateAlexaChannel.json
      */
     /**
-     * Sample code: Update DirectLine Speech.
-     *
+     * Sample code: Update Alexa Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void updateDirectLineSpeech(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .updateWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.DIRECT_LINE_SPEECH_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
-                    .withProperties(
-                        new DirectLineSpeechChannel()
-                            .withProperties(
-                                new DirectLineSpeechChannelProperties()
-                                    .withCognitiveServiceRegion("XcognitiveServiceRegionX")
-                                    .withCognitiveServiceSubscriptionKey("XcognitiveServiceSubscriptionKeyX")
-                                    .withIsEnabled(true))),
-                Context.NONE);
+    public static void updateAlexaChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.ALEXA_CHANNEL,
+                new BotChannelInner().withLocation("global")
+                    .withProperties(new AlexaChannel().withProperties(
+                        new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateChannel.json
+     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/
+     * UpdateDirectLineSpeechChannel.json
      */
     /**
-     * Sample code: Update Bot.
-     *
+     * Sample code: Update DirectLine Speech Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void updateBot(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .updateWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.EMAIL_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
-                    .withProperties(
-                        new EmailChannel()
-                            .withProperties(
-                                new EmailChannelProperties()
-                                    .withEmailAddress("a@b.com")
-                                    .withPassword("pwd")
-                                    .withIsEnabled(true))),
-                Context.NONE);
+    public static void updateDirectLineSpeechChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.DIRECT_LINE_SPEECH_CHANNEL,
+                new BotChannelInner().withLocation("global")
+                    .withProperties(new DirectLineSpeechChannel().withProperties(
+                        new DirectLineSpeechChannelProperties().withCognitiveServiceRegion("XcognitiveServiceRegionX")
+                            .withCognitiveServiceSubscriptionKey("fakeTokenPlaceholder")
+                            .withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateLineChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateLineChannel.json
      */
     /**
-     * Sample code: Update Line.
-     *
+     * Sample code: Update Line Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void updateLine(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .updateWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.LINE_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
-                    .withProperties(
-                        new LineChannel()
-                            .withProperties(
-                                new LineChannelProperties()
-                                    .withLineRegistrations(
-                                        Arrays
-                                            .asList(
-                                                new LineRegistration()
-                                                    .withChannelSecret("channelSecret")
-                                                    .withChannelAccessToken("channelAccessToken"))))),
-                Context.NONE);
+    public static void updateLineChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.LINE_CHANNEL,
+                new BotChannelInner().withLocation("global")
+                    .withProperties(new LineChannel().withProperties(new LineChannelProperties().withLineRegistrations(
+                        Arrays.asList(new LineRegistration().withChannelSecret("fakeTokenPlaceholder")
+                            .withChannelAccessToken("fakeTokenPlaceholder"))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/UpdateAlexaChannel.json
+     * x-ms-original-file:
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/UpdateChannel.json
      */
     /**
-     * Sample code: Update Alexa.
-     *
+     * Sample code: Update Channel.
+     * 
      * @param manager Entry point to BotServiceManager.
      */
-    public static void updateAlexa(com.azure.resourcemanager.botservice.BotServiceManager manager) {
-        manager
-            .channels()
-            .updateWithResponse(
-                "OneResourceGroupName",
-                "samplebotname",
-                ChannelName.ALEXA_CHANNEL,
-                new BotChannelInner()
-                    .withLocation("global")
+    public static void updateChannel(com.azure.resourcemanager.botservice.BotServiceManager manager) {
+        manager.channels()
+            .updateWithResponse("OneResourceGroupName", "samplebotname", ChannelName.EMAIL_CHANNEL,
+                new BotChannelInner().withLocation("global")
                     .withProperties(
-                        new AlexaChannel()
-                            .withProperties(
-                                new AlexaChannelProperties().withAlexaSkillId("XAlexaSkillIdX").withIsEnabled(true))),
-                Context.NONE);
+                        new EmailChannel().withProperties(new EmailChannelProperties().withEmailAddress("a@b.com")
+                            .withPassword("fakeTokenPlaceholder")
+                            .withIsEnabled(true))),
+                com.azure.core.util.Context.NONE);
     }
 }

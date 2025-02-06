@@ -10,10 +10,9 @@ import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
 public final class RoleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleInner model =
-            BinaryData
-                .fromString("{\"kind\":\"Role\",\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}")
-                .toObject(RoleInner.class);
+        RoleInner model = BinaryData
+            .fromString("{\"kind\":\"Role\",\"id\":\"seotgqrllt\",\"name\":\"u\",\"type\":\"lauwzizxbmpgcjef\"}")
+            .toObject(RoleInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Encryption entities for databricks workspace resource. */
+/**
+ * Encryption entities for databricks workspace resource.
+ */
 @Fluent
-public final class EncryptionEntitiesDefinition {
+public final class EncryptionEntitiesDefinition implements JsonSerializable<EncryptionEntitiesDefinition> {
     /*
      * Encryption properties for the databricks managed services.
      */
-    @JsonProperty(value = "managedServices")
     private EncryptionV2 managedServices;
 
     /*
      * Encryption properties for the databricks managed disks.
      */
-    @JsonProperty(value = "managedDisk")
     private ManagedDiskEncryption managedDisk;
 
-    /** Creates an instance of EncryptionEntitiesDefinition class. */
+    /**
+     * Creates an instance of EncryptionEntitiesDefinition class.
+     */
     public EncryptionEntitiesDefinition() {
     }
 
     /**
      * Get the managedServices property: Encryption properties for the databricks managed services.
-     *
+     * 
      * @return the managedServices value.
      */
     public EncryptionV2 managedServices() {
@@ -37,7 +43,7 @@ public final class EncryptionEntitiesDefinition {
 
     /**
      * Set the managedServices property: Encryption properties for the databricks managed services.
-     *
+     * 
      * @param managedServices the managedServices value to set.
      * @return the EncryptionEntitiesDefinition object itself.
      */
@@ -48,7 +54,7 @@ public final class EncryptionEntitiesDefinition {
 
     /**
      * Get the managedDisk property: Encryption properties for the databricks managed disks.
-     *
+     * 
      * @return the managedDisk value.
      */
     public ManagedDiskEncryption managedDisk() {
@@ -57,7 +63,7 @@ public final class EncryptionEntitiesDefinition {
 
     /**
      * Set the managedDisk property: Encryption properties for the databricks managed disks.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the EncryptionEntitiesDefinition object itself.
      */
@@ -68,7 +74,7 @@ public final class EncryptionEntitiesDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class EncryptionEntitiesDefinition {
         if (managedDisk() != null) {
             managedDisk().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("managedServices", this.managedServices);
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionEntitiesDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionEntitiesDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionEntitiesDefinition.
+     */
+    public static EncryptionEntitiesDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionEntitiesDefinition deserializedEncryptionEntitiesDefinition = new EncryptionEntitiesDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managedServices".equals(fieldName)) {
+                    deserializedEncryptionEntitiesDefinition.managedServices = EncryptionV2.fromJson(reader);
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedEncryptionEntitiesDefinition.managedDisk = ManagedDiskEncryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionEntitiesDefinition;
+        });
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Initial replication details.
  */
 @Fluent
-public final class InitialReplicationDetails {
+public final class InitialReplicationDetails implements JsonSerializable<InitialReplicationDetails> {
     /*
      * Initial replication type.
      */
-    @JsonProperty(value = "initialReplicationType")
     private String initialReplicationType;
 
     /*
      * The initial replication progress percentage.
      */
-    @JsonProperty(value = "initialReplicationProgressPercentage")
     private String initialReplicationProgressPercentage;
 
     /**
@@ -77,5 +79,44 @@ public final class InitialReplicationDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("initialReplicationType", this.initialReplicationType);
+        jsonWriter.writeStringField("initialReplicationProgressPercentage", this.initialReplicationProgressPercentage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InitialReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InitialReplicationDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InitialReplicationDetails.
+     */
+    public static InitialReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InitialReplicationDetails deserializedInitialReplicationDetails = new InitialReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("initialReplicationType".equals(fieldName)) {
+                    deserializedInitialReplicationDetails.initialReplicationType = reader.getString();
+                } else if ("initialReplicationProgressPercentage".equals(fieldName)) {
+                    deserializedInitialReplicationDetails.initialReplicationProgressPercentage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInitialReplicationDetails;
+        });
     }
 }

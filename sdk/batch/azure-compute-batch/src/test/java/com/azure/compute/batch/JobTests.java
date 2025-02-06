@@ -16,7 +16,6 @@ import java.io.StringReader;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-
 public class JobTests extends BatchClientTestBase {
     private static BatchPool livePool;
     static String poolId;
@@ -62,7 +61,6 @@ public class JobTests extends BatchClientTestBase {
             PagedIterable<BatchJob> jobs = batchClient.listJobs();
             Assertions.assertNotNull(jobs);
 
-
             boolean found = false;
             for (BatchJob batchJob : jobs) {
                 if (batchJob.getId().equals(jobId)) {
@@ -72,7 +70,6 @@ public class JobTests extends BatchClientTestBase {
             }
 
             Assertions.assertTrue(found);
-
 
             // REPLACE
             BatchJob replacementJob = job;
@@ -137,7 +134,8 @@ public class JobTests extends BatchClientTestBase {
             sleepIfRunningAgainstService(5 * 1000);
 
             job = batchClient.getJob(jobId);
-            Assertions.assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
+            Assertions
+                .assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
             Assertions.assertEquals(OnAllBatchTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
 
             // UPDATE
@@ -151,7 +149,8 @@ public class JobTests extends BatchClientTestBase {
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
-            batchClient.terminateJob(jobId, new TerminateBatchJobOptions(), new BatchJobTerminateContent().setTerminationReason("myreason"));
+            batchClient.terminateJob(jobId, new TerminateBatchJobOptions(),
+                new BatchJobTerminateContent().setTerminationReason("myreason"));
             job = batchClient.getJob(jobId);
             Assertions.assertEquals(BatchJobState.TERMINATING, job.getState());
 
@@ -173,17 +172,19 @@ public class JobTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
-        ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-            .setSku("18.04-LTS").setVersion("latest");
+        ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            .setOffer("UbuntuServer")
+            .setSku("18.04-LTS")
+            .setVersion("latest");
 
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
         BatchPoolSpecification poolSpec = new BatchPoolSpecification("STANDARD_D1_V2");
-        poolSpec.setVirtualMachineConfiguration(configuration)
-            .setTargetNodeCommunicationMode(targetMode);
+        poolSpec.setVirtualMachineConfiguration(configuration).setTargetNodeCommunicationMode(targetMode);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
-        poolInfo.setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
+        poolInfo
+            .setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
 
         BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
         batchClient.createJob(jobToCreate);
@@ -193,7 +194,8 @@ public class JobTests extends BatchClientTestBase {
             BatchJob job = batchClient.getJob(jobId);
             Assertions.assertNotNull(job);
             Assertions.assertEquals(jobId, job.getId());
-            Assertions.assertEquals(targetMode, job.getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
+            Assertions.assertEquals(targetMode,
+                job.getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
 
             // DELETE
             batchClient.deleteJob(jobId);
@@ -220,22 +222,11 @@ public class JobTests extends BatchClientTestBase {
     @Test
     public void testDeserializationOfBatchJobStatistics() {
         // Simulated JSON response with numbers as strings
-        String jsonResponse = "{"
-            + "\"url\":\"https://example.com/stats\","
-            + "\"startTime\":\"2022-01-01T00:00:00Z\","
-            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
-            + "\"userCPUTime\":\"PT1H\","
-            + "\"kernelCPUTime\":\"PT30M\","
-            + "\"wallClockTime\":\"PT1H30M\","
-            + "\"readIOps\":\"1000\","
-            + "\"writeIOps\":\"500\","
-            + "\"readIOGiB\":0.5,"
-            + "\"writeIOGiB\":0.25,"
-            + "\"numSucceededTasks\":\"10\","
-            + "\"numFailedTasks\":\"2\","
-            + "\"numTaskRetries\":\"3\","
-            + "\"waitTime\":\"PT10M\""
-            + "}";
+        String jsonResponse = "{" + "\"url\":\"https://example.com/stats\"," + "\"startTime\":\"2022-01-01T00:00:00Z\","
+            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\"," + "\"userCPUTime\":\"PT1H\","
+            + "\"kernelCPUTime\":\"PT30M\"," + "\"wallClockTime\":\"PT1H30M\"," + "\"readIOps\":\"1000\","
+            + "\"writeIOps\":\"500\"," + "\"readIOGiB\":0.5," + "\"writeIOGiB\":0.25," + "\"numSucceededTasks\":\"10\","
+            + "\"numFailedTasks\":\"2\"," + "\"numTaskRetries\":\"3\"," + "\"waitTime\":\"PT10M\"" + "}";
 
         // Deserialize JSON response using JsonReader from JsonProviders
         try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {

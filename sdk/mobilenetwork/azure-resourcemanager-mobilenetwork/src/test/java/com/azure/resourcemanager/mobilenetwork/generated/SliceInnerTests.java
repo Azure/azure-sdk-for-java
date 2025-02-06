@@ -15,27 +15,27 @@ public final class SliceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":593896600,\"sd\":\"sckdlp\"},\"description\":\"zrcxfailcfxwmdbo\"},\"location\":\"fgsftufqob\",\"tags\":{\"cc\":\"nac\",\"kizvytn\":\"knh\"},\"id\":\"zvulj\",\"name\":\"aaeranokqgukk\",\"type\":\"qnvb\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":567152409,\"sd\":\"mqspkcdqzhlctdd\"},\"description\":\"qn\"},\"location\":\"fpch\",\"tags\":{\"umvq\":\"njjrcgegydcwbox\"},\"id\":\"olihrra\",\"name\":\"ouau\",\"type\":\"rjtloq\"}")
             .toObject(SliceInner.class);
-        Assertions.assertEquals("fgsftufqob", model.location());
-        Assertions.assertEquals("nac", model.tags().get("cc"));
-        Assertions.assertEquals(593896600, model.snssai().sst());
-        Assertions.assertEquals("sckdlp", model.snssai().sd());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
+        Assertions.assertEquals("fpch", model.location());
+        Assertions.assertEquals("njjrcgegydcwbox", model.tags().get("umvq"));
+        Assertions.assertEquals(567152409, model.snssai().sst());
+        Assertions.assertEquals("mqspkcdqzhlctdd", model.snssai().sd());
+        Assertions.assertEquals("qn", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliceInner model = new SliceInner().withLocation("fgsftufqob")
-            .withTags(mapOf("cc", "nac", "kizvytn", "knh"))
-            .withSnssai(new Snssai().withSst(593896600).withSd("sckdlp"))
-            .withDescription("zrcxfailcfxwmdbo");
+        SliceInner model = new SliceInner().withLocation("fpch")
+            .withTags(mapOf("umvq", "njjrcgegydcwbox"))
+            .withSnssai(new Snssai().withSst(567152409).withSd("mqspkcdqzhlctdd"))
+            .withDescription("qn");
         model = BinaryData.fromObject(model).toObject(SliceInner.class);
-        Assertions.assertEquals("fgsftufqob", model.location());
-        Assertions.assertEquals("nac", model.tags().get("cc"));
-        Assertions.assertEquals(593896600, model.snssai().sst());
-        Assertions.assertEquals("sckdlp", model.snssai().sd());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
+        Assertions.assertEquals("fpch", model.location());
+        Assertions.assertEquals("njjrcgegydcwbox", model.tags().get("umvq"));
+        Assertions.assertEquals(567152409, model.snssai().sst());
+        Assertions.assertEquals("mqspkcdqzhlctdd", model.snssai().sd());
+        Assertions.assertEquals("qn", model.description());
     }
 
     // Use "Map.of" if available

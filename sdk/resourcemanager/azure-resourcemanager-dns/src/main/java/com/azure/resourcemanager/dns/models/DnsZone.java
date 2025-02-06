@@ -18,27 +18,53 @@ import java.util.List;
 @Fluent
 public interface DnsZone
     extends GroupableResource<DnsZoneManager, ZoneInner>, Refreshable<DnsZone>, Updatable<DnsZone.Update> {
-    /** @return the maximum number of record sets that can be created in this zone. */
+    /**
+     * Gets the maximum number of record sets that can be created in this zone.
+     *
+     * @return the maximum number of record sets that can be created in this zone.
+     */
     long maxNumberOfRecordSets();
 
-    /** @return the current number of record sets in this zone. */
+    /**
+     * Gets the current number of record sets in this zone.
+     *
+     * @return the current number of record sets in this zone.
+     */
     long numberOfRecordSets();
 
-    /** @return the etag associated with this zone. */
+    /**
+     * Gets the etag associated with this zone.
+     *
+     * @return the etag associated with this zone.
+     */
     String etag();
 
-    /** @return the access type of this zone (Private or Public). */
+    /**
+     * Gets the access type of this zone (Private or Public).
+     *
+     * @return the access type of this zone (Private or Public).
+     */
     ZoneType accessType();
 
     /**
+     * Gets a list of references to virtual networks that register hostnames in this DNS zone for Private DNS zone.
+     *
      * @return a list of references to virtual networks that register hostnames in this DNS zone for Private DNS zone.
      */
     List<String> registrationVirtualNetworkIds();
 
-    /** @return a list of references to virtual networks that resolve records in this DNS zone for Private DNS zone. */
+    /**
+     * Gets a list of references to virtual networks that resolve records in this DNS zone for Private DNS zone.
+     *
+     * @return a list of references to virtual networks that resolve records in this DNS zone for Private DNS zone.
+     */
     List<String> resolutionVirtualNetworkIds();
 
-    /** @return the record sets in this zone. */
+    /**
+     * Gets the record sets in this zone.
+     *
+     * @return the record sets in this zone.
+     */
     PagedIterable<DnsRecordSet> listRecordSets();
 
     /**
@@ -67,37 +93,81 @@ public interface DnsZone
      */
     PagedIterable<DnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize);
 
-    /** @return name servers assigned for this zone. */
+    /**
+     * Gets name servers assigned for this zone.
+     *
+     * @return name servers assigned for this zone.
+     */
     List<String> nameServers();
 
-    /** @return entry point to manage record sets in this zone containing A (IPv4 address) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing A (IPv4 address) records.
+     *
+     * @return entry point to manage record sets in this zone containing A (IPv4 address) records
+     */
     ARecordSets aRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing AAAA (IPv6 address) records.
+     *
+     * @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records
+     */
     AaaaRecordSets aaaaRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing Caa (canonical name) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing Caa (canonical name) records.
+     *
+     * @return entry point to manage record sets in this zone containing Caa (canonical name) records
+     */
     CaaRecordSets caaRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing CNAME (canonical name) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing CNAME (canonical name) records.
+     *
+     * @return entry point to manage record sets in this zone containing CNAME (canonical name) records
+     */
     CnameRecordSets cNameRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing MX (mail exchange) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing MX (mail exchange) records.
+     *
+     * @return entry point to manage record sets in this zone containing MX (mail exchange) records
+     */
     MxRecordSets mxRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing NS (name server) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing NS (name server) records.
+     *
+     * @return entry point to manage record sets in this zone containing NS (name server) records
+     */
     NsRecordSets nsRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing PTR (pointer) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing PTR (pointer) records.
+     *
+     * @return entry point to manage record sets in this zone containing PTR (pointer) records
+     */
     PtrRecordSets ptrRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing SRV (service) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing SRV (service) records.
+     *
+     * @return entry point to manage record sets in this zone containing SRV (service) records
+     */
     SrvRecordSets srvRecordSets();
 
-    /** @return entry point to manage record sets in this zone containing TXT (text) records */
+    /**
+     * Gets entry point to manage record sets in this zone containing TXT (text) records.
+     *
+     * @return entry point to manage record sets in this zone containing TXT (text) records
+     */
     TxtRecordSets txtRecordSets();
 
-    /** @return the record set containing SOA (start of authority) record associated with this DNS zone */
+    /**
+     * Gets the record set containing SOA (start of authority) record associated with this DNS zone.
+     *
+     * @return the record set containing SOA (start of authority) record associated with this DNS zone
+     */
     SoaRecordSet getSoaRecordSet();
 
     /** The entirety of the DNS zone definition. */
@@ -208,11 +278,8 @@ public interface DnsZone
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<DnsZone>,
-                DefinitionStages.WithRecordSet,
-                DefinitionStages.WithETagCheck,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<DnsZone>, DefinitionStages.WithRecordSet, DefinitionStages.WithETagCheck,
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -558,10 +625,7 @@ public interface DnsZone
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<DnsZone>,
-            UpdateStages.WithRecordSet,
-            UpdateStages.WithETagCheck,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<DnsZone>, UpdateStages.WithRecordSet, UpdateStages.WithETagCheck,
+        Resource.UpdateWithTags<Update> {
     }
 }

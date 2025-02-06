@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IscsiTargets. */
+/**
+ * Resource collection API of IscsiTargets.
+ */
 public interface IscsiTargets {
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IscsiTargets {
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface IscsiTargets {
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -49,7 +51,7 @@ public interface IscsiTargets {
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -62,7 +64,7 @@ public interface IscsiTargets {
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -72,12 +74,12 @@ public interface IscsiTargets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an iSCSI Target along with {@link Response}.
      */
-    Response<IscsiTarget> getWithResponse(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context);
+    Response<IscsiTarget> getWithResponse(String resourceGroupName, String diskPoolName, String iscsiTargetName,
+        Context context);
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -90,7 +92,7 @@ public interface IscsiTargets {
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +103,7 @@ public interface IscsiTargets {
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface IscsiTargets {
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface IscsiTargets {
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface IscsiTargets {
 
     /**
      * Begins definition for a new IscsiTarget resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IscsiTarget definition.
      */

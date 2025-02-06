@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ContinentsResponseContinentsItem;
 import com.azure.resourcemanager.cdn.models.ContinentsResponseCountryOrRegionsItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Continents Response.
  */
 @Fluent
-public final class ContinentsResponseInner {
+public final class ContinentsResponseInner implements JsonSerializable<ContinentsResponseInner> {
     /*
      * The continents property.
      */
-    @JsonProperty(value = "continents")
     private List<ContinentsResponseContinentsItem> continents;
 
     /*
      * The countryOrRegions property.
      */
-    @JsonProperty(value = "countryOrRegions")
     private List<ContinentsResponseCountryOrRegionsItem> countryOrRegions;
 
     /**
@@ -85,5 +87,49 @@ public final class ContinentsResponseInner {
         if (countryOrRegions() != null) {
             countryOrRegions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("continents", this.continents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("countryOrRegions", this.countryOrRegions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContinentsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinentsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContinentsResponseInner.
+     */
+    public static ContinentsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContinentsResponseInner deserializedContinentsResponseInner = new ContinentsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("continents".equals(fieldName)) {
+                    List<ContinentsResponseContinentsItem> continents
+                        = reader.readArray(reader1 -> ContinentsResponseContinentsItem.fromJson(reader1));
+                    deserializedContinentsResponseInner.continents = continents;
+                } else if ("countryOrRegions".equals(fieldName)) {
+                    List<ContinentsResponseCountryOrRegionsItem> countryOrRegions
+                        = reader.readArray(reader1 -> ContinentsResponseCountryOrRegionsItem.fromJson(reader1));
+                    deserializedContinentsResponseInner.countryOrRegions = countryOrRegions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContinentsResponseInner;
+        });
     }
 }

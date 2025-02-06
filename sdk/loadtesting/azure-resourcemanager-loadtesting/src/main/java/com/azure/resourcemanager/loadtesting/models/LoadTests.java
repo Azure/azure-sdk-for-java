@@ -8,80 +8,82 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LoadTests. */
+/**
+ * Resource collection API of LoadTests.
+ */
 public interface LoadTests {
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LoadTestResource> list();
 
     /**
-     * Lists loadtests resources in a subscription.
-     *
+     * List LoadTestResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LoadTestResource> list(Context context);
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LoadTestResource> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists loadtest resources in a resource group.
-     *
+     * List LoadTestResource resources by resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resources page result as paginated response with {@link PagedIterable}.
+     * @return the response of a LoadTestResource list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LoadTestResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response}.
+     * @return a LoadTestResource along with {@link Response}.
      */
-    Response<LoadTestResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String loadTestName, Context context);
+    Response<LoadTestResource> getByResourceGroupWithResponse(String resourceGroupName, String loadTestName,
+        Context context);
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource.
+     * @return a LoadTestResource.
      */
     LoadTestResource getByResourceGroup(String resourceGroupName, String loadTestName);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,8 +93,8 @@ public interface LoadTests {
     void deleteByResourceGroup(String resourceGroupName, String loadTestName);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -104,7 +106,7 @@ public interface LoadTests {
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,12 +114,12 @@ public interface LoadTests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName);
+    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String loadTestName);
 
     /**
      * Lists the endpoints that agents may call as part of load testing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadTestName Load Test name.
      * @param context The context to associate with this operation.
@@ -126,35 +128,35 @@ public interface LoadTests {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String loadTestName, Context context);
+    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String loadTestName, Context context);
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response}.
+     * @return a LoadTestResource along with {@link Response}.
      */
     LoadTestResource getById(String id);
 
     /**
-     * Get a LoadTest resource.
-     *
+     * Get a LoadTestResource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadTest resource along with {@link Response}.
+     * @return a LoadTestResource along with {@link Response}.
      */
     Response<LoadTestResource> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,8 +165,8 @@ public interface LoadTests {
     void deleteById(String id);
 
     /**
-     * Delete a LoadTest resource.
-     *
+     * Delete a LoadTestResource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +177,7 @@ public interface LoadTests {
 
     /**
      * Begins definition for a new LoadTestResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new LoadTestResource definition.
      */

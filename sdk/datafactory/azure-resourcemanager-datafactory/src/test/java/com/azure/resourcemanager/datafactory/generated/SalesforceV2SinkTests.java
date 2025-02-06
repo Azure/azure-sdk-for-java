@@ -13,22 +13,22 @@ public final class SalesforceV2SinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceV2Sink model = BinaryData.fromString(
-            "{\"type\":\"SalesforceV2Sink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datakpumzda\",\"ignoreNullValues\":\"dataoqeteavphup\",\"writeBatchSize\":\"datarp\",\"writeBatchTimeout\":\"datavgihknnvjgccq\",\"sinkRetryCount\":\"dataewofhjonqkbnr\",\"sinkRetryWait\":\"dataattzxvfsrufj\",\"maxConcurrentConnections\":\"datavryfb\",\"disableMetricsCollection\":\"datavzgy\",\"\":{\"dngtylvdumpmx\":\"dataveiy\",\"kmrvgdjbl\":\"datafkbbchdypc\"}}")
+            "{\"type\":\"SalesforceV2Sink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datansbbhd\",\"ignoreNullValues\":\"dataegllc\",\"writeBatchSize\":\"dataihy\",\"writeBatchTimeout\":\"datagukf\",\"sinkRetryCount\":\"dataqokzvxknygimohrl\",\"sinkRetryWait\":\"datajyxhwvnyupszchq\",\"maxConcurrentConnections\":\"dataudd\",\"disableMetricsCollection\":\"datazvsmnxb\",\"\":{\"mgfwdxukmeo\":\"dataib\"}}")
             .toObject(SalesforceV2Sink.class);
         Assertions.assertEquals(SalesforceV2SinkWriteBehavior.UPSERT, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceV2Sink model = new SalesforceV2Sink().withWriteBatchSize("datarp")
-            .withWriteBatchTimeout("datavgihknnvjgccq")
-            .withSinkRetryCount("dataewofhjonqkbnr")
-            .withSinkRetryWait("dataattzxvfsrufj")
-            .withMaxConcurrentConnections("datavryfb")
-            .withDisableMetricsCollection("datavzgy")
+        SalesforceV2Sink model = new SalesforceV2Sink().withWriteBatchSize("dataihy")
+            .withWriteBatchTimeout("datagukf")
+            .withSinkRetryCount("dataqokzvxknygimohrl")
+            .withSinkRetryWait("datajyxhwvnyupszchq")
+            .withMaxConcurrentConnections("dataudd")
+            .withDisableMetricsCollection("datazvsmnxb")
             .withWriteBehavior(SalesforceV2SinkWriteBehavior.UPSERT)
-            .withExternalIdFieldName("datakpumzda")
-            .withIgnoreNullValues("dataoqeteavphup");
+            .withExternalIdFieldName("datansbbhd")
+            .withIgnoreNullValues("dataegllc");
         model = BinaryData.fromObject(model).toObject(SalesforceV2Sink.class);
         Assertions.assertEquals(SalesforceV2SinkWriteBehavior.UPSERT, model.writeBehavior());
     }

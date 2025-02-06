@@ -20,17 +20,11 @@ import reactor.core.publisher.Mono;
  * Entry point to Service Bus namespace API in Azure.
  */
 @Fluent
-public interface ServiceBusNamespaces extends
-    SupportsCreating<ServiceBusNamespace.DefinitionStages.Blank>,
-    SupportsBatchCreation<ServiceBusNamespace>,
-    SupportsBatchDeletion,
-    SupportsListing<ServiceBusNamespace>,
-    SupportsListingByResourceGroup<ServiceBusNamespace>,
-    SupportsGettingByResourceGroup<ServiceBusNamespace>,
-    SupportsGettingById<ServiceBusNamespace>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    HasManager<ServiceBusManager> {
+public interface ServiceBusNamespaces
+    extends SupportsCreating<ServiceBusNamespace.DefinitionStages.Blank>, SupportsBatchCreation<ServiceBusNamespace>,
+    SupportsBatchDeletion, SupportsListing<ServiceBusNamespace>, SupportsListingByResourceGroup<ServiceBusNamespace>,
+    SupportsGettingByResourceGroup<ServiceBusNamespace>, SupportsGettingById<ServiceBusNamespace>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, HasManager<ServiceBusManager> {
     /**
      * Checks if namespace name is valid and is not in use.
      *

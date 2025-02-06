@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryColumn model =
-            BinaryData.fromString("{\"name\":\"fcktqumiekke\",\"type\":\"ikh\"}").toObject(QueryColumn.class);
-        Assertions.assertEquals("fcktqumiekke", model.name());
-        Assertions.assertEquals("ikh", model.type());
+        QueryColumn model
+            = BinaryData.fromString("{\"name\":\"swankltytmh\",\"type\":\"oznnhdrlktgj\"}").toObject(QueryColumn.class);
+        Assertions.assertEquals("swankltytmh", model.name());
+        Assertions.assertEquals("oznnhdrlktgj", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryColumn model = new QueryColumn().withName("fcktqumiekke").withType("ikh");
+        QueryColumn model = new QueryColumn().withName("swankltytmh").withType("oznnhdrlktgj");
         model = BinaryData.fromObject(model).toObject(QueryColumn.class);
-        Assertions.assertEquals("fcktqumiekke", model.name());
-        Assertions.assertEquals("ikh", model.type());
+        Assertions.assertEquals("swankltytmh", model.name());
+        Assertions.assertEquals("oznnhdrlktgj", model.type());
     }
 }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPa
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
@@ -83,6 +84,10 @@ public final class AccessControlListImpl
         return this.innerModel().aclsUrl();
     }
 
+    public CommunityActionTypes defaultAction() {
+        return this.innerModel().defaultAction();
+    }
+
     public List<AccessControlListMatchConfiguration> matchConfigurations() {
         List<AccessControlListMatchConfiguration> inner = this.innerModel().matchConfigurations();
         if (inner != null) {
@@ -137,25 +142,21 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AccessControlList create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .create(resourceGroupName, accessControlListName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .create(resourceGroupName, accessControlListName, this.innerModel(), context);
         return this;
     }
 
-    AccessControlListImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    AccessControlListImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new AccessControlListInner();
         this.serviceManager = serviceManager;
         this.accessControlListName = name;
@@ -167,62 +168,51 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
         return this;
     }
 
     public AccessControlList apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .update(resourceGroupName, accessControlListName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .update(resourceGroupName, accessControlListName, updateBody, context);
         return this;
     }
 
-    AccessControlListImpl(
-        AccessControlListInner innerObject,
+    AccessControlListImpl(AccessControlListInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accessControlListName = Utils.getValueFromIdByName(innerObject.id(), "accessControlLists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accessControlListName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessControlLists");
     }
 
     public AccessControlList refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccessControlList refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessControlLists()
-                .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessControlLists()
+            .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, context)
+            .getValue();
         return this;
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .accessControlLists()
+        return serviceManager.accessControlLists()
             .updateAdministrativeState(resourceGroupName, accessControlListName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .accessControlLists()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.accessControlLists()
             .updateAdministrativeState(resourceGroupName, accessControlListName, body, context);
     }
 
@@ -239,8 +229,7 @@ public final class AccessControlListImpl
     }
 
     public ValidateConfigurationResponse validateConfiguration(Context context) {
-        return serviceManager
-            .accessControlLists()
+        return serviceManager.accessControlLists()
             .validateConfiguration(resourceGroupName, accessControlListName, context);
     }
 
@@ -284,8 +273,18 @@ public final class AccessControlListImpl
         }
     }
 
-    public AccessControlListImpl withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListImpl withDefaultAction(CommunityActionTypes defaultAction) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultAction(defaultAction);
+            return this;
+        } else {
+            this.updateBody.withDefaultAction(defaultAction);
+            return this;
+        }
+    }
+
+    public AccessControlListImpl
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         if (isInCreateMode()) {
             this.innerModel().withMatchConfigurations(matchConfigurations);
             return this;
@@ -295,8 +294,8 @@ public final class AccessControlListImpl
         }
     }
 
-    public AccessControlListImpl withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListImpl
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (isInCreateMode()) {
             this.innerModel().withDynamicMatchConfigurations(dynamicMatchConfigurations);
             return this;

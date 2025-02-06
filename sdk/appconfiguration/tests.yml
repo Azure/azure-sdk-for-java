@@ -3,11 +3,9 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
-    UseFederatedAuth: true
     ServiceDirectory: appconfiguration
     Artifacts:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
     TimeoutInMinutes: 90
-    SupportedClouds: "Public,UsGov,China"

@@ -34,23 +34,28 @@ import com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPol
 import com.azure.resourcemanager.customerinsights.models.AuthorizationPolicyListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationPoliciesClient.
+ */
 public final class AuthorizationPoliciesClientImpl implements AuthorizationPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AuthorizationPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomerInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of AuthorizationPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationPoliciesClientImpl(CustomerInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AuthorizationPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AuthorizationPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,100 +66,68 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
     public interface AuthorizationPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationPolicyResourceFormatInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<AuthorizationPolicyResourceFormatInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("authorizationPolicyName") String authorizationPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AuthorizationPolicyResourceFormatInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationPolicyResourceFormatInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<AuthorizationPolicyResourceFormatInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("authorizationPolicyName") String authorizationPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/authorizationPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/authorizationPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationPolicyListResult>> listByHub(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AuthorizationPolicyListResult>> listByHub(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}/regeneratePrimaryKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}/regeneratePrimaryKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("authorizationPolicyName") String authorizationPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}/regenerateSecondaryKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/authorizationPolicies/{authorizationPolicyName}/regenerateSecondaryKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("authorizationPolicyName") String authorizationPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AuthorizationPolicyListResult>> listByHubNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates an authorization policy or updates an existing authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -162,20 +135,16 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy resource format along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the authorization policy resource format along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyResourceFormatInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String authorizationPolicyName,
+        String resourceGroupName, String hubName, String authorizationPolicyName,
         AuthorizationPolicyResourceFormatInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,15 +154,12 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -202,25 +168,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            authorizationPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName,
+                authorizationPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an authorization policy or updates an existing authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -229,21 +185,16 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization policy resource format along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the authorization policy resource format along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AuthorizationPolicyResourceFormatInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String authorizationPolicyName,
-        AuthorizationPolicyResourceFormatInner parameters,
-        Context context) {
+        String resourceGroupName, String hubName, String authorizationPolicyName,
+        AuthorizationPolicyResourceFormatInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -253,15 +204,12 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -270,22 +218,13 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                authorizationPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName, authorizationPolicyName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates an authorization policy or updates an existing authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -296,18 +235,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationPolicyResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String hubName,
-        String authorizationPolicyName,
-        AuthorizationPolicyResourceFormatInner parameters) {
+    private Mono<AuthorizationPolicyResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String authorizationPolicyName, AuthorizationPolicyResourceFormatInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates an authorization policy or updates an existing authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -319,11 +255,8 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy resource format along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String authorizationPolicyName,
-        AuthorizationPolicyResourceFormatInner parameters,
+    public Response<AuthorizationPolicyResourceFormatInner> createOrUpdateWithResponse(String resourceGroupName,
+        String hubName, String authorizationPolicyName, AuthorizationPolicyResourceFormatInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, parameters, context)
             .block();
@@ -331,7 +264,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
 
     /**
      * Creates an authorization policy or updates an existing authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -342,18 +275,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationPolicyResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String authorizationPolicyName,
-        AuthorizationPolicyResourceFormatInner parameters) {
+    public AuthorizationPolicyResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String authorizationPolicyName, AuthorizationPolicyResourceFormatInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, hubName, authorizationPolicyName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Gets an authorization policy in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -363,13 +293,11 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return an authorization policy in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AuthorizationPolicyResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    private Mono<Response<AuthorizationPolicyResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String authorizationPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -379,36 +307,23 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            authorizationPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hubName,
+                authorizationPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an authorization policy in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -419,13 +334,11 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return an authorization policy in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AuthorizationPolicyResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+    private Mono<Response<AuthorizationPolicyResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String authorizationPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -435,33 +348,22 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                authorizationPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, hubName, authorizationPolicyName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets an authorization policy in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -471,15 +373,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return an authorization policy in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationPolicyResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    private Mono<AuthorizationPolicyResourceFormatInner> getAsync(String resourceGroupName, String hubName,
+        String authorizationPolicyName) {
         return getWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an authorization policy in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -490,14 +392,14 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return an authorization policy in the hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+    public Response<AuthorizationPolicyResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String authorizationPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context).block();
     }
 
     /**
      * Gets an authorization policy in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -507,30 +409,28 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return an authorization policy in the hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationPolicyResourceFormatInner get(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    public AuthorizationPolicyResourceFormatInner get(String resourceGroupName, String hubName,
+        String authorizationPolicyName) {
         return getWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE).getValue();
     }
 
     /**
      * Gets all the authorization policies in a specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the authorization policies in a specified hub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName) {
+    private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>>
+        listByHubSinglePageAsync(String resourceGroupName, String hubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -540,39 +440,21 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHub(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AuthorizationPolicyResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHub(this.client.getEndpoint(), resourceGroupName, hubName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AuthorizationPolicyResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the authorization policies in a specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -580,16 +462,14 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the authorization policies in a specified hub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName, Context context) {
+    private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>>
+        listByHubSinglePageAsync(String resourceGroupName, String hubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -599,36 +479,21 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHub(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHub(this.client.getEndpoint(), resourceGroupName, hubName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the authorization policies in a specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -638,14 +503,13 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AuthorizationPolicyResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName),
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName),
             nextLink -> listByHubNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the authorization policies in a specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -655,16 +519,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return all the authorization policies in a specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationPolicyResourceFormatInner> listByHubAsync(
-        String resourceGroupName, String hubName, Context context) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
+    private PagedFlux<AuthorizationPolicyResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName,
+        Context context) {
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
             nextLink -> listByHubNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the authorization policies in a specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,7 +542,7 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
 
     /**
      * Gets all the authorization policies in a specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -689,14 +552,14 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return all the authorization policies in a specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AuthorizationPolicyResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, Context context) {
+    public PagedIterable<AuthorizationPolicyResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        Context context) {
         return new PagedIterable<>(listByHubAsync(resourceGroupName, hubName, context));
     }
 
     /**
      * Regenerates the primary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -706,13 +569,11 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKeyWithResponseAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    private Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKeyWithResponseAsync(String resourceGroupName,
+        String hubName, String authorizationPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -722,36 +583,23 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regeneratePrimaryKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            authorizationPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.regeneratePrimaryKey(this.client.getEndpoint(), resourceGroupName, hubName,
+                authorizationPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates the primary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -762,13 +610,11 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKeyWithResponseAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+    private Mono<Response<AuthorizationPolicyInner>> regeneratePrimaryKeyWithResponseAsync(String resourceGroupName,
+        String hubName, String authorizationPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -778,33 +624,22 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regeneratePrimaryKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                authorizationPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.regeneratePrimaryKey(this.client.getEndpoint(), resourceGroupName, hubName,
+            authorizationPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Regenerates the primary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -814,15 +649,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationPolicyInner> regeneratePrimaryKeyAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    private Mono<AuthorizationPolicyInner> regeneratePrimaryKeyAsync(String resourceGroupName, String hubName,
+        String authorizationPolicyName) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerates the primary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -833,15 +668,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyInner> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+    public Response<AuthorizationPolicyInner> regeneratePrimaryKeyWithResponse(String resourceGroupName, String hubName,
+        String authorizationPolicyName, Context context) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context)
             .block();
     }
 
     /**
      * Regenerates the primary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -851,15 +686,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationPolicyInner regeneratePrimaryKey(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    public AuthorizationPolicyInner regeneratePrimaryKey(String resourceGroupName, String hubName,
+        String authorizationPolicyName) {
         return regeneratePrimaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE)
             .getValue();
     }
 
     /**
      * Regenerates the secondary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -869,13 +704,11 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKeyWithResponseAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    private Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKeyWithResponseAsync(String resourceGroupName,
+        String hubName, String authorizationPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -885,36 +718,24 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateSecondaryKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            authorizationPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateSecondaryKey(this.client.getEndpoint(), resourceGroupName,
+                hubName, authorizationPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates the secondary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -925,13 +746,11 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKeyWithResponseAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+    private Mono<Response<AuthorizationPolicyInner>> regenerateSecondaryKeyWithResponseAsync(String resourceGroupName,
+        String hubName, String authorizationPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -941,33 +760,22 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (authorizationPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateSecondaryKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                authorizationPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.regenerateSecondaryKey(this.client.getEndpoint(), resourceGroupName, hubName,
+            authorizationPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Regenerates the secondary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -977,15 +785,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationPolicyInner> regenerateSecondaryKeyAsync(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    private Mono<AuthorizationPolicyInner> regenerateSecondaryKeyAsync(String resourceGroupName, String hubName,
+        String authorizationPolicyName) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerates the secondary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -996,15 +804,15 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AuthorizationPolicyInner> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String hubName, String authorizationPolicyName, Context context) {
+    public Response<AuthorizationPolicyInner> regenerateSecondaryKeyWithResponse(String resourceGroupName,
+        String hubName, String authorizationPolicyName, Context context) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, hubName, authorizationPolicyName, context)
             .block();
     }
 
     /**
      * Regenerates the secondary policy key of the specified authorization policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param authorizationPolicyName The name of the policy.
@@ -1014,22 +822,21 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
      * @return the authorization policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationPolicyInner regenerateSecondaryKey(
-        String resourceGroupName, String hubName, String authorizationPolicyName) {
+    public AuthorizationPolicyInner regenerateSecondaryKey(String resourceGroupName, String hubName,
+        String authorizationPolicyName) {
         return regenerateSecondaryKeyWithResponse(resourceGroupName, hubName, authorizationPolicyName, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list authorization policy operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1037,62 +844,42 @@ public final class AuthorizationPoliciesClientImpl implements AuthorizationPolic
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AuthorizationPolicyResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AuthorizationPolicyResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list authorization policy operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AuthorizationPolicyResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

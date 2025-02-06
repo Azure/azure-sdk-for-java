@@ -126,10 +126,8 @@ public final class ServiceUnitResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ServiceUnitResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ServiceUnitResourceInner"));
         } else {
             innerProperties().validate();
         }

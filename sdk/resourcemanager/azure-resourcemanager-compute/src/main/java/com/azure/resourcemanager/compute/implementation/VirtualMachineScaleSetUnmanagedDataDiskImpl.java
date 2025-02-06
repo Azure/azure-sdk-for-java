@@ -13,23 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** The implementation for {@link VirtualMachineScaleSetUnmanagedDataDisk} and its create and update interfaces. */
-class VirtualMachineScaleSetUnmanagedDataDiskImpl
-    extends ChildResourceImpl<VirtualMachineScaleSetDataDisk, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
-    implements VirtualMachineScaleSetUnmanagedDataDisk.DefinitionWithNewVhd<
-            VirtualMachineScaleSet.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineScaleSetUnmanagedDataDisk.DefinitionWithImage<
-            VirtualMachineScaleSet.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineScaleSetUnmanagedDataDisk.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
-        VirtualMachineScaleSetUnmanagedDataDisk.Update,
-        VirtualMachineScaleSetUnmanagedDataDisk {
+class VirtualMachineScaleSetUnmanagedDataDiskImpl extends
+    ChildResourceImpl<VirtualMachineScaleSetDataDisk, VirtualMachineScaleSetImpl, VirtualMachineScaleSet> implements
+    VirtualMachineScaleSetUnmanagedDataDisk.DefinitionWithNewVhd<VirtualMachineScaleSet.DefinitionStages.WithUnmanagedCreate>,
+    VirtualMachineScaleSetUnmanagedDataDisk.DefinitionWithImage<VirtualMachineScaleSet.DefinitionStages.WithUnmanagedCreate>,
+    VirtualMachineScaleSetUnmanagedDataDisk.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
+    VirtualMachineScaleSetUnmanagedDataDisk.Update, VirtualMachineScaleSetUnmanagedDataDisk {
 
-    protected VirtualMachineScaleSetUnmanagedDataDiskImpl(
-        VirtualMachineScaleSetDataDisk innerObject, VirtualMachineScaleSetImpl parent) {
+    protected VirtualMachineScaleSetUnmanagedDataDiskImpl(VirtualMachineScaleSetDataDisk innerObject,
+        VirtualMachineScaleSetImpl parent) {
         super(innerObject, parent);
     }
 
-    protected static VirtualMachineScaleSetUnmanagedDataDiskImpl prepareDataDisk(
-        String name, VirtualMachineScaleSetImpl parent) {
+    protected static VirtualMachineScaleSetUnmanagedDataDiskImpl prepareDataDisk(String name,
+        VirtualMachineScaleSetImpl parent) {
         VirtualMachineScaleSetDataDisk dataDiskInner = new VirtualMachineScaleSetDataDisk();
         dataDiskInner.withLun(-1).withName(name);
         return new VirtualMachineScaleSetUnmanagedDataDiskImpl(dataDiskInner, parent);

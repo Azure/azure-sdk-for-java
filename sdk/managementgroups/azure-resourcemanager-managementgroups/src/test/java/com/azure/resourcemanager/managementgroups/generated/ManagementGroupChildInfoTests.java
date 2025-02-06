@@ -13,52 +13,126 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupChildInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupChildInfo model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"/subscriptions\",\"id\":\"qgoulznd\",\"name\":\"kwy\",\"displayName\":\"gfgibm\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"qsrxybzqqed\",\"name\":\"tbciqfouflmm\",\"displayName\":\"zsm\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"ugpbkw\",\"name\":\"utduqktapspwgcu\",\"displayName\":\"tumkdosvqwhbm\",\"children\":[]}]}")
-                .toObject(ManagementGroupChildInfo.class);
-        Assertions.assertEquals(ManagementGroupChildType.SUBSCRIPTIONS, model.type());
-        Assertions.assertEquals("qgoulznd", model.id());
-        Assertions.assertEquals("kwy", model.name());
-        Assertions.assertEquals("gfgibm", model.displayName());
-        Assertions.assertEquals(ManagementGroupChildType.SUBSCRIPTIONS, model.children().get(0).type());
-        Assertions.assertEquals("qsrxybzqqed", model.children().get(0).id());
-        Assertions.assertEquals("tbciqfouflmm", model.children().get(0).name());
-        Assertions.assertEquals("zsm", model.children().get(0).displayName());
+        ManagementGroupChildInfo model = BinaryData.fromString(
+            "{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"xhdzxibqeojnx\",\"name\":\"zvddntwndeicbtwn\",\"displayName\":\"aoqvuh\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"yd\",\"name\":\"lmjthjq\",\"displayName\":\"pyeicxm\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"hkh\",\"name\":\"uigdtopbobjog\",\"displayName\":\"e\",\"children\":[{}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"hrzayvvtpgvdf\",\"name\":\"otkftutqxlngx\",\"displayName\":\"fgugnxkrxdqmid\",\"children\":[{},{}]}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"qdrabhjybigehoqf\",\"name\":\"wska\",\"displayName\":\"ktzlcuiywg\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"rvynhzgpph\",\"name\":\"gyncocpecfvmmc\",\"displayName\":\"fsxlzevgbmqjqa\",\"children\":[{}]},{\"type\":\"/subscriptions\",\"id\":\"vkwlzuvccfwnf\",\"name\":\"acfi\",\"displayName\":\"l\",\"children\":[{}]},{\"type\":\"/subscriptions\",\"id\":\"gtzxdpn\",\"name\":\"qqwx\",\"displayName\":\"feallnwsu\",\"children\":[{},{},{}]},{\"type\":\"/subscriptions\",\"id\":\"mpmngnzscxaqwoo\",\"name\":\"cbonqvpk\",\"displayName\":\"rxnjeaseipheofl\",\"children\":[{}]}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"enjbdlwtgrhp\",\"name\":\"pj\",\"displayName\":\"asxazjpqyegualhb\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"zzvdudgwds\",\"name\":\"hotwmcynpwlbjnp\",\"displayName\":\"cftadeh\",\"children\":[{},{}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"sop\",\"name\":\"suesnzw\",\"displayName\":\"jbavorxzdm\",\"children\":[{},{},{}]}]}]}")
+            .toObject(ManagementGroupChildInfo.class);
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS, model.type());
+        Assertions.assertEquals("xhdzxibqeojnx", model.id());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.name());
+        Assertions.assertEquals("aoqvuh", model.displayName());
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS,
+            model.children().get(0).type());
+        Assertions.assertEquals("yd", model.children().get(0).id());
+        Assertions.assertEquals("lmjthjq", model.children().get(0).name());
+        Assertions.assertEquals("pyeicxm", model.children().get(0).displayName());
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS,
+            model.children().get(0).children().get(0).type());
+        Assertions.assertEquals("hkh", model.children().get(0).children().get(0).id());
+        Assertions.assertEquals("uigdtopbobjog", model.children().get(0).children().get(0).name());
+        Assertions.assertEquals("e", model.children().get(0).children().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupChildInfo model =
-            new ManagementGroupChildInfo()
-                .withType(ManagementGroupChildType.SUBSCRIPTIONS)
-                .withId("qgoulznd")
-                .withName("kwy")
-                .withDisplayName("gfgibm")
+        ManagementGroupChildInfo model
+            = new ManagementGroupChildInfo().withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                .withId("xhdzxibqeojnx")
+                .withName("zvddntwndeicbtwn")
+                .withDisplayName("aoqvuh")
                 .withChildren(
                     Arrays
                         .asList(
                             new ManagementGroupChildInfo()
-                                .withType(ManagementGroupChildType.SUBSCRIPTIONS)
-                                .withId("qsrxybzqqed")
-                                .withName("tbciqfouflmm")
-                                .withDisplayName("zsm")
-                                .withChildren(Arrays.asList()),
+                                .withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                                .withId("yd")
+                                .withName("lmjthjq")
+                                .withDisplayName("pyeicxm")
+                                .withChildren(
+                                    Arrays
+                                        .asList(
+                                            new ManagementGroupChildInfo()
+                                                .withType(
+                                                    ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                                                .withId("hkh")
+                                                .withName("uigdtopbobjog")
+                                                .withDisplayName("e")
+                                                .withChildren(Arrays.asList(new ManagementGroupChildInfo())),
+                                            new ManagementGroupChildInfo()
+                                                .withType(
+                                                    ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                                                .withId("hrzayvvtpgvdf")
+                                                .withName("otkftutqxlngx")
+                                                .withDisplayName("fgugnxkrxdqmid")
+                                                .withChildren(Arrays.asList(new ManagementGroupChildInfo(),
+                                                    new ManagementGroupChildInfo())))),
                             new ManagementGroupChildInfo()
                                 .withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
-                                .withId("ugpbkw")
-                                .withName("utduqktapspwgcu")
-                                .withDisplayName("tumkdosvqwhbm")
-                                .withChildren(Arrays.asList())));
+                                .withId("qdrabhjybigehoqf")
+                                .withName("wska")
+                                .withDisplayName("ktzlcuiywg")
+                                .withChildren(Arrays.asList(
+                                    new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                                        .withId("rvynhzgpph")
+                                        .withName("gyncocpecfvmmc")
+                                        .withDisplayName("fsxlzevgbmqjqa")
+                                        .withChildren(Arrays.asList(new ManagementGroupChildInfo())),
+                                    new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                                        .withId("vkwlzuvccfwnf")
+                                        .withName("acfi")
+                                        .withDisplayName("l")
+                                        .withChildren(Arrays.asList(new ManagementGroupChildInfo())),
+                                    new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                                        .withId("gtzxdpn")
+                                        .withName("qqwx")
+                                        .withDisplayName("feallnwsu")
+                                        .withChildren(Arrays.asList(new ManagementGroupChildInfo(),
+                                            new ManagementGroupChildInfo(), new ManagementGroupChildInfo())),
+                                    new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                                        .withId("mpmngnzscxaqwoo")
+                                        .withName("cbonqvpk")
+                                        .withDisplayName("rxnjeaseipheofl")
+                                        .withChildren(Arrays.asList(new ManagementGroupChildInfo())))),
+                            new ManagementGroupChildInfo()
+                                .withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                                .withId("enjbdlwtgrhp")
+                                .withName("pj")
+                                .withDisplayName("asxazjpqyegualhb")
+                                .withChildren(
+                                    Arrays
+                                        .asList(
+                                            new ManagementGroupChildInfo()
+                                                .withType(
+                                                    ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                                                .withId("zzvdudgwds")
+                                                .withName("hotwmcynpwlbjnp")
+                                                .withDisplayName("cftadeh")
+                                                .withChildren(
+                                                    Arrays.asList(
+                                                        new ManagementGroupChildInfo(),
+                                                        new ManagementGroupChildInfo())),
+                                            new ManagementGroupChildInfo()
+                                                .withType(
+                                                    ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                                                .withId("sop")
+                                                .withName("suesnzw")
+                                                .withDisplayName("jbavorxzdm")
+                                                .withChildren(Arrays.asList(new ManagementGroupChildInfo(),
+                                                    new ManagementGroupChildInfo(),
+                                                    new ManagementGroupChildInfo()))))));
         model = BinaryData.fromObject(model).toObject(ManagementGroupChildInfo.class);
-        Assertions.assertEquals(ManagementGroupChildType.SUBSCRIPTIONS, model.type());
-        Assertions.assertEquals("qgoulznd", model.id());
-        Assertions.assertEquals("kwy", model.name());
-        Assertions.assertEquals("gfgibm", model.displayName());
-        Assertions.assertEquals(ManagementGroupChildType.SUBSCRIPTIONS, model.children().get(0).type());
-        Assertions.assertEquals("qsrxybzqqed", model.children().get(0).id());
-        Assertions.assertEquals("tbciqfouflmm", model.children().get(0).name());
-        Assertions.assertEquals("zsm", model.children().get(0).displayName());
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS, model.type());
+        Assertions.assertEquals("xhdzxibqeojnx", model.id());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.name());
+        Assertions.assertEquals("aoqvuh", model.displayName());
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS,
+            model.children().get(0).type());
+        Assertions.assertEquals("yd", model.children().get(0).id());
+        Assertions.assertEquals("lmjthjq", model.children().get(0).name());
+        Assertions.assertEquals("pyeicxm", model.children().get(0).displayName());
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS,
+            model.children().get(0).children().get(0).type());
+        Assertions.assertEquals("hkh", model.children().get(0).children().get(0).id());
+        Assertions.assertEquals("uigdtopbobjog", model.children().get(0).children().get(0).name());
+        Assertions.assertEquals("e", model.children().get(0).children().get(0).displayName());
     }
 }

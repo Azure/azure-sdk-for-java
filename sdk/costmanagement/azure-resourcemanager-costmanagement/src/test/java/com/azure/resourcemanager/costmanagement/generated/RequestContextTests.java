@@ -14,36 +14,31 @@ import org.junit.jupiter.api.Assertions;
 public final class RequestContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RequestContext model =
-            BinaryData
-                .fromString(
-                    "{\"requestScope\":\"iby\",\"requestBody\":{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"h\",\"end\":\"hfwpracstwit\"},\"billingPeriod\":\"hevxcced\",\"invoiceId\":\"nmdyodnwzxl\"}}")
-                .toObject(RequestContext.class);
-        Assertions.assertEquals("iby", model.requestScope());
-        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
-        Assertions.assertEquals("h", model.requestBody().timePeriod().start());
-        Assertions.assertEquals("hfwpracstwit", model.requestBody().timePeriod().end());
-        Assertions.assertEquals("hevxcced", model.requestBody().billingPeriod());
-        Assertions.assertEquals("nmdyodnwzxl", model.requestBody().invoiceId());
+        RequestContext model = BinaryData.fromString(
+            "{\"requestScope\":\"sunwqrjzfrgqhaoh\",\"requestBody\":{\"metric\":\"AmortizedCost\",\"timePeriod\":{\"start\":\"cnjrohmbpyryxame\",\"end\":\"l\"},\"billingPeriod\":\"yvk\",\"invoiceId\":\"m\"}}")
+            .toObject(RequestContext.class);
+        Assertions.assertEquals("sunwqrjzfrgqhaoh", model.requestScope());
+        Assertions.assertEquals(CostDetailsMetricType.AMORTIZED_COST, model.requestBody().metric());
+        Assertions.assertEquals("cnjrohmbpyryxame", model.requestBody().timePeriod().start());
+        Assertions.assertEquals("l", model.requestBody().timePeriod().end());
+        Assertions.assertEquals("yvk", model.requestBody().billingPeriod());
+        Assertions.assertEquals("m", model.requestBody().invoiceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestContext model =
-            new RequestContext()
-                .withRequestScope("iby")
-                .withRequestBody(
-                    new GenerateCostDetailsReportRequestDefinition()
-                        .withMetric(CostDetailsMetricType.ACTUAL_COST)
-                        .withTimePeriod(new CostDetailsTimePeriod().withStart("h").withEnd("hfwpracstwit"))
-                        .withBillingPeriod("hevxcced")
-                        .withInvoiceId("nmdyodnwzxl"));
+        RequestContext model = new RequestContext().withRequestScope("sunwqrjzfrgqhaoh")
+            .withRequestBody(
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.AMORTIZED_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("cnjrohmbpyryxame").withEnd("l"))
+                    .withBillingPeriod("yvk")
+                    .withInvoiceId("m"));
         model = BinaryData.fromObject(model).toObject(RequestContext.class);
-        Assertions.assertEquals("iby", model.requestScope());
-        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
-        Assertions.assertEquals("h", model.requestBody().timePeriod().start());
-        Assertions.assertEquals("hfwpracstwit", model.requestBody().timePeriod().end());
-        Assertions.assertEquals("hevxcced", model.requestBody().billingPeriod());
-        Assertions.assertEquals("nmdyodnwzxl", model.requestBody().invoiceId());
+        Assertions.assertEquals("sunwqrjzfrgqhaoh", model.requestScope());
+        Assertions.assertEquals(CostDetailsMetricType.AMORTIZED_COST, model.requestBody().metric());
+        Assertions.assertEquals("cnjrohmbpyryxame", model.requestBody().timePeriod().start());
+        Assertions.assertEquals("l", model.requestBody().timePeriod().end());
+        Assertions.assertEquals("yvk", model.requestBody().billingPeriod());
+        Assertions.assertEquals("m", model.requestBody().invoiceId());
     }
 }

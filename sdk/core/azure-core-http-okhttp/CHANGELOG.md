@@ -1,14 +1,49 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.12.7 (2025-02-06)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 1.12.6 (2024-11-14)
 
 ### Bugs Fixed
 
+- Fixed a bug where when using `responseTimeout` could result in an `OutOfMemoryError` due to a `Timer` retaining a
+  reference to the network call until the timeout period elapsed. ([#42887](https://github.com/Azure/azure-sdk-for-java/pull/42887))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.12.5 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
+## 1.12.4 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.12.3 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.12.2 (2024-07-31)
 

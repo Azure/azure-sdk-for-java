@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.ConnectivityHop;
 public final class ConnectivityHopTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectivityHop model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"inkfscj\",\"id\":\"cjwvuagfqwtltngv\",\"address\":\"e\",\"resourceId\":\"trklzmijajwol\",\"nextHopIds\":[\"vaghmpy\"],\"issues\":[{\"origin\":\"Local\",\"severity\":\"Error\",\"type\":\"UserDefinedRoute\",\"context\":[{\"vyxpavidni\":\"cvbxqlapsnss\",\"xgcbdsvalpnpt\":\"vwffcvvyezslp\",\"x\":\"trkxgpazwu\"}]},{\"origin\":\"Local\",\"severity\":\"Error\",\"type\":\"NetworkSecurityRule\",\"context\":[{\"aewzgiudjp\":\"hldiuhzzgqlm\"},{\"sdsu\":\"qhttqhnmhkre\"}]},{\"origin\":\"Outbound\",\"severity\":\"Warning\",\"type\":\"Unknown\",\"context\":[{\"m\":\"spiny\"}]}]}")
-                .toObject(ConnectivityHop.class);
+        ConnectivityHop model = BinaryData.fromString(
+            "{\"type\":\"inkfscj\",\"id\":\"cjwvuagfqwtltngv\",\"address\":\"e\",\"resourceId\":\"trklzmijajwol\",\"nextHopIds\":[\"vaghmpy\"],\"issues\":[{\"origin\":\"Local\",\"severity\":\"Error\",\"type\":\"UserDefinedRoute\",\"context\":[{\"vyxpavidni\":\"cvbxqlapsnss\",\"xgcbdsvalpnpt\":\"vwffcvvyezslp\",\"x\":\"trkxgpazwu\"}]},{\"origin\":\"Local\",\"severity\":\"Error\",\"type\":\"NetworkSecurityRule\",\"context\":[{\"aewzgiudjp\":\"hldiuhzzgqlm\"},{\"sdsu\":\"qhttqhnmhkre\"}]},{\"origin\":\"Outbound\",\"severity\":\"Warning\",\"type\":\"Unknown\",\"context\":[{\"m\":\"spiny\"}]}]}")
+            .toObject(ConnectivityHop.class);
     }
 
     @org.junit.jupiter.api.Test

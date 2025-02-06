@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.1 (Unreleased)
+## 11.8.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,110 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 11.7.4 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.2` to version `1.5.4`.
+
+
+## 11.8.0-beta.4 (2024-11-22)
+
+### Bugs Fixed
+
+ - Fixed bug in the serialization of `SearchDocumentsResult` `debuginfo` property.
+ - Fixed missing properties bug in `SemanticSearchResults`.
+   - Added missing properties `debugInfo` and `semanticQueryRewritesResultType`.
+
+## 11.8.0-beta.3 (2024-11-20)
+
+### Bugs Fixed
+
+- Fixed a bug where `SearchOptions` was missing setters for `QueryDebugMode`, `QueryLanguage`, and `QuerySpellerType`.
+
+## 11.8.0-beta.2 (2024-11-18)
+
+### Features Added 
+
+- `FacetResults` is now a recursive data structure to support hierarchical aggregation and facet filtering.
+- `QueryAnswer` now supports a `maxCharLength` option to limit the character length of the answer.
+- `QueryCaption` now supports a `maxCharLength` option to limit the character length of the caption.
+- `VectorizableTextQuery` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
+- `SemanticSearchOptions` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
+- `VectorSearchCompression` now supports configuring the `rescoringOptoins`.
+- `IndexingParametersConfiguration` now supports two additional options for `MarkdownParsingSubmode` and `MarkdownHeaderDepth`.
+- Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
+- Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.4`.
+
+## 11.7.3 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.2`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+
+## 11.7.2 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+
+## 11.8.0-beta.1 (2024-09-23)
+
+### Features Added
+
+- `VectorSearchCompression` now supports `truncationDimension` which allows for specifying the number of dimensions to 
+  truncate vectors to.
+- `SplitSkill` now supports tokenization.
+- `VectorQuery` now supports `filterOverride` which allow for vector queries to override the broader SearchRequest.filter to allow for vector queries to have more specific configurations
+- `DocumentDebugInfo` is extended with vector scores for the result.
+
+### Other Changes
+
+- Migrate Search test from local auth to Microsoft Entra authentication.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.` to version `1.5.1`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+
+
+## 11.7.1 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.14` to version `1.5.0`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
 
 ## 11.7.0 (2024-07-17)
 

@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,6 +20,11 @@ import java.util.List;
 @Fluent
 public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
     /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.POSTGRE_SQL;
+
+    /*
      * The dataSourceParameter property.
      */
     private SQLSourceParameterPatch dataSourceParameter;
@@ -27,6 +33,16 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
      * Creates an instance of PostgreSqlDataFeedPatch class.
      */
     public PostgreSqlDataFeedPatch() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -238,11 +254,12 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.POSTGRE_SQL == null ? null : DataSourceType.POSTGRE_SQL.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
@@ -268,6 +285,8 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
         jsonWriter.writeStringField("authenticationType",
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -278,7 +297,6 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
      * @param jsonReader The JsonReader being read.
      * @return An instance of PostgreSqlDataFeedPatch if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PostgreSqlDataFeedPatch.
      */
     public static PostgreSqlDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
@@ -288,22 +306,15 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"PostgreSql".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'PostgreSql'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedPostgreSqlDataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedPostgreSqlDataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedPostgreSqlDataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeedPatch.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedPostgreSqlDataFeedPatch.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedPostgreSqlDataFeedPatch
                         .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
@@ -347,6 +358,8 @@ public final class PostgreSqlDataFeedPatch extends DataFeedDetailPatch {
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedPostgreSqlDataFeedPatch.setCredentialId(reader.getString());
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedPostgreSqlDataFeedPatch.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedPostgreSqlDataFeedPatch.dataSourceParameter = SQLSourceParameterPatch.fromJson(reader);
                 } else {

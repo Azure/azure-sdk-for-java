@@ -6,36 +6,37 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
 import com.azure.resourcemanager.datafactory.models.SwitchCase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Switch activity properties.
  */
 @Fluent
-public final class SwitchActivityTypeProperties {
+public final class SwitchActivityTypeProperties implements JsonSerializable<SwitchActivityTypeProperties> {
     /*
      * An expression that would evaluate to a string or integer. This is used to determine the block of activities in
      * cases that will be executed.
      */
-    @JsonProperty(value = "on", required = true)
     private Expression on;
 
     /*
      * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not
      * provided, the activity will execute activities provided in defaultActivities.
      */
-    @JsonProperty(value = "cases")
     private List<SwitchCase> cases;
 
     /*
      * List of activities to execute if no case condition is satisfied. This is an optional property and if not
      * provided, the activity will exit without any action.
      */
-    @JsonProperty(value = "defaultActivities")
     private List<Activity> defaultActivities;
 
     /**
@@ -132,4 +133,50 @@ public final class SwitchActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SwitchActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("on", this.on);
+        jsonWriter.writeArrayField("cases", this.cases, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("defaultActivities", this.defaultActivities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwitchActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwitchActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SwitchActivityTypeProperties.
+     */
+    public static SwitchActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwitchActivityTypeProperties deserializedSwitchActivityTypeProperties = new SwitchActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("on".equals(fieldName)) {
+                    deserializedSwitchActivityTypeProperties.on = Expression.fromJson(reader);
+                } else if ("cases".equals(fieldName)) {
+                    List<SwitchCase> cases = reader.readArray(reader1 -> SwitchCase.fromJson(reader1));
+                    deserializedSwitchActivityTypeProperties.cases = cases;
+                } else if ("defaultActivities".equals(fieldName)) {
+                    List<Activity> defaultActivities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedSwitchActivityTypeProperties.defaultActivities = defaultActivities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwitchActivityTypeProperties;
+        });
+    }
 }

@@ -15,21 +15,21 @@ public final class TriggerPipelineReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerPipelineReference model = BinaryData.fromString(
-            "{\"pipelineReference\":{\"referenceName\":\"adswz\",\"name\":\"uyem\"},\"parameters\":{\"wyrmouv\":\"datauowhlxl\",\"rfowtdvrfmvlih\":\"datalgmokzkl\",\"hdxlw\":\"datavjdrqcrjidhftuk\"}}")
+            "{\"pipelineReference\":{\"referenceName\":\"tnpdctuhspfefy\",\"name\":\"duyeuyl\"},\"parameters\":{\"h\":\"datamtybkcgsu\",\"fxexlfciatxtjrr\":\"datallnmwyn\",\"ajfoxc\":\"datakmdskjhhxd\",\"lxlhuavkrm\":\"datascv\"}}")
             .toObject(TriggerPipelineReference.class);
-        Assertions.assertEquals("adswz", model.pipelineReference().referenceName());
-        Assertions.assertEquals("uyem", model.pipelineReference().name());
+        Assertions.assertEquals("tnpdctuhspfefy", model.pipelineReference().referenceName());
+        Assertions.assertEquals("duyeuyl", model.pipelineReference().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TriggerPipelineReference model = new TriggerPipelineReference()
-            .withPipelineReference(new PipelineReference().withReferenceName("adswz").withName("uyem"))
-            .withParameters(
-                mapOf("wyrmouv", "datauowhlxl", "rfowtdvrfmvlih", "datalgmokzkl", "hdxlw", "datavjdrqcrjidhftuk"));
+            .withPipelineReference(new PipelineReference().withReferenceName("tnpdctuhspfefy").withName("duyeuyl"))
+            .withParameters(mapOf("h", "datamtybkcgsu", "fxexlfciatxtjrr", "datallnmwyn", "ajfoxc", "datakmdskjhhxd",
+                "lxlhuavkrm", "datascv"));
         model = BinaryData.fromObject(model).toObject(TriggerPipelineReference.class);
-        Assertions.assertEquals("adswz", model.pipelineReference().referenceName());
-        Assertions.assertEquals("uyem", model.pipelineReference().name());
+        Assertions.assertEquals("tnpdctuhspfefy", model.pipelineReference().referenceName());
+        Assertions.assertEquals("duyeuyl", model.pipelineReference().name());
     }
 
     // Use "Map.of" if available

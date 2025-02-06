@@ -53,14 +53,13 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
     public void canCreateCdnProfile() {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         CheckNameAvailabilityResult result = cdnManager.profiles().checkEndpointNameAvailability(cdnProfileName);
         Assertions.assertTrue(result.nameAvailable());
 
-        CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
+        CdnProfile cdnProfile = cdnManager.profiles()
+            .define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withStandardMicrosoftSku()
@@ -84,14 +83,13 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);
         String cdnEndpointName = generateRandomResourceName("cdnendp", 15);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         CheckNameAvailabilityResult result = cdnManager.profiles().checkEndpointNameAvailability(cdnProfileName);
         Assertions.assertTrue(result.nameAvailable());
 
-        CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
+        CdnProfile cdnProfile = cdnManager.profiles()
+            .define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withStandardMicrosoftSku()
@@ -103,10 +101,10 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         cdnProfile.update()
             .defineNewEndpoint(cdnEndpointName)
-                .withOrigin("origin1", "www.someDomain.net")
-                .withHttpAllowed(true)
-                .withHttpsAllowed(true)
-                .attach()
+            .withOrigin("origin1", "www.someDomain.net")
+            .withHttpAllowed(true)
+            .withHttpsAllowed(true)
+            .attach()
             .apply();
 
         Map<String, CdnEndpoint> cdnEndpointMap = cdnProfile.endpoints();
@@ -124,22 +122,21 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);
         String cdnEndpointName = generateRandomResourceName("cdnendp", 15);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         CheckNameAvailabilityResult result = cdnManager.profiles().checkEndpointNameAvailability(cdnProfileName);
         Assertions.assertTrue(result.nameAvailable());
 
-        CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
+        CdnProfile cdnProfile = cdnManager.profiles()
+            .define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withStandardMicrosoftSku()
             .defineNewEndpoint(cdnEndpointName)
-                .withOrigin("origin1", "www.someDomain.net")
-                .withHttpAllowed(false)
-                .withHttpsAllowed(true)
-                .attach()
+            .withOrigin("origin1", "www.someDomain.net")
+            .withHttpAllowed(false)
+            .withHttpsAllowed(true)
+            .attach()
             .create();
 
         Assertions.assertNotNull(cdnProfile);
@@ -156,9 +153,9 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         cdnProfile.update()
             .updateEndpoint(cdnEndpointName)
-                .withHttpAllowed(true)
-                .withHttpsAllowed(false)
-                .parent()
+            .withHttpAllowed(true)
+            .withHttpsAllowed(false)
+            .parent()
             .apply();
 
         cdnEndpoint.refresh();
@@ -178,50 +175,40 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         String originName1 = generateRandomResourceName("origin", 15);
         String originName2 = generateRandomResourceName("origin", 15);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         CheckNameAvailabilityResult result = cdnManager.profiles().checkEndpointNameAvailability(cdnProfileName);
         Assertions.assertTrue(result.nameAvailable());
 
         // create cdnProfile with one cdnEndpoint, with 1 rule
-        CdnProfile cdnProfile = cdnManager.profiles().define(cdnProfileName)
+        CdnProfile cdnProfile = cdnManager.profiles()
+            .define(cdnProfileName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
             .withStandardMicrosoftSku()
             .defineNewEndpoint(cdnEndpointName)
-                .withOrigin(originName1, "www.someDomain.net")
-                .withHttpAllowed(false)
-                .withHttpsAllowed(true)
-                // define Global rule
-                .defineNewStandardRulesEngineRule("Global")
-                    .withOrder(0)
-                    .withActions(
-                        new DeliveryRuleCacheExpirationAction()
-                            .withParameters(
-                                new CacheExpirationActionParameters()
-                                    .withCacheBehavior(CacheBehavior.SET_IF_MISSING)
-                                    .withCacheDuration("00:05:00")
-                                    .withCacheType(CacheType.ALL)))
-                    .attach()
-                .defineNewStandardRulesEngineRule(ruleName1)
-                    .withOrder(1)
-                    .withMatchConditions(
-                        new DeliveryRuleRequestSchemeCondition()
-                            .withParameters(
-                                new RequestSchemeMatchConditionParameters()
-                                    .withMatchValues(
-                                        Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTP))))
-                    .withActions(
-                        new UrlRedirectAction()
-                            .withParameters(
-                                new UrlRedirectActionParameters()
-                                    .withRedirectType(RedirectType.FOUND)
-                                    .withDestinationProtocol(DestinationProtocol.HTTPS)
-                                    .withCustomHostname("")))
-                    .attach()
-                .attach()
+            .withOrigin(originName1, "www.someDomain.net")
+            .withHttpAllowed(false)
+            .withHttpsAllowed(true)
+            // define Global rule
+            .defineNewStandardRulesEngineRule("Global")
+            .withOrder(0)
+            .withActions(new DeliveryRuleCacheExpirationAction()
+                .withParameters(new CacheExpirationActionParameters().withCacheBehavior(CacheBehavior.SET_IF_MISSING)
+                    .withCacheDuration("00:05:00")
+                    .withCacheType(CacheType.ALL)))
+            .attach()
+            .defineNewStandardRulesEngineRule(ruleName1)
+            .withOrder(1)
+            .withMatchConditions(
+                new DeliveryRuleRequestSchemeCondition().withParameters(new RequestSchemeMatchConditionParameters()
+                    .withMatchValues(Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTP))))
+            .withActions(new UrlRedirectAction()
+                .withParameters(new UrlRedirectActionParameters().withRedirectType(RedirectType.FOUND)
+                    .withDestinationProtocol(DestinationProtocol.HTTPS)
+                    .withCustomHostname("")))
+            .attach()
+            .attach()
             .create();
 
         cdnProfile.refresh();
@@ -243,51 +230,38 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         // update cdnProfile, add 1 additional rule, update existing rule to existing endpoint
         // and define a new endpoint with 1 rule
-        cdnProfile
-            .update()
+        cdnProfile.update()
             .updateEndpoint(cdnEndpointName)
             // define new Standard rules engine rule
             .defineNewStandardRulesEngineRule(ruleName2)
-                .withOrder(1)
-                .withMatchConditions(
-                    new DeliveryRuleHttpVersionCondition()
-                        .withParameters(
-                            new HttpVersionMatchConditionParameters()
-                                .withOperator(HttpVersionOperator.EQUAL)
-                                .withMatchValues(Arrays.asList("2.0"))))
-                .withActions(
-                    new DeliveryRuleCacheExpirationAction()
-                        .withParameters(
-                            new CacheExpirationActionParameters()
-                                .withCacheType(CacheType.ALL)
-                                .withCacheBehavior(CacheBehavior.BYPASS_CACHE)))
-                .attach()
+            .withOrder(1)
+            .withMatchConditions(new DeliveryRuleHttpVersionCondition()
+                .withParameters(new HttpVersionMatchConditionParameters().withOperator(HttpVersionOperator.EQUAL)
+                    .withMatchValues(Arrays.asList("2.0"))))
+            .withActions(new DeliveryRuleCacheExpirationAction()
+                .withParameters(new CacheExpirationActionParameters().withCacheType(CacheType.ALL)
+                    .withCacheBehavior(CacheBehavior.BYPASS_CACHE)))
+            .attach()
             // update existing Standard rules engine rule
             .updateStandardRulesEngineRule(ruleName1)
-                .withOrder(2)
-                .parent()
+            .withOrder(2)
+            .parent()
             .parent()
             // define new endpoint with 1 rule
             .defineNewEndpoint(cdnEndpointName2)
-                .withOrigin(originName2, "www.someDomain.net")
-                .withHttpAllowed(false)
-                .withHttpsAllowed(true)
-                .defineNewStandardRulesEngineRule(ruleName3)
-                    .withOrder(1)
-                    .withMatchConditions(
-                        new DeliveryRuleHttpVersionCondition()
-                            .withParameters(
-                                new HttpVersionMatchConditionParameters()
-                                    .withOperator(HttpVersionOperator.EQUAL)
-                                    .withMatchValues(Arrays.asList("1.1"))))
-                    .withActions(
-                        new DeliveryRuleCacheExpirationAction()
-                            .withParameters(
-                                new CacheExpirationActionParameters()
-                                    .withCacheType(CacheType.ALL)
-                                    .withCacheDuration("00:05:00")
-                                    .withCacheBehavior(CacheBehavior.OVERRIDE)))
-                .attach()
+            .withOrigin(originName2, "www.someDomain.net")
+            .withHttpAllowed(false)
+            .withHttpsAllowed(true)
+            .defineNewStandardRulesEngineRule(ruleName3)
+            .withOrder(1)
+            .withMatchConditions(new DeliveryRuleHttpVersionCondition()
+                .withParameters(new HttpVersionMatchConditionParameters().withOperator(HttpVersionOperator.EQUAL)
+                    .withMatchValues(Arrays.asList("1.1"))))
+            .withActions(new DeliveryRuleCacheExpirationAction()
+                .withParameters(new CacheExpirationActionParameters().withCacheType(CacheType.ALL)
+                    .withCacheDuration("00:05:00")
+                    .withCacheBehavior(CacheBehavior.OVERRIDE)))
+            .attach()
             .attach()
             .apply();
 
@@ -320,11 +294,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         DeliveryRule rule3 = endpoint2.standardRulesEngineRules().get(ruleName3);
         Assertions.assertNotNull(rule3);
 
-        cdnProfile.update()
-            .updateEndpoint(cdnEndpointName)
-                .withoutStandardRulesEngineRule(ruleName1)
-                .parent()
-            .apply();
+        cdnProfile.update().updateEndpoint(cdnEndpointName).withoutStandardRulesEngineRule(ruleName1).parent().apply();
 
         cdnProfile.refresh();
 

@@ -648,7 +648,7 @@ public class BinaryDataJavaDocCodeSnippet {
      * Codesnippets for {@link BinaryData#isReplayable()},
      * {@link BinaryData#toReplayableBinaryData()}
      */
-    public void replayablity() {
+    public void replayability() {
         // BEGIN: com.azure.util.BinaryData.replayability
         BinaryData binaryData = binaryDataProducer();
 
@@ -674,7 +674,7 @@ public class BinaryDataJavaDocCodeSnippet {
      * Codesnippets for {@link BinaryData#isReplayable()},
      * {@link BinaryData#toReplayableBinaryData()}
      */
-    public void replayablityAsync() {
+    public void replayabilityAsync() {
         // BEGIN: com.azure.util.BinaryData.replayabilityAsync
         Mono.fromCallable(this::binaryDataProducer)
             .flatMap(binaryData -> {

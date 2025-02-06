@@ -77,29 +77,24 @@ public final class AccessPolicyResourceImpl
     }
 
     public AccessPolicyResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, accessPolicyName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, accessPolicyName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccessPolicyResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, accessPolicyName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, accessPolicyName, createParameters, context)
+            .getValue();
         return this;
     }
 
-    AccessPolicyResourceImpl(
-        String name, com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
+    AccessPolicyResourceImpl(String name,
+        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = new AccessPolicyResourceInner();
         this.serviceManager = serviceManager;
         this.accessPolicyName = name;
@@ -112,58 +107,45 @@ public final class AccessPolicyResourceImpl
     }
 
     public AccessPolicyResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessPolicies()
-                .updateWithResponse(
-                    resourceGroupName,
-                    environmentName,
-                    accessPolicyName,
-                    updateAccessPolicyUpdateParameters,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessPolicies()
+            .updateWithResponse(resourceGroupName, environmentName, accessPolicyName,
+                updateAccessPolicyUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccessPolicyResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessPolicies()
-                .updateWithResponse(
-                    resourceGroupName, environmentName, accessPolicyName, updateAccessPolicyUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessPolicies()
+            .updateWithResponse(resourceGroupName, environmentName, accessPolicyName,
+                updateAccessPolicyUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    AccessPolicyResourceImpl(
-        AccessPolicyResourceInner innerObject,
+    AccessPolicyResourceImpl(AccessPolicyResourceInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "environments");
-        this.accessPolicyName = Utils.getValueFromIdByName(innerObject.id(), "accessPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
+        this.accessPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessPolicies");
     }
 
     public AccessPolicyResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessPolicies()
-                .getWithResponse(resourceGroupName, environmentName, accessPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessPolicies()
+            .getWithResponse(resourceGroupName, environmentName, accessPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccessPolicyResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessPolicies()
-                .getWithResponse(resourceGroupName, environmentName, accessPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessPolicies()
+            .getWithResponse(resourceGroupName, environmentName, accessPolicyName, context)
+            .getValue();
         return this;
     }
 

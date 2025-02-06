@@ -5,50 +5,64 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Criterion for dynamic threshold.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
-@JsonTypeName("DynamicThresholdCriterion")
 @Fluent
 public final class DynamicMetricCriteria extends MultiMetricCriteria {
     /*
+     * Specifies the type of threshold criteria
+     */
+    private CriterionType criterionType = CriterionType.DYNAMIC_THRESHOLD_CRITERION;
+
+    /*
      * The operator used to compare the metric value against the threshold.
      */
-    @JsonProperty(value = "operator", required = true)
     private DynamicThresholdOperator operator;
 
     /*
      * The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric
      * series pattern.
      */
-    @JsonProperty(value = "alertSensitivity", required = true)
     private DynamicThresholdSensitivity alertSensitivity;
 
     /*
      * The minimum number of violations required within the selected lookback time window required to raise an alert.
      */
-    @JsonProperty(value = "failingPeriods", required = true)
     private DynamicThresholdFailingPeriods failingPeriods;
 
     /*
-     * Use this option to set the date from which to start learning the metric historical data and calculate the
-     * dynamic thresholds (in ISO8601 format)
+     * Use this option to set the date from which to start learning the metric historical data and calculate the dynamic
+     * thresholds (in ISO8601 format)
      */
-    @JsonProperty(value = "ignoreDataBefore")
     private OffsetDateTime ignoreDataBefore;
 
     /**
      * Creates an instance of DynamicMetricCriteria class.
      */
     public DynamicMetricCriteria() {
+    }
+
+    /**
+     * Get the criterionType property: Specifies the type of threshold criteria.
+     * 
+     * @return the criterionType value.
+     */
+    @Override
+    public CriterionType criterionType() {
+        return this.criterionType;
     }
 
     /**
@@ -200,20 +214,110 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
         }
         if (alertSensitivity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property alertSensitivity in model DynamicMetricCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertSensitivity in model DynamicMetricCriteria"));
         }
         if (failingPeriods() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property failingPeriods in model DynamicMetricCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failingPeriods in model DynamicMetricCriteria"));
         } else {
             failingPeriods().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynamicMetricCriteria.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("metricName", metricName());
+        jsonWriter.writeStringField("timeAggregation", timeAggregation() == null ? null : timeAggregation().toString());
+        jsonWriter.writeStringField("metricNamespace", metricNamespace());
+        jsonWriter.writeArrayField("dimensions", dimensions(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("skipMetricValidation", skipMetricValidation());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeStringField("alertSensitivity",
+            this.alertSensitivity == null ? null : this.alertSensitivity.toString());
+        jsonWriter.writeJsonField("failingPeriods", this.failingPeriods);
+        jsonWriter.writeStringField("criterionType", this.criterionType == null ? null : this.criterionType.toString());
+        jsonWriter.writeStringField("ignoreDataBefore",
+            this.ignoreDataBefore == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.ignoreDataBefore));
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicMetricCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicMetricCriteria if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicMetricCriteria.
+     */
+    public static DynamicMetricCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicMetricCriteria deserializedDynamicMetricCriteria = new DynamicMetricCriteria();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.withName(reader.getString());
+                } else if ("metricName".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.withMetricName(reader.getString());
+                } else if ("timeAggregation".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria
+                        .withTimeAggregation(AggregationTypeEnum.fromString(reader.getString()));
+                } else if ("metricNamespace".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.withMetricNamespace(reader.getString());
+                } else if ("dimensions".equals(fieldName)) {
+                    List<MetricDimension> dimensions = reader.readArray(reader1 -> MetricDimension.fromJson(reader1));
+                    deserializedDynamicMetricCriteria.withDimensions(dimensions);
+                } else if ("skipMetricValidation".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria
+                        .withSkipMetricValidation(reader.getNullable(JsonReader::getBoolean));
+                } else if ("operator".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.operator
+                        = DynamicThresholdOperator.fromString(reader.getString());
+                } else if ("alertSensitivity".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.alertSensitivity
+                        = DynamicThresholdSensitivity.fromString(reader.getString());
+                } else if ("failingPeriods".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.failingPeriods = DynamicThresholdFailingPeriods.fromJson(reader);
+                } else if ("criterionType".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.criterionType = CriterionType.fromString(reader.getString());
+                } else if ("ignoreDataBefore".equals(fieldName)) {
+                    deserializedDynamicMetricCriteria.ignoreDataBefore = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDynamicMetricCriteria.withAdditionalProperties(additionalProperties);
+
+            return deserializedDynamicMetricCriteria;
+        });
+    }
 }

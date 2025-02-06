@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -44,6 +45,7 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrott
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import io.netty.handler.ssl.SslContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
@@ -183,6 +185,13 @@ public class ReflectionUtils {
 
     public static void setDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient, DiagnosticsProvider tracerProvider){
         set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
+    }
+
+    public static DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient){
+        return get(
+            DiagnosticsProvider.class,
+            cosmosAsyncClient,
+            "diagnosticsProvider");
     }
 
     public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
@@ -451,4 +460,11 @@ public class ReflectionUtils {
         return get(ISessionContainer.class, rxDocumentClient, "sessionContainer");
     }
 
+    public static SslContext getSslContext(Configs configs) {
+        return get(SslContext.class, configs, "sslContext");
+    }
+
+    public static SslContext getSslContextWithCertValidationDisabled(Configs configs) {
+        return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
+    }
 }

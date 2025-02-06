@@ -40,15 +40,16 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
 
     public PagedIterable<ApiDefinition> list(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, String filter, Context context) {
-        PagedIterable<ApiDefinitionInner> inner = this.serviceClient().list(resourceGroupName, serviceName,
-            workspaceName, apiName, versionName, filter, context);
+        PagedIterable<ApiDefinitionInner> inner = this.serviceClient()
+            .list(resourceGroupName, serviceName, workspaceName, apiName, versionName, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiDefinitionImpl(inner1, this.manager()));
     }
 
     public Response<ApiDefinition> getWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, String definitionName, Context context) {
-        ApiDefinitionsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName,
-            workspaceName, apiName, versionName, definitionName, context);
+        ApiDefinitionsGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApiDefinitionImpl(inner.getValue(), this.manager()));
@@ -59,8 +60,8 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
 
     public ApiDefinition get(String resourceGroupName, String serviceName, String workspaceName, String apiName,
         String versionName, String definitionName) {
-        ApiDefinitionInner inner = this.serviceClient().get(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, definitionName);
+        ApiDefinitionInner inner = this.serviceClient()
+            .get(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName);
         if (inner != null) {
             return new ApiDefinitionImpl(inner, this.manager());
         } else {
@@ -70,20 +71,22 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, String definitionName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, definitionName, context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                context);
     }
 
     public void delete(String resourceGroupName, String serviceName, String workspaceName, String apiName,
         String versionName, String definitionName) {
-        this.serviceClient().delete(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName);
+        this.serviceClient()
+            .delete(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName);
     }
 
     public Response<Void> headWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, String definitionName, Context context) {
-        return this.serviceClient().headWithResponse(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, definitionName, context);
+        return this.serviceClient()
+            .headWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                context);
     }
 
     public void head(String resourceGroupName, String serviceName, String workspaceName, String apiName,
@@ -93,8 +96,8 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
 
     public ApiSpecExportResult exportSpecification(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, String definitionName) {
-        ApiSpecExportResultInner inner = this.serviceClient().exportSpecification(resourceGroupName, serviceName,
-            workspaceName, apiName, versionName, definitionName);
+        ApiSpecExportResultInner inner = this.serviceClient()
+            .exportSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName);
         if (inner != null) {
             return new ApiSpecExportResultImpl(inner, this.manager());
         } else {
@@ -104,8 +107,9 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
 
     public ApiSpecExportResult exportSpecification(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, String definitionName, Context context) {
-        ApiSpecExportResultInner inner = this.serviceClient().exportSpecification(resourceGroupName, serviceName,
-            workspaceName, apiName, versionName, definitionName, context);
+        ApiSpecExportResultInner inner = this.serviceClient()
+            .exportSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                context);
         if (inner != null) {
             return new ApiSpecExportResultImpl(inner, this.manager());
         } else {
@@ -115,14 +119,16 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
 
     public void importSpecification(String resourceGroupName, String serviceName, String workspaceName, String apiName,
         String versionName, String definitionName, ApiSpecImportRequest body) {
-        this.serviceClient().importSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName, body);
+        this.serviceClient()
+            .importSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                body);
     }
 
     public void importSpecification(String resourceGroupName, String serviceName, String workspaceName, String apiName,
         String versionName, String definitionName, ApiSpecImportRequest body, Context context) {
-        this.serviceClient().importSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName, body, context);
+        this.serviceClient()
+            .importSpecification(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                body, context);
     }
 
     public ApiDefinition getById(String id) {
@@ -156,8 +162,10 @@ public final class ApiDefinitionsImpl implements ApiDefinitions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'definitions'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
-            Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, definitionName,
+                Context.NONE)
+            .getValue();
     }
 
     public Response<ApiDefinition> getByIdWithResponse(String id, Context context) {

@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for Kpi Reprocess. */
+/**
+ * Samples for Kpi Reprocess.
+ */
 public final class KpiReprocessSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/KpiReprocess.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * KpiReprocess.json
      */
     /**
      * Sample code: Kpi_Reprocess.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void kpiReprocess(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {
-        manager
-            .kpis()
+        manager.kpis()
             .reprocessWithResponse("TestHubRG", "sdkTestHub", "kpiTest45453647", com.azure.core.util.Context.NONE);
     }
 }

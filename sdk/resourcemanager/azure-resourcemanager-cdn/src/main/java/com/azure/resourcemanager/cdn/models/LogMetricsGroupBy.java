@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class LogMetricsGroupBy extends ExpandableStringEnum<LogMetricsGrou
      * @param name a name to look for.
      * @return the corresponding LogMetricsGroupBy.
      */
-    @JsonCreator
     public static LogMetricsGroupBy fromString(String name) {
         return fromString(name, LogMetricsGroupBy.class);
     }

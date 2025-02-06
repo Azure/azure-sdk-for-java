@@ -5,60 +5,58 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Terms properties for Marketplace and Confluent.
  */
 @Fluent
-public final class ConfluentAgreementProperties {
+public final class ConfluentAgreementProperties implements JsonSerializable<ConfluentAgreementProperties> {
     /*
      * Publisher identifier string.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Product identifier string.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Plan identifier string.
      */
-    @JsonProperty(value = "plan")
     private String plan;
 
     /*
      * Link to HTML with Microsoft and Publisher terms.
      */
-    @JsonProperty(value = "licenseTextLink")
     private String licenseTextLink;
 
     /*
      * Link to the privacy policy of the publisher.
      */
-    @JsonProperty(value = "privacyPolicyLink")
     private String privacyPolicyLink;
 
     /*
      * Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
      */
-    @JsonProperty(value = "retrieveDatetime")
     private OffsetDateTime retrieveDatetime;
 
     /*
      * Terms signature.
      */
-    @JsonProperty(value = "signature")
     private String signature;
 
     /*
      * If any version of the terms have been accepted, otherwise false.
      */
-    @JsonProperty(value = "accepted")
     private Boolean accepted;
 
     /**
@@ -235,5 +233,66 @@ public final class ConfluentAgreementProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("plan", this.plan);
+        jsonWriter.writeStringField("licenseTextLink", this.licenseTextLink);
+        jsonWriter.writeStringField("privacyPolicyLink", this.privacyPolicyLink);
+        jsonWriter.writeStringField("retrieveDatetime",
+            this.retrieveDatetime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retrieveDatetime));
+        jsonWriter.writeStringField("signature", this.signature);
+        jsonWriter.writeBooleanField("accepted", this.accepted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfluentAgreementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfluentAgreementProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfluentAgreementProperties.
+     */
+    public static ConfluentAgreementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfluentAgreementProperties deserializedConfluentAgreementProperties = new ConfluentAgreementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.product = reader.getString();
+                } else if ("plan".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.plan = reader.getString();
+                } else if ("licenseTextLink".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.licenseTextLink = reader.getString();
+                } else if ("privacyPolicyLink".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.privacyPolicyLink = reader.getString();
+                } else if ("retrieveDatetime".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.retrieveDatetime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("signature".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.signature = reader.getString();
+                } else if ("accepted".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.accepted = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfluentAgreementProperties;
+        });
     }
 }

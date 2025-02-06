@@ -31,23 +31,36 @@ public final class ApplicationsCreateOrUpdateSamples {
      */
     public static void
         putAnApplicationWithMaximumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications().define("myApp").withExistingCluster("resRg", "myCluster").withTags(mapOf())
-            .withTypeName("myAppType").withTypeVersion("1.0").withParameters(mapOf("param1", "value1"))
+        manager.applications()
+            .define("myApp")
+            .withExistingCluster("resRg", "myCluster")
+            .withTags(mapOf())
+            .withTypeName("myAppType")
+            .withTypeVersion("1.0")
+            .withParameters(mapOf("param1", "value1"))
             .withUpgradePolicy(new ApplicationUpgradePolicy().withUpgradeReplicaSetCheckTimeout("01:00:00")
                 .withForceRestart(false)
-                .withRollingUpgradeMonitoringPolicy(new ArmRollingUpgradeMonitoringPolicy()
-                    .withFailureAction(ArmUpgradeFailureAction.ROLLBACK).withHealthCheckWaitDuration("00:02:00")
-                    .withHealthCheckStableDuration("00:05:00").withHealthCheckRetryTimeout("00:10:00")
-                    .withUpgradeTimeout("01:00:00").withUpgradeDomainTimeout("1.06:00:00"))
+                .withRollingUpgradeMonitoringPolicy(
+                    new ArmRollingUpgradeMonitoringPolicy().withFailureAction(ArmUpgradeFailureAction.ROLLBACK)
+                        .withHealthCheckWaitDuration("00:02:00")
+                        .withHealthCheckStableDuration("00:05:00")
+                        .withHealthCheckRetryTimeout("00:10:00")
+                        .withUpgradeTimeout("01:00:00")
+                        .withUpgradeDomainTimeout("1.06:00:00"))
                 .withApplicationHealthPolicy(new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
                     .withMaxPercentUnhealthyDeployedApplications(0)
-                    .withDefaultServiceTypeHealthPolicy(new ArmServiceTypeHealthPolicy()
-                        .withMaxPercentUnhealthyServices(0).withMaxPercentUnhealthyPartitionsPerService(0)
-                        .withMaxPercentUnhealthyReplicasPerPartition(0)))
+                    .withDefaultServiceTypeHealthPolicy(
+                        new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(0)
+                            .withMaxPercentUnhealthyPartitionsPerService(0)
+                            .withMaxPercentUnhealthyReplicasPerPartition(0)))
                 .withUpgradeMode(RollingUpgradeMode.MONITORED))
-            .withMinimumNodes(1L).withMaximumNodes(3L).withRemoveApplicationCapacity(false)
-            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1").withMaximumCapacity(3L)
-                .withReservationCapacity(1L).withTotalApplicationCapacity(5L)))
+            .withMinimumNodes(1L)
+            .withMaximumNodes(3L)
+            .withRemoveApplicationCapacity(false)
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
+                .withMaximumCapacity(3L)
+                .withReservationCapacity(1L)
+                .withTotalApplicationCapacity(5L)))
             .create();
     }
 
@@ -63,8 +76,14 @@ public final class ApplicationsCreateOrUpdateSamples {
      */
     public static void
         putAnApplicationWithMinimumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications().define("myApp").withExistingCluster("resRg", "myCluster").withRegion("eastus")
-            .withTags(mapOf()).withTypeName("myAppType").withTypeVersion("1.0").withRemoveApplicationCapacity(false)
+        manager.applications()
+            .define("myApp")
+            .withExistingCluster("resRg", "myCluster")
+            .withRegion("eastus")
+            .withTags(mapOf())
+            .withTypeName("myAppType")
+            .withTypeVersion("1.0")
+            .withRemoveApplicationCapacity(false)
             .create();
     }
 
@@ -80,9 +99,15 @@ public final class ApplicationsCreateOrUpdateSamples {
      */
     public static void
         putAnApplicationWithRecreateOption(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications().define("myApp").withExistingCluster("resRg", "myCluster").withTags(mapOf())
-            .withTypeName("myAppType").withTypeVersion("1.0").withParameters(mapOf("param1", "value1"))
-            .withUpgradePolicy(new ApplicationUpgradePolicy().withRecreateApplication(true)).create();
+        manager.applications()
+            .define("myApp")
+            .withExistingCluster("resRg", "myCluster")
+            .withTags(mapOf())
+            .withTypeName("myAppType")
+            .withTypeVersion("1.0")
+            .withParameters(mapOf("param1", "value1"))
+            .withUpgradePolicy(new ApplicationUpgradePolicy().withRecreateApplication(true))
+            .create();
     }
 
     // Use "Map.of" if available

@@ -6,7 +6,9 @@ package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.BudgetFilter;
 import com.azure.resourcemanager.consumption.models.BudgetTimePeriod;
 import com.azure.resourcemanager.consumption.models.CategoryType;
@@ -14,33 +16,50 @@ import com.azure.resourcemanager.consumption.models.CurrentSpend;
 import com.azure.resourcemanager.consumption.models.ForecastSpend;
 import com.azure.resourcemanager.consumption.models.Notification;
 import com.azure.resourcemanager.consumption.models.TimeGrainType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
 
-/** A budget resource. */
+/**
+ * A budget resource.
+ */
 @Fluent
 public final class BudgetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BudgetInner.class);
-
     /*
      * The properties of the budget.
      */
-    @JsonProperty(value = "properties")
     private BudgetProperties innerProperties;
 
     /*
-     * eTag of the resource. To handle concurrent update scenario, this field
-     * will be used to determine whether the user is updating the latest
-     * version or not.
+     * eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user
+     * is updating the latest version or not.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BudgetInner class.
+     */
+    public BudgetInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the budget.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BudgetProperties innerProperties() {
@@ -50,7 +69,7 @@ public final class BudgetInner extends ProxyResource {
     /**
      * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +79,7 @@ public final class BudgetInner extends ProxyResource {
     /**
      * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the BudgetInner object itself.
      */
@@ -70,8 +89,38 @@ public final class BudgetInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the category property: The category of the budget, whether the budget tracks cost or usage.
-     *
+     * 
      * @return the category value.
      */
     public CategoryType category() {
@@ -80,7 +129,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Set the category property: The category of the budget, whether the budget tracks cost or usage.
-     *
+     * 
      * @param category the category value to set.
      * @return the BudgetInner object itself.
      */
@@ -94,7 +143,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Get the amount property: The total amount of cost to track with the budget.
-     *
+     * 
      * @return the amount value.
      */
     public BigDecimal amount() {
@@ -103,7 +152,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Set the amount property: The total amount of cost to track with the budget.
-     *
+     * 
      * @param amount the amount value to set.
      * @return the BudgetInner object itself.
      */
@@ -118,7 +167,7 @@ public final class BudgetInner extends ProxyResource {
     /**
      * Get the timeGrain property: The time covered by a budget. Tracking of the amount will be reset based on the time
      * grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers.
-     *
+     * 
      * @return the timeGrain value.
      */
     public TimeGrainType timeGrain() {
@@ -128,7 +177,7 @@ public final class BudgetInner extends ProxyResource {
     /**
      * Set the timeGrain property: The time covered by a budget. Tracking of the amount will be reset based on the time
      * grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the BudgetInner object itself.
      */
@@ -145,7 +194,7 @@ public final class BudgetInner extends ProxyResource {
      * should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should
      * not be more than twelve months. Past start date should be selected within the timegrain period. There are no
      * restrictions on the end date.
-     *
+     * 
      * @return the timePeriod value.
      */
     public BudgetTimePeriod timePeriod() {
@@ -157,7 +206,7 @@ public final class BudgetInner extends ProxyResource {
      * should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should
      * not be more than twelve months. Past start date should be selected within the timegrain period. There are no
      * restrictions on the end date.
-     *
+     * 
      * @param timePeriod the timePeriod value to set.
      * @return the BudgetInner object itself.
      */
@@ -171,7 +220,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Get the filter property: May be used to filter budgets by user-specified dimensions and/or tags.
-     *
+     * 
      * @return the filter value.
      */
     public BudgetFilter filter() {
@@ -180,7 +229,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Set the filter property: May be used to filter budgets by user-specified dimensions and/or tags.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the BudgetInner object itself.
      */
@@ -194,7 +243,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Get the currentSpend property: The current amount of cost which is being tracked for a budget.
-     *
+     * 
      * @return the currentSpend value.
      */
     public CurrentSpend currentSpend() {
@@ -204,7 +253,7 @@ public final class BudgetInner extends ProxyResource {
     /**
      * Get the notifications property: Dictionary of notifications associated with the budget. Budget can have up to
      * five notifications.
-     *
+     * 
      * @return the notifications value.
      */
     public Map<String, Notification> notifications() {
@@ -214,7 +263,7 @@ public final class BudgetInner extends ProxyResource {
     /**
      * Set the notifications property: Dictionary of notifications associated with the budget. Budget can have up to
      * five notifications.
-     *
+     * 
      * @param notifications the notifications value to set.
      * @return the BudgetInner object itself.
      */
@@ -228,7 +277,7 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Get the forecastSpend property: The forecasted cost which is being tracked for a budget.
-     *
+     * 
      * @return the forecastSpend value.
      */
     public ForecastSpend forecastSpend() {
@@ -237,12 +286,58 @@ public final class BudgetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("eTag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BudgetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BudgetInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BudgetInner.
+     */
+    public static BudgetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BudgetInner deserializedBudgetInner = new BudgetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBudgetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBudgetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBudgetInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBudgetInner.innerProperties = BudgetProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedBudgetInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBudgetInner;
+        });
     }
 }

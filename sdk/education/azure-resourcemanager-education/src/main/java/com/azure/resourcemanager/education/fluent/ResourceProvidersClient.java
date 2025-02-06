@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.education.models.RedeemRequest;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

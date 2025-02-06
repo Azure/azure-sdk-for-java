@@ -19,17 +19,22 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
+import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import com.azure.storage.file.share.models.ModeCopyMode;
+import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -54,6 +59,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -62,6 +68,8 @@ import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import com.azure.storage.file.share.specialized.ShareLeaseClient;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -78,6 +86,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -110,7 +119,8 @@ class FileApiTests extends FileShareTestBase {
     private static Map<String, String> testMetadata;
     private static ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
-    private static final String FILE_PERMISSION = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
+    private static final String FILE_PERMISSION
+        = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
     public void setup() {
@@ -120,16 +130,15 @@ class FileApiTests extends FileShareTestBase {
         shareClient.create();
         primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
-        httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en")
-            .setContentType("application/octet-stream");
-        smbProperties = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.<NtfsFileAttributes> of(NtfsFileAttributes.NORMAL));
+        httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
     public void getFileURL() {
-        String accountName = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount()
-            .getConnectionString()).getAccountName();
+        String accountName
+            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+                .getAccountName();
         String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath);
 
         String fileURL = primaryFileClient.getFileUrl();
@@ -138,22 +147,25 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void getShareSnapshotURL() {
-        String accountName = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount()
-            .getConnectionString()).getAccountName();
+        String accountName
+            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+                .getAccountName();
         String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath);
 
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot();
         expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot();
         ShareFileClient newFileClient = shareBuilderHelper(shareName).snapshot(shareSnapshotInfo.getSnapshot())
-            .buildClient().getFileClient(filePath);
+            .buildClient()
+            .getFileClient(filePath);
         String fileURL = newFileClient.getFileUrl();
 
         assertEquals(expectURL, fileURL);
 
         String snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName,
             shareName, filePath, shareSnapshotInfo.getSnapshot());
-        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(
-            ENVIRONMENT.getPrimaryAccount().getConnectionString()), snapshotEndpoint);
+        ShareFileClient client = getFileClient(
+            StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()),
+            snapshotEndpoint);
 
         assertEquals(client.getFileUrl(), snapshotEndpoint);
     }
@@ -171,17 +183,16 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void existsError() {
-        primaryFileClient = fileBuilderHelper(shareName, filePath)
-            .sasToken("sig=dummyToken").buildFileClient();
+        primaryFileClient = fileBuilderHelper(shareName, filePath).sasToken("sig=dummyToken").buildFileClient();
 
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryFileClient.exists());
-        assertEquals(e.getResponse().getStatusCode(), 403);
+        assertEquals(403, e.getResponse().getStatusCode());
     }
 
     @Test
     public void createFile() {
-        FileShareTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null,
-            null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(
+            primaryFileClient.createWithResponse(1024, null, null, null, null, null, null), 201);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -202,9 +213,8 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void createFile4TB() {
-        FileShareTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(4 * Constants.TB, null, null,
-            null, null, null,
-            null), 201);
+        FileShareTestHelper.assertResponseStatusCode(
+            primaryFileClient.createWithResponse(4 * Constants.TB, null, null, null, null, null, null), 201);
     }
 
     @Test
@@ -221,8 +231,8 @@ class FileApiTests extends FileShareTestBase {
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
-        Response<ShareFileInfo> resp = primaryFileClient
-            .createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null, null);
+        Response<ShareFileInfo> resp
+            = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties, null, testMetadata, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 201);
         assertNotNull(resp.getValue().getETag());
@@ -239,8 +249,7 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void createFileWithArgsFp() {
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now());
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
         Response<ShareFileInfo> resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties,
             FILE_PERMISSION, testMetadata, null, null);
 
@@ -261,26 +270,25 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void createChangeTime() {
         OffsetDateTime changeTime = testResourceNamer.now();
-        primaryFileClient.createWithResponse(512, null, new FileSmbProperties().setFileChangeTime(changeTime),
-            null, null, null, null, null);
-        FileShareTestHelper.compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties()
-            .getFileChangeTime(), changeTime);
+        primaryFileClient.createWithResponse(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null,
+            null, null, null, null);
+        FileShareTestHelper.compareDatesWithPrecision(
+            primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void createFileOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
 
-
-        Response<ShareFileInfo> result = fileClient.createWithResponse(Constants.KB, null, null, null, null, null,
-            null);
+        Response<ShareFileInfo> result
+            = fileClient.createWithResponse(Constants.KB, null, null, null, null, null, null);
         assertEquals(fileClient.getShareName(), shareName);
         String[] filePath = fileClient.getFilePath().split("/");
         assertEquals(fileName, filePath[1]); // compare with filename
@@ -290,8 +298,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void createFileWithArgsError() {
         ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryFileClient.createWithResponse(-1, null, null, null,
-                testMetadata, null, null));
+            () -> primaryFileClient.createWithResponse(-1, null, null, null, testMetadata, null, null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.OUT_OF_RANGE_INPUT);
     }
 
@@ -299,18 +306,18 @@ class FileApiTests extends FileShareTestBase {
     @MethodSource("permissionAndKeySupplier")
     public void createFilePermissionAndKeyError(String filePermissionKey, String permission) {
         FileSmbProperties smbProperties = new FileSmbProperties().setFilePermissionKey(filePermissionKey);
-        assertThrows(IllegalArgumentException.class, () ->
-                primaryFileClient.createWithResponse(1024, null, smbProperties, permission, null, null, null));
+        assertThrows(IllegalArgumentException.class,
+            () -> primaryFileClient.createWithResponse(1024, null, smbProperties, permission, null, null, null));
     }
 
     private static Stream<Arguments> permissionAndKeySupplier() {
         return Stream.of(Arguments.of("filePermissionKey", FILE_PERMISSION),
-            Arguments.of(null, new String(FileShareTestHelper.getRandomBuffer(9 * Constants.KB))));
+            Arguments.of(null, FileShareTestHelper.getRandomString(9 * Constants.KB)));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void createFileTrailingDot(boolean allowTrailingDot) {
         shareClient = getShareClient(shareName, allowTrailingDot, null);
         ShareDirectoryClient rootDirectory = shareClient.getRootDirectoryClient();
@@ -337,8 +344,8 @@ class FileApiTests extends FileShareTestBase {
         Response<ShareFileUploadInfo> uploadResponse = primaryFileClient.uploadRangeWithResponse(
             new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()), null, null);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ShareFileDownloadResponse downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null,
-            null);
+        ShareFileDownloadResponse downloadResponse
+            = primaryFileClient.downloadWithResponse(stream, null, null, null, null);
         ShareFileDownloadHeaders headers = downloadResponse.getDeserializedHeaders();
 
         FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
@@ -364,8 +371,8 @@ class FileApiTests extends FileShareTestBase {
             new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()).setOffset(1L),
             null, null);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ShareFileDownloadResponse downloadResponse = primaryFileClient
-            .downloadWithResponse(stream, new ShareFileRange(1, DATA.getDefaultDataSizeLong()), true, null, null);
+        ShareFileDownloadResponse downloadResponse = primaryFileClient.downloadWithResponse(stream,
+            new ShareFileRange(1, DATA.getDefaultDataSizeLong()), true, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
         FileShareTestHelper.assertResponseStatusCode(downloadResponse, 206);
@@ -376,10 +383,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadAndDownloadDataOAuth() {
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
@@ -412,11 +419,10 @@ class FileApiTests extends FileShareTestBase {
     public void parallelUploadAndDownloadData() {
         primaryFileClient.create(DATA.getDefaultDataSizeLong());
         Response<ShareFileUploadInfo> uploadResponse = primaryFileClient.uploadRangeWithResponse(
-            new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()),
-            null, null);
+            new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()), null, null);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ShareFileDownloadResponse downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null,
-            null);
+        ShareFileDownloadResponse downloadResponse
+            = primaryFileClient.downloadWithResponse(stream, null, null, null, null);
         ShareFileDownloadHeaders headers = downloadResponse.getDeserializedHeaders();
 
         FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
@@ -464,12 +470,11 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void parallelUploadInputStreamBadLength() {
-        int[] lengths = new int[]{0, -100, DATA.getDefaultDataSize() - 1, DATA.getDefaultDataSize() + 1};
+        int[] lengths = new int[] { 0, -100, DATA.getDefaultDataSize() - 1, DATA.getDefaultDataSize() + 1 };
         for (int length : lengths) {
             primaryFileClient.create(DATA.getDefaultDataSize());
-            assertThrows(Exception.class, () ->
-                primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(),
-                length), null, null));
+            assertThrows(Exception.class, () -> primaryFileClient.uploadRangeWithResponse(
+                new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), length), null, null));
         }
     }
 
@@ -490,8 +495,8 @@ class FileApiTests extends FileShareTestBase {
         Response<ShareFileUploadInfo> uploadResponse = primaryFileClient.uploadRangeWithResponse(
             new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong()), null, null);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ShareFileDownloadResponse downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null,
-            null);
+        ShareFileDownloadResponse downloadResponse
+            = primaryFileClient.downloadWithResponse(stream, null, null, null, null);
         ShareFileDownloadHeaders headers = downloadResponse.getDeserializedHeaders();
 
         FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
@@ -538,12 +543,12 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient fileClient = shareClient.getFileClient(pathName);
         fileClient.create(20 * Constants.MB);
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong((long) Constants.MB)
-            .setMaxSingleUploadSizeLong(2L * Constants.MB)
-            .setMaxConcurrency(5);
-        ShareFileUploadOptions parallelUploadOptions = new ShareFileUploadOptions(input)
-            .setParallelTransferOptions(parallelTransferOptions);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong((long) Constants.MB)
+                .setMaxSingleUploadSizeLong(2L * Constants.MB)
+                .setMaxConcurrency(5);
+        ShareFileUploadOptions parallelUploadOptions
+            = new ShareFileUploadOptions(input).setParallelTransferOptions(parallelTransferOptions);
 
         fileClient.uploadWithResponse(parallelUploadOptions, null, null);
 
@@ -552,8 +557,8 @@ class FileApiTests extends FileShareTestBase {
         // Upload the downloaded content to a different location
         String pathName2 = generatePathName();
 
-        parallelUploadOptions = new ShareFileUploadOptions(inputStreamResult)
-            .setParallelTransferOptions(parallelTransferOptions);
+        parallelUploadOptions
+            = new ShareFileUploadOptions(inputStreamResult).setParallelTransferOptions(parallelTransferOptions);
 
         ShareFileClient fileClient2 = shareClient.getFileClient(pathName2);
         fileClient2.create(20 * Constants.MB);
@@ -581,7 +586,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1})
+    @ValueSource(ints = { 0, 1 })
     public void downloadEmptyFile(int fileSize) {
         primaryFileClient.create(fileSize);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -613,12 +618,11 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient fc2 = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             primaryFileClient.getFileUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"));
 
-
         ShareFileRange range = new ShareFileRange(2, 6L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(3);
-        RuntimeException e = assertThrows(RuntimeException.class,
-            () -> fc2.downloadWithResponse(new ByteArrayOutputStream(), new ShareFileDownloadOptions()
-                .setRange(range).setRetryOptions(options), null, null));
+        RuntimeException e
+            = assertThrows(RuntimeException.class, () -> fc2.downloadWithResponse(new ByteArrayOutputStream(),
+                new ShareFileDownloadOptions().setRange(range).setRetryOptions(options), null, null));
 
         /*
         Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
@@ -641,6 +645,93 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(bodyStr, DATA.getDefaultText());
     }
 
+    @Test
+    public void downloadToFileWithPartialDownloads() throws Exception {
+        File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        uploadFile.deleteOnExit();
+        Files.write(uploadFile.toPath(), DATA.getDefaultBytes());
+
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+        outFile.deleteOnExit();
+
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
+
+        // Create a ShareFileClient for download using the custom pipeline
+        ShareFileClient downloadClient
+            = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(), primaryFileClient.getFileUrl(), policy);
+
+        // Upload the test data
+        primaryFileClient.create(DATA.getDefaultDataSize());
+        primaryFileClient.uploadFromFile(uploadFile.toString());
+
+        downloadClient.downloadToFile(outFile.toString());
+
+        byte[] downloadedData = Files.readAllBytes(outFile.toPath());
+        Assertions.assertArrayEquals(DATA.getDefaultBytes(), downloadedData);
+
+        // Assert that we retried the correct number of times (5)
+        assertEquals(0, policy.getTriesRemaining());
+
+        // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges, actualRanges);
+
+        // Clean up
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(uploadFile.toPath());
+    }
+
+    private List<String> expectedHeaderRanges() {
+        List<String> expectedRanges = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            expectedRanges.add("bytes=" + i + "-" + (DATA.getDefaultDataSize() - 1));
+        }
+        return expectedRanges;
+    }
+
+    @Test
+    public void downloadToFileRetryExhausted() throws Exception {
+        File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        uploadFile.deleteOnExit();
+        Files.write(uploadFile.toPath(), DATA.getDefaultBytes());
+
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+        outFile.deleteOnExit();
+
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
+
+        // Create a ShareFileClient for download using the custom pipeline
+        ShareFileClient downloadClient
+            = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(), primaryFileClient.getFileUrl(), policy);
+
+        // Upload the test data
+        primaryFileClient.create(DATA.getDefaultDataSize());
+        primaryFileClient.uploadFromFile(uploadFile.toString());
+
+        // Throws a Exceptions.ReactiveException.class because of Flux.error
+        Throwable thrown = assertThrows(Throwable.class, () -> downloadClient.downloadToFile(outFile.toString()));
+        assertInstanceOf(IOException.class, thrown.getCause());
+
+        // Assert that we retried the correct number of times (5) even though the retry policy allowed for 6 retries
+        assertEquals(0, policy.getTriesRemaining());
+
+        // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges, actualRanges);
+
+        // Clean up
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(uploadFile.toPath());
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @Test
     public void downloadTrailingDot() {
@@ -656,10 +747,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void downloadOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
@@ -690,7 +781,8 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(fileSize);
         Response<ShareFileUploadInfo> uploadResponse = primaryFileClient.uploadRangeWithResponse(
             new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())
-                .setOffset(fileSize - DATA.getDefaultDataSizeLong()), null, null); /* Upload to end of file. */
+                .setOffset(fileSize - DATA.getDefaultDataSizeLong()),
+            null, null); /* Upload to end of file. */
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ShareFileDownloadResponse downloadResponse = primaryFileClient.downloadWithResponse(stream,
             new ShareFileRange(fileSize - DATA.getDefaultDataSizeLong(), fileSize), true, null, null);
@@ -701,12 +793,13 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(longs = {
-        4 * Constants.MB, // max put range
-        5 * Constants.MB})
-    public void uploadBufferedRangeGreaterThanMaxPutRange(long length) {
+    @ValueSource(
+        ints = {
+            4 * Constants.MB, // max put range
+            5 * Constants.MB })
+    public void uploadBufferedRangeGreaterThanMaxPutRange(int length) {
         primaryFileClient.create(length);
-        ByteArrayInputStream data = new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer((int) length));
+        ByteArrayInputStream data = new ByteArrayInputStream(getRandomByteArray(length));
         assertDoesNotThrow(() -> primaryFileClient.upload(data, length, null));
 
     }
@@ -717,11 +810,11 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
         primaryFileClient.create(DATA.getDefaultDataSizeLong());
 
-        ShareFileUploadRangeOptions options = new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSizeLong());
+        ShareFileUploadRangeOptions options
+            = new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());
         Response<ShareFileUploadInfo> uploadResponse = primaryFileClient.uploadRangeWithResponse(options, null, null);
-        ShareFileDownloadResponse downloadResponse = primaryFileClient.downloadWithResponse(new ByteArrayOutputStream(),
-            null, null, null);
+        ShareFileDownloadResponse downloadResponse
+            = primaryFileClient.downloadWithResponse(new ByteArrayOutputStream(), null, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
         FileShareTestHelper.assertResponseStatusCode(downloadResponse, 200);
@@ -731,10 +824,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
@@ -767,48 +860,46 @@ class FileApiTests extends FileShareTestBase {
     @MethodSource("bufferedUploadVariousPartitions")
     public void bufferedUploadVariousPartitions(Long length, Long uploadChunkLength) {
         primaryFileClient.create(length);
-        ByteArrayInputStream data = new ByteArrayInputStream(FileShareTestHelper
-            .getRandomBuffer(Math.toIntExact(length)));
-        assertNotNull(primaryFileClient.upload(data, length, new ParallelTransferOptions()
-            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength)));
+        ByteArrayInputStream data = new ByteArrayInputStream(getRandomByteArray(Math.toIntExact(length)));
+        assertNotNull(
+            primaryFileClient.upload(data, length, new ParallelTransferOptions().setBlockSizeLong(uploadChunkLength)
+                .setMaxSingleUploadSizeLong(uploadChunkLength)));
     }
 
     private static Stream<Arguments> bufferedUploadVariousPartitions() {
-        return Stream.of(
-            Arguments.of(1024L, null),
-            Arguments.of(1024L, 1024L),
-            Arguments.of(1024L, 256L),
-            Arguments.of(4L * Constants.MB, null),
-            Arguments.of(4L * Constants.MB, 1024L),
-            Arguments.of(20L * Constants.MB, null),
-            Arguments.of(20L * Constants.MB, 4L * Constants.MB)
-        );
+        return Stream.of(Arguments.of(1024L, null), Arguments.of(1024L, 1024L), Arguments.of(1024L, 256L),
+            Arguments.of(4L * Constants.MB, null), Arguments.of(4L * Constants.MB, 1024L),
+            Arguments.of(20L * Constants.MB, null), Arguments.of(20L * Constants.MB, 4L * Constants.MB));
     }
 
     @Test
     public void bufferedUploadErrorPartitionTooBig() {
-        long length = 20 * Constants.MB;
+        int length = 20 * Constants.MB;
         long uploadChunkLength = 20 * Constants.MB;
         primaryFileClient.create(length);
-        ByteArrayInputStream data = new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer((int) length));
+        ByteArrayInputStream data = new ByteArrayInputStream(getRandomByteArray(length));
 
-        assertThrows(Exception.class, () -> primaryFileClient.upload(data, length, new ParallelTransferOptions()
-            .setBlockSizeLong(uploadChunkLength).setMaxSingleUploadSizeLong(uploadChunkLength)));
+        assertThrows(Exception.class,
+            () -> primaryFileClient.upload(data, length,
+                new ParallelTransferOptions().setBlockSizeLong(uploadChunkLength)
+                    .setMaxSingleUploadSizeLong(uploadChunkLength)));
     }
 
     @Test
     public void uploadDataError() {
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(),
-                DATA.getDefaultDataSizeLong()).setOffset(1L), null, null));
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.uploadRangeWithResponse(
+                new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())
+                    .setOffset(1L),
+                null, null));
 
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
     @Test
     public void parallelUploadDataError() {
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong(), null));
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong(), null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
@@ -867,17 +958,17 @@ class FileApiTests extends FileShareTestBase {
     public void clearRangeTrailingDot() {
         ShareFileClient primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
         primaryFileClient.create(DATA.getDefaultDataSizeLong());
-        FileShareTestHelper.assertResponseStatusCode(primaryFileClient.clearRangeWithResponse(
-            DATA.getDefaultDataSizeLong(), 0, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(
+            primaryFileClient.clearRangeWithResponse(DATA.getDefaultDataSizeLong(), 0, null, null), 201);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadAndClearRangeOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
@@ -914,8 +1005,8 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(fullInfoString.length());
         primaryFileClient.uploadRange(fullInfoData, fullInfoString.length());
 
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.clearRangeWithResponse(7, 20, null, null));
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.clearRangeWithResponse(7, 20, null, null));
 
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 416, ShareErrorCode.INVALID_RANGE);
     }
@@ -924,17 +1015,15 @@ class FileApiTests extends FileShareTestBase {
     @MethodSource("uploadDataLengthMismatchSupplier")
     public void uploadDataLengthMismatch(int size, String errMsg) {
         primaryFileClient.create(1024);
-        UnexpectedLengthException e = assertThrows(UnexpectedLengthException.class,
-            () -> primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
-                DATA.getDefaultInputStream(), size), null, Context.NONE));
+        UnexpectedLengthException e
+            = assertThrows(UnexpectedLengthException.class, () -> primaryFileClient.uploadRangeWithResponse(
+                new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), size), null, Context.NONE));
 
         assertTrue(e.getMessage().contains(errMsg));
     }
 
     private static Stream<Arguments> uploadDataLengthMismatchSupplier() {
-        return Stream.of(
-            Arguments.of(6, "more than"),
-            Arguments.of(8, "less than"));
+        return Stream.of(Arguments.of(6, "more than"), Arguments.of(8, "less than"));
     }
 
     @ParameterizedTest
@@ -958,20 +1047,17 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void downloadDataError() {
-        ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryFileClient.downloadWithResponse(new ByteArrayOutputStream(), new ShareFileRange(0, 1023L),
-                false, null, null));
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryFileClient
+            .downloadWithResponse(new ByteArrayOutputStream(), new ShareFileRange(0, 1023L), false, null, null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
     @Test
-    public void uploadFileDoesNotExist() {
+    public void uploadFileDoesNotExist() throws IOException {
         File uploadFile = new File(testFolder.getPath() + "/fakefile.txt");
-        if (uploadFile.exists()) {
-            assert uploadFile.delete();
-        }
-        UncheckedIOException e = assertThrows(UncheckedIOException.class,
-            () -> primaryFileClient.uploadFromFile(uploadFile.getPath()));
+        Files.deleteIfExists(uploadFile.toPath());
+        UncheckedIOException e
+            = assertThrows(UncheckedIOException.class, () -> primaryFileClient.uploadFromFile(uploadFile.getPath()));
         assertInstanceOf(NoSuchFileException.class, e.getCause());
 
         // cleanup
@@ -983,22 +1069,22 @@ class FileApiTests extends FileShareTestBase {
      */
     @LiveOnly
     @ParameterizedTest
-    @ValueSource(ints = {
-        0, // empty file
-        20, // small file
-        16 * 1024 * 1024, // medium file in several chunks
-        8 * 1026 * 1024 + 10, // medium file not aligned to block
-        50 * Constants.MB // large file requiring multiple requests
-    })
+    @ValueSource(
+        ints = {
+            0, // empty file
+            20, // small file
+            16 * 1024 * 1024, // medium file in several chunks
+            8 * 1026 * 1024 + 10, // medium file not aligned to block
+            50 * Constants.MB // large file requiring multiple requests
+        })
     public void downloadFileBufferCopy(int fileSize) throws IOException {
-        ShareServiceClient shareServiceClient = new ShareServiceClientBuilder()
-            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
-            .buildClient();
+        ShareServiceClient shareServiceClient
+            = new ShareServiceClientBuilder().connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+                .buildClient();
 
-        ShareFileClient fileClient = shareServiceClient.getShareClient(shareName)
-            .createFile(filePath, fileSize);
+        ShareFileClient fileClient = shareServiceClient.getShareClient(shareName).createFile(filePath, fileSize);
 
-        File file = FileShareTestHelper.getRandomFile(fileSize);
+        File file = getRandomFile(fileSize);
         fileClient.uploadFromFile(file.toPath().toString());
         File outFile = new File(generatePathName() + ".txt");
         if (outFile.exists()) {
@@ -1006,7 +1092,7 @@ class FileApiTests extends FileShareTestBase {
         }
 
         fileClient.downloadToFile(outFile.toPath().toString());
-        assertTrue(FileShareTestHelper.compareFiles(file, outFile, 0, fileSize));
+        assertTrue(compareFiles(file, outFile, 0, fileSize));
 
         //cleanup
         shareServiceClient.deleteShare(shareName);
@@ -1026,8 +1112,8 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(data.length());
         primaryFileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes(StandardCharsets.UTF_8)),
             data.length());
-        UncheckedIOException e = assertThrows(UncheckedIOException.class,
-            () -> primaryFileClient.downloadToFile(downloadFile.getPath()));
+        UncheckedIOException e
+            = assertThrows(UncheckedIOException.class, () -> primaryFileClient.downloadToFile(downloadFile.getPath()));
         assertInstanceOf(FileAlreadyExistsException.class, e.getCause());
 
         // cleanup
@@ -1058,30 +1144,29 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void uploadRangePreserveFileLastWrittenOn() {
-        FileLastWrittenMode[] modes = {FileLastWrittenMode.NOW, FileLastWrittenMode.PRESERVE};
+        FileLastWrittenMode[] modes = { FileLastWrittenMode.NOW, FileLastWrittenMode.PRESERVE };
         for (FileLastWrittenMode mode : modes) {
             primaryFileClient.create(Constants.KB);
             ShareFileProperties initialProps = primaryFileClient.getProperties();
-            primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
-                new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB)),
-                Constants.KB).setLastWrittenMode(mode), null, null);
+            primaryFileClient.uploadRangeWithResponse(
+                new ShareFileUploadRangeOptions(new ByteArrayInputStream(getRandomByteArray(Constants.KB)),
+                    Constants.KB).setLastWrittenMode(mode),
+                null, null);
             ShareFileProperties resultProps = primaryFileClient.getProperties();
 
             if (mode.equals(FileLastWrittenMode.PRESERVE)) {
-                assertEquals(initialProps.getSmbProperties().getFileLastWriteTime(), resultProps.getSmbProperties()
-                    .getFileLastWriteTime());
+                assertEquals(initialProps.getSmbProperties().getFileLastWriteTime(),
+                    resultProps.getSmbProperties().getFileLastWriteTime());
             } else {
-                assertNotEquals(initialProps.getSmbProperties().getFileLastWriteTime(), resultProps.getSmbProperties()
-                    .getFileLastWriteTime());
+                assertNotEquals(initialProps.getSmbProperties().getFileLastWriteTime(),
+                    resultProps.getSmbProperties().getFileLastWriteTime());
             }
         }
     }
 
     @Disabled("the groovy test was not testing this test properly. need to investigate this test further.")
     @ParameterizedTest
-    @ValueSource(strings = {
-        "",
-        "ü1ü" /* Something that needs to be url encoded. */
+    @ValueSource(strings = { "", "ü1ü" /* Something that needs to be url encoded. */
     })
     public void uploadRangeFromURL(String pathSuffix) {
         primaryFileClient = fileBuilderHelper(shareName, filePath + pathSuffix).buildFileClient();
@@ -1092,28 +1177,26 @@ class FileApiTests extends FileShareTestBase {
         int destinationOffset = 0;
 
         primaryFileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length());
-        StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString(
-            ENVIRONMENT.getPrimaryAccount().getConnectionString());
-        String sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(testResourceNamer.now().plusDays(1))
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        String sasToken = new ShareServiceSasSignatureValues().setExpiryTime(testResourceNamer.now().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
             .generateSasQueryParameters(credential)
             .encode();
 
-        ShareFileClient client = fileBuilderHelper(shareName, "destination" + pathSuffix)
-            .endpoint(primaryFileClient.getFileUrl().toString())
-            .buildFileClient();
-
+        ShareFileClient client
+            = fileBuilderHelper(shareName, "destination" + pathSuffix).endpoint(primaryFileClient.getFileUrl())
+                .buildFileClient();
 
         client.create(1024);
-        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, primaryFileClient.getFileUrl() + "?"
-            + sasToken);
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset,
+            primaryFileClient.getFileUrl() + "?" + sasToken);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         client.download(stream);
-        String result = new String(stream.toByteArray());
+        String result = stream.toString();
 
         for (int i = 0; i < length; i++) {
             //the groovy test was not asserting this line properly. need to come back and investigate this test further.
@@ -1121,28 +1204,28 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
-    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void uploadRangeFromURLSourceErrorAndStatusCode() {
-        primaryFileClient.create(1024);
-        ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
-        destinationClient.create(1024);
-
-        ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
-
-        assertTrue(e.getStatusCode() == 401);
-        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-        assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-    }*/
+    //    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    //    @Test
+    //    public void uploadRangeFromURLSourceErrorAndStatusCode() {
+    //        primaryFileClient.create(1024);
+    //        ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
+    //        destinationClient.create(1024);
+    //
+    //        ShareStorageException e = assertThrows(ShareStorageException.class,
+    //            () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
+    //
+    //        assertTrue(e.getStatusCode() == 401);
+    //        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+    //        assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+    //    }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClientSharedKey(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClientSharedKey(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
@@ -1154,10 +1237,9 @@ class FileApiTests extends FileShareTestBase {
         int destinationOffset = 0;
 
         fileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length());
-        StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString(
-            ENVIRONMENT.getPrimaryAccount().getConnectionString());
-        String sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(testResourceNamer.now().plusDays(1))
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        String sasToken = new ShareServiceSasSignatureValues().setExpiryTime(testResourceNamer.now().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
             .setShareName(fileClient.getShareName())
             .setFilePath(fileClient.getFilePath())
@@ -1172,12 +1254,13 @@ class FileApiTests extends FileShareTestBase {
             destinationOffset, sourceOffset, fileClient.getFileUrl() + "?" + sasToken, null, null);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ShareFileDownloadResponse downloadResponse = fileClientDest.downloadWithResponse(stream, null, null, null, null);
+        ShareFileDownloadResponse downloadResponse
+            = fileClientDest.downloadWithResponse(stream, null, null, null, null);
         ShareFileDownloadHeaders headers = downloadResponse.getDeserializedHeaders();
 
         FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
         assertTrue(downloadResponse.getStatusCode() == 200 || downloadResponse.getStatusCode() == 206);
-        assertEquals(headers.getContentLength(), 1024);
+        assertEquals(1024, headers.getContentLength());
 
         assertNotNull(headers.getETag());
         assertNotNull(headers.getLastModified());
@@ -1190,26 +1273,24 @@ class FileApiTests extends FileShareTestBase {
         assertNotNull(headers.getFileId());
 
         //u
-        assertEquals(stream.toByteArray()[0], 117);
+        assertEquals(117, stream.toByteArray()[0]);
 
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void uploadRangeFromUrlPreserveFileLastWrittenOn() {
-        FileLastWrittenMode[] modes = {FileLastWrittenMode.NOW, FileLastWrittenMode.PRESERVE};
+        FileLastWrittenMode[] modes = { FileLastWrittenMode.NOW, FileLastWrittenMode.PRESERVE };
 
         primaryFileClient.create(Constants.KB);
         ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
         destinationClient.create(Constants.KB);
         ShareFileProperties initialProps = destinationClient.getProperties();
-        primaryFileClient.uploadRange(new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB)),
-            Constants.KB);
+        primaryFileClient.uploadRange(new ByteArrayInputStream(getRandomByteArray(Constants.KB)), Constants.KB);
 
-        StorageSharedKeyCredential credential = StorageSharedKeyCredential
-            .fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
-        String sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(testResourceNamer.now().plusDays(1))
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        String sasToken = new ShareServiceSasSignatureValues().setExpiryTime(testResourceNamer.now().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
@@ -1217,18 +1298,20 @@ class FileApiTests extends FileShareTestBase {
             .encode();
 
         for (FileLastWrittenMode mode : modes) {
-            destinationClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(Constants.KB,
-                primaryFileClient.getFileUrl() + "?" + sasToken).setLastWrittenMode(mode), null, null);
+            destinationClient.uploadRangeFromUrlWithResponse(
+                new ShareFileUploadRangeFromUrlOptions(Constants.KB, primaryFileClient.getFileUrl() + "?" + sasToken)
+                    .setLastWrittenMode(mode),
+                null, null);
             ShareFileProperties resultProps = destinationClient.getProperties();
             if (mode.equals(FileLastWrittenMode.PRESERVE)) {
-//                assertEquals(initialProps.getSmbProperties().getFileLastWriteTime(), resultProps.getSmbProperties()
-//                    .getFileLastWriteTime());
+                //                assertEquals(initialProps.getSmbProperties().getFileLastWriteTime(), resultProps.getSmbProperties()
+                //                    .getFileLastWriteTime());
                 assertTrue(FileShareTestHelper.compareDatesWithPrecision(
                     initialProps.getSmbProperties().getFileLastWriteTime(),
                     resultProps.getSmbProperties().getFileLastWriteTime()));
             } else {
-                assertNotEquals(initialProps.getSmbProperties().getFileLastWriteTime(), resultProps.getSmbProperties()
-                    .getFileLastWriteTime());
+                assertNotEquals(initialProps.getSmbProperties().getFileLastWriteTime(),
+                    resultProps.getSmbProperties().getFileLastWriteTime());
             }
         }
     }
@@ -1244,10 +1327,8 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient destinationClient = directoryClient.getFileClient(generatePathName() + ".");
         destinationClient.create(Constants.KB);
 
-        sourceClient.uploadRange(new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB)),
-            Constants.KB);
-        ShareFileSasPermission permissions = new ShareFileSasPermission()
-            .setReadPermission(true)
+        sourceClient.uploadRange(new ByteArrayInputStream(getRandomByteArray(Constants.KB)), Constants.KB);
+        ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true);
@@ -1276,9 +1357,10 @@ class FileApiTests extends FileShareTestBase {
 
         sourceClient.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());
         // error thrown: CannotVerifyCopySource
-        assertThrows(ShareStorageException.class, () -> destinationClient
-            .uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(DATA.getDefaultDataSizeLong(),
-                sourceClient.getFileUrl()), null, null));
+        assertThrows(ShareStorageException.class,
+            () -> destinationClient.uploadRangeFromUrlWithResponse(
+                new ShareFileUploadRangeFromUrlOptions(DATA.getDefaultDataSizeLong(), sourceClient.getFileUrl()), null,
+                null));
     }
 
     @Test
@@ -1298,9 +1380,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "",
-        "ü1ü" /* Something that needs to be url encoded. */
+    @ValueSource(strings = { "", "ü1ü" /* Something that needs to be url encoded. */
     })
     public void startCopy(String pathSuffix) {
         primaryFileClient = fileBuilderHelper(shareName, filePath + pathSuffix).buildFileClient();
@@ -1308,8 +1388,8 @@ class FileApiTests extends FileShareTestBase {
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
         String sourceURL = primaryFileClient.getFileUrl();
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, new ShareFileCopyOptions(),
-            null);
+        SyncPoller<ShareFileCopyInfo, Void> poller
+            = primaryFileClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse.getValue().getCopyId());
     }
@@ -1323,15 +1403,14 @@ class FileApiTests extends FileShareTestBase {
         String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now());
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
         if (setFilePermissionKey) {
             smbProperties.setFilePermissionKey(filePermissionKey);
         }
 
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties,
-            setFilePermission ? FILE_PERMISSION : null, permissionType, ignoreReadOnly,
-            setArchiveAttribute, null, null, null);
+        SyncPoller<ShareFileCopyInfo, Void> poller
+            = primaryFileClient.beginCopy(sourceURL, smbProperties, setFilePermission ? FILE_PERMISSION : null,
+                permissionType, ignoreReadOnly, setArchiveAttribute, null, null, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse.getValue().getCopyId());
     }
@@ -1346,14 +1425,14 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient destClient = shareClient.getFileClient(generatePathName() + ".");
         destClient.create(1024);
 
-        byte[] data = FileShareTestHelper.getRandomBuffer(Constants.KB);
+        byte[] data = getRandomByteArray(Constants.KB);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
         sourceClient.uploadRange(inputStream, Constants.KB);
 
-        SyncPoller<ShareFileCopyInfo, Void> poller = destClient.beginCopy(sourceClient.getFileUrl(),
-            new ShareFileCopyOptions(), null);
+        SyncPoller<ShareFileCopyInfo, Void> poller
+            = destClient.beginCopy(sourceClient.getFileUrl(), new ShareFileCopyOptions(), null);
         poller.waitForCompletion();
-        assertEquals(poller.poll().getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, poller.poll().getStatus());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
@@ -1382,20 +1461,20 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
     }
 
-    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    @Test
-    public void startCopySourceErrorAndStatusCode() {
-        primaryFileClient.create(1024);
-
-        ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
-            SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
-            poller.waitForCompletion();
-        });
-
-        assertTrue(e.getStatusCode() == 400);
-        assertTrue(e.getServiceMessage().contains("InvalidUri"));
-        assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
-    }*/
+    //    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    //    @Test
+    //    public void startCopySourceErrorAndStatusCode() {
+    //        primaryFileClient.create(1024);
+    //
+    //        ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
+    //            SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
+    //            poller.waitForCompletion();
+    //        });
+    //
+    //        assertTrue(e.getStatusCode() == 400);
+    //        assertTrue(e.getServiceMessage().contains("InvalidUri"));
+    //        assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
+    //    }
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#startCopyArgumentsSupplier")
@@ -1406,13 +1485,11 @@ class FileApiTests extends FileShareTestBase {
         String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now());
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
         if (setFilePermissionKey) {
             smbProperties.setFilePermissionKey(filePermissionKey);
         }
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setSmbProperties(smbProperties)
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
             .setFilePermission(setFilePermission ? FILE_PERMISSION : null)
             .setIgnoreReadOnly(ignoreReadOnly)
             .setArchiveAttribute(setArchiveAttribute)
@@ -1421,21 +1498,19 @@ class FileApiTests extends FileShareTestBase {
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
     @Test
     public void startCopyWithOptionsIgnoreReadOnlyAndSetArchive() {
         primaryFileClient.create(1024);
         String sourceURL = primaryFileClient.getFileUrl();
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setIgnoreReadOnly(true)
-            .setArchiveAttribute(true);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setIgnoreReadOnly(true).setArchiveAttribute(true);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
@@ -1447,13 +1522,11 @@ class FileApiTests extends FileShareTestBase {
 
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
-        smbProperties
-            .setFileCreationTime(testResourceNamer.now())
+        smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setNtfsFileAttributes(ntfs);
 
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setSmbProperties(smbProperties)
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
@@ -1462,12 +1535,33 @@ class FileApiTests extends FileShareTestBase {
         FileSmbProperties properties = primaryFileClient.getProperties().getSmbProperties();
 
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         FileShareTestHelper.compareDatesWithPrecision(properties.getFileCreationTime(),
             smbProperties.getFileCreationTime());
         FileShareTestHelper.compareDatesWithPrecision(properties.getFileLastWriteTime(),
             smbProperties.getFileLastWriteTime());
         assertEquals(properties.getNtfsFileAttributes(), smbProperties.getNtfsFileAttributes());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void startCopyFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        primaryFileClient.create(1024);
+        String sourceURL = primaryFileClient.getFileUrl();
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setFilePermission(permission)
+            .setFilePermissionFormat(filePermissionFormat)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
+
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
+        PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
+
+        FileSmbProperties properties = primaryFileClient.getProperties().getSmbProperties();
+
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        assertNotNull(properties.getFilePermissionKey());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
@@ -1478,8 +1572,7 @@ class FileApiTests extends FileShareTestBase {
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
         smbProperties.setFileChangeTime(testResourceNamer.now());
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setSmbProperties(smbProperties)
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
@@ -1487,7 +1580,7 @@ class FileApiTests extends FileShareTestBase {
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
 
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         FileShareTestHelper.compareDatesWithPrecision(smbProperties.getFileChangeTime(),
             primaryFileClient.getProperties().getSmbProperties().getFileChangeTime());
     }
@@ -1501,14 +1594,12 @@ class FileApiTests extends FileShareTestBase {
         EnumSet<NtfsFileAttributes> ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
-        smbProperties
-            .setFileCreationTime(testResourceNamer.now())
+        smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setNtfsFileAttributes(ntfs)
             .setFilePermissionKey(filePermissionKey);
 
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setSmbProperties(smbProperties)
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
@@ -1516,7 +1607,7 @@ class FileApiTests extends FileShareTestBase {
         FileSmbProperties properties = primaryFileClient.getProperties().getSmbProperties();
 
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         FileShareTestHelper.compareDatesWithPrecision(properties.getFileCreationTime(),
             smbProperties.getFileCreationTime());
         FileShareTestHelper.compareDatesWithPrecision(properties.getFileLastWriteTime(),
@@ -1530,13 +1621,12 @@ class FileApiTests extends FileShareTestBase {
         String sourceURL = primaryFileClient.getFileUrl();
         String leaseId = createLeaseClient(primaryFileClient).acquireLease();
         ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(leaseId);
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setDestinationRequestConditions(conditions);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setDestinationRequestConditions(conditions);
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
 
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
     @Test
@@ -1546,8 +1636,7 @@ class FileApiTests extends FileShareTestBase {
         String leaseId = testResourceNamer.randomUuid();
         ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(leaseId);
 
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setDestinationRequestConditions(conditions);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setDestinationRequestConditions(conditions);
         // exception: LeaseNotPresentWithFileOperation
         assertThrows(ShareStorageException.class, () -> primaryFileClient.beginCopy(sourceURL, options, null));
     }
@@ -1556,14 +1645,13 @@ class FileApiTests extends FileShareTestBase {
     public void startCopyWithOptionsMetadata() {
         primaryFileClient.create(1024);
         String sourceURL = primaryFileClient.getFileUrl();
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setMetadata(testMetadata);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(testMetadata);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
 
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
@@ -1579,28 +1667,26 @@ class FileApiTests extends FileShareTestBase {
         String sourceURL = primaryFileClient.getFileUrl();
         String leaseId = createLeaseClient(primaryFileClient).acquireLease();
         ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(leaseId);
-        CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList()
-            .setCreatedOn(true)
+        CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList().setCreatedOn(true)
             .setLastWrittenOn(true)
             .setChangedOn(true)
             .setFileAttributes(true);
 
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setDestinationRequestConditions(conditions)
-            .setSmbPropertiesToCopy(list);
+        ShareFileCopyOptions options
+            = new ShareFileCopyOptions().setDestinationRequestConditions(conditions).setSmbPropertiesToCopy(list);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         ShareFileProperties resultProperties = primaryFileClient.getProperties();
 
         assertNotNull(pollResponse.getValue().getCopyId());
-        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-        FileShareTestHelper.compareDatesWithPrecision(creationTime, resultProperties.getSmbProperties()
-            .getFileCreationTime());
-        FileShareTestHelper.compareDatesWithPrecision(lastWrittenTime, resultProperties.getSmbProperties()
-            .getFileLastWriteTime());
-        FileShareTestHelper.compareDatesWithPrecision(changedTime, resultProperties.getSmbProperties()
-            .getFileChangeTime());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        FileShareTestHelper.compareDatesWithPrecision(creationTime,
+            resultProperties.getSmbProperties().getFileCreationTime());
+        FileShareTestHelper.compareDatesWithPrecision(lastWrittenTime,
+            resultProperties.getSmbProperties().getFileLastWriteTime());
+        FileShareTestHelper.compareDatesWithPrecision(changedTime,
+            resultProperties.getSmbProperties().getFileChangeTime());
         assertEquals(fileAttributes, resultProperties.getSmbProperties().getNtfsFileAttributes());
     }
 
@@ -1611,8 +1697,7 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(1024);
         String sourceURL = primaryFileClient.getFileUrl();
         EnumSet<NtfsFileAttributes> ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE);
-        CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList()
-            .setCreatedOn(createdOn)
+        CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList().setCreatedOn(createdOn)
             .setLastWrittenOn(lastWrittenOn)
             .setChangedOn(changedOn)
             .setFileAttributes(fileAttributes);
@@ -1622,8 +1707,7 @@ class FileApiTests extends FileShareTestBase {
             .setFileChangeTime(testResourceNamer.now())
             .setNtfsFileAttributes(ntfs);
 
-        ShareFileCopyOptions options = new ShareFileCopyOptions()
-            .setSmbProperties(smbProperties)
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
             .setSmbPropertiesToCopy(list);
@@ -1634,10 +1718,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void startCopyOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient sourceClient = dirClient.getFileClient(generatePathName());
         sourceClient.create(DATA.getDefaultDataSizeLong());
@@ -1646,8 +1730,8 @@ class FileApiTests extends FileShareTestBase {
         sourceClient.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());
 
         String sourceURL = sourceClient.getFileUrl();
-        SyncPoller<ShareFileCopyInfo, Void> poller = sourceClient.beginCopy(sourceURL, new ShareFileCopyOptions(),
-            null);
+        SyncPoller<ShareFileCopyInfo, Void> poller
+            = sourceClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse.getValue().getCopyId());
     }
@@ -1689,16 +1773,16 @@ class FileApiTests extends FileShareTestBase {
         String leaseId = createLeaseClient(primaryFileClient).acquireLease();
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
 
-        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(
-            sourceURL, new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null);
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(sourceURL,
+            new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null);
 
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse);
         assertNotNull(pollResponse.getValue());
         // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
         // Exception thrown: "NoPendingCopyOperation"
-        assertThrows(ShareStorageException.class, () -> dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(),
-            requestConditions, null, null));
+        assertThrows(ShareStorageException.class,
+            () -> dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(), requestConditions, null, null));
     }
 
     @Test
@@ -1720,14 +1804,13 @@ class FileApiTests extends FileShareTestBase {
         // revisit this test. the groovy test was throwing exception at beginCopy, but not testing abortCopy.
         // exception: LeaseNotPresentWithFileOperation
         assertThrows(ShareStorageException.class, () -> {
-            SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(
-                sourceURL, new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null);
+            SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(sourceURL,
+                new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null);
 
             PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
             assertNotNull(pollResponse);
             assertNotNull(pollResponse.getValue());
-            dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(),
-                requestConditions, null, null);
+            dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(), requestConditions, null, null);
         });
     }
 
@@ -1755,10 +1838,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void abortCopyOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient sourceClient = dirClient.getFileClient(fileName);
@@ -1800,8 +1883,8 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void deleteFileOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         dirClient.create();
@@ -1813,8 +1896,8 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void deleteFileError() {
-        ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryFileClient.deleteWithResponse(null, null));
+        ShareStorageException e
+            = assertThrows(ShareStorageException.class, () -> primaryFileClient.deleteWithResponse(null, null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
@@ -1850,8 +1933,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void getProperties() {
         primaryFileClient.create(1024);
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now());
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
         Response<ShareFileProperties> resp = primaryFileClient.getPropertiesWithResponse(null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
@@ -1872,8 +1954,7 @@ class FileApiTests extends FileShareTestBase {
     public void getPropertiesTrailingDot() {
         ShareFileClient shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
         shareFileClient.create(1024);
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now());
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
         Response<ShareFileProperties> resp = shareFileClient.getPropertiesWithResponse(null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
@@ -1892,10 +1973,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void getPropertiesOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
 
@@ -1931,8 +2012,8 @@ class FileApiTests extends FileShareTestBase {
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
 
-        Response<ShareFileInfo> resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties,
-            null, null, null);
+        Response<ShareFileInfo> resp
+            = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
         assertNotNull(resp.getValue().getETag());
@@ -1950,11 +2031,10 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void setHttpHeadersFp() {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null);
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now());
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
 
-        Response<ShareFileInfo> resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties,
-            FILE_PERMISSION, null, null);
+        Response<ShareFileInfo> resp
+            = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, FILE_PERMISSION, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
         assertNotNull(resp.getValue().getETag());
@@ -1977,8 +2057,8 @@ class FileApiTests extends FileShareTestBase {
 
         String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
 
-        ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(512)
-            .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
+        ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(512).setFilePermissions(
+            new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
 
         Response<ShareFileInfo> bagResponse = primaryFileClient.setPropertiesWithResponse(options, null, null);
 
@@ -1992,8 +2072,8 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(512);
         OffsetDateTime changeTime = testResourceNamer.now();
         primaryFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null);
-        FileShareTestHelper.compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties()
-            .getFileChangeTime(), changeTime);
+        FileShareTestHelper.compareDatesWithPrecision(
+            primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
@@ -2004,46 +2084,45 @@ class FileApiTests extends FileShareTestBase {
         shareFileClient.create(1024);
         OffsetDateTime changeTime = testResourceNamer.now();
         shareFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null);
-        FileShareTestHelper.compareDatesWithPrecision(shareFileClient.getProperties().getSmbProperties()
-            .getFileChangeTime(), changeTime);
+        FileShareTestHelper.compareDatesWithPrecision(
+            shareFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void setHttpHeadersOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(Constants.KB);
-        httpHeaders = new ShareFileHttpHeaders()
-            .setContentType("application/octet-stream")
+        httpHeaders = new ShareFileHttpHeaders().setContentType("application/octet-stream")
             .setContentDisposition("attachment")
             .setCacheControl("no-transform")
             .setContentEncoding("gzip")
             .setContentLanguage("en");
 
-        Response<ShareFileInfo> res = fileClient.setPropertiesWithResponse(Constants.KB, httpHeaders, null, null, null,
-            null);
+        Response<ShareFileInfo> res
+            = fileClient.setPropertiesWithResponse(Constants.KB, httpHeaders, null, null, null, null);
         ShareFileProperties properties = fileClient.getProperties();
 
         FileShareTestHelper.assertResponseStatusCode(res, 200);
         assertNotNull(res.getValue().getETag());
         assertEquals(res.getValue().getETag(), res.getHeaders().getValue(HttpHeaderName.ETAG));
-        assertEquals(properties.getContentType(), "application/octet-stream");
-        assertEquals(properties.getContentDisposition(), "attachment");
-        assertEquals(properties.getCacheControl(), "no-transform");
-        assertEquals(properties.getContentEncoding(), "gzip");
+        assertEquals("application/octet-stream", properties.getContentType());
+        assertEquals("attachment", properties.getContentDisposition());
+        assertEquals("no-transform", properties.getCacheControl());
+        assertEquals("gzip", properties.getContentEncoding());
         assertNull(properties.getContentMd5());
     }
 
     @Test
     public void setHttpHeadersError() {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null);
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.setPropertiesWithResponse(-1, null, null, null, null, null));
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.setPropertiesWithResponse(-1, null, null, null, null, null));
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.OUT_OF_RANGE_INPUT);
     }
 
@@ -2052,8 +2131,8 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.createWithResponse(1024, httpHeaders, null, null, testMetadata, null, null);
         Map<String, String> updatedMetadata = Collections.singletonMap("update", "value");
         ShareFileProperties getPropertiesBefore = primaryFileClient.getProperties();
-        Response<ShareFileMetadataInfo> setPropertiesResponse = primaryFileClient
-            .setMetadataWithResponse(updatedMetadata, null, null);
+        Response<ShareFileMetadataInfo> setPropertiesResponse
+            = primaryFileClient.setMetadataWithResponse(updatedMetadata, null, null);
         ShareFileProperties getPropertiesAfter = primaryFileClient.getProperties();
         assertEquals(testMetadata, getPropertiesBefore.getMetadata());
         FileShareTestHelper.assertResponseStatusCode(setPropertiesResponse, 200);
@@ -2068,8 +2147,8 @@ class FileApiTests extends FileShareTestBase {
         Map<String, String> updatedMetadata = Collections.singletonMap("update", "value");
 
         ShareFileProperties getPropertiesBefore = shareFileClient.getProperties();
-        Response<ShareFileMetadataInfo> setPropertiesResponse = shareFileClient.setMetadataWithResponse(updatedMetadata,
-            null, null);
+        Response<ShareFileMetadataInfo> setPropertiesResponse
+            = shareFileClient.setMetadataWithResponse(updatedMetadata, null, null);
         ShareFileProperties getPropertiesAfter = shareFileClient.getProperties();
 
         assertEquals(testMetadata, getPropertiesBefore.getMetadata());
@@ -2080,18 +2159,18 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void setMetadataOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         Map<String, String> updatedMetadata = Collections.singletonMap("update", "value");
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.createWithResponse(Constants.KB, null, null, null, testMetadata, null, null);
 
         ShareFileProperties getPropertiesBefore = fileClient.getProperties();
-        Response<ShareFileMetadataInfo> setPropertiesResponse = fileClient.setMetadataWithResponse(updatedMetadata,
-            null, null);
+        Response<ShareFileMetadataInfo> setPropertiesResponse
+            = fileClient.setMetadataWithResponse(updatedMetadata, null, null);
         ShareFileProperties getPropertiesAfter = fileClient.getProperties();
 
         assertEquals(testMetadata, getPropertiesBefore.getMetadata());
@@ -2166,9 +2245,7 @@ class FileApiTests extends FileShareTestBase {
         String uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileName);
         primaryFileClient.uploadFromFile(uploadFile);
         ShareSnapshotInfo snapInfo = shareClient.createSnapshot();
-        primaryFileClient = fileBuilderHelper(shareName, filePath)
-            .snapshot(snapInfo.getSnapshot())
-            .buildFileClient();
+        primaryFileClient = fileBuilderHelper(shareName, filePath).snapshot(snapInfo.getSnapshot()).buildFileClient();
 
         primaryFileClient.listRanges(new ShareFileRange(0, 511L), null, null).forEach(it -> {
             assertEquals(0, it.getStart());
@@ -2185,12 +2262,11 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(1024);
         String uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileName);
         primaryFileClient.uploadFromFile(uploadFile);
-        primaryFileClient = fileBuilderHelper(shareName, filePath)
-            .snapshot("2020-08-07T16:58:02.0000000Z")
-            .buildFileClient();
+        primaryFileClient
+            = fileBuilderHelper(shareName, filePath).snapshot("2020-08-07T16:58:02.0000000Z").buildFileClient();
 
-        assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.listRanges(new ShareFileRange(0, 511L), null, null).forEach(it -> {
+        assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.listRanges(new ShareFileRange(0, 511L), null, null).forEach(it -> {
                 assertEquals(0, it.getStart());
                 assertEquals(511, it.getEnd());
             }));
@@ -2202,10 +2278,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void listRangesOAuth() throws IOException {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         String fileName = generatePathName();
         ShareFileClient fileClient = dirClient.getFileClient(fileName);
@@ -2228,17 +2304,16 @@ class FileApiTests extends FileShareTestBase {
     public void listRangesDiff(List<FileRange> rangesToUpdate, List<FileRange> rangesToClear,
         List<FileRange> expectedRanges, List<ClearRange> expectedClearRanges) {
         primaryFileClient.create(4 * Constants.MB);
-        primaryFileClient.uploadRange(new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(4 * Constants.MB)),
-            4 * Constants.MB);
-        String snapshotId = primaryFileServiceClient.getShareClient(primaryFileClient.getShareName())
-            .createSnapshot()
-            .getSnapshot();
+        primaryFileClient.uploadRange(new ByteArrayInputStream(getRandomByteArray(4 * Constants.MB)), 4 * Constants.MB);
+        String snapshotId
+            = primaryFileServiceClient.getShareClient(primaryFileClient.getShareName()).createSnapshot().getSnapshot();
 
         rangesToUpdate.forEach(it -> {
             long size = it.getEnd() - it.getStart() + 1;
             primaryFileClient.uploadRangeWithResponse(
-                new ShareFileUploadRangeOptions(new ByteArrayInputStream(
-                    FileShareTestHelper.getRandomBuffer((int) size)), size).setOffset(it.getStart()), null, null);
+                new ShareFileUploadRangeOptions(new ByteArrayInputStream(getRandomByteArray((int) size)), size)
+                    .setOffset(it.getStart()),
+                null, null);
         });
 
         rangesToClear.forEach(it -> {
@@ -2268,18 +2343,16 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void listRangesDiffOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(Constants.KB);
-        fileClient.uploadRange(new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB)),
-            Constants.KB);
-        String snapshotId = primaryFileServiceClient.getShareClient(fileClient.getShareName())
-            .createSnapshot()
-            .getSnapshot();
+        fileClient.uploadRange(new ByteArrayInputStream(getRandomByteArray(Constants.KB)), Constants.KB);
+        String snapshotId
+            = primaryFileServiceClient.getShareClient(fileClient.getShareName()).createSnapshot().getSnapshot();
 
         List<FileRange> rangesToUpdate = FileShareTestHelper.createFileRanges();
         List<FileRange> rangesToClear = FileShareTestHelper.createFileRanges();
@@ -2288,8 +2361,8 @@ class FileApiTests extends FileShareTestBase {
 
         rangesToUpdate.forEach(it -> {
             long size = it.getEnd() - it.getStart() + 1;
-            fileClient.uploadWithResponse(new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer((int) size)),
-                size, it.getStart(), null, null);
+            fileClient.uploadWithResponse(new ByteArrayInputStream(getRandomByteArray((int) size)), size, it.getStart(),
+                null, null);
         });
 
         rangesToClear.forEach(it -> {
@@ -2324,8 +2397,10 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.uploadFromFile(uploadFile);
         ShareSnapshotInfo snapInfo = shareClient.createSnapshot();
 
-        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSizeLong()).setOffset(1024L), null, null);
+        primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())
+                .setOffset(1024L),
+            null, null);
 
         FileRange range = primaryFileClient.listRangesDiffWithResponse(
             new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025, 1026L)), null,
@@ -2345,14 +2420,18 @@ class FileApiTests extends FileShareTestBase {
         String uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileName);
         primaryFileClient.uploadFromFile(uploadFile);
         ShareSnapshotInfo snapInfo = shareClient.createSnapshot();
-        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSizeLong()).setOffset(1024L), null, null);
+        primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())
+                .setOffset(1024L),
+            null, null);
         String leaseId = createLeaseClient(primaryFileClient).acquireLease();
 
-        FileRange range = primaryFileClient.listRangesDiffWithResponse(
-            new ShareFileListRangesDiffOptions(snapInfo.getSnapshot())
+        FileRange range = primaryFileClient
+            .listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot())
                 .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId)), null, null)
-            .getValue().getRanges().get(0);
+            .getValue()
+            .getRanges()
+            .get(0);
         assertEquals(1024, range.getStart());
         assertEquals(1030, range.getEnd());
         // cleanup
@@ -2368,7 +2447,7 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(Constants.MB);
 
         //upload some content
-        ByteArrayInputStream content = new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB));
+        ByteArrayInputStream content = new ByteArrayInputStream(getRandomByteArray(Constants.KB));
         String uploadFile = FileShareTestHelper.createRandomFileWithLength(Constants.KB, testFolder, fileName);
         primaryFileClient.uploadFromFile(uploadFile);
         primaryFileClient.uploadRange(content, Constants.KB);
@@ -2402,10 +2481,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> listRangesDiffWithRenameSupplier() {
-        return Stream.of(
-            Arguments.of(true),
-            Arguments.of(false),
-            Arguments.of((Boolean) null));
+        return Stream.of(Arguments.of(true), Arguments.of(false), Arguments.of((Boolean) null));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
@@ -2417,8 +2493,9 @@ class FileApiTests extends FileShareTestBase {
         String uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileNameWithDot);
         primaryFileClient.uploadFromFile(uploadFile);
         ShareSnapshotInfo snapInfo = shareClient.createSnapshot();
-        ShareFileUploadRangeOptions options = new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSizeLong()).setOffset(1024L);
+        ShareFileUploadRangeOptions options
+            = new ShareFileUploadRangeOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong())
+                .setOffset(1024L);
         primaryFileClient.uploadRangeWithResponse(options, null, null);
         FileRange range = primaryFileClient.listRangesDiffWithResponse(
             new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRange(new ShareFileRange(1025L, 1026L)), null,
@@ -2441,10 +2518,12 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong(), 1024L, null,
             null);
 
-        assertThrows(ShareStorageException.class, () -> primaryFileClient.listRangesDiffWithResponse(
-            new ShareFileListRangesDiffOptions(snapInfo.getSnapshot())
-                .setRequestConditions(new ShareRequestConditions()
-                    .setLeaseId(testResourceNamer.randomUuid())), null, null).getValue().getRanges().get(0));
+        assertThrows(ShareStorageException.class, () -> primaryFileClient
+            .listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(snapInfo.getSnapshot()).setRequestConditions(
+                new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid())), null, null)
+            .getValue()
+            .getRanges()
+            .get(0));
 
         // cleanup
         FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
@@ -2457,10 +2536,11 @@ class FileApiTests extends FileShareTestBase {
         String uploadFile = FileShareTestHelper.createRandomFileWithLength(1024, testFolder, fileName);
         primaryFileClient.uploadFromFile(uploadFile);
 
-        assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.listRangesDiffWithResponse(
-                new ShareFileListRangesDiffOptions("2020-08-07T16:58:02.0000000Z"), null, null).getValue().getRanges()
-                .get(0));
+        assertThrows(ShareStorageException.class, () -> primaryFileClient
+            .listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("2020-08-07T16:58:02.0000000Z"), null, null)
+            .getValue()
+            .getRanges()
+            .get(0));
         FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
     }
 
@@ -2487,10 +2567,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void listHandlesOAuth() {
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(Constants.KB);
@@ -2505,7 +2585,7 @@ class FileApiTests extends FileShareTestBase {
         ShareDirectoryClient directoryClient = shareClient.getDirectoryClient("mydirectory");
         ShareFileClient fileClient = directoryClient.getFileClient("myfile");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
-        assertEquals(list.get(0).getAccessRights().get(0), ShareFileHandleAccessRights.WRITE);
+        assertEquals(ShareFileHandleAccessRights.WRITE, list.get(0).getAccessRights().get(0));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2023-01-03")
@@ -2536,10 +2616,10 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void forceCloseHandleOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient
+            = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(512);
@@ -2566,7 +2646,7 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @ParameterizedTest
-    @ValueSource(strings = {"\u200B", "\u200C", "\u200D", "\uFEFF"})
+    @ValueSource(strings = { "\u200B", "\u200C", "\u200D", "\uFEFF" })
     public void renameWithUnicodeChars(String specialChar) {
         ShareFileClient fileClient = shareClient.getFileClient("test-file-source" + specialChar + " pdf.txt");
         fileClient.create(512);
@@ -2579,8 +2659,8 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void renameWithResponse() {
         primaryFileClient.create(512);
-        Response<ShareFileClient> resp = primaryFileClient.renameWithResponse(
-            new ShareFileRenameOptions(generatePathName()), null, null);
+        Response<ShareFileClient> resp
+            = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null);
         ShareFileClient renamedClient = resp.getValue();
         assertNotNull(renamedClient.getProperties());
         assertThrows(ShareStorageException.class, () -> primaryFileClient.getProperties());
@@ -2589,8 +2669,7 @@ class FileApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-02-12")
     @Test
     public void renameSasToken() {
-        ShareFileSasPermission permissions = new ShareFileSasPermission()
-            .setReadPermission(true)
+        ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true);
@@ -2620,15 +2699,15 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void renameReplaceIfExists(boolean replaceIfExists) {
         primaryFileClient.create(512);
         ShareFileClient destination = shareClient.getFileClient(generatePathName());
         destination.create(512);
         boolean exception = false;
         try {
-            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(destination.getFilePath())
-                .setReplaceIfExists(replaceIfExists), null, null);
+            primaryFileClient.renameWithResponse(
+                new ShareFileRenameOptions(destination.getFilePath()).setReplaceIfExists(replaceIfExists), null, null);
         } catch (ShareStorageException ignored) {
             exception = true;
         }
@@ -2637,18 +2716,20 @@ class FileApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void renameIgnoreReadOnly(boolean ignoreReadOnly) {
         primaryFileClient.create(512);
-        FileSmbProperties props = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY));
+        FileSmbProperties props
+            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY));
         ShareFileClient destinationFile = shareClient.getFileClient(generatePathName());
         destinationFile.createWithResponse(512L, null, props, null, null, null, null, null);
         boolean exception = false;
 
         try {
-            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(destinationFile.getFilePath())
-                .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true), null, null);
+            primaryFileClient.renameWithResponse(
+                new ShareFileRenameOptions(destinationFile.getFilePath()).setIgnoreReadOnly(ignoreReadOnly)
+                    .setReplaceIfExists(true),
+                null, null);
         } catch (ShareStorageException ignored) {
             exception = true;
         }
@@ -2659,10 +2740,14 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void renameFilePermission() {
         primaryFileClient.create(512);
-        String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
+        String filePermission
+            = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
 
-        ShareFileClient destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
-            .setFilePermission(filePermission), null, null).getValue();
+        ShareFileClient destClient
+            = primaryFileClient
+                .renameWithResponse(new ShareFileRenameOptions(generatePathName()).setFilePermission(filePermission),
+                    null, null)
+                .getValue();
 
         assertNotNull(destClient.getProperties().getSmbProperties().getFilePermissionKey());
     }
@@ -2688,37 +2773,43 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void renameFilePermissionAndKeySet() {
         primaryFileClient.create(512);
-        String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
+        String filePermission
+            = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
         // permission and key cannot both be set
-        assertThrows(ShareStorageException.class, () ->  primaryFileClient.renameWithResponse(
-            new ShareFileRenameOptions(generatePathName())
-            .setFilePermission(filePermission)
-            .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey")), null, null)
-            .getValue());
+        assertThrows(ShareStorageException.class,
+            () -> primaryFileClient
+                .renameWithResponse(
+                    new ShareFileRenameOptions(generatePathName()).setFilePermission(filePermission)
+                        .setSmbProperties(new FileSmbProperties().setFilePermissionKey("filePermissionkey")),
+                    null, null)
+                .getValue());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void renameFileSmbProperties() {
         primaryFileClient.create(512);
-        String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
+        String filePermission
+            = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
         String permissionKey = shareClient.createPermission(filePermission);
         OffsetDateTime fileCreationTime = testResourceNamer.now().minusDays(5);
         OffsetDateTime fileLastWriteTime = testResourceNamer.now().minusYears(2);
         OffsetDateTime fileChangeTime = testResourceNamer.now();
-        FileSmbProperties smbProperties = new FileSmbProperties()
-            .setFilePermissionKey(permissionKey)
+        FileSmbProperties smbProperties = new FileSmbProperties().setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(fileCreationTime)
             .setFileLastWriteTime(fileLastWriteTime)
             .setFileChangeTime(fileChangeTime);
 
-        ShareFileClient destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
-            .setSmbProperties(smbProperties), null, null).getValue();
+        ShareFileClient destClient
+            = primaryFileClient
+                .renameWithResponse(new ShareFileRenameOptions(generatePathName()).setSmbProperties(smbProperties),
+                    null, null)
+                .getValue();
         ShareFileProperties destProperties = destClient.getProperties();
 
-        assertEquals(destProperties.getSmbProperties().getNtfsFileAttributes(), EnumSet.of(NtfsFileAttributes.ARCHIVE,
-            NtfsFileAttributes.READ_ONLY));
+        assertEquals(destProperties.getSmbProperties().getNtfsFileAttributes(),
+            EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY));
         assertNotNull(destProperties.getSmbProperties().getFileCreationTime());
         assertNotNull(destProperties.getSmbProperties().getFileLastWriteTime());
         FileShareTestHelper.compareDatesWithPrecision(destProperties.getSmbProperties().getFileChangeTime(),
@@ -2748,8 +2839,8 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient primaryFileClient = rootDirectory.getFileClient(generatePathName() + ".");
         primaryFileClient.create(1024);
 
-        Response<ShareFileClient> response = primaryFileClient
-            .renameWithResponse(new ShareFileRenameOptions(generatePathName() + "."), null, null);
+        Response<ShareFileClient> response
+            = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName() + "."), null, null);
 
         FileShareTestHelper.assertResponseStatusCode(response, 200);
     }
@@ -2766,8 +2857,7 @@ class FileApiTests extends FileShareTestBase {
     public void renameSourceAC() {
         primaryFileClient.create(512);
         String leaseID = setupFileLeaseCondition(primaryFileClient, RECEIVED_LEASE_ID);
-        ShareRequestConditions src = new ShareRequestConditions()
-            .setLeaseId(leaseID);
+        ShareRequestConditions src = new ShareRequestConditions().setLeaseId(leaseID);
 
         FileShareTestHelper.assertResponseStatusCode(primaryFileClient.renameWithResponse(
             new ShareFileRenameOptions(generatePathName()).setSourceRequestConditions(src), null, null), 200);
@@ -2778,12 +2868,10 @@ class FileApiTests extends FileShareTestBase {
     public void renameSourceACFail() {
         primaryFileClient.create(512);
         setupFileLeaseCondition(primaryFileClient, GARBAGE_LEASE_ID);
-        ShareRequestConditions src = new ShareRequestConditions()
-            .setLeaseId(GARBAGE_LEASE_ID);
+        ShareRequestConditions src = new ShareRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
 
-        assertThrows(ShareStorageException.class, () ->
-            primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
-                .setSourceRequestConditions(src), null, null));
+        assertThrows(ShareStorageException.class, () -> primaryFileClient.renameWithResponse(
+            new ShareFileRenameOptions(generatePathName()).setSourceRequestConditions(src), null, null));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -2794,8 +2882,7 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient destFile = shareClient.getFileClient(pathName);
         destFile.create(512);
         String leaseID = setupFileLeaseCondition(destFile, RECEIVED_LEASE_ID);
-        ShareRequestConditions src = new ShareRequestConditions()
-            .setLeaseId(leaseID);
+        ShareRequestConditions src = new ShareRequestConditions().setLeaseId(leaseID);
 
         FileShareTestHelper.assertResponseStatusCode(primaryFileClient.renameWithResponse(
             new ShareFileRenameOptions(pathName).setDestinationRequestConditions(src).setReplaceIfExists(true), null,
@@ -2810,31 +2897,32 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient destFile = shareClient.getFileClient(pathName);
         destFile.create(512);
         setupFileLeaseCondition(destFile, GARBAGE_LEASE_ID);
-        ShareRequestConditions src = new ShareRequestConditions()
-            .setLeaseId(GARBAGE_LEASE_ID);
+        ShareRequestConditions src = new ShareRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
 
         // should be throwing ShareStorageException, but test-proxy causes an error with mismatched requests
-        assertThrows(RuntimeException.class, () -> destFile.renameWithResponse(new ShareFileRenameOptions(pathName)
-            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null));
+        assertThrows(RuntimeException.class,
+            () -> destFile.renameWithResponse(
+                new ShareFileRenameOptions(pathName).setDestinationRequestConditions(src).setReplaceIfExists(true),
+                null, null));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void renameContentType() {
         primaryFileClient.create(512);
-        Response<ShareFileClient> resp = primaryFileClient.renameWithResponse(
-            new ShareFileRenameOptions(generatePathName()).setContentType("mytype"), null, null);
+        Response<ShareFileClient> resp = primaryFileClient
+            .renameWithResponse(new ShareFileRenameOptions(generatePathName()).setContentType("mytype"), null, null);
 
         ShareFileClient renamedClient = resp.getValue();
         ShareFileProperties props = renamedClient.getProperties();
-        assertEquals(props.getContentType(), "mytype");
+        assertEquals("mytype", props.getContentType());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void renameOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         dirClient.create();
@@ -2842,8 +2930,8 @@ class FileApiTests extends FileShareTestBase {
 
         fileClient.create(512);
         String fileRename = generatePathName();
-        Response<ShareFileClient> resp = fileClient.renameWithResponse(new ShareFileRenameOptions(fileRename), null,
-            null);
+        Response<ShareFileClient> resp
+            = fileClient.renameWithResponse(new ShareFileRenameOptions(fileRename), null, null);
 
         ShareFileClient renamedClient = resp.getValue();
         renamedClient.getProperties();
@@ -2854,11 +2942,10 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void getSnapshotId() {
-        String snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
-            1, 1), ZoneOffset.UTC).toString();
+        String snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1, 1, 1), ZoneOffset.UTC).toString();
 
-        ShareFileClient shareSnapshotClient = fileBuilderHelper(shareName, filePath).snapshot(snapshot)
-            .buildFileClient();
+        ShareFileClient shareSnapshotClient
+            = fileBuilderHelper(shareName, filePath).snapshot(snapshot).buildFileClient();
         assertEquals(snapshot, shareSnapshotClient.getShareSnapshotId());
     }
 
@@ -2873,12 +2960,8 @@ class FileApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> getNonEncodedFileNameSupplier() {
-        return Stream.of(
-            Arguments.of("test%test"),
-            Arguments.of("%Россия 한국 中国!"),
-            Arguments.of("%E6%96%91%E9%BB%9E"),
-            Arguments.of("斑點")
-        );
+        return Stream.of(Arguments.of("test%test"), Arguments.of("%Россия 한국 中国!"), Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點"));
     }
 
     @ParameterizedTest
@@ -2895,11 +2978,13 @@ class FileApiTests extends FileShareTestBase {
     public void perCallPolicy() {
         primaryFileClient.create(512);
 
-        ShareFileClient fileClient = fileBuilderHelper(primaryFileClient.getShareName(),
-            primaryFileClient.getFilePath()).addPolicy(getPerCallVersionPolicy()).buildFileClient();
+        ShareFileClient fileClient
+            = fileBuilderHelper(primaryFileClient.getShareName(), primaryFileClient.getFilePath())
+                .addPolicy(getPerCallVersionPolicy())
+                .buildFileClient();
 
         Response<ShareFileProperties> response = fileClient.getPropertiesWithResponse(null, null);
-        assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
+        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
     }
 
     @Test
@@ -2907,9 +2992,8 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP)
                 .audience(null) /* should default to "https://storage.azure.com/" */);
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
@@ -2921,9 +3005,8 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP)
                 .audience(ShareAudience.createShareServiceAccountAudience(shareClient.getAccountName())));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
@@ -2935,9 +3018,8 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
+        ShareServiceClient oAuthServiceClient
+            = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP)
                 .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
@@ -2953,10 +3035,8 @@ class FileApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         ShareFileClient fileClient = fileBuilderHelper(shareName, fileName).buildFileClient();
         fileClient.create(Constants.KB);
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder()
-                .shareTokenIntent(ShareTokenIntent.BACKUP)
-                .audience(audience));
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(
+            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP).audience(audience));
 
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
@@ -2971,5 +3051,180 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertNotNull(list.get(0).getClientName());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createNFS() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareFileClient premiumFileClient = premiumShareClient.getFileClient(generatePathName());
+
+        ShareFileCreateOptions options = new ShareFileCreateOptions(1024)
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+        ShareFileInfo response = premiumFileClient.createWithResponse(options, null, null).getValue();
+
+        assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
+        assertEquals("345", response.getPosixProperties().getOwner());
+        assertEquals("123", response.getPosixProperties().getGroup());
+        assertEquals("7777", response.getPosixProperties().getFileMode());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void setPropertiesNFS() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareFileClient premiumFileClient = premiumShareClient.getFileClient(generatePathName());
+        premiumFileClient.create(1024);
+
+        ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(1024)
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        ShareFileInfo response = premiumFileClient.setPropertiesWithResponse(options, null, null).getValue();
+
+        assertEquals("345", response.getPosixProperties().getOwner());
+        assertEquals("123", response.getPosixProperties().getGroup());
+        assertEquals("7777", response.getPosixProperties().getFileMode());
+        assertNotNull(response.getPosixProperties().getLinkCount());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getPropertiesNFS() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareFileClient premiumFileClient = premiumShareClient.getFileClient(generatePathName());
+        premiumFileClient.create(1024);
+
+        ShareFileProperties response = premiumFileClient.getPropertiesWithResponse(null, null).getValue();
+
+        assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
+        assertEquals("0", response.getPosixProperties().getOwner());
+        assertEquals("0", response.getPosixProperties().getGroup());
+        assertEquals("0664", response.getPosixProperties().getFileMode());
+        assertEquals(1, response.getPosixProperties().getLinkCount());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    private static Stream<Arguments> beginCopyNFSSupplier() {
+        return Stream.of(Arguments.of(ModeCopyMode.SOURCE), Arguments.of(ModeCopyMode.OVERRIDE),
+            Arguments.of((ModeCopyMode) null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @MethodSource("beginCopyNFSSupplier")
+    public void beginCopyNFS(ModeCopyMode modeAndOwnerCopyMode) {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        String sourcePath = generatePathName() + "source";
+        ShareFileClient premiumFileClientSource = premiumShareClient.getFileClient(sourcePath);
+        premiumFileClientSource.create(1024);
+        premiumFileClientSource.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());
+
+        premiumFileClientSource.setPropertiesWithResponse(new ShareFileSetPropertiesOptions(1024).setPosixProperties(
+            new FilePosixProperties().setOwner("999").setGroup("888").setFileMode("0111")), null, null);
+
+        String destPath = generatePathName() + "dest";
+        ShareFileClient premiumFileClientDest = premiumShareClient.getFileClient(destPath);
+        premiumFileClientDest.create(1024);
+
+        ShareFileProperties sourceProperties = premiumFileClientSource.getProperties();
+
+        String owner;
+        String group;
+        String mode;
+
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setPosixProperties(new FilePosixProperties());
+
+        if (modeAndOwnerCopyMode == ModeCopyMode.OVERRIDE) {
+            owner = "54321";
+            group = "12345";
+            mode = "7777";
+            options.setModeCopyMode(ModeCopyMode.OVERRIDE);
+            options.setOwnerCopyMode(OwnerCopyMode.OVERRIDE);
+            options.getPosixProperties().setOwner(owner);
+            options.getPosixProperties().setGroup(group);
+            options.getPosixProperties().setFileMode(mode);
+        } else if (modeAndOwnerCopyMode == ModeCopyMode.SOURCE) {
+            options.setModeCopyMode(ModeCopyMode.SOURCE);
+            options.setOwnerCopyMode(OwnerCopyMode.SOURCE);
+            owner = sourceProperties.getPosixProperties().getOwner();
+            group = sourceProperties.getPosixProperties().getGroup();
+            mode = sourceProperties.getPosixProperties().getFileMode();
+        } else {
+            owner = "0";
+            group = "0";
+            mode = "0664";
+        }
+
+        SyncPoller<ShareFileCopyInfo, Void> poller
+            = premiumFileClientDest.beginCopy(premiumFileClientSource.getFileUrl(), options, null);
+        PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
+
+        ShareFileProperties resultProperties = premiumFileClientDest.getProperties();
+
+        assertNotNull(pollResponse.getValue().getCopyId());
+        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+
+        assertEquals(owner, resultProperties.getPosixProperties().getOwner());
+        assertEquals(group, resultProperties.getPosixProperties().getGroup());
+        assertEquals(mode, resultProperties.getPosixProperties().getFileMode());
+        FileShareTestHelper.assertSmbPropertiesNull(resultProperties.getSmbProperties());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createHardLink() {
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareFileClient source = premiumShareClient.getFileClient(generatePathName());
+        source.create(1024);
+
+        String leaseId = testResourceNamer.randomUuid();
+        ShareLeaseClient leaseClient = createLeaseClient(premiumShareClient, leaseId);
+        String lease = leaseClient.acquireLease();
+
+        ShareFileClient hardLink = premiumShareClient.getFileClient(generatePathName() + "hardlink");
+        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(source.getFilePath())
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(lease));
+
+        ShareFileInfo response = hardLink.createHardLinkWithResponse(options, null, null).getValue();
+
+        assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
+        assertEquals("0", response.getPosixProperties().getOwner());
+        assertEquals("0", response.getPosixProperties().getGroup());
+        assertEquals("0664", response.getPosixProperties().getFileMode());
+        assertEquals(2, response.getPosixProperties().getLinkCount());
+
+        assertNotNull(response.getSmbProperties().getFileCreationTime());
+        assertNotNull(response.getSmbProperties().getFileLastWriteTime());
+        assertNotNull(response.getSmbProperties().getFileChangeTime());
+        assertNotNull(response.getSmbProperties().getFileId());
+        assertNotNull(response.getSmbProperties().getParentId());
+
+        FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+
+        //cleanup
+        leaseClient.releaseLease();
+        premiumShareClient.delete();
     }
 }

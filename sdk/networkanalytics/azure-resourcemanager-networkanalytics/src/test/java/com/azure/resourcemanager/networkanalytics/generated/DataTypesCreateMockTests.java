@@ -46,14 +46,18 @@ public final class DataTypesCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataType response = manager.dataTypes().define("bqdxbx").withExistingDataProduct("fzxmhhvhgureodkw", "bdagxt")
-            .withProperties(
-                new DataTypeProperties().withState(DataTypeState.RUNNING).withStorageOutputRetention(144807252)
-                    .withDatabaseCacheRetention(1090180987).withDatabaseRetention(1185146175))
+        DataType response = manager.dataTypes()
+            .define("bqdxbx")
+            .withExistingDataProduct("fzxmhhvhgureodkw", "bdagxt")
+            .withProperties(new DataTypeProperties().withState(DataTypeState.RUNNING)
+                .withStorageOutputRetention(144807252)
+                .withDatabaseCacheRetention(1090180987)
+                .withDatabaseRetention(1185146175))
             .create();
 
         Assertions.assertEquals(DataTypeState.RUNNING, response.properties().state());

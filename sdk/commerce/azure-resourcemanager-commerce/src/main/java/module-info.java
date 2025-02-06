@@ -10,10 +10,6 @@ module com.azure.resourcemanager.commerce {
     exports com.azure.resourcemanager.commerce.fluent.models;
     exports com.azure.resourcemanager.commerce.models;
 
-    opens com.azure.resourcemanager.commerce.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.commerce.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.commerce.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.commerce.models to com.azure.core, com.fasterxml.jackson.databind;
 }

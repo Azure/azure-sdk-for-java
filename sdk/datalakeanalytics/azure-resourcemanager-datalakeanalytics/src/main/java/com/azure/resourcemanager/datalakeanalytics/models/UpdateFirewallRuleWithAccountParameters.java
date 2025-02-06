@@ -6,31 +6,38 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateFirewallRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to update a firewall rule while updating a Data Lake Analytics account. */
+/**
+ * The parameters used to update a firewall rule while updating a Data Lake Analytics account.
+ */
 @Fluent
-public final class UpdateFirewallRuleWithAccountParameters {
+public final class UpdateFirewallRuleWithAccountParameters
+    implements JsonSerializable<UpdateFirewallRuleWithAccountParameters> {
     /*
      * The unique name of the firewall rule to update.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The firewall rule properties to use when updating a firewall rule.
      */
-    @JsonProperty(value = "properties")
     private UpdateFirewallRuleProperties innerProperties;
 
-    /** Creates an instance of UpdateFirewallRuleWithAccountParameters class. */
+    /**
+     * Creates an instance of UpdateFirewallRuleWithAccountParameters class.
+     */
     public UpdateFirewallRuleWithAccountParameters() {
     }
 
     /**
      * Get the name property: The unique name of the firewall rule to update.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public final class UpdateFirewallRuleWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the firewall rule to update.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateFirewallRuleWithAccountParameters object itself.
      */
@@ -50,7 +57,7 @@ public final class UpdateFirewallRuleWithAccountParameters {
 
     /**
      * Get the innerProperties property: The firewall rule properties to use when updating a firewall rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateFirewallRuleProperties innerProperties() {
@@ -60,7 +67,7 @@ public final class UpdateFirewallRuleWithAccountParameters {
     /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -70,7 +77,7 @@ public final class UpdateFirewallRuleWithAccountParameters {
     /**
      * Set the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the UpdateFirewallRuleWithAccountParameters object itself.
      */
@@ -85,7 +92,7 @@ public final class UpdateFirewallRuleWithAccountParameters {
     /**
      * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -95,7 +102,7 @@ public final class UpdateFirewallRuleWithAccountParameters {
     /**
      * Set the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
      * and End should be in the same protocol.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the UpdateFirewallRuleWithAccountParameters object itself.
      */
@@ -109,15 +116,14 @@ public final class UpdateFirewallRuleWithAccountParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model UpdateFirewallRuleWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model UpdateFirewallRuleWithAccountParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -125,4 +131,46 @@ public final class UpdateFirewallRuleWithAccountParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateFirewallRuleWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateFirewallRuleWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateFirewallRuleWithAccountParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateFirewallRuleWithAccountParameters.
+     */
+    public static UpdateFirewallRuleWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateFirewallRuleWithAccountParameters deserializedUpdateFirewallRuleWithAccountParameters
+                = new UpdateFirewallRuleWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpdateFirewallRuleWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateFirewallRuleWithAccountParameters.innerProperties
+                        = UpdateFirewallRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateFirewallRuleWithAccountParameters;
+        });
+    }
 }

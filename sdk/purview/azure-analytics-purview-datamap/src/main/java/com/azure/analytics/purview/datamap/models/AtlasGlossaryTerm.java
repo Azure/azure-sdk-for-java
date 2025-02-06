@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -95,7 +96,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * The name of the template.
      */
     @Generated
-    private List<Object> templateName;
+    private List<BinaryData> templateName;
 
     /*
      * The glossary header with basic information.
@@ -145,7 +146,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * key of the first layer map is term template name.
      */
     @Generated
-    private Map<String, Map<String, Object>> attributes;
+    private Map<String, Map<String, BinaryData>> attributes;
 
     /*
      * An array of related object IDs.
@@ -520,7 +521,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * @return the templateName value.
      */
     @Generated
-    public List<Object> getTemplateName() {
+    public List<BinaryData> getTemplateName() {
         return this.templateName;
     }
 
@@ -531,7 +532,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * @return the AtlasGlossaryTerm object itself.
      */
     @Generated
-    public AtlasGlossaryTerm setTemplateName(List<Object> templateName) {
+    public AtlasGlossaryTerm setTemplateName(List<BinaryData> templateName) {
         this.templateName = templateName;
         return this;
     }
@@ -699,7 +700,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * @return the attributes value.
      */
     @Generated
-    public Map<String, Map<String, Object>> getAttributes() {
+    public Map<String, Map<String, BinaryData>> getAttributes() {
         return this.attributes;
     }
 
@@ -713,7 +714,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
      * @return the AtlasGlossaryTerm object itself.
      */
     @Generated
-    public AtlasGlossaryTerm setAttributes(Map<String, Map<String, Object>> attributes) {
+    public AtlasGlossaryTerm setAttributes(Map<String, Map<String, BinaryData>> attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -1091,7 +1092,7 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
         jsonWriter.writeStringField("updatedBy", this.updatedBy);
         jsonWriter.writeStringField("abbreviation", this.abbreviation);
         jsonWriter.writeArrayField("templateName", this.templateName,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeJsonField("anchor", this.anchor);
         jsonWriter.writeArrayField("antonyms", this.antonyms, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
@@ -1100,8 +1101,8 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
         jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("contacts", this.contacts,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeMap(element,
+            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
         jsonWriter.writeArrayField("assignedEntities", this.assignedEntities,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeJson(element));
@@ -1171,7 +1172,8 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
                 } else if ("abbreviation".equals(fieldName)) {
                     deserializedAtlasGlossaryTerm.abbreviation = reader.getString();
                 } else if ("templateName".equals(fieldName)) {
-                    List<Object> templateName = reader.readArray(reader1 -> reader1.readUntyped());
+                    List<BinaryData> templateName = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasGlossaryTerm.templateName = templateName;
                 } else if ("anchor".equals(fieldName)) {
                     deserializedAtlasGlossaryTerm.anchor = AtlasGlossaryHeader.fromJson(reader);
@@ -1195,8 +1197,9 @@ public final class AtlasGlossaryTerm implements JsonSerializable<AtlasGlossaryTe
                         = reader.readMap(reader1 -> reader1.readArray(reader2 -> ContactInfo.fromJson(reader2)));
                     deserializedAtlasGlossaryTerm.contacts = contacts;
                 } else if ("attributes".equals(fieldName)) {
-                    Map<String, Map<String, Object>> attributes
-                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    Map<String, Map<String, BinaryData>> attributes
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2
+                            .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
                     deserializedAtlasGlossaryTerm.attributes = attributes;
                 } else if ("assignedEntities".equals(fieldName)) {
                     List<AtlasRelatedObjectId> assignedEntities

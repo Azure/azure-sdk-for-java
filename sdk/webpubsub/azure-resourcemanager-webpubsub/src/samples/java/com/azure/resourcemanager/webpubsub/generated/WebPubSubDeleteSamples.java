@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-/** Samples for WebPubSub Delete. */
+/**
+ * Samples for WebPubSub Delete.
+ */
 public final class WebPubSubDeleteSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Delete.json
+     * x-ms-original-file:
+     * specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2024-03-01/examples/WebPubSub_Delete.
+     * json
      */
     /**
      * Sample code: WebPubSub_Delete.
-     *
+     * 
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubDelete(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {

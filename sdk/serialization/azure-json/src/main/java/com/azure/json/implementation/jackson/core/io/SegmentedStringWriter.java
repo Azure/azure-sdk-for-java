@@ -87,18 +87,4 @@ public final class SegmentedStringWriter extends Writer {
      * /**********************************************************
      */
 
-    /**
-     * Main access method that will construct a String that contains
-     * all the contents, release all internal buffers we may have,
-     * and return result String.
-     * Note that the method is not idempotent -- if called second time,
-     * will just return an empty String.
-     *
-     * @return String that contains all aggregated content
-     */
-    public String getAndClear() {
-        String result = _buffer.contentsAsString();
-        _buffer.releaseBuffers();
-        return result;
-    }
 }

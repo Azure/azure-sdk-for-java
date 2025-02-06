@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes threat kill chain phase entity. */
+/**
+ * Describes threat kill chain phase entity.
+ */
 @Fluent
-public final class ThreatIntelligenceParsedPatternTypeValue {
+public final class ThreatIntelligenceParsedPatternTypeValue
+    implements JsonSerializable<ThreatIntelligenceParsedPatternTypeValue> {
     /*
      * Type of the value
      */
-    @JsonProperty(value = "valueType")
     private String valueType;
 
     /*
      * Value of parsed pattern
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
+     * Creates an instance of ThreatIntelligenceParsedPatternTypeValue class.
+     */
+    public ThreatIntelligenceParsedPatternTypeValue() {
+    }
+
+    /**
      * Get the valueType property: Type of the value.
-     *
+     * 
      * @return the valueType value.
      */
     public String valueType() {
@@ -33,7 +44,7 @@ public final class ThreatIntelligenceParsedPatternTypeValue {
 
     /**
      * Set the valueType property: Type of the value.
-     *
+     * 
      * @param valueType the valueType value to set.
      * @return the ThreatIntelligenceParsedPatternTypeValue object itself.
      */
@@ -44,7 +55,7 @@ public final class ThreatIntelligenceParsedPatternTypeValue {
 
     /**
      * Get the value property: Value of parsed pattern.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -53,7 +64,7 @@ public final class ThreatIntelligenceParsedPatternTypeValue {
 
     /**
      * Set the value property: Value of parsed pattern.
-     *
+     * 
      * @param value the value value to set.
      * @return the ThreatIntelligenceParsedPatternTypeValue object itself.
      */
@@ -64,9 +75,49 @@ public final class ThreatIntelligenceParsedPatternTypeValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("valueType", this.valueType);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceParsedPatternTypeValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceParsedPatternTypeValue if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceParsedPatternTypeValue.
+     */
+    public static ThreatIntelligenceParsedPatternTypeValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceParsedPatternTypeValue deserializedThreatIntelligenceParsedPatternTypeValue
+                = new ThreatIntelligenceParsedPatternTypeValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("valueType".equals(fieldName)) {
+                    deserializedThreatIntelligenceParsedPatternTypeValue.valueType = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedThreatIntelligenceParsedPatternTypeValue.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceParsedPatternTypeValue;
+        });
     }
 }

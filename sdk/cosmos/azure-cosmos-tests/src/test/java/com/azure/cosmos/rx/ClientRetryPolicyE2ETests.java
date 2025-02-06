@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -37,6 +38,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -47,7 +49,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -63,15 +67,19 @@ import static org.testng.Assert.fail;
 
 public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private CosmosAsyncClient clientWithPreferredRegions;
-    private CosmosAsyncContainer cosmosAsyncContainer;
+    private CosmosAsyncContainer cosmosAsyncContainerFromClientWithPreferredRegions;
+    private CosmosAsyncClient clientWithoutPreferredRegions;
+    private CosmosAsyncContainer cosmosAsyncContainerFromClientWithoutPreferredRegions;
     private List<String> preferredRegions;
 
     @DataProvider(name = "channelAcquisitionExceptionArgProvider")
     public static Object[][] channelAcquisitionExceptionArgProvider() {
         return new Object[][]{
-            // OperationType, FaultInjectionOperationType
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM },
+            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false }
         };
     }
 
@@ -88,47 +96,81 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
-        Map<String, String> readRegionMap = this.getRegionMap(databaseAccount, false);
-        this.preferredRegions =
-            readRegionMap
-                .keySet()
+
+        AccountLevelLocationContext accountLevelReadableLocationContext
+            = getAccountLevelLocationContext(databaseAccount, false);
+
+        validate(accountLevelReadableLocationContext, false);
+
+        this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
                 .stream()
                 .map(regionName -> regionName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toList());
+
         this.clientWithPreferredRegions = getClientBuilder()
-            .preferredRegions(preferredRegions)
+            .preferredRegions(this.preferredRegions)
             .consistencyLevel(ConsistencyLevel.SESSION)
             .endpointDiscoveryEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .buildAsyncClient();
-        this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
+
+        this.clientWithoutPreferredRegions = getClientBuilder()
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .endpointDiscoveryEnabled(true)
+            .multipleWriteRegionsEnabled(true)
+            .buildAsyncClient();
+
+        this.cosmosAsyncContainerFromClientWithPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
+        this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeClose(clientWithPreferredRegions);
+        safeClose(this.clientWithPreferredRegions);
+        safeClose(this.clientWithoutPreferredRegions);
     }
 
     @DataProvider(name = "operationTypeProvider")
     public static Object[][] operationTypeProvider() {
         return new Object[][]{
-            // FaultInjectionOperationType, OperationType, shouldRetryCrossRegionForHttpTimeout
-            { FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE },
-            { FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE },
+            // FaultInjectionOperationType, OperationType, shouldRetryCrossRegionForHttpTimeout, shouldUsePreferredRegionsOnClient
+            { FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.TRUE },
+            { FaultInjectionOperationType.READ_ITEM, OperationType.Read, Boolean.TRUE, Boolean.FALSE },
+            { FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.TRUE },
+            { FaultInjectionOperationType.CREATE_ITEM, OperationType.Create, Boolean.FALSE, Boolean.FALSE }
         };
     }
 
-    @Test(groups = { "multi-master" }, timeOut = TIMEOUT)
-    public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable() {
+    @DataProvider(name = "preferredRegionsConfigProvider")
+    public static Object[] preferredRegionsConfigProvider() {
+
+        // shouldUsePreferredRegionsOnClient
+        return new Object[] {Boolean.TRUE, Boolean.FALSE};
+    }
+
+    @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
+    public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable(boolean shouldUsePreferredRegionsOnClient) {
         TestItem newItem = TestItem.createNewItem();
-        this.cosmosAsyncContainer.createItem(newItem).block();
+
+        CosmosAsyncContainer resultantCosmosAsyncContainer;
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithoutPreferredRegions;
+        }
+
+        resultantCosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for query plan
         FaultInjectionConditionBuilder conditionBuilder =
             new FaultInjectionConditionBuilder()
                 .operationType(FaultInjectionOperationType.METADATA_REQUEST_QUERY_PLAN);
         if (BridgeInternal
-            .getContextClient(this.clientWithPreferredRegions)
+            .getContextClient(resultantCosmosAsyncClient)
             .getConnectionPolicy()
             .getConnectionMode() == ConnectionMode.GATEWAY) {
             conditionBuilder.connectionType(FaultInjectionConnectionType.GATEWAY);
@@ -144,14 +186,14 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             )
             .build();
 
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(queryPlanDelayRule)).block();
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(resultantCosmosAsyncContainer, Arrays.asList(queryPlanDelayRule)).block();
         String query = "select * from c";
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setPartitionKey(new PartitionKey(newItem.getId()));
         try {
             // validate the query plan will be retried in a different region and the final requests will be succeeded
             // TODO: Also capture all retries for metadata requests in the diagnostics
-            FeedResponse<TestItem> firstPage = cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class)
+            FeedResponse<TestItem> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestItem.class)
                 .byPage()
                 .blockFirst();
 
@@ -165,17 +207,29 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-master" }, timeOut = TIMEOUT)
-    public void addressRefreshHttpTimeoutWillNotDoCrossRegionRetry() {
+    @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
+    public void addressRefreshHttpTimeoutWillDoCrossRegionRetryForReads(boolean shouldUsePreferredRegionsOnClient) {
+
+        CosmosAsyncContainer resultantCosmosAsyncContainer;
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithoutPreferredRegions;
+        }
+
         if (BridgeInternal
-            .getContextClient(this.clientWithPreferredRegions)
+            .getContextClient(resultantCosmosAsyncClient)
             .getConnectionPolicy()
             .getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
         }
 
         TestItem newItem = TestItem.createNewItem();
-        this.cosmosAsyncContainer.createItem(newItem).block();
+        resultantCosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for address refresh
         FaultInjectionRule addressRefreshDelayRule = new FaultInjectionRuleBuilder("addressRefreshDelayRule")
@@ -206,13 +260,81 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         CosmosFaultInjectionHelper
             .configureFaultInjectionRules(
-                cosmosAsyncContainer,
+                resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            cosmosAsyncContainer
+            CosmosItemResponse<TestItem> itemResponse = resultantCosmosAsyncContainer
                 .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
                 .block();
-            fail("addressRefreshHttpTimeoutWillNotDoCrossRegionRetry() should fail due to addressRefresh timeout");
+
+            assertThat(itemResponse).isNotNull();
+
+            CosmosDiagnostics diagnostics = itemResponse.getDiagnostics();
+
+            assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
+            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
+            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(1));
+        } finally {
+            addressRefreshDelayRule.disable();
+            serverGoneRule.disable();
+        }
+    }
+
+    @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
+    public void addressRefreshHttpTimeoutWillNotDoCrossRegionRetryForWrites(boolean shouldUsePreferredRegionsOnClient) {
+
+        CosmosAsyncContainer resultantCosmosAsyncContainer;
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
+        }
+
+        // create fault injection rules for address refresh
+        FaultInjectionRule addressRefreshDelayRule = new FaultInjectionRuleBuilder("addressRefreshDelayRule")
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(11))
+                    .times(4) // make sure it will exhaust the local region retry
+                    .build()
+            )
+            .build();
+
+        // Create gone rules to force address refresh will bound to happen
+        FaultInjectionRule serverGoneRule = new FaultInjectionRuleBuilder("serverGoneRule")
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                    .times(4) // client is on session consistency, make sure exception will be bubbled up to goneAndRetry policy
+                    .build()
+            )
+            .build();
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(
+                resultantCosmosAsyncContainer,
+                Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
+        try {
+            TestItem newItem = TestItem.createNewItem();
+            resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
             assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
             assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
@@ -228,17 +350,29 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     public void dataPlaneRequestHttpTimeout(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
-        boolean shouldRetryCrossRegion) {
+        boolean shouldRetryCrossRegion,
+        boolean shouldUsePreferredRegionsOnClient) {
+
+        CosmosAsyncContainer resultantCosmosAsyncContainer;
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+            resultantCosmosAsyncContainer = this.cosmosAsyncContainerFromClientWithoutPreferredRegions;
+        }
 
         if (BridgeInternal
-            .getContextClient(this.clientWithPreferredRegions)
+            .getContextClient(resultantCosmosAsyncClient)
             .getConnectionPolicy()
             .getConnectionMode() != ConnectionMode.GATEWAY) {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
         }
 
         TestItem newItem = TestItem.createNewItem();
-        this.cosmosAsyncContainer.createItem(newItem).block();
+        resultantCosmosAsyncContainer.createItem(newItem).block();
         FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
             .condition(
                 new FaultInjectionConditionBuilder()
@@ -253,14 +387,14 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             )
             .build();
 
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(requestHttpTimeoutRule)).block();
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(resultantCosmosAsyncContainer, Arrays.asList(requestHttpTimeoutRule)).block();
 
         try {
             if (shouldRetryCrossRegion) {
                 try {
                     CosmosDiagnostics cosmosDiagnostics =
                         this.performDocumentOperation(
-                            cosmosAsyncContainer,
+                            resultantCosmosAsyncContainer,
                             operationType,
                             newItem,
                             (testItem) -> new PartitionKey(testItem.getId())
@@ -274,7 +408,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             } else {
                 try {
                     this.performDocumentOperation(
-                        cosmosAsyncContainer,
+                        resultantCosmosAsyncContainer,
                         operationType,
                         newItem,
                         (testItem) -> new PartitionKey(testItem.getId())
@@ -296,9 +430,19 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     @Test(groups = { "multi-master" }, dataProvider = "channelAcquisitionExceptionArgProvider", timeOut = 8 * TIMEOUT)
     public void channelAcquisitionExceptionOnWrites(
         OperationType operationType,
-        FaultInjectionOperationType faultInjectionOperationType) {
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldUsePreferredRegionsOnClient) {
+
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+        }
+
         if (BridgeInternal
-            .getContextClient(this.clientWithPreferredRegions)
+            .getContextClient(resultantCosmosAsyncClient)
             .getConnectionPolicy()
             .getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("channelAcquisitionExceptionOnWrites() is only meant for Direct mode");
@@ -320,7 +464,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
         CosmosAsyncClient testClient = getClientBuilder()
-            .preferredRegions(preferredRegions)
+            .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
             .consistencyLevel(ConsistencyLevel.SESSION)
             .endpointDiscoveryEnabled(true)
             .multipleWriteRegionsEnabled(true)
@@ -471,16 +615,57 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         throw new IllegalArgumentException("The operation type is not supported");
     }
 
-    private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
         }
 
-        return regionMap;
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
+    }
+
+    private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
+
+        AssertionsForClassTypes.assertThat(accountLevelLocationContext).isNotNull();
+
+        if (isWriteOnly) {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedWriteableRegions.size()).isGreaterThanOrEqualTo(1);
+        } else {
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions).isNotNull();
+            AssertionsForClassTypes.assertThat(accountLevelLocationContext.serviceOrderedReadableRegions.size()).isGreaterThanOrEqualTo(1);
+        }
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
+        }
     }
 }

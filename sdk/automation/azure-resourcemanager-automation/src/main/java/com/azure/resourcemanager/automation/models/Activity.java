@@ -8,67 +8,69 @@ import com.azure.resourcemanager.automation.fluent.models.ActivityInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of Activity. */
+/**
+ * An immutable client-side representation of Activity.
+ */
 public interface Activity {
     /**
      * Gets the id property: Gets or sets the id of the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Gets the name of the activity.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the definition property: Gets or sets the user name of the activity.
-     *
+     * 
      * @return the definition value.
      */
     String definition();
 
     /**
      * Gets the parameterSets property: Gets or sets the parameter sets of the activity.
-     *
+     * 
      * @return the parameterSets value.
      */
     List<ActivityParameterSet> parameterSets();
 
     /**
      * Gets the outputTypes property: Gets or sets the output types of the activity.
-     *
+     * 
      * @return the outputTypes value.
      */
     List<ActivityOutputType> outputTypes();
 
     /**
      * Gets the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     OffsetDateTime creationTime();
 
     /**
      * Gets the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     OffsetDateTime lastModifiedTime();
 
     /**
      * Gets the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.ActivityInner object.
-     *
+     * 
      * @return the inner object.
      */
     ActivityInner innerModel();

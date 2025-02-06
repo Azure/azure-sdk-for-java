@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StoragePoolOperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StoragePoolOperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"mt\",\"resource\":\"kknryrtihf\",\"operation\":\"tijbpzvgnwzsymgl\",\"description\":\"uf\"}")
-                .toObject(StoragePoolOperationDisplay.class);
+        StoragePoolOperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"mt\",\"resource\":\"kknryrtihf\",\"operation\":\"tijbpzvgnwzsymgl\",\"description\":\"uf\"}")
+            .toObject(StoragePoolOperationDisplay.class);
         Assertions.assertEquals("mt", model.provider());
         Assertions.assertEquals("kknryrtihf", model.resource());
         Assertions.assertEquals("tijbpzvgnwzsymgl", model.operation());
@@ -24,12 +22,10 @@ public final class StoragePoolOperationDisplayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolOperationDisplay model =
-            new StoragePoolOperationDisplay()
-                .withProvider("mt")
-                .withResource("kknryrtihf")
-                .withOperation("tijbpzvgnwzsymgl")
-                .withDescription("uf");
+        StoragePoolOperationDisplay model = new StoragePoolOperationDisplay().withProvider("mt")
+            .withResource("kknryrtihf")
+            .withOperation("tijbpzvgnwzsymgl")
+            .withDescription("uf");
         model = BinaryData.fromObject(model).toObject(StoragePoolOperationDisplay.class);
         Assertions.assertEquals("mt", model.provider());
         Assertions.assertEquals("kknryrtihf", model.resource());

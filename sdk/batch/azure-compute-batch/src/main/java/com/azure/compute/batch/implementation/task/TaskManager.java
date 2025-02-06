@@ -44,12 +44,8 @@ public class TaskManager {
         private volatile Exception exception;
         private final Object lock;
 
-        public WorkingThread(
-            TaskSubmitter taskSubmitter,
-            String jobId,
-            Queue<BatchTaskCreateContent> pendingList,
-            List<BatchTaskAddResult> failures,
-            Object lock) {
+        public WorkingThread(TaskSubmitter taskSubmitter, String jobId, Queue<BatchTaskCreateContent> pendingList,
+            List<BatchTaskAddResult> failures, Object lock) {
             this.taskSubmitter = taskSubmitter;
             this.jobId = jobId;
             this.pendingList = pendingList;
@@ -75,38 +71,36 @@ public class TaskManager {
          */
         private void submitChunk(List<BatchTaskCreateContent> taskList) {
             try {
-                taskSubmitter.submitTasks(jobId, new BatchTaskGroup(taskList))
-                    .doOnError(e -> {
-                        if (e instanceof HttpResponseException) {
-                            // Handle HttpResponseException
-                            handleException((HttpResponseException) e, taskList);
-                        } else {
-                            // Handle generic exceptions
-                            exception = (Exception) e;
-                            pendingList.addAll(taskList);
-                        }
-                    })
-                    .subscribe(response -> {
-                        if (response != null && response.getValue() != null) {
-                            for (BatchTaskAddResult result : response.getValue()) {
-                                if (result.getError() != null) {
-                                    if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
-                                        // Server error will be retried
-                                        for (BatchTaskCreateContent batchTaskToCreate : taskList) {
-                                            if (batchTaskToCreate.getId().equals(result.getTaskId())) {
-                                                pendingList.add(batchTaskToCreate);
-                                                break;
-                                            }
+                taskSubmitter.submitTasks(jobId, new BatchTaskGroup(taskList)).doOnError(e -> {
+                    if (e instanceof HttpResponseException) {
+                        // Handle HttpResponseException
+                        handleException((HttpResponseException) e, taskList);
+                    } else {
+                        // Handle generic exceptions
+                        exception = (Exception) e;
+                        pendingList.addAll(taskList);
+                    }
+                }).subscribe(response -> {
+                    if (response != null && response.getValue() != null) {
+                        for (BatchTaskAddResult result : response.getValue()) {
+                            if (result.getError() != null) {
+                                if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
+                                    // Server error will be retried
+                                    for (BatchTaskCreateContent batchTaskToCreate : taskList) {
+                                        if (batchTaskToCreate.getId().equals(result.getTaskId())) {
+                                            pendingList.add(batchTaskToCreate);
+                                            break;
                                         }
-                                    } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR
-                                        && !result.getError().getMessage().getValue().contains("Status code 409")) {
-                                        // Client error will be recorded
-                                        failures.add(result);
                                     }
+                                } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR
+                                    && !result.getError().getMessage().getValue().contains("Status code 409")) {
+                                    // Client error will be recorded
+                                    failures.add(result);
                                 }
                             }
                         }
-                    });
+                    }
+                });
             } catch (Exception e) {
                 // TODO (catch): Auto-generated catch block
                 e.printStackTrace();
@@ -177,11 +171,8 @@ public class TaskManager {
      * @param taskList The list of tasks to be submitted.
      * @param batchClientParallelOptions Options for configuring the parallelism of task submissions.
      */
-    public static Mono<Void> createTasks(
-        TaskSubmitter taskSubmitter,
-        String jobId,
-        List<BatchTaskCreateContent> taskList,
-        BatchClientParallelOptions batchClientParallelOptions) {
+    public static Mono<Void> createTasks(TaskSubmitter taskSubmitter, String jobId,
+        List<BatchTaskCreateContent> taskList, BatchClientParallelOptions batchClientParallelOptions) {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 
@@ -277,7 +268,8 @@ public class TaskManager {
                 for (BatchTaskCreateContent param : pendingList) {
                     notFinished.add(param);
                 }
-                sink.error(new CreateTasksErrorException("At least one task failed to be added.", failures, notFinished));
+                sink.error(
+                    new CreateTasksErrorException("At least one task failed to be added.", failures, notFinished));
             } else {
                 sink.success();
             }

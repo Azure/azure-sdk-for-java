@@ -14,8 +14,7 @@ public final class AvailableServiceSkuImpl implements AvailableServiceSku {
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    AvailableServiceSkuImpl(
-        AvailableServiceSkuInner innerObject,
+    AvailableServiceSkuImpl(AvailableServiceSkuInner innerObject,
         com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

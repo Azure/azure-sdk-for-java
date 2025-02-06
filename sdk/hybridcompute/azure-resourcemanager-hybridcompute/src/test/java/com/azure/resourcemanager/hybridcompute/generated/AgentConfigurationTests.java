@@ -11,7 +11,7 @@ public final class AgentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentConfiguration model = BinaryData.fromString(
-            "{\"proxyUrl\":\"yd\",\"incomingConnectionsPorts\":[\"mjthjqkwp\",\"eicxmqciwqvhkhi\"],\"extensionsAllowList\":[{\"publisher\":\"dtopbob\",\"type\":\"ghmewuam\"},{\"publisher\":\"hrzayvvtpgvdf\",\"type\":\"otkftutqxlngx\"},{\"publisher\":\"fgugnxkrxdqmid\",\"type\":\"hzrvqd\"}],\"extensionsBlockList\":[{\"publisher\":\"jybige\",\"type\":\"qfbow\"}],\"proxyBypass\":[\"nyktzlcuiy\",\"gqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"],\"extensionsEnabled\":\"sxlzevgbmqj\",\"guestConfigurationEnabled\":\"bcypmi\",\"configMode\":\"full\"}")
+            "{\"proxyUrl\":\"fwnfnb\",\"incomingConnectionsPorts\":[\"ionle\",\"x\"],\"extensionsAllowList\":[{\"publisher\":\"tzxdpnqbqqwx\",\"type\":\"feallnwsu\"}],\"extensionsBlockList\":[{\"publisher\":\"jampmngnzscxaqw\",\"type\":\"chcbonqvpkvlrxnj\"},{\"publisher\":\"seiphe\",\"type\":\"lokeyy\"},{\"publisher\":\"nj\",\"type\":\"lwtgrhpdj\"}],\"proxyBypass\":[\"masxazjpqyegu\",\"lhbxxhejjzzvdud\",\"wdslfhotwmcy\"],\"extensionsEnabled\":\"wlbjnpgacftade\",\"guestConfigurationEnabled\":\"nltyfsoppusuesnz\",\"configMode\":\"full\"}")
             .toObject(AgentConfiguration.class);
     }
 

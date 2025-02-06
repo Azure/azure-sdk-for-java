@@ -9,11 +9,28 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Resource collection API of JobSchedules. */
+/**
+ * Resource collection API of JobSchedules.
+ */
 public interface JobSchedules {
     /**
      * Delete the job schedule identified by job schedule name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobScheduleId The job schedule name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, UUID jobScheduleId,
+        Context context);
+
+    /**
+     * Delete the job schedule identified by job schedule name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -24,8 +41,8 @@ public interface JobSchedules {
     void delete(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
-     * Delete the job schedule identified by job schedule name.
-     *
+     * Retrieve the job schedule identified by job schedule name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -33,14 +50,14 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the job schedule along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
+    Response<JobSchedule> getWithResponse(String resourceGroupName, String automationAccountName, UUID jobScheduleId,
+        Context context);
 
     /**
      * Retrieve the job schedule identified by job schedule name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobScheduleId The job schedule name.
@@ -52,23 +69,8 @@ public interface JobSchedules {
     JobSchedule get(String resourceGroupName, String automationAccountName, UUID jobScheduleId);
 
     /**
-     * Retrieve the job schedule identified by job schedule name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobScheduleId The job schedule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job schedule along with {@link Response}.
-     */
-    Response<JobSchedule> getWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobScheduleId, Context context);
-
-    /**
      * Retrieve a list of job schedules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface JobSchedules {
 
     /**
      * Retrieve a list of job schedules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -90,12 +92,12 @@ public interface JobSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job schedule operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobSchedule> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context);
+    PagedIterable<JobSchedule> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context);
 
     /**
      * Retrieve the job schedule identified by job schedule name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,7 +108,7 @@ public interface JobSchedules {
 
     /**
      * Retrieve the job schedule identified by job schedule name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +120,7 @@ public interface JobSchedules {
 
     /**
      * Delete the job schedule identified by job schedule name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +130,7 @@ public interface JobSchedules {
 
     /**
      * Delete the job schedule identified by job schedule name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +142,7 @@ public interface JobSchedules {
 
     /**
      * Begins definition for a new JobSchedule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new JobSchedule definition.
      */

@@ -203,6 +203,8 @@ public final class LivenessSessionAuditEntry implements JsonSerializable<Livenes
         jsonWriter.writeJsonField("request", this.request);
         jsonWriter.writeJsonField("response", this.response);
         jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeStringField("sessionImageId", this.sessionImageId);
+        jsonWriter.writeStringField("verifyImageHash", this.verifyImageHash);
         return jsonWriter.writeEndObject();
     }
 
@@ -226,6 +228,8 @@ public final class LivenessSessionAuditEntry implements JsonSerializable<Livenes
             AuditRequestInfo request = null;
             AuditLivenessResponseInfo response = null;
             String digest = null;
+            String sessionImageId = null;
+            String verifyImageHash = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -246,12 +250,51 @@ public final class LivenessSessionAuditEntry implements JsonSerializable<Livenes
                     response = AuditLivenessResponseInfo.fromJson(reader);
                 } else if ("digest".equals(fieldName)) {
                     digest = reader.getString();
+                } else if ("sessionImageId".equals(fieldName)) {
+                    sessionImageId = reader.getString();
+                } else if ("verifyImageHash".equals(fieldName)) {
+                    verifyImageHash = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new LivenessSessionAuditEntry(id, sessionId, requestId, clientRequestId, receivedDateTime, request,
-                response, digest);
+            LivenessSessionAuditEntry deserializedLivenessSessionAuditEntry = new LivenessSessionAuditEntry(id,
+                sessionId, requestId, clientRequestId, receivedDateTime, request, response, digest);
+            deserializedLivenessSessionAuditEntry.sessionImageId = sessionImageId;
+            deserializedLivenessSessionAuditEntry.verifyImageHash = verifyImageHash;
+            return deserializedLivenessSessionAuditEntry;
         });
+    }
+
+    /*
+     * The image ID of the session request.
+     */
+    @Generated
+    private String sessionImageId;
+
+    /*
+     * The sha256 hash of the verify-image in the request.
+     */
+    @Generated
+    private String verifyImageHash;
+
+    /**
+     * Get the sessionImageId property: The image ID of the session request.
+     *
+     * @return the sessionImageId value.
+     */
+    @Generated
+    public String getSessionImageId() {
+        return this.sessionImageId;
+    }
+
+    /**
+     * Get the verifyImageHash property: The sha256 hash of the verify-image in the request.
+     *
+     * @return the verifyImageHash value.
+     */
+    @Generated
+    public String getVerifyImageHash() {
+        return this.verifyImageHash;
     }
 }

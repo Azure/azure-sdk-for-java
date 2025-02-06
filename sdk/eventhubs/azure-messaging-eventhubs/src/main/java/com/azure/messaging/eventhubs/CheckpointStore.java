@@ -27,8 +27,7 @@ public interface CheckpointStore {
      * @param consumerGroup The consumer group name.
      * @return A {@link Flux} of partition ownership details of all the partitions that have/had an owner.
      */
-    Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
-        String consumerGroup);
+    Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup);
 
     /**
      * Called to claim ownership of a list of partitions. This will return the list of partitions that were owned

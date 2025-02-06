@@ -3,19 +3,17 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.CriticalResultInference;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
-import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
-import com.azure.health.insights.radiologyinsights.models.DocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
-import com.azure.health.insights.radiologyinsights.models.DocumentType;
-import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -24,6 +22,7 @@ import com.azure.health.insights.radiologyinsights.models.FollowupRecommendation
 import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
@@ -31,12 +30,13 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
-
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
@@ -45,12 +45,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
 
 /**
  * The SampleCriticalResultInferenceAsync class processes a sample radiology document
  * with the Radiology Insights service. It will initialize an asynchronous
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the
  * results and display the Critical Results extracted by the Radiology Insights service.
  *
  */
@@ -87,41 +89,42 @@ public class SampleCriticalResultInferenceAsync {
     public static void main(final String[] args) throws InterruptedException {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
 
-        RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
-                .credential(new AzureKeyCredential(apiKey)).buildAsyncClient();
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential);
+        RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
-                .beginInferRadiologyInsights(createRadiologyInsightsRequest());
+        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+                .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-
-        Mono<RadiologyInsightsInferenceResult> finalResult = asyncPoller.last().flatMap(pollResult -> {
-            if (pollResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                return pollResult.getFinalResult();
-            } else {
-                System.out.println(
-                        "Poll Request Failed with message: " + pollResult.getValue().getError().getMessage());
-                return Mono.empty();
-            }
-        });
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        finalResult.doFinally(signal -> {
-            latch.countDown();
-        }).subscribe(result -> {
-            displayCriticalResults(result);
-        });
+        asyncPoller
+            .takeUntil(isComplete)
+            .doFinally(signal -> {
+                latch.countDown();
+            })
+            .subscribe(completedResult -> {
+                if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                    System.out.println("Completed poll response, status: " + completedResult.getStatus());
+                    mono = completedResult.getFinalResult();
+                    displayCriticalResults(mono.block());
+                }
+            }, error -> {
+                System.err.println(error.getMessage());
+                error.printStackTrace();
+            });
 
         latch.await();
     }
 
     /**
-     * Display the critical results of the Radiology Insights request.
+     * Display the critical results of the Radiology Insights job request.
      *
      * @param radiologyInsightsResult The response for the Radiology Insights
      *                                request.
@@ -143,14 +146,14 @@ public class SampleCriticalResultInferenceAsync {
     }
 
     /**
-     * Creates a RadiologyInsightsData object to use in the Radiology Insights
+     * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
      *
-     * @return A RadiologyInsightsData object with the created patient records and
+     * @return A RadiologyInsightsJob object with the created patient records and
      *         model configuration.
      */
     // BEGIN: com.azure.health.insights.radiologyinsights.createrequest
-    private static RadiologyInsightsData createRadiologyInsightsRequest() {
+    private static RadiologyInsightsData createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
@@ -174,9 +177,9 @@ public class SampleCriticalResultInferenceAsync {
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
 
-        patientRecord.setInfo(patientDetails);
+        patientRecord.setDetails(patientDetails);
 
-        Encounter encounter = new Encounter("encounterid1");
+        PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
 
@@ -195,7 +198,7 @@ public class SampleCriticalResultInferenceAsync {
         patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
         patientDocument.setLanguage("EN");
 
-        DocumentAuthor author = new DocumentAuthor();
+        ClinicalDocumentAuthor author = new ClinicalDocumentAuthor();
         author.setId("authorid1");
         author.setFullName("authorname1");
 
@@ -224,7 +227,7 @@ public class SampleCriticalResultInferenceAsync {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
         OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-        patientDocument.setCreatedDateTime(createdDateTime);
+        patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
         patientRecords.add(patientRecord);
@@ -237,8 +240,8 @@ public class SampleCriticalResultInferenceAsync {
      * @return The patient document.
      */
     private static PatientDocument getPatientDocument() {
-        DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
-        return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+        return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 
     /**
@@ -264,6 +267,8 @@ public class SampleCriticalResultInferenceAsync {
         return configuration;
     }
 
+    private static Mono<RadiologyInsightsInferenceResult> mono = null;
+
     /**
      * Retrieves the RadiologyInsightsInferenceOptions object with the specified
      * options.
@@ -284,4 +289,9 @@ public class SampleCriticalResultInferenceAsync {
         return inferenceOptions;
     }
     // END: com.azure.health.insights.radiologyinsights.createrequest
+
+    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
+        return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
+            && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
+    };
 }

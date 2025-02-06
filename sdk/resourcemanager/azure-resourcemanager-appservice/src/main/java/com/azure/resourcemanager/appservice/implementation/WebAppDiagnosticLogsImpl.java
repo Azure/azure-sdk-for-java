@@ -24,9 +24,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
  */
 class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteLogsConfigInner>
-    implements WebAppDiagnosticLogs,
-        WebAppDiagnosticLogs.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-        WebAppDiagnosticLogs.UpdateDefinition<WebAppBase.Update<FluentT>> {
+    implements WebAppDiagnosticLogs, WebAppDiagnosticLogs.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+    WebAppDiagnosticLogs.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final WebAppBaseImpl<FluentT, FluentImplT> parent;
 
@@ -76,8 +75,8 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
         if (innerModel().applicationLogs() == null || innerModel().applicationLogs().azureBlobStorage() == null) {
             return 0;
         } else {
-            return ResourceManagerUtils.toPrimitiveInt(
-                innerModel().applicationLogs().azureBlobStorage().retentionInDays());
+            return ResourceManagerUtils
+                .toPrimitiveInt(innerModel().applicationLogs().azureBlobStorage().retentionInDays());
         }
     }
 
@@ -183,23 +182,19 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withApplicationLogsStoredOnFileSystem() {
         if (innerModel().applicationLogs() != null) {
-            innerModel()
-                .applicationLogs()
+            innerModel().applicationLogs()
                 .withFileSystem(new FileSystemApplicationLogsConfig().withLevel(applicationLogLevel));
         }
         return this;
     }
 
     @Override
-    public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withApplicationLogsStoredOnStorageBlob(
-        String containerSasUrl) {
+    public WebAppDiagnosticLogsImpl<FluentT, FluentImplT>
+        withApplicationLogsStoredOnStorageBlob(String containerSasUrl) {
         if (innerModel().applicationLogs() != null) {
-            innerModel()
-                .applicationLogs()
-                .withAzureBlobStorage(
-                    new AzureBlobStorageApplicationLogsConfig()
-                        .withLevel(applicationLogLevel)
-                        .withSasUrl(containerSasUrl));
+            innerModel().applicationLogs()
+                .withAzureBlobStorage(new AzureBlobStorageApplicationLogsConfig().withLevel(applicationLogLevel)
+                    .withSasUrl(containerSasUrl));
         }
         return this;
     }
@@ -215,8 +210,7 @@ class WebAppDiagnosticLogsImpl<FluentT extends WebAppBase, FluentImplT extends W
     @Override
     public WebAppDiagnosticLogsImpl<FluentT, FluentImplT> withWebServerLogsStoredOnStorageBlob(String containerSasUrl) {
         if (innerModel().httpLogs() != null) {
-            innerModel()
-                .httpLogs()
+            innerModel().httpLogs()
                 .withAzureBlobStorage(
                     new AzureBlobStorageHttpLogsConfig().withEnabled(true).withSasUrl(containerSasUrl));
         }

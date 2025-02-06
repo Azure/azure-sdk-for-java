@@ -6,73 +6,42 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.Asset;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AssetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"assetId\":\"ac58694f-e4ac-4503-ab9a-6d03a0d5d7f9\",\"created\":\"2021-03-20T19:14:36Z\",\"lastModified\":\"2021-06-13T17:23:56Z\",\"alternateId\":\"khnmgbrou\",\"description\":\"dbhfhp\",\"container\":\"azjzo\",\"storageAccountName\":\"jxhpdulontacn\",\"storageEncryptionFormat\":\"None\"},\"id\":\"ehtuevrhr\",\"name\":\"jyoogwxh\",\"type\":\"sd\"}";
 
-        String responseStr =
-            "{\"properties\":{\"assetId\":\"8dbd9a31-1490-47fd-9482-8680aab4cb3c\",\"created\":\"2021-07-22T09:11:26Z\",\"lastModified\":\"2021-02-07T10:50:40Z\",\"alternateId\":\"tmwwi\",\"description\":\"ehfqpofvwbc\",\"container\":\"embnkbw\",\"storageAccountName\":\"vxkdivqihebwtswb\",\"storageEncryptionFormat\":\"MediaStorageClientEncryption\"},\"id\":\"m\",\"name\":\"urageg\",\"type\":\"zvcjfelisdjubggb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Asset response = manager.assets()
+            .define("wahzjmucftbyr")
+            .withExistingMediaService("bf", "yggagflnlgmt")
+            .withAlternateId("gqfu")
+            .withDescription("ckzmkwklsnox")
+            .withContainer("mqeq")
+            .withStorageAccountName("h")
+            .create();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Asset response =
-            manager
-                .assets()
-                .define("otqyry")
-                .withExistingMediaService("gsgzwywakoihk", "smjblmljhlnym")
-                .withAlternateId("xmvwfg")
-                .withDescription("yxonsupe")
-                .withContainer("lzqnhcvs")
-                .withStorageAccountName("tnzoibgsxgnxfy")
-                .create();
-
-        Assertions.assertEquals("tmwwi", response.alternateId());
-        Assertions.assertEquals("ehfqpofvwbc", response.description());
-        Assertions.assertEquals("embnkbw", response.container());
-        Assertions.assertEquals("vxkdivqihebwtswb", response.storageAccountName());
+        Assertions.assertEquals("khnmgbrou", response.alternateId());
+        Assertions.assertEquals("dbhfhp", response.description());
+        Assertions.assertEquals("azjzo", response.container());
+        Assertions.assertEquals("jxhpdulontacn", response.storageAccountName());
     }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.frontdoor.generated;
  */
 public final class NetworkExperimentProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentDeleteProfile.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
+     * NetworkExperimentDeleteProfile.json
      */
     /**
      * Sample code: Deletes an NetworkExperiment Profile by ProfileName.

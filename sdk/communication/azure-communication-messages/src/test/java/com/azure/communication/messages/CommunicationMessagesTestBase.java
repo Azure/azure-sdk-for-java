@@ -28,10 +28,10 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
             "endpoint=https://REDACTED.int.communication.azure.net;accessKey=secret");
 
     protected static final String CHANNEL_REGISTRATION_ID = Configuration.getGlobalConfiguration()
-        .get("SENDER_CHANNEL_REGISTRATION_ID", "77ffd898-ec44-42cd-b560-57a8903d05c7");
+        .get("SENDER_CHANNEL_REGISTRATION_ID", "bc73327d-d246-4983-9e13-284468af7240");
 
-    protected static final String RECIPIENT_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("RECIPIENT_IDENTIFIER", "+11234567788");
+    protected static final String RECIPIENT_IDENTIFIER
+        = Configuration.getGlobalConfiguration().get("RECIPIENT_IDENTIFIER", "+11234567788");
 
     protected static final String IMAGE_URL = Configuration.getGlobalConfiguration()
         .get("IMAGE_URL", "https://upload.wikimedia.org/wikipedia/commons/3/30/Building92microsoft.jpg");
@@ -42,10 +42,11 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
     protected static final String DOCUMENT_URL = Configuration.getGlobalConfiguration()
         .get("DOCUMENT_URL", "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
 
-    protected NotificationMessagesClientBuilder getNotificationMessagesClientBuilder(HttpClient httpClient, TokenCredential token) {
+    protected NotificationMessagesClientBuilder getNotificationMessagesClientBuilder(HttpClient httpClient,
+        TokenCredential token) {
 
-        NotificationMessagesClientBuilder notificationMessagesClientBuilder = new NotificationMessagesClientBuilder()
-            .httpClient(getHttpClientOrUsePlayback(httpClient));
+        NotificationMessagesClientBuilder notificationMessagesClientBuilder
+            = new NotificationMessagesClientBuilder().httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
@@ -71,15 +72,15 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
         return notificationMessagesClientBuilder;
     }
 
-    protected MessageTemplateClientBuilder getMessageTemplateClientBuilder(HttpClient httpClient, TokenCredential token) {
-        MessageTemplateClientBuilder templateClientBuilder = new MessageTemplateClientBuilder()
-            .httpClient(getHttpClientOrUsePlayback(httpClient));
+    protected MessageTemplateClientBuilder getMessageTemplateClientBuilder(HttpClient httpClient,
+        TokenCredential token) {
+        MessageTemplateClientBuilder templateClientBuilder
+            = new MessageTemplateClientBuilder().httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (token == null) {
             templateClientBuilder.connectionString(CONNECTION_STRING);
         } else {
-            templateClientBuilder
-                .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+            templateClientBuilder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
                 .credential(token);
         }
 
@@ -99,22 +100,20 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
     }
 
     public Mono<HttpResponse> logHeaders(HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+        return next.process().flatMap(httpResponse -> {
+            final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
+            // Should sanitize printed reponse url
+            LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for request " + bufferedResponse.getRequest().getUrl()
+                + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+            return Mono.just(bufferedResponse);
+        });
     }
 
     private void addTestProxySanitizer() {
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("$..to", null,
-                "REDACTED",
-                TestProxySanitizerType.BODY_KEY)));
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("$..to", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
         }
     }
 

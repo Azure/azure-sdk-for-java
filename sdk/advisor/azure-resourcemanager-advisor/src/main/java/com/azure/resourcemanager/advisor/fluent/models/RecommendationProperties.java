@@ -5,139 +5,127 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.Impact;
 import com.azure.resourcemanager.advisor.models.ResourceMetadata;
 import com.azure.resourcemanager.advisor.models.ShortDescription;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The properties of the recommendation. */
+/**
+ * The properties of the recommendation.
+ */
 @Fluent
-public final class RecommendationProperties {
+public final class RecommendationProperties implements JsonSerializable<RecommendationProperties> {
     /*
      * The category of the recommendation.
      */
-    @JsonProperty(value = "category")
     private Category category;
 
     /*
      * The business impact of the recommendation.
      */
-    @JsonProperty(value = "impact")
     private Impact impact;
 
     /*
      * The resource type identified by Advisor.
      */
-    @JsonProperty(value = "impactedField")
     private String impactedField;
 
     /*
      * The resource identified by Advisor.
      */
-    @JsonProperty(value = "impactedValue")
     private String impactedValue;
 
     /*
      * The most recent time that Advisor checked the validity of the recommendation.
      */
-    @JsonProperty(value = "lastUpdated")
     private OffsetDateTime lastUpdated;
 
     /*
      * The recommendation metadata.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> metadata;
 
     /*
      * The recommendation-type GUID.
      */
-    @JsonProperty(value = "recommendationTypeId")
     private String recommendationTypeId;
 
     /*
      * A summary of the recommendation.
      */
-    @JsonProperty(value = "shortDescription")
     private ShortDescription shortDescription;
 
     /*
      * The list of snoozed and dismissed rules for the recommendation.
      */
-    @JsonProperty(value = "suppressionIds")
     private List<UUID> suppressionIds;
 
     /*
      * Extended properties
      */
-    @JsonProperty(value = "extendedProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedProperties;
 
     /*
      * Metadata of resource that was assessed
      */
-    @JsonProperty(value = "resourceMetadata")
     private ResourceMetadata resourceMetadata;
 
     /*
      * The detailed description of recommendation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The label of recommendation.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * The link to learn more about recommendation and generation logic.
      */
-    @JsonProperty(value = "learnMoreLink")
     private String learnMoreLink;
 
     /*
      * The potential benefit of implementing recommendation.
      */
-    @JsonProperty(value = "potentialBenefits")
     private String potentialBenefits;
 
     /*
      * The list of recommended actions to implement recommendation.
      */
-    @JsonProperty(value = "actions")
     private List<Map<String, Object>> actions;
 
     /*
      * The automated way to apply recommendation.
      */
-    @JsonProperty(value = "remediation")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> remediation;
 
     /*
      * The recommendation metadata properties exposed to customer to provide additional information.
      */
-    @JsonProperty(value = "exposedMetadataProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> exposedMetadataProperties;
 
-    /** Creates an instance of RecommendationProperties class. */
+    /**
+     * Creates an instance of RecommendationProperties class.
+     */
     public RecommendationProperties() {
     }
 
     /**
      * Get the category property: The category of the recommendation.
-     *
+     * 
      * @return the category value.
      */
     public Category category() {
@@ -146,7 +134,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the category property: The category of the recommendation.
-     *
+     * 
      * @param category the category value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -157,7 +145,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the impact property: The business impact of the recommendation.
-     *
+     * 
      * @return the impact value.
      */
     public Impact impact() {
@@ -166,7 +154,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the impact property: The business impact of the recommendation.
-     *
+     * 
      * @param impact the impact value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -177,7 +165,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the impactedField property: The resource type identified by Advisor.
-     *
+     * 
      * @return the impactedField value.
      */
     public String impactedField() {
@@ -186,7 +174,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the impactedField property: The resource type identified by Advisor.
-     *
+     * 
      * @param impactedField the impactedField value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -197,7 +185,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the impactedValue property: The resource identified by Advisor.
-     *
+     * 
      * @return the impactedValue value.
      */
     public String impactedValue() {
@@ -206,7 +194,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the impactedValue property: The resource identified by Advisor.
-     *
+     * 
      * @param impactedValue the impactedValue value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -217,7 +205,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the lastUpdated property: The most recent time that Advisor checked the validity of the recommendation.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public OffsetDateTime lastUpdated() {
@@ -226,7 +214,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the lastUpdated property: The most recent time that Advisor checked the validity of the recommendation.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -237,7 +225,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the metadata property: The recommendation metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, Object> metadata() {
@@ -246,7 +234,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the metadata property: The recommendation metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -257,7 +245,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the recommendationTypeId property: The recommendation-type GUID.
-     *
+     * 
      * @return the recommendationTypeId value.
      */
     public String recommendationTypeId() {
@@ -266,7 +254,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the recommendationTypeId property: The recommendation-type GUID.
-     *
+     * 
      * @param recommendationTypeId the recommendationTypeId value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -277,7 +265,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the shortDescription property: A summary of the recommendation.
-     *
+     * 
      * @return the shortDescription value.
      */
     public ShortDescription shortDescription() {
@@ -286,7 +274,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the shortDescription property: A summary of the recommendation.
-     *
+     * 
      * @param shortDescription the shortDescription value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -297,7 +285,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the suppressionIds property: The list of snoozed and dismissed rules for the recommendation.
-     *
+     * 
      * @return the suppressionIds value.
      */
     public List<UUID> suppressionIds() {
@@ -306,7 +294,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the suppressionIds property: The list of snoozed and dismissed rules for the recommendation.
-     *
+     * 
      * @param suppressionIds the suppressionIds value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -317,7 +305,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the extendedProperties property: Extended properties.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -326,7 +314,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the extendedProperties property: Extended properties.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -337,7 +325,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the resourceMetadata property: Metadata of resource that was assessed.
-     *
+     * 
      * @return the resourceMetadata value.
      */
     public ResourceMetadata resourceMetadata() {
@@ -346,7 +334,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the resourceMetadata property: Metadata of resource that was assessed.
-     *
+     * 
      * @param resourceMetadata the resourceMetadata value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -357,7 +345,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the description property: The detailed description of recommendation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -366,7 +354,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the description property: The detailed description of recommendation.
-     *
+     * 
      * @param description the description value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -377,7 +365,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the label property: The label of recommendation.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -386,7 +374,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the label property: The label of recommendation.
-     *
+     * 
      * @param label the label value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -397,7 +385,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the learnMoreLink property: The link to learn more about recommendation and generation logic.
-     *
+     * 
      * @return the learnMoreLink value.
      */
     public String learnMoreLink() {
@@ -406,7 +394,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the learnMoreLink property: The link to learn more about recommendation and generation logic.
-     *
+     * 
      * @param learnMoreLink the learnMoreLink value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -417,7 +405,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the potentialBenefits property: The potential benefit of implementing recommendation.
-     *
+     * 
      * @return the potentialBenefits value.
      */
     public String potentialBenefits() {
@@ -426,7 +414,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the potentialBenefits property: The potential benefit of implementing recommendation.
-     *
+     * 
      * @param potentialBenefits the potentialBenefits value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -437,7 +425,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the actions property: The list of recommended actions to implement recommendation.
-     *
+     * 
      * @return the actions value.
      */
     public List<Map<String, Object>> actions() {
@@ -446,7 +434,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the actions property: The list of recommended actions to implement recommendation.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -457,7 +445,7 @@ public final class RecommendationProperties {
 
     /**
      * Get the remediation property: The automated way to apply recommendation.
-     *
+     * 
      * @return the remediation value.
      */
     public Map<String, Object> remediation() {
@@ -466,7 +454,7 @@ public final class RecommendationProperties {
 
     /**
      * Set the remediation property: The automated way to apply recommendation.
-     *
+     * 
      * @param remediation the remediation value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -478,7 +466,7 @@ public final class RecommendationProperties {
     /**
      * Get the exposedMetadataProperties property: The recommendation metadata properties exposed to customer to provide
      * additional information.
-     *
+     * 
      * @return the exposedMetadataProperties value.
      */
     public Map<String, Object> exposedMetadataProperties() {
@@ -488,7 +476,7 @@ public final class RecommendationProperties {
     /**
      * Set the exposedMetadataProperties property: The recommendation metadata properties exposed to customer to provide
      * additional information.
-     *
+     * 
      * @param exposedMetadataProperties the exposedMetadataProperties value to set.
      * @return the RecommendationProperties object itself.
      */
@@ -499,7 +487,7 @@ public final class RecommendationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -509,5 +497,106 @@ public final class RecommendationProperties {
         if (resourceMetadata() != null) {
             resourceMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("impact", this.impact == null ? null : this.impact.toString());
+        jsonWriter.writeStringField("impactedField", this.impactedField);
+        jsonWriter.writeStringField("impactedValue", this.impactedValue);
+        jsonWriter.writeStringField("lastUpdated",
+            this.lastUpdated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdated));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("recommendationTypeId", this.recommendationTypeId);
+        jsonWriter.writeJsonField("shortDescription", this.shortDescription);
+        jsonWriter.writeArrayField("suppressionIds", this.suppressionIds,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeMapField("extendedProperties", this.extendedProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("resourceMetadata", this.resourceMetadata);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("learnMoreLink", this.learnMoreLink);
+        jsonWriter.writeStringField("potentialBenefits", this.potentialBenefits);
+        jsonWriter.writeArrayField("actions", this.actions,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        jsonWriter.writeMapField("remediation", this.remediation, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("exposedMetadataProperties", this.exposedMetadataProperties,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendationProperties.
+     */
+    public static RecommendationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationProperties deserializedRecommendationProperties = new RecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedRecommendationProperties.category = Category.fromString(reader.getString());
+                } else if ("impact".equals(fieldName)) {
+                    deserializedRecommendationProperties.impact = Impact.fromString(reader.getString());
+                } else if ("impactedField".equals(fieldName)) {
+                    deserializedRecommendationProperties.impactedField = reader.getString();
+                } else if ("impactedValue".equals(fieldName)) {
+                    deserializedRecommendationProperties.impactedValue = reader.getString();
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedRecommendationProperties.lastUpdated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, Object> metadata = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedRecommendationProperties.metadata = metadata;
+                } else if ("recommendationTypeId".equals(fieldName)) {
+                    deserializedRecommendationProperties.recommendationTypeId = reader.getString();
+                } else if ("shortDescription".equals(fieldName)) {
+                    deserializedRecommendationProperties.shortDescription = ShortDescription.fromJson(reader);
+                } else if ("suppressionIds".equals(fieldName)) {
+                    List<UUID> suppressionIds = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedRecommendationProperties.suppressionIds = suppressionIds;
+                } else if ("extendedProperties".equals(fieldName)) {
+                    Map<String, String> extendedProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRecommendationProperties.extendedProperties = extendedProperties;
+                } else if ("resourceMetadata".equals(fieldName)) {
+                    deserializedRecommendationProperties.resourceMetadata = ResourceMetadata.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedRecommendationProperties.description = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedRecommendationProperties.label = reader.getString();
+                } else if ("learnMoreLink".equals(fieldName)) {
+                    deserializedRecommendationProperties.learnMoreLink = reader.getString();
+                } else if ("potentialBenefits".equals(fieldName)) {
+                    deserializedRecommendationProperties.potentialBenefits = reader.getString();
+                } else if ("actions".equals(fieldName)) {
+                    List<Map<String, Object>> actions
+                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    deserializedRecommendationProperties.actions = actions;
+                } else if ("remediation".equals(fieldName)) {
+                    Map<String, Object> remediation = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedRecommendationProperties.remediation = remediation;
+                } else if ("exposedMetadataProperties".equals(fieldName)) {
+                    Map<String, Object> exposedMetadataProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedRecommendationProperties.exposedMetadataProperties = exposedMetadataProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationProperties;
+        });
     }
 }

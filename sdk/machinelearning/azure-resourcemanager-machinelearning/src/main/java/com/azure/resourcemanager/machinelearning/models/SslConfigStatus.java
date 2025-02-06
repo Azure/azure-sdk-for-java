@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enable or disable ssl for scoring. */
+/**
+ * Enable or disable ssl for scoring.
+ */
 public final class SslConfigStatus extends ExpandableStringEnum<SslConfigStatus> {
-    /** Static value Disabled for SslConfigStatus. */
+    /**
+     * Static value Disabled for SslConfigStatus.
+     */
     public static final SslConfigStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for SslConfigStatus. */
+    /**
+     * Static value Enabled for SslConfigStatus.
+     */
     public static final SslConfigStatus ENABLED = fromString("Enabled");
 
-    /** Static value Auto for SslConfigStatus. */
+    /**
+     * Static value Auto for SslConfigStatus.
+     */
     public static final SslConfigStatus AUTO = fromString("Auto");
 
     /**
      * Creates a new instance of SslConfigStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class SslConfigStatus extends ExpandableStringEnum<SslConfigStatus>
 
     /**
      * Creates or finds a SslConfigStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SslConfigStatus.
      */
-    @JsonCreator
     public static SslConfigStatus fromString(String name) {
         return fromString(name, SslConfigStatus.class);
     }
 
     /**
      * Gets known SslConfigStatus values.
-     *
+     * 
      * @return known SslConfigStatus values.
      */
     public static Collection<SslConfigStatus> values() {

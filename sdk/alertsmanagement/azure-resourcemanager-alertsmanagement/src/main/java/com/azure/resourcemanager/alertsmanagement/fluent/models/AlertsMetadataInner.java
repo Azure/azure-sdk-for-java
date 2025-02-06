@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.alertsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.models.AlertsMetadataProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** alert meta data information. */
+/**
+ * alert meta data information.
+ */
 @Fluent
-public final class AlertsMetadataInner {
+public final class AlertsMetadataInner implements JsonSerializable<AlertsMetadataInner> {
     /*
      * alert meta data property bag
      */
-    @JsonProperty(value = "properties")
     private AlertsMetadataProperties properties;
 
     /**
+     * Creates an instance of AlertsMetadataInner class.
+     */
+    public AlertsMetadataInner() {
+    }
+
+    /**
      * Get the properties property: alert meta data property bag.
-     *
+     * 
      * @return the properties value.
      */
     public AlertsMetadataProperties properties() {
@@ -28,7 +39,7 @@ public final class AlertsMetadataInner {
 
     /**
      * Set the properties property: alert meta data property bag.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AlertsMetadataInner object itself.
      */
@@ -39,12 +50,48 @@ public final class AlertsMetadataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertsMetadataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertsMetadataInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertsMetadataInner.
+     */
+    public static AlertsMetadataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertsMetadataInner deserializedAlertsMetadataInner = new AlertsMetadataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAlertsMetadataInner.properties = AlertsMetadataProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertsMetadataInner;
+        });
     }
 }

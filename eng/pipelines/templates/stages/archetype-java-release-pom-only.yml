@@ -1,8 +1,6 @@
 parameters:
   Artifacts: []
   ArtifactName: 'not-specified'
-  TargetDocRepoOwner: ''
-  TargetDocRepoName: ''
   EnableIntegrationStage: true
 
 stages:

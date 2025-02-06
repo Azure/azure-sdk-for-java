@@ -56,7 +56,9 @@ public final class MeshUpgradeProfileProperties extends MeshRevision {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (compatibleWith() != null) {
+            compatibleWith().forEach(e -> e.validate());
+        }
     }
 
     /**

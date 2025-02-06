@@ -6,46 +6,48 @@ package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.resourcemanager.billingbenefits.fluent.models.RoleAssignmentEntityInner;
 
-/** An immutable client-side representation of RoleAssignmentEntity. */
+/**
+ * An immutable client-side representation of RoleAssignmentEntity.
+ */
 public interface RoleAssignmentEntity {
     /**
      * Gets the id property: Role assignment entity id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Role assignment entity name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the principalId property: Principal Id.
-     *
+     * 
      * @return the principalId value.
      */
     String principalId();
 
     /**
      * Gets the roleDefinitionId property: Role definition id.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     String roleDefinitionId();
 
     /**
      * Gets the scope property: Scope of the role assignment entity.
-     *
+     * 
      * @return the scope value.
      */
     String scope();
 
     /**
      * Gets the inner com.azure.resourcemanager.billingbenefits.fluent.models.RoleAssignmentEntityInner object.
-     *
+     * 
      * @return the inner object.
      */
     RoleAssignmentEntityInner innerModel();

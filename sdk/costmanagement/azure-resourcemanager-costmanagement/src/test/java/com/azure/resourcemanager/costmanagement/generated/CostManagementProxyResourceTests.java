@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CostManagementProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostManagementProxyResource model =
-            BinaryData
-                .fromString("{\"eTag\":\"pgvdf\",\"id\":\"iotkftutqxl\",\"name\":\"gxlefgugnxkrxd\",\"type\":\"mi\"}")
-                .toObject(CostManagementProxyResource.class);
-        Assertions.assertEquals("pgvdf", model.etag());
+        CostManagementProxyResource model = BinaryData.fromString(
+            "{\"eTag\":\"tdaaygdvwvg\",\"id\":\"iohgwxrtfud\",\"name\":\"epxgyqagvr\",\"type\":\"mnpkukghimdblxg\"}")
+            .toObject(CostManagementProxyResource.class);
+        Assertions.assertEquals("tdaaygdvwvg", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostManagementProxyResource model = new CostManagementProxyResource().withEtag("pgvdf");
+        CostManagementProxyResource model = new CostManagementProxyResource().withEtag("tdaaygdvwvg");
         model = BinaryData.fromObject(model).toObject(CostManagementProxyResource.class);
-        Assertions.assertEquals("pgvdf", model.etag());
+        Assertions.assertEquals("tdaaygdvwvg", model.etag());
     }
 }

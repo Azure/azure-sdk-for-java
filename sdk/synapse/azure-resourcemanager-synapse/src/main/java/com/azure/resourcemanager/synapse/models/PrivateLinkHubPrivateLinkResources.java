@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkHubPrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkHubPrivateLinkResources.
+ */
 public interface PrivateLinkHubPrivateLinkResources {
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface PrivateLinkHubPrivateLinkResources {
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface PrivateLinkHubPrivateLinkResources {
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -53,14 +55,14 @@ public interface PrivateLinkHubPrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link resource in private link hub along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.

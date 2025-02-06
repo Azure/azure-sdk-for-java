@@ -19,39 +19,37 @@ public final class AmazonRedshiftTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRedshiftTableDataset model = BinaryData.fromString(
-            "{\"type\":\"AmazonRedshiftTable\",\"typeProperties\":{\"tableName\":\"dataync\",\"table\":\"datau\",\"schema\":\"datafstyygjqpulm\"},\"description\":\"gm\",\"structure\":\"dataqmiwxzfvvzucqfg\",\"schema\":\"datajnbxwbmwdukin\",\"linkedServiceName\":{\"referenceName\":\"lxhgdekekzou\",\"parameters\":{\"cgldohgc\":\"datawwpzrd\",\"dqtdnnc\":\"datandxfhhhtes\"}},\"parameters\":{\"dxccyijj\":{\"type\":\"Object\",\"defaultValue\":\"datadshvvf\"},\"ydw\":{\"type\":\"Int\",\"defaultValue\":\"dataijzrqnjxmvvsd\"},\"exqwqnghxnimvy\":{\"type\":\"Object\",\"defaultValue\":\"dataruhhqldrdymnswx\"},\"tnylqu\":{\"type\":\"Object\",\"defaultValue\":\"dataxgunnqgypu\"}},\"annotations\":[\"datamvyumgmmuebsnzn\",\"datagsqufmjxcyo\",\"dataeqcazisvbrqgcy\",\"datapgawepk\"],\"folder\":{\"name\":\"rzp\"},\"\":{\"taflvs\":\"datardtbgblxbuibrvj\"}}")
+            "{\"type\":\"AmazonRedshiftTable\",\"typeProperties\":{\"tableName\":\"datargyzcslazp\",\"table\":\"dataqoyimxp\",\"schema\":\"dataktteagbga\"},\"description\":\"qpjuytvude\",\"structure\":\"datapbybkisboif\",\"schema\":\"dataglpwdjr\",\"linkedServiceName\":{\"referenceName\":\"urfshzn\",\"parameters\":{\"txfrm\":\"datatuhaaaxxdcdjmdk\",\"ehxuihwes\":\"dataecxstowa\"}},\"parameters\":{\"tevspsaneyvaerp\":{\"type\":\"String\",\"defaultValue\":\"datagblkkncyp\"},\"kjwqdmraqnilp\":{\"type\":\"String\",\"defaultValue\":\"datanhrfbrj\"},\"lrfdjwlzseod\":{\"type\":\"Bool\",\"defaultValue\":\"dataaigazwf\"}},\"annotations\":[\"datadr\",\"datal\",\"dataymqxserwy\"],\"folder\":{\"name\":\"ytjwgetfigw\"},\"\":{\"ebjrahgdstubwg\":\"datajxzi\",\"mdoiiyobqzwjal\":\"dataxzsshxliqmsckwh\"}}")
             .toObject(AmazonRedshiftTableDataset.class);
-        Assertions.assertEquals("gm", model.description());
-        Assertions.assertEquals("lxhgdekekzou", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("dxccyijj").type());
-        Assertions.assertEquals("rzp", model.folder().name());
+        Assertions.assertEquals("qpjuytvude", model.description());
+        Assertions.assertEquals("urfshzn", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tevspsaneyvaerp").type());
+        Assertions.assertEquals("ytjwgetfigw", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRedshiftTableDataset model = new AmazonRedshiftTableDataset().withDescription("gm")
-            .withStructure("dataqmiwxzfvvzucqfg")
-            .withSchema("datajnbxwbmwdukin")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("lxhgdekekzou")
-                .withParameters(mapOf("cgldohgc", "datawwpzrd", "dqtdnnc", "datandxfhhhtes")))
-            .withParameters(mapOf("dxccyijj",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datadshvvf"), "ydw",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataijzrqnjxmvvsd"),
-                "exqwqnghxnimvy",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataruhhqldrdymnswx"),
-                "tnylqu",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataxgunnqgypu")))
-            .withAnnotations(
-                Arrays.asList("datamvyumgmmuebsnzn", "datagsqufmjxcyo", "dataeqcazisvbrqgcy", "datapgawepk"))
-            .withFolder(new DatasetFolder().withName("rzp"))
-            .withTableName("dataync")
-            .withTable("datau")
-            .withSchemaTypePropertiesSchema("datafstyygjqpulm");
+        AmazonRedshiftTableDataset model = new AmazonRedshiftTableDataset().withDescription("qpjuytvude")
+            .withStructure("datapbybkisboif")
+            .withSchema("dataglpwdjr")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("urfshzn")
+                .withParameters(mapOf("txfrm", "datatuhaaaxxdcdjmdk", "ehxuihwes", "dataecxstowa")))
+            .withParameters(mapOf("tevspsaneyvaerp",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datagblkkncyp"),
+                "kjwqdmraqnilp",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datanhrfbrj"),
+                "lrfdjwlzseod",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataaigazwf")))
+            .withAnnotations(Arrays.asList("datadr", "datal", "dataymqxserwy"))
+            .withFolder(new DatasetFolder().withName("ytjwgetfigw"))
+            .withTableName("datargyzcslazp")
+            .withTable("dataqoyimxp")
+            .withSchemaTypePropertiesSchema("dataktteagbga");
         model = BinaryData.fromObject(model).toObject(AmazonRedshiftTableDataset.class);
-        Assertions.assertEquals("gm", model.description());
-        Assertions.assertEquals("lxhgdekekzou", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("dxccyijj").type());
-        Assertions.assertEquals("rzp", model.folder().name());
+        Assertions.assertEquals("qpjuytvude", model.description());
+        Assertions.assertEquals("urfshzn", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tevspsaneyvaerp").type());
+        Assertions.assertEquals("ytjwgetfigw", model.folder().name());
     }
 
     // Use "Map.of" if available

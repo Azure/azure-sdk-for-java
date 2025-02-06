@@ -98,22 +98,18 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScheduledActions()
+            .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScheduledAction create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScheduledActions()
+            .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -130,57 +126,44 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScheduledActions()
+            .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScheduledAction apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScheduledActions()
+            .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    ScheduledActionImpl(
-        ScheduledActionInner innerObject,
+    ScheduledActionImpl(ScheduledActionInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
-        this.name =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
     }
 
     public ScheduledAction refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScheduledActions()
-                .getByScopeWithResponse(scope, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScheduledActions()
+            .getByScopeWithResponse(scope, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScheduledAction refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScheduledActions()
-                .getByScopeWithResponse(scope, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScheduledActions()
+            .getByScopeWithResponse(scope, name, context)
+            .getValue();
         return this;
     }
 

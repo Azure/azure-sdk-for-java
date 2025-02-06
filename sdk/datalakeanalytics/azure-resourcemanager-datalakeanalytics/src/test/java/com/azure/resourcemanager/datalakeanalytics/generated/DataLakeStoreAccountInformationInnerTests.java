@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeStoreAccountInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeStoreAccountInformationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"suffix\":\"orxzdmohctbqvud\"},\"name\":\"dndnvow\",\"type\":\"jjugwdkcglhslaz\",\"id\":\"yggdtjixh\"}")
-                .toObject(DataLakeStoreAccountInformationInner.class);
-        Assertions.assertEquals("yggdtjixh", model.id());
+        DataLakeStoreAccountInformationInner model = BinaryData.fromString(
+            "{\"properties\":{\"suffix\":\"mjthjqkwp\"},\"name\":\"icxm\",\"type\":\"iwqvhkh\",\"id\":\"uigdtopbobjog\"}")
+            .toObject(DataLakeStoreAccountInformationInner.class);
+        Assertions.assertEquals("uigdtopbobjog", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeStoreAccountInformationInner model = new DataLakeStoreAccountInformationInner().withId("yggdtjixh");
+        DataLakeStoreAccountInformationInner model = new DataLakeStoreAccountInformationInner().withId("uigdtopbobjog");
         model = BinaryData.fromObject(model).toObject(DataLakeStoreAccountInformationInner.class);
-        Assertions.assertEquals("yggdtjixh", model.id());
+        Assertions.assertEquals("uigdtopbobjog", model.id());
     }
 }
