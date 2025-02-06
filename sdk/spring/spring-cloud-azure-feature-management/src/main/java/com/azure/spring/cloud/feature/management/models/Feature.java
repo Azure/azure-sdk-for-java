@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.feature.management.models;
 
 import java.util.List;
+import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +24,7 @@ public class Feature {
     private boolean enabled;
 
     @JsonProperty("conditions")
+    @NonNull
     private Conditions conditions = new Conditions();
 
     @JsonProperty("allocation")

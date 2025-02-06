@@ -19,6 +19,10 @@ public class FeatureFilterUtils {
         updateValueFromMapToList(parameters, key, false);
     }
 
+    public static void updateValueFromMapToList(Map<String, Object> parameters, String key) {
+        updateValueFromMapToList(parameters, key, false);
+    }
+
     /**
      * Looks at the given key in the parameters and coverts it to a list if it is currently a map.
      *

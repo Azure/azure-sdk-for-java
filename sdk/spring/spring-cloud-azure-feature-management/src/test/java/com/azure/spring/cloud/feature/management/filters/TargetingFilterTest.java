@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
@@ -62,7 +61,7 @@ public class TargetingFilterTest {
 
         assertTrue(filter.evaluate(context));
     }
-    
+
     @Test
     public void targetedUserLower() {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
@@ -142,7 +141,7 @@ public class TargetingFilterTest {
 
         assertTrue(filter.evaluate(context));
     }
-    
+
     @Test
     public void targetedGroupLower() {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
@@ -460,5 +459,24 @@ public class TargetingFilterTest {
         excludes.put(USERS, excludedUsers);
         excludes.put(GROUPS, excludedGroups);
         return excludes;
+    }
+
+    class TargetingFilterTestContextAccessor implements TargetingContextAccessor {
+
+        private String user;
+
+        private ArrayList<String> groups;
+
+        TargetingFilterTestContextAccessor(String user, ArrayList<String> groups) {
+            this.user = user;
+            this.groups = groups;
+        }
+
+        @Override
+        public void configureTargetingContext(TargetingContext context) {
+            context.setUserId(user);
+            context.setGroups(groups);
+        }
+
     }
 }

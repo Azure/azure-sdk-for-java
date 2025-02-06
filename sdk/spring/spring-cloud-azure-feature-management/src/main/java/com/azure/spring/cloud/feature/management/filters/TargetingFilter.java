@@ -140,13 +140,11 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
             throw new IllegalArgumentException("Targeting Context not configured.");
         }
 
-        TargetingFilterContext targetingContext = new TargetingFilterContext();
-
-        if (contextualAccessor != null && (appContext != null || contextAccessor == null)) {
+        TargetingContext targetingContext = new TargetingFilterContext();
+        if (appContext != null && appContext instanceof TargetingContext) {
             // Use this if, there is an appContext + the contextualAccessor, or there is no contextAccessor.
-            contextualAccessor.configureTargetingContext(targetingContext, appContext);
-        }
-        if (contextAccessor != null) {
+            targetingContext = (TargetingContext) appContext;
+        } else if (contextAccessor != null) {
             // If this is the only one provided just use it.
             contextAccessor.configureTargetingContext(targetingContext);
         }
@@ -234,11 +232,11 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         return isTargeted(defaultContextId, audience.getDefaultRolloutPercentage());
     }
 
-    private boolean targetUser(String userId, Collection<String> collection) {
-        return userId != null && collection != null && collection.stream().anyMatch(user -> equals(userId, user));
+    private boolean targetUser(String userId, Collection<String> users) {
+        return userId != null && users != null && users.stream().anyMatch(user -> equals(userId, user));
     }
 
-    private boolean targetGroup(Audience audience, TargetingFilterContext targetingContext,
+    private boolean targetGroup(Audience audience, TargetingContext targetingContext,
         FeatureFilterEvaluationContext context, String group) {
         Optional<GroupRollout> groupRollout = audience.getGroups().stream()
             .filter(g -> equals(g.getName(), group)).findFirst();
@@ -257,7 +255,7 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
         return false;
     }
 
-    private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
+    private boolean validateTargetingContext(TargetingContext targetingContext) {
         boolean hasUserDefined = StringUtils.hasText(targetingContext.getUserId());
         boolean hasGroupsDefined = targetingContext.getGroups() != null;
         boolean hasAtLeastOneGroup = false;

@@ -58,6 +58,8 @@ public class FeatureManager {
     private final FeatureManagementProperties featureManagementConfigurations;
 
     private transient FeatureManagementConfigProperties properties;
+    
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(100);
 
     private final TargetingContextAccessor contextAccessor;
 
@@ -106,7 +108,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature) throws FilterNotFoundException {
-        return checkFeature(feature, null).map(event -> event.isEnabled()).block(Duration.ofSeconds(100));
+        return checkFeature(feature, null).map(event -> event.isEnabled()).block(Duration.ofSeconds(DEFAULT_REQUEST_TIMEOUT));
     }
 
     /**
@@ -134,7 +136,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature, Object featureContext) throws FilterNotFoundException {
-        return checkFeature(feature, featureContext).map(event -> event.isEnabled()).block(Duration.ofSeconds(100));
+        return checkFeature(feature, featureContext).map(event -> event.isEnabled()).block(Duration.ofSeconds(DEFAULT_REQUEST_TIMEOUT));
     }
 
     /**
@@ -361,7 +363,6 @@ public class FeatureManager {
             String filterName = featureFilter.getName();
 
             try {
-
                 Object filter = context.getBean(filterName);
                 featureFilter.setFeatureName(featureFlag.getId());
                 if (filter instanceof FeatureFilter) {
