@@ -65,6 +65,3 @@ Thumbs.db
 
 # reduced pom files should not be included
 dependency-reduced-pom.xml
-
-# Temp typespec files
-!TempTypeSpecFiles/
