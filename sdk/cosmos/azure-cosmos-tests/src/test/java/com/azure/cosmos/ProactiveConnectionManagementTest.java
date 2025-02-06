@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -180,11 +181,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             cosmosAsyncContainer.openConnectionsAndInitCaches(proactiveConnectionRegionCount).block();
 
-            UnmodifiableList<URI> readEndpoints =
+            UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> readEndpoints =
                 globalEndpointManager.getReadEndpoints();
+
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
-                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                Math.min(readEndpoints.size(),proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream().map(LocationCache.ConsolidatedRegionalEndpoint::getGatewayLocationEndpoint).collect(Collectors.toList());
 
             Mono<CosmosAsyncContainer> asyncContainerMono = Mono.just(cosmosAsyncContainer);
 
@@ -342,10 +345,14 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> readEndpoints = globalEndpointManager.getReadEndpoints();
+
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
-                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream()
+                .map(LocationCache.ConsolidatedRegionalEndpoint::getGatewayLocationEndpoint)
+                .collect(Collectors.toList());
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
@@ -488,10 +495,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
-                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream()
+                .map(LocationCache.ConsolidatedRegionalEndpoint::getGatewayLocationEndpoint)
+                .collect(Collectors.toList());;
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
@@ -656,10 +666,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<LocationCache.ConsolidatedRegionalEndpoint> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
-                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
+                .stream()
+                .map(LocationCache.ConsolidatedRegionalEndpoint::getGatewayLocationEndpoint)
+                .collect(Collectors.toList());;
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =

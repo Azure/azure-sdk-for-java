@@ -2,6 +2,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import io.netty.channel.ConnectTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -29,7 +30,7 @@ public class ThinClientStoreModelTest {
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("https://localhost"), null))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         // mocking with HTTP/1.1 client, just using this test as basic store model validation. e2e request flow

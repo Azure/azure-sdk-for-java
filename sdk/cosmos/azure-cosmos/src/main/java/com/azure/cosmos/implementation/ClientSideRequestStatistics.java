@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -163,7 +164,9 @@ public class ClientSideRequestStatistics {
             this.requestPayloadSizeInBytes = 0;
         }
 
+        LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = null;
         URI locationEndPoint = null;
+
         if (request.requestContext != null) {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
@@ -176,6 +179,7 @@ public class ClientSideRequestStatistics {
             }
 
             locationEndPoint = request.requestContext.locationEndpointToRoute;
+            consolidatedRegionalEndpoint = request.requestContext.consolidatedRegionalEndpointToRoute;
 
             List<String> excludedRegions = request.requestContext.getExcludeRegions();
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
@@ -189,12 +193,12 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (locationEndPoint != null) {
+            if (consolidatedRegionalEndpoint != null) {
                 storeResponseStatistics.regionName =
-                    globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
+                    globalEndpointManager.getRegionName(consolidatedRegionalEndpoint.getGatewayLocationEndpoint(), request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
-                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, locationEndPoint));
+                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, consolidatedRegionalEndpoint));
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -218,9 +222,13 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
+            LocationCache.ConsolidatedRegionalEndpoint consolidatedRegionalEndpoint = null;
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
+
+                consolidatedRegionalEndpoint = rxDocumentServiceRequest.requestContext.consolidatedRegionalEndpointToRoute;
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
                 this.keywordIdentifiers = rxDocumentServiceRequest.requestContext.getKeywordIdentifiers();
             }
@@ -233,7 +241,7 @@ public class ClientSideRequestStatistics {
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
 
-                this.regionsContactedWithContext.add(new RegionWithContext(regionName, locationEndPoint));
+                this.regionsContactedWithContext.add(new RegionWithContext(regionName, consolidatedRegionalEndpoint));
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -651,7 +659,7 @@ public class ClientSideRequestStatistics {
         return this.regionsContactedWithContext.first().regionContacted;
     }
 
-    public URI getFirstContactedLocationEndpoint() {
+    public LocationCache.ConsolidatedRegionalEndpoint getFirstContactedLocationEndpoint() {
         if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
             return null;
         }
@@ -1048,10 +1056,10 @@ public class ClientSideRequestStatistics {
     static class RegionWithContext implements Comparable<RegionWithContext> {
 
         private final String regionContacted;
-        private final URI locationEndpointsContacted;
+        private final LocationCache.ConsolidatedRegionalEndpoint locationEndpointsContacted;
         private final long recordedTimestamp;
 
-        RegionWithContext(String regionContacted, URI locationEndpointsContacted) {
+        RegionWithContext(String regionContacted, LocationCache.ConsolidatedRegionalEndpoint locationEndpointsContacted) {
             this.regionContacted = regionContacted;
             this.locationEndpointsContacted = locationEndpointsContacted;
             this.recordedTimestamp = System.currentTimeMillis();

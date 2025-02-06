@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
@@ -37,7 +38,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForReadOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://localhost:"), null)).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
         RetryContext retryContext = new RetryContext();
@@ -89,7 +90,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForMetaDataReadOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://localhost:"), null)).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
         RetryContext retryContext = new RetryContext();
@@ -143,7 +144,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForQueryPlanOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://localhost:"), null)).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
         RetryContext retryContext = new RetryContext();
@@ -195,7 +196,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = "unit")
     public void shouldNotRetryOnTimeoutForWriteOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://localhost:"), null)).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
 
@@ -236,7 +237,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = "unit", dataProvider = "operationTypeProvider")
     public void httpNetworkFailureOnAddressRefresh(OperationType operationType) throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("http://localhost:"), null)).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
 

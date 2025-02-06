@@ -6,8 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import io.netty.handler.ssl.SslContext;
 import org.testng.annotations.Test;
 
 import java.net.URI;
@@ -170,12 +168,12 @@ public class ConfigsTests {
     @Test(groups = { "unit" })
     public void thinClientEnabledTest() {
         Configs config = new Configs();
-        assertThat(config.getThinclientEnabled()).isFalse();
+        assertThat(config.isThinClientEnabled()).isFalse();
 
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(config.getThinclientEnabled()).isTrue();
+            assertThat(config.isThinClientEnabled()).isTrue();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
