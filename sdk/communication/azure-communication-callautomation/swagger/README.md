@@ -32,7 +32,7 @@ autorest README.md --java --v4
 tag: package-2024-09-01-preview
 use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/691fea3efb9ff22b20904e92d5116223f452a3b1/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/c8d14e82887409318f471cb17d2fa03844e8187f/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
