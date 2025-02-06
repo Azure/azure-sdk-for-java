@@ -34,7 +34,7 @@ steps:
       ExcludePaths: ${{parameters.ExcludePaths}}
 
   - pwsh: |
-      $temp = $(ArtifactPackageNames)
+      $temp = '$(ArtifactPackageNames)'
       if ($temp) {
         Write-Host "ArtifactPackageNames is set, value=$temp"
       } else {
