@@ -273,7 +273,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.6.0-beta.1");
+                .append("1.6.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))

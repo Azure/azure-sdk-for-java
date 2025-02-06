@@ -82,14 +82,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this.innerModel().disableShowmount();
     }
 
-    public String nfsV4IdDomain() {
-        return this.innerModel().nfsV4IdDomain();
-    }
-
-    public Boolean isMultiAdEnabled() {
-        return this.innerModel().isMultiAdEnabled();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -261,16 +253,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             return this;
         } else {
             this.updateBody.withEncryption(encryption);
-            return this;
-        }
-    }
-
-    public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
-        if (isInCreateMode()) {
-            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
-            return this;
-        } else {
-            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
     }

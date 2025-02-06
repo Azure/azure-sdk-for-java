@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"ikf\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"zqlqhyc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class NetAppResourcesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResponse response = manager.netAppResources()
-            .checkNameAvailabilityWithResponse("wotey",
-                new ResourceNameAvailabilityRequest().withName("wcluqovekqvgq")
-                    .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES)
-                    .withResourceGroup("wifzmp"),
+            .checkNameAvailabilityWithResponse("srvhmgorffuki",
+                new ResourceNameAvailabilityRequest().withName("cvwmzhwplefa")
+                    .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS)
+                    .withResourceGroup("xilcbtgnhnzey"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.isAvailable());
+        Assertions.assertEquals(false, response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("ikf", response.message());
+        Assertions.assertEquals("zqlqhyc", response.message());
     }
 }
