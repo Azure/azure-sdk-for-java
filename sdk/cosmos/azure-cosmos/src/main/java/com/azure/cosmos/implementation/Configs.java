@@ -284,9 +284,11 @@ public class Configs {
 
     private static final boolean DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = false;
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
+    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE = "COSMOS_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
     private static final boolean DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED = true;
     private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED = "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED";
+    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED_VARIABLE = "COSMOS_IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED";
 
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
@@ -858,7 +860,7 @@ public class Configs {
             System.getProperty(
                 IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
                 firstNonNull(
-                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
+                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
                     String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
 
         return Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsString);
@@ -869,7 +871,7 @@ public class Configs {
             System.getProperty(
                 IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED,
                 firstNonNull(
-                    emptyToNull(System.getenv().get(IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED)),
+                    emptyToNull(System.getenv().get(IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED_VARIABLE)),
                     String.valueOf(DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED)));
 
         return Boolean.parseBoolean(isSessionTokenFalseProgressMergeDisabledAsString);
