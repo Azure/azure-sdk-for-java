@@ -1,5 +1,8 @@
 package com.azure.spring.cloud.feature.management.models;
 
+/**
+ * Event tracking the evaluation of a feature flag
+ */
 public class EvaluationEvent {
 
     private final Feature feature;
@@ -12,6 +15,10 @@ public class EvaluationEvent {
 
     private VariantAssignmentReason reason = VariantAssignmentReason.NONE;
 
+    /**
+     * Creates an Evaluation Event for the given feature
+     * @param feature Feature
+     */
     public EvaluationEvent(Feature feature) {
         this.feature = feature;
     }
@@ -32,6 +39,7 @@ public class EvaluationEvent {
 
     /**
      * @param user the user to set
+     * @return EvaluationEvent
      */
     public EvaluationEvent setUser(String user) {
         this.user = user;
@@ -46,7 +54,8 @@ public class EvaluationEvent {
     }
 
     /**
-     * @param mono the enabled to set
+     * @param enabled the enabled to set
+     * @return EvaluationEvent
      */
     public EvaluationEvent setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -62,6 +71,7 @@ public class EvaluationEvent {
 
     /**
      * @param variant the variant to set
+     * @return EvaluationEvent
      */
     public EvaluationEvent setVariant(Variant variant) {
         this.variant = variant;
@@ -77,6 +87,7 @@ public class EvaluationEvent {
 
     /**
      * @param reason the reason to set
+     * @return EvaluationEvent
      */
     public EvaluationEvent setReason(VariantAssignmentReason reason) {
         this.reason = reason;

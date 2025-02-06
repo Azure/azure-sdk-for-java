@@ -4,6 +4,9 @@ package com.azure.spring.cloud.feature.management.models;
 
 import java.util.List;
 
+/**
+ * Group allocation of a variant. Contains a variant and a list of groups assigned to the variant.
+ */
 public class GroupAllocation {
 
     private String variant;

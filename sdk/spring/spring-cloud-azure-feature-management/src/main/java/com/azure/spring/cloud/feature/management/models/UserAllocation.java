@@ -4,6 +4,9 @@ package com.azure.spring.cloud.feature.management.models;
 
 import java.util.List;
 
+/**
+ * User allocation of a variant. Contains a variant and a list of users assigned to the variant.
+ */
 public class UserAllocation {
 
     private String variant;

@@ -4,6 +4,9 @@ package com.azure.spring.cloud.feature.management.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Reference to a Variant containing the Variant name, configuration value, and possible status override.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VariantReference {
 
@@ -22,6 +25,7 @@ public class VariantReference {
 
     /**
      * @param name the name to set
+     * @return VariantReference
      */
     public VariantReference setName(String name) {
         this.name = name;
@@ -37,6 +41,7 @@ public class VariantReference {
 
     /**
      * @param configurationValue the configurationValue to set
+     * @return VariantReference
      */
     public VariantReference setConfigurationValue(Object configurationValue) {
         this.configurationValue = configurationValue;
@@ -52,6 +57,7 @@ public class VariantReference {
 
     /**
      * @param statusOverride the statusOverride to set
+     * @return VariantReference
      */
     public VariantReference setStatusOverride(String statusOverride) {
         this.statusOverride = statusOverride;

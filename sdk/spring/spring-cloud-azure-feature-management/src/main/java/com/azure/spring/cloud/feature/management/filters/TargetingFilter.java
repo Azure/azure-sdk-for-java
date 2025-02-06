@@ -18,7 +18,6 @@ import com.azure.spring.cloud.feature.management.implementation.targeting.Audien
 import com.azure.spring.cloud.feature.management.implementation.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
-import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
@@ -54,8 +53,6 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
      */
     private static final String EXCLUSION_CAMEL = "Exclusion";
 
-    protected static final String EXCLUSION = "Exclusion";
-
     /**
      * Error message for when the total Audience value is greater than 100 percent.
      */
@@ -75,11 +72,6 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
     protected final TargetingContextAccessor contextAccessor;
 
     /**
-     * Accessor for identifying the current user/group when evaluating when providing context
-     */
-    protected final ContextualTargetingContextAccessor contextualAccessor;
-
-    /**
      * Options for evaluating the filter
      */
     protected final TargetingEvaluationOptions options;
@@ -91,7 +83,6 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
      */
     public TargetingFilter(TargetingContextAccessor contextAccessor) {
         this.contextAccessor = contextAccessor;
-        this.contextualAccessor = null;
         this.options = new TargetingEvaluationOptions();
     }
 
@@ -103,31 +94,7 @@ public class TargetingFilter implements FeatureFilter, ContextualFeatureFilter {
      */
     public TargetingFilter(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options) {
         this.contextAccessor = contextAccessor;
-        this.contextualAccessor = null;
         this.options = options;
-    }
-
-    /**
-     * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
-     * 
-     * @param contextualAccessor Context for evaluating the users/groups.
-     * @param options enables customization of the filter.
-     */
-    public TargetingFilter(ContextualTargetingContextAccessor contextualAccessor, TargetingEvaluationOptions options) {
-        this.contextAccessor = null;
-        this.contextualAccessor = contextualAccessor;
-        this.options = options;
-    }
-
-    /**
-     * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
-     * 
-     * @param contextualAccessor Context for evaluating the users/groups.
-     */
-    public TargetingFilter(ContextualTargetingContextAccessor contextualAccessor) {
-        this.contextAccessor = null;
-        this.contextualAccessor = contextualAccessor;
-        this.options = new TargetingEvaluationOptions();
     }
 
     @Override

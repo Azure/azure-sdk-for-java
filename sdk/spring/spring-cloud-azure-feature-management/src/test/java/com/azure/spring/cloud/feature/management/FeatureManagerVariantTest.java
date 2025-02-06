@@ -29,7 +29,6 @@ import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.models.VariantReference;
-import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 
 /**
@@ -39,8 +38,6 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingContextAcces
 public class FeatureManagerVariantTest {
 
     private FeatureManager featureManager;
-
-    private FeatureManager contextualFeatureManager;
 
     @Mock
     private ApplicationContext context;
@@ -54,18 +51,13 @@ public class FeatureManagerVariantTest {
     @Mock
     private TargetingContextAccessor contextAccessorMock;
 
-    @Mock
-    private ContextualTargetingContextAccessor contextualAccessorMock;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
         featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, contextAccessorMock,
-            null, null);
-        contextualFeatureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null,
-            contextualAccessorMock, null);
+            null);
     }
 
     @AfterEach
@@ -88,7 +80,7 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssigner() {
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null);
         List<Feature> features = List.of(new Feature().setId("No Assigner").setVariants(createVariants()));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
@@ -191,27 +183,6 @@ public class FeatureManagerVariantTest {
     }
 
     @Test
-    public void enabledFilterDefaultAllTrue() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
-                .setConditions(new Conditions().setClientFilters(
-                    List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
-                        new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn")))
-                    .setRequirementType("All"))
-                .setAllocation(new Allocation().setDefaultWhenEnabled("small")).setEnabled(true));
-
-        when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
-        when(context.getBean(Mockito.eq("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
-        Variant result = featureManager.getVariant("No Assigner");
-        assertEquals(result.getName(), "small");
-        assertEquals(result.getValue(), 1);
-
-        result = contextualFeatureManager.getVariant("No Assigner", false);
-        assertEquals(result.getName(), "small");
-        assertEquals(result.getValue(), 1);
-    }
-
-    @Test
     public void enabledFilterDefaultAllTrueJustOne() {
         List<Feature> features = List
             .of(new Feature().setId("No Assigner").setVariants(createVariants())
@@ -219,7 +190,8 @@ public class FeatureManagerVariantTest {
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOff")))
                     .setRequirementType("All"))
-                .setAllocation(new Allocation().setDefaultWhenEnabled("small").setDefaultWhenDisabled("large")).setEnabled(true));
+                .setAllocation(new Allocation().setDefaultWhenEnabled("small").setDefaultWhenDisabled("large"))
+                .setEnabled(true));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         when(context.getBean(Mockito.eq("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
@@ -236,7 +208,8 @@ public class FeatureManagerVariantTest {
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn")))
-                    .setRequirementType("All")).setEnabled(true));
+                    .setRequirementType("All"))
+                .setEnabled(true));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         when(context.getBean(Mockito.eq("AlwaysOn"))).thenReturn(new AlwaysOnFilter());

@@ -42,6 +42,7 @@ public class Feature {
 
     /**
      * @param id the id to set
+     * @return Feature
      */
     public Feature setId(String id) {
         this.id = id;
@@ -57,6 +58,7 @@ public class Feature {
 
     /**
      * @param enabled the enabled to set
+     * @return Feature
      */
     public Feature setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -72,6 +74,7 @@ public class Feature {
 
     /**
      * @param description the description to set
+     * @return Feature
      * */
     public Feature setDescription(String description) {
         this.description = description;
@@ -87,6 +90,7 @@ public class Feature {
 
     /**
      * @param conditions the conditions to set
+     * @return Feature
      * */
     public Feature setConditions(Conditions conditions) {
         this.conditions = conditions;
@@ -102,6 +106,7 @@ public class Feature {
 
     /**
      * @param allocation the allocation to set
+     * @return Feature
      */
     public Feature setAllocation(Allocation allocation) {
         this.allocation = allocation;
@@ -117,6 +122,7 @@ public class Feature {
 
     /**
      * @param variants the variants to set
+     * @return Feature
      */
     public Feature setVariants(List<VariantReference> variants) {
         this.variants = variants;

@@ -37,7 +37,6 @@ import com.azure.spring.cloud.feature.management.models.UserAllocation;
 import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.models.VariantAssignmentReason;
 import com.azure.spring.cloud.feature.management.models.VariantReference;
-import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
@@ -63,8 +62,6 @@ public class FeatureManager {
 
     private final TargetingContextAccessor contextAccessor;
 
-    private final ContextualTargetingContextAccessor contextualAccessor;
-
     private final TargetingEvaluationOptions evaluationOptions;
 
     /**
@@ -76,12 +73,11 @@ public class FeatureManager {
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,
-        ContextualTargetingContextAccessor contextualAccessor, TargetingEvaluationOptions evaluationOptions) {
+        TargetingEvaluationOptions evaluationOptions) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
         this.contextAccessor = contextAccessor;
-        this.contextualAccessor = contextualAccessor;
         this.evaluationOptions = evaluationOptions;
     }
 
@@ -408,12 +404,6 @@ public class FeatureManager {
 
     private TargetingFilterContext buildContext(Object appContext) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
-        if (contextualAccessor != null && (appContext != null || contextAccessor == null)) {
-            // Use this if, there is an appContext + the contextualAccessor, or there is no
-            // contextAccessor.
-            contextualAccessor.configureTargetingContext(targetingContext, appContext);
-            return targetingContext;
-        }
         if (contextAccessor != null) {
             // If this is the only one provided just use it.
             contextAccessor.configureTargetingContext(targetingContext);

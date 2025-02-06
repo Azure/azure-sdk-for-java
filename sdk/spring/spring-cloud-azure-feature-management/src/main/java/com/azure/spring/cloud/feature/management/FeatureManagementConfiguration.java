@@ -13,7 +13,6 @@ import org.springframework.lang.NonNull;
 
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
-import com.azure.spring.cloud.feature.management.targeting.ContextualTargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 
@@ -38,17 +37,14 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
     FeatureManager featureManager(FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties,
         ObjectProvider<TargetingContextAccessor> contextAccessorProvider,
-        ObjectProvider<ContextualTargetingContextAccessor> contextualAccessorProvider,
         ObjectProvider<TargetingEvaluationOptions> evaluationOptionsProvider) {
 
         TargetingContextAccessor contextAccessor = contextAccessorProvider.getIfAvailable();
-        ContextualTargetingContextAccessor contextualTargetingContextAccessor = contextualAccessorProvider
-            .getIfAvailable();
         TargetingEvaluationOptions evaluationOptions = evaluationOptionsProvider
             .getIfAvailable(() -> new TargetingEvaluationOptions());
 
         return new FeatureManager(appContext, featureManagementConfigurations, properties, contextAccessor,
-            contextualTargetingContextAccessor, evaluationOptions);
+            evaluationOptions);
     }
 
     @Override

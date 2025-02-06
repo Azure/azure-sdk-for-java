@@ -4,6 +4,9 @@ package com.azure.spring.cloud.feature.management.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Percentile allocation of a variant. Contains a variant and a range of users assigned to the variant.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PercentileAllocation {
 

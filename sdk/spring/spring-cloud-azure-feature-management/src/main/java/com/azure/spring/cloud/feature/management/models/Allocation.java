@@ -8,6 +8,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Allocation of a feature flag to variants.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Allocation {
 
@@ -34,6 +37,7 @@ public class Allocation {
 
     /**
      * @param defaultWhenEnabled the defaultWhenEnabled to set
+     * @return Allocation
      */
     public Allocation setDefaultWhenEnabled(String defaultWhenEnabled) {
         this.defaultWhenEnabled = defaultWhenEnabled;
@@ -49,6 +53,7 @@ public class Allocation {
 
     /**
      * @param defaultWhenDisabled the defaultWhenDisabled to set
+     * @return Allocation
      */
     public Allocation setDefaultWhenDisabled(String defaultWhenDisabled) {
         this.defaultWhenDisabled = defaultWhenDisabled;
@@ -63,7 +68,8 @@ public class Allocation {
     }
 
     /**
-     * @param users the users to set
+     * @param user the users to set
+     * @return Allocation
      */
     public Allocation setUser(List<UserAllocation> user) {
         this.user = user;
@@ -78,7 +84,8 @@ public class Allocation {
     }
 
     /**
-     * @param groups the groups to set
+     * @param group the groups to set
+     * @return Allocation
      */
     public Allocation setGroups(List<GroupAllocation> group) {
         this.group = group;
@@ -94,6 +101,7 @@ public class Allocation {
 
     /**
      * @param percentile the percentile to set
+     * @return Allocation
      */
     public Allocation setPercentile(List<PercentileAllocation> percentile) {
         this.percentile = percentile;
@@ -109,6 +117,7 @@ public class Allocation {
 
     /**
      * @param seed the seed to set
+     * @return Allocation
      */
     public Allocation setSeed(String seed) {
         this.seed = seed;

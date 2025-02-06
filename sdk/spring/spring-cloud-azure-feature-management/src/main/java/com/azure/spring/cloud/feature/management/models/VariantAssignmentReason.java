@@ -4,16 +4,21 @@
 package com.azure.spring.cloud.feature.management.models;
 
 /**
- * The reason why a given boolean/variant was returned when calling 
- * isEnabled/getVariant.
+ * The reason why a given boolean/variant was returned when calling isEnabled/getVariant.
  */
 public enum VariantAssignmentReason {
 
+    /** None */
     NONE("None"),
+    /** Default when Disabled */
     DEFAULT_WHEN_DISABLED("DefaultWhenDisabled"),
+    /** Default when Enabled */
     DEFAULT_WHEN_ENABLED("DefaultWhenEnabled"),
+    /** User */
     USER("User"),
+    /** Group */
     GROUP("Group"),
+    /** Percentile */
     PERCENTILE("Percentile");
 
     private final String type;
