@@ -74,7 +74,6 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final Map<String, String> headers = request.getHeaders();
 
         // Special-case headers
-
         this.addAimHeader(headers);
         this.addAllowScanOnQuery(headers);
         this.addBinaryIdIfPresent(headers);
@@ -124,6 +123,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addSDKSupportedCapabilities(headers);
         this.addChangeFeedWireFormatVersion(headers);
         this.addPriorityLevel(headers);
+        this.addGlobalDatabaseAccountName(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -282,6 +282,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     }
 
     private RntbdToken getPriorityLevel() { return this.get(RntbdRequestHeader.PriorityLevel); }
+
+    private RntbdToken getGlobalDatabaseAccountName() { return this.get(RntbdRequestHeader.GlobalDatabaseAccountName); }
 
     private RntbdToken getDatabaseName() {
         return this.get(RntbdRequestHeader.DatabaseName);
@@ -773,6 +775,15 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     .getPriorityLevelAccessor()
                     .getPriorityValue(priorityLevel)
             );
+        }
+    }
+
+    private void addGlobalDatabaseAccountName(final Map<String, String> headers)
+    {
+        final String value = headers.get(HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME);
+
+        if (StringUtils.isNotEmpty(value)) {
+            this.getGlobalDatabaseAccountName().setValue(value);
         }
     }
 

@@ -11,6 +11,8 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME;
+import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
@@ -28,7 +30,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         checkNotNull(ids, "expected non-null ids");
         checkNotNull(in, "expected non-null in");
 
-        this.tokens = new EnumMap<T, RntbdToken>(classType);
+        this.tokens = new EnumMap<>(classType);
         headers.stream().forEach(h -> tokens.put(h, RntbdToken.create(h)));
         this.headers = ids;
         this.in = in;
@@ -89,6 +91,16 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
     }
 
     final void encode(final ByteBuf out) {
+        // TODO: special casing for thin client. need to revisit perf implications.
+        if (this.tokens.containsKey(EFFECTIVE_PARTITION_KEY)) {
+            this.tokens.get(EFFECTIVE_PARTITION_KEY).encode(out);
+            this.tokens.remove(EFFECTIVE_PARTITION_KEY);
+        }
+        if (this.tokens.containsKey(GLOBAL_DATABASE_ACCOUNT_NAME)) {
+            this.tokens.get(GLOBAL_DATABASE_ACCOUNT_NAME).encode(out);
+            this.tokens.remove(GLOBAL_DATABASE_ACCOUNT_NAME);
+        }
+
         for (final RntbdToken token : this.tokens.values()) {
             token.encode(out);
         }
