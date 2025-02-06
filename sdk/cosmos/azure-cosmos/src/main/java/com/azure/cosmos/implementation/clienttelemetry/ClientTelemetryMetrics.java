@@ -269,10 +269,10 @@ public final class ClientTelemetryMetrics {
             latency,
             maxItemCount == null ? -1 : maxItemCount,
             actualItemCount == null ? -1: actualItemCount,
-            opCountPerEvaluation,
-            opRetriedCountPerEvaluation,
-            globalOpCount,
-            targetMaxMicroBatchSize,
+            opCountPerEvaluation == null ? 0 : opCountPerEvaluation,
+            opRetriedCountPerEvaluation == null ? 0 : opRetriedCountPerEvaluation,
+            globalOpCount == null ? 0 : globalOpCount,
+            targetMaxMicroBatchSize == null ? 0 : targetMaxMicroBatchSize,
             diagnosticsContext,
             contactedRegions
         );

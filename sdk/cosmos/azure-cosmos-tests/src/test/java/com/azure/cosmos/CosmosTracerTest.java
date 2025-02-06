@@ -911,6 +911,36 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
     }
 
+    @Test(groups = { "fast", "simple" }, timeOut = 10 * TIMEOUT)
+    public void readItemWith404() {
+        ITEM_ID =  "tracerDoc_" + testCaseCount.incrementAndGet();
+        TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
+
+        DiagnosticsProvider provider = createAndInitializeDiagnosticsProvider(
+            mockTracer,
+            false,
+            true,
+            ShowQueryMode.NONE,
+            false,
+            1);
+
+        long diagnosticHandlerFailuresBaseline = provider.getDiagnosticHandlerFailuresSnapshot();
+        try {
+            cosmosAsyncContainer
+                .readItem(ITEM_ID, new PartitionKey(ITEM_ID), null, ObjectNode.class)
+                .block();
+
+            fail("404 Expected");
+        } catch (CosmosException cosmosException) {
+            assertThat(cosmosException.getStatusCode()).isEqualTo(404);
+        }
+
+        assertThat(provider.getDiagnosticHandlerFailuresSnapshot())
+            .isEqualTo(diagnosticHandlerFailuresBaseline);
+
+        mockTracer.reset();
+    }
+
     @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
     public void cosmosAsyncScripts(
         boolean useLegacyTracing,
