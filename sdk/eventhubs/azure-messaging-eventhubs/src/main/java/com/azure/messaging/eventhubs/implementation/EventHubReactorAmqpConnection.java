@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
+import com.azure.core.amqp.implementation.ProtonSession;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -162,7 +162,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     }
 
     @Override
-    protected ReactorSession createSession(ProtonSessionWrapper session) {
+    protected ReactorSession createSession(ProtonSession session) {
         return new EventHubReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
             tokenManagerProvider, retryOptions, messageSerializer);
     }
