@@ -5,8 +5,6 @@ package com.azure.spring.cloud.feature.management.implementation;
 public final class FeatureManagementConstants {
 
     public static final String DEFAULT_REQUIREMENT_TYPE = "Any";
-    
-    public static final String ALL_REQUIREMENT_TYPE = "All";
 
     public static final String ALL_REQUIREMENT_TYPE = "All";
 
