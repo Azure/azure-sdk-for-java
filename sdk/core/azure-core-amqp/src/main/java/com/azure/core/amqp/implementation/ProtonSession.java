@@ -150,12 +150,12 @@ public final class ProtonSession {
      * </p>
      * <p>
      * If the session (or parent Qpid Proton-j connection) is disposed after opening, any later operation attempts
-     * (e.g., creating sender, receiver, channel) will fail.
+     * (e.g., creating sender, receiver, channel on the session) will fail.
      * </p>
      * <p>
      * By design, no re-open attempt will be made within this type. Lifetime of a {@link ProtonSession} instance is
-     * scoped to life time of one low level Qpid Proton-j session instance it manages, which is scoped within the
-     * life time of qpid Proton-j Connection hosting it. Re-establishing session requires querying the connection-cache
+     * scoped to lifetime of one low level Qpid Proton-j session instance it manages, which is scoped within the
+     * lifetime of qpid Proton-j Connection hosting it. Re-establishing session requires querying the connection-cache
      * to obtain the latest connection (may not be same as the connection facilitated this session) then hosting and
      * opening a new {@link ProtonSession} on it. It means, upon a retriable {@link AmqpException} from any APIs (to
      * create sender, receiver, channel) in this type, the call sites needs to obtain a new {@link ProtonSession}
@@ -166,7 +166,7 @@ public final class ProtonSession {
      * <p>
      * <ul>the mono can terminates with retriable {@link AmqpException} if
      *      <li>the session disposal happened while opening,</li>
-     *      <li>or the connection reactor thread got shutdown while opening.</li>
+     *      <li>or the connection reactor thread got shut down while opening.</li>
      * </ul>
      * </p>
      */
@@ -268,8 +268,6 @@ public final class ProtonSession {
                 }
             }
         });
-        // TODO (anu): when removing v1 support, move the timeout to the call site, ReactorSession::channel(), so it
-        //  aligns with the placement of timeout for ReactorSession::open().
         return channel.timeout(timeout, Mono.error(() -> {
             final String message
                 = String.format(OBTAIN_CHANNEL_TIMEOUT_MESSAGE_FORMAT, getConnectionId(), getName(), name);

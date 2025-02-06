@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
+import com.azure.core.amqp.implementation.ProtonSession;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -224,7 +224,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    protected ReactorSession createSession(ProtonSessionWrapper session) {
+    protected ReactorSession createSession(ProtonSession session) {
         return new ServiceBusReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
             tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(distributedTransactionsSupport));

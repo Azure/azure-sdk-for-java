@@ -13,7 +13,6 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ProtonSession;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -229,10 +228,9 @@ public class ServiceBusReactorSessionTest {
 
         final ProtonSession protonSession = new ProtonSession(CONNECTION_ID, HOSTNAME, protonConnection,
             handlerProvider, reactorProvider, SESSION_NAME, Duration.ofSeconds(1), CLIENT_LOGGER);
-        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(protonSession);
 
         serviceBusReactorSession
-            = new ServiceBusReactorSession(connection, sessionWrapper, handlerProvider, linkProvider, cbsNodeSupplier,
+            = new ServiceBusReactorSession(connection, protonSession, handlerProvider, linkProvider, cbsNodeSupplier,
                 tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(false));
         serviceBusReactorSession.open().block();
     }
@@ -317,9 +315,8 @@ public class ServiceBusReactorSessionTest {
 
         final ProtonSession protonSession = new ProtonSession(CONNECTION_ID, HOSTNAME, protonConnection,
             handlerProvider, reactorProvider, SESSION_NAME, Duration.ofSeconds(1), CLIENT_LOGGER);
-        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(protonSession);
         final ServiceBusReactorSession serviceBusReactorSession
-            = new ServiceBusReactorSession(connection, sessionWrapper, handlerProvider, linkProvider, cbsNodeSupplier,
+            = new ServiceBusReactorSession(connection, protonSession, handlerProvider, linkProvider, cbsNodeSupplier,
                 tokenManagerProvider, messageSerializer, retryOptions, new ServiceBusCreateSessionOptions(true));
 
         // Act

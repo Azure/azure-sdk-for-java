@@ -13,7 +13,6 @@ import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper.ProtonChannelWrapper;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -139,7 +138,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
     protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId, String fullyQualifiedNamespace,
-        String entityPath, ProtonChannelWrapper channel, AmqpRetryOptions retryOptions,
+        String entityPath, ProtonSession.ProtonChannel channel, AmqpRetryOptions retryOptions,
         ReactorHandlerProvider handlerProvider, ReactorProvider provider, MessageSerializer messageSerializer,
         SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider,
         boolean isV2) {
@@ -161,7 +160,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.messageSerializer = messageSerializer;
 
         // Setup send (request) link.
-        this.sendLink = channel.sender();
+        this.sendLink = channel.getSender();
         final Target senderTarget = new Target();
         senderTarget.setAddress(entityPath);
         this.sendLink.setTarget(senderTarget);
@@ -173,7 +172,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         // Setup receive (response) link.
-        this.receiveLink = channel.receiver();
+        this.receiveLink = channel.getReceiver();
         final Source receiverSource = new Source();
         receiverSource.setAddress(entityPath);
         this.receiveLink.setSource(receiverSource);

@@ -302,15 +302,12 @@ public class ReactorConnection implements AmqpConnection {
 
     /**
      * Creates a new ReactorSession that uses the given low-level session.
-     * <p>
-     * TODO (anu): Use 'ProtonSession' as the arg when removing v1 and 'SessionCache' (hence 'ProtonSession') is no
-     *  longer opt-in for v2.
-     * </p>
+     *
      * @param session the QPid Proton-j session.
      *
      * @return A new instance of ReactorSession.
      */
-    protected ReactorSession createSession(ProtonSessionWrapper session) {
+    protected ReactorSession createSession(ProtonSession session) {
         return new ReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
             tokenManagerProvider, messageSerializer, connectionOptions.getRetry());
     }

@@ -256,8 +256,7 @@ public final class ReactorSessionCacheTest {
         }
 
         @Override
-        public ReactorSession load(ProtonSessionWrapper protonSession) {
-            // TODO (anu): When removing v1, use 'ProtonSession' instead of ProtonSessionWrapper.
+        public ReactorSession load(ProtonSession protonSession) {
             final String name = protonSession.getName();
             final Deque<ReactorSession> sessions = lookup.get(name);
             if (sessions == null) {

@@ -139,9 +139,8 @@ public class ReactorSessionTest {
             reactorProvider, NAME, Duration.ofSeconds(1), CLIENT_LOGGER);
 
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
-        final ProtonSessionWrapper sessionWrapper = new ProtonSessionWrapper(protonSession);
-        this.reactorSession = new ReactorSession(amqpConnection, sessionWrapper, handlerProvider,
-            new AmqpLinkProvider(), cbsNodeSupplier, tokenManagerProvider, serializer, options);
+        this.reactorSession = new ReactorSession(amqpConnection, protonSession, handlerProvider, new AmqpLinkProvider(),
+            cbsNodeSupplier, tokenManagerProvider, serializer, options);
     }
 
     @AfterEach

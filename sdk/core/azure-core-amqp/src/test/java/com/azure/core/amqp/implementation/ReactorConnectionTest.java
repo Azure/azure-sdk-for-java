@@ -252,7 +252,7 @@ class ReactorConnectionTest {
 
         sessionHandler.onSessionRemoteOpen(sessionEvent);
 
-        final AtomicReference<ProtonSessionWrapper> sessionEmitted = new AtomicReference<>(null);
+        final AtomicReference<ProtonSession> sessionEmitted = new AtomicReference<>(null);
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME)).assertNext(s -> {
             assertNotNull(s);

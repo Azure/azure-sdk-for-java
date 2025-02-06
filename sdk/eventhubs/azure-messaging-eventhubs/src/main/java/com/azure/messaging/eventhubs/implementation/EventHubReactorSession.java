@@ -13,7 +13,7 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConsumerFactory;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
+import com.azure.core.amqp.implementation.ProtonSession;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -63,10 +63,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param retryOptions to be used for this session.
      * @param messageSerializer to be used.
      */
-    EventHubReactorSession(AmqpConnection amqpConnection, ProtonSessionWrapper session,
-        ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
-        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-        AmqpRetryOptions retryOptions, MessageSerializer messageSerializer) {
+    EventHubReactorSession(AmqpConnection amqpConnection, ProtonSession session, ReactorHandlerProvider handlerProvider,
+        AmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
+        TokenManagerProvider tokenManagerProvider, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer) {
         super(amqpConnection, session, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider,
             messageSerializer, retryOptions);
     }
