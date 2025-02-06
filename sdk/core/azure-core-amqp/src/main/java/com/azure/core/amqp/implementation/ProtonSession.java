@@ -34,7 +34,7 @@ import static reactor.core.publisher.Sinks.EmitFailureHandler.FAIL_FAST;
 /**
  * A type for managing and abstracting operations on a QPid Proton-j low-level {@link Session} instance.
  */
-final class ProtonSession {
+public final class ProtonSession {
     private static final String SESSION_NOT_OPENED = "session has not been opened.";
     private static final String NOT_OPENING_DISPOSED_SESSION = "session is already disposed, not opening.";
     private static final String DISPOSED_MESSAGE_FORMAT = "Cannot create %s from a closed session.";
@@ -64,8 +64,9 @@ final class ProtonSession {
      * @param openTimeout the session open timeout.
      * @param logger the client logger.
      */
-    ProtonSession(String connectionId, String hostname, Connection connection, ReactorHandlerProvider handlerProvider,
-        ReactorProvider reactorProvider, String sessionName, Duration openTimeout, ClientLogger logger) {
+    public ProtonSession(String connectionId, String hostname, Connection connection,
+        ReactorHandlerProvider handlerProvider, ReactorProvider reactorProvider, String sessionName,
+        Duration openTimeout, ClientLogger logger) {
         this.connection = Objects.requireNonNull(connection, "'connection' cannot be null.");
         this.reactorProvider = Objects.requireNonNull(reactorProvider, "'reactorProvider' cannot be null.");
         Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
@@ -379,7 +380,7 @@ final class ProtonSession {
      * communication with the broker.
      * </p>
      */
-    static final class ProtonChannel {
+    public static final class ProtonChannel {
         private final String name;
         private final Sender sender;
         private final Receiver receiver;
@@ -391,7 +392,7 @@ final class ProtonSession {
          * @param sender the sender endpoint of the channel.
          * @param receiver the receiver endpoint of the channel.
          */
-        ProtonChannel(String name, Sender sender, Receiver receiver) {
+        public ProtonChannel(String name, Sender sender, Receiver receiver) {
             this.name = name;
             this.sender = sender;
             this.receiver = receiver;
