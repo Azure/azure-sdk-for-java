@@ -147,6 +147,7 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "ActiveStorm", clazz -> {
             customizePrivateConstructor(clazz);
             customizeClassesWithString(clazz);
+            clazz.getMothod("getGovId").rename("getGovernmentId");
             bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsSubtropical", "setGovId",
                     "isActive");
         });
@@ -520,6 +521,7 @@ public class WeatherCustomization extends Customization {
     private void customizeStormSearchResult(PackageCustomization models) {
         customizeClass(models, "StormSearchResult", clazz -> {
             customizePrivateConstructor(clazz);
+            clazz.getMothod("getGovId").rename("getGovernmentId");
             bulkRemoveMethods(clazz, "setStorms", "setNextLink", "getNextLink");
         });
     }
