@@ -12,18 +12,7 @@ import org.openrewrite.test.RewriteTest;
  * ContextTest is used to test out the recipe that converts code to use the
  * new clientcore Context class.
  */
-public class ContextTest implements RewriteTest {
-
-    /**
-     * This method sets which recipe should be used for testing
-     * @param spec stores settings for testing environment; e.g. which recipes to use for testing
-     */
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
-
+public class ContextTest extends RecipeTestBase {
     /**
      * This test method is used to make sure that the Context class is updated
      */

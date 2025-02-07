@@ -14,17 +14,8 @@ import org.openrewrite.test.RewriteTest;
  * FixedDelay and ExponentialDelay from the RetryOptions constructor and updates
  * it to use the new azure-core-v2 HttpRetryOptions class.
  */
-public class RetryOptionsConstructorTest implements RewriteTest {
+public class RetryOptionsConstructorTest extends RecipeTestBase {
 
-    /**
-     * This method sets which recipe should be used for testing
-     * @param spec stores settings for testing environment; e.g. which recipes to use for testing
-     */
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
 
     /**
      * This test method is used to make sure that RetryOptions is updated to the new constructor and class

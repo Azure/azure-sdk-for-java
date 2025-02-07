@@ -12,17 +12,8 @@ import org.openrewrite.test.RewriteTest;
  * RequestOptionsTest is used to test out the recipe that converts com.azure.core.http.rest.RequestOptions
  * to io.clientcore.core.http.models.RequestOptions.
  */
-public class RequestOptionsTest implements RewriteTest {
+public class RequestOptionsTest extends RecipeTestBase {
 
-    /**
-     * This method sets which recipe should be used for testing
-     * @param spec stores settings for testing environment; e.g. which recipes to use for testing
-     */
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
 
     /**
      * This test method is used to make sure that the class import for RequestOptions is updated

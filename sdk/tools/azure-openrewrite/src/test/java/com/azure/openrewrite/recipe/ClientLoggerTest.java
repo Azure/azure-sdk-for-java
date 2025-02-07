@@ -8,17 +8,11 @@ import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-public class ClientLoggerTest implements RewriteTest {
+public class ClientLoggerTest extends RecipeTestBase {
     /**
      * ClientLoggerTest tests the recipe that changes
      * com.azure.core.util.logging.ClientLogger to io.clientcore.core.util.ClientLogger.
      */
-
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
 
     /* Test to make sure ClientLogger import is changed */
     @Test

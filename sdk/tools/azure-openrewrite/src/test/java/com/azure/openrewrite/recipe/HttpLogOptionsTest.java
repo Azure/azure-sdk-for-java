@@ -8,19 +8,13 @@ import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-public class HttpLogOptionsTest implements RewriteTest {
+public class HttpLogOptionsTest extends RecipeTestBase {
     /**
      * HttpLogOptionsTest tests the recipe that changes
      * com.azure.core.http.policy.HttpLogDetailLevel to io.clientcore.core.http.models.HttpLogOptions.HttpLogDetailLevel
      * and com.azure.core.http.policy.HttpLogOptions to io.clientcore.core.http.models.HttpLogOptions
      *
      */
-
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-            "com.azure.openrewrite.migrateToVNext");
-    }
 
     /* Test to make sure HttpLogOptions and HttpLogDetailLevel imports are changed*/
     @Test
