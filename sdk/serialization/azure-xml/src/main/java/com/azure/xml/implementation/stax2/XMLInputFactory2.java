@@ -19,7 +19,7 @@ import javax.xml.stream.XMLStreamReader;
  * @version 3.0 01/21/2007
  * @author Tatu Saloranta (tatu.saloranta@iki.fi)
  */
-public abstract class XMLInputFactory2 extends XMLInputFactory implements XMLStreamProperties {
+public abstract class XMLInputFactory2 implements XMLStreamProperties {
 
     /*
     /**********************************************************************

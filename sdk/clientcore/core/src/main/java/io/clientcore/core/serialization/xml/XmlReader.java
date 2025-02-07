@@ -3,8 +3,11 @@
 
 package io.clientcore.core.serialization.xml;
 
-import io.clientcore.core.serialization.xml.implementation.aalto.stax.InputFactoryImpl;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.serialization.xml.implementation.JavaWrapperXmlInputFactoryFacade;
+import io.clientcore.core.serialization.xml.implementation.ShadedXmlInputFactoryFacade;
+import io.clientcore.core.serialization.xml.implementation.XmlInputFactoryFacade;
+import io.clientcore.core.serialization.xml.implementation.aalto.stax.InputFactoryImpl;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -26,17 +29,20 @@ import java.util.Objects;
 public final class XmlReader implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(XmlReader.class);
 
-    private static final XMLInputFactory XML_INPUT_FACTORY;
+    private static final XmlInputFactoryFacade FACTORY_FACADE;
 
     static {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XmlInputFactoryFacade factoryFacade;
         if ("com.sun.xml.internal.stream.XMLInputFactoryImpl".equals(xmlInputFactory.getClass().getName())) {
-            xmlInputFactory = new InputFactoryImpl();
+            factoryFacade = new ShadedXmlInputFactoryFacade(new InputFactoryImpl());
+        } else {
+            factoryFacade = new JavaWrapperXmlInputFactoryFacade(xmlInputFactory);
         }
 
-        XML_INPUT_FACTORY = xmlInputFactory;
-        XML_INPUT_FACTORY.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
-        XML_INPUT_FACTORY.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        FACTORY_FACADE = factoryFacade;
+        FACTORY_FACADE.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+        FACTORY_FACADE.setProperty(XMLInputFactory.SUPPORT_DTD, false);
     }
 
     private final XMLStreamReader reader;
@@ -110,7 +116,7 @@ public final class XmlReader implements AutoCloseable {
      */
     public static XmlReader fromReader(Reader xml) throws XMLStreamException {
         Objects.requireNonNull(xml, "'xml' cannot be null.");
-        return new XmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
+        return new XmlReader(FACTORY_FACADE.createXMLStreamReader(xml));
     }
 
     /**
