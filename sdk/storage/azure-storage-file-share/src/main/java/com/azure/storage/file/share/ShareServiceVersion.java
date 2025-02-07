@@ -135,6 +135,11 @@ public enum ShareServiceVersion implements ServiceVersion {
     V2025_01_05("2025-01-05"),
 
     /**
+     * Service version {@code 2025-05-05}.
+     */
+    V2025_05_05("2025-05-05"),
+
+    /**
      * Service version {@code 2025_07_05}.
      */
     V2025_07_05("2025_07_05");
