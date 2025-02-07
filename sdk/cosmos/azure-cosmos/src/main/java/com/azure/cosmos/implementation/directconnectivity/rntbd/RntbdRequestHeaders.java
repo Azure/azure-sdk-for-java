@@ -1342,8 +1342,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     token.setValue(Boolean.parseBoolean(value));
                     break;
                 }
+                case Bytes: {
+                    token.setValue(value.getBytes());
+                    break;
+                }
                 case Double: {
-
                     token.setValue(parseDouble(name, value));
                     break;
                 }

@@ -13,12 +13,12 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY;
 
 public class RntbdTokenStreamTests {
-    // Created this test for thin client testing
+    // Created this test for thin client testing, to make sure thin client headers are always special cased
     @Test(groups = { "unit" })
     public void testThinClientSpecialCasing() {
         RxDocumentServiceRequest mockRequest = Mockito.mock(RxDocumentServiceRequest.class);
         Map<String, String> headers = new HashMap<>();
-        headers.put(EFFECTIVE_PARTITION_KEY, "effectivePartitionKey");
+        headers.put(EFFECTIVE_PARTITION_KEY, "13A141365AE34002732EE6DD02677CFC");
         headers.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "globalDatabaseAccountName");
         Mockito.doReturn(headers).when(mockRequest).getHeaders();
         RntbdRequestArgs mockRntbdRequestArgs = Mockito.mock(RntbdRequestArgs.class);

@@ -101,7 +101,7 @@ public final class RntbdContextRequest {
         }
     }
 
-    static final class Headers extends RntbdTokenStream<RntbdContextRequestHeader> {
+    private static final class Headers extends RntbdTokenStream<RntbdContextRequestHeader> {
 
         private static final byte[] ClientVersion = Versions.CURRENT_VERSION.getBytes(StandardCharsets.UTF_8);
 
@@ -121,7 +121,7 @@ public final class RntbdContextRequest {
             this.protocolVersion.setValue(CURRENT_PROTOCOL_VERSION);
         }
 
-        Headers(ByteBuf in) {
+        private Headers(ByteBuf in) {
 
             super(RntbdContextRequestHeader.set, RntbdContextRequestHeader.map, in, RntbdContextRequestHeader.class);
 

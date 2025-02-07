@@ -592,7 +592,7 @@ public final class RntbdConstants {
         SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false),
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
-        GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.Byte, false);
+        GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false);
 
         public static final Map<Short, RntbdRequestHeader> map;
         public static final EnumSet<RntbdRequestHeader> set = EnumSet.allOf(RntbdRequestHeader.class);

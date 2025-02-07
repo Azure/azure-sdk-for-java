@@ -93,8 +93,10 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (request.properties == null) {
             request.properties = new HashMap<>();
         }
-        request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
-        //request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
+        //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
+        //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
+        request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
+        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
         // todo - neharao1: no concept of a replica / service endpoint that can be passed
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
