@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Changed the IMDS probe to fail if the response isn't valid JSON. [#41291](https://github.com/Azure/azure-sdk-for-java/issues/41291)
+
 ## 1.15.0 (2025-01-10)
 
 ### Features Added
