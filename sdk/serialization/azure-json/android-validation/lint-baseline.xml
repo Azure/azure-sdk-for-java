@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.7.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.7.0)" variant="all" version="8.7.0">
+  <issue
+      id="WrongCommentType"
+      severity="Error"
+      message="This block comment looks like it was intended to be a javadoc comment"
+      category="Correctness"
+      priority="9"
+      summary="Wrong Comment Type"
+      explanation="This check flags any block comments which look like they had been intended to be KDoc or javadoc comments instead.&#xA;&#xA;If you really want to use Javadoc-like constructs in a block comment, there&apos;s a convention you can use: include `(non-Javadoc)` somewhere in the comment, e.g.&#xA;```&#xA;  /* (non-Javadoc)&#xA;   * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)&#xA;   */&#xA;  @Override&#xA;  public void setDocumentLocator(Locator locator) {&#xA;```&#xA;(see https://stackoverflow.com/questions/5172841/non-javadoc-meaning)"
+      errorLine1="    /* @since 2.10 */"
+      errorLine2="       ~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\json\JsonWriteContext.java"
+        line="76"
+        column="8"/>
+  </issue>
+
+  <issue
+      id="WrongCommentType"
+      severity="Error"
+      message="This block comment looks like it was intended to be a javadoc comment"
+      category="Correctness"
+      priority="9"
+      summary="Wrong Comment Type"
+      explanation="This check flags any block comments which look like they had been intended to be KDoc or javadoc comments instead.&#xA;&#xA;If you really want to use Javadoc-like constructs in a block comment, there&apos;s a convention you can use: include `(non-Javadoc)` somewhere in the comment, e.g.&#xA;```&#xA;  /* (non-Javadoc)&#xA;   * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)&#xA;   */&#xA;  @Override&#xA;  public void setDocumentLocator(Locator locator) {&#xA;```&#xA;(see https://stackoverflow.com/questions/5172841/non-javadoc-meaning)"
+      errorLine1="    /* @since 2.10 */"
+      errorLine2="       ~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\json\JsonWriteContext.java"
+        line="183"
+        column="8"/>
+  </issue>
+
+  <issue
+      id="WrongCommentType"
+      severity="Error"
+      message="This block comment looks like it was intended to be a javadoc comment"
+      category="Correctness"
+      priority="9"
+      summary="Wrong Comment Type"
+      explanation="This check flags any block comments which look like they had been intended to be KDoc or javadoc comments instead.&#xA;&#xA;If you really want to use Javadoc-like constructs in a block comment, there&apos;s a convention you can use: include `(non-Javadoc)` somewhere in the comment, e.g.&#xA;```&#xA;  /* (non-Javadoc)&#xA;   * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)&#xA;   */&#xA;  @Override&#xA;  public void setDocumentLocator(Locator locator) {&#xA;```&#xA;(see https://stackoverflow.com/questions/5172841/non-javadoc-meaning)"
+      errorLine1="    /* @since 2.10 */"
+      errorLine2="       ~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\json\JsonWriteContext.java"
+        line="202"
+        column="8"/>
+  </issue>
+
+  <issue
+      id="WrongCommentType"
+      severity="Error"
+      message="This block comment looks like it was intended to be a javadoc comment"
+      category="Correctness"
+      priority="9"
+      summary="Wrong Comment Type"
+      explanation="This check flags any block comments which look like they had been intended to be KDoc or javadoc comments instead.&#xA;&#xA;If you really want to use Javadoc-like constructs in a block comment, there&apos;s a convention you can use: include `(non-Javadoc)` somewhere in the comment, e.g.&#xA;```&#xA;  /* (non-Javadoc)&#xA;   * @see org.xml.sax.helpers.DefaultHandler#setDocumentLocator(org.xml.sax.Locator)&#xA;   */&#xA;  @Override&#xA;  public void setDocumentLocator(Locator locator) {&#xA;```&#xA;(see https://stackoverflow.com/questions/5172841/non-javadoc-meaning)"
+      errorLine1="     * @param bindex Relative index within base64 character unit; between 0"
+      errorLine2="       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserBase.java"
+        line="1199"
+        column="8"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="        return String.format(&quot;[%s: size=%d, hashSize=%d, %d/%d/%d/%d pri/sec/ter/spill (=%s), total:%d]&quot;,"
+      errorLine2="               ^">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\sym\ByteQuadsCanonicalizer.java"
+        line="468"
+        column="16"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="                _reportError(String.format("
+      errorLine2="                             ^">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\GeneratorBase.java"
+        line="474"
+        column="30"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="            base = String.format("
+      errorLine2="                   ^">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserBase.java"
+        line="1206"
+        column="20"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="        _reportInputCoercion(String.format(&quot;Numeric value (%s) out of range of int (%d - %s)&quot;,"
+      errorLine2="                             ^">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserMinimalBase.java"
+        line="644"
+        column="30"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="        _reportInputCoercion(String.format(&quot;Numeric value (%s) out of range of long (%d - %s)&quot;,"
+      errorLine2="                             ^">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserMinimalBase.java"
+        line="666"
+        column="30"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="        return String.format(&quot;[Integer with %d digits]&quot;, rawLen);"
+      errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserMinimalBase.java"
+        line="685"
+        column="16"/>
+  </issue>
+
+  <issue
+      id="DefaultLocale"
+      severity="Error"
+      message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+      category="Correctness"
+      priority="6"
+      summary="Implied default locale in case conversion"
+      explanation="Calling `String#toLowerCase()` or `#toUpperCase()` **without specifying an explicit locale** is a common source of bugs. The reason for that is that those methods will use the current locale on the user&apos;s device, and even though the code appears to work correctly when you are developing the app, it will fail in some locales. For example, in the Turkish locale, the uppercase replacement for `i` is **not** `I`.&#xA;&#xA;If you want the methods to just perform ASCII replacement, for example to convert an enum name, call `String#toUpperCase(Locale.ROOT)` instead. If you really want to use the current locale, call `String#toUpperCase(Locale.getDefault())` instead."
+      url="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      urls="https://developer.android.com/reference/java/util/Locale.html#default_locale"
+      errorLine1="        return String.format(&quot;[number with %d characters]&quot;, rawLen);"
+      errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserMinimalBase.java"
+        line="697"
+        column="16"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="            &quot;Unexpected end of base64-encoded String: base64 variant &apos;%s&apos; expects no padding at the end while decoding. This Base64Variant might have been incorrectly configured&quot;,"
+      errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\Base64Variant.java"
+        line="689"
+        column="13"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="            &quot;Unexpected end of base64-encoded String: base64 variant &apos;%s&apos; expects padding (one or more &apos;%c&apos; characters) at the end. This Base64Variant might have been incorrectly configured&quot;,"
+      errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\Base64Variant.java"
+        line="703"
+        column="13"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="            &quot;Generator of type %s does not support schema of type &apos;%s&apos;&quot;, getClass().getName(), schema.getSchemaType()));"
+      errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\JsonGenerator.java"
+        line="588"
+        column="13"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="            String.format(&quot;Can not %s, expecting field name (context: %s)&quot;, typeMsg, _writeContext.typeDesc()));"
+      errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\json\JsonGeneratorImpl.java"
+        line="219"
+        column="27"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="                String.format(&quot;Numeric value (%s) out of range of Java byte&quot;, getText()), JsonToken.VALUE_NUMBER_INT,"
+      errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\JsonParser.java"
+        line="1429"
+        column="31"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="                String.format(&quot;Numeric value (%s) out of range of Java short&quot;, getText()), JsonToken.VALUE_NUMBER_INT,"
+      errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\JsonParser.java"
+        line="1458"
+        column="31"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="        throw new JsonParseException(this, String.format(&quot;Current token (%s) not of boolean type&quot;, t))"
+      errorLine2="                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\JsonParser.java"
+        line="1606"
+        column="58"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="            _reportInvalidEOF(String.format(&quot;: expected close marker for %s (start marker at %s)&quot;, marker,"
+      errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserBase.java"
+        line="511"
+        column="45"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="        _reportError(String.format(&quot;Unexpected close marker &apos;%s&apos;: expected &apos;%c&apos; (for %s starting at %s)&quot;, (char) actCh,"
+      errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserBase.java"
+        line="1064"
+        column="36"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="        String msg = String.format(&quot;Unexpected character (%s) in numeric value&quot;, _getCharDesc(ch));"
+      errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserMinimalBase.java"
+        line="605"
+        column="36"/>
+  </issue>
+
+  <issue
+      id="StringFormatTrivial"
+      severity="Error"
+      message="This formatting string is trivial. Rather than using `String.format` to create your String, it will be more performant to concatenate your arguments with `+`. "
+      category="Performance"
+      priority="5"
+      summary="`String.format` string only contains trivial conversions"
+      explanation="Every call to `String.format` creates a new `Formatter` instance, which will decrease the performance of your app. `String.format` should only be used when necessary--if the formatted string contains only trivial conversions (e.g. `b`, `s`, `c`) and there are no translation concerns, it will be more efficient to replace them and concatenate with `+`."
+      errorLine1="        String msg = String.format(&quot;Unexpected character (%s)&quot;, _getCharDesc(ch));"
+      errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\base\ParserMinimalBase.java"
+        line="704"
+        column="36"/>
+  </issue>
+
+  <issue
+      id="SyntheticAccessor"
+      severity="Error"
+      message="Access to `private` field `sOutputEscapes128` of class `CharTypes` requires synthetic accessor"
+      category="Performance"
+      priority="2"
+      summary="Synthetic Accessor"
+      explanation="A private inner class which is accessed from the outer class will force the compiler to insert a synthetic accessor; this means that you are causing extra overhead. This is not important in small projects, but is important for large apps running up against the 64K method handle limit, and especially for **libraries** where you want to make sure your library is as small as possible for the cases where your library is used in an app running up against the 64K limit."
+      errorLine1="                esc = Arrays.copyOf(sOutputEscapes128, 128);"
+      errorLine2="                                    ~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\implementation\jackson\core\io\CharTypes.java"
+        line="323"
+        column="37"/>
+  </issue>
+
+  <issue
+      id="LambdaLast"
+      severity="Error"
+      message="Functional interface parameters (such as parameter 2, &quot;elementWriterFunc&quot;, in com.azure.json.JsonWriter.writeArray) should be last to improve Kotlin interoperability; see https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions"
+      category="Interoperability:Kotlin Interoperability"
+      priority="6"
+      summary="Lambda Parameters Last"
+      explanation="To improve calling this code from Kotlin, parameter types eligible for SAM conversion should be last."
+      url="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      urls="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      errorLine1="        boolean skipNullElements) throws IOException {"
+      errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\JsonWriter.java"
+        line="213"
+        column="9"/>
+  </issue>
+
+  <issue
+      id="LambdaLast"
+      severity="Error"
+      message="Functional interface parameters (such as parameter 2, &quot;elementWriterFunc&quot;, in com.azure.json.JsonWriter.writeArray) should be last to improve Kotlin interoperability; see https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions"
+      category="Interoperability:Kotlin Interoperability"
+      priority="6"
+      summary="Lambda Parameters Last"
+      explanation="To improve calling this code from Kotlin, parameter types eligible for SAM conversion should be last."
+      url="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      urls="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      errorLine1="        boolean skipNullElements) throws IOException {"
+      errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\JsonWriter.java"
+        line="276"
+        column="9"/>
+  </issue>
+
+  <issue
+      id="LambdaLast"
+      severity="Error"
+      message="Functional interface parameters (such as parameter 2, &quot;valueWriterFunc&quot;, in com.azure.json.JsonWriter.writeMap) should be last to improve Kotlin interoperability; see https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions"
+      category="Interoperability:Kotlin Interoperability"
+      priority="6"
+      summary="Lambda Parameters Last"
+      explanation="To improve calling this code from Kotlin, parameter types eligible for SAM conversion should be last."
+      url="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      urls="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      errorLine1="        boolean skipNullValues) throws IOException {"
+      errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\JsonWriter.java"
+        line="362"
+        column="9"/>
+  </issue>
+
+  <issue
+      id="LambdaLast"
+      severity="Error"
+      message="Functional interface parameters (such as parameter 3, &quot;elementWriterFunc&quot;, in com.azure.json.JsonWriter.writeArrayField) should be last to improve Kotlin interoperability; see https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions"
+      category="Interoperability:Kotlin Interoperability"
+      priority="6"
+      summary="Lambda Parameters Last"
+      explanation="To improve calling this code from Kotlin, parameter types eligible for SAM conversion should be last."
+      url="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      urls="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      errorLine1="        WriteValueCallback&lt;JsonWriter, T> elementWriterFunc, boolean skipNullElements) throws IOException {"
+      errorLine2="                                                             ~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\JsonWriter.java"
+        line="680"
+        column="62"/>
+  </issue>
+
+  <issue
+      id="LambdaLast"
+      severity="Error"
+      message="Functional interface parameters (such as parameter 3, &quot;elementWriterFunc&quot;, in com.azure.json.JsonWriter.writeArrayField) should be last to improve Kotlin interoperability; see https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions"
+      category="Interoperability:Kotlin Interoperability"
+      priority="6"
+      summary="Lambda Parameters Last"
+      explanation="To improve calling this code from Kotlin, parameter types eligible for SAM conversion should be last."
+      url="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      urls="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      errorLine1="        WriteValueCallback&lt;JsonWriter, T> elementWriterFunc, boolean skipNullElements) throws IOException {"
+      errorLine2="                                                             ~~~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\JsonWriter.java"
+        line="748"
+        column="62"/>
+  </issue>
+
+  <issue
+      id="LambdaLast"
+      severity="Error"
+      message="Functional interface parameters (such as parameter 3, &quot;valueWriterFunc&quot;, in com.azure.json.JsonWriter.writeMapField) should be last to improve Kotlin interoperability; see https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions"
+      category="Interoperability:Kotlin Interoperability"
+      priority="6"
+      summary="Lambda Parameters Last"
+      explanation="To improve calling this code from Kotlin, parameter types eligible for SAM conversion should be last."
+      url="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      urls="https://android.github.io/kotlin-guides/interop.html#lambda-parameters-last"
+      errorLine1="        WriteValueCallback&lt;JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {"
+      errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~~">
+    <location
+        file="D:\GitHub\azure-sdk-for-java\sdk\serialization\azure-json\src\main\java\com\azure\json\JsonWriter.java"
+        line="818"
+        column="60"/>
+  </issue>
+</issues>
