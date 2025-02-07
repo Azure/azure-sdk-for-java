@@ -118,15 +118,15 @@ public class TemplateInput {
     /**
      * Converts a fully-qualified class name to its short name.
      *
-     * @param fqcn the fully-qualified class name.
+     * @param fullyQualifiedClassName the fully-qualified class name.
      * @return the short name of the class.
      */
-    private static String toShortName(String fqcn) {
-        int lastDot = fqcn.lastIndexOf('.');
+    private static String toShortName(String fullyQualifiedClassName) {
+        int lastDot = fullyQualifiedClassName.lastIndexOf('.');
         if (lastDot > 0) {
-            return fqcn.substring(lastDot + 1);
+            return fullyQualifiedClassName.substring(lastDot + 1);
         }
-        return fqcn;
+        return fullyQualifiedClassName;
     }
 
     /**
