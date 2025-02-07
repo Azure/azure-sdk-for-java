@@ -4,6 +4,7 @@
 package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
+import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.implementation.instrumentation.otel.metrics.OTelMeter;
@@ -17,6 +18,8 @@ import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.Meter;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -85,6 +88,7 @@ public class OTelInstrumentation implements Instrumentation {
     private final LibraryInstrumentationOptions libraryOptions;
     private final boolean isTracingEnabled;
     private final boolean isMetricsEnabled;
+    private final boolean allowNestedSpans;
 
     /**
      * Creates a new instance of {@link OTelInstrumentation}.
@@ -107,6 +111,8 @@ public class OTelInstrumentation implements Instrumentation {
         this.libraryOptions = libraryOptions;
         this.isTracingEnabled = applicationOptions == null || applicationOptions.isTracingEnabled();
         this.isMetricsEnabled = applicationOptions == null || applicationOptions.isMetricsEnabled();
+        this.allowNestedSpans = libraryOptions != null
+            && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
     }
 
     /**
@@ -176,8 +182,40 @@ public class OTelInstrumentation implements Instrumentation {
         return OTelSpanContext.getInvalid();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context) {
+        if (!isTracingEnabled && !isMetricsEnabled) {
+            return false;
+        }
+
+        if (allowNestedSpans) {
+            return true;
+        }
+
+        return spanKind != tryGetSpanKind(context);
+    }
+
     private Object getOtelInstance() {
         // not caching global to prevent caching instance that was not setup yet at the start time.
         return otelInstance != null ? otelInstance : GET_GLOBAL_OTEL_INVOKER.invoke();
+    }
+
+    /**
+     * Retrieves the span kind from the given context if and only if the context is a {@link OTelSpanContext}
+     * i.e. was created by this instrumentation.
+     * @param context the context to get the span kind from
+     * @return the span kind or {@code null} if the context is not recognized
+     */
+    private static SpanKind tryGetSpanKind(InstrumentationContext context) {
+        if (context instanceof OTelSpanContext) {
+            Span span = context.getSpan();
+            if (span instanceof OTelSpan) {
+                return ((OTelSpan) span).getSpanKind();
+            }
+        }
+        return null;
     }
 }
