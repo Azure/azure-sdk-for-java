@@ -1,14 +1,10 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.10 (2025-02-07)
 
 ### Other Changes
+
+- Upgraded `msal4j` from `1.17.2` to `1.19.0`
 
 ## 1.1.9 (2025-01-10)
 
