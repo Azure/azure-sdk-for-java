@@ -441,7 +441,7 @@ public class LROPollerTests {
                 Assertions.assertEquals("v1weidxu", result.name());
                 Assertions.assertEquals("Microsoft.KeyVault/vaults", result.type());
 
-                Assertions.assertTrue(System.currentTimeMillis() - timeBeforePoll < pollInterval.getSeconds());
+                Assertions.assertTrue(System.currentTimeMillis() - timeBeforePoll < pollInterval.toMillis());
             } else {
                 PollerFlux<PollResult<Resource>, Resource> lroFlux
                     = PollerFactory.create(SERIALIZER, new HttpPipelineBuilder().build(), Resource.class,
