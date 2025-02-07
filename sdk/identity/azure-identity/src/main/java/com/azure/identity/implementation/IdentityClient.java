@@ -1257,20 +1257,26 @@ public class IdentityClient extends IdentityClientBase {
         return (int) options.getRetryTimeout().apply(Duration.ofSeconds(retry)).toMillis();
     }
 
+    /**
+     * Sends a simple probe request to understand if the IMDS endpoint is available. This is not a real token
+     * request.
+     * @param endpoint the IMDS endpoint to probe.
+     * @return a Mono that emits true if the endpoint is available, false otherwise.
+     */
     Mono<Boolean> checkIMDSAvailable(String endpoint) {
 
         URL url = null;
         try {
             url = getUrl(endpoint + "?api-version=2018-02-01");
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            return Mono.error(new RuntimeException(e));
         }
         HttpClient client = HttpClient.createDefault(new HttpClientOptions().setConnectTimeout(Duration.ofSeconds(1)));
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
         return client.send(request).flatMap(response -> response.getBodyAsByteArray().flatMap(body -> {
-            try {
-                JsonObject.fromJson(JsonProviders.createReader(body));
+            try (JsonReader reader = JsonProviders.createReader(body)) {
+                JsonObject.fromJson(reader);
                 return Mono.just(true);
             } catch (IOException e) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
