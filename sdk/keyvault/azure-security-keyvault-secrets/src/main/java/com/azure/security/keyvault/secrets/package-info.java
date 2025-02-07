@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 /**
+ * <!-- @formatter:off -->
  * <p><a href="https://learn.microsoft.com/azure/key-vault/general/">Azure Key Vault</a> is a cloud-based service
  * provided by Microsoft Azure that allows users to store, manage, and access secrets, such as passwords, certificates,
  * and other sensitive information, securely in the cloud. The service provides a centralized and secure location for
