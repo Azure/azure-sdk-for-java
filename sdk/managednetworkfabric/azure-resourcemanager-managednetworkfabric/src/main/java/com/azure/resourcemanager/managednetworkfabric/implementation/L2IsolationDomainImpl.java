@@ -158,8 +158,8 @@ public final class L2IsolationDomainImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l2IsolationDomainName = Utils.getValueFromIdByName(innerObject.id(), "l2IsolationDomains");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.l2IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l2IsolationDomains");
     }
 
     public L2IsolationDomain refresh() {

@@ -10,8 +10,7 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class InboundEndpointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/
-     * InboundEndpoint_Get.json
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Get.json
      */
     /**
      * Sample code: Retrieve inbound endpoint for DNS resolver.

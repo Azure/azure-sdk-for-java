@@ -143,8 +143,10 @@ public final class CryptographyUtils {
 
     public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
         if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
+            String keyOperationName = keyOperation == null ? null : keyOperation.toString().toLowerCase(Locale.ROOT);
+
             throw new UnsupportedOperationException(String.format("The %s operation is not allowed for key with id: %s",
-                keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
+                keyOperationName, jsonWebKey.getId()));
         }
     }
 

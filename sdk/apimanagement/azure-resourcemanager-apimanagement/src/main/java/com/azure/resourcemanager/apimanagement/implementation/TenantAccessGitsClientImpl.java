@@ -25,17 +25,23 @@ import com.azure.resourcemanager.apimanagement.fluent.TenantAccessGitsClient;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TenantAccessGitsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantAccessGitsClient.
+ */
 public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TenantAccessGitsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of TenantAccessGitsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TenantAccessGitsClientImpl(ApiManagementClientImpl client) {
@@ -72,7 +78,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -111,7 +117,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -150,7 +156,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -168,7 +174,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -186,7 +192,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate primary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -201,7 +207,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -240,7 +246,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -279,7 +285,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -297,7 +303,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -315,7 +321,7 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
 
     /**
      * Regenerate secondary access key for GIT.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.

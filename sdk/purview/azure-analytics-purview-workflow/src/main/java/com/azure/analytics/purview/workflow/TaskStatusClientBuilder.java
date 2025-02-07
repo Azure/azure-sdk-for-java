@@ -13,7 +13,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -41,7 +40,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the TaskStatusClient type. */
+/**
+ * A builder for creating a new instance of the TaskStatusClient type.
+ */
 @ServiceClientBuilder(serviceClients = { TaskStatusClient.class, TaskStatusAsyncClient.class })
 public final class TaskStatusClientBuilder
     implements HttpTrait<TaskStatusClientBuilder>, ConfigurationTrait<TaskStatusClientBuilder>,
@@ -62,7 +63,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the TaskStatusClientBuilder. */
+    /**
+     * Create an instance of the TaskStatusClientBuilder.
+     */
     @Generated
     public TaskStatusClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -74,12 +77,14 @@ public final class TaskStatusClientBuilder
     @Generated
     private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
         return this;
@@ -91,7 +96,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder httpClient(HttpClient httpClient) {
@@ -105,7 +112,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -119,7 +128,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -133,7 +144,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -141,7 +154,9 @@ public final class TaskStatusClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -156,7 +171,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder configuration(Configuration configuration) {
@@ -170,7 +187,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder credential(TokenCredential tokenCredential) {
@@ -184,7 +203,9 @@ public final class TaskStatusClientBuilder
     @Generated
     private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public TaskStatusClientBuilder endpoint(String endpoint) {
@@ -200,7 +221,7 @@ public final class TaskStatusClientBuilder
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the TaskStatusClientBuilder.
      */
@@ -218,7 +239,7 @@ public final class TaskStatusClientBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the TaskStatusClientBuilder.
      */
@@ -230,17 +251,25 @@ public final class TaskStatusClientBuilder
 
     /**
      * Builds an instance of PurviewWorkflowClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PurviewWorkflowClientImpl.
      */
     @Generated
     private PurviewWorkflowClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         PurviewWorkflowServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : PurviewWorkflowServiceVersion.getLatest();
         PurviewWorkflowClientImpl client = new PurviewWorkflowClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -256,10 +285,8 @@ public final class TaskStatusClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -275,7 +302,7 @@ public final class TaskStatusClientBuilder
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
@@ -285,7 +312,7 @@ public final class TaskStatusClientBuilder
 
     /**
      * Builds an instance of TaskStatusAsyncClient class.
-     *
+     * 
      * @return an instance of TaskStatusAsyncClient.
      */
     @Generated
@@ -295,7 +322,7 @@ public final class TaskStatusClientBuilder
 
     /**
      * Builds an instance of TaskStatusClient class.
-     *
+     * 
      * @return an instance of TaskStatusClient.
      */
     @Generated

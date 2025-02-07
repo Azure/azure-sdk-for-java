@@ -7,11 +7,13 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SharedKeysOperations. */
+/**
+ * Resource collection API of SharedKeysOperations.
+ */
 public interface SharedKeysOperations {
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -24,7 +26,7 @@ public interface SharedKeysOperations {
 
     /**
      * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface SharedKeysOperations {
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -51,7 +53,7 @@ public interface SharedKeysOperations {
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

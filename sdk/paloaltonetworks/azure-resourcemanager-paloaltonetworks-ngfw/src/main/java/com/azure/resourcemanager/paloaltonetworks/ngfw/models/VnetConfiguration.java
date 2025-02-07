@@ -6,35 +6,35 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VnetInfo for Firewall Networking.
  */
 @Fluent
-public final class VnetConfiguration {
+public final class VnetConfiguration implements JsonSerializable<VnetConfiguration> {
     /*
      * Azure Virtual Network
      */
-    @JsonProperty(value = "vnet", required = true)
     private IpAddressSpace vnet;
 
     /*
      * Trust Subnet
      */
-    @JsonProperty(value = "trustSubnet", required = true)
     private IpAddressSpace trustSubnet;
 
     /*
      * Untrust Subnet
      */
-    @JsonProperty(value = "unTrustSubnet", required = true)
     private IpAddressSpace unTrustSubnet;
 
     /*
      * IP of trust subnet for UDR
      */
-    @JsonProperty(value = "ipOfTrustSubnetForUdr")
     private IpAddress ipOfTrustSubnetForUdr;
 
     /**
@@ -130,20 +130,21 @@ public final class VnetConfiguration {
      */
     public void validate() {
         if (vnet() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vnet in model VnetConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vnet in model VnetConfiguration"));
         } else {
             vnet().validate();
         }
         if (trustSubnet() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property trustSubnet in model VnetConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property trustSubnet in model VnetConfiguration"));
         } else {
             trustSubnet().validate();
         }
         if (unTrustSubnet() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property unTrustSubnet in model VnetConfiguration"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property unTrustSubnet in model VnetConfiguration"));
         } else {
             unTrustSubnet().validate();
         }
@@ -153,4 +154,50 @@ public final class VnetConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VnetConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vnet", this.vnet);
+        jsonWriter.writeJsonField("trustSubnet", this.trustSubnet);
+        jsonWriter.writeJsonField("unTrustSubnet", this.unTrustSubnet);
+        jsonWriter.writeJsonField("ipOfTrustSubnetForUdr", this.ipOfTrustSubnetForUdr);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VnetConfiguration.
+     */
+    public static VnetConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetConfiguration deserializedVnetConfiguration = new VnetConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vnet".equals(fieldName)) {
+                    deserializedVnetConfiguration.vnet = IpAddressSpace.fromJson(reader);
+                } else if ("trustSubnet".equals(fieldName)) {
+                    deserializedVnetConfiguration.trustSubnet = IpAddressSpace.fromJson(reader);
+                } else if ("unTrustSubnet".equals(fieldName)) {
+                    deserializedVnetConfiguration.unTrustSubnet = IpAddressSpace.fromJson(reader);
+                } else if ("ipOfTrustSubnetForUdr".equals(fieldName)) {
+                    deserializedVnetConfiguration.ipOfTrustSubnetForUdr = IpAddress.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetConfiguration;
+        });
+    }
 }

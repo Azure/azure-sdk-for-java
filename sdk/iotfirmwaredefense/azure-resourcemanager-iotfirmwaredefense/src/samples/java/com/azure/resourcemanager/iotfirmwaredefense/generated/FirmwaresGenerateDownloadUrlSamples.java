@@ -19,8 +19,9 @@ public final class FirmwaresGenerateDownloadUrlSamples {
      */
     public static void firmwaresGenerateDownloadUrlMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +35,8 @@ public final class FirmwaresGenerateDownloadUrlSamples {
      */
     public static void firmwaresGenerateDownloadUrlMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
+                com.azure.core.util.Context.NONE);
     }
 }

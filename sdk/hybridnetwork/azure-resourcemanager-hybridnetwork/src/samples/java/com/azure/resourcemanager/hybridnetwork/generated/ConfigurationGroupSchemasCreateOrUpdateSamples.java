@@ -22,7 +22,9 @@ public final class ConfigurationGroupSchemasCreateOrUpdateSamples {
      */
     public static void createOrUpdateTheNetworkFunctionDefinitionGroup(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.configurationGroupSchemas().define("testConfigurationGroupSchema").withRegion("westUs2")
+        manager.configurationGroupSchemas()
+            .define("testConfigurationGroupSchema")
+            .withRegion("westUs2")
             .withExistingPublisher("rg1", "testPublisher")
             .withProperties(new ConfigurationGroupSchemaPropertiesFormat().withDescription("Schema with no secrets")
                 .withSchemaDefinition(

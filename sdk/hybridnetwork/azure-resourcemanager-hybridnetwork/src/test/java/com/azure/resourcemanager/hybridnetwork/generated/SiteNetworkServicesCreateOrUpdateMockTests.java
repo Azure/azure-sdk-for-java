@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridnetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridnetwork.HybridNetworkManager;
 import com.azure.resourcemanager.hybridnetwork.models.DeploymentResourceIdReference;
 import com.azure.resourcemanager.hybridnetwork.models.ManagedResourceGroupConfiguration;
@@ -22,39 +20,22 @@ import com.azure.resourcemanager.hybridnetwork.models.SiteNetworkServiceProperti
 import com.azure.resourcemanager.hybridnetwork.models.Sku;
 import com.azure.resourcemanager.hybridnetwork.models.SkuName;
 import com.azure.resourcemanager.hybridnetwork.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SiteNetworkServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"managedResourceGroupConfiguration\":{\"name\":\"usuv\",\"location\":\"lczwci\"},\"siteReference\":{\"id\":\"sllfryvdmvxad\"},\"publisherName\":\"cfrgnawbabgfbkt\",\"publisherScope\":\"Unknown\",\"networkServiceDesignGroupName\":\"czlfsy\",\"networkServiceDesignVersionName\":\"frbzgowo\",\"networkServiceDesignVersionOfferingLocation\":\"mj\",\"networkServiceDesignVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"desiredStateConfigurationGroupValueReferences\":{\"xhlusrvxis\":{\"id\":\"nyq\"}},\"lastStateNetworkServiceDesignVersionName\":\"jceagb\",\"lastStateConfigurationGroupValueReferences\":{\"qipubyz\":{\"id\":\"sumywzashxgonoyj\"}}},\"identity\":{\"principalId\":\"1feb67f7-7d4a-496c-8edb-c220e1c747e3\",\"tenantId\":\"e4137c56-bb51-4b15-a241-82de4d9f03e1\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"gv\":{\"principalId\":\"5681f559-cef0-4a17-af9c-4efc4412ef88\",\"clientId\":\"361faa97-4133-4601-94ba-3c46f042db97\"},\"m\":{\"principalId\":\"ffe26eb5-706f-49f4-8e12-3c477f6c1592\",\"clientId\":\"86029674-c4e7-4c98-b18b-bf230c0fa183\"},\"qujlyegqa\":{\"principalId\":\"0f067247-3840-49f4-816a-f0c230db5706\",\"clientId\":\"80ef49a4-01ec-4d08-8303-9065e800a365\"},\"gflqqbtnyjp\":{\"principalId\":\"0d129ff8-a960-4e01-93f4-fd47cd314d1c\",\"clientId\":\"b73d7ad5-28d7-49da-8a91-c2b59903915b\"}}},\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"location\":\"vabm\",\"tags\":{\"lwuhvajmailfe\":\"xbaevwjcnkot\"},\"id\":\"jjzakzwjiqullqx\",\"name\":\"dmvr\",\"type\":\"cm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"managedResourceGroupConfiguration\":{\"name\":\"usuv\",\"location\":\"lczwci\"},\"siteReference\":{\"id\":\"sllfryvdmvxad\"},\"publisherName\":\"cfrgnawbabgfbkt\",\"publisherScope\":\"Unknown\",\"networkServiceDesignGroupName\":\"czlfsy\",\"networkServiceDesignVersionName\":\"frbzgowo\",\"networkServiceDesignVersionOfferingLocation\":\"mj\",\"networkServiceDesignVersionResourceReference\":{\"idType\":\"DeploymentResourceIdReference\"},\"desiredStateConfigurationGroupValueReferences\":{\"xhlusrvxis\":{\"id\":\"nyq\"}},\"lastStateNetworkServiceDesignVersionName\":\"jceagb\",\"lastStateConfigurationGroupValueReferences\":{\"qipubyz\":{\"id\":\"sumywzashxgonoyj\"}}},\"identity\":{\"principalId\":\"f85db881-55a4-4e03-aa25-b491a5c709c0\",\"tenantId\":\"f8b780f3-a0ef-466d-aa5f-ed50144822e2\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"gv\":{\"principalId\":\"ce6c262f-437d-4811-8e15-c7f34127cdff\",\"clientId\":\"74c13faf-6406-4937-b9c8-373977f74d2c\"},\"m\":{\"principalId\":\"abdb5d67-abe5-4783-9274-3323afcf1ac3\",\"clientId\":\"174c82e4-2395-45a9-9fac-bd827bedabaf\"},\"qujlyegqa\":{\"principalId\":\"c394ba34-ac3c-4531-92c6-92d78d974d74\",\"clientId\":\"81481ea8-0bcc-4972-ab40-c202cffe757a\"},\"gflqqbtnyjp\":{\"principalId\":\"668aa780-3cd2-4705-885e-91fe567fcb09\",\"clientId\":\"a8ba9bbe-eed2-46c4-8fff-d5df4c2136bb\"}}},\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"location\":\"vabm\",\"tags\":{\"lwuhvajmailfe\":\"xbaevwjcnkot\"},\"id\":\"jjzakzwjiqullqx\",\"name\":\"dmvr\",\"type\":\"cm\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridNetworkManager manager = HybridNetworkManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

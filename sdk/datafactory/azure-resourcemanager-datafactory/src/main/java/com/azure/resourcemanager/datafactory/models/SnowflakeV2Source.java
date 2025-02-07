@@ -132,7 +132,6 @@ public final class SnowflakeV2Source extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (exportSettings() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -277,11 +278,11 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
                 } else if ("status".equals(fieldName)) {
                     deserializedActivityRun.status = reader.getString();
                 } else if ("activityRunStart".equals(fieldName)) {
-                    deserializedActivityRun.activityRunStart
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedActivityRun.activityRunStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("activityRunEnd".equals(fieldName)) {
-                    deserializedActivityRun.activityRunEnd
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedActivityRun.activityRunEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("durationInMs".equals(fieldName)) {
                     deserializedActivityRun.durationInMs = reader.getNullable(JsonReader::getInt);
                 } else if ("input".equals(fieldName)) {

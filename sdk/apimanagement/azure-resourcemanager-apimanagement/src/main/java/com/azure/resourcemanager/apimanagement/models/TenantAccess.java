@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TenantAccess. */
+/**
+ * Resource collection API of TenantAccess.
+ */
 public interface TenantAccess {
     /**
      * Returns list of access infos - for Git and Management endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface TenantAccess {
 
     /**
      * Returns list of access infos - for Git and Management endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
@@ -39,7 +41,7 @@ public interface TenantAccess {
 
     /**
      * Tenant access metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -54,7 +56,7 @@ public interface TenantAccess {
 
     /**
      * Tenant access metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -66,7 +68,7 @@ public interface TenantAccess {
 
     /**
      * Get tenant access information details without secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -81,7 +83,7 @@ public interface TenantAccess {
 
     /**
      * Get tenant access information details without secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -94,7 +96,7 @@ public interface TenantAccess {
 
     /**
      * Regenerate primary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -109,7 +111,7 @@ public interface TenantAccess {
 
     /**
      * Regenerate primary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -121,7 +123,7 @@ public interface TenantAccess {
 
     /**
      * Regenerate secondary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -136,7 +138,7 @@ public interface TenantAccess {
 
     /**
      * Regenerate secondary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -148,7 +150,7 @@ public interface TenantAccess {
 
     /**
      * Get tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -163,7 +165,7 @@ public interface TenantAccess {
 
     /**
      * Get tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -176,7 +178,7 @@ public interface TenantAccess {
 
     /**
      * Get tenant access information details without secrets.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,7 +189,7 @@ public interface TenantAccess {
 
     /**
      * Get tenant access information details without secrets.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +201,7 @@ public interface TenantAccess {
 
     /**
      * Begins definition for a new AccessInformationContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AccessInformationContract definition.
      */

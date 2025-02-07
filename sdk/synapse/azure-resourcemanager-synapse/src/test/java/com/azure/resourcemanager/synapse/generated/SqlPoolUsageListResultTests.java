@@ -13,13 +13,14 @@ public final class SqlPoolUsageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolUsageListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"nwdcfhu\",\"resourceName\":\"dpfuvg\",\"displayName\":\"bjj\",\"currentValue\":36.3222034919501,\"limit\":87.04760186425912,\"unit\":\"vudutncor\",\"nextResetTime\":\"2021-05-08T09:13:15Z\"}],\"nextLink\":\"qtvcofudflvkgj\"}")
+            "{\"value\":[{\"name\":\"gqouwifzmpj\",\"resourceName\":\"ivqikfxcvhr\",\"displayName\":\"phuagrttikteusq\",\"currentValue\":87.87099495421192,\"limit\":46.588120409870506,\"unit\":\"ubyjaffmmf\",\"nextResetTime\":\"2021-09-28T19:04:07Z\"},{\"name\":\"cuubgq\",\"resourceName\":\"rtalmet\",\"displayName\":\"wgdsl\",\"currentValue\":33.67256782052066,\"limit\":50.135091196767334,\"unit\":\"oi\",\"nextResetTime\":\"2021-02-26T07:29:44Z\"}],\"nextLink\":\"ypxiutcxap\"}")
             .toObject(SqlPoolUsageListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolUsageListResult model = new SqlPoolUsageListResult().withValue(Arrays.asList(new SqlPoolUsageInner()));
+        SqlPoolUsageListResult model
+            = new SqlPoolUsageListResult().withValue(Arrays.asList(new SqlPoolUsageInner(), new SqlPoolUsageInner()));
         model = BinaryData.fromObject(model).toObject(SqlPoolUsageListResult.class);
     }
 }

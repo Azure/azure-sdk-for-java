@@ -199,19 +199,61 @@ public final class ScriptActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @return the returnMultistatementResult value.
+     */
+    public Object returnMultistatementResult() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().returnMultistatementResult();
+    }
+
+    /**
+     * Set the returnMultistatementResult property: Enable to retrieve result sets from multiple SQL statements and the
+     * number of rows affected by the DML statement. Supported connector: SnowflakeV2. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @param returnMultistatementResult the returnMultistatementResult value to set.
+     * @return the ScriptActivity object itself.
+     */
+    public ScriptActivity withReturnMultistatementResult(Object returnMultistatementResult) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ScriptActivityTypeProperties();
+        }
+        this.innerTypeProperties().withReturnMultistatementResult(returnMultistatementResult);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property innerTypeProperties in model ScriptActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ScriptActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 

@@ -20,7 +20,7 @@ public final class ReplicationEligibilityResultsOperationListSampl {
      */
     public static void getsTheValidationErrorsInCaseTheVMIsUnsuitableForProtection(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEligibilityResultsOperations().listWithResponse("testRg1", "testVm2",
-            com.azure.core.util.Context.NONE);
+        manager.replicationEligibilityResultsOperations()
+            .listWithResponse("testRg1", "testVm2", com.azure.core.util.Context.NONE);
     }
 }

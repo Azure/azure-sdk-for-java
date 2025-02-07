@@ -5,51 +5,56 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties of a change. */
+/**
+ * The properties of a change.
+ */
 @Fluent
-public final class ChangeProperties {
+public final class ChangeProperties implements JsonSerializable<ChangeProperties> {
     /*
      * The resource id that the change is attached to.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The time when the change is detected.
      */
-    @JsonProperty(value = "timeStamp")
     private OffsetDateTime timestamp;
 
     /*
      * The list of identities who might initiated the change.
      * The identity could be user name (email address) or the object ID of the Service Principal.
      */
-    @JsonProperty(value = "initiatedByList")
     private List<String> initiatedByList;
 
     /*
      * The type of the change.
      */
-    @JsonProperty(value = "changeType")
     private ChangeType changeType;
 
     /*
      * The list of detailed changes at json property level.
      */
-    @JsonProperty(value = "propertyChanges")
     private List<PropertyChange> propertyChanges;
 
-    /** Creates an instance of ChangeProperties class. */
+    /**
+     * Creates an instance of ChangeProperties class.
+     */
     public ChangeProperties() {
     }
 
     /**
      * Get the resourceId property: The resource id that the change is attached to.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -58,7 +63,7 @@ public final class ChangeProperties {
 
     /**
      * Set the resourceId property: The resource id that the change is attached to.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ChangeProperties object itself.
      */
@@ -69,7 +74,7 @@ public final class ChangeProperties {
 
     /**
      * Get the timestamp property: The time when the change is detected.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -78,7 +83,7 @@ public final class ChangeProperties {
 
     /**
      * Set the timestamp property: The time when the change is detected.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ChangeProperties object itself.
      */
@@ -88,9 +93,9 @@ public final class ChangeProperties {
     }
 
     /**
-     * Get the initiatedByList property: The list of identities who might initiated the change. The identity could be
-     * user name (email address) or the object ID of the Service Principal.
-     *
+     * Get the initiatedByList property: The list of identities who might initiated the change.
+     * The identity could be user name (email address) or the object ID of the Service Principal.
+     * 
      * @return the initiatedByList value.
      */
     public List<String> initiatedByList() {
@@ -98,9 +103,9 @@ public final class ChangeProperties {
     }
 
     /**
-     * Set the initiatedByList property: The list of identities who might initiated the change. The identity could be
-     * user name (email address) or the object ID of the Service Principal.
-     *
+     * Set the initiatedByList property: The list of identities who might initiated the change.
+     * The identity could be user name (email address) or the object ID of the Service Principal.
+     * 
      * @param initiatedByList the initiatedByList value to set.
      * @return the ChangeProperties object itself.
      */
@@ -111,7 +116,7 @@ public final class ChangeProperties {
 
     /**
      * Get the changeType property: The type of the change.
-     *
+     * 
      * @return the changeType value.
      */
     public ChangeType changeType() {
@@ -120,7 +125,7 @@ public final class ChangeProperties {
 
     /**
      * Set the changeType property: The type of the change.
-     *
+     * 
      * @param changeType the changeType value to set.
      * @return the ChangeProperties object itself.
      */
@@ -131,7 +136,7 @@ public final class ChangeProperties {
 
     /**
      * Get the propertyChanges property: The list of detailed changes at json property level.
-     *
+     * 
      * @return the propertyChanges value.
      */
     public List<PropertyChange> propertyChanges() {
@@ -140,7 +145,7 @@ public final class ChangeProperties {
 
     /**
      * Set the propertyChanges property: The list of detailed changes at json property level.
-     *
+     * 
      * @param propertyChanges the propertyChanges value to set.
      * @return the ChangeProperties object itself.
      */
@@ -151,12 +156,67 @@ public final class ChangeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (propertyChanges() != null) {
             propertyChanges().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("timeStamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeArrayField("initiatedByList", this.initiatedByList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        jsonWriter.writeArrayField("propertyChanges", this.propertyChanges,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChangeProperties.
+     */
+    public static ChangeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeProperties deserializedChangeProperties = new ChangeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedChangeProperties.resourceId = reader.getString();
+                } else if ("timeStamp".equals(fieldName)) {
+                    deserializedChangeProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("initiatedByList".equals(fieldName)) {
+                    List<String> initiatedByList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedChangeProperties.initiatedByList = initiatedByList;
+                } else if ("changeType".equals(fieldName)) {
+                    deserializedChangeProperties.changeType = ChangeType.fromString(reader.getString());
+                } else if ("propertyChanges".equals(fieldName)) {
+                    List<PropertyChange> propertyChanges
+                        = reader.readArray(reader1 -> PropertyChange.fromJson(reader1));
+                    deserializedChangeProperties.propertyChanges = propertyChanges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeProperties;
+        });
     }
 }

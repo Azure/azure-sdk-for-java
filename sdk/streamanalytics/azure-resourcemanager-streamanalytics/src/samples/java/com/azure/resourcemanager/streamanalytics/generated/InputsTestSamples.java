@@ -10,8 +10,8 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class InputsTestSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
-     * Input_Test.json
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_Test.
+     * json
      */
     /**
      * Sample code: Test the connection for an input.

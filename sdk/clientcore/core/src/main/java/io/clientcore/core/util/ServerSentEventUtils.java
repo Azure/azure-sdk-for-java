@@ -19,17 +19,19 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for Server Sent Event handling.
  */
 public final class ServerSentEventUtils {
     private static final String DEFAULT_EVENT = "message";
-    private static final Pattern DIGITS_ONLY = Pattern.compile("^\\d*$");
     private static final HttpHeaderName LAST_EVENT_ID = HttpHeaderName.fromString("Last-Event-Id");
+
+    /**
+     * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
+     */
     public static final String NO_LISTENER_ERROR_MESSAGE
-        = "No ServerSentEventListener attached to HttpRequest to " + "handle the text/event-stream response";
+        = "No ServerSentEventListener attached to HttpRequest to handle the text/event-stream response";
 
     private ServerSentEventUtils() {
     }
@@ -38,7 +40,6 @@ public final class ServerSentEventUtils {
      * Checks if the {@code Content-Type} is a text event stream.
      *
      * @param contentType The content type.
-     *
      * @return {@code true} if the content type is a text event stream.
      */
     public static boolean isTextEventStreamContentType(String contentType) {
@@ -73,6 +74,7 @@ public final class ServerSentEventUtils {
      * <p>
      * The method will retry the request with the last event id set and after the retry time.
      * </p>
+     *
      * @param serverSentResult The {@link ServerSentResult result} of the retry.
      * @param httpRequest The {@link HttpRequest} to send.
      * @return {@code true} if the request was retried; {@code false} otherwise.
@@ -189,7 +191,7 @@ public final class ServerSentEventUtils {
                     break;
 
                 case "retry":
-                    if (!value.isEmpty() && DIGITS_ONLY.matcher(value).matches()) {
+                    if (!value.isEmpty() && isDigitsOnly(value)) {
                         ServerSentEventHelper.setRetryAfter(event, Duration.ofMillis(Long.parseLong(value)));
                     }
 
@@ -210,5 +212,19 @@ public final class ServerSentEventUtils {
         }
 
         return event;
+    }
+
+    private static boolean isDigitsOnly(String str) {
+        int length = str.length();
+
+        for (int i = 0; i < length; i++) {
+            char c = str.charAt(i);
+
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

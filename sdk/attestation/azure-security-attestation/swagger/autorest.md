@@ -33,27 +33,16 @@ tag: package-2020-10-01
 require:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/attestation/data-plane/readme.md
 java: true
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.42'
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation
 generate-client-as-impl: true
-generate-client-interfaces: false
-service-interface-as-public: true
 custom-types: AttestationType,PolicyModification,CertificateModification
 custom-types-subpackage: models
 models-subpackage: implementation.models
 sync-methods: none
 client-side-validations: true
-context-client-method-parameter: true
 required-fields-as-ctor-args: true
 disable-client-builder: true
-stream-style-serialization: true
-
-#add-credentials: false
-#credential-types: tokencredential
-#credential-scopes: 'https://attest.azure.net/.default'
-
-#required-parameter-client-methods: true
-
 ```

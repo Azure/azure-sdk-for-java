@@ -5,28 +5,41 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * InMageRcm appliance specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Immutable
 public final class InMageRcmApplianceSpecificDetails extends ApplianceSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The list of appliances.
      */
-    @JsonProperty(value = "appliances", access = JsonProperty.Access.WRITE_ONLY)
     private List<InMageRcmApplianceDetails> appliances;
 
     /**
      * Creates an instance of InMageRcmApplianceSpecificDetails class.
      */
     public InMageRcmApplianceSpecificDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -45,9 +58,49 @@ public final class InMageRcmApplianceSpecificDetails extends ApplianceSpecificDe
      */
     @Override
     public void validate() {
-        super.validate();
         if (appliances() != null) {
             appliances().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmApplianceSpecificDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmApplianceSpecificDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmApplianceSpecificDetails.
+     */
+    public static InMageRcmApplianceSpecificDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmApplianceSpecificDetails deserializedInMageRcmApplianceSpecificDetails
+                = new InMageRcmApplianceSpecificDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmApplianceSpecificDetails.instanceType = reader.getString();
+                } else if ("appliances".equals(fieldName)) {
+                    List<InMageRcmApplianceDetails> appliances
+                        = reader.readArray(reader1 -> InMageRcmApplianceDetails.fromJson(reader1));
+                    deserializedInMageRcmApplianceSpecificDetails.appliances = appliances;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmApplianceSpecificDetails;
+        });
     }
 }

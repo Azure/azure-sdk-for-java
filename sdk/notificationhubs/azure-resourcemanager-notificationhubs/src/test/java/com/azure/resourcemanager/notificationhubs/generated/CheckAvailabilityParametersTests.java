@@ -16,40 +16,40 @@ public final class CheckAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckAvailabilityParameters model = BinaryData.fromString(
-            "{\"id\":\"mhquvgjxp\",\"name\":\"bczmeh\",\"type\":\"zopbsphrupidgs\",\"location\":\"bejhphoycmsxa\",\"tags\":{\"zehtbmu\":\"dxbmtqioq\",\"wnoi\":\"p\",\"bqsoqijg\":\"hwlrx\"},\"isAvailiable\":true,\"sku\":{\"name\":\"Standard\",\"tier\":\"zlobcufpd\",\"size\":\"rbt\",\"family\":\"qjnqglhqgnufoooj\",\"capacity\":1080301009}}")
+            "{\"id\":\"pewnw\",\"name\":\"eitjz\",\"type\":\"lusarh\",\"location\":\"fcqhsmyurkd\",\"tags\":{\"arcryuanzwuxzdxt\":\"xhekuksjtxukcdm\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"hmwhfpmrqo\",\"size\":\"tu\",\"family\":\"nryrtihf\",\"capacity\":1773018691},\"isAvailiable\":false}")
             .toObject(CheckAvailabilityParameters.class);
-        Assertions.assertEquals("bczmeh", model.name());
-        Assertions.assertEquals("bejhphoycmsxa", model.location());
-        Assertions.assertEquals("dxbmtqioq", model.tags().get("zehtbmu"));
-        Assertions.assertEquals(true, model.isAvailiable());
+        Assertions.assertEquals("eitjz", model.name());
+        Assertions.assertEquals("fcqhsmyurkd", model.location());
+        Assertions.assertEquals("xhekuksjtxukcdm", model.tags().get("arcryuanzwuxzdxt"));
         Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
-        Assertions.assertEquals("zlobcufpd", model.sku().tier());
-        Assertions.assertEquals("rbt", model.sku().size());
-        Assertions.assertEquals("qjnqglhqgnufoooj", model.sku().family());
-        Assertions.assertEquals(1080301009, model.sku().capacity());
+        Assertions.assertEquals("hmwhfpmrqo", model.sku().tier());
+        Assertions.assertEquals("tu", model.sku().size());
+        Assertions.assertEquals("nryrtihf", model.sku().family());
+        Assertions.assertEquals(1773018691, model.sku().capacity());
+        Assertions.assertEquals(false, model.isAvailiable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckAvailabilityParameters model = new CheckAvailabilityParameters().withName("bczmeh")
-            .withLocation("bejhphoycmsxa")
-            .withTags(mapOf("zehtbmu", "dxbmtqioq", "wnoi", "p", "bqsoqijg", "hwlrx"))
-            .withIsAvailiable(true)
+        CheckAvailabilityParameters model = new CheckAvailabilityParameters().withName("eitjz")
+            .withLocation("fcqhsmyurkd")
+            .withTags(mapOf("arcryuanzwuxzdxt", "xhekuksjtxukcdm"))
             .withSku(new Sku().withName(SkuName.STANDARD)
-                .withTier("zlobcufpd")
-                .withSize("rbt")
-                .withFamily("qjnqglhqgnufoooj")
-                .withCapacity(1080301009));
+                .withTier("hmwhfpmrqo")
+                .withSize("tu")
+                .withFamily("nryrtihf")
+                .withCapacity(1773018691))
+            .withIsAvailiable(false);
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityParameters.class);
-        Assertions.assertEquals("bczmeh", model.name());
-        Assertions.assertEquals("bejhphoycmsxa", model.location());
-        Assertions.assertEquals("dxbmtqioq", model.tags().get("zehtbmu"));
-        Assertions.assertEquals(true, model.isAvailiable());
+        Assertions.assertEquals("eitjz", model.name());
+        Assertions.assertEquals("fcqhsmyurkd", model.location());
+        Assertions.assertEquals("xhekuksjtxukcdm", model.tags().get("arcryuanzwuxzdxt"));
         Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
-        Assertions.assertEquals("zlobcufpd", model.sku().tier());
-        Assertions.assertEquals("rbt", model.sku().size());
-        Assertions.assertEquals("qjnqglhqgnufoooj", model.sku().family());
-        Assertions.assertEquals(1080301009, model.sku().capacity());
+        Assertions.assertEquals("hmwhfpmrqo", model.sku().tier());
+        Assertions.assertEquals("tu", model.sku().size());
+        Assertions.assertEquals("nryrtihf", model.sku().family());
+        Assertions.assertEquals(1773018691, model.sku().capacity());
+        Assertions.assertEquals(false, model.isAvailiable());
     }
 
     // Use "Map.of" if available

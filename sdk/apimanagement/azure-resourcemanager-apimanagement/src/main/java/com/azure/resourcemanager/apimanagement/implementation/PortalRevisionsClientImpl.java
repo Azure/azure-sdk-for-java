@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PortalRevisionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PortalRevisionsClient.
+ */
 public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PortalRevisionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of PortalRevisionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PortalRevisionsClientImpl(ApiManagementClientImpl client) {
@@ -128,13 +134,15 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
-     *     |-------------|------------------------|-----------------------------------|
-     *     <p>|name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith| |isCurrent | eq, ne | |.
+     * |-------------|------------------------|-----------------------------------|
+     * 
+     * |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |isCurrent | eq, ne | |.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,13 +179,15 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
-     *     |-------------|------------------------|-----------------------------------|
-     *     <p>|name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith| |isCurrent | eq, ne | |.
+     * |-------------|------------------------|-----------------------------------|
+     * 
+     * |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |isCurrent | eq, ne | |.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -215,13 +225,15 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
-     *     |-------------|------------------------|-----------------------------------|
-     *     <p>|name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith| |isCurrent | eq, ne | |.
+     * |-------------|------------------------|-----------------------------------|
+     * 
+     * |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |isCurrent | eq, ne | |.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +250,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,13 +269,15 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
-     *     |-------------|------------------------|-----------------------------------|
-     *     <p>|name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith| |isCurrent | eq, ne | |.
+     * |-------------|------------------------|-----------------------------------|
+     * 
+     * |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |isCurrent | eq, ne | |.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -282,7 +296,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,13 +314,15 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
-     *     |-------------|------------------------|-----------------------------------|
-     *     <p>|name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith| |isCurrent | eq, ne | |.
+     * |-------------|------------------------|-----------------------------------|
+     * 
+     * |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |isCurrent | eq, ne | |.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -323,11 +339,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -364,11 +380,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -405,11 +421,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,11 +439,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -442,11 +458,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -458,11 +474,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -499,11 +515,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -540,11 +556,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -559,11 +575,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -578,11 +594,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -596,12 +612,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -645,12 +661,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -693,12 +709,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -717,12 +733,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -744,12 +760,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -765,12 +781,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -788,12 +804,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -809,12 +825,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -831,12 +847,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -851,12 +867,12 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
      * if the revision is publicly accessible.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Portal Revision's contract details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -871,14 +887,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -924,14 +940,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -976,14 +992,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1002,14 +1018,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1030,14 +1046,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1053,14 +1069,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1077,14 +1093,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1099,14 +1115,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1122,14 +1138,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1143,14 +1159,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Updates the description of specified portal revision or makes it current.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Portal Revision's contract details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1165,9 +1181,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1192,9 +1207,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

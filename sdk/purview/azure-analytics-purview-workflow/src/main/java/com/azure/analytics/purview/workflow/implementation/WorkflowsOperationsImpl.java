@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -31,23 +32,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsOperations.
+ */
 public final class WorkflowsOperationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of WorkflowsOperationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowsOperationsImpl(PurviewWorkflowClientImpl client) {
         this.service
             = RestProxy.create(WorkflowsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -144,10 +160,10 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Get a specific workflow.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -167,8 +183,9 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -186,10 +203,10 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Get a specific workflow.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -209,8 +226,9 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -228,10 +246,10 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Create or replace a workflow.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     triggers (Required): [
      *          (Required){
@@ -246,11 +264,13 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -270,8 +290,9 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param workflowCreateOrUpdateCommand Create or update workflow payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -292,10 +313,10 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Create or replace a workflow.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     triggers (Required): [
      *          (Required){
@@ -310,11 +331,13 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     triggers (Required): [
@@ -334,8 +357,9 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param workflowCreateOrUpdateCommand Create or update workflow payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -356,7 +380,7 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Delete a workflow.
-     *
+     * 
      * @param workflowId The workflow id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -374,7 +398,7 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Delete a workflow.
-     *
+     * 
      * @param workflowId The workflow id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -392,10 +416,10 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Validate a workflow.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     triggers (Required): [
      *          (Required){
@@ -410,11 +434,13 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -428,8 +454,9 @@ public final class WorkflowsOperationsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param workflowValidateQuery Check workflow payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -449,10 +476,10 @@ public final class WorkflowsOperationsImpl {
 
     /**
      * Validate a workflow.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     triggers (Required): [
      *          (Required){
@@ -467,11 +494,13 @@ public final class WorkflowsOperationsImpl {
      *     description: String (Required)
      *     actionDag: Object (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -485,8 +514,9 @@ public final class WorkflowsOperationsImpl {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param workflowId The workflow id.
      * @param workflowValidateQuery Check workflow payload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

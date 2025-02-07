@@ -14,18 +14,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkflowTasksList {
     public static void main(String[] args) {
-        WorkflowTasksClient workflowTasksClient =
-                new WorkflowTasksClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-                        .buildClient();
+        WorkflowTasksClient workflowTasksClient
+            = new WorkflowTasksClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.workflow.generated.workflowtaskslist.workflowtaskslist
-        RequestOptions requestOptions =
-                new RequestOptions()
-                        .addQueryParam("maxpagesize", "1000")
-                        .addQueryParam("orderby", "createdTime desc")
-                        .addQueryParam("timeWindow", "30d")
-                        .addQueryParam("viewMode", "sent");
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("maxpagesize", "1000")
+            .addQueryParam("orderby", "createdTime desc")
+            .addQueryParam("timeWindow", "30d")
+            .addQueryParam("viewMode", "sent");
         PagedIterable<BinaryData> response = workflowTasksClient.list(requestOptions);
         // END:com.azure.analytics.purview.workflow.generated.workflowtaskslist.workflowtaskslist
     }

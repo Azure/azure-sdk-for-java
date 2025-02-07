@@ -11,19 +11,39 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** An immutable representation of a web app source control configuration in a web app. */
 @Fluent
 public interface WebAppSourceControl extends HasInnerModel<SiteSourceControlInner>, ChildResource<WebAppBase> {
-    /** @return the repository or source control url */
+    /**
+     * Gets the repository or source control url.
+     *
+     * @return the repository or source control url
+     */
     String repositoryUrl();
 
-    /** @return the name of the branch to use for deployment */
+    /**
+     * Gets the name of the branch to use for deployment.
+     *
+     * @return the name of the branch to use for deployment
+     */
     String branch();
 
-    /** @return whether to do manual or continuous integration */
+    /**
+     * Check whether to do manual or continuous integration.
+     *
+     * @return whether to do manual or continuous integration
+     */
     boolean isManualIntegration();
 
-    /** @return whether deployment rollback is enabled */
+    /**
+     * Check whether deployment rollback is enabled.
+     *
+     * @return whether deployment rollback is enabled
+     */
     boolean deploymentRollbackEnabled();
 
-    /** @return mercurial or Git repository type */
+    /**
+     * Gets mercurial or Git repository type.
+     *
+     * @return mercurial or Git repository type
+     */
     RepositoryType repositoryType();
 
     /**

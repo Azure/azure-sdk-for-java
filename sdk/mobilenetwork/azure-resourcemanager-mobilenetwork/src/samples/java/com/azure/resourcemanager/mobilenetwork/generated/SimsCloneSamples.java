@@ -13,7 +13,8 @@ import java.util.Arrays;
  */
 public final class SimsCloneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimClone.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimClone.json
      */
     /**
      * Sample code: Clone list of SIMs to target SIM group.

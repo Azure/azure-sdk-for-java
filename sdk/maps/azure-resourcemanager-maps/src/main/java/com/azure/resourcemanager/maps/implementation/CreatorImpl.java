@@ -133,9 +133,9 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
     CreatorImpl(CreatorInner innerObject, com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.creatorName = Utils.getValueFromIdByName(innerObject.id(), "creators");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.creatorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "creators");
     }
 
     public Creator refresh() {

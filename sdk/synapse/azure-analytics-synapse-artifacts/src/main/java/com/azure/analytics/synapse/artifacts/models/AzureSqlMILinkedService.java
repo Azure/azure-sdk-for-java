@@ -34,7 +34,8 @@ public class AzureSqlMILinkedService extends LinkedService {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The ID of the service principal used to authenticate against Azure SQL Managed Instance. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure SQL Managed Instance. Type: string (or
+     * Expression with resultType string).
      */
     private Object servicePrincipalId;
 
@@ -44,12 +45,15 @@ public class AzureSqlMILinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
     private Object azureCloudType;
 
@@ -59,7 +63,8 @@ public class AzureSqlMILinkedService extends LinkedService {
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

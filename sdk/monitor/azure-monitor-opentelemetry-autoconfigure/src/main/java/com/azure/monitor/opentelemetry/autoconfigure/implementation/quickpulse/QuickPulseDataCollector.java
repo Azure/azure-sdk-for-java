@@ -3,18 +3,33 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DependencyDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ExceptionDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.RequestDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Trace;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
@@ -45,7 +60,10 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector() {
+    private final AtomicReference<FilteringConfiguration> configuration;
+
+    QuickPulseDataCollector(AtomicReference<FilteringConfiguration> configuration) {
+        this.configuration = configuration;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -59,7 +77,8 @@ final class QuickPulseDataCollector {
 
     synchronized void enable(Supplier<String> instrumentationKeySupplier) {
         this.instrumentationKeySupplier = instrumentationKeySupplier;
-        counters.set(new Counters());
+        FilteringConfiguration config = configuration.get();
+        counters.set(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
     }
 
     synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
@@ -73,7 +92,9 @@ final class QuickPulseDataCollector {
 
     @Nullable
     synchronized FinalCounters getAndRestart() {
-        Counters currentCounters = counters.getAndSet(new Counters());
+        FilteringConfiguration config = configuration.get();
+        Counters currentCounters
+            = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
         if (currentCounters != null) {
             return new FinalCounters(currentCounters);
         }
@@ -107,15 +128,17 @@ final class QuickPulseDataCollector {
             return;
         }
         int itemCount = sampleRate == null ? 1 : Math.round(100 / sampleRate);
-
+        FilteringConfiguration currentConfig = configuration.get();
         MonitorDomain data = telemetryItem.getData().getBaseData();
         if (data instanceof RequestData) {
             RequestData requestTelemetry = (RequestData) data;
-            addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem));
+            addRequest(requestTelemetry, itemCount, getOperationName(telemetryItem), currentConfig);
         } else if (data instanceof RemoteDependencyData) {
-            addDependency((RemoteDependencyData) data, itemCount);
+            addDependency((RemoteDependencyData) data, itemCount, currentConfig);
         } else if (data instanceof TelemetryExceptionData) {
-            addException((TelemetryExceptionData) data, itemCount);
+            addException((TelemetryExceptionData) data, itemCount, currentConfig);
+        } else if (data instanceof MessageData) {
+            addTrace((MessageData) data, currentConfig);
         }
     }
 
@@ -129,7 +152,43 @@ final class QuickPulseDataCollector {
         return tags == null ? null : tags.get(ContextTagKeys.AI_OPERATION_NAME.toString());
     }
 
-    private void addDependency(RemoteDependencyData telemetry, int itemCount) {
+    private boolean matchesDocumentFilters(TelemetryColumns columns, TelemetryType telemetryType,
+        FilteringConfiguration currentConfig, List<String> matchingDocumentStreamIds) {
+        Map<String, List<FilterConjunctionGroupInfo>> documentsConfig
+            = currentConfig.fetchDocumentsConfigForTelemetryType(telemetryType);
+        if (documentsConfig.isEmpty()) {
+            return true;
+        }
+
+        // This will iterate through all the filtering configuration for a particular telemetry type to
+        // determine which filters from that config match the incoming telemetry item. When emitting documents,
+        // the document requires list of all applicable document stream ids. This is because it is possible for
+        // multiple sessions of live metrics to be open, and the list of document stream ids is used by live
+        // metrics UI to determine which document shows up in which session. Thus, tracking the matching
+        // document stream ids here.
+        for (Map.Entry<String, List<FilterConjunctionGroupInfo>> entry : documentsConfig.entrySet()) {
+            String documentStreamId = entry.getKey();
+            for (FilterConjunctionGroupInfo filterGroup : entry.getValue()) {
+                if (Filter.checkFilterConjunctionGroup(filterGroup, columns)
+                    && !matchingDocumentStreamIds.contains(documentStreamId)) {
+                    matchingDocumentStreamIds.add(documentStreamId);
+                }
+            }
+        }
+        return !matchingDocumentStreamIds.isEmpty();
+    }
+
+    private void applyMetricFilters(TelemetryColumns columns, TelemetryType telemetryType,
+        FilteringConfiguration currentConfig, Counters currentCounters) {
+        List<DerivedMetricInfo> metricsConfig = currentConfig.fetchMetricConfigForTelemetryType(telemetryType);
+        for (DerivedMetricInfo derivedMetricInfo : metricsConfig) {
+            if (Filter.checkMetricFilters(derivedMetricInfo, columns)) {
+                currentCounters.derivedMetrics.calculateProjection(derivedMetricInfo, columns);
+            }
+        }
+    }
+
+    private void addDependency(RemoteDependencyData telemetry, int itemCount, FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         if (counters == null) {
             return;
@@ -140,21 +199,30 @@ final class QuickPulseDataCollector {
         if (success != null && !success) { // success should not be null
             counters.unsuccessfulRdds.incrementAndGet();
         }
-        RemoteDependency dependencyDoc = new RemoteDependency();
-        dependencyDoc.setName(telemetry.getName());
-        dependencyDoc.setCommandName(telemetry.getData());
-        dependencyDoc.setDuration(Duration.ofMillis(durationMillis).toString());
-        dependencyDoc.setResultCode(telemetry.getResultCode());
-        dependencyDoc.setProperties(setCustomDimensions(telemetry.getProperties(), telemetry.getMeasurements()));
 
-        synchronized (counters.documentList) {
-            if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(dependencyDoc);
+        DependencyDataColumns columns = new DependencyDataColumns(telemetry);
+        applyMetricFilters(columns, TelemetryType.DEPENDENCY, currentConfig, counters);
+
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, TelemetryType.DEPENDENCY, currentConfig, documentStreamIds)) {
+            RemoteDependency dependencyDoc = new RemoteDependency();
+            dependencyDoc.setName(telemetry.getName());
+            dependencyDoc.setCommandName(telemetry.getData());
+            dependencyDoc.setDuration(Duration.ofMillis(durationMillis).toString());
+            dependencyDoc.setResultCode(telemetry.getResultCode());
+            dependencyDoc.setProperties(setCustomDimensions(telemetry.getProperties(), telemetry.getMeasurements()));
+            dependencyDoc.setDocumentStreamIds(documentStreamIds);
+
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(dependencyDoc);
+                }
             }
         }
     }
 
-    private void addException(TelemetryExceptionData exceptionData, int itemCount) {
+    private void addException(TelemetryExceptionData exceptionData, int itemCount,
+        FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         if (counters == null) {
             return;
@@ -162,23 +230,33 @@ final class QuickPulseDataCollector {
 
         counters.exceptions.addAndGet(itemCount);
 
-        List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
-        // Exception is a class from live metrics swagger that represents a document for an exception
-        Exception exceptionDoc = new Exception();
-        if (exceptionList != null && !exceptionList.isEmpty()) {
-            exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
-            exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
-        }
-        exceptionDoc.setProperties(setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements()));
+        ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
 
-        synchronized (counters.documentList) {
-            if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(exceptionDoc);
+        applyMetricFilters(columns, TelemetryType.EXCEPTION, currentConfig, counters);
+
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, TelemetryType.EXCEPTION, currentConfig, documentStreamIds)) {
+            List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
+            // Exception is a class from live metrics swagger that represents a document for an exception
+            Exception exceptionDoc = new Exception();
+            if (exceptionList != null && !exceptionList.isEmpty()) {
+                exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
+                exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
+            }
+            exceptionDoc
+                .setProperties(setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements()));
+            exceptionDoc.setDocumentStreamIds(documentStreamIds);
+
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(exceptionDoc);
+                }
             }
         }
     }
 
-    private void addRequest(RequestData requestTelemetry, int itemCount, String operationName) {
+    private void addRequest(RequestData requestTelemetry, int itemCount, String operationName,
+        FilteringConfiguration currentConfig) {
         Counters counters = this.counters.get();
         if (counters == null) {
             return;
@@ -189,16 +267,43 @@ final class QuickPulseDataCollector {
             counters.unsuccessfulRequests.incrementAndGet();
         }
 
-        Request requestDoc = new Request();
-        requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
-        requestDoc.setResponseCode(requestTelemetry.getResponseCode());
-        requestDoc.setName(requestTelemetry.getName());
-        requestDoc.setUrl(requestTelemetry.getUrl());
-        requestDoc
-            .setProperties(setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
-        synchronized (counters.documentList) {
-            if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(requestDoc);
+        RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
+
+        applyMetricFilters(columns, TelemetryType.REQUEST, currentConfig, counters);
+
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, TelemetryType.REQUEST, currentConfig, documentStreamIds)) {
+            Request requestDoc = new Request();
+            requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
+            requestDoc.setResponseCode(requestTelemetry.getResponseCode());
+            requestDoc.setName(requestTelemetry.getName());
+            requestDoc.setUrl(requestTelemetry.getUrl());
+            requestDoc.setProperties(
+                setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+            requestDoc.setDocumentStreamIds(documentStreamIds);
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(requestDoc);
+                }
+            }
+        }
+    }
+
+    private void addTrace(MessageData traceTelemetry, FilteringConfiguration currentConfig) {
+        Counters counters = this.counters.get();
+        TraceDataColumns columns = new TraceDataColumns(traceTelemetry);
+        applyMetricFilters(columns, TelemetryType.TRACE, currentConfig, counters);
+        List<String> documentStreamIds = new ArrayList<>();
+        if (matchesDocumentFilters(columns, TelemetryType.TRACE, currentConfig, documentStreamIds)) {
+            Trace traceDoc = new Trace();
+            traceDoc.setMessage(traceTelemetry.getMessage());
+            traceDoc
+                .setProperties(setCustomDimensions(traceTelemetry.getProperties(), traceTelemetry.getMeasurements()));
+            traceDoc.setDocumentStreamIds(documentStreamIds);
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(traceDoc);
+                }
             }
         }
     }
@@ -306,6 +411,10 @@ final class QuickPulseDataCollector {
         final double processNormalizedCpuUsage;
         final List<DocumentIngress> documentList = new ArrayList<>();
 
+        final Map<String, Double> projections;
+
+        final List<CollectionConfigurationError> configErrors;
+
         private FinalCounters(Counters currentCounters) {
 
             processPhysicalMemory = getPhysicalMemory(memory);
@@ -325,6 +434,9 @@ final class QuickPulseDataCollector {
             synchronized (currentCounters.documentList) {
                 this.documentList.addAll(currentCounters.documentList);
             }
+            this.projections = currentCounters.derivedMetrics.fetchFinalDerivedMetricValues();
+            this.configErrors = currentCounters.configErrors;
+
         }
 
         private long getPhysicalMemory(@Nullable MemoryMXBean memory) {
@@ -376,6 +488,15 @@ final class QuickPulseDataCollector {
         final AtomicLong rddsAndDuations = new AtomicLong(0);
         final AtomicInteger unsuccessfulRdds = new AtomicInteger(0);
         final List<DocumentIngress> documentList = new ArrayList<>();
+
+        final DerivedMetricProjections derivedMetrics;
+
+        final List<CollectionConfigurationError> configErrors;
+
+        Counters(Map<String, AggregationType> projectionInfo, List<CollectionConfigurationError> errors) {
+            derivedMetrics = new DerivedMetricProjections(projectionInfo);
+            configErrors = errors;
+        }
 
         static long encodeCountAndDuration(long count, long duration) {
             if (count > MAX_COUNT || duration > MAX_DURATION) {

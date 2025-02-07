@@ -17,8 +17,8 @@ import com.azure.resourcemanager.compute.fluent.CloudServiceRolesClient;
 import com.azure.resourcemanager.compute.fluent.CloudServicesClient;
 import com.azure.resourcemanager.compute.fluent.CloudServicesUpdateDomainsClient;
 import com.azure.resourcemanager.compute.fluent.CommunityGalleriesClient;
-import com.azure.resourcemanager.compute.fluent.CommunityGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.CommunityGalleryImageVersionsClient;
+import com.azure.resourcemanager.compute.fluent.CommunityGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostsClient;
@@ -27,10 +27,12 @@ import com.azure.resourcemanager.compute.fluent.DiskEncryptionSetsClient;
 import com.azure.resourcemanager.compute.fluent.DiskRestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
-import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient;
-import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
+import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.GalleryInVMAccessControlProfileVersionsClient;
+import com.azure.resourcemanager.compute.fluent.GalleryInVMAccessControlProfilesClient;
 import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
@@ -40,9 +42,10 @@ import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.compute.fluent.RestorePointCollectionsClient;
 import com.azure.resourcemanager.compute.fluent.RestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
-import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
+import com.azure.resourcemanager.compute.fluent.SoftDeletedResourcesClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
@@ -52,12 +55,12 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesEdgeZonesCli
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
-import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
-import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -657,6 +660,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The SoftDeletedResourcesClient object to access its operations.
+     */
+    private final SoftDeletedResourcesClient softDeletedResources;
+
+    /**
+     * Gets the SoftDeletedResourcesClient object to access its operations.
+     * 
+     * @return the SoftDeletedResourcesClient object.
+     */
+    public SoftDeletedResourcesClient getSoftDeletedResources() {
+        return this.softDeletedResources;
+    }
+
+    /**
      * The GallerySharingProfilesClient object to access its operations.
      */
     private final GallerySharingProfilesClient gallerySharingProfiles;
@@ -668,6 +685,34 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public GallerySharingProfilesClient getGallerySharingProfiles() {
         return this.gallerySharingProfiles;
+    }
+
+    /**
+     * The GalleryInVMAccessControlProfilesClient object to access its operations.
+     */
+    private final GalleryInVMAccessControlProfilesClient galleryInVMAccessControlProfiles;
+
+    /**
+     * Gets the GalleryInVMAccessControlProfilesClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfilesClient object.
+     */
+    public GalleryInVMAccessControlProfilesClient getGalleryInVMAccessControlProfiles() {
+        return this.galleryInVMAccessControlProfiles;
+    }
+
+    /**
+     * The GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     */
+    private final GalleryInVMAccessControlProfileVersionsClient galleryInVMAccessControlProfileVersions;
+
+    /**
+     * Gets the GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfileVersionsClient object.
+     */
+    public GalleryInVMAccessControlProfileVersionsClient getGalleryInVMAccessControlProfileVersions() {
+        return this.galleryInVMAccessControlProfileVersions;
     }
 
     /**
@@ -880,7 +925,10 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
+        this.softDeletedResources = new SoftDeletedResourcesClientImpl(this);
         this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
+        this.galleryInVMAccessControlProfiles = new GalleryInVMAccessControlProfilesClientImpl(this);
+        this.galleryInVMAccessControlProfileVersions = new GalleryInVMAccessControlProfileVersionsClientImpl(this);
         this.sharedGalleries = new SharedGalleriesClientImpl(this);
         this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
         this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);

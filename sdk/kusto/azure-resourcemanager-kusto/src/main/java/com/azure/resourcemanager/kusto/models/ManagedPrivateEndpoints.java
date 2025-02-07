@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ManagedPrivateEndpoints. */
+/**
+ * Resource collection API of ManagedPrivateEndpoints.
+ */
 public interface ManagedPrivateEndpoints {
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -27,7 +29,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -41,7 +43,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Returns the list of managed private endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -66,7 +68,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -81,7 +83,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -94,7 +96,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -106,7 +108,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param managedPrivateEndpointName The name of the managed private endpoint.
@@ -119,7 +121,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,7 +132,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Gets a managed private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +144,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -152,7 +154,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Deletes a managed private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,7 +165,7 @@ public interface ManagedPrivateEndpoints {
 
     /**
      * Begins definition for a new ManagedPrivateEndpoint resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ManagedPrivateEndpoint definition.
      */

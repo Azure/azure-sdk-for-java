@@ -18,8 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class NameAvailabilityParameters implements JsonSerializable<NameAvailabilityParameters> {
     /*
-     * The resource type. Can be "Microsoft.SignalRService/SignalR", "Microsoft.SignalRService/WebPubSub",
-     * "Microsoft.SignalRService/SignalR/replicas" or "Microsoft.SignalRService/WebPubSub/replicas"
+     * The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
      */
     private String type;
 
@@ -35,9 +34,8 @@ public final class NameAvailabilityParameters implements JsonSerializable<NameAv
     }
 
     /**
-     * Get the type property: The resource type. Can be "Microsoft.SignalRService/SignalR",
-     * "Microsoft.SignalRService/WebPubSub", "Microsoft.SignalRService/SignalR/replicas" or
-     * "Microsoft.SignalRService/WebPubSub/replicas".
+     * Get the type property: The resource type. Can be "Microsoft.SignalRService/SignalR" or
+     * "Microsoft.SignalRService/webPubSub".
      * 
      * @return the type value.
      */
@@ -46,9 +44,8 @@ public final class NameAvailabilityParameters implements JsonSerializable<NameAv
     }
 
     /**
-     * Set the type property: The resource type. Can be "Microsoft.SignalRService/SignalR",
-     * "Microsoft.SignalRService/WebPubSub", "Microsoft.SignalRService/SignalR/replicas" or
-     * "Microsoft.SignalRService/WebPubSub/replicas".
+     * Set the type property: The resource type. Can be "Microsoft.SignalRService/SignalR" or
+     * "Microsoft.SignalRService/webPubSub".
      * 
      * @param type the type value to set.
      * @return the NameAvailabilityParameters object itself.

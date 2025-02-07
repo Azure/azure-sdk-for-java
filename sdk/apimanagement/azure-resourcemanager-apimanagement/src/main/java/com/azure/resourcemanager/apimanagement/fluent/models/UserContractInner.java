@@ -6,27 +6,48 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** User details. */
+/**
+ * User details.
+ */
 @Fluent
 public final class UserContractInner extends ProxyResource {
     /*
      * User entity contract properties.
      */
-    @JsonProperty(value = "properties")
     private UserContractProperties innerProperties;
 
-    /** Creates an instance of UserContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of UserContractInner class.
+     */
     public UserContractInner() {
     }
 
     /**
      * Get the innerProperties property: User entity contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserContractProperties innerProperties() {
@@ -34,8 +55,38 @@ public final class UserContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -44,7 +95,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserContractInner object itself.
      */
@@ -58,7 +109,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -67,7 +118,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserContractInner object itself.
      */
@@ -81,7 +132,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Get the email property: Email address.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -90,7 +141,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Set the email property: Email address.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserContractInner object itself.
      */
@@ -105,7 +156,7 @@ public final class UserContractInner extends ProxyResource {
     /**
      * Get the registrationDate property: Date of user registration. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the registrationDate value.
      */
     public OffsetDateTime registrationDate() {
@@ -115,7 +166,7 @@ public final class UserContractInner extends ProxyResource {
     /**
      * Set the registrationDate property: Date of user registration. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param registrationDate the registrationDate value to set.
      * @return the UserContractInner object itself.
      */
@@ -129,7 +180,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Get the groups property: Collection of groups user is part of.
-     *
+     * 
      * @return the groups value.
      */
     public List<GroupContractProperties> groups() {
@@ -139,7 +190,7 @@ public final class UserContractInner extends ProxyResource {
     /**
      * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @return the state value.
      */
     public UserState state() {
@@ -149,7 +200,7 @@ public final class UserContractInner extends ProxyResource {
     /**
      * Set the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @param state the state value to set.
      * @return the UserContractInner object itself.
      */
@@ -163,7 +214,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Get the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @return the note value.
      */
     public String note() {
@@ -172,7 +223,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Set the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @param note the note value to set.
      * @return the UserContractInner object itself.
      */
@@ -186,7 +237,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Get the identities property: Collection of user identities.
-     *
+     * 
      * @return the identities value.
      */
     public List<UserIdentityContractInner> identities() {
@@ -195,7 +246,7 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Set the identities property: Collection of user identities.
-     *
+     * 
      * @param identities the identities value to set.
      * @return the UserContractInner object itself.
      */
@@ -209,12 +260,55 @@ public final class UserContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserContractInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserContractInner.
+     */
+    public static UserContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserContractInner deserializedUserContractInner = new UserContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUserContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUserContractInner.innerProperties = UserContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserContractInner;
+        });
     }
 }

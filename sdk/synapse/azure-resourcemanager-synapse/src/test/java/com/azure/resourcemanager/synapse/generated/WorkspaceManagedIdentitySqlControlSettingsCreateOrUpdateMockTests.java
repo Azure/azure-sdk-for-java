@@ -11,9 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
-import com.azure.resourcemanager.synapse.models.DesiredState;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModel;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
+import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +24,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateMockT
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabled\"}},\"id\":\"xlkdlgwgnamkuuy\",\"name\":\"uyuafixlxicw\",\"type\":\"pthdcfmf\"}";
+            = "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Disabled\",\"actualState\":\"Disabled\"}},\"id\":\"qxowkdn\",\"name\":\"rxgkr\",\"type\":\"wiehycpn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,15 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedIdentitySqlControlSettingsModel response = manager.workspaceManagedIdentitySqlControlSettings()
-            .createOrUpdate("wlvi", "jmxmlitqdsj",
+            .createOrUpdate("xch", "kibmgjymn",
                 new ManagedIdentitySqlControlSettingsModelInner().withGrantSqlControlToManagedIdentity(
                     new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                        .withDesiredState(DesiredState.ENABLED)),
+                        .withDesiredState(
+                            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.ENABLED)),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DesiredState.ENABLED, response.grantSqlControlToManagedIdentity().desiredState());
+        Assertions.assertEquals(
+            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.DISABLED,
+            response.grantSqlControlToManagedIdentity().desiredState());
     }
 }

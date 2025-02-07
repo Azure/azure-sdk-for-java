@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class VerificationStatus extends ExpandableStringEnum<VerificationS
      * @param name a name to look for.
      * @return the corresponding VerificationStatus.
      */
-    @JsonCreator
     public static VerificationStatus fromString(String name) {
         return fromString(name, VerificationStatus.class);
     }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the destination resource. */
+/**
+ * The type of the destination resource.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value StorageAccount for Type. */
+    /**
+     * Static value StorageAccount for Type.
+     */
     public static final Type STORAGE_ACCOUNT = fromString("StorageAccount");
 
-    /** Static value EventHub for Type. */
+    /**
+     * Static value EventHub for Type.
+     */
     public static final Type EVENT_HUB = fromString("EventHub");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
-    @JsonCreator
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

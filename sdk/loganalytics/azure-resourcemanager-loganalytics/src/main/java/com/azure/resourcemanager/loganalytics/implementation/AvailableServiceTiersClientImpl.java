@@ -26,17 +26,23 @@ import com.azure.resourcemanager.loganalytics.fluent.models.AvailableServiceTier
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AvailableServiceTiersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailableServiceTiersClient.
+ */
 public final class AvailableServiceTiersClientImpl implements AvailableServiceTiersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AvailableServiceTiersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of AvailableServiceTiersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AvailableServiceTiersClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -64,14 +70,14 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
 
     /**
      * Gets the available service tiers for the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available service tiers for the workspace along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AvailableServiceTierInner>>> listByWorkspaceWithResponseAsync(String resourceGroupName,
@@ -101,7 +107,7 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
 
     /**
      * Gets the available service tiers for the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -109,7 +115,7 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available service tiers for the workspace along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<AvailableServiceTierInner>>> listByWorkspaceWithResponseAsync(String resourceGroupName,
@@ -138,7 +144,7 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
 
     /**
      * Gets the available service tiers for the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +160,7 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
 
     /**
      * Gets the available service tiers for the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -171,7 +177,7 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
 
     /**
      * Gets the available service tiers for the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -33,17 +33,23 @@ import com.azure.resourcemanager.loganalytics.fluent.models.DataExportInner;
 import com.azure.resourcemanager.loganalytics.models.DataExportListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataExportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataExportsClient.
+ */
 public final class DataExportsClientImpl implements DataExportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataExportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationalInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of DataExportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataExportsClientImpl(OperationalInsightsManagementClientImpl client) {
@@ -102,14 +108,14 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list data exports along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataExportInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -141,7 +147,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -149,7 +155,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list data exports along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataExportInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -181,7 +187,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +202,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -213,7 +219,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +234,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -245,7 +251,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -254,7 +260,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the top level data export resource container along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataExportInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -292,7 +298,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -302,7 +308,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the top level data export resource container along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataExportInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -339,7 +345,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -358,7 +364,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -378,7 +384,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Create or update a data export.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -397,7 +403,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -437,7 +443,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -477,7 +483,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -494,7 +500,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -512,7 +518,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -528,7 +534,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -568,7 +574,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -608,7 +614,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -625,7 +631,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -643,7 +649,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.

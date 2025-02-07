@@ -5,60 +5,56 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details of the gateway operation.
  */
 @Immutable
-public final class GatewayOperationDetails {
+public final class GatewayOperationDetails implements JsonSerializable<GatewayOperationDetails> {
     /*
      * A value indicating the state of gateway operation.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * A value indicating the progress percentage of gateway operation.
      */
-    @JsonProperty(value = "progressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer progressPercentage;
 
     /*
      * A value indicating the time elapsed for the operation in milliseconds.
      */
-    @JsonProperty(value = "timeElapsed", access = JsonProperty.Access.WRITE_ONLY)
     private Long timeElapsed;
 
     /*
      * A value indicating the time remaining for the operation in milliseconds.
      */
-    @JsonProperty(value = "timeRemaining", access = JsonProperty.Access.WRITE_ONLY)
     private Long timeRemaining;
 
     /*
      * A value indicating the upload speed in bytes per second.
      */
-    @JsonProperty(value = "uploadSpeed", access = JsonProperty.Access.WRITE_ONLY)
     private Long uploadSpeed;
 
     /*
      * A value indicating the ESXi host name.
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * A value indicating the datastore collection.
      */
-    @JsonProperty(value = "dataStores", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dataStores;
 
     /*
      * A value indicating the VMware read throughput in bytes per second.
      */
-    @JsonProperty(value = "vmwareReadThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Long vmwareReadThroughput;
 
     /**
@@ -145,5 +141,55 @@ public final class GatewayOperationDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayOperationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayOperationDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayOperationDetails.
+     */
+    public static GatewayOperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayOperationDetails deserializedGatewayOperationDetails = new GatewayOperationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.state = reader.getString();
+                } else if ("progressPercentage".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.progressPercentage = reader.getNullable(JsonReader::getInt);
+                } else if ("timeElapsed".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.timeElapsed = reader.getNullable(JsonReader::getLong);
+                } else if ("timeRemaining".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.timeRemaining = reader.getNullable(JsonReader::getLong);
+                } else if ("uploadSpeed".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.uploadSpeed = reader.getNullable(JsonReader::getLong);
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.hostname = reader.getString();
+                } else if ("dataStores".equals(fieldName)) {
+                    List<String> dataStores = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayOperationDetails.dataStores = dataStores;
+                } else if ("vmwareReadThroughput".equals(fieldName)) {
+                    deserializedGatewayOperationDetails.vmwareReadThroughput = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayOperationDetails;
+        });
     }
 }

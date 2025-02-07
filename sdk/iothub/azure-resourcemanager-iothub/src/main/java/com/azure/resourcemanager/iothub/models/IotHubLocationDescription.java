@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Public representation of one of the locations where a resource is provisioned. */
+/**
+ * Public representation of one of the locations where a resource is provisioned.
+ */
 @Fluent
-public final class IotHubLocationDescription {
+public final class IotHubLocationDescription implements JsonSerializable<IotHubLocationDescription> {
     /*
      * The name of the Azure region
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently
-     * provisioned. The secondary region is the Azure disaster recovery (DR) paired region and also the region where
-     * the IoT hub can failover to.
+     * provisioned. The secondary region is the Azure disaster recovery (DR) paired region and also the region where the
+     * IoT hub can failover to.
      */
-    @JsonProperty(value = "role")
     private IotHubReplicaRoleType role;
 
-    /** Creates an instance of IotHubLocationDescription class. */
+    /**
+     * Creates an instance of IotHubLocationDescription class.
+     */
     public IotHubLocationDescription() {
     }
 
     /**
      * Get the location property: The name of the Azure region.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -39,7 +45,7 @@ public final class IotHubLocationDescription {
 
     /**
      * Set the location property: The name of the Azure region.
-     *
+     * 
      * @param location the location value to set.
      * @return the IotHubLocationDescription object itself.
      */
@@ -52,7 +58,7 @@ public final class IotHubLocationDescription {
      * Get the role property: The role of the region, can be either primary or secondary. The primary region is where
      * the IoT hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and
      * also the region where the IoT hub can failover to.
-     *
+     * 
      * @return the role value.
      */
     public IotHubReplicaRoleType role() {
@@ -63,7 +69,7 @@ public final class IotHubLocationDescription {
      * Set the role property: The role of the region, can be either primary or secondary. The primary region is where
      * the IoT hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and
      * also the region where the IoT hub can failover to.
-     *
+     * 
      * @param role the role value to set.
      * @return the IotHubLocationDescription object itself.
      */
@@ -74,9 +80,48 @@ public final class IotHubLocationDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubLocationDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubLocationDescription if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotHubLocationDescription.
+     */
+    public static IotHubLocationDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubLocationDescription deserializedIotHubLocationDescription = new IotHubLocationDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedIotHubLocationDescription.location = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedIotHubLocationDescription.role = IotHubReplicaRoleType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubLocationDescription;
+        });
     }
 }

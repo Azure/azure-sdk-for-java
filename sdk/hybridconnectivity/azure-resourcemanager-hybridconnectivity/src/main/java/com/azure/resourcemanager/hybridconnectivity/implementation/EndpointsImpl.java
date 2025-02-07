@@ -38,12 +38,12 @@ public final class EndpointsImpl implements Endpoints {
 
     public PagedIterable<EndpointResource> list(String resourceUri) {
         PagedIterable<EndpointResourceInner> inner = this.serviceClient().list(resourceUri);
-        return Utils.mapPage(inner, inner1 -> new EndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EndpointResource> list(String resourceUri, Context context) {
         PagedIterable<EndpointResourceInner> inner = this.serviceClient().list(resourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new EndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EndpointResourceImpl(inner1, this.manager()));
     }
 
     public Response<EndpointResource> getWithResponse(String resourceUri, String endpointName, Context context) {
@@ -143,13 +143,13 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public EndpointResource getById(String id) {
-        String resourceUri = Utils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "resourceUri");
         if (resourceUri == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByParameterName(id,
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -159,13 +159,13 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public Response<EndpointResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri = Utils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "resourceUri");
         if (resourceUri == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByParameterName(id,
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -175,13 +175,13 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public void deleteById(String id) {
-        String resourceUri = Utils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "resourceUri");
         if (resourceUri == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByParameterName(id,
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -191,13 +191,13 @@ public final class EndpointsImpl implements Endpoints {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = Utils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "resourceUri");
         if (resourceUri == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
         }
-        String endpointName = Utils.getValueFromIdByParameterName(id,
+        String endpointName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "endpointName");
         if (endpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

@@ -32,21 +32,6 @@ public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProper
      */
     private List<MigrateSqlServerSqlDbTaskOutput> output;
 
-    /*
-     * Array of command properties.
-     */
-    private List<CommandProperties> commands;
-
-    /*
-     * The state of the task. This is ignored if submitted.
-     */
-    private TaskState state;
-
-    /*
-     * Array of errors. This is ignored if submitted.
-     */
-    private List<ManagementError> errors;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbTaskProperties class.
      */
@@ -90,36 +75,6 @@ public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProper
      */
     public List<MigrateSqlServerSqlDbTaskOutput> output() {
         return this.output;
-    }
-
-    /**
-     * Get the commands property: Array of command properties.
-     * 
-     * @return the commands value.
-     */
-    @Override
-    public List<CommandProperties> commands() {
-        return this.commands;
-    }
-
-    /**
-     * Get the state property: The state of the task. This is ignored if submitted.
-     * 
-     * @return the state value.
-     */
-    @Override
-    public TaskState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the errors property: Array of errors. This is ignored if submitted.
-     * 
-     * @return the errors value.
-     */
-    @Override
-    public List<ManagementError> errors() {
-        return this.errors;
     }
 
     /**
@@ -169,12 +124,12 @@ public final class MigrateSqlServerSqlDbTaskProperties extends ProjectTaskProper
 
                 if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedMigrateSqlServerSqlDbTaskProperties.errors = errors;
+                    deserializedMigrateSqlServerSqlDbTaskProperties.withErrors(errors);
                 } else if ("state".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbTaskProperties.state = TaskState.fromString(reader.getString());
+                    deserializedMigrateSqlServerSqlDbTaskProperties.withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
                     List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
-                    deserializedMigrateSqlServerSqlDbTaskProperties.commands = commands;
+                    deserializedMigrateSqlServerSqlDbTaskProperties.withCommands(commands);
                 } else if ("taskType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskProperties.taskType = reader.getString();
                 } else if ("input".equals(fieldName)) {

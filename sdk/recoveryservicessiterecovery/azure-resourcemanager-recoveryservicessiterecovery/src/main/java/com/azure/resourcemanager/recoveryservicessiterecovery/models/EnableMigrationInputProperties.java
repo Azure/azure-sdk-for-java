@@ -6,23 +6,25 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Enable migration input properties.
  */
 @Fluent
-public final class EnableMigrationInputProperties {
+public final class EnableMigrationInputProperties implements JsonSerializable<EnableMigrationInputProperties> {
     /*
      * The policy Id.
      */
-    @JsonProperty(value = "policyId", required = true)
     private String policyId;
 
     /*
      * The provider specific details.
      */
-    @JsonProperty(value = "providerSpecificDetails", required = true)
     private EnableMigrationProviderSpecificInput providerSpecificDetails;
 
     /**
@@ -79,16 +81,60 @@ public final class EnableMigrationInputProperties {
      */
     public void validate() {
         if (policyId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property policyId in model EnableMigrationInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyId in model EnableMigrationInputProperties"));
         }
         if (providerSpecificDetails() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property providerSpecificDetails in model EnableMigrationInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerSpecificDetails in model EnableMigrationInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EnableMigrationInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnableMigrationInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnableMigrationInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnableMigrationInputProperties.
+     */
+    public static EnableMigrationInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnableMigrationInputProperties deserializedEnableMigrationInputProperties
+                = new EnableMigrationInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyId".equals(fieldName)) {
+                    deserializedEnableMigrationInputProperties.policyId = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedEnableMigrationInputProperties.providerSpecificDetails
+                        = EnableMigrationProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnableMigrationInputProperties;
+        });
+    }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 public final class SqlPoolsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateSqlPool.json
      */
     /**
      * Sample code: Create a SQL Analytics pool.

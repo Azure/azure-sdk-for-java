@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.DeployConfigurationParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Deploy Tenant Configuration Contract. */
+/**
+ * Deploy Tenant Configuration Contract.
+ */
 @Fluent
-public final class DeployConfigurationParameters {
+public final class DeployConfigurationParameters implements JsonSerializable<DeployConfigurationParameters> {
     /*
      * Deploy Configuration Parameter contract properties.
      */
-    @JsonProperty(value = "properties")
     private DeployConfigurationParameterProperties innerProperties;
 
-    /** Creates an instance of DeployConfigurationParameters class. */
+    /**
+     * Creates an instance of DeployConfigurationParameters class.
+     */
     public DeployConfigurationParameters() {
     }
 
     /**
      * Get the innerProperties property: Deploy Configuration Parameter contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeployConfigurationParameterProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class DeployConfigurationParameters {
     /**
      * Get the branch property: The name of the Git branch from which the configuration is to be deployed to the
      * configuration database.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -43,7 +50,7 @@ public final class DeployConfigurationParameters {
     /**
      * Set the branch property: The name of the Git branch from which the configuration is to be deployed to the
      * configuration database.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the DeployConfigurationParameters object itself.
      */
@@ -57,7 +64,7 @@ public final class DeployConfigurationParameters {
 
     /**
      * Get the force property: The value enforcing deleting subscriptions to products that are deleted in this update.
-     *
+     * 
      * @return the force value.
      */
     public Boolean force() {
@@ -66,7 +73,7 @@ public final class DeployConfigurationParameters {
 
     /**
      * Set the force property: The value enforcing deleting subscriptions to products that are deleted in this update.
-     *
+     * 
      * @param force the force value to set.
      * @return the DeployConfigurationParameters object itself.
      */
@@ -80,12 +87,50 @@ public final class DeployConfigurationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeployConfigurationParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeployConfigurationParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeployConfigurationParameters.
+     */
+    public static DeployConfigurationParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeployConfigurationParameters deserializedDeployConfigurationParameters
+                = new DeployConfigurationParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDeployConfigurationParameters.innerProperties
+                        = DeployConfigurationParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeployConfigurationParameters;
+        });
     }
 }

@@ -6,43 +6,47 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.SchemaType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Schema create or update contract Properties. */
+/**
+ * Schema create or update contract Properties.
+ */
 @Fluent
-public final class GlobalSchemaContractProperties {
+public final class GlobalSchemaContractProperties implements JsonSerializable<GlobalSchemaContractProperties> {
     /*
      * Schema Type. Immutable.
      */
-    @JsonProperty(value = "schemaType", required = true)
     private SchemaType schemaType;
 
     /*
      * Free-form schema entity description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Json-encoded string for non json-based schema.
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * Global Schema document object for json-based schema formats(e.g. json schema).
      */
-    @JsonProperty(value = "document")
     private Object document;
 
-    /** Creates an instance of GlobalSchemaContractProperties class. */
+    /**
+     * Creates an instance of GlobalSchemaContractProperties class.
+     */
     public GlobalSchemaContractProperties() {
     }
 
     /**
      * Get the schemaType property: Schema Type. Immutable.
-     *
+     * 
      * @return the schemaType value.
      */
     public SchemaType schemaType() {
@@ -51,7 +55,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Set the schemaType property: Schema Type. Immutable.
-     *
+     * 
      * @param schemaType the schemaType value to set.
      * @return the GlobalSchemaContractProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Get the description property: Free-form schema entity description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -71,7 +75,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Set the description property: Free-form schema entity description.
-     *
+     * 
      * @param description the description value to set.
      * @return the GlobalSchemaContractProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Get the value property: Json-encoded string for non json-based schema.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -91,7 +95,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Set the value property: Json-encoded string for non json-based schema.
-     *
+     * 
      * @param value the value value to set.
      * @return the GlobalSchemaContractProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Get the document property: Global Schema document object for json-based schema formats(e.g. json schema).
-     *
+     * 
      * @return the document value.
      */
     public Object document() {
@@ -111,7 +115,7 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Set the document property: Global Schema document object for json-based schema formats(e.g. json schema).
-     *
+     * 
      * @param document the document value to set.
      * @return the GlobalSchemaContractProperties object itself.
      */
@@ -122,15 +126,63 @@ public final class GlobalSchemaContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schemaType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property schemaType in model GlobalSchemaContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schemaType in model GlobalSchemaContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GlobalSchemaContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("schemaType", this.schemaType == null ? null : this.schemaType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeUntypedField("document", this.document);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalSchemaContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalSchemaContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GlobalSchemaContractProperties.
+     */
+    public static GlobalSchemaContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalSchemaContractProperties deserializedGlobalSchemaContractProperties
+                = new GlobalSchemaContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schemaType".equals(fieldName)) {
+                    deserializedGlobalSchemaContractProperties.schemaType = SchemaType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedGlobalSchemaContractProperties.description = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedGlobalSchemaContractProperties.value = reader.readUntyped();
+                } else if ("document".equals(fieldName)) {
+                    deserializedGlobalSchemaContractProperties.document = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalSchemaContractProperties;
+        });
+    }
 }

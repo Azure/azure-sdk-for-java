@@ -29,7 +29,8 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
     private Object path;
 
     /*
-     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     private Object enableCompression;
 

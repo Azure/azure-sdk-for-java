@@ -22,7 +22,7 @@ public final class GalleriesListByDevCenterMockTests {
     @Test
     public void testListByDevCenter() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"mninwjizcilng\"},\"id\":\"shejjtbxqm\",\"name\":\"luxlxqzvnersby\",\"type\":\"ucrwnami\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"galleryResourceId\":\"btqwpwyawbzas\"},\"id\":\"ucljgkyexaoguya\",\"name\":\"p\",\"type\":\"dsdaultxijjumf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class GalleriesListByDevCenterMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Gallery> response = manager.galleries()
-            .listByDevCenter("elfclducc", "irdsvuwcob", 1462697228, com.azure.core.util.Context.NONE);
+            .listByDevCenter("rqwexjkmfxapjwog", "qnobp", 1221074180, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mninwjizcilng", response.iterator().next().galleryResourceId());
+        Assertions.assertEquals("btqwpwyawbzas", response.iterator().next().galleryResourceId());
     }
 }

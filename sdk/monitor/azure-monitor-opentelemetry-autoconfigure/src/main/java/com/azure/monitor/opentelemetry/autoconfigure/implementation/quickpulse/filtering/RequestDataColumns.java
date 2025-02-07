@@ -3,7 +3,9 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
 
 import java.util.ArrayList;
@@ -11,24 +13,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-// Casing of private fields is to match the names of fields passed down via filtering configuration
 public class RequestDataColumns implements TelemetryColumns {
     private final Map<String, Object> mapping = new HashMap<>();
     private final CustomDimensions customDims;
 
+    private static final ClientLogger LOGGER = new ClientLogger(RequestDataColumns.class);
+
     public RequestDataColumns(RequestData requestData) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(requestData.getProperties(), requestData.getMeasurements());
+        customDims = new CustomDimensions(requestData.getProperties(), requestData.getMeasurements());
         mapping.put(KnownRequestColumns.URL, requestData.getUrl());
         mapping.put(KnownRequestColumns.SUCCESS, requestData.isSuccess());
-        mapping.put(KnownRequestColumns.DURATION,
-            FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration()));
+
+        long durationMicroSec = FormattedDuration.getDurationFromTelemetryItemDurationString(requestData.getDuration());
+        if (durationMicroSec == -1) {
+            LOGGER.verbose("The provided timestamp {} could not be converted to microseconds",
+                requestData.getDuration());
+        }
+
+        mapping.put(KnownRequestColumns.DURATION, durationMicroSec);
         mapping.put(KnownRequestColumns.NAME, requestData.getName());
         int responseCode;
         try {
             responseCode = Integer.parseInt(requestData.getResponseCode());
         } catch (NumberFormatException e) {
             responseCode = -1;
+            LOGGER.verbose("The provided response code {} could not be converted to a numeric value",
+                requestData.getResponseCode());
         }
         mapping.put(KnownRequestColumns.RESPONSE_CODE, responseCode);
     }
@@ -36,8 +46,7 @@ public class RequestDataColumns implements TelemetryColumns {
     // To be used in tests only
     public RequestDataColumns(String url, long duration, int responseCode, boolean success, String name,
         Map<String, String> dims, Map<String, Double> measurements) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(dims, measurements);
+        customDims = new CustomDimensions(dims, measurements);
         mapping.put(KnownRequestColumns.URL, url);
         mapping.put(KnownRequestColumns.SUCCESS, success);
         mapping.put(KnownRequestColumns.DURATION, duration);
@@ -65,8 +74,16 @@ public class RequestDataColumns implements TelemetryColumns {
         return result;
     }
 
-    public Map<String, String> getCustomDimensions() {
-        return this.customDims.getCustomDimensions();
+    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+        return customDims.matchesAnyFieldInCustomDimensions(filter);
+    }
+
+    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+        return customDims.matchesCustomDimFilter(filter, trimmedFieldName);
+    }
+
+    public double getCustomDimValueForProjection(String key) {
+        return customDims.getCustomDimValueForProjection(key);
     }
 
 }

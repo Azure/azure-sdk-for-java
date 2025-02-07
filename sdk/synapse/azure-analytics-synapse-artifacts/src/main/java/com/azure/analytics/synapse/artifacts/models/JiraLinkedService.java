@@ -29,7 +29,8 @@ public class JiraLinkedService extends LinkedService {
     private Object host;
 
     /*
-     * The TCP port that the Jira server uses to listen for client connections. The default value is 443 if connecting through HTTPS, or 8080 if connecting through HTTP.
+     * The TCP port that the Jira server uses to listen for client connections. The default value is 443 if connecting
+     * through HTTPS, or 8080 if connecting through HTTP.
      */
     private Object port;
 
@@ -49,7 +50,8 @@ public class JiraLinkedService extends LinkedService {
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     private Object useHostVerification;
 
@@ -59,7 +61,8 @@ public class JiraLinkedService extends LinkedService {
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

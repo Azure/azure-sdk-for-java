@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsEndpointResourceInner;
 
-/** An instance of this class provides access to all the operations defined in DigitalTwinsEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DigitalTwinsEndpointsClient.
+ */
 public interface DigitalTwinsEndpointsClient {
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Get DigitalTwinsInstance Endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -61,7 +63,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Get DigitalTwinsInstances Endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -75,7 +77,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -92,7 +94,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -110,7 +112,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -126,7 +128,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -143,7 +145,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -158,7 +160,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -174,7 +176,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
@@ -188,7 +190,7 @@ public interface DigitalTwinsEndpointsClient {
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.

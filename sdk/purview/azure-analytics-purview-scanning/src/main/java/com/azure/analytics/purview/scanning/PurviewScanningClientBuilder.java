@@ -21,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -34,13 +33,16 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the PurviewScanningClient type. */
+/**
+ * A builder for creating a new instance of the PurviewScanningClient type.
+ */
 @ServiceClientBuilder(
     serviceClients = {
         KeyVaultConnectionsClient.class,
@@ -80,7 +82,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the PurviewScanningClientBuilder. */
+    /**
+     * Create an instance of the PurviewScanningClientBuilder.
+     */
     @Generated
     public PurviewScanningClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -92,10 +96,15 @@ public final class PurviewScanningClientBuilder
     @Generated
     private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -106,7 +115,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder httpClient(HttpClient httpClient) {
@@ -120,7 +131,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -134,7 +147,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -148,7 +163,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -156,7 +173,9 @@ public final class PurviewScanningClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -171,7 +190,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder configuration(Configuration configuration) {
@@ -185,7 +206,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private TokenCredential tokenCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder credential(TokenCredential tokenCredential) {
@@ -199,7 +222,9 @@ public final class PurviewScanningClientBuilder
     @Generated
     private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PurviewScanningClientBuilder endpoint(String endpoint) {
@@ -215,7 +240,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
      * @return the PurviewScanningClientBuilder.
      */
@@ -233,7 +258,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the PurviewScanningClientBuilder.
      */
@@ -245,17 +270,25 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of PurviewScanningClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PurviewScanningClientImpl.
      */
     @Generated
     private PurviewScanningClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         PurviewScanningServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : PurviewScanningServiceVersion.getLatest();
         PurviewScanningClientImpl client = new PurviewScanningClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -271,9 +304,8 @@ public final class PurviewScanningClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -282,7 +314,6 @@ public final class PurviewScanningClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
@@ -290,7 +321,7 @@ public final class PurviewScanningClientBuilder
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
@@ -300,7 +331,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of KeyVaultConnectionsAsyncClient class.
-     *
+     * 
      * @return an instance of KeyVaultConnectionsAsyncClient.
      */
     @Generated
@@ -310,7 +341,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ClassificationRulesAsyncClient class.
-     *
+     * 
      * @return an instance of ClassificationRulesAsyncClient.
      */
     @Generated
@@ -320,7 +351,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of DataSourcesAsyncClient class.
-     *
+     * 
      * @return an instance of DataSourcesAsyncClient.
      */
     @Generated
@@ -330,7 +361,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of FiltersAsyncClient class.
-     *
+     * 
      * @return an instance of FiltersAsyncClient.
      */
     @Generated
@@ -340,7 +371,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ScansAsyncClient class.
-     *
+     * 
      * @return an instance of ScansAsyncClient.
      */
     @Generated
@@ -350,7 +381,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ScanResultAsyncClient class.
-     *
+     * 
      * @return an instance of ScanResultAsyncClient.
      */
     @Generated
@@ -360,7 +391,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ScanRulesetsAsyncClient class.
-     *
+     * 
      * @return an instance of ScanRulesetsAsyncClient.
      */
     @Generated
@@ -370,7 +401,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of SystemScanRulesetsAsyncClient class.
-     *
+     * 
      * @return an instance of SystemScanRulesetsAsyncClient.
      */
     @Generated
@@ -380,7 +411,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of TriggersAsyncClient class.
-     *
+     * 
      * @return an instance of TriggersAsyncClient.
      */
     @Generated
@@ -390,7 +421,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of KeyVaultConnectionsClient class.
-     *
+     * 
      * @return an instance of KeyVaultConnectionsClient.
      */
     @Generated
@@ -400,7 +431,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ClassificationRulesClient class.
-     *
+     * 
      * @return an instance of ClassificationRulesClient.
      */
     @Generated
@@ -410,7 +441,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of DataSourcesClient class.
-     *
+     * 
      * @return an instance of DataSourcesClient.
      */
     @Generated
@@ -420,7 +451,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of FiltersClient class.
-     *
+     * 
      * @return an instance of FiltersClient.
      */
     @Generated
@@ -430,7 +461,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ScansClient class.
-     *
+     * 
      * @return an instance of ScansClient.
      */
     @Generated
@@ -440,7 +471,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ScanResultClient class.
-     *
+     * 
      * @return an instance of ScanResultClient.
      */
     @Generated
@@ -450,7 +481,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of ScanRulesetsClient class.
-     *
+     * 
      * @return an instance of ScanRulesetsClient.
      */
     @Generated
@@ -460,7 +491,7 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of SystemScanRulesetsClient class.
-     *
+     * 
      * @return an instance of SystemScanRulesetsClient.
      */
     @Generated
@@ -470,11 +501,13 @@ public final class PurviewScanningClientBuilder
 
     /**
      * Builds an instance of TriggersClient class.
-     *
+     * 
      * @return an instance of TriggersClient.
      */
     @Generated
     public TriggersClient buildTriggersClient() {
         return new TriggersClient(buildInnerClient().getTriggers());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PurviewScanningClientBuilder.class);
 }

@@ -20,6 +20,15 @@ public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceD
         = fromString("Microsoft.Compute/virtualMachineScaleSets");
 
     /**
+     * Creates a new instance of ForceDeletionResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForceDeletionResourceType() {
+    }
+
+    /**
      * Creates or finds a ForceDeletionResourceType from its string representation.
      * @param name a name to look for
      * @return the corresponding ForceDeletionResourceType
@@ -29,6 +38,8 @@ public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceD
     }
 
     /**
+     * Gets known ForceDeletionResourceType values.
+     *
      * @return known ForceDeletionResourceType values
      */
     public static Collection<ForceDeletionResourceType> values() {

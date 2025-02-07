@@ -3,7 +3,10 @@
 
 package io.clientcore.core.implementation.util;
 
-enum UriTokenType {
+/**
+ * Represents the type of token in a URI.
+ */
+public enum UriTokenType {
     SCHEME,
 
     HOST,

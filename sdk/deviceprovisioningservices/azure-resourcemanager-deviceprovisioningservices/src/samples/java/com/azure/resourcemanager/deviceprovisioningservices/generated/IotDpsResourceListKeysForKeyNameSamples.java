@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IotDpsResource ListKeysForKeyName. */
+/**
+ * Samples for IotDpsResource ListKeysForKeyName.
+ */
 public final class IotDpsResourceListKeysForKeyNameSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetKey.json
+     * x-ms-original-file:
+     * specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetKey.
+     * json
      */
     /**
      * Sample code: DPSGetKey.
-     *
+     * 
      * @param manager Entry point to IotDpsManager.
      */
     public static void dPSGetKey(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
-        manager
-            .iotDpsResources()
-            .listKeysForKeyNameWithResponse("myFirstProvisioningService", "testKey", "myResourceGroup", Context.NONE);
+        manager.iotDpsResources()
+            .listKeysForKeyNameWithResponse("myFirstProvisioningService", "testKey", "myResourceGroup",
+                com.azure.core.util.Context.NONE);
     }
 }

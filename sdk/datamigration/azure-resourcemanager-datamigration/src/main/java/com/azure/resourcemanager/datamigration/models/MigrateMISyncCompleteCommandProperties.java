@@ -32,16 +32,6 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
      */
     private MigrateMISyncCompleteCommandOutput output;
 
-    /*
-     * The state of the command. This is ignored if submitted.
-     */
-    private CommandState state;
-
-    /*
-     * Array of errors. This is ignored if submitted.
-     */
-    private List<ManagementError> errors;
-
     /**
      * Creates an instance of MigrateMISyncCompleteCommandProperties class.
      */
@@ -88,26 +78,6 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
     }
 
     /**
-     * Get the state property: The state of the command. This is ignored if submitted.
-     * 
-     * @return the state value.
-     */
-    @Override
-    public CommandState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the errors property: Array of errors. This is ignored if submitted.
-     * 
-     * @return the errors value.
-     */
-    @Override
-    public List<ManagementError> errors() {
-        return this.errors;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -151,10 +121,10 @@ public final class MigrateMISyncCompleteCommandProperties extends CommandPropert
 
                 if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedMigrateMISyncCompleteCommandProperties.errors = errors;
+                    deserializedMigrateMISyncCompleteCommandProperties.withErrors(errors);
                 } else if ("state".equals(fieldName)) {
-                    deserializedMigrateMISyncCompleteCommandProperties.state
-                        = CommandState.fromString(reader.getString());
+                    deserializedMigrateMISyncCompleteCommandProperties
+                        .withState(CommandState.fromString(reader.getString()));
                 } else if ("commandType".equals(fieldName)) {
                     deserializedMigrateMISyncCompleteCommandProperties.commandType = reader.getString();
                 } else if ("input".equals(fieldName)) {

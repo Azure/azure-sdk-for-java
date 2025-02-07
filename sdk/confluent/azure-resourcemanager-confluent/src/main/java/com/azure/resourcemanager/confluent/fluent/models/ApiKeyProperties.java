@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ApiKeySpecEntity;
 import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * API Key Properties.
  */
 @Fluent
-public final class ApiKeyProperties {
+public final class ApiKeyProperties implements JsonSerializable<ApiKeyProperties> {
     /*
      * Metadata of the record
      */
-    @JsonProperty(value = "metadata")
     private SCMetadataEntity metadata;
 
     /*
      * Specification of the API Key
      */
-    @JsonProperty(value = "spec")
     private ApiKeySpecEntity spec;
 
     /**
@@ -84,5 +86,44 @@ public final class ApiKeyProperties {
         if (spec() != null) {
             spec().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeJsonField("spec", this.spec);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKeyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKeyProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiKeyProperties.
+     */
+    public static ApiKeyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKeyProperties deserializedApiKeyProperties = new ApiKeyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedApiKeyProperties.metadata = SCMetadataEntity.fromJson(reader);
+                } else if ("spec".equals(fieldName)) {
+                    deserializedApiKeyProperties.spec = ApiKeySpecEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKeyProperties;
+        });
     }
 }

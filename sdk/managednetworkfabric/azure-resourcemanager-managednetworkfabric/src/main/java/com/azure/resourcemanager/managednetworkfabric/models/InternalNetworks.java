@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of InternalNetworks. */
+/**
+ * Resource collection API of InternalNetworks.
+ */
 public interface InternalNetworks {
     /**
      * Retrieves details of InternalNetworks using GET method.
-     *
-     * <p>Gets a InternalNetworks.
-     *
+     * 
+     * Gets a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -29,9 +31,9 @@ public interface InternalNetworks {
 
     /**
      * Retrieves details of InternalNetworks using GET method.
-     *
-     * <p>Gets a InternalNetworks.
-     *
+     * 
+     * Gets a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -44,9 +46,9 @@ public interface InternalNetworks {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -58,9 +60,9 @@ public interface InternalNetworks {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -73,9 +75,9 @@ public interface InternalNetworks {
 
     /**
      * Executes list operation to display list of all internal networks
-     *
-     * <p>Displays InternalNetworks list by resource group GET method.
-     *
+     * 
+     * Displays InternalNetworks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,9 +89,9 @@ public interface InternalNetworks {
 
     /**
      * Executes list operation to display list of all internal networks
-     *
-     * <p>Displays InternalNetworks list by resource group GET method.
-     *
+     * 
+     * Displays InternalNetworks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -103,9 +105,9 @@ public interface InternalNetworks {
 
     /**
      * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
+     * 
+     * Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -120,9 +122,9 @@ public interface InternalNetworks {
 
     /**
      * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
+     * 
+     * Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -138,9 +140,9 @@ public interface InternalNetworks {
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
-     *
-     * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
-     *
+     * 
+     * Update BGP state for internalNetwork. Allowed only on edge devices.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -155,9 +157,9 @@ public interface InternalNetworks {
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
-     *
-     * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
-     *
+     * 
+     * Update BGP state for internalNetwork. Allowed only on edge devices.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -173,9 +175,9 @@ public interface InternalNetworks {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD administrative state for internalNetwork.
-     *
+     * 
+     * Update Static Route BFD administrative state for internalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -190,9 +192,9 @@ public interface InternalNetworks {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD administrative state for internalNetwork.
-     *
+     * 
+     * Update Static Route BFD administrative state for internalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -208,9 +210,9 @@ public interface InternalNetworks {
 
     /**
      * Retrieves details of InternalNetworks using GET method.
-     *
-     * <p>Gets a InternalNetworks.
-     *
+     * 
+     * Gets a InternalNetworks.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,9 +223,9 @@ public interface InternalNetworks {
 
     /**
      * Retrieves details of InternalNetworks using GET method.
-     *
-     * <p>Gets a InternalNetworks.
-     *
+     * 
+     * Gets a InternalNetworks.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,9 +237,9 @@ public interface InternalNetworks {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -247,9 +249,9 @@ public interface InternalNetworks {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,7 +262,7 @@ public interface InternalNetworks {
 
     /**
      * Begins definition for a new InternalNetwork resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InternalNetwork definition.
      */

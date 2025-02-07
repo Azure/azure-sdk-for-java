@@ -20,7 +20,7 @@ public final class IntegrationRuntimeStatusOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"eurdeewlsuxp\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"wkdwjyjiznioroof\",\"state\":\"Starting\",\"\":{\"trnighm\":\"datapmcreihu\",\"gwfmsxjwdylwxm\":\"datanuwqxungro\",\"ugeerclbltbhpwac\":\"datazjow\",\"r\":\"datayeurjwmv\"}}}";
+            = "{\"name\":\"opemtu\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"ujlyegq\",\"state\":\"Starting\",\"\":{\"fvabmvmsxba\":\"dataflqqbtnyjpylxd\",\"ajmailfemjjza\":\"datavwjcnkottlwuh\",\"bdmvrscmqerndbr\":\"datazwjiqullq\"}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IntegrationRuntimeStatusOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimeStatusOperations()
-            .getWithResponse("ublehhkplobz", "ottaksadz", "ghmmtbtdvucfvvra", com.azure.core.util.Context.NONE)
+            .getWithResponse("fq", "puby", "nclkfkeeb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -29,7 +29,8 @@ public class RestServiceLinkedService extends LinkedService {
     private Object url;
 
     /*
-     * Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     private Object enableServerCertificateValidation;
 
@@ -49,7 +50,8 @@ public class RestServiceLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression with resultType object).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
+     * with resultType object).
      */
     private Object authHeaders;
 
@@ -64,12 +66,15 @@ public class RestServiceLinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which your application resides.
+     * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which
+     * your application resides.
      */
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
     private Object azureCloudType;
 
@@ -79,7 +84,8 @@ public class RestServiceLinkedService extends LinkedService {
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 
@@ -99,17 +105,20 @@ public class RestServiceLinkedService extends LinkedService {
     private SecretBase clientSecret;
 
     /*
-     * The token endpoint of the authorization server to acquire access token. Type: string (or Expression with resultType string).
+     * The token endpoint of the authorization server to acquire access token. Type: string (or Expression with
+     * resultType string).
      */
     private Object tokenEndpoint;
 
     /*
-     * The target service or resource to which the access will be requested. Type: string (or Expression with resultType string).
+     * The target service or resource to which the access will be requested. Type: string (or Expression with resultType
+     * string).
      */
     private Object resource;
 
     /*
-     * The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression with resultType string).
+     * The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression
+     * with resultType string).
      */
     private Object scope;
 

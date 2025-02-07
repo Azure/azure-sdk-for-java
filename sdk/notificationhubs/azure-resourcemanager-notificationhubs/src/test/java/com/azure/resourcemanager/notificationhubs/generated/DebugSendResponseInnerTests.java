@@ -6,6 +6,8 @@ package com.azure.resourcemanager.notificationhubs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner;
+import com.azure.resourcemanager.notificationhubs.models.Sku;
+import com.azure.resourcemanager.notificationhubs.models.SkuName;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,19 +16,42 @@ public final class DebugSendResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DebugSendResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"success\":736999913427384233,\"failure\":8894415977580296297,\"results\":[{\"applicationPlatform\":\"ntnbybkzg\",\"pnsHandle\":\"rwclxxwrljdo\",\"registrationId\":\"kcqvkocrc\",\"outcome\":\"kwt\"},{\"applicationPlatform\":\"xbnjbiksq\",\"pnsHandle\":\"lssai\",\"registrationId\":\"p\",\"outcome\":\"nzl\"},{\"applicationPlatform\":\"fmppe\",\"pnsHandle\":\"vmgxsab\",\"registrationId\":\"qduujitcjczdz\",\"outcome\":\"ndhkrw\"},{\"applicationPlatform\":\"appd\",\"pnsHandle\":\"dkvwrwjfe\",\"registrationId\":\"nhutjeltmrldhugj\",\"outcome\":\"datqxhocdgeabl\"}]},\"location\":\"huticndvkao\",\"tags\":{\"tyhxhurokft\":\"i\",\"iawxklry\":\"xolniwpwcukjfk\",\"cbacphejkotynqg\":\"lwckbasyypnddhs\"},\"id\":\"l\",\"name\":\"ndlik\",\"type\":\"yqkgfg\"}")
+            "{\"properties\":{\"success\":62.422825,\"failure\":22.030466,\"results\":\"datasxlzevgbmqj\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"y\",\"size\":\"ivkwlzuvccfwnfnb\",\"family\":\"fionl\",\"capacity\":10134075},\"location\":\"etqgtzxdpnq\",\"tags\":{\"snjampmng\":\"wxrjfeallnwsub\",\"chcbonqvpkvlrxnj\":\"zscxaqwo\",\"pheoflokeyy\":\"ase\"},\"id\":\"enjbdlwtgrhp\",\"name\":\"jp\",\"type\":\"umasxazjpq\"}")
             .toObject(DebugSendResponseInner.class);
-        Assertions.assertEquals("huticndvkao", model.location());
-        Assertions.assertEquals("i", model.tags().get("tyhxhurokft"));
+        Assertions.assertEquals("etqgtzxdpnq", model.location());
+        Assertions.assertEquals("wxrjfeallnwsub", model.tags().get("snjampmng"));
+        Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
+        Assertions.assertEquals("y", model.sku().tier());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.sku().size());
+        Assertions.assertEquals("fionl", model.sku().family());
+        Assertions.assertEquals(10134075, model.sku().capacity());
+        Assertions.assertEquals(62.422825F, model.success());
+        Assertions.assertEquals(22.030466F, model.failure());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DebugSendResponseInner model = new DebugSendResponseInner().withLocation("huticndvkao")
-            .withTags(mapOf("tyhxhurokft", "i", "iawxklry", "xolniwpwcukjfk", "cbacphejkotynqg", "lwckbasyypnddhs"));
+        DebugSendResponseInner model = new DebugSendResponseInner().withLocation("etqgtzxdpnq")
+            .withTags(mapOf("snjampmng", "wxrjfeallnwsub", "chcbonqvpkvlrxnj", "zscxaqwo", "pheoflokeyy",
+                "fakeTokenPlaceholder"))
+            .withSku(new Sku().withName(SkuName.STANDARD)
+                .withTier("y")
+                .withSize("ivkwlzuvccfwnfnb")
+                .withFamily("fionl")
+                .withCapacity(10134075))
+            .withSuccess(62.422825F)
+            .withFailure(22.030466F)
+            .withResults("datasxlzevgbmqj");
         model = BinaryData.fromObject(model).toObject(DebugSendResponseInner.class);
-        Assertions.assertEquals("huticndvkao", model.location());
-        Assertions.assertEquals("i", model.tags().get("tyhxhurokft"));
+        Assertions.assertEquals("etqgtzxdpnq", model.location());
+        Assertions.assertEquals("wxrjfeallnwsub", model.tags().get("snjampmng"));
+        Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
+        Assertions.assertEquals("y", model.sku().tier());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.sku().size());
+        Assertions.assertEquals("fionl", model.sku().family());
+        Assertions.assertEquals(10134075, model.sku().capacity());
+        Assertions.assertEquals(62.422825F, model.success());
+        Assertions.assertEquals(22.030466F, model.failure());
     }
 
     // Use "Map.of" if available

@@ -39,6 +39,10 @@ public final class VirtualNetworkRuleImpl
         return this.innerModel().state();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VirtualNetworkRuleInner innerModel() {
         return this.innerObject;
     }
@@ -101,9 +105,10 @@ public final class VirtualNetworkRuleImpl
         com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
-        this.virtualNetworkRuleName = Utils.getValueFromIdByName(innerObject.id(), "virtualNetworkRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "servers");
+        this.virtualNetworkRuleName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkRules");
     }
 
     public VirtualNetworkRule refresh() {

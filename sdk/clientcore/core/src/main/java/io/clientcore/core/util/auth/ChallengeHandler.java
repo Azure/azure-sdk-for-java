@@ -5,17 +5,13 @@ package io.clientcore.core.util.auth;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.util.ClientLogger;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Class representing a challenge handler for authentication.
  */
 public interface ChallengeHandler {
-    ClientLogger LOGGER = new ClientLogger(ChallengeHandler.class);
-
     /**
      * Handles the authentication challenge based on the HTTP request and response.
      *
@@ -43,49 +39,5 @@ public interface ChallengeHandler {
      */
     static ChallengeHandler of(ChallengeHandler... handlers) {
         return new CompositeChallengeHandler(Arrays.asList(handlers));
-    }
-
-    /**
-     * A private static class to handle multiple challenge handlers in a composite way.
-     */
-    class CompositeChallengeHandler implements ChallengeHandler {
-        private final List<ChallengeHandler> challengeHandlers;
-
-        CompositeChallengeHandler(List<ChallengeHandler> challengeHandlers) {
-            this.challengeHandlers = challengeHandlers;
-        }
-
-        @Override
-        public boolean canHandle(Response<?> response, boolean isProxy) {
-            for (ChallengeHandler handler : challengeHandlers) {
-                if (handler.canHandle(response, isProxy)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
-            // First, try to handle with DigestChallengeHandler, giving it priority
-            for (ChallengeHandler handler : challengeHandlers) {
-                if (handler.canHandle(response, isProxy) && handler instanceof DigestChallengeHandler) {
-                    handler.handleChallenge(request, response, isProxy);
-                    return;
-                }
-            }
-
-            // If no DigestChallengeHandler was able to handle, try other handlers (e.g., Basic)
-            for (ChallengeHandler handler : challengeHandlers) {
-                if (handler.canHandle(response, isProxy)) {
-                    handler.handleChallenge(request, response, isProxy);
-                    return;
-                }
-            }
-
-            // Log an error if no handler could handle the challenge
-            LOGGER.logThrowableAsError(
-                new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
-        }
     }
 }

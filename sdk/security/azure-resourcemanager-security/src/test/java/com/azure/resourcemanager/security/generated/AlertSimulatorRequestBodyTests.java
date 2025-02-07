@@ -13,9 +13,8 @@ import java.util.Map;
 public final class AlertSimulatorRequestBodyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertSimulatorRequestBody model = BinaryData
-            .fromString(
-                "{\"properties\":{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"nzjahwriuomzczf\":\"dataad\"}}}")
+        AlertSimulatorRequestBody model = BinaryData.fromString(
+            "{\"properties\":{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"tmkzjvkviirhgfgr\":\"datasii\"}}}")
             .toObject(AlertSimulatorRequestBody.class);
     }
 

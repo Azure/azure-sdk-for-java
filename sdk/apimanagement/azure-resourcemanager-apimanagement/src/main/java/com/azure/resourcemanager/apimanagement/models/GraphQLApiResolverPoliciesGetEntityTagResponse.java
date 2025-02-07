@@ -8,12 +8,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the getEntityTag operation. */
+/**
+ * Contains all response data for the getEntityTag operation.
+ */
 public final class GraphQLApiResolverPoliciesGetEntityTagResponse
     extends ResponseBase<GraphQLApiResolverPoliciesGetEntityTagHeaders, Void> {
     /**
      * Creates an instance of GraphQLApiResolverPoliciesGetEntityTagResponse.
-     *
+     * 
      * @param request the request which resulted in this GraphQLApiResolverPoliciesGetEntityTagResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.

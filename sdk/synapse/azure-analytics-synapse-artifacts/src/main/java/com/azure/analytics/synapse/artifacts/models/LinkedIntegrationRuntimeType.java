@@ -19,13 +19,12 @@ public class LinkedIntegrationRuntimeType implements JsonSerializable<LinkedInte
     /*
      * The authorization type for integration runtime sharing.
      */
-    private String authorizationType;
+    private String authorizationType = "LinkedIntegrationRuntimeType";
 
     /**
      * Creates an instance of LinkedIntegrationRuntimeType class.
      */
     public LinkedIntegrationRuntimeType() {
-        this.authorizationType = "LinkedIntegrationRuntimeType";
     }
 
     /**

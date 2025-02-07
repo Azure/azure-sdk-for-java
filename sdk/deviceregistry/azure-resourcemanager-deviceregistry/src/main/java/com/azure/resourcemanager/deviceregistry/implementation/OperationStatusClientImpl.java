@@ -37,25 +37,25 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     /**
      * The service client containing this operation class.
      */
-    private final DeviceRegistryClientImpl client;
+    private final DeviceRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationStatusClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationStatusClientImpl(DeviceRegistryClientImpl client) {
+    OperationStatusClientImpl(DeviceRegistryManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DeviceRegistryClientOperationStatus to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for DeviceRegistryManagementClientOperationStatus to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeviceRegistryClient")
+    @ServiceInterface(name = "DeviceRegistryManage")
     public interface OperationStatusService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DeviceRegistry/locations/{location}/operationStatuses/{operationId}")

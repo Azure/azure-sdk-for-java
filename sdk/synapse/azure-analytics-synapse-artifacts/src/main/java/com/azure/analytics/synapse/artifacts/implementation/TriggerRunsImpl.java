@@ -92,10 +92,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rerunTriggerInstanceWithResponseAsync(String triggerName, String runId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.rerunTriggerInstance(this.client.getEndpoint(), triggerName,
-            runId, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> rerunTriggerInstanceWithResponseAsync(triggerName, runId, context));
     }
 
     /**
@@ -190,10 +187,7 @@ public final class TriggerRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelTriggerInstanceWithResponseAsync(String triggerName, String runId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelTriggerInstance(this.client.getEndpoint(), triggerName,
-            runId, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> cancelTriggerInstanceWithResponseAsync(triggerName, runId, context));
     }
 
     /**
@@ -289,10 +283,7 @@ public final class TriggerRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerRunsQueryResponse>>
         queryTriggerRunsByWorkspaceWithResponseAsync(RunFilterParameters filterParameters) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.queryTriggerRunsByWorkspace(this.client.getEndpoint(),
-            apiVersion, filterParameters, accept, context));
+        return FluxUtil.withContext(context -> queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters, context));
     }
 
     /**

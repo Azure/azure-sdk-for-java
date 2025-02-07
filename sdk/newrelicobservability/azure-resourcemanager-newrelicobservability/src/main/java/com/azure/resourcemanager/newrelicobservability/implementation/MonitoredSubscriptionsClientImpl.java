@@ -418,7 +418,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,7 +463,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -509,7 +509,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -556,7 +556,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -601,7 +601,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -623,7 +623,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -663,7 +663,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -702,7 +702,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -721,7 +721,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -766,7 +766,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -811,7 +811,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -858,7 +858,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -903,7 +903,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -924,7 +924,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -964,7 +964,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1003,7 +1003,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1244,9 +1244,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1271,9 +1269,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

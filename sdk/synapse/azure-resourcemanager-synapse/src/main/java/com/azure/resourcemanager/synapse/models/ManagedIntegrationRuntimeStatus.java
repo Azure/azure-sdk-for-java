@@ -32,16 +32,6 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties
         = new ManagedIntegrationRuntimeStatusTypeProperties();
 
-    /*
-     * The state of integration runtime.
-     */
-    private IntegrationRuntimeState state;
-
-    /*
-     * The workspace name which the integration runtime belong to.
-     */
-    private String dataFactoryName;
-
     /**
      * Creates an instance of ManagedIntegrationRuntimeStatus class.
      */
@@ -65,26 +55,6 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
      */
     private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
-    }
-
-    /**
-     * Get the state property: The state of integration runtime.
-     * 
-     * @return the state value.
-     */
-    @Override
-    public IntegrationRuntimeState state() {
-        return this.state;
-    }
-
-    /**
-     * Get the dataFactoryName property: The workspace name which the integration runtime belong to.
-     * 
-     * @return the dataFactoryName value.
-     */
-    @Override
-    public String dataFactoryName() {
-        return this.dataFactoryName;
     }
 
     /**
@@ -176,10 +146,10 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
                 reader.nextToken();
 
                 if ("dataFactoryName".equals(fieldName)) {
-                    deserializedManagedIntegrationRuntimeStatus.dataFactoryName = reader.getString();
+                    deserializedManagedIntegrationRuntimeStatus.withDataFactoryName(reader.getString());
                 } else if ("state".equals(fieldName)) {
-                    deserializedManagedIntegrationRuntimeStatus.state
-                        = IntegrationRuntimeState.fromString(reader.getString());
+                    deserializedManagedIntegrationRuntimeStatus
+                        .withState(IntegrationRuntimeState.fromString(reader.getString()));
                 } else if ("typeProperties".equals(fieldName)) {
                     deserializedManagedIntegrationRuntimeStatus.innerTypeProperties
                         = ManagedIntegrationRuntimeStatusTypeProperties.fromJson(reader);

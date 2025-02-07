@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ContentTypes. */
+/**
+ * Resource collection API of ContentTypes.
+ */
 public interface ContentTypes {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,7 +28,7 @@ public interface ContentTypes {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -40,7 +42,7 @@ public interface ContentTypes {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -56,7 +58,7 @@ public interface ContentTypes {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -71,12 +73,12 @@ public interface ContentTypes {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,12 +92,12 @@ public interface ContentTypes {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +107,7 @@ public interface ContentTypes {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,7 +119,7 @@ public interface ContentTypes {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +133,7 @@ public interface ContentTypes {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,10 +145,10 @@ public interface ContentTypes {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,7 +159,7 @@ public interface ContentTypes {
 
     /**
      * Begins definition for a new ContentTypeContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ContentTypeContract definition.
      */

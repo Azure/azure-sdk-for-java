@@ -4,28 +4,40 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
-      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
         parameters:
-          TestName: Spring_Integration
-          TimeoutInMinutes: 240
-          TestOptions: "-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
+          TestName: IT_AppConfig
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.appconfiguration.*IT
           TestResourceDirectories:
-            - spring/spring-cloud-azure-integration-tests/test-resources/common
-#            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
+        parameters:
+          TestName: IT_Cosmos
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.cosmos.*IT,com.azure.spring.cloud.integration.tests.cosmos.*.*IT
+          TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
+        parameters:
+          TestName: IT_ServiceBus
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.servicebus.*IT,com.azure.spring.cloud.integration.tests.servicebus.*.*IT
+          TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
+        parameters:
+          TestName: IT_EventHubs_Storage
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.eventhubs.*IT,com.azure.spring.cloud.integration.tests.eventhubs.*.*IT,com.azure.spring.cloud.integration.tests.storage.*.*IT
+          TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
             - spring/spring-cloud-azure-integration-tests/test-resources/storage
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
+        parameters:
+          TestName: IT_KeyVault
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.keyvault.*.*IT
+          TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
-            - spring/spring-cloud-azure-integration-tests/test-resources/dummy
-          Artifacts:
-            - name: spring-cloud-azure-integration-tests
-              groupId: com.azure.spring
-              safeName: springcloudazureintegrationtests
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          TestName: Spring_AppConfig_Integration
+          TestName: AppConfig_IT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-test-appconfiguration-config
           Artifacts:
@@ -35,7 +47,7 @@ extends:
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           MatrixConfigs:
-            - Name: Cosmos_live_test_integration
+            - Name: Cosmos_IT
               Path: sdk/spring/pipeline/cosmos-integration-matrix-compatible.json
               Selection: all
               GenerateVMJobs: true

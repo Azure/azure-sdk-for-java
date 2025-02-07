@@ -14,8 +14,7 @@ import java.util.Map;
 public final class BigDataPoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/UpdateBigDataPool.
-     * json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/UpdateBigDataPool.json
      */
     /**
      * Sample code: Update a Big Data pool.

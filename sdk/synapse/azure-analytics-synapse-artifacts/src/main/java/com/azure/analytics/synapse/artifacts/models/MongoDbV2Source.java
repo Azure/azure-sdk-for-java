@@ -23,7 +23,8 @@ public final class MongoDbV2Source extends CopySource {
     private String type = "MongoDbV2Source";
 
     /*
-     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType string).
+     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
+     * pass an empty document ({}). Type: string (or Expression with resultType string).
      */
     private Object filter;
 
@@ -33,17 +34,21 @@ public final class MongoDbV2Source extends CopySource {
     private MongoDbCursorMethodsProperties cursorMethods;
 
     /*
-     * Specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
+     * Specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases,
+     * modifying the batch size will not affect the user or the application. This property's main purpose is to avoid
+     * hit the limitation of response size. Type: integer (or Expression with resultType integer).
      */
     private Object batchSize;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Query timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     private Object queryTimeout;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     private Object additionalColumns;
 

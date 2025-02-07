@@ -7,8 +7,10 @@ package com.azure.resourcemanager.kusto.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ScriptInner;
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.Script;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
 
 public final class ScriptImpl implements Script, Script.Definition, Script.Update {
     private ScriptInner innerObject;
@@ -53,6 +55,14 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public ScriptLevel scriptLevel() {
+        return this.innerModel().scriptLevel();
+    }
+
+    public PrincipalPermissionsAction principalPermissionsAction() {
+        return this.innerModel().principalPermissionsAction();
     }
 
     public String resourceGroupName() {
@@ -123,10 +133,10 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
     ScriptImpl(ScriptInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
-        this.scriptName = Utils.getValueFromIdByName(innerObject.id(), "scripts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.scriptName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scripts");
     }
 
     public Script refresh() {
@@ -167,6 +177,16 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
 
     public ScriptImpl withContinueOnErrors(Boolean continueOnErrors) {
         this.innerModel().withContinueOnErrors(continueOnErrors);
+        return this;
+    }
+
+    public ScriptImpl withScriptLevel(ScriptLevel scriptLevel) {
+        this.innerModel().withScriptLevel(scriptLevel);
+        return this;
+    }
+
+    public ScriptImpl withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction) {
+        this.innerModel().withPrincipalPermissionsAction(principalPermissionsAction);
         return this;
     }
 }

@@ -22,6 +22,23 @@ public class AzureEntityResource extends Resource {
      */
     private String etag;
 
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
     /**
      * Creates an instance of AzureEntityResource class.
      */
@@ -49,6 +66,38 @@ public class AzureEntityResource extends Resource {
     }
 
     /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -73,11 +122,11 @@ public class AzureEntityResource extends Resource {
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedAzureEntityResource.setId(reader.getString());
+                    deserializedAzureEntityResource.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedAzureEntityResource.setName(reader.getString());
+                    deserializedAzureEntityResource.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedAzureEntityResource.setType(reader.getString());
+                    deserializedAzureEntityResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedAzureEntityResource.etag = reader.getString();
                 } else {

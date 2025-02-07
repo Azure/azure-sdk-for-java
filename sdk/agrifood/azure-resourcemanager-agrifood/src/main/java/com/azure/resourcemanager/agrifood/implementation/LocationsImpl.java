@@ -27,15 +27,6 @@ public final class LocationsImpl implements Locations {
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest body) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(body);
-        if (inner != null) {
-            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body,
         Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
@@ -43,6 +34,15 @@ public final class LocationsImpl implements Locations {
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest body) {
+        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(body);
+        if (inner != null) {
+            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
             return null;
         }

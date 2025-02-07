@@ -13,15 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MetadataPolicyGet {
     public static void main(String[] args) {
-        MetadataPolicyClient metadataPolicyClient =
-                new MetadataPolicyClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClient();
+        MetadataPolicyClient metadataPolicyClient
+            = new MetadataPolicyClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.administration.generated.metadatapolicyget.metadatapolicyget
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                metadataPolicyClient.getWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
+        Response<BinaryData> response
+            = metadataPolicyClient.getWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
         // END:com.azure.analytics.purview.administration.generated.metadatapolicyget.metadatapolicyget
     }
 }

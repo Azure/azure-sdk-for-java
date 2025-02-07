@@ -24,14 +24,9 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     private CommunityGalleryProperties innerProperties;
 
     /*
-     * Resource name
+     * The identifier information of community gallery.
      */
-    private String name;
-
-    /*
-     * Resource location
-     */
-    private String location;
+    private CommunityGalleryIdentifier innerIdentifier;
 
     /*
      * Resource type
@@ -39,9 +34,14 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     private String type;
 
     /*
-     * The identifier information of community gallery.
+     * Resource location
      */
-    private CommunityGalleryIdentifier innerIdentifier;
+    private String location;
+
+    /*
+     * Resource name
+     */
+    private String name;
 
     /**
      * Creates an instance of CommunityGalleryInner class.
@@ -59,23 +59,12 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the innerIdentifier property: The identifier information of community gallery.
      * 
-     * @return the name value.
+     * @return the innerIdentifier value.
      */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the location property: Resource location.
-     * 
-     * @return the location value.
-     */
-    @Override
-    public String location() {
-        return this.location;
+    private CommunityGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
     }
 
     /**
@@ -89,12 +78,23 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     }
 
     /**
-     * Get the innerIdentifier property: The identifier information of community gallery.
+     * Get the location property: Resource location.
      * 
-     * @return the innerIdentifier value.
+     * @return the location value.
      */
-    private CommunityGalleryIdentifier innerIdentifier() {
-        return this.innerIdentifier;
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -196,9 +196,11 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (innerIdentifier() != null) {
+            innerIdentifier().validate();
         }
     }
 

@@ -67,16 +67,6 @@ public final class ClientType extends ExpandableStringEnum<ClientType> {
     public static final ClientType KAFKA_SPRING_BOOT = fromString("kafka-springBoot");
 
     /**
-     * Static value jms-springBoot for ClientType.
-     */
-    public static final ClientType JMS_SPRING_BOOT = fromString("jms-springBoot");
-
-    /**
-     * Static value dapr for ClientType.
-     */
-    public static final ClientType DAPR = fromString("dapr");
-
-    /**
      * Creates a new instance of ClientType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

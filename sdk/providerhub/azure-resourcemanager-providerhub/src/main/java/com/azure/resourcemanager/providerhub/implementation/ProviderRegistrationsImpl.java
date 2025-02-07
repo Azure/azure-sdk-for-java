@@ -80,12 +80,12 @@ public final class ProviderRegistrationsImpl implements ProviderRegistrations {
 
     public PagedIterable<ProviderRegistration> list() {
         PagedIterable<ProviderRegistrationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ProviderRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderRegistrationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProviderRegistration> list(Context context) {
         PagedIterable<ProviderRegistrationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ProviderRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderRegistrationImpl(inner1, this.manager()));
     }
 
     public Response<List<OperationsDefinition>> generateOperationsWithResponse(String providerNamespace,

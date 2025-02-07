@@ -6,25 +6,27 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.TestRouteResultInner;
 
-/** An immutable client-side representation of TestRouteResult. */
+/**
+ * An immutable client-side representation of TestRouteResult.
+ */
 public interface TestRouteResult {
     /**
      * Gets the result property: Result of testing route.
-     *
+     * 
      * @return the result value.
      */
     TestResultStatus result();
 
     /**
      * Gets the details property: Detailed result of testing route.
-     *
+     * 
      * @return the details value.
      */
     TestRouteResultDetails details();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.TestRouteResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     TestRouteResultInner innerModel();

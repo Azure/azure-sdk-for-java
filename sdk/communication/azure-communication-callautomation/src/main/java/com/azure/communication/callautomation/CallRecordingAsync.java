@@ -3,44 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
-import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
-import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageKind;
-import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
-import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
-import com.azure.communication.callautomation.models.CallLocator;
-import com.azure.communication.callautomation.models.CallLocatorKind;
-import com.azure.communication.callautomation.models.ChannelAffinity;
-import com.azure.communication.callautomation.models.DownloadToFileOptions;
-import com.azure.communication.callautomation.models.GroupCallLocator;
-import com.azure.communication.callautomation.models.ParallelDownloadOptions;
-import com.azure.communication.callautomation.models.RecordingStateResult;
-import com.azure.communication.callautomation.models.ServerCallLocator;
-import com.azure.communication.callautomation.models.StartRecordingOptions;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRange;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -57,8 +19,47 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
+import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
+import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
+import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
+import com.azure.communication.callautomation.models.CallLocator;
+import com.azure.communication.callautomation.models.CallLocatorKind;
+import com.azure.communication.callautomation.models.ChannelAffinity;
+import com.azure.communication.callautomation.models.DownloadToFileOptions;
+import com.azure.communication.callautomation.models.GroupCallLocator;
+import com.azure.communication.callautomation.models.ParallelDownloadOptions;
+import com.azure.communication.callautomation.models.RecordingStateResult;
+import com.azure.communication.callautomation.models.RoomCallLocator;
+import com.azure.communication.callautomation.models.ServerCallLocator;
+import com.azure.communication.callautomation.models.StartRecordingOptions;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * CallRecordingAsync.
@@ -125,20 +126,23 @@ public final class CallRecordingAsync {
     }
 
     private StartCallRecordingRequestInternal getStartCallRecordingRequest(StartRecordingOptions options) {
-        CallLocator callLocator = options.getCallLocator();
-        CallLocatorInternal callLocatorInternal
-            = new CallLocatorInternal().setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+        StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal();
+        if (options.getCallLocator() != null) {
+            CallLocator callLocator = options.getCallLocator();
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+                .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
-        if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
-            callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
-        } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
-            callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
-        } else {
-            throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
+                callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
+                callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+                callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
+            } else {
+                throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            }
+            request.setCallLocator(callLocatorInternal);
         }
-
-        StartCallRecordingRequestInternal request
-            = new StartCallRecordingRequestInternal().setCallLocator(callLocatorInternal);
 
         if (options.getRecordingContent() != null) {
             request
@@ -175,14 +179,16 @@ public final class CallRecordingAsync {
                     = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
                 RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
                     .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
-                    .setRecordingStorageKind(RecordingStorageKind.AZURE_BLOB_STORAGE);
+                    .setRecordingStorageKind(RecordingStorageTypeInternal.AZURE_BLOB_STORAGE);
                 request.setExternalStorage(recordingStorageInternal);
             }
         }
         if (options.isPauseOnStart() != null) {
             request.setPauseOnStart(options.isPauseOnStart());
         }
-
+        if (options.getCallConnectionId() != null) {
+            request.setCallConnectionId(options.getCallConnectionId());
+        }
         return request;
     }
 

@@ -29,7 +29,7 @@ public final class RecommendationsGetGenerateStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.recommendations()
-            .getGenerateStatusWithResponse(UUID.fromString("705685dd-83ee-4dc2-b787-d7e07bbc4015"),
+            .getGenerateStatusWithResponse(UUID.fromString("a9ba72b0-f0f2-46b4-9588-f762cd2a66f2"),
                 com.azure.core.util.Context.NONE);
 
     }

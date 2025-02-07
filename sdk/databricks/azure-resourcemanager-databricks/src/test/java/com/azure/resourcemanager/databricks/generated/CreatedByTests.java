@@ -11,7 +11,7 @@ public final class CreatedByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreatedBy model = BinaryData.fromString(
-            "{\"oid\":\"f0e129af-6196-48e8-abbd-6a8142479d66\",\"puid\":\"ybrk\",\"applicationId\":\"8dea2bb7-0351-476b-80c7-edf3be92928e\"}")
+            "{\"oid\":\"99765cdf-87c8-4cc6-8d6a-b4093fcd481a\",\"puid\":\"ybrk\",\"applicationId\":\"c50a5e68-ae5f-45f9-8823-f286713b0c47\"}")
             .toObject(CreatedBy.class);
     }
 

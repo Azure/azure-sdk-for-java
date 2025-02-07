@@ -31,17 +31,23 @@ import com.azure.resourcemanager.changeanalysis.models.ChangeList;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ChangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChangesClient.
+ */
 public final class ChangesClientImpl implements ChangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ChangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureChangeAnalysisManagementClientImpl client;
 
     /**
      * Initializes an instance of ChangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ChangesClientImpl(AzureChangeAnalysisManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class ChangesClientImpl implements ChangesClient {
     @ServiceInterface(name = "AzureChangeAnalysisM")
     public interface ChangesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ChangeAnalysis"
-            + "/changes")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ChangeAnalysis/changes")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChangeList>> listByResourceGroup(@HostParam("$host") String endpoint,
@@ -95,13 +100,13 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,13 +144,13 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -184,13 +189,13 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,7 +211,7 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
@@ -226,13 +231,13 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -249,7 +254,7 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
@@ -267,13 +272,13 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,12 +293,12 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -327,12 +332,12 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -367,12 +372,12 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -386,7 +391,7 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,12 +408,12 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -424,7 +429,7 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,12 +445,12 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
-     *
+     * 
      * @param startTime Specifies the start time of the changes request.
      * @param endTime Specifies the end time of the changes request.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -460,9 +465,8 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -488,9 +492,8 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -516,9 +519,8 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -544,9 +546,8 @@ public final class ChangesClientImpl implements ChangesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

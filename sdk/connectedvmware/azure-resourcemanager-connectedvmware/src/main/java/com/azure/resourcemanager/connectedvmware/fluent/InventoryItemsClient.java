@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemInner;
 
-/** An instance of this class provides access to all the operations defined in InventoryItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InventoryItemsClient.
+ */
 public interface InventoryItemsClient {
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -34,9 +36,9 @@ public interface InventoryItemsClient {
 
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -50,9 +52,9 @@ public interface InventoryItemsClient {
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -68,9 +70,9 @@ public interface InventoryItemsClient {
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -84,9 +86,9 @@ public interface InventoryItemsClient {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -102,9 +104,9 @@ public interface InventoryItemsClient {
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -117,9 +119,9 @@ public interface InventoryItemsClient {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,9 +134,9 @@ public interface InventoryItemsClient {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.

@@ -20,7 +20,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
     /**
      * List shared private link resources.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +34,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
     /**
      * List shared private link resources.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Get the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +67,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Get the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,7 +83,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Create or update a shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +101,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Create or update a shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -114,7 +120,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Create or update a shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +137,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Create or update a shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -147,7 +155,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Delete the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +171,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Delete the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +188,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Delete the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,7 +202,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * Delete the specified shared private link resource.
      * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

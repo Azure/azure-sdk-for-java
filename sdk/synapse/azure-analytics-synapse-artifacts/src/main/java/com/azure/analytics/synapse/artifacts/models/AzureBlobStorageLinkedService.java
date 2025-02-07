@@ -24,7 +24,8 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private String type = "AzureBlobStorage";
 
     /*
-     * The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string, SecureString
+     * or AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 
@@ -34,7 +35,8 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * SAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint
+     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     private Object sasUri;
 
@@ -44,12 +46,14 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * Blob service endpoint of the Azure Blob Storage resource. It is mutually exclusive with connectionString, sasUri property.
+     * Blob service endpoint of the Azure Blob Storage resource. It is mutually exclusive with connectionString, sasUri
+     * property.
      */
     private String serviceEndpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or
+     * Expression with resultType string).
      */
     private Object servicePrincipalId;
 
@@ -59,22 +63,27 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or Expression with resultType string).
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
+     * Expression with resultType string).
      */
     private Object azureCloudType;
 
     /*
-     * Specify the kind of your storage account. Allowed values are: Storage (general purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with resultType string).
+     * Specify the kind of your storage account. Allowed values are: Storage (general purpose v1), StorageV2 (general
+     * purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with resultType string).
      */
     private String accountKind;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private String encryptedCredential;
 
@@ -89,7 +98,8 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private AzureStorageAuthenticationType authenticationType;
 
     /*
-     * Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression with resultType string).
+     * Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression
+     * with resultType string).
      */
     private Object containerUri;
 

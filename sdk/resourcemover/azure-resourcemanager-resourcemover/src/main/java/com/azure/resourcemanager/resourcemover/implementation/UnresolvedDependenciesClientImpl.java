@@ -31,17 +31,23 @@ import com.azure.resourcemanager.resourcemover.models.DependencyLevel;
 import com.azure.resourcemanager.resourcemover.models.UnresolvedDependencyCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UnresolvedDependenciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UnresolvedDependenciesClient.
+ */
 public final class UnresolvedDependenciesClientImpl implements UnresolvedDependenciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UnresolvedDependenciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceMoverServiceApiImpl client;
 
     /**
      * Initializes an instance of UnresolvedDependenciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UnresolvedDependenciesClientImpl(ResourceMoverServiceApiImpl client) {
@@ -80,7 +86,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -89,8 +95,8 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of unresolved dependencies along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of unresolved dependencies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UnresolvedDependencyInner>> getSinglePageAsync(String resourceGroupName,
@@ -123,7 +129,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -133,8 +139,8 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of unresolved dependencies along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of unresolved dependencies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UnresolvedDependencyInner>> getSinglePageAsync(String resourceGroupName,
@@ -166,7 +172,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -187,7 +193,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +213,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -229,7 +235,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,7 +253,7 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -268,14 +274,13 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return unresolved dependency collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return unresolved dependency collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UnresolvedDependencyInner>> getNextSinglePageAsync(String nextLink) {
@@ -295,15 +300,14 @@ public final class UnresolvedDependenciesClientImpl implements UnresolvedDepende
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return unresolved dependency collection along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return unresolved dependency collection along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UnresolvedDependencyInner>> getNextSinglePageAsync(String nextLink, Context context) {
