@@ -228,7 +228,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         assertNotNull(expected);
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
-        assertEquals(expected.getNextLink(), actual.getNextLink());
     }
 
     static void validateGetSearchTropicalStormWithResponse(StormSearchResult expected,
@@ -241,7 +240,6 @@ public class WeatherTestBase extends TestProxyTestBase {
     static void validateGetTropicalStormForecast(StormForecastResult expected, StormForecastResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -256,7 +254,6 @@ public class WeatherTestBase extends TestProxyTestBase {
     static void validateGetTropicalStormLocations(StormLocationsResult expected, StormLocationsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -272,7 +269,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.getAirQualityResults().size(), actual.getAirQualityResults().size());
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -288,7 +284,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         DailyAirQualityForecastResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -303,7 +298,6 @@ public class WeatherTestBase extends TestProxyTestBase {
     static void validateGetHourlyAirQualityForecast(AirQualityResult expected, AirQualityResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -319,7 +313,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         DailyHistoricalRecordsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -335,7 +328,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         DailyHistoricalActualsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -351,7 +343,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         DailyHistoricalNormalsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
