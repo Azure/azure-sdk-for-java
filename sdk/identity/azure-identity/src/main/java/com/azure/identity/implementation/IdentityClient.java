@@ -6,9 +6,13 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityConstants;
@@ -19,6 +23,7 @@ import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.models.JsonObject;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
@@ -1252,28 +1257,31 @@ public class IdentityClient extends IdentityClientBase {
         return (int) options.getRetryTimeout().apply(Duration.ofSeconds(retry)).toMillis();
     }
 
-    private Mono<Boolean> checkIMDSAvailable(String endpoint) {
-        return Mono.fromCallable(() -> {
-            HttpURLConnection connection = null;
-            URL url = getUrl(endpoint + "?api-version=2018-02-01");
+    Mono<Boolean> checkIMDSAvailable(String endpoint) {
 
+        URL url = null;
+        try {
+            url = getUrl(endpoint + "?api-version=2018-02-01");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        HttpClient client = HttpClient.createDefault(new HttpClientOptions().setConnectTimeout(Duration.ofSeconds(1)));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+
+        return client.send(request).flatMap(response -> response.getBodyAsByteArray().flatMap(body -> {
             try {
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(1000);
-                connection.connect();
-            } catch (Exception e) {
-                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                JsonObject.fromJson(JsonProviders.createReader(body));
+                return Mono.just(true);
+            } catch (IOException e) {
+                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                        + "Connection to IMDS endpoint cannot be established, " + e.getMessage() + ".", e));
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+                        + "Connection to IMDS endpoint cannot be established.", e)));
             }
-
-            return true;
-        });
+        }))
+            .onErrorMap(t -> LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                    + "Connection to IMDS endpoint cannot be established.", t)))
+            .hasElement();
     }
 
     private static void sleep(int millis) {

@@ -6,10 +6,13 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.util.CertificateUtil;
-import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -31,6 +34,8 @@ import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -40,6 +45,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -58,10 +64,12 @@ import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.argThat;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -329,10 +337,12 @@ public class IdentityClientTests {
         IdentityClientOptions options = new IdentityClientOptions().setManagedIdentityType(ManagedIdentityType.VM)
             .setConfiguration(configuration);
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
+        IdentityClient spy = spy(client);
+        doReturn(Mono.just(true)).when(spy).checkIMDSAvailable(anyString());
         // mock
-        mockForIMDSCodeFlow(IdentityConstants.DEFAULT_IMDS_ENDPOINT, tokenJson, () -> {
+        mockForIMDSCodeFlow(tokenJson, () -> {
             // test
-            StepVerifier.create(client.getTokenFromTargetManagedIdentity(request)).assertNext(token -> {
+            StepVerifier.create(spy.getTokenFromTargetManagedIdentity(request)).assertNext(token -> {
                 Assertions.assertEquals("token1", token.getToken());
                 Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
             }).verifyComplete();
@@ -353,10 +363,12 @@ public class IdentityClientTests {
         IdentityClientOptions options = new IdentityClientOptions().setManagedIdentityType(ManagedIdentityType.VM)
             .setConfiguration(configuration);
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
+        IdentityClient spy = spy(client);
+        doReturn(Mono.just(true)).when(spy).checkIMDSAvailable(anyString());
         // mock
-        mockForIMDSCodeFlow(endpoint, tokenJson, () -> {
+        mockForIMDSCodeFlow(tokenJson, () -> {
             // test
-            StepVerifier.create(client.getTokenFromTargetManagedIdentity(request)).assertNext(token -> {
+            StepVerifier.create(spy.getTokenFromTargetManagedIdentity(request)).assertNext(token -> {
                 Assertions.assertEquals("token1", token.getToken());
                 Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
             }).verifyComplete();
@@ -494,6 +506,67 @@ public class IdentityClientTests {
             Assertions.assertEquals(accessToken, token.getToken());
             Assertions.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
+    }
+
+    @Test
+    public void testManagedIdentityWithInvalidJson() {
+        try (MockedStatic<HttpClient> mockClient = mockStatic(HttpClient.class);) {
+            HttpClient httpClient = mock(HttpClient.class);
+            when(httpClient.send(any())).thenReturn(Mono.just(new HttpResponse(null) {
+                @Override
+                public int getStatusCode() {
+                    return HttpURLConnection.HTTP_OK;
+                }
+
+                @Override
+                public String getHeaderValue(String s) {
+                    return null;
+                }
+
+                @Override
+                public HttpHeaders getHeaders() {
+                    return null;
+                }
+
+                @Override
+                public Flux<ByteBuffer> getBody() {
+                    return Flux.just(ByteBuffer.wrap("invalid json".getBytes(Charset.defaultCharset())));
+                }
+
+                @Override
+                public Mono<byte[]> getBodyAsByteArray() {
+                    return Mono.just("invalid json".getBytes(Charset.defaultCharset()));
+                }
+
+                @Override
+                public Mono<String> getBodyAsString() {
+                    return Mono.just("invalid json");
+                }
+
+                @Override
+                public Mono<String> getBodyAsString(Charset charset) {
+                    return null;
+                }
+
+                @Override
+                public Mono<InputStream> getBodyAsInputStream() {
+                    return Mono.just(new ByteArrayInputStream("invalid json".getBytes(Charset.defaultCharset())));
+                }
+            }));
+            mockClient.when(() -> HttpClient.createDefault(any())).thenReturn(httpClient);
+
+            String secret = "SYSTEM-ASSIGNED-CLIENT-SECRET";
+            String clientId = "SYSTEM-ASSIGNED-CLIENT-ID";
+
+            IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID)
+                .clientId(clientId)
+                .clientSecret(secret)
+                .identityClientOptions(new IdentityClientOptions().setManagedIdentityType(ManagedIdentityType.VM))
+                .build();
+            StepVerifier.create(client.checkIMDSAvailable("https://localhost"))
+                .expectError(CredentialUnavailableException.class)
+                .verify();
+        }
     }
 
     /****** mocks ******/
@@ -765,7 +838,7 @@ public class IdentityClientTests {
         }
     }
 
-    private void mockForIMDSCodeFlow(String endpoint, String tokenJson, Runnable test) throws Exception {
+    private void mockForIMDSCodeFlow(String tokenJson, Runnable test) throws Exception {
         try (MockedStatic<IdentityClientBase> identityClientMockedStatic = mockStatic(IdentityClientBase.class)) {
             URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
