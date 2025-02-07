@@ -385,6 +385,7 @@ public class LROPollerTests {
         final String resourceEndpoint = "/resource/1";
         final String sampleVaultUpdateSucceededResponse
             = "{\"id\":\"/subscriptions/000/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu\",\"name\":\"v1weidxu\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"centralus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"000\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"vaultUri\":\"https://v1weidxu.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}";
+        Duration pollInterval = Duration.ofSeconds(30);
         ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
             private final int[] getCallCount = new int[1];
 
@@ -406,6 +407,8 @@ public class LROPollerTests {
                     }
                     // 200 response with provisioningState=Succeeded.
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(200)
+                        .headers(new HttpHeaders(
+                            HttpHeader.httpHeader("Retry-After", String.valueOf(pollInterval.getSeconds()))))
                         .body(sampleVaultUpdateSucceededResponse)
                         .build();
                 }
@@ -429,6 +432,9 @@ public class LROPollerTests {
                     = SyncPollerFactory.create(SERIALIZER, new HttpPipelineBuilder().build(), Resource.class,
                         Resource.class, POLLING_DURATION, () -> newLroInitResponse(client));
 
+                lroPoller.setPollInterval(pollInterval);
+                long timeBeforePoll = System.currentTimeMillis();
+
                 PollResponse<PollResult<Resource>> pollResponse = lroPoller.poll();
                 Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
 
@@ -437,6 +443,8 @@ public class LROPollerTests {
                 Assertions.assertNotNull(result.id());
                 Assertions.assertEquals("v1weidxu", result.name());
                 Assertions.assertEquals("Microsoft.KeyVault/vaults", result.type());
+
+                Assertions.assertTrue(System.currentTimeMillis() - timeBeforePoll < pollInterval.getSeconds());
             } else {
                 PollerFlux<PollResult<Resource>, Resource> lroFlux
                     = PollerFactory.create(SERIALIZER, new HttpPipelineBuilder().build(), Resource.class,
