@@ -187,4 +187,4 @@ More examples can be found at [Azure Monitor Query samples][README-Samples].
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/README.md
 [azure-identity-readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmonitor%2Fazure-monitor-query%2Fmigration-guide.png)
+
