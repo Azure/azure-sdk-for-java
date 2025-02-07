@@ -50,12 +50,14 @@ public final class PollOperation {
         return pollingContext -> {
             PollingState pollingState = PollingState.from(serializerAdapter, pollingContext);
             if (pollingState.getOperationStatus().isComplete()) {
-                return Mono.just(pollResponseFromPollingState(serializerAdapter, pollResultType, pollingState));
+                return Mono.defer(
+                    () -> Mono.just(pollResponseFromPollingState(serializerAdapter, pollResultType, pollingState)));
             } else {
                 // InProgress|NonTerminal-Status
                 return doSinglePoll(pipeline, pollingState, context).flatMap(updatedState -> {
                     updatedState.store(pollingContext);
-                    return Mono.just(pollResponseFromPollingState(serializerAdapter, pollResultType, updatedState));
+                    return Mono.defer(
+                        () -> Mono.just(pollResponseFromPollingState(serializerAdapter, pollResultType, updatedState)));
                 });
             }
         };
