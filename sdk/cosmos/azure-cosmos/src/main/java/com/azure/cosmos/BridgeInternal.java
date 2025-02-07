@@ -406,8 +406,8 @@ public final class BridgeInternal {
         cosmosException.setError(new CosmosError());
         cosmosException.getError().set(
             Constants.Properties.MESSAGE,
-            errorMessage,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            errorMessage
+        );
         return cosmosException;
     }
 

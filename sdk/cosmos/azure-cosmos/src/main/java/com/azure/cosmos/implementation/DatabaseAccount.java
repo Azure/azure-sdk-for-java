@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -65,7 +64,7 @@ public final class DatabaseAccount extends Resource {
      * @param databasesLink the databases link.
      */
     void setDatabasesLink(String databasesLink) {
-        this.set(Constants.Properties.DATABASES_LINK, databasesLink, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.DATABASES_LINK, databasesLink);
     }
 
     /**
@@ -83,7 +82,7 @@ public final class DatabaseAccount extends Resource {
      * @param medialink the media link.
      */
     void setMediaLink(String medialink) {
-        this.set(Constants.Properties.MEDIA_LINK, medialink, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.MEDIA_LINK, medialink);
     }
 
     /**
@@ -101,7 +100,7 @@ public final class DatabaseAccount extends Resource {
      * @param addresseslink the addresses link.
      */
     void setAddressesLink(String addresseslink) {
-        this.set(Constants.Properties.ADDRESS_LINK, addresseslink, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.ADDRESS_LINK, addresseslink);
     }
 
     /**
@@ -229,7 +228,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of writable locations.
      */
     public void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
-        this.set(Constants.Properties.WRITABLE_LOCATIONS, locations, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.WRITABLE_LOCATIONS, locations);
     }
 
     /**
@@ -249,7 +248,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of readable locations.
      */
     public void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
-        this.set(Constants.Properties.READABLE_LOCATIONS, locations, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
     /**
@@ -262,7 +261,7 @@ public final class DatabaseAccount extends Resource {
     }
 
     public void setEnableMultipleWriteLocations(boolean value) {
-        this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
     public void populatePropertyBag() {
@@ -271,8 +270,8 @@ public final class DatabaseAccount extends Resource {
             this.consistencyPolicy.populatePropertyBag();
             this.set(
                 Constants.Properties.USER_CONSISTENCY_POLICY,
-                this.consistencyPolicy,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.consistencyPolicy
+            );
         }
     }
 
