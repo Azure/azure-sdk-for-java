@@ -16,6 +16,7 @@ com.fasterxml.jackson.core:jackson-core;2.17.2
 com.fasterxml.jackson.core:jackson-databind;2.17.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.17.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.17.2
+com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.17.2
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.17.2
 com.fasterxml.jackson.module:jackson-module-afterburner;2.17.2
 com.fasterxml.jackson.module:jackson-module-blackbird;2.17.2
@@ -38,10 +39,8 @@ com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
 com.squareup.okhttp3:okhttp;4.12.0
-com.squareup:javapoet;1.13.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
-io.clientcore.tools:annotation-processor;1.0.0-beta.1
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
@@ -87,6 +86,7 @@ org.openjfx:javafx-graphics;17.0.6
 org.graalvm.buildtools:junit-platform-native;0.9.19
 org.graalvm.buildtools:native-maven-plugin;0.9.19
 org.postgresql:postgresql;42.3.9
+org.projectlombok:lombok;1.18.34
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
@@ -95,6 +95,7 @@ io.lettuce:lettuce-core;6.4.0.RELEASE
 org.redisson:redisson;3.36.0
 testdep_net.bytebuddy:byte-buddy;1.15.5
 testdep_net.bytebuddy:byte-buddy-agent;1.15.5
+org.openrewrite.recipe:rewrite-recipe-bom;3.0.2
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-maven-plugin;2.7.18
@@ -116,19 +117,19 @@ com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.17.2
 com.microsoft.azure:msal4j-brokers;1.0.0
 com.microsoft.azure:msal4j-persistence-extension;1.3.0
-io.opentelemetry:opentelemetry-api;1.43.0
-io.opentelemetry:opentelemetry-sdk;1.43.0
-io.opentelemetry:opentelemetry-sdk-metrics;1.43.0
-io.opentelemetry:opentelemetry-sdk-logs;1.43.0
-io.opentelemetry:opentelemetry-exporter-logging;1.43.0
-io.opentelemetry:opentelemetry-exporter-otlp;1.43.0
-io.opentelemetry:opentelemetry-sdk-testing;1.43.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.43.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.43.0
-io.opentelemetry:opentelemetry-bom;1.43.0
-io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.9.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.9.0
-io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.9.0-alpha
+io.opentelemetry:opentelemetry-api;1.46.0
+io.opentelemetry:opentelemetry-sdk;1.46.0
+io.opentelemetry:opentelemetry-sdk-metrics;1.46.0
+io.opentelemetry:opentelemetry-sdk-logs;1.46.0
+io.opentelemetry:opentelemetry-exporter-logging;1.46.0
+io.opentelemetry:opentelemetry-exporter-otlp;1.46.0
+io.opentelemetry:opentelemetry-sdk-testing;1.46.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.46.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.46.0
+io.opentelemetry:opentelemetry-bom;1.46.0
+io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.12.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.12.0
+io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.12.0-alpha
 io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.26.0-alpha
 io.projectreactor:reactor-test;3.4.41
 io.github.hakky54:logcaptor;2.9.3
@@ -207,6 +208,7 @@ org.jacoco:org.jacoco.agent;0.8.12
 org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
+org.owasp:dependency-check-maven;11.1.1
 org.ow2.asm:asm;9.7
 org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
@@ -219,6 +221,16 @@ org.revapi:revapi-maven-plugin;0.14.6
 # what was defined in the parent pom.
 # Format;
 # <some unique identifier, area name preferred>_groupId:artifactId;dependency-version
+
+# The OpenTelemetry exporter is replaced with the OpenTelemetry SDK Autoconfigure Distro
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-api;1.43.0
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk;1.43.0
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-metrics;1.43.0
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-logs;1.43.0
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.43.0
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.43.0
+otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-testing;1.43.0
+otel_exporter_deprecated_io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.26.0-alpha
 
 # This is a unique dependency as it is the only <type>test-jar</type> dependency in the
 # data track. It's also using a SNAPSHOT version which should be disallowed but there is

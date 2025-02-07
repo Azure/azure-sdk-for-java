@@ -1833,7 +1833,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        internalObjectNode.set("mypk", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        internalObjectNode.set("mypk", uuid);
         return internalObjectNode;
     }
 
@@ -1841,7 +1841,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        internalObjectNode.set( "mypk", pkValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        internalObjectNode.set( "mypk", pkValue);
         return internalObjectNode;
     }
 
