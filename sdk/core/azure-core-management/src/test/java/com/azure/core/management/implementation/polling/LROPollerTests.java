@@ -386,6 +386,8 @@ public class LROPollerTests {
         final String sampleVaultUpdateSucceededResponse
             = "{\"id\":\"/subscriptions/000/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu\",\"name\":\"v1weidxu\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"centralus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"000\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"vaultUri\":\"https://v1weidxu.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}";
         ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
+            private final int[] getCallCount = new int[1];
+
             @Override
             public com.github.tomakehurst.wiremock.http.Response transform(Request request,
                 com.github.tomakehurst.wiremock.http.Response response, FileSource fileSource, Parameters parameters) {
@@ -396,6 +398,12 @@ public class LROPollerTests {
                         .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    getCallCount[0]++;
+                    if (getCallCount[0] > 1) {
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder().status(500)
+                            .body("Unexpected additional polling detected.")
+                            .build();
+                    }
                     // 200 response with provisioningState=Succeeded.
                     return new com.github.tomakehurst.wiremock.http.Response.Builder().status(200)
                         .body(sampleVaultUpdateSucceededResponse)
