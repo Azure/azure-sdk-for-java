@@ -10,14 +10,11 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -51,7 +48,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -75,7 +71,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     // ReceiveLinkHandlerWrapper is a temporary type to support either v1 or v2 receiver. This type will be deleted,
     // when removing support for the v1 receiver; instead, the 'ReceiveLinkHandler' for the new v2 receiver will be
     // used.
-    private final RequestChannelWrapper receiveLinkHandler;
+    private final ReceiveLinkHandler2 receiveLinkHandler;
     private final SenderSettleMode senderSettleMode;
     // The request-response-channel endpoint states derived from the latest state of the send and receive links.
     private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
@@ -183,19 +179,20 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.receiveLink.setSenderSettleMode(senderSettleMode);
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
 
-        this.receiveLinkHandler = new RequestChannelWrapper(connectionId, fullyQualifiedNamespace, linkName, entityPath,
-            receiveLink, handlerProvider, provider, retryOptions, isV2);
+        this.receiveLinkHandler
+            = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace, linkName, entityPath,
+                DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, false, provider.getReactorDispatcher(), retryOptions);
+        BaseHandler.setHandler(receiveLink, receiveLinkHandler);
 
         this.metricsProvider = metricsProvider;
 
         // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
         //
-        final Disposable receiveMessagesDisposable
-            = receiveLinkHandler.getDeliveredMessages(this::decodeDelivery).subscribe(message -> {
-                logger.atVerbose().addKeyValue("messageId", message.getCorrelationId()).log("Settling message.");
+        final Disposable receiveMessagesDisposable = receiveLinkHandler.getMessages().subscribe(message -> {
+            logger.atVerbose().addKeyValue("messageId", message.getCorrelationId()).log("Settling message.");
 
-                settleMessage(message);
-            });
+            settleMessage(message);
+        });
         this.subscriptions.add(receiveMessagesDisposable);
 
         final Disposable receiveEndpointDisposable = receiveLinkHandler.getEndpointStates().subscribe(state -> {
@@ -392,22 +389,6 @@ public class RequestResponseChannel implements AsyncCloseable {
         return receiveLinkHandler.getErrorContext(receiveLink);
     }
 
-    protected Message decodeDelivery(Delivery delivery) {
-        final Message response = Proton.message();
-        final int msgSize = delivery.pending();
-        final byte[] buffer = new byte[msgSize];
-
-        final int read = receiveLink.recv(buffer, 0, msgSize);
-
-        response.decode(buffer, 0, read);
-        if (this.senderSettleMode == SenderSettleMode.SETTLED) {
-            // No op. Delivery comes settled from the sender
-            delivery.disposition(Accepted.getInstance());
-            delivery.settle();
-        }
-        return response;
-    }
-
     private void settleMessage(Message message) {
         UnsignedLong correlationId;
         if (message.getCorrelationId() instanceof UnsignedLong) {
@@ -556,48 +537,6 @@ public class RequestResponseChannel implements AsyncCloseable {
                 metricsProvider.recordRequestResponseDuration(((Instant) startTimestamp).toEpochMilli(),
                     (String) operationName, responseCode);
             }
-        }
-    }
-
-    // Temporary type to support either v1 or new v2.
-    // TODO (anu): remove the temporary type once v1's side by side support with v2 is no longer needed.
-    private static final class RequestChannelWrapper {
-        private final boolean isV2;
-        private final ReceiveLinkHandler receiveLinkHandler;
-        private final ReceiveLinkHandler2 receiveLinkHandler2;
-
-        RequestChannelWrapper(String connectionId, String fullyQualifiedNamespace, String linkName, String entityPath,
-            Receiver receiveLink, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
-            AmqpRetryOptions retryOptions, boolean isV2) {
-            this.isV2 = isV2;
-            if (this.isV2) {
-                this.receiveLinkHandler2 = handlerProvider.createReceiveLinkHandler(connectionId,
-                    fullyQualifiedNamespace, linkName, entityPath, DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY,
-                    false, provider.getReactorDispatcher(), retryOptions);
-                BaseHandler.setHandler(receiveLink, receiveLinkHandler2);
-                this.receiveLinkHandler = null;
-            } else {
-                this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId,
-                    fullyQualifiedNamespace, linkName, entityPath);
-                BaseHandler.setHandler(receiveLink, receiveLinkHandler);
-                this.receiveLinkHandler2 = null;
-            }
-        }
-
-        Flux<EndpointState> getEndpointStates() {
-            return isV2 ? receiveLinkHandler2.getEndpointStates() : receiveLinkHandler.getEndpointStates();
-        }
-
-        Flux<Message> getDeliveredMessages(Function<Delivery, Message> decodeDelivery) {
-            if (isV2) {
-                return receiveLinkHandler2.getMessages();
-            } else {
-                return receiveLinkHandler.getDeliveredMessages().map(decodeDelivery);
-            }
-        }
-
-        public AmqpErrorContext getErrorContext(Receiver link) {
-            return isV2 ? receiveLinkHandler2.getErrorContext(link) : receiveLinkHandler.getErrorContext(link);
         }
     }
 }
