@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/clientcore/
+    exclude:
+      - sdk/clientcore/annotation-processor/
 
 pr:
   branches:
@@ -20,6 +22,8 @@ pr:
   paths:
     include:
       - sdk/clientcore/
+    exclude:
+      - sdk/clientcore/annotation-processor/
 
 parameters:
   - name: release_core
@@ -28,10 +32,6 @@ parameters:
     default: true
   - name: release_clientcorehttpokhttp3
     displayName: 'http-okhttp3'
-    type: boolean
-    default: false
-  - name: release_clientcoreannotationprocessor
-    displayName: 'annotation-processor'
     type: boolean
     default: false
 
@@ -54,12 +54,6 @@ extends:
         groupId: io.clientcore
         safeName: httpokhttp3
         releaseInBatch: ${{ parameters.release_clientcorehttpokhttp3 }}
-      - name: annotation-processor
-        groupId: io.clientcore
-        safeName: annotationprocessor
-        releaseInBatch: ${{ parameters.release_clientcoreannotationprocessor }}
     AdditionalModules:
       - name: optional-dependency-tests
-        groupId: io.clientcore
-      - name: annotation-processor-test
         groupId: io.clientcore
