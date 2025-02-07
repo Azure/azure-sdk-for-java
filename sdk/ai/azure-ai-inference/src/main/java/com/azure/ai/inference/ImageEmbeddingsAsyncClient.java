@@ -4,12 +4,11 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
+import com.azure.ai.inference.implementation.models.EmbedRequest;
 import com.azure.ai.inference.implementation.models.ImageEmbedRequest;
-import com.azure.ai.inference.models.EmbeddingEncodingFormat;
-import com.azure.ai.inference.models.EmbeddingInput;
-import com.azure.ai.inference.models.EmbeddingInputType;
 import com.azure.ai.inference.models.EmbeddingsResult;
 import com.azure.ai.inference.models.ExtraParameters;
+import com.azure.ai.inference.models.ImageEmbeddingInput;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -24,8 +23,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import java.util.List;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * Initializes a new instance of the asynchronous ImageEmbeddingsClient type.
@@ -60,7 +60,7 @@ public final class ImageEmbeddingsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -80,12 +80,13 @@ public final class ImageEmbeddingsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
+     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -101,7 +102,7 @@ public final class ImageEmbeddingsAsyncClient {
      * }
      * </pre>
      *
-     * @param embedRequest1 The embedRequest1 parameter.
+     * @param body request options to pass to the endpoint using images embeddings path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -114,20 +115,20 @@ public final class ImageEmbeddingsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> embedWithResponse(BinaryData embedRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.embedWithResponseAsync(embedRequest1, requestOptions);
+    Mono<Response<BinaryData>> embedWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.embedWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }
@@ -148,11 +149,12 @@ public final class ImageEmbeddingsAsyncClient {
     }
 
     /**
-     * Return the embedding vectors for given images.
-     * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
+     * Return the embedding vectors for given text prompts.
+     * The method makes a REST API call to the `/embeddings` route on the given endpoint.
      *
-     * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
-     * The input must not exceed the max input tokens for the model.
+     * @param input Inputs, instances of ImageEmbeddingsInput.
+     * To embed multiple inputs in a single request, pass an array
+     * of strings or array of token arrays.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -160,20 +162,21 @@ public final class ImageEmbeddingsAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return representation of the response data from an embeddings request.
-     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * Image embeddings measure the relatedness of images and are commonly used for search, clustering,
      * recommendations, and other similar scenarios on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EmbeddingsResult> embed(List<EmbeddingInput> input) {
+    public Mono<EmbeddingsResult> embed(List<ImageEmbeddingInput> input) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        ImageEmbedRequest embedRequest1Obj = new ImageEmbedRequest(input);
-        BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
-        return embedWithResponse(embedRequest1, requestOptions).flatMap(FluxUtil::toMono)
+        ImageEmbedRequest embedRequestObj = new ImageEmbedRequest(input);
+        BinaryData embedRequest = BinaryData.fromObject(embedRequestObj);
+        return embedWithResponse(embedRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EmbeddingsResult.class));
     }
 
+    /**
+    
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
@@ -198,20 +201,10 @@ public final class ImageEmbeddingsAsyncClient {
      * Return the embedding vectors for given images.
      * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
      *
-     * @param input Input image to embed. To embed multiple inputs in a single request, pass an array.
-     * The input must not exceed the max input tokens for the model.
+     * @param body request options to pass to the endpoint using images embeddings path.
      * @param extraParams Controls what happens if extra parameters, undefined by the REST API,
      * are passed in the JSON request payload.
      * This sets the HTTP request header `extra-parameters`.
-     * @param dimensions Optional. The number of dimensions the resulting output embeddings should have.
-     * Passing null causes the model to use its default value.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param encodingFormat Optional. The number of dimensions the resulting output embeddings should have.
-     * Passing null causes the model to use its default value.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param inputType Optional. The type of the input.
-     * Returns a 422 error if the model doesn't support the value or parameter.
-     * @param model ID of the specific AI model to use, if more than one model is available on the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -224,19 +217,37 @@ public final class ImageEmbeddingsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EmbeddingsResult> embed(List<EmbeddingInput> input, ExtraParameters extraParams, Integer dimensions,
-        EmbeddingEncodingFormat encodingFormat, EmbeddingInputType inputType, String model) {
+    Mono<EmbeddingsResult> embed(ImageEmbedRequest body, ExtraParameters extraParams) {
         // Generated convenience method for embedWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        ImageEmbedRequest embedRequest1Obj = new ImageEmbedRequest(input).setDimensions(dimensions)
-            .setEncodingFormat(encodingFormat)
-            .setInputType(inputType)
-            .setModel(model);
-        BinaryData embedRequest1 = BinaryData.fromObject(embedRequest1Obj);
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return embedWithResponse(embedRequest1, requestOptions).flatMap(FluxUtil::toMono)
+        return embedWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(EmbeddingsResult.class));
+    }
+
+    /**
+     * Return the embedding vectors for given images.
+     * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
+     *
+     * @param body request options to pass to the endpoint using images embeddings path.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return representation of the response data from an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<EmbeddingsResult> embed(ImageEmbedRequest body) {
+        // Generated convenience method for embedWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return embedWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EmbeddingsResult.class));
     }
 }

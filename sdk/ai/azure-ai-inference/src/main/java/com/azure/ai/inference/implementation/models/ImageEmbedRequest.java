@@ -4,8 +4,8 @@
 package com.azure.ai.inference.implementation.models;
 
 import com.azure.ai.inference.models.EmbeddingEncodingFormat;
-import com.azure.ai.inference.models.EmbeddingInput;
 import com.azure.ai.inference.models.EmbeddingInputType;
+import com.azure.ai.inference.models.ImageEmbeddingInput;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -29,7 +29,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * The input must not exceed the max input tokens for the model.
      */
     @Generated
-    private final List<EmbeddingInput> input;
+    private final List<ImageEmbeddingInput> input;
 
     /*
      * Optional. The number of dimensions the resulting output embeddings should have.
@@ -72,7 +72,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @param input the input value to set.
      */
     @Generated
-    public ImageEmbedRequest(List<EmbeddingInput> input) {
+    public ImageEmbedRequest(List<ImageEmbeddingInput> input) {
         this.input = input;
     }
 
@@ -83,7 +83,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
      * @return the input value.
      */
     @Generated
-    public List<EmbeddingInput> getInput() {
+    public List<ImageEmbeddingInput> getInput() {
         return this.input;
     }
 
@@ -245,7 +245,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
     @Generated
     public static ImageEmbedRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<EmbeddingInput> input = null;
+            List<ImageEmbeddingInput> input = null;
             Integer dimensions = null;
             EmbeddingEncodingFormat encodingFormat = null;
             EmbeddingInputType inputType = null;
@@ -255,7 +255,7 @@ public final class ImageEmbedRequest implements JsonSerializable<ImageEmbedReque
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("input".equals(fieldName)) {
-                    input = reader.readArray(reader1 -> EmbeddingInput.fromJson(reader1));
+                    input = reader.readArray(reader1 -> ImageEmbeddingInput.fromJson(reader1));
                 } else if ("dimensions".equals(fieldName)) {
                     dimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("encoding_format".equals(fieldName)) {

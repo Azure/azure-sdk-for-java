@@ -15,6 +15,8 @@ import static com.azure.core.test.TestBase.getHttpClients;
 public class TestUtils {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";
+    static final String TEST_IMAGE_PATH = "./src/samples/resources/sample-images/sample.png";
+    static final String TEST_IMAGE_FORMAT = "png";
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients}

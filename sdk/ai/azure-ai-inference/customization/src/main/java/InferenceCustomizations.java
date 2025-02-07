@@ -16,7 +16,7 @@ public class InferenceCustomizations extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
-        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/inference/implementation/models/CompleteOptions.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/ai/inference/implementation/models/ChatCompletionsOptions.java");
         PackageCustomization implModels = customization.getPackage("com.azure.ai.inference.implementation.models");
         ClassCustomization embedRequest1 = implModels.getClass("EmbedRequest1");
         embedRequest1.rename("ImageEmbedRequest");
@@ -24,7 +24,7 @@ public class InferenceCustomizations extends Customization {
     }
 
     private void customizeChatCompletionsBaseClasses(LibraryCustomization customization, Logger logger) {
-        List<String> classList = Arrays.asList("ChatCompletionsNamedToolSelection", "ChatCompletionsToolCall", "ChatCompletionsToolDefinition");
+        List<String> classList = Arrays.asList("ChatCompletionsNamedToolChoice", "ChatCompletionsToolCall", "ChatCompletionsToolDefinition");
         for (String className : classList) {
             logger.info("Customizing the {} class", className);
             ClassCustomization namedToolSelectionClass = customization.getPackage("com.azure.ai.inference.models").getClass(className);

@@ -15,7 +15,7 @@ import java.io.IOException;
  * A tool selection of a specific, named function tool that will limit chat completions to using the named function.
  */
 @Immutable
-public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatCompletionsNamedToolSelection> {
+public class ChatCompletionsNamedToolChoice implements JsonSerializable<ChatCompletionsNamedToolChoice> {
 
     /*
      * The type of the tool. Currently, only `function` is supported.
@@ -27,15 +27,15 @@ public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatC
      * The function that should be called.
      */
     @Generated
-    private final ChatCompletionsFunctionToolSelection function;
+    private final ChatCompletionsNamedToolChoiceFunction function;
 
     /**
-     * Creates an instance of ChatCompletionsNamedToolSelection class.
+     * Creates an instance of ChatCompletionsNamedToolChoice class.
      *
      * @param function the function value to set.
      */
     @Generated
-    public ChatCompletionsNamedToolSelection(ChatCompletionsFunctionToolSelection function) {
+    public ChatCompletionsNamedToolChoice(ChatCompletionsNamedToolChoiceFunction function) {
         this.function = function;
     }
 
@@ -55,7 +55,7 @@ public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatC
      * @return the function value.
      */
     @Generated
-    public ChatCompletionsFunctionToolSelection getFunction() {
+    public ChatCompletionsNamedToolChoiceFunction getFunction() {
         return this.function;
     }
 
@@ -72,28 +72,28 @@ public class ChatCompletionsNamedToolSelection implements JsonSerializable<ChatC
     }
 
     /**
-     * Reads an instance of ChatCompletionsNamedToolSelection from the JsonReader.
+     * Reads an instance of ChatCompletionsNamedToolChoice from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatCompletionsNamedToolSelection if the JsonReader was pointing to an instance of it, or
+     * @return An instance of ChatCompletionsNamedToolChoice if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatCompletionsNamedToolSelection.
+     * @throws IOException If an error occurs while reading the ChatCompletionsNamedToolChoice.
      */
     @Generated
-    public static ChatCompletionsNamedToolSelection fromJson(JsonReader jsonReader) throws IOException {
+    public static ChatCompletionsNamedToolChoice fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ChatCompletionsFunctionToolSelection function = null;
+            ChatCompletionsNamedToolChoiceFunction function = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("function".equals(fieldName)) {
-                    function = ChatCompletionsFunctionToolSelection.fromJson(reader);
+                    function = ChatCompletionsNamedToolChoiceFunction.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ChatCompletionsNamedToolSelection(function);
+            return new ChatCompletionsNamedToolChoice(function);
         });
     }
 }
