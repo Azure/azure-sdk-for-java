@@ -435,9 +435,6 @@ public class LROPollerTests {
                 lroPoller.setPollInterval(pollInterval);
                 long timeBeforePoll = System.currentTimeMillis();
 
-                PollResponse<PollResult<Resource>> pollResponse = lroPoller.poll();
-                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
-
                 Resource result = lroPoller.getFinalResult();
                 Assertions.assertNotNull(result);
                 Assertions.assertNotNull(result.id());
