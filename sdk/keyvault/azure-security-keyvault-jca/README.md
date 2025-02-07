@@ -67,8 +67,10 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 
 ## Key concepts
 ### Jar Signer
+The JCA library provides support for Java Archive (JAR) signing, ensuring the integrity and authenticity of JAR files using certificates stored in Azure Key Vault.
 
-### TLS/mTLS
+### SSL/TLS and mTLS
+The JCA library supports SSL/TLS and mTLS (Mutual TLS) to enhance security in secure communication channels. It enables applications to securely retrieve certificates from Azure Key Vault and use them for TLS-related operations.
 
 ### Exposed Env Options
 JCA library support to configure the following options:
@@ -89,6 +91,11 @@ JCA library support to configure the following options:
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
 ```java readme-sample-serverSSL
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<your-azure-keyvault-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
+
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
@@ -102,6 +109,24 @@ context.init(managerFactory.getKeyManagers(), null, null);
 
 SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
 SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
+
+while (true) {
+SSLSocket socket = (SSLSocket) serverSocket.accept();
+    System.out.println("Client connected: " + socket.getInetAddress());
+BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+String body = "Hello, this is server.";
+String response = "HTTP/1.1 200 OK\r\n" +
+    "Content-Type: text/plain\r\n" +
+    "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" +
+    "Connection: close\r\n" +
+    "\r\n" +
+    body;
+
+    out.write(response);
+    out.flush();
+    socket.close();
+}
 ```
 
 Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
@@ -110,6 +135,11 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
 ```java readme-sample-clientSSL
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<your-azure-keyvault-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
+
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
@@ -125,22 +155,24 @@ SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketF
 
 PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
     RegistryBuilder.<ConnectionSocketFactory>create()
-        .register("https", sslConnectionSocketFactory)
-        .build());
+                   .register("https", sslConnectionSocketFactory)
+                   .build());
 
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-    HttpGet httpGet = new HttpGet("https://localhost:8766");
-    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-        int status = response.getStatusLine().getStatusCode();
-        String result1 = "Not success";
-        if (status == 204) {
-            result1 = "Success";
-        }
-        return result1;
-    };
-    result = client.execute(httpGet, responseHandler);
+HttpGet httpGet = new HttpGet("https://localhost:8765");
+ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+    int status = response.getStatusLine().getStatusCode();
+    String result1 = "Not success";
+    if (status == 200) {
+        result1 = "Success";
+        System.out.println(EntityUtils.toString(response.getEntity()));
+    }
+    return result1;
+};
+result = client.execute(httpGet, responseHandler);
+    System.out.println(result);
 } catch (IOException ioe) {
     ioe.printStackTrace();
 }
