@@ -29,6 +29,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-1_2-12
 | Connector    | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |--------------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.36.1       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 9.\*                          |
 | 4.36.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
 | 4.35.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
 | 4.34.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
@@ -102,6 +103,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-2_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.36.1    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
 | 4.36.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
 | 4.35.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
 | 4.34.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
@@ -160,6 +162,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-3_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.36.1    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.36.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.35.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.34.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
@@ -200,6 +203,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-4_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.36.1    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |
 | 4.36.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
 | 4.35.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
 | 4.34.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
@@ -232,6 +236,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-5_2-12
 | Connector | Supported Spark Versions | Minimum Java Version   | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.36.1    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
 | 4.36.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
 | 4.35.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
 | 4.34.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
