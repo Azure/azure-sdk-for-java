@@ -19,9 +19,9 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - For Spark 3.3
   - [Azure Databricks Runtime 11.3 LTS with Spark 3.3.2](https://learn.microsoft.com/azure/databricks/release-notes/runtime/12.2)
 - For Spark 3.4
-    - [Azure Databricks Runtime 11.3 LTS with Spark 3.4.1](https://learn.microsoft.com/azure/databricks/release-notes/runtime/13.3)
+  - [Azure Databricks Runtime 13.3 LTS with Spark 3.4.1](https://learn.microsoft.com/azure/databricks/release-notes/runtime/13.3lts)
 - For Spark 3.5
-  - [Azure Databricks Runtime 11.3 LTS with Spark 3.5.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/15.4)
+  - [Azure Databricks Runtime 15.4 LTS with Spark 3.5.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/15.4lts)
 
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
