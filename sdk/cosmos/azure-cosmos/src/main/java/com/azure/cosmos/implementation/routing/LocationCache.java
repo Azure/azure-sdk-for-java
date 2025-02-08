@@ -235,13 +235,17 @@ public class LocationCache {
             return writeEndpoints;
         }
 
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludedRegions = excludedRegionsOnRequest;
+        }
+
         // filter regions based on the exclude region config
         return this.getApplicableEndpoints(
             new Utils.ValueHolder<>(null),
             writeEndpoints,
             this.locationInfo.regionNameByWriteEndpoint,
             this.defaultEndpoint,
-            excludedRegionsOnRequest,
+            effectiveExcludedRegions,
             unavailableRegionsForPartition);
     }
 
@@ -264,13 +268,17 @@ public class LocationCache {
             return readEndpoints;
         }
 
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludedRegions = excludedRegionsOnRequest;
+        }
+
         // filter regions based on the exclude region config
         return this.getApplicableEndpoints(
             new Utils.ValueHolder<>(null),
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
-            excludedRegionsOnRequest,
+            effectiveExcludedRegions,
             unavailableRegionsForPartition);
     }
 
@@ -288,13 +296,17 @@ public class LocationCache {
             return readEndpoints;
         }
 
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludedRegions = excludedRegionsOnRequest;
+        }
+
         // filter regions based on the exclude region config
         return this.getApplicableEndpoints(
             requestValueHolder,
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
-            excludedRegionsOnRequest,
+            effectiveExcludedRegions,
             unavailableRegionsForPartition);
     }
 
@@ -313,13 +325,17 @@ public class LocationCache {
             return writeEndpoints;
         }
 
+        if (excludedRegionsOnRequest != null && !excludedRegionsOnRequest.isEmpty()) {
+            effectiveExcludedRegions = excludedRegionsOnRequest;
+        }
+
         // filter regions based on the exclude region config
         return this.getApplicableEndpoints(
             requestValueHolder,
             writeEndpoints,
             this.locationInfo.regionNameByWriteEndpoint,
             this.defaultEndpoint,
-            excludedRegionsOnRequest,
+            effectiveExcludedRegions,
             unavailableRegionsForPartition);
     }
 
@@ -334,30 +350,32 @@ public class LocationCache {
         List<URI> locationsRemovedByInternalExcludeRegions = new ArrayList<>();
 
         List<URI> applicableEndpoints = new ArrayList<>();
+
         for (URI endpoint : endpoints) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
             if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
-
                 if (!userConfiguredExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
                     applicableEndpoints.add(endpoint);
                 }
             }
         }
 
-        for (URI endpoint : endpoints) {
-            Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
-            if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
+        if (internalExcludeRegions != null && internalExcludeRegions.isEmpty()) {
+            for (URI endpoint : endpoints) {
+                Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
+                if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
 
-                if (internalExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
+                    if (internalExcludeRegions.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
 
-                    int size = applicableEndpoints.size();
+                        int size = applicableEndpoints.size();
 
-                    applicableEndpoints.remove(endpoint);
+                        applicableEndpoints.remove(endpoint);
 
-                    int newSize = applicableEndpoints.size();
+                        int newSize = applicableEndpoints.size();
 
-                    if (newSize < size) {
-                        locationsRemovedByInternalExcludeRegions.add(endpoint);
+                        if (newSize < size) {
+                            locationsRemovedByInternalExcludeRegions.add(endpoint);
+                        }
                     }
                 }
             }
