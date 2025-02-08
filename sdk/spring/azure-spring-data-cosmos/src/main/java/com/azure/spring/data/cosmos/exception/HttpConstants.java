@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.exception;
 
+
+/**
+ * Http Constants.
+ */
 public class HttpConstants {
 
     /**
