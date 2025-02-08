@@ -44,6 +44,7 @@ public class CosmosExceptionUtils {
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
 
             int statusCode = cosmosException.getStatusCode();
+            int subStatusCode = ((CosmosException) unwrappedThrowable).getSubStatusCode();
             if (statusCode == HttpStatus.BAD_REQUEST.value()) {
                 cosmosAccessException = new CosmosBadRequestException(message, cosmosException);
             } else if (statusCode == HttpStatus.CONFLICT.value()) {
@@ -51,13 +52,13 @@ public class CosmosExceptionUtils {
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 cosmosAccessException = new CosmosForbiddenException(message, cosmosException);
             } else if (statusCode == HttpStatus.GONE.value()) {
-                if (statusCode == HttpConstants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE) {
+                if (subStatusCode == HttpConstants.CosmosExceptionSubStatusCodes.NAME_CACHE_IS_STALE) {
                     cosmosAccessException = new CosmosInvalidPartitionException(message, cosmosException);
-                } else if (statusCode == HttpConstants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION) {
+                } else if (subStatusCode == HttpConstants.CosmosExceptionSubStatusCodes.COMPLETING_PARTITION_MIGRATION) {
                     cosmosAccessException = new CosmosPartitionIsMigratingException(message, cosmosException);
-                } else if (statusCode == HttpConstants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE) {
+                } else if (subStatusCode == HttpConstants.CosmosExceptionSubStatusCodes.PARTITION_KEY_RANGE_GONE) {
                     cosmosAccessException = new CosmosPartitionKeyRangeGoneException(message, cosmosException);
-                } else if (statusCode == HttpConstants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE) {
+                } else if (subStatusCode == HttpConstants.CosmosExceptionSubStatusCodes.COMPLETING_SPLIT_OR_MERGE) {
                     cosmosAccessException = new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
                 } else {
                     cosmosAccessException = new CosmosGoneException(message, cosmosException);
@@ -69,7 +70,7 @@ public class CosmosExceptionUtils {
             } else if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 cosmosAccessException = new CosmosNotFoundException(message, cosmosException);
             } else if (statusCode == HttpStatus.REQUEST_TIMEOUT.value()) {
-                if (((CosmosException) unwrappedThrowable).getSubStatusCode() == HttpConstants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
+                if (subStatusCode == HttpConstants.CosmosExceptionSubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
                     cosmosAccessException = new CosmosOperationCancelledException(message, cosmosException);
                 } else {
                     cosmosAccessException = new CosmosRequestTimeoutException(message, cosmosException);
