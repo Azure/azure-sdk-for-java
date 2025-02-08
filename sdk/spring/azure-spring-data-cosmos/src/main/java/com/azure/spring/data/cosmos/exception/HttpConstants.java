@@ -6,7 +6,7 @@ package com.azure.spring.data.cosmos.exception;
 /**
  * Http Constants.
  */
-public class HttpConstants {
+final class HttpConstants {
 
     /**
      * Cosmos Exception Status Codes.
