@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -68,6 +69,25 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
             return false;
+        }
+
+        if (request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        if (request.getOperationType() != OperationType.QueryPlan) {
+            return false;
+        }
+
+        if (request.isReadOnlyRequest()) {
+            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                = request.requestContext.getCrossRegionAvailabilityContext();
+
+            checkNotNull(crossRegionAvailabilityContextForRequest, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
+
+            if (!crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverride()) {
+                return false;
+            }
         }
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);

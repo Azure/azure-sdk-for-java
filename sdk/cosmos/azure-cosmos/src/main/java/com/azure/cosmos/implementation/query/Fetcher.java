@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -183,7 +184,11 @@ abstract class Fetcher<T> {
                 if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
-                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
+
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext = request.requestContext.getCrossRegionAvailabilityContext();
+                    checkNotNull(crossRegionAvailabilityContext, "Argument 'crossRegionAvailabilityContext' must not be null!");
+
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = crossRegionAvailabilityContext.getFeedOperationContextForCircuitBreaker();
 
                     checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
@@ -211,7 +216,12 @@ abstract class Fetcher<T> {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
 
-                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext = request.requestContext.getCrossRegionAvailabilityContext();
+
+                    checkNotNull(crossRegionAvailabilityContext, "Argument 'crossRegionAvailabilityContext' must not be null!");
+
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = crossRegionAvailabilityContext.getFeedOperationContextForCircuitBreaker();
+
                     checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
                     if (!feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {

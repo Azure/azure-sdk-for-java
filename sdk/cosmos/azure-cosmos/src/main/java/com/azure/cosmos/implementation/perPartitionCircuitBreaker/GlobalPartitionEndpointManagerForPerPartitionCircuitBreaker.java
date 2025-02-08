@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -516,10 +517,15 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+            = request.requestContext.getCrossRegionAvailabilityContext();
+
+        checkNotNull(crossRegionAvailabilityContextForRequest, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
+
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker
-            = request.requestContext.getPointOperationContextForCircuitBreaker();
+            = crossRegionAvailabilityContextForRequest.getPointOperationContextForCircuitBreaker();
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker
-            = request.requestContext.getFeedOperationContextForCircuitBreaker();
+            = crossRegionAvailabilityContextForRequest.getFeedOperationContextForCircuitBreaker();
 
         if (pointOperationContextForCircuitBreaker != null) {
             checkNotNull(

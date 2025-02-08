@@ -1,7 +1,9 @@
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AvailabilityStrategyContext;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -402,12 +404,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
         request.requestContext.resolvedCollectionRid = collectionResourceId;
         request.requestContext.setExcludeRegions(Collections.emptyList());
-        request.requestContext.setPointOperationContext(
-            new PointOperationContextForCircuitBreaker(
-                new AtomicBoolean(false),
-                false,
-                collectionLink,
-                new SerializationDiagnosticsContext()));
+        request.requestContext.setCrossRegionAvailabilityContext(
+            new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+                null,
+                new PointOperationContextForCircuitBreaker(
+                    new AtomicBoolean(false),
+                    false,
+                    collectionLink,
+                    new SerializationDiagnosticsContext()),
+                new AvailabilityStrategyContext(true, true)
+            )
+);
 
         return request;
     }

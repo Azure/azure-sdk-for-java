@@ -42,7 +42,6 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicBoolean refreshInBackground;
     private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
     private volatile boolean isClosed;
-    private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;

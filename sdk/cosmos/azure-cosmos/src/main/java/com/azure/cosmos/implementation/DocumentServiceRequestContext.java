@@ -64,9 +64,14 @@ public class DocumentServiceRequestContext implements Cloneable {
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
-    private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
+//    private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
+//
+//    private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
 
-    private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
+//    private AvailabilityStrategyContext crossRegionAvailabilityStrategyContext;
+
+    private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest;
+
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
     private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
@@ -155,8 +160,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
-        context.feedOperationContextForCircuitBreaker = this.feedOperationContextForCircuitBreaker;
-        context.pointOperationContextForCircuitBreaker = this.pointOperationContextForCircuitBreaker;
+        context.crossRegionAvailabilityContextForRequest = this.crossRegionAvailabilityContextForRequest;
         return context;
     }
 
@@ -192,20 +196,28 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 
-    public PointOperationContextForCircuitBreaker getPointOperationContextForCircuitBreaker() {
-        return pointOperationContextForCircuitBreaker;
+//    public PointOperationContextForCircuitBreaker getPointOperationContextForCircuitBreaker() {
+//        return pointOperationContextForCircuitBreaker;
+//    }
+//
+//    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+//        this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
+//    }
+//
+//    public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
+//        return feedOperationContextForCircuitBreaker;
+//    }
+//
+//    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
+//        this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
+//    }
+
+    public void setCrossRegionAvailabilityContext(CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
+        this.crossRegionAvailabilityContextForRequest = crossRegionAvailabilityContextForRequest;
     }
 
-    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
-        this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
-    }
-
-    public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
-        return feedOperationContextForCircuitBreaker;
-    }
-
-    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
-        this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
+    public CrossRegionAvailabilityContextForRxDocumentServiceRequest getCrossRegionAvailabilityContext() {
+        return this.crossRegionAvailabilityContextForRequest;
     }
 
     public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
