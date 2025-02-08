@@ -1,14 +1,16 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.15.1 (2025-02-07)
 
 ### Bugs Fixed
 
+- Fixed an issue preventing scopes with underscores from working properly. [#44040](https://github.com/Azure/azure-sdk-for-java/pull/44040)
+
 ### Other Changes
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.8`.
+- Upgraded `msal4j` from `1.17.1` to version `1.19.0`.
 
 ## 1.15.0 (2025-01-10)
 
